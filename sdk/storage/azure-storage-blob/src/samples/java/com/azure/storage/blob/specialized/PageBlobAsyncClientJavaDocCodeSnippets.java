@@ -254,6 +254,43 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link PageBlobAsyncClient#getPageRangesDiffFromUrl(BlobRange, String)}
+     */
+    public void getPageRangesDiffFromUrlCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrl#BlobRange-String
+        BlobRange blobRange = new BlobRange(offset);
+        final String prevSnapshotUrl = "previous snapshot url";
+
+        client.getPageRangesDiff(blobRange, prevSnapshotUrl).subscribe(response -> {
+            System.out.println("Valid Page Ranges are:");
+            for (PageRange pageRange : response.getPageRange()) {
+                System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+            }
+        });
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrl#BlobRange-String
+    }
+
+    /**
+     * Code snippets for {@link PageBlobAsyncClient#getPageRangesDiffFromUrlWithResponse(BlobRange, String,
+     * BlobRequestConditions)}
+     */
+    public void getPageRangesDiffFromUrlWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrlWithResponse#BlobRange-String-BlobRequestConditions
+        BlobRange blobRange = new BlobRange(offset);
+        final String prevSnapshotUrl = "previous snapshot url";
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+
+        client.getPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, blobRequestConditions)
+            .subscribe(response -> {
+                System.out.println("Valid Page Ranges are:");
+                for (PageRange pageRange : response.getValue().getPageRange()) {
+                    System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+                }
+            });
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrlWithResponse#BlobRange-String-BlobRequestConditions
+    }
+
+    /**
      * Code snippets for {@link PageBlobAsyncClient#resize(long)}
      */
     public void resizeCodeSnippet() {

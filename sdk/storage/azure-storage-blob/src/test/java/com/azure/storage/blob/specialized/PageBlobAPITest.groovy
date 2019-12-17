@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.http.RequestConditions
 import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -807,6 +808,37 @@ class PageBlobAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Get page ranges diff prev snapshot url"() {
+        setup:
+        BlobContainerClient managedDiskContainer = managedDiskServiceClient.getBlobContainerClient(generateContainerName())
+        managedDiskContainer.create()
+        PageBlobClient managedDiskBlob = managedDiskContainer.getBlobClient(generateBlobName()).getPageBlobClient()
+        managedDiskBlob.create(PageBlobClient.PAGE_BYTES * 2)
+
+        managedDiskBlob.uploadPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+
+        def snapUrl = managedDiskBlob.createSnapshot().getBlobUrl()
+
+        managedDiskBlob.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+
+        managedDiskBlob.clearPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1))
+
+        when:
+        def response = managedDiskBlob.getPageRangesDiffFromUrlWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapUrl, null, null, null)
+
+        then:
+        response.getValue().getPageRange().size() == 1
+        response.getValue().getPageRange().get(0).getStart() == 0
+        response.getValue().getPageRange().get(0).getEnd() == PageBlobClient.PAGE_BYTES - 1
+        response.getValue().getClearRange().size() == 1
+        response.getValue().getClearRange().get(0).getStart() == PageBlobClient.PAGE_BYTES
+        response.getValue().getClearRange().get(0).getEnd() == PageBlobClient.PAGE_BYTES * 2 - 1
+        validateBasicHeaders(response.getHeaders())
+        Integer.parseInt(response.getHeaders().getValue("x-ms-blob-content-length")) == PageBlobClient.PAGE_BYTES * 2
     }
 
     @Unroll

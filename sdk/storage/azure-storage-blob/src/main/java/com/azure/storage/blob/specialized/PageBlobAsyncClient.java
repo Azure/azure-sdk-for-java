@@ -596,23 +596,87 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->
-                getPageRangesDiffWithResponse(blobRange, prevSnapshot, requestConditions, context));
+                getPageRangesDiffWithResponse(blobRange, prevSnapshot, null, requestConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrl#BlobRange-String}
+     *
+     * @param blobRange {@link BlobRange}
+     * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
+     * response will contain only pages that were changed between target blob and previous snapshot. Changed pages
+     * include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot specified by
+     * prevsnapshot is the older of the two.
+     *
+     * @return A reactive response emitting all the different page ranges.
+     */
+    public Mono<PageList> getPageRangesDiffFromUrl(BlobRange blobRange, String prevSnapshotUrl) {
+        try {
+            return getPageRangesDiffFromUrlWithResponse(blobRange, prevSnapshotUrl, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * This API only works for managed disk accounts.
+     * <p>Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
+     * Docs</a>.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrlWithResponse#BlobRange-String-BlobRequestConditions}
+     *
+     * @param blobRange {@link BlobRange}
+     * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
+     * response will contain only pages that were changed between target blob and previous snapshot. Changed pages
+     * include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot specified by
+     * prevsnapshot is the older of the two.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @return A reactive response emitting all the different page ranges.
+     *
+     * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
+     */
+    public Mono<Response<PageList>> getPageRangesDiffFromUrlWithResponse(BlobRange blobRange, String prevSnapshotUrl,
+        BlobRequestConditions requestConditions) {
+        try {
+            return withContext(context ->
+                getPageRangesDiffWithResponse(blobRange, null, prevSnapshotUrl, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
-        BlobRequestConditions requestConditions, Context context) {
+        String prevSnapshotUrl, BlobRequestConditions requestConditions, Context context) {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        if (prevSnapshot == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
+        URL url = null;
+        if (prevSnapshotUrl == null) {
+            if (prevSnapshot == null) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
+            }
+        } else {
+            try {
+                url = new URL(prevSnapshotUrl);
+            } catch (MalformedURLException ex) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'prevSnapshotUrl' is not a valid url."));
+            }
         }
 
         return this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(null, null, getSnapshotId(),
-            null, prevSnapshot, null /*prevsnapurl*/, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
+            null, prevSnapshot, url, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
