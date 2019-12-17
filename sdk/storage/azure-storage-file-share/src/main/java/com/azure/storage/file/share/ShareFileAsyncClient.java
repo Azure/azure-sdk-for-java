@@ -911,7 +911,7 @@ public class ShareFileAsyncClient {
      */
     public Mono<Response<ShareFileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
                                                               FileSmbProperties smbProperties, String filePermission) {
-        return this.setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission);
+        return this.setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null);
     }
 
     /**
