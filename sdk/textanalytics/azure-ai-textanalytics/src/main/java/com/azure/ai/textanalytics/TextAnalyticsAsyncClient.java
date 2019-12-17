@@ -56,13 +56,13 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Text Analytics.
- * Operations allow by the client to detect language, recognize entities, recognize pii entities,
+ * Operations allow by the client to detect language, recognize entities, recognize PII entities,
  * recognize linked entities, and analyze sentiment for a text input or a list of text input.
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation}
  *
- * <p>View {@link TextAnalyticsClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link TextAnalyticsClientBuilder} for additional ways to construct the client.</p>
  *
  * @see TextAnalyticsClientBuilder
  */
@@ -399,7 +399,7 @@ public final class TextAnalyticsAsyncClient {
      * For the list of supported entity types, check https://aka.ms/tanerpii.
      * See https://aka.ms/talangs for the list of enabled languages.
      *
-     * @param text the text to recognize pii entities for.
+     * @param text the text to recognize PII entities for.
      *
      * @return A {@link Mono} containing the {@link NamedEntityResult PII entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -414,7 +414,7 @@ public final class TextAnalyticsAsyncClient {
      * For the list of supported entity types, check https://aka.ms/tanerpii.
      * See https://aka.ms/talangs for the list of enabled languages.
      *
-     * @param text the text to recognize pii entities for.
+     * @param text the text to recognize PII entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -449,7 +449,7 @@ public final class TextAnalyticsAsyncClient {
      * For the list of supported entity types, check https://aka.ms/tanerpii.
      * See https://aka.ms/talangs for the list of enabled languages.
      *
-     * @param textInputs A list of text to recognize pii entities for.
+     * @param textInputs A list of text to recognize PII entities for.
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link NamedEntityResult named entity} of the text.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -465,7 +465,7 @@ public final class TextAnalyticsAsyncClient {
      * For the list of supported entity types, check https://aka.ms/tanerpii.
      * See https://aka.ms/talangs for the list of enabled languages.
      * *
-     * @param textInputs A list of text to recognize pii entities for.
+     * @param textInputs A list of text to recognize PII entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -495,7 +495,7 @@ public final class TextAnalyticsAsyncClient {
      * For the list of supported entity types, check https://aka.ms/tanerpii.
      * See https://aka.ms/talangs for the list of enabled languages.
      *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize pii entities for.
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link NamedEntityResult named entity}.
@@ -512,7 +512,7 @@ public final class TextAnalyticsAsyncClient {
      * For the list of supported entity types, check https://aka.ms/tanerpii.
      * See https://aka.ms/talangs for the list of enabled languages.
      *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize pii entities for.
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -1128,6 +1128,7 @@ public final class TextAnalyticsAsyncClient {
      * Helper method to convert the service response of {@link LanguageResult} to {@link DocumentResultCollection}.
      *
      * @param languageResult the {@link LanguageResult} returned by the service.
+     *
      * @return the {@link DocumentResultCollection} of {@link DetectLanguageResult} to be returned by the SDK.
      */
     private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(
@@ -1140,6 +1141,7 @@ public final class TextAnalyticsAsyncClient {
      * Helper method to get a combined list of error documents and valid documents.
      *
      * @param languageResult the {@link LanguageResult} containing both the error and document list.
+     *
      * @return the combined error and document list.
      */
     private static List<DetectLanguageResult> getDocumentLanguages(final LanguageResult languageResult) {

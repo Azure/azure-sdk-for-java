@@ -3,22 +3,22 @@
     "Method" : "POST",
     "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com//text/analytics/v3.0-preview.1/entities/linking",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "1f57d312-134c-4e86-8821-918296235be6",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9f604d8e-9e35-4fdd-913d-1e2b4b41ad6d",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "11",
+      "x-envoy-upstream-service-time" : "15",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2",
-      "apim-request-id" : "8d2c3991-73e1-46db-bdd0-6911bb675773",
-      "x-aml-ta-request-id" : "e64c2ac6-26f9-49ef-978f-e7ca73f6438f",
+      "apim-request-id" : "c9959676-d6cb-43ee-8b46-add4ac6273f7",
+      "x-aml-ta-request-id" : "37d2a4ca-cad6-493f-81f4-6e4b40fbe8c8",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":0,\"length\":9,\"score\":0.15927483173469081}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"https://en.wikipedia.org/wiki/Microsoft\",\"dataSource\":\"Wikipedia\"},{\"name\":\"Application programming interface\",\"matches\":[{\"text\":\"API's\",\"offset\":61,\"length\":5,\"score\":0.62952832290627114}],\"language\":\"en\",\"id\":\"Application programming interface\",\"url\":\"https://en.wikipedia.org/wiki/Application_programming_interface\",\"dataSource\":\"Wikipedia\"}]},{\"id\":\"1\",\"entities\":[{\"name\":\"ABA routing transit number\",\"matches\":[{\"text\":\"ABA number\",\"offset\":5,\"length\":10,\"score\":0.61596770524356326}],\"language\":\"en\",\"id\":\"ABA routing transit number\",\"url\":\"https://en.wikipedia.org/wiki/ABA_routing_transit_number\",\"dataSource\":\"Wikipedia\"}]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Sun, 15 Dec 2019 05:35:16 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"score\":0.11472424095537814}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"https://en.wikipedia.org/wiki/Seattle\",\"dataSource\":\"Wikipedia\"}]},{\"id\":\"1\",\"entities\":[{\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":10,\"length\":9,\"score\":0.18693659716732069}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"https://en.wikipedia.org/wiki/Microsoft\",\"dataSource\":\"Wikipedia\"}]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
+      "Date" : "Tue, 17 Dec 2019 22:39:25 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

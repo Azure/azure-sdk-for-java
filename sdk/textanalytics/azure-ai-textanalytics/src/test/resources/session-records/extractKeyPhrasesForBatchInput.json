@@ -4,21 +4,21 @@
     "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com//text/analytics/v3.0-preview.1/keyPhrases",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "47d64c18-ca9c-4190-bc85-aaeb5d0ec09c",
+      "x-ms-client-request-id" : "c06ff081-7cd8-4067-9a79-4e4abeb64e19",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "8",
+      "x-envoy-upstream-service-time" : "11",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2",
-      "apim-request-id" : "81c8b6bc-0499-46b0-90ef-7d97093889c4",
-      "x-aml-ta-request-id" : "63c00349-b151-43b3-8077-4cab63b5a551",
+      "apim-request-id" : "6d0a7ed6-0460-4828-be82-7e00e73857d4",
+      "x-aml-ta-request-id" : "8cfb3cb4-c4a9-46b9-aec6-c69e705ca62e",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"]},{\"id\":\"1\",\"keyPhrases\":[\"lower left hand corner\",\"personal check\",\"digits\",\"ABA number\"]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Mon, 16 Dec 2019 19:24:56 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"input text\",\"world\"]},{\"id\":\"1\",\"keyPhrases\":[\"monde\"]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
+      "Date" : "Tue, 17 Dec 2019 22:33:53 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
