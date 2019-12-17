@@ -22,7 +22,8 @@ import com.azure.search.models.SynonymMap;
 import com.azure.search.models.TokenInfo;
 
 /**
- * TODO: Add class description
+ * Synchronous Client to manage and query indexes,
+ * as well as manage other resources, on a Cognitive Search service
  */
 @ServiceClient(builder = SearchServiceClientBuilder.class)
 public class SearchServiceClient {

@@ -4,7 +4,7 @@
 package com.azure.search.models;
 
 /**
- * TODO: add class desc
+ * Contains the range facet value found by a search query
  */
 public class RangeFacetResult {
     private final Long count;

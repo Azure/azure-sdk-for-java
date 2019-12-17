@@ -42,7 +42,7 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * TODO: Add class description
+ * Cognitive Search Asynchronous Client to query an index and upload, merge, or delete documents
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public class SearchIndexAsyncClient {

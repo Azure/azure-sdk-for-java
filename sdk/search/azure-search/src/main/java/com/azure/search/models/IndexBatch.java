@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * TODO: add class desc
+ * Contains a batch of document write actions to send to the index.
  */
 @Fluent
 public class IndexBatch<T> extends IndexBatchImpl<T> {

@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * TODO: Add class description
+ * Cognitive Search Synchronous Client to query an index and upload, merge, or delete documents
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class)
 public class SearchIndexClient {

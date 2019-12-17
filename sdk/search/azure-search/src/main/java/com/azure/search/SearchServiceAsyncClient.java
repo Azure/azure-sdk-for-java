@@ -39,7 +39,8 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * TODO: Add class description
+ * Asynchronous Client to manage and query indexes,
+ * as well as manage other resources, on a Cognitive Search service
  */
 @ServiceClient(builder = SearchServiceClientBuilder.class, isAsync = true)
 public class SearchServiceAsyncClient {

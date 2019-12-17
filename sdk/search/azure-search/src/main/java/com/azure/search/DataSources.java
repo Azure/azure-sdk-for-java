@@ -13,7 +13,7 @@ import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * TODO: Add class description
+ * Utility class generating DataSource object per DataSourceType
  */
 public class DataSources {
 
