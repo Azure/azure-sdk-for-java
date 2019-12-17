@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1
+## 1.2.0-beta.1 (Unreleased)
 
 ## Version 1.1.0 (2019-11-26)
 - Added support for creating reactor-netty-http client from an existing client.
