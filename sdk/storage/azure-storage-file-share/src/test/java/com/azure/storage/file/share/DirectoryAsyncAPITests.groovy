@@ -547,6 +547,7 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Create file lease"() {
         given:
         primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.getFileClient("testCreateFile").create(512).block()
         def leaseId = createLeaseClient(primaryDirectoryAsyncClient.getFileClient("testCreateFile")).acquireLease().block()
 
         expect:
@@ -557,6 +558,7 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Create file lease fail"() {
         given:
         primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.getFileClient("testCreateFile").create(512).block()
         createLeaseClient(primaryDirectoryAsyncClient.getFileClient("testCreateFile")).acquireLease().block()
 
         expect:

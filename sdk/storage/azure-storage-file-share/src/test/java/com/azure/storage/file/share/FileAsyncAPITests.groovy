@@ -803,9 +803,7 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.deleteWithResponse(new ShareRequestConditions().setLeaseId(getRandomUUID())))
-            .assertNext {
-                assert FileTestHelper.assertResponseStatusCode(it, 202)
-            }.verifyComplete()
+            .verifyError(ShareStorageException)
     }
 
     def "Get properties"() {
@@ -1071,7 +1069,7 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.listRanges(null, new ShareRequestConditions().setLeaseId(getRandomUUID())))
-            .expectNextCount(1).verifyComplete()
+            .verifyError(ShareStorageException)
 
         cleanup:
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())

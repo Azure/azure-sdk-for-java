@@ -365,6 +365,7 @@ class ShareAsyncAPITests extends APISpec {
     def "Create file lease"() {
         given:
         primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.getFileClient("testCreateFile").create(512).block()
         def leaseId = createLeaseClient(primaryShareAsyncClient.getFileClient("testCreateFile")).acquireLease().block()
 
         expect:
@@ -376,6 +377,7 @@ class ShareAsyncAPITests extends APISpec {
     def "Create file lease fail"() {
         given:
         primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.getFileClient("testCreateFile").create(512).block()
         createLeaseClient(primaryShareAsyncClient.getFileClient("testCreateFile")).acquireLease().block()
 
         expect:
