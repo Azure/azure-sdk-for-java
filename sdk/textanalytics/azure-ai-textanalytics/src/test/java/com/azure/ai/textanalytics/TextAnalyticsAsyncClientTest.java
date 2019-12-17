@@ -34,6 +34,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             .buildAsyncClient());
     }
 
+    // Detected Languages
+
     /**
      * Verify that we can get statistics on the collection result when given a batch input with options.
      */
@@ -199,6 +201,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    // Linked Entities
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
         LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch().setText("Seattle").setLength(7).setOffset(26).setScore(0.11472424095537814);
@@ -257,41 +260,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchLinkedEntities(), TestEndpoint.NAMED_ENTITY))
                 .verifyComplete();
         });
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForTextInput() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForEmptyText() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForFaultyText() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForBatchInput() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForBatchInputShowStatistics() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForBatchStringInput() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForListLanguageHint() {
-
     }
 
     // Pii Entities
@@ -356,8 +324,65 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
 
     // Key Phrases
+    @Test
+    public void recognizeKeyPhrasesForTextInput() {
+        List<String> keyPhrasesList1 = Arrays.asList("monde");
+        StepVerifier.create(client.extractKeyPhrasesWithResponse("Bonjour tout le monde.", "fr"))
+            .assertNext(response -> validateKeyPhrases(keyPhrasesList1, response.getValue().getKeyPhrases()))
+            .verifyComplete();
+    }
 
+    @Test
+    public void recognizeKeyPhrasesForEmptyText() {
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        StepVerifier.create(client.extractKeyPhrases(""))
+            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
+            .verifyComplete();
+    }
 
+    @Test
+    public void recognizeKeyPhrasesForFaultyText() {
+        StepVerifier.create(client.extractKeyPhrases("!@#%%"))
+            .assertNext(response -> assertEquals(response.getKeyPhrases().size(), 0))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeKeyPhrasesForBatchInput() {
+        recognizeBatchKeyPhrasesRunner((inputs) -> {
+            StepVerifier.create(client.extractBatchKeyPhrases(inputs))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
+                .verifyComplete();
+        });
+
+    }
+
+    @Test
+    public void recognizeKeyPhrasesForBatchInputShowStatistics() {
+        recognizeBatchKeyPhrasesShowStatsRunner((inputs, options) -> {
+            StepVerifier.create(client.extractBatchKeyPhrasesWithResponse(inputs, options))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
+                .verifyComplete();
+        });
+    }
+
+    @Test
+    public void recognizeKeyPhrasesForBatchStringInput() {
+        recognizeKeyPhrasesStringInputRunner((inputs) -> {
+            StepVerifier.create(client.extractKeyPhrases(inputs))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
+                .verifyComplete();
+        });
+    }
+
+    @Test
+    public void recognizeKeyPhrasesForListLanguageHint() {
+        recognizeKeyPhrasesLanguageHintRunner((inputs, language) -> {
+            StepVerifier.create(client.extractKeyPhrasesWithResponse(inputs, language))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
+                .verifyComplete();
+        });
+    }
 
     // Sentiment
     /**
@@ -366,19 +391,20 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void analyseSentimentForTextInput() {
         final TextSentiment expectedDocumentSentiment = new TextSentiment()
-            .setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(0)
-            .setNegativeScore(0.00019).setNeutralScore(0.5).setPositiveScore(0.4);
+            .setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(0).setNegativeScore(0.00019)
+            .setNeutralScore(0.5).setPositiveScore(0.4);
         final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-           new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(0).setNegativeScore(0.99),
-           new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(32).setPositiveScore(0.99)
-        );
+            new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(0)
+                .setNegativeScore(0.99),
+            new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(32)
+                .setPositiveScore(0.99));
 
-        StepVerifier.create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
+        StepVerifier
+            .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
             .assertNext(response -> {
                 validateAnalysedSentiment(expectedDocumentSentiment, response.getDocumentSentiment());
                 validateAnalysedSentenceSentiment(expectedSentenceSentiments, response.getSentenceSentiments());
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     /**
@@ -388,11 +414,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyseSentimentForEmptyText() {
         Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
         StepVerifier.create(client.analyzeSentiment(""))
-            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
-            .verifyComplete();
+            .assertNext(response -> validateErrorDocument(expectedError, response.getError())).verifyComplete();
     }
 
-    @Test
     public void analyseSentimentForFaultyText() {
         // TODO (shawn): add this case later
     }
