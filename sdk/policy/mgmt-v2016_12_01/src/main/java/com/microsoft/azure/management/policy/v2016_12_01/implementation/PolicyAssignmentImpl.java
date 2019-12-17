@@ -31,10 +31,10 @@ class PolicyAssignmentImpl extends CreatableUpdatableImpl<PolicyAssignment, Poli
         this.manager = manager;
         // Set resource name
         this.policyAssignmentName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.policyAssignmentName = IdParsingUtils.getValueFromIdByName(inner.id(), "policyAssignments");
         this.scope = IdParsingUtils.getValueFromIdByPosition(inner.id(), 0);
-        //
+        // set other parameters for create and update
     }
 
     @Override
