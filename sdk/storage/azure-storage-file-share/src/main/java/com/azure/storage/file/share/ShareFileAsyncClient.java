@@ -318,14 +318,14 @@ public class ShareFileAsyncClient {
      * is used.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
-     * @param requestConditions {@link ShareRequestConditions}
+     * @param destinationRequestConditions {@link ShareRequestConditions}
      * @return A {@link PollerFlux} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
     public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
-        Duration pollInterval, ShareRequestConditions requestConditions) {
+        Duration pollInterval, ShareRequestConditions destinationRequestConditions) {
         final ShareRequestConditions finalRequestConditions =
-            requestConditions == null ? new ShareRequestConditions() : requestConditions;
+            destinationRequestConditions == null ? new ShareRequestConditions() : destinationRequestConditions;
         final AtomicReference<String> copyId = new AtomicReference<>();
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
 
