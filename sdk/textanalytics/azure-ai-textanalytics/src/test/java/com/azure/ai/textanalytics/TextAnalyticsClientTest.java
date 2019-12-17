@@ -181,7 +181,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizePiiEntitiesForEmptyText() {
         Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
         validateErrorDocument(expectedError, client.recognizePiiEntities("").getError());
-
     }
 
     @Test
@@ -324,5 +323,68 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         recognizeKeyPhrasesLanguageHintRunner((inputs, language) ->
             validateBatchResult(client.extractKeyPhrasesWithResponse(inputs, language, Context.NONE).getValue(),
                 getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
+    }
+
+    // Sentiment
+    /**
+     * Test analyzing sentiment for a string input.
+     */
+    @Test
+    public void analyseSentimentForTextInput() {
+        analyseBatchSentimentRunner(inputs -> validateBatchResult(client.analyzeBatchSentiment(inputs),
+            getExpectedBatchTextSentiment(), TestEndpoint.SENTIMENT));
+    }
+
+    /**
+     * Verifies that an error document is returned for a empty text input.
+     */
+    @Test
+    public void analyseSentimentForEmptyText() {
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        validateErrorDocument(expectedError, client.analyzeSentiment("").getError());
+    }
+
+    @Test
+    public void analyseSentimentForFaultyText() {
+        // TODO (shawn): add this case later
+    }
+
+    /**
+     * Test analyzing sentiment for a list of string input.
+     */
+    @Test
+    public void analyseSentimentForBatchStringInput() {
+        analyseSentimentStringInputRunner(inputs ->
+            validateBatchResult(client.analyzeSentiment(inputs), getExpectedBatchTextSentiment(),
+                TestEndpoint.SENTIMENT));
+    }
+
+    /**
+     * Test analyzing sentiment for a list of string input with language hint.
+     */
+    @Test
+    public void analyseSentimentForListLanguageHint() {
+        analyseSentimentLanguageHintRunner((inputs, language) ->
+            validateBatchResult(client.analyzeSentimentWithResponse(inputs, language, Context.NONE).getValue(),
+                getExpectedBatchTextSentiment(), TestEndpoint.SENTIMENT));
+    }
+
+    /**
+     * Test analyzing sentiment for batch input.
+     */
+    @Test
+    public void analyseSentimentForBatchInput() {
+        analyseBatchSentimentRunner(inputs -> validateBatchResult(client.analyzeBatchSentiment(inputs),
+            getExpectedBatchTextSentiment(), TestEndpoint.SENTIMENT));
+    }
+
+    /**
+     * Verify that we can get statistics on the collection result when given a batch input with options.
+     */
+    @Test
+    public void analyseSentimentForBatchInputShowStatistics() {
+        analyseBatchSentimentShowStatsRunner((inputs, options) ->
+            validateBatchResult(client.analyzeBatchSentimentWithResponse(inputs, options, Context.NONE).getValue(),
+                getExpectedBatchTextSentiment(), TestEndpoint.SENTIMENT));
     }
 }

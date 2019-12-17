@@ -19,18 +19,18 @@ public class TextSentiment {
     private double positiveScore;
 
     // sentence
-    private String length;
+    private int length;
 
     private int offset;
 
     // sentiment string
     private TextSentimentClass textSentimentClass;
 
-    public String getLength() {
+    public int getLength() {
         return length;
     }
 
-    public TextSentiment setLength(String length) {
+    public TextSentiment setLength(int length) {
         this.length = length;
         return this;
     }

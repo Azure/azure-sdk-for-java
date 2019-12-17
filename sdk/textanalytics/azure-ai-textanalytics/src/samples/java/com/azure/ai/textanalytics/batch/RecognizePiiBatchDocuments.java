@@ -41,7 +41,6 @@ public class RecognizePiiBatchDocuments {
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
-
         // Detecting pii entities from a batch of documents
         detectedBatchResult.stream().forEach(piiEntityDocumentResult ->
             piiEntityDocumentResult.getNamedEntities().forEach(entity ->
@@ -53,5 +52,4 @@ public class RecognizePiiBatchDocuments {
                     entity.getLength(),
                     entity.getScore())));
     }
-
 }
