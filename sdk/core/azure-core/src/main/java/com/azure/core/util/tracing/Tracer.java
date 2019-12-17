@@ -211,7 +211,7 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Returns a builder with the provided span name.</p>
-     * {@codesnippet com.azure.core.util.tracing.getSharedSpanBuilder#string-context}
+     * {@codesnippet com.azure.core.util.tracing.getSpanBuilder#string-context}
      *
      * @param spanName Name to give the span for the created builder.
      * @param context Additional metadata that is passed through the call stack.
