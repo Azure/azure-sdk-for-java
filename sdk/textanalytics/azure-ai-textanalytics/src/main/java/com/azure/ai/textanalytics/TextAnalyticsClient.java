@@ -17,6 +17,7 @@ import com.azure.ai.textanalytics.models.NamedEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentimentResult;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ import java.util.List;
 @ServiceClient(builder = TextAnalyticsClientBuilder.class)
 public final class TextAnalyticsClient {
     private final TextAnalyticsAsyncClient client;
+    private final String defaultCountryHint;
+    private final String defaultLanguage;
 
     /**
      * Create a {@code TextAnalyticsClient client} that sends requests to the Text Analytics service's endpoint.
@@ -44,6 +47,8 @@ public final class TextAnalyticsClient {
      */
     TextAnalyticsClient(TextAnalyticsAsyncClient client) {
         this.client = client;
+        this.defaultCountryHint = client.clientOptions.getDefaultCountryHint();
+        this.defaultLanguage = client.clientOptions.getDefaultLanguage();
     }
 
     /**
@@ -51,13 +56,12 @@ public final class TextAnalyticsClient {
      * certainty that the identified language is true.
      *
      * @param text The text to be analyzed.
-     *
      * @return the {@link DetectLanguageResult detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectLanguageResult detectLanguage(String text) {
-        return detectLanguage(text, null);
+        return detectLanguage(text, defaultCountryHint);
     }
 
     /**
@@ -95,248 +99,535 @@ public final class TextAnalyticsClient {
     /**
      * Detects Language for a batch of input.
      *
-     * @param inputs The list of texts to be analyzed.
+     * @param textInputs The list of texts to be analyzed.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
      * {@link DetectLanguageResult detected languages} with their numeric scores.
-     * @throws NullPointerException if {@code inputs} is {@code null}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> inputs) {
-        return detectLanguagesWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> textInputs) {
+        return detectLanguagesWithResponse(textInputs, defaultCountryHint, Context.NONE).getValue();
     }
 
     /**
      * Detects Language for a batch of input with the provided country hint.
      *
-     * @param inputs The list of texts to be analyzed.
+     * @param textInputs The list of texts to be analyzed.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
      * alpha-2. Defaults to "US" if not specified.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
      * {@link DetectLanguageResult detected languages} with their numeric scores.
-     * @throws NullPointerException if {@code inputs} is {@code null}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<DetectLanguageResult>> detectLanguagesWithResponse(List<String> inputs,
-                                                                                                String countryHint,
-                                                                                                Context context) {
-        return client.detectLanguagesWithResponse(inputs, countryHint, context).block();
+    public Response<DocumentResultCollection<DetectLanguageResult>> detectLanguagesWithResponse(
+        List<String> textInputs, String countryHint, Context context) {
+        return client.detectLanguagesWithResponse(textInputs, countryHint, context).block();
     }
 
     /**
      * Detects Language for a batch of input.
      *
-     * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
-     *
+     * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * @return A {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
-     * @throws NullPointerException if {@code inputs} is {@code null}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<DetectLanguageResult> detectBatchLanguages(List<DetectLanguageInput> inputs) {
-        return detectBatchLanguagesWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<DetectLanguageResult> detectBatchLanguages(List<DetectLanguageInput> textInputs) {
+        return detectBatchLanguagesWithResponse(textInputs, null, Context.NONE).getValue();
     }
 
     /**
      * Detects Language for a batch of input.
      *
-     * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
      * {@link DetectLanguageResult detected languages}.
-     * @throws NullPointerException if {@code inputs} is {@code null}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguagesWithResponse(
-        List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.detectBatchLanguagesWithResponse(inputs, options, context).block();
+        List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return client.detectBatchLanguagesWithResponse(textInputs, options, context).block();
     }
 
-    // (2) entities
-    // new user
+    // Named Entity
+
+    /**
+     * Returns a list of general named entities in the provided text.
+     * For a list of supported entity types, check: https://aka.ms/taner
+     * For a list of enabled languages, check: https://aka.ms/talangs
+     *
+     * @param text the text to recognize entities for.
+     * @return the {@link NamedEntityResult named entity} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamedEntityResult recognizeEntities(String text) {
-        return recognizeEntitiesWithResponse(text, null, Context.NONE).getValue();
+        return recognizeEntitiesWithResponse(text, defaultLanguage, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of general named entities in the provided text.
+     * For a list of supported entity types, check: https://aka.ms/taner
+     * For a list of enabled languages, check: https://aka.ms/talangs
+     *
+     * @param text the text to recognize entities for.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing the {@link NamedEntityResult named entity} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NamedEntityResult> recognizeEntitiesWithResponse(String text, String language,
-                                                                          Context context) {
+    public Response<NamedEntityResult> recognizeEntitiesWithResponse(String text, String language, Context context) {
         return client.recognizeEntitiesWithResponse(text, language, context).block();
     }
 
-    // hackathon user
+    /**
+     * Returns a list of general named entities for the provided list of texts.
+     *
+     * @param textInputs A list of texts to recognize entities for.
+     *
+     * @return A {@link DocumentResultCollection batch} containing the list of
+     * {@link NamedEntityResult named entity} of the text.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<NamedEntityResult> recognizeEntities(List<String> inputs) {
-        return recognizeEntitiesWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<NamedEntityResult> recognizeEntities(List<String> textInputs) {
+        return recognizeEntitiesWithResponse(textInputs, defaultLanguage, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of general named entities for the provided list of texts.
+     *
+     * @param textInputs A list of texts to recognize entities for.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
+     * {@link NamedEntityResult named entity}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<NamedEntityResult>> recognizeEntitiesWithResponse(List<String> inputs,
-                                                                                     String language, Context context) {
-        return client.recognizeEntitiesWithResponse(inputs, language, context).block();
+    public Response<DocumentResultCollection<NamedEntityResult>> recognizeEntitiesWithResponse(
+        List<String> textInputs, String language, Context context) {
+        return client.recognizeEntitiesWithResponse(textInputs, language, context).block();
     }
 
-    // advantage user
+    /**
+     * Returns a list of general named entities for the provided list of text inputs.
+     *
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
+     * @return A {@link DocumentResultCollection batch} of the {@link NamedEntityResult named entity}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<NamedEntityResult> recognizeBatchEntities(List<TextDocumentInput> inputs) {
-        return recognizeBatchEntitiesWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<NamedEntityResult> recognizeBatchEntities(List<TextDocumentInput> textInputs) {
+        return recognizeBatchEntitiesWithResponse(textInputs, null, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of general named entities for the provided list of text inputs.
+     *
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link DocumentResultCollection batch} of {@link NamedEntityResult named entity}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<NamedEntityResult>> recognizeBatchEntitiesWithResponse(
-        List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizeBatchEntitiesWithResponse(inputs, options, context).block();
+        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return client.recognizeBatchEntitiesWithResponse(textInputs, options, context).block();
     }
 
-    // (3) PII entities
-    // new user
+    // PII Entities
+
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text.
+     * For the list of supported entity types, check https://aka.ms/tanerpii.
+     * See https://aka.ms/talangs for the list of enabled languages.
+     *
+     * @param text the text to recognize pii entities for.
+     * @return A {@link NamedEntityResult PII entity} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamedEntityResult recognizePiiEntities(String text) {
-        return recognizePiiEntitiesWithResponse(text, null, Context.NONE).getValue();
+        return recognizePiiEntitiesWithResponse(text, defaultLanguage, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text.
+     * For the list of supported entity types, check https://aka.ms/tanerpii.
+     * See https://aka.ms/talangs for the list of enabled languages.
+     *
+     * @param text the text to recognize pii entities for.
+     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
+     * English as default.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} has the {@link NamedEntityResult named entity}
+     * of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NamedEntityResult> recognizePiiEntitiesWithResponse(String text, String language, Context context) {
-        return client.recognizePiiEntitiesWithResponse(text, language, Context.NONE).block();
+        return client.recognizePiiEntitiesWithResponse(text, language, context).block();
     }
 
-    // hackathon user
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts.
+     * For the list of supported entity types, check https://aka.ms/tanerpii.
+     * See https://aka.ms/talangs for the list of enabled languages.
+     *
+     * @param textInputs A list of text to recognize pii entities for.
+     * @return A {@link DocumentResultCollection batch} of the {@link NamedEntityResult named entity} of the text.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<NamedEntityResult> recognizePiiEntities(List<String> inputs) {
-        return recognizePiiEntitiesWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<NamedEntityResult> recognizePiiEntities(List<String> textInputs) {
+        return recognizePiiEntitiesWithResponse(textInputs, defaultLanguage, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts.
+     * For the list of supported entity types, check https://aka.ms/tanerpii.
+     * See https://aka.ms/talangs for the list of enabled languages.
+     * *
+     * @param textInputs A list of text to recognize pii entities for.
+     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
+     * English as default.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
+     * {@link NamedEntityResult named entity}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<NamedEntityResult>> recognizePiiEntitiesWithResponse(List<String> inputs,
-                                                                                        String language,
-                                                                                        Context context) {
-        return client.recognizePiiEntitiesWithResponse(inputs, language, context).block();
+    public Response<DocumentResultCollection<NamedEntityResult>> recognizePiiEntitiesWithResponse(
+        List<String> textInputs, String language, Context context) {
+        return client.recognizePiiEntitiesWithResponse(textInputs, language, context).block();
     }
 
-    // advantage user
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs.
+     * For the list of supported entity types, check https://aka.ms/tanerpii.
+     * See https://aka.ms/talangs for the list of enabled languages.
+     *
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize pii entities for.
+     * @return A {@link DocumentResultCollection batch} of the {@link NamedEntityResult named entity}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<NamedEntityResult> recognizeBatchPiiEntities(List<TextDocumentInput> inputs) {
-        return recognizeBatchPiiEntitiesWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<NamedEntityResult> recognizeBatchPiiEntities(List<TextDocumentInput> textInputs) {
+        return recognizeBatchPiiEntitiesWithResponse(textInputs, null, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs.
+     * For the list of supported entity types, check https://aka.ms/tanerpii.
+     * See https://aka.ms/talangs for the list of enabled languages.
+     *
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize pii entities for.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link DocumentResultCollection batch} of {@link NamedEntityResult named entity}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<NamedEntityResult>> recognizeBatchPiiEntitiesWithResponse(
-        List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizeBatchPiiEntitiesWithResponse(inputs, options, context).block();
+        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return client.recognizeBatchPiiEntitiesWithResponse(textInputs, options, context).block();
     }
 
-    // (4) Link entities
-    // new user
+    // Linked Entities
+
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the provided text.
+     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     *
+     * @param text the text to recognize linked entities for.
+     * @return A {@link LinkedEntityResult linked entity} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkedEntityResult recognizeLinkedEntities(String text) {
-        return recognizeLinkedEntitiesWithResponse(text, null, Context.NONE).getValue();
+        return recognizeLinkedEntitiesWithResponse(text, defaultLanguage, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the provided text.
+     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     *
+     * @param text the text to recognize linked entities for.
+     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
+     * English as default.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} has the
+     * {@link LinkedEntityResult named entity} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LinkedEntityResult> recognizeLinkedEntitiesWithResponse(String text, String language,
-                                                                            Context context) {
+        Context context) {
         return client.recognizeLinkedEntitiesWithResponse(text, language, context).block();
     }
 
-    // hackathon user
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts.
+     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     *
+     * @param textInputs A list of text to recognize linked entities for.
+     *
+     * @return A {@link DocumentResultCollection batch} of the {@link LinkedEntityResult linked entity} of the text.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<LinkedEntityResult> recognizeLinkedEntities(List<String> inputs) {
-        return recognizeLinkedEntitiesWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<LinkedEntityResult> recognizeLinkedEntities(List<String> textInputs) {
+        return recognizeLinkedEntitiesWithResponse(textInputs, defaultLanguage, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts.
+     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     *
+     * @param textInputs A list of text to recognize linked entities for.
+     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
+     * English as default.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
+     * {@link LinkedEntityResult linked entity}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<LinkedEntityResult>> recognizeLinkedEntitiesWithResponse(
-        List<String> inputs, String language, Context context) {
-        return client.recognizeLinkedEntitiesWithResponse(inputs, language, context).block();
+        List<String> textInputs, String language, Context context) {
+        return client.recognizeLinkedEntitiesWithResponse(textInputs, language, context).block();
     }
 
-    // advantage user
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs.
+     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     *
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
+     * @return A {@link DocumentResultCollection batch} of the {@link LinkedEntityResult linked entity}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<LinkedEntityResult> recognizeBatchLinkedEntities(List<TextDocumentInput> inputs) {
-        return recognizeBatchLinkedEntitiesWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<LinkedEntityResult> recognizeBatchLinkedEntities(
+        List<TextDocumentInput> textInputs) {
+        return recognizeBatchLinkedEntitiesWithResponse(textInputs, null, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs.
+     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     *
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link DocumentResultCollection batch} of {@link LinkedEntityResult linked entity}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<LinkedEntityResult>> recognizeBatchLinkedEntitiesWithResponse(
-        List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizeBatchLinkedEntitiesWithResponse(inputs, options, context).block();
+        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return client.recognizeBatchLinkedEntitiesWithResponse(textInputs, options, context).block();
     }
 
-    // (5) key phrase
-    // new user
+    // Key Phrase
+
+    /**
+     * Returns a list of strings denoting the key phrases in the input text.
+     *
+     * @param text the text to be analyzed.
+     * @return A {@link KeyPhraseResult key phrases} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyPhraseResult extractKeyPhrases(String text) {
-        return extractKeyPhrasesWithResponse(text, null, Context.NONE).getValue();
+        return extractKeyPhrasesWithResponse(text, defaultLanguage, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of strings denoting the key phrases in the input text.
+     * See https://aka.ms/talangs for the list of enabled languages.
+     *
+     * @param text the text to be analyzed.
+     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
+     * English as default.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} has the {@link KeyPhraseResult key phrases}
+     * of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyPhraseResult> extractKeyPhrasesWithResponse(String text, String language, Context context) {
         return client.extractKeyPhrasesWithResponse(text, language, context).block();
     }
 
-    // hackathon user
+    /**
+     * Returns a list of strings denoting the key phrases in the input text.
+     *
+     * @param textInputs A list of text to be analyzed.
+     * @return A {@link DocumentResultCollection batch} of the {@link KeyPhraseResult key phrases} of the text.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<KeyPhraseResult> extractKeyPhrases(List<String> inputs) {
-        return extractKeyPhrasesWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<KeyPhraseResult> extractKeyPhrases(List<String> textInputs) {
+        return extractKeyPhrasesWithResponse(textInputs, defaultLanguage, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of strings denoting the key phrases in the input text.
+     * See https://aka.ms/talangs for the list of enabled languages.
+     *
+     * @param textInputs A list of text to be analyzed.
+     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
+     * English as default.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
+     * {@link KeyPhraseResult key phrases}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrasesWithResponse(List<String> inputs,
-                                                                                   String language, Context context) {
-        return client.extractKeyPhrasesWithResponse(inputs, language, context).block();
+    public Response<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrasesWithResponse(
+        List<String> textInputs, String language, Context context) {
+        return client.extractKeyPhrasesWithResponse(textInputs, language, context).block();
     }
 
-    // advantage user
+    /**
+     * Returns a list of strings denoting the key phrases in the input text.
+     *
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
+     * @return A {@link DocumentResultCollection batch} of the {@link KeyPhraseResult key phrases}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<KeyPhraseResult> extractBatchKeyPhrases(List<TextDocumentInput> inputs) {
-        return extractBatchKeyPhrasesWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<KeyPhraseResult> extractBatchKeyPhrases(List<TextDocumentInput> textInputs) {
+        return extractBatchKeyPhrasesWithResponse(textInputs, null, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a list of strings denoting the key phrases in the input text.
+     * See https://aka.ms/talangs for the list of enabled languages.
+     *
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link DocumentResultCollection batch} of {@link KeyPhraseResult key phrases}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<KeyPhraseResult>> extractBatchKeyPhrasesWithResponse(
-        List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.extractBatchKeyPhrasesWithResponse(inputs, options, context).block();
+        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return client.extractBatchKeyPhrasesWithResponse(textInputs, options, context).block();
     }
 
-    // (6) sentiment
-    // new user,
+    // Sentiment
+
+    /**
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
+     * (Positive, Negative, and Neutral) for the document and each sentence within i
+     *
+     * @param text the text to be analyzed.
+     * @return the {@link TextSentimentResult text sentiments} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TextSentimentResult analyzeSentiment(String input) {
-        return analyzeBatchSentimentWithResponse(input, null, Context.NONE).getValue();
+    public TextSentimentResult analyzeSentiment(String text) {
+        return analyzeBatchSentimentWithResponse(text, defaultLanguage, Context.NONE).getValue();
     }
 
-
+    /**
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
+     * (Positive, Negative, and Neutral) for the document and each sentence within i
+     *
+     * @param text the text to be analyzed.
+     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
+     * English as default.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing the {@link TextSentimentResult text sentiments} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TextSentimentResult> analyzeBatchSentimentWithResponse(
-        String input, String language, Context context) {
-        return client.analyzeSentimentWithResponse(input, language, context).block();
+        String text, String language, Context context) {
+        return client.analyzeSentimentWithResponse(text, language, context).block();
     }
 
-    // hackathon user
+    /**
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     *
+     * @param textInputs A list of text to be analyzed.
+     *
+     * @return A {@link DocumentResultCollection batch} containing the list of
+     * {@link TextSentimentResult text sentiments} with their numeric scores.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<TextSentimentResult> analyzeSentiment(List<String> inputs) {
-        return analyzeSentimentWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<TextSentimentResult> analyzeSentiment(List<String> textInputs) {
+        return analyzeSentimentWithResponse(textInputs, defaultLanguage, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     *
+     * @param textInputs A list of text to be analyzed.
+     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
+     * English as default.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
+     * {@link TextSentimentResult text sentiments} with their numeric scores.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<TextSentimentResult>> analyzeSentimentWithResponse(List<String> inputs,
-                                                                                      String language,
-                                                                                      Context context) {
-        return client.analyzeSentimentWithResponse(inputs, language, context).block();
+    public Response<DocumentResultCollection<TextSentimentResult>> analyzeSentimentWithResponse(
+        List<String> textInputs, String language, Context context) {
+        return client.analyzeSentimentWithResponse(textInputs, language, context).block();
     }
 
-    // advantage user
+    /**
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     *
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
+     * @return A {@link DocumentResultCollection batch} of {@link TextSentimentResult text sentiments}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<TextSentimentResult> analyzeBatchSentiment(List<TextDocumentInput> inputs) {
-        return analyzeBatchSentimentWithResponse(inputs, null, Context.NONE).getValue();
+    public DocumentResultCollection<TextSentimentResult> analyzeBatchSentiment(List<TextDocumentInput> textInputs) {
+        return analyzeBatchSentimentWithResponse(textInputs, null, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     *
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
+     * {@link TextSentimentResult text sentiments}.
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<TextSentimentResult>> analyzeBatchSentimentWithResponse(
-        List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.analyzeBatchSentimentWithResponse(inputs, options, context).block();
+        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return client.analyzeBatchSentimentWithResponse(textInputs, options, context).block();
     }
 }
