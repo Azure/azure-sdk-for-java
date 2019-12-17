@@ -3,6 +3,7 @@
 
 package com.azure.core.util.logging;
 
+import com.azure.core.implementation.LogLevel;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -274,6 +275,18 @@ public class ClientLoggerTests {
         String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         assertTrue(logValues.contains(exceptionMessage + System.lineSeparator()));
         assertTrue(logValues.contains(runtimeException.getStackTrace()[0].toString()));
+    }
+
+    @Test
+    public void canLogAtLevelTrue(){
+        setupLogLevel(2);
+        assertTrue(new ClientLogger(ClientLoggerTests.class).canLogAtLevel(LogLevel.ERROR));
+    }
+
+    @Test
+    public void canLogAtLevelFalse(){
+        setupLogLevel(2);
+        assertFalse(new ClientLogger(ClientLoggerTests.class).canLogAtLevel(LogLevel.VERBOSE));
     }
 
     private String setupLogLevel(int logLevelToSet) {

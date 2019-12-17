@@ -174,6 +174,17 @@ public class ClientLogger {
     }
 
     /*
+     * Determines if the environment and logger support logging at the given log level.
+     *
+     * @param logLevel Logging level for the log message.
+     * @return Flag indicating if logger are configured to support logging at the given log level.
+     */
+    public boolean canLogAtLevel(LogLevel logLevel) {
+        LogLevel environmentLoggingLevel = getEnvironmentLoggingLevel();
+        return canLogAtLevel(logLevel, environmentLoggingLevel);
+    }
+
+    /*
      * Performs the logging.
      *
      * @param format formattable message.
