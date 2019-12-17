@@ -283,7 +283,7 @@ public class ClientLoggerTests {
 
     @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
     @CsvSource({"1, 1, true", "1, 2, true", "1, 3, true", "1, 4, true", "2, 1, false", "2, 5, false"})
-    public void canLogAtLevel(int logLevelToConfigure, int logLevelToValidate, boolean expected){
+    public void canLogAtLevel(int logLevelToConfigure, int logLevelToValidate, boolean expected) {
         setupLogLevel(logLevelToConfigure);
         LogLevel logLevel = convertToLogLevel(logLevelToValidate);
         assertEquals(new ClientLogger(ClientLoggerTests.class).canLogAtLevel(logLevel), expected);
