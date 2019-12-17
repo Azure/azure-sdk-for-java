@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The properties for updating a docker build step.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = DockerBuildStepUpdateParameters.class)
 @JsonTypeName("Docker")
 public class DockerBuildStepUpdateParameters extends TaskStepUpdateParameters {
     /**

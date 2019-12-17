@@ -17,6 +17,9 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.containerregistry.v2019_04_01.Registries;
+import com.microsoft.azure.management.containerregistry.v2019_04_01.Operations;
+import com.microsoft.azure.management.containerregistry.v2019_04_01.Replications;
+import com.microsoft.azure.management.containerregistry.v2019_04_01.Webhooks;
 import com.microsoft.azure.management.containerregistry.v2019_04_01.Runs;
 import com.microsoft.azure.management.containerregistry.v2019_04_01.Tasks;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
@@ -27,6 +30,9 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class ContainerRegistryManager extends ManagerCore<ContainerRegistryManager, ContainerRegistryManagementClientImpl> {
     private Registries registries;
+    private Operations operations;
+    private Replications replications;
+    private Webhooks webhooks;
     private Runs runs;
     private Tasks tasks;
     /**
@@ -84,6 +90,36 @@ public final class ContainerRegistryManager extends ManagerCore<ContainerRegistr
             this.registries = new RegistriesImpl(this);
         }
         return this.registries;
+    }
+
+    /**
+     * @return Entry point to manage Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(this);
+        }
+        return this.operations;
+    }
+
+    /**
+     * @return Entry point to manage Replications.
+     */
+    public Replications replications() {
+        if (this.replications == null) {
+            this.replications = new ReplicationsImpl(this);
+        }
+        return this.replications;
+    }
+
+    /**
+     * @return Entry point to manage Webhooks.
+     */
+    public Webhooks webhooks() {
+        if (this.webhooks == null) {
+            this.webhooks = new WebhooksImpl(this);
+        }
+        return this.webhooks;
     }
 
     /**
