@@ -18,6 +18,7 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.Registries;
 import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.Runs;
+import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.TaskRuns;
 import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.Tasks;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -28,6 +29,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class ContainerRegistryManager extends ManagerCore<ContainerRegistryManager, ContainerRegistryManagementClientImpl> {
     private Registries registries;
     private Runs runs;
+    private TaskRuns taskRuns;
     private Tasks tasks;
     /**
     * Get a Configurable instance that can be used to create ContainerRegistryManager with optional configuration.
@@ -94,6 +96,16 @@ public final class ContainerRegistryManager extends ManagerCore<ContainerRegistr
             this.runs = new RunsImpl(this);
         }
         return this.runs;
+    }
+
+    /**
+     * @return Entry point to manage TaskRuns.
+     */
+    public TaskRuns taskRuns() {
+        if (this.taskRuns == null) {
+            this.taskRuns = new TaskRunsImpl(this);
+        }
+        return this.taskRuns;
     }
 
     /**
