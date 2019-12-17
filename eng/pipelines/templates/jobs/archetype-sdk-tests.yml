@@ -82,6 +82,8 @@ jobs:
           -ProvisionerApplicationSecret $env:PROVISIONER_APPLICATION_SECRET
           -DeleteAfterHours 24
           -Location westus2
+          -Force
+          -Verbose
         env:
           TEST_APPLICATION_ID: $(aad-azure-sdk-test-client-id)
           TEST_APPLICATION_SECRET: $(aad-azure-sdk-test-client-secret)
@@ -109,6 +111,8 @@ jobs:
           -TenantId $env:TENANT_ID
           -ProvisionerApplicationId $env:PROVISIONER_APPLICATION_ID
           -ProvisionerApplicationSecret $env:PROVISIONER_APPLICATION_SECRET
+          -Force
+          -Verbose
         env:
           TENANT_ID: $(aad-azure-sdk-test-tenant-id)
           PROVISIONER_APPLICATION_ID: $(provisioner-aad-id)
