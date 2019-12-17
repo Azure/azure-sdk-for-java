@@ -102,18 +102,39 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * TODO (shawn): add javadoc
+     * Creates a {@link TextAnalyticsClient} based on options set in the builder. Every time
+     * {@code buildClient()} is called a new instance of {@link TextAnalyticsClient} is created.
+     *
+     * <p>
+     * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link #endpoint(String) endpoint} are used to create the {@link TextAnalyticsClient client}. All other builder
+     * settings are ignored
+     * </p>
      *
      * @return A TextAnalyticsClient with the options set from the builder.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or
+     * {@link #subscriptionKey(String) subscriptionKey} has not been set.
+     * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsClient buildClient() {
         return new TextAnalyticsClient(buildAsyncClient());
     }
 
+
     /**
-     * TODO (shawn): add javadoc
+     * Creates a {@link TextAnalyticsAsyncClient} based on options set in the builder. Every time
+     * {@code buildAsyncClient()} is called a new instance of {@link TextAnalyticsAsyncClient} is created.
+     *
+     * <p>
+     * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link #endpoint(String) endpoint} are used to create the {@link TextAnalyticsClient client}. All other builder
+     * settings are ignored.
+     * </p>
      *
      * @return A TextAnalyticsAsyncClient with the options set from the builder.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or
+     * {@link #subscriptionKey(String) subscriptionKey} has not been set.
+     * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsAsyncClient buildAsyncClient() {
         // Global Env configuration store
@@ -188,9 +209,12 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param endpoint The URL of the Azure Text Analytics instance service requests to and receive responses from.
      * @return The updated TextAnalyticsClientBuilder object.
-     * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @throws NullPointerException if {@code endpoint} is null
+     * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsClientBuilder endpoint(String endpoint) {
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
@@ -205,7 +229,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param subscriptionKey subscription key
      * @return The updated TextAnalyticsClientBuilder object.
-     * @throws NullPointerException If {@code subscriptionKey} is {@code null}.
+     * @throws NullPointerException If {@code subscriptionKey} is {@code null}
      */
     public TextAnalyticsClientBuilder subscriptionKey(String subscriptionKey) {
         Objects.requireNonNull(subscriptionKey, "'subscriptionKey' cannot be null.");

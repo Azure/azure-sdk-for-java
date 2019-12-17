@@ -21,12 +21,27 @@ import com.azure.ai.textanalytics.models.TextSentimentResult;
 import java.util.List;
 
 /**
- * Text analytics synchronous client
+ * This class provides a synchronous client that contains all the operations that apply to Azure Text Analytics.
+ * Operations allow by the client to detect language, recognize entities, recognize pii entities,
+ * recognize linked entities, and analyze sentiment for a text input or a list of text input.
+ *
+ * <p><strong>Instantiating a synchronous Text Analytics Client</strong></p>
+ * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.instantiation}
+ *
+ * <p>View {@link TextAnalyticsClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see TextAnalyticsClientBuilder
  */
 @ServiceClient(builder = TextAnalyticsClientBuilder.class)
 public final class TextAnalyticsClient {
     private final TextAnalyticsAsyncClient client;
 
+    /**
+     * Create a {@code TextAnalyticsClient client} that sends requests to the Text Analytics service's endpoint.
+     * Each service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
+     *
+     * @param client The {@link TextAnalyticsClient} that the client routes its request through.
+     */
     TextAnalyticsClient(TextAnalyticsAsyncClient client) {
         this.client = client;
     }

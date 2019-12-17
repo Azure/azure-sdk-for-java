@@ -55,7 +55,16 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Text analytics asynchronous client
+ * This class provides an asynchronous client that contains all the operations that apply to Azure Text Analytics.
+ * Operations allow by the client to detect language, recognize entities, recognize pii entities,
+ * recognize linked entities, and analyze sentiment for a text input or a list of text input.
+ *
+ * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
+ * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation}
+ *
+ * <p>View {@link TextAnalyticsClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see TextAnalyticsClientBuilder
  */
 @ServiceClient(builder = TextAnalyticsClientBuilder.class, isAsync = true)
 public final class TextAnalyticsAsyncClient {
@@ -65,6 +74,17 @@ public final class TextAnalyticsAsyncClient {
     private final TextAnalyticsServiceVersion serviceVersion;
     private final TextAnalyticsClientOptions clientOptions;
 
+    /**
+     * Create a {@code TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint.
+     * Each service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
+     *
+     * @param service The proxy service used to perform REST calls.
+     * @param serviceVersion The versions of Azure Text Analytics supported by this client library.
+     * @param clientOptions The {@link TextAnalyticsClientOptions client option} contains
+     * {@link TextAnalyticsClientOptions#getDefaultLanguage default language} and
+     * {@link TextAnalyticsClientOptions#getDefaultCountryHint()} default country hint}
+     * that could be used as default values for each request.
+     */
     TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion,
                              TextAnalyticsClientOptions clientOptions) {
         this.service = service;
@@ -72,6 +92,13 @@ public final class TextAnalyticsAsyncClient {
         this.clientOptions = clientOptions;
     }
 
+    /**
+     * Create a {@code TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint.
+     * Each service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
+     *
+     * @param service The proxy service used to perform REST calls.
+     * @param serviceVersion The versions of Azure Text Analytics supported by this client library.
+     */
     TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this(service, serviceVersion, null);
     }
