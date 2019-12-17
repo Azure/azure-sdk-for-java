@@ -22,7 +22,7 @@ public class ExtractKeyPhrases {
         // The text that need be analysed.
         String text = "My cat might need to see a veterinarian.";
 
-        for(String keyPhrase : client.extractKeyPhrases(text).getKeyPhrases()) {
+        for (String keyPhrase : client.extractKeyPhrases(text).getKeyPhrases()) {
             System.out.printf("Recognized Phrases: %s.%n", keyPhrase);
         }
     }
