@@ -3,7 +3,6 @@
 
 package com.azure.core.http.okhttp;
 
-import com.azure.core.http.AuthorizationChallengeHandler;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -38,14 +37,12 @@ import java.util.function.Function;
  */
 class OkHttpAsyncHttpClient implements HttpClient {
     private final OkHttpClient httpClient;
-    private final AuthorizationChallengeHandler challengeHandler;
     //
     private static final Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
     private static final MediaType MEDIA_TYPE_OCTET_STREAM = MediaType.parse("application/octet-stream");
 
-    OkHttpAsyncHttpClient(OkHttpClient httpClient, AuthorizationChallengeHandler challengeHandler) {
+    OkHttpAsyncHttpClient(OkHttpClient httpClient) {
         this.httpClient = httpClient;
-        this.challengeHandler = challengeHandler;
     }
 
     @Override

@@ -215,8 +215,7 @@ public class OkHttpAsyncHttpClientBuilder {
                     } else {
                         String digestAuthorizationHeader = null;
                         if (digestChallenges.size() > 0) {
-                            digestAuthorizationHeader = AuthorizationChallengeHandler.digest(proxyOptions.getUsername(),
-                                proxyOptions.getPassword(), response.request().method(),
+                            digestAuthorizationHeader = challengeHandler.handleDigest(response.request().method(),
                                 response.request().url().toString(), digestChallenges.stream()
                                     .map(Challenge::authParams)
                                     .map(HttpHeaders::new)
@@ -224,8 +223,7 @@ public class OkHttpAsyncHttpClientBuilder {
                         }
 
                         if (digestAuthorizationHeader == null && basicChallenges.size() > 0) {
-                            authorizationHeader = AuthorizationChallengeHandler.basic(proxyOptions.getUsername(),
-                                proxyOptions.getPassword());
+                            authorizationHeader = challengeHandler.handleBasic();
                         } else {
                             authorizationHeader = digestAuthorizationHeader;
                         }
@@ -237,6 +235,6 @@ public class OkHttpAsyncHttpClientBuilder {
                 });
             }
         }
-        return new OkHttpAsyncHttpClient(httpClientBuilder.build(), challengeHandler);
+        return new OkHttpAsyncHttpClient(httpClientBuilder.build());
     }
 }
