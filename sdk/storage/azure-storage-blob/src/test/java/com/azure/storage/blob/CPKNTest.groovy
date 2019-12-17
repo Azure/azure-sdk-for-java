@@ -22,8 +22,8 @@ import java.time.OffsetDateTime
 
 class CPKNTest extends APISpec {
 
-    String scope1
-    String scope2
+    String scope1 = "testscope1"
+    String scope2 = "testscope2"
     EncryptionScope es
     BlobContainerEncryptionScope ces
     BlobContainerClientBuilder builder
@@ -35,8 +35,6 @@ class CPKNTest extends APISpec {
     BlobClientBase cpknExistingBlob
 
     def setup() {
-        scope1 = "gaprascope1" // I will change this to something generic and rerecord
-        scope2 = "gaprascope2" // I will change this to something generic and rerecord
         es = new EncryptionScope().setEncryptionScope(scope1)
         ces = new BlobContainerEncryptionScope().setDefaultEncryptionScope(scope2).setDenyEncryptionScopeOverride(true)
 

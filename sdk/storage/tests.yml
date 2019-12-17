@@ -15,8 +15,6 @@ jobs:
         SECONDARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-secondary-account-key)
         BLOB_STORAGE_ACCOUNT_NAME: $(java-storage-test-blob-account-name)
         BLOB_STORAGE_ACCOUNT_KEY: $(java-storage-test-blob-account-key)
-        BLOB_ENCRYPTION_SCOPE_1: scope_1
-        BLOB_ENCRYPTION_SCOPE_2: scope_2
         PREMIUM_STORAGE_ACCOUNT_NAME: $(java-storage-test-premium-account-name)
         PREMIUM_STORAGE_ACCOUNT_KEY: $(java-storage-test-premium-account-key)
         AZURE_STORAGE_ACCESS_KEY: $(java-storage-test-access-key)
