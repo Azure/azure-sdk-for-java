@@ -301,7 +301,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeKeyPhrasesForBatchInput() {
-        recognizeBatchLinkedEntityRunner((inputs) ->
+        extractBatchKeyPhrasesRunner((inputs) ->
             validateBatchResult(client.extractBatchKeyPhrases(inputs),
                 getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
     }
