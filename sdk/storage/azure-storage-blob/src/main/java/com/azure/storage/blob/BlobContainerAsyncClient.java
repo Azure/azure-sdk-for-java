@@ -422,7 +422,8 @@ public final class BlobContainerAsyncClient {
                 ContainerGetPropertiesHeaders hd = rb.getDeserializedHeaders();
                 BlobContainerProperties properties = new BlobContainerProperties(hd.getMetadata(), hd.getETag(),
                     hd.getLastModified(), hd.getLeaseDuration(), hd.getLeaseState(), hd.getLeaseStatus(),
-                    hd.getBlobPublicAccess(), hd.isHasImmutabilityPolicy(), hd.isHasLegalHold());
+                    hd.getBlobPublicAccess(), hd.isHasImmutabilityPolicy(), hd.isHasLegalHold(),
+                    hd.getDefaultEncryptionScope(), hd.isDenyEncryptionScopeOverride());
                 return new SimpleResponse<>(rb, properties);
             });
     }
