@@ -293,15 +293,6 @@ public class ClientLoggerTests {
         assertEquals(new ClientLogger(ClientLoggerTests.class).canLogAtLevel(logLevel), expected);
     }
 
-    private LogLevel convertToLogLevel(int logLevelStr) {
-        for (LogLevel level: LogLevel.values()) {
-            if (logLevelStr == level.toNumeric()) {
-                return level;
-            }
-        }
-        return null;
-    }
-
     private String setupLogLevel(int logLevelToSet) {
         String originalLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLOUD);
         System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, Integer.toString(logLevelToSet));
