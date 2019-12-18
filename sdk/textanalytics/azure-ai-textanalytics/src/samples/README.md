@@ -18,7 +18,6 @@ The following sections provide several code snippets covering some of the most c
 
 - [Detect language in text][sample_hello_world]
 - [Recognize entities in text][sample_entities]
-- [Recognize health care entities in text][sample_health_care_entities]
 - [Recognize personally identifiable information in text][sample_pii_entities]
 - [Recognize linked entities in text][sample_linked_entities]
 - [Extract key phrases in text][sample_key_phrases]
@@ -27,7 +26,6 @@ The following sections provide several code snippets covering some of the most c
 Batch Samples:
 - [Detect language for a batch of documents][sample_language_batch]
 - [Recognize entities in a batch of documents][sample_entities_batch]
-- [Recognize health care entities in a batch of documents][sample_health_care_entities_batch]
 - [Recognize personally identifiable information in a batch of documents][sample_pii_entities_batch]
 - [Recognize linked entities in a batch of documents][sample_linked_entities_batch]
 - [Extract key phrases in a batch of documents][sample_key_phrases_batch]
@@ -54,7 +52,6 @@ Guidelines](../../CONTRIBUTING.md) for more information.
 
 [sample_hello_world]: java/com/azure/cs/textanalytics/HelloWorld.java
 [sample_entities]: java/com/azure/cs/textanalytics/RecognizeEntities.java
-[sample_health_care_entities]: java/com/azure/cs/textanalytics/RecognizeHealthCareEntities.java
 [sample_pii_entities]: java/com/azure/cs/textanalytics/RecognizePII.java
 [sample_linked_entities]: java/com/azure/cs/textanalytics/RecognizeLinkedEntities.java
 [sample_key_phrases]: java/com/azure/cs/textanalytics/RecognizeKeyPhrases.java
@@ -62,7 +59,6 @@ Guidelines](../../CONTRIBUTING.md) for more information.
 
 [sample_language_batch]: java/com/azure/cs/textanalytics/batch/DetectLanguageBatchDocuments.java
 [sample_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
-[sample_health_care_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizeHealthCareEntitiesBatchDocuments.java
 [sample_pii_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizePiiBatchDocuments.java
 [sample_linked_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
 [sample_key_phrases_batch]: java/com/azure/cs/textanalytics/batch/RecognizeKeyPhrasesBatchDocuments.java

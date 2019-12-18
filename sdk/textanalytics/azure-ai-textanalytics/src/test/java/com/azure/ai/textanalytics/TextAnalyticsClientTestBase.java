@@ -11,9 +11,9 @@ import com.azure.ai.textanalytics.models.Error;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -55,6 +55,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -502,8 +503,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 assertEquals(detectLanguageResults.size(), actualDetectLanguageResults.size());
 
                 actualDetectLanguageResults.forEach(actualItem -> {
-                    Optional<DetectLanguageResult> optionalExpectedItem = detectLanguageResults.stream().filter(
-                        expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId())).findFirst();
+                    Stream<DetectLanguageResult> expectedItems = detectLanguageResults.stream().filter(
+                        expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId()));
+                    assertEquals(expectedItems.count(), 1);
+                    Optional<DetectLanguageResult> optionalExpectedItem = expectedItems.findFirst();
                     assertTrue(optionalExpectedItem.isPresent());
                     DetectLanguageResult expectedItem = optionalExpectedItem.get();
                     if (actualItem.getError() == null) {
@@ -528,8 +531,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 assertEquals(recognizeEntitiesResults.size(), actualRecognizeEntitiesResults.size());
 
                 actualRecognizeEntitiesResults.forEach(actualItem -> {
-                    Optional<RecognizeEntitiesResult> optionalExpectedItem = recognizeEntitiesResults.stream().filter(
-                        expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId())).findFirst();
+                    Stream<RecognizeEntitiesResult> expectedItems = recognizeEntitiesResults.stream().filter(
+                        expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId()));
+                    assertEquals(expectedItems.count(), 1);
+                    Optional<RecognizeEntitiesResult> optionalExpectedItem = expectedItems.findFirst();
                     assertTrue(optionalExpectedItem.isPresent());
                     RecognizeEntitiesResult expectedItem = optionalExpectedItem.get();
                     if (actualItem.getError() == null) {
@@ -553,8 +558,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 assertEquals(recognizeLinkedEntitiesResults.size(), actualRecognizeLinkedEntitiesResults.size());
 
                 actualRecognizeLinkedEntitiesResults.forEach(actualItem -> {
-                    Optional<RecognizeLinkedEntitiesResult> optionalExpectedItem = recognizeLinkedEntitiesResults.stream().filter(
-                        expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId())).findFirst();
+                    Stream<RecognizeLinkedEntitiesResult> expectedItems = recognizeLinkedEntitiesResults.stream().filter(
+                        expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId()));
+                    assertEquals(expectedItems.count(), 1);
+                    Optional<RecognizeLinkedEntitiesResult> optionalExpectedItem = expectedItems.findFirst();
                     assertTrue(optionalExpectedItem.isPresent());
                     RecognizeLinkedEntitiesResult expectedItem = optionalExpectedItem.get();
                     if (actualItem.getError() == null) {
@@ -578,8 +585,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 assertEquals(extractKeyPhraseResults.size(), actualExtractKeyPhraseResults.size());
 
                 actualExtractKeyPhraseResults.forEach(actualItem -> {
-                    Optional<ExtractKeyPhraseResult> optionalExpectedItem = extractKeyPhraseResults.stream().filter(
-                        expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId())).findFirst();
+                    Stream<ExtractKeyPhraseResult> expectedItems = extractKeyPhraseResults.stream().filter(
+                        expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId()));
+                    assertEquals(expectedItems.count(), 1);
+                    Optional<ExtractKeyPhraseResult> optionalExpectedItem = expectedItems.findFirst();
                     assertTrue(optionalExpectedItem.isPresent());
                     ExtractKeyPhraseResult expectedItem = optionalExpectedItem.get();
                     if (actualItem.getError() == null) {
@@ -684,7 +693,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedError.getCode(), actualError.getCode());
         assertEquals(expectedError.getMessage(), actualError.getMessage());
         assertEquals(expectedError.getTarget(), actualError.getTarget());
-        assertEquals(expectedError.getInnerError(), actualError.getInnerError());
     }
 
     /**
@@ -854,6 +862,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         }
     }
 
+    /**
+     * Helper method to get the expected Batch Detected Languages
+     */
     static DocumentResultCollection<DetectLanguageResult> getExpectedBatchDetectedLanguages() {
         DetectedLanguage detectedLanguage1 = new DetectedLanguage().setName("English").setIso6391Name("en")
             .setScore(1.0);

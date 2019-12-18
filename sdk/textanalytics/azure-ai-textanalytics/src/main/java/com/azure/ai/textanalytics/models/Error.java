@@ -33,12 +33,6 @@ public final class Error {
     private String target;
 
     /*
-     * Inner error contains more specific information.
-     */
-    @JsonProperty(value = "innererror")
-    private InnerError innerError;
-
-    /*
      * Details about specific errors that led to this reported error.
      */
     @JsonProperty(value = "details")
@@ -105,28 +99,6 @@ public final class Error {
      */
     public Error setTarget(String target) {
         this.target = target;
-        return this;
-    }
-
-    /**
-     * Get the innererror property: Inner error contains more specific
-     * information.
-     *
-     * @return the innererror value.
-     */
-    public InnerError getInnerError() {
-        return this.innerError;
-    }
-
-    /**
-     * Set the innererror property: Inner error contains more specific
-     * information.
-     *
-     * @param innerError the innererror value to set.
-     * @return the Error object itself.
-     */
-    public Error setInnerError(InnerError innerError) {
-        this.innerError = innerError;
         return this;
     }
 
