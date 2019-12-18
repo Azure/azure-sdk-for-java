@@ -166,6 +166,7 @@ public final class TextAnalyticsClient {
      * For a list of supported entity types, check: https://aka.ms/taner
      *
      * @param text the text to recognize entities for.
+     *
      * @return the {@link NamedEntityResult named entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -182,6 +183,7 @@ public final class TextAnalyticsClient {
      * @param text the text to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} containing the {@link NamedEntityResult named entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */

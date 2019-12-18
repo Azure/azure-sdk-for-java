@@ -60,7 +60,7 @@ Netty and include OkHTTP client in your pom.xml.
 ```
 [//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
 ```xml
-<!-- Add OkHTTP client to use with AppConfiguration -->
+<!-- Add OkHTTP client to use with Text Analytics -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>

@@ -40,15 +40,19 @@ import java.util.Objects;
  * and {@link TextAnalyticsAsyncClient TextAnalyticsAsyncClients}, call {@link #buildClient()} buildClient} and
  * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
- * <p>The client needs the service endpoint of the Azure Text Analytics to access the resource service.
+ * <p>
+ * The client needs the service endpoint of the Azure Text Analytics to access the resource service.
  * {@link #subscriptionKey(String) subscriptionKey(String)} or
- * {@link #credential(TokenCredential) credential(TokenCredential)} give the builder access credential. </p>
+ * {@link #credential(TokenCredential) credential(TokenCredential)} give the builder access credential.
+ * </p>
  *
- * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
+ * <p>
+ * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and
  * set the service endpoint with {@link #endpoint(String) this}. Using a
  * pipeline requires additional setup but allows for finer control on how the {@link TextAnalyticsClient} and
- * {@link TextAnalyticsAsyncClient} is built.</p>
+ * {@link TextAnalyticsAsyncClient} is built.
+ * </p>
  *
  * @see TextAnalyticsAsyncClient
  * @see TextAnalyticsClient
@@ -198,6 +202,7 @@ public final class TextAnalyticsClientBuilder {
      * @param clientOptions TextAnalyticsClientOptions model that includes
      * {@link TextAnalyticsClientOptions#getDefaultLanguage() default language} and
      * {@link TextAnalyticsClientOptions#getDefaultCountryHint() default country hint}
+     *
      * @return The updated TextAnalyticsClientBuilder object.
      */
     public TextAnalyticsClientBuilder clientOptions(TextAnalyticsClientOptions clientOptions) {
@@ -229,6 +234,7 @@ public final class TextAnalyticsClientBuilder {
      * Sets the credential to use when authenticating HTTP requests for this TextAnalyticsClientBuilder.
      *
      * @param subscriptionKey subscription key
+     *
      * @return The updated TextAnalyticsClientBuilder object.
      * @throws NullPointerException If {@code subscriptionKey} is {@code null}
      */
@@ -254,9 +260,10 @@ public final class TextAnalyticsClientBuilder {
     /**
      * Sets the logging configuration for HTTP requests and responses.
      *
-     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set. </p>
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     *
      * @return The updated TextAnalyticsClientBuilder object.
      */
     public TextAnalyticsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
@@ -268,6 +275,7 @@ public final class TextAnalyticsClientBuilder {
      * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
+     *
      * @return The updated TextAnalyticsClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
@@ -294,12 +302,13 @@ public final class TextAnalyticsClientBuilder {
 
     /**
      * Sets the HTTP pipeline to use for the service client.
-     *
+     * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from
      * {@link TextAnalyticsClientBuilder#endpoint(String) endpoint} to build {@link TextAnalyticsAsyncClient} or
      * {@link TextAnalyticsClient}.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     *
      * @return The updated TextAnalyticsClientBuilder object.
      */
     public TextAnalyticsClientBuilder pipeline(HttpPipeline httpPipeline) {
@@ -313,11 +322,12 @@ public final class TextAnalyticsClientBuilder {
 
     /**
      * Sets the configuration store that is used during construction of the service client.
-     *
+     * <p>
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
+     *
      * @return The updated TextAnalyticsClientBuilder object.
      */
     public TextAnalyticsClientBuilder configuration(Configuration configuration) {
@@ -327,10 +337,12 @@ public final class TextAnalyticsClientBuilder {
 
     /**
      * Sets the {@link HttpPipelinePolicy} that is used when each request is sent.
-     *
+     * <p>
      * The default retry policy will be used if not provided {@link TextAnalyticsClientBuilder#buildAsyncClient()}
      * to build {@link TextAnalyticsAsyncClient} or {@link TextAnalyticsClient}.
+     *
      * @param retryPolicy user's retry policy applied to each request.
+     *
      * @return The updated TextAnalyticsClientBuilder object.
      */
     public TextAnalyticsClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
@@ -346,6 +358,7 @@ public final class TextAnalyticsClientBuilder {
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
      * @param version {@link TextAnalyticsServiceVersion} of the service to be used when making requests.
+     *
      * @return The updated TextAnalyticsClientBuilder object.
      */
     public TextAnalyticsClientBuilder serviceVersion(TextAnalyticsServiceVersion version) {

@@ -439,6 +439,7 @@ public final class TextAnalyticsAsyncClient {
      * See https://aka.ms/talangs for the list of enabled languages.
      *
      * @param textInputs A list of text to recognize PII entities for.
+     *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link NamedEntityResult named entity} of the text.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -453,7 +454,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts.
      * For the list of supported entity types, check https://aka.ms/tanerpii.
      * See https://aka.ms/talangs for the list of enabled languages.
-     * *
+     *
      * @param textInputs A list of text to recognize PII entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
@@ -631,6 +632,7 @@ public final class TextAnalyticsAsyncClient {
      * See https://aka.ms/talangs for supported languages in Text Analytics API.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
+     *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link LinkedEntityResult linked entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -754,6 +756,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of strings denoting the key phrases in the input text.
      *
      * @param textInputs A list of text to be analyzed.
+     *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link KeyPhraseResult key phrases} of the text.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -796,6 +799,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of strings denoting the key phrases in the input text.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
+     *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link KeyPhraseResult key phrases}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -966,6 +970,7 @@ public final class TextAnalyticsAsyncClient {
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
+     *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link TextSentimentResult text sentiment}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
