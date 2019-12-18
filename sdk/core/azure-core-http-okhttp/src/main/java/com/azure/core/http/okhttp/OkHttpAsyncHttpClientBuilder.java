@@ -13,12 +13,18 @@ import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okio.Buffer;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.Proxy;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -208,30 +214,47 @@ public class OkHttpAsyncHttpClientBuilder {
                         .filter(challenge -> "Digest".equalsIgnoreCase(challenge.scheme()))
                         .collect(Collectors.toList());
 
-                    String authorizationHeader;
-                    if (basicChallenges.size() == 0 && digestChallenges.size() == 0) {
-                        // Received a challenge that we don't know how to handle, just exist.
-                        return null;
-                    } else {
-                        String digestAuthorizationHeader = null;
-                        if (digestChallenges.size() > 0) {
-                            digestAuthorizationHeader = challengeHandler.handleDigest(response.request().method(),
-                                response.request().url().toString(), digestChallenges.stream()
-                                    .map(Challenge::authParams)
-                                    .map(HttpHeaders::new)
-                                    .collect(Collectors.toList()));
-                        }
+                    String authorizationHeader = null;
+                    if (digestChallenges.size() > 0) {
+                        List<HttpHeaders> challenges = digestChallenges.stream().map(Challenge::authParams)
+                            .map(HttpHeaders::new).collect(Collectors.toList());
+                        Supplier<byte[]> bodySupplier = () -> {
+                            RequestBody requestBody = response.request().body();
+                            if (requestBody == null) {
+                                return new byte[0];
+                            }
 
-                        if (digestAuthorizationHeader == null && basicChallenges.size() > 0) {
-                            authorizationHeader = challengeHandler.handleBasic();
-                        } else {
-                            authorizationHeader = digestAuthorizationHeader;
-                        }
+                            Buffer bodyBuffer = new Buffer();
+                            try {
+                                requestBody.writeTo(bodyBuffer);
+                            } catch (IOException e) {
+                                throw logger.logExceptionAsWarning(new UncheckedIOException(e));
+                            }
+
+                            return bodyBuffer.readByteArray();
+                        };
+
+                        authorizationHeader = challengeHandler.handleDigest(response.request().method(),
+                            response.request().url().toString(), challenges, bodySupplier);
+                    } else if (basicChallenges.size() > 0) {
+                        authorizationHeader = challengeHandler.handleBasic();
                     }
 
-                    return response.request().newBuilder()
-                        .header("Proxy-Authorization", authorizationHeader)
-                        .build();
+                    /*
+                     * If Digest proxy was attempted but it wasn't able to be computed and the server sent a Basic
+                     * challenge as well apply the basic authorization header.
+                     */
+                    if (authorizationHeader == null && basicChallenges.size() > 0) {
+                        authorizationHeader = challengeHandler.handleBasic();
+                    }
+
+                    Request.Builder requestBuilder = response.request().newBuilder();
+
+                    if (authorizationHeader != null) {
+                        requestBuilder.header("Proxy-Authorization", authorizationHeader);
+                    }
+
+                    return requestBuilder.build();
                 });
             }
         }

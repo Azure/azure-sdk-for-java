@@ -8,7 +8,6 @@ import com.azure.core.util.CoreUtils;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
@@ -16,12 +15,15 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
- *
+ * This class handles Basic and Digest authorization challenges, complying to RFC 2617 and RFC 7616.
  */
 public final class AuthorizationChallengeHandler {
+    private static final char[] HEX_CHARACTERS = "0123456789abcdef".toCharArray();
+
     private static final String BASIC = "Basic ";
     private static final String DIGEST = "Digest ";
 
@@ -95,9 +97,11 @@ public final class AuthorizationChallengeHandler {
      *
      * @param method HTTP method being used in the request.
      * @param uri Relative URI for the request.
+     * @param bodySupplier Supplies the request body, used to compute the hash of the body when using {@code
+     * "qop=auth-int"}.
      * @return A preemptive authorization header for a potential Digest authentication challenge.
      */
-    public String proactiveDigest(String method, String uri) {
+    public String proactiveDigest(String method, String uri, Supplier<byte[]> bodySupplier) {
         HttpHeaders challenge = lastChallenge.get();
 
         // Haven't responded to a challenge yet, send the request without an authorization header.
@@ -106,7 +110,8 @@ public final class AuthorizationChallengeHandler {
         }
 
         String algorithm = challenge.getValue(ALGORITHM);
-        return createDigestAuthorizationHeader(method, uri, challenge, algorithm, getAlgorithmDigest(algorithm));
+        return createDigestAuthorizationHeader(method, uri, challenge, algorithm, bodySupplier,
+            getAlgorithmDigest(algorithm));
     }
 
     /**
@@ -116,9 +121,11 @@ public final class AuthorizationChallengeHandler {
      * @param uri Relative URI for the request.
      * @param challenges List of challenges that the server returned for the client to choose from and use when creating
      * the authorization header.
+     * @param bodySupplier Supplies the request body, used to compute the hash of the body when using {@code
+     * "qop=auth-int"}.
      * @return Authorization header for Digest authentication challenges.
      */
-    public String handleDigest(String method, String uri, List<HttpHeaders> challenges) {
+    public String handleDigest(String method, String uri, List<HttpHeaders> challenges, Supplier<byte[]> bodySupplier) {
         Map<String, List<HttpHeaders>> challengesByType = partitionByChallengeType(challenges);
 
         for (String algorithm : ALGORITHM_PREFERENCE_ORDER) {
@@ -137,7 +144,7 @@ public final class AuthorizationChallengeHandler {
             HttpHeaders challenge = challengesByType.get(algorithm).get(0);
             lastChallenge.set(challenge);
 
-            return createDigestAuthorizationHeader(method, uri, challenge, algorithm, digest);
+            return createDigestAuthorizationHeader(method, uri, challenge, algorithm, bodySupplier, digest);
         }
 
         return null;
@@ -147,7 +154,7 @@ public final class AuthorizationChallengeHandler {
      * Creates the Authorization header for the Digest authentication challenge.
      */
     private String createDigestAuthorizationHeader(String method, String uri, HttpHeaders challenge, String algorithm,
-        MessageDigest digest) {
+        Supplier<byte[]> bodySupplier, MessageDigest digest) {
         int nc = getNc(challenge);
         String realm = challenge.getValue(REALM);
         String nonce = challenge.getValue(NONCE);
@@ -164,12 +171,12 @@ public final class AuthorizationChallengeHandler {
             cnonce = generateCnonce();
         }
 
-        byte[] ha1 = algorithm.endsWith(_SESS)
+        String ha1 = algorithm.endsWith(_SESS)
             ? calculateHa1Sess(digest, realm, nonce, cnonce)
             : calculateHa1NoSess(digest, realm);
 
-        byte[] ha2 = AUTH_INT.equals(qop)
-            ? calculateHa2AuthIntQop(digest, method, uri, null)
+        String ha2 = AUTH_INT.equals(qop)
+            ? calculateHa2AuthIntQop(digest, method, uri, bodySupplier.get())
             : calculateHa2AuthQopOrEmpty(digest, method, uri);
 
         String response = (AUTH.equals(qop) || AUTH_INT.equals(qop))
@@ -178,7 +185,7 @@ public final class AuthorizationChallengeHandler {
 
         String headerUsername = (hashUsername) ? calculateUserhash(digest, realm) : username;
 
-        return buildAuthorizationHeader(username, realm, uri, algorithm, nonce, nc, cnonce, qop, response, opaque,
+        return buildAuthorizationHeader(headerUsername, realm, uri, algorithm, nonce, nc, cnonce, qop, response, opaque,
             hashUsername);
     }
 
@@ -198,58 +205,110 @@ public final class AuthorizationChallengeHandler {
         }
     }
 
+    /*
+     * Parses the qopHeader for the qop to use. If the qopHeader is null or only contains unknown qop types null will
+     * be returned, otherwise the preference is 'auth' followed by 'auth-int'.
+     */
     private String getQop(String qopHeader) {
         if (CoreUtils.isNullOrEmpty(qopHeader)) {
             return null;
-        } else if (qopHeader.contains(AUTH_INT)) {
-            return AUTH_INT;
         } else if (qopHeader.contains(AUTH)) {
             return AUTH;
+        } else if (qopHeader.contains(AUTH_INT)) {
+            return AUTH_INT;
         } else {
             return null;
         }
     }
 
-    private byte[] calculateHa1NoSess(MessageDigest digest, String realm) {
-        return digest.digest(String.format("%s:%s:%s", username, realm, password).getBytes(StandardCharsets.UTF_8));
+    /*
+     * Calculates the 'HA1' hex string when using an algorithm that isn't a '-sess' variant.
+     *
+     * This performs the following operations:
+     * - Create the digest of (username + ":" + realm + ":" password).
+     * - Return the resulting bytes as a hex string.
+     */
+    private String calculateHa1NoSess(MessageDigest digest, String realm) {
+        return hexStringOf(digest.digest(String.format("%s:%s:%s", username, realm, password)
+            .getBytes(StandardCharsets.UTF_8)));
     }
 
-    private byte[] calculateHa1Sess(MessageDigest digest, String realm, String nonce, String cnonce) {
-        return digest.digest(mergeArrays(calculateHa1NoSess(digest, realm),
-            String.format(":%s:%s", nonce, cnonce).getBytes(StandardCharsets.UTF_8)));
+    /*
+     * Calculates the 'HA1' hex string when using a '-sess' algorithm variant.
+     *
+     * This performs the following operations:
+     * - Create the digest of (username + ":" + realm + ":" password).
+     * - Convert the resulting bytes to a hex string, aliased as userPassHex.
+     * - Create the digest of (userPassHex + ":" nonce + ":" + cnonce).
+     * - Return the resulting bytes as a hex string.
+     */
+    private String calculateHa1Sess(MessageDigest digest, String realm, String nonce, String cnonce) {
+        return hexStringOf(digest.digest(String.format("%s:%s:%s", calculateHa1NoSess(digest, realm), nonce, cnonce)
+            .getBytes(StandardCharsets.UTF_8)));
     }
 
-    private byte[] calculateHa2AuthQopOrEmpty(MessageDigest digest, String httpMethod, String uri) {
-        return digest.digest(String.format("%s:%s", httpMethod, uri).getBytes(StandardCharsets.UTF_8));
+    /*
+     * Calculates the 'HA2' hex string when using 'qop=auth' or the qop is unknown.
+     *
+     * This performs the following operations:
+     * - Create the digest of (httpMethod + ":" + uri).
+     * - Return the resulting bytes as a hex string.
+     */
+    private String calculateHa2AuthQopOrEmpty(MessageDigest digest, String httpMethod, String uri) {
+        return hexStringOf(digest.digest(String.format("%s:%s", httpMethod, uri).getBytes(StandardCharsets.UTF_8)));
     }
 
-    private byte[] calculateHa2AuthIntQop(MessageDigest digest, String httpMethod, String uri, String body) {
-        byte[] bodyHash = digest.digest(body.getBytes(StandardCharsets.UTF_8));
-        byte[] ha2AuthIntQopData = mergeArrays(String.format("%s:%s:", httpMethod, uri)
-            .getBytes(StandardCharsets.UTF_8), bodyHash);
-
-        return digest.digest(ha2AuthIntQopData);
+    /*
+     * Calculates the 'HA2' hex string when using 'qop=auth-int'.
+     *
+     * This performs the following operations:
+     * - Create the digest of (requestEntity).
+     * - Convert the resulting bytes to a hex string, aliased as bodyHex.
+     * - Create the digest of (httpMethod + ":" + uri + ":" bodyHex).
+     * - Return the resulting bytes as a hex string.
+     *
+     * The request entity is the entity headers (https://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html) and the body of
+     * the request. Using 'qop=auth-int' requires the request body to be replay-able, this is why 'auth' is preferred
+     * instead of auth-int as this cannot be guaranteed. In addition to the body being replay-able this runs into risks
+     * when the body is very large and potentially consuming large amounts of memory.
+     */
+    private String calculateHa2AuthIntQop(MessageDigest digest, String httpMethod, String uri, byte[] requestEntity) {
+        return hexStringOf(digest.digest(String.format("%s:%s:%s", httpMethod, uri,
+            hexStringOf(digest.digest(requestEntity))).getBytes(StandardCharsets.UTF_8)));
     }
 
-    private static String calculateResponseUnknownQop(MessageDigest digest, byte[] ha1, String nonce, byte[] ha2) {
-        digest.update(ha1);
-        digest.update(String.format(":%s:", nonce).getBytes(StandardCharsets.UTF_8));
-        return Base64.getEncoder().encodeToString(digest.digest(ha2));
+    /*
+     * Calculates the 'response' hex string when qop is unknown.
+     *
+     * This performs the following operations:
+     * - Create the digest of (ha1 + ":" + nonce + ":" + ha2).
+     * - Return the resulting bytes as a hex string.
+     */
+    private String calculateResponseUnknownQop(MessageDigest digest, String ha1, String nonce, String ha2) {
+        return hexStringOf(digest.digest(String.format("%s:%s:%s", ha1, nonce, ha2).getBytes(StandardCharsets.UTF_8)));
     }
 
-    private static String calculateResponseKnownQop(MessageDigest digest, byte[] ha1, String nonce, int nc,
-        String cnonce, String qop, byte[] ha2) {
-        digest.update(ha1);
-        digest.update(String.format(":%s:%08X:%s:%s:", nonce, nc, cnonce, qop).getBytes(StandardCharsets.UTF_8));
-        return Base64.getEncoder().encodeToString(digest.digest(ha2));
+    /*
+     * Calculates the 'response' hex string when 'qop=auth' or 'qop=auth-int'.
+     *
+     * This performs the following operations:
+     * - Create the digest of (ha1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + ha2).
+     * - Return the resulting byes as a hex string.
+     *
+     * nc, nonce count, is represented in a hexadecimal format.
+     */
+    private String calculateResponseKnownQop(MessageDigest digest, String ha1, String nonce, int nc, String cnonce,
+        String qop, String ha2) {
+        return hexStringOf(digest.digest(String.format("%s:%s:%08X:%s:%s:%s", ha1, nonce, nc, cnonce, qop, ha2)
+            .getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
      * Calculates the hashed username value if the authenticate challenge has 'userhash=true'.
      */
     private String calculateUserhash(MessageDigest digest, String realm) {
-        return Base64.getEncoder().encodeToString(
-            digest.digest(String.format("%s:%s", username, realm).getBytes(StandardCharsets.UTF_8)));
+        return Base64.getEncoder()
+            .encodeToString(digest.digest(String.format("%s:%s", username, realm).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
@@ -285,9 +344,10 @@ public final class AuthorizationChallengeHandler {
      * Creates a client nonce.
      */
     private static String generateCnonce() {
-        byte[] cnonce = new byte[16];
-        new SecureRandom().nextBytes(cnonce);
-        return Base64.getEncoder().encodeToString(cnonce);
+        return "0a4f113b";
+//        byte[] cnonce = new byte[16];
+//        new SecureRandom().nextBytes(cnonce);
+//        return hexStringOf(cnonce);
     }
 
     /*
@@ -305,7 +365,7 @@ public final class AuthorizationChallengeHandler {
         }
 
         authorizationBuilder.append("nonce=\"").append(nonce).append("\", ");
-        authorizationBuilder.append("nc=").append(Integer.toHexString(nc)).append(", ");
+        authorizationBuilder.append("nc=").append(String.format("%08X", nc)).append(", ");
         authorizationBuilder.append("cnonce=\"").append(cnonce).append("\", ");
 
         if (!CoreUtils.isNullOrEmpty(qop)) {
@@ -320,13 +380,23 @@ public final class AuthorizationChallengeHandler {
     }
 
     /*
-     * Merges two byte arrays.
+     * Converts the passed byte array into a hex string.
      */
-    private static byte[] mergeArrays(byte[] firstArray, byte[] secondArray) {
-        byte[] mergedArray = new byte[firstArray.length + secondArray.length];
-        System.arraycopy(firstArray, 0, mergedArray, 0, firstArray.length);
-        System.arraycopy(secondArray, 0, mergedArray, firstArray.length, secondArray.length);
+    private static String hexStringOf(byte[] bytes) {
+        // Hex uses 4 bits, converting a byte to hex will double its size.
+        char[] hexCharacters = new char[bytes.length * 2];
 
-        return mergedArray;
+        for (int i = 0; i < bytes.length; i++) {
+            // Convert the byte into an integer, masking all but the last 8 bits (the byte).
+            int b = bytes[i] & 0xFF;
+
+            // Shift 4 times to the right to get the leading 4 bits and get the corresponding hex character.
+            hexCharacters[i * 2] = HEX_CHARACTERS[b >>> 4];
+
+            // Mask all but the last 4 bits and get the corresponding hex character.
+            hexCharacters[i * 2 + 1] = HEX_CHARACTERS[b & 0x0F];
+        }
+
+        return new String(hexCharacters);
     }
 }

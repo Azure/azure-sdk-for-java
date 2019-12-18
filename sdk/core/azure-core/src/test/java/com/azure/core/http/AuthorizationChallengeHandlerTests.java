@@ -10,7 +10,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -32,11 +34,34 @@ public class AuthorizationChallengeHandlerTests {
         assertEquals(expected, new AuthorizationChallengeHandler(USERNAME, PASSWORD).handleBasic());
     }
 
+    @Test
+    public void validateDigest() {
+        String uri = "/dir/index.html";
+        String method = "GET";
+        String username = "Mufasa";
+        String password = "Circle Of Life";
+        HttpHeaders challenge = new HttpHeaders()
+            .put("realm", "testrealm@host.com")
+            .put("qop", "auth, auth-int")
+            .put("algorithm", "MD5")
+            .put("nonce", "dcd98b7102dd2f0e8b11d0f600bfb0c093")
+            .put("opaque", "5ccc069c403ebaf9f0171e9517f40e41");
+
+        byte[] expectedResponse = "6629fae49393a05397450978507c4ef1".getBytes(StandardCharsets.UTF_8);
+
+        AuthorizationChallengeHandler challengeHandler = new AuthorizationChallengeHandler(username, password);
+        String authorizationHeader = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> new byte[0]);
+
+        byte[] actualResponse = getResponseValue(authorizationHeader);
+        assertEquals(expectedResponse, actualResponse);
+    }
+
     @ParameterizedTest
     @MethodSource("digestChallengeSupplier")
     public void digestChallenge(String method, String uri, List<HttpHeaders> challenges, String expected) {
         assertEquals(expected, new AuthorizationChallengeHandler(USERNAME, PASSWORD)
-            .handleDigest(method, uri, challenges));
+            .handleDigest(method, uri, challenges, () -> new byte[0]));
     }
 
     private static Stream<Arguments> digestChallengeSupplier() {
@@ -87,5 +112,14 @@ public class AuthorizationChallengeHandlerTests {
         System.arraycopy(secondArray, 0, mergedArray, firstArray.length, secondArray.length);
 
         return mergedArray;
+    }
+
+    private static byte[] getResponseValue(String authorizationHeader) {
+        return Arrays.stream(authorizationHeader.split(","))
+            .filter(value -> value.contains("response="))
+            .map(value -> value.split("=")[1].replace("\"", ""))
+            .map(responseValue -> responseValue.getBytes(StandardCharsets.UTF_8))
+            .findFirst()
+            .get();
     }
 }
