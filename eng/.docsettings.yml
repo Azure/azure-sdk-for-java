@@ -54,6 +54,7 @@ known_presence_issues:
   - ['sdk/keyvault/microsoft-azure-keyvault-extensions', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-webkey', '#2847']
   - ['sdk/mediaservices/microsoft-azure-media', '#2847']
+  - ['sdk/e2e', '#2847']
   # Changelog List
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/CHANGELOG.md', '#2847']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/CHANGELOG.md', '#2847']
