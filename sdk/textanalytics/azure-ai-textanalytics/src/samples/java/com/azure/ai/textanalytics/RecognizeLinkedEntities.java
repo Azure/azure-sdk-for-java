@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.LinkedEntity;
+
 /**
  * Sample demonstrate how to recognize linked entities of a text input.
  */
@@ -22,10 +24,12 @@ public class RecognizeLinkedEntities {
         // The text that need be analysed.
         String text = "Old Faithful is a geyser at Yellowstone Park.";
 
-        client.recognizeLinkedEntities(text).getLinkedEntities().forEach(
-            linkedEntity -> System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.%n",
+        for (LinkedEntity linkedEntity : client.recognizeLinkedEntities(text).getLinkedEntities()) {
+            System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.%n",
                 linkedEntity.getName(),
                 linkedEntity.getUri(),
-                linkedEntity.getDataSource()));
+                linkedEntity.getDataSource());
+        }
     }
+
 }

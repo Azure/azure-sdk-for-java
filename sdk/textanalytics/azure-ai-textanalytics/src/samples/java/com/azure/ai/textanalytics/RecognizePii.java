@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.NamedEntity;
+
 /**
  * Sample demonstrate how to recognize PII(personal information identification) entities of a text input.
  */
@@ -22,14 +24,13 @@ public class RecognizePii {
         // The text that need be analysed.
         String text = "My SSN is 555-55-5555";
 
-        client.recognizePiiEntities(text).getNamedEntities().forEach(
-            entity -> System.out.printf(
+        for (NamedEntity entity : client.recognizePiiEntities(text).getNamedEntities()) {
+            System.out.printf(
                 "Recognized PII Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
                 entity.getText(),
                 entity.getType(),
                 entity.getSubtype(),
-                entity.getOffset(),
-                entity.getLength(),
-                entity.getScore()));
+                entity.getScore());
+        }
     }
 }

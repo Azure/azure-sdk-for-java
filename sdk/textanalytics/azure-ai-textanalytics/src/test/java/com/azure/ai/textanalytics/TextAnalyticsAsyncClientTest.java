@@ -333,7 +333,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     // Key Phrases
     @Test
-    public void recognizeKeyPhrasesForTextInput() {
+    public void extractKeyPhrasesForTextInput() {
         List<String> keyPhrasesList1 = Arrays.asList("monde");
         StepVerifier.create(client.extractKeyPhrasesWithResponse("Bonjour tout le monde.", "fr"))
             .assertNext(response -> validateKeyPhrases(keyPhrasesList1, response.getValue().getKeyPhrases()))
@@ -341,7 +341,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
-    public void recognizeKeyPhrasesForEmptyText() {
+    public void extractKeyPhrasesForEmptyText() {
         Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
         StepVerifier.create(client.extractKeyPhrases(""))
             .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
@@ -349,14 +349,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
-    public void recognizeKeyPhrasesForFaultyText() {
+    public void extractKeyPhrasesForFaultyText() {
         StepVerifier.create(client.extractKeyPhrases("!@#%%"))
             .assertNext(response -> assertEquals(response.getKeyPhrases().size(), 0))
             .verifyComplete();
     }
 
     @Test
-    public void recognizeKeyPhrasesForBatchInput() {
+    public void extractKeyPhrasesForBatchInput() {
         extractBatchKeyPhrasesRunner((inputs) -> {
             StepVerifier.create(client.extractBatchKeyPhrases(inputs))
                 .assertNext(response -> validateBatchResult(response, getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
@@ -366,7 +366,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
-    public void recognizeKeyPhrasesForBatchInputShowStatistics() {
+    public void extractKeyPhrasesForBatchInputShowStatistics() {
         extractBatchKeyPhrasesShowStatsRunner((inputs, options) -> {
             StepVerifier.create(client.extractBatchKeyPhrasesWithResponse(inputs, options))
                 .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
@@ -375,7 +375,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
-    public void recognizeKeyPhrasesForBatchStringInput() {
+    public void extractKeyPhrasesForBatchStringInput() {
         extractKeyPhrasesStringInputRunner((inputs) -> {
             StepVerifier.create(client.extractKeyPhrases(inputs))
                 .assertNext(response -> validateBatchResult(response, getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
@@ -384,7 +384,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
-    public void recognizeKeyPhrasesForListLanguageHint() {
+    public void extractKeyPhrasesForListLanguageHint() {
         extractKeyPhrasesLanguageHintRunner((inputs, language) -> {
             StepVerifier.create(client.extractKeyPhrasesWithResponse(inputs, language))
                 .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))

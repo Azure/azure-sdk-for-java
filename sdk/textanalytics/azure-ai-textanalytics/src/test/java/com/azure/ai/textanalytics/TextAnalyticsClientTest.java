@@ -280,7 +280,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
-    public void recognizeKeyPhrasesForTextInput() {
+    public void extractKeyPhrasesForTextInput() {
         List<String> keyPhrasesList1 = Arrays.asList("monde");
         validateKeyPhrases(keyPhrasesList1,
             client.extractKeyPhrasesWithResponse("Bonjour tout le monde.", "fr", Context.NONE)
@@ -288,40 +288,40 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
-    public void recognizeKeyPhrasesForEmptyText() {
+    public void extractKeyPhrasesForEmptyText() {
         Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
         validateErrorDocument(expectedError, client.extractKeyPhrases("").getError());
     }
 
     @Disabled
     @Test
-    public void recognizeKeyPhrasesForFaultyText() {
+    public void extractKeyPhrasesForFaultyText() {
 
     }
 
     @Test
-    public void recognizeKeyPhrasesForBatchInput() {
+    public void extractKeyPhrasesForBatchInput() {
         extractBatchKeyPhrasesRunner((inputs) ->
             validateBatchResult(client.extractBatchKeyPhrases(inputs),
                 getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
     }
 
     @Test
-    public void recognizeKeyPhrasesForBatchInputShowStatistics() {
+    public void extractKeyPhrasesForBatchInputShowStatistics() {
         extractBatchKeyPhrasesShowStatsRunner((inputs, options) ->
             validateBatchResult(client.extractBatchKeyPhrasesWithResponse(inputs, options, Context.NONE).getValue(),
                 getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
     }
 
     @Test
-    public void recognizeKeyPhrasesForBatchStringInput() {
+    public void extractKeyPhrasesForBatchStringInput() {
         extractKeyPhrasesStringInputRunner((inputs) ->
             validateBatchResult(client.extractKeyPhrases(inputs),
                 getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
     }
 
     @Test
-    public void recognizeKeyPhrasesForListLanguageHint() {
+    public void extractKeyPhrasesForListLanguageHint() {
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
             validateBatchResult(client.extractKeyPhrasesWithResponse(inputs, language, Context.NONE).getValue(),
                 getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));

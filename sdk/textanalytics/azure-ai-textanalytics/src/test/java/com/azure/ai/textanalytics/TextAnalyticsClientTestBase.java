@@ -123,135 +123,135 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     // Detect Language
     @Test
-    public abstract void detectSingleTextLanguage();
+    abstract void detectSingleTextLanguage();
 
     @Test
-    public abstract void detectLanguageEmptyText();
+    abstract void detectLanguageEmptyText();
 
     @Test
-    public abstract void detectLanguageFaultyText();
+    abstract void detectLanguageFaultyText();
 
     @Test
-    public abstract void detectLanguagesBatchInput();
+    abstract void detectLanguagesBatchInput();
 
     @Test
-    public abstract void detectLanguagesBatchInputShowStatistics();
+    abstract void detectLanguagesBatchInputShowStatistics();
 
     @Test
-    public abstract void detectLanguagesBatchStringInput();
+    abstract void detectLanguagesBatchStringInput();
 
     @Test
-    public abstract void detectLanguagesBatchListCountryHint();
+    abstract void detectLanguagesBatchListCountryHint();
 
     // Named Entities
     @Test
-    public abstract void recognizeEntitiesForTextInput();
+    abstract void recognizeEntitiesForTextInput();
 
     @Test
-    public abstract void recognizeEntitiesForEmptyText();
+    abstract void recognizeEntitiesForEmptyText();
 
     @Test
-    public abstract void recognizeEntitiesForFaultyText();
+    abstract void recognizeEntitiesForFaultyText();
 
     @Test
-    public abstract void recognizeEntitiesForBatchInput();
+    abstract void recognizeEntitiesForBatchInput();
 
     @Test
-    public abstract void recognizeEntitiesForBatchInputShowStatistics();
+    abstract void recognizeEntitiesForBatchInputShowStatistics();
 
     @Test
-    public abstract void recognizeEntitiesForBatchStringInput();
+    abstract void recognizeEntitiesForBatchStringInput();
 
     @Test
-    public abstract void recognizeEntitiesForListLanguageHint();
+    abstract void recognizeEntitiesForListLanguageHint();
 
     // Pii Entities
     @Test
-    public abstract void recognizePiiEntitiesForTextInput();
+    abstract void recognizePiiEntitiesForTextInput();
 
     @Test
-    public abstract void recognizePiiEntitiesForEmptyText();
+    abstract void recognizePiiEntitiesForEmptyText();
 
     @Test
-    public abstract void recognizePiiEntitiesForFaultyText();
+    abstract void recognizePiiEntitiesForFaultyText();
 
     @Test
-    public abstract void recognizePiiEntitiesForBatchInput();
+    abstract void recognizePiiEntitiesForBatchInput();
 
     @Test
-    public abstract void recognizePiiEntitiesForBatchInputShowStatistics();
+    abstract void recognizePiiEntitiesForBatchInputShowStatistics();
 
     @Test
-    public abstract void recognizePiiEntitiesForBatchStringInput();
+    abstract void recognizePiiEntitiesForBatchStringInput();
 
     @Test
-    public abstract void recognizePiiEntitiesForListLanguageHint();
+    abstract void recognizePiiEntitiesForListLanguageHint();
 
     // Linked Entities
     @Test
-    public abstract void recognizeLinkedEntitiesForTextInput();
+    abstract void recognizeLinkedEntitiesForTextInput();
 
     @Test
-    public abstract void recognizeLinkedEntitiesForEmptyText();
+    abstract void recognizeLinkedEntitiesForEmptyText();
 
     @Test
-    public abstract void recognizeLinkedEntitiesForFaultyText();
+    abstract void recognizeLinkedEntitiesForFaultyText();
 
     @Test
-    public abstract void recognizeLinkedEntitiesForBatchInput();
+    abstract void recognizeLinkedEntitiesForBatchInput();
 
     @Test
-    public abstract void recognizeLinkedEntitiesForBatchInputShowStatistics();
+    abstract void recognizeLinkedEntitiesForBatchInputShowStatistics();
 
     @Test
-    public abstract void recognizeLinkedEntitiesForBatchStringInput();
+    abstract void recognizeLinkedEntitiesForBatchStringInput();
 
     @Test
-    public abstract void recognizeLinkedEntitiesForListLanguageHint();
+    abstract void recognizeLinkedEntitiesForListLanguageHint();
 
     // Key Phrases
     @Test
-    public abstract void recognizeKeyPhrasesForTextInput();
+    abstract void extractKeyPhrasesForTextInput();
 
     @Test
-    public abstract void recognizeKeyPhrasesForEmptyText();
+    abstract void extractKeyPhrasesForEmptyText();
 
     @Test
-    public abstract void recognizeKeyPhrasesForFaultyText();
+    abstract void extractKeyPhrasesForFaultyText();
 
     @Test
-    public abstract void recognizeKeyPhrasesForBatchInput();
+    abstract void extractKeyPhrasesForBatchInput();
 
     @Test
-    public abstract void recognizeKeyPhrasesForBatchInputShowStatistics();
+    abstract void extractKeyPhrasesForBatchInputShowStatistics();
 
     @Test
-    public abstract void recognizeKeyPhrasesForBatchStringInput();
+    abstract void extractKeyPhrasesForBatchStringInput();
 
     @Test
-    public abstract void recognizeKeyPhrasesForListLanguageHint();
+    abstract void extractKeyPhrasesForListLanguageHint();
 
     // Sentiment
     @Test
-    public abstract void analyseSentimentForTextInput();
+    abstract void analyseSentimentForTextInput();
 
     @Test
-    public abstract void analyseSentimentForEmptyText();
+    abstract void analyseSentimentForEmptyText();
 
     @Test
-    public abstract void analyseSentimentForFaultyText();
+    abstract void analyseSentimentForFaultyText();
 
     @Test
-    public abstract void analyseSentimentForBatchInput();
+    abstract void analyseSentimentForBatchInput();
 
     @Test
-    public abstract void analyseSentimentForBatchInputShowStatistics();
+    abstract void analyseSentimentForBatchInputShowStatistics();
 
     @Test
-    public abstract void analyseSentimentForBatchStringInput();
+    abstract void analyseSentimentForBatchStringInput();
 
     @Test
-    public abstract void analyseSentimentForListLanguageHint();
+    abstract void analyseSentimentForListLanguageHint();
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
