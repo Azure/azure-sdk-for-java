@@ -59,7 +59,7 @@ public enum LogLevel {
     }
 
     /**
-     * Convert log level value to LogLevel.
+     * Converts the passed log level string to the corresponding {@link LogLevel}.
      *
      * @param logLevelVal The log level value which needs to convert
      * @return The LogLevel Enum.
