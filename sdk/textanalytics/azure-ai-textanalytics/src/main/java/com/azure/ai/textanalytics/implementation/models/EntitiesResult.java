@@ -4,7 +4,6 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -30,7 +29,7 @@ public final class EntitiesResult {
      * The statistics property.
      */
     @JsonProperty(value = "statistics")
-    private TextBatchStatistics statistics;
+    private RequestStatistics statistics;
 
     /*
      * This field indicates which model is used for scoring.
@@ -83,7 +82,7 @@ public final class EntitiesResult {
      *
      * @return the statistics value.
      */
-    public TextBatchStatistics getStatistics() {
+    public RequestStatistics getStatistics() {
         return this.statistics;
     }
 
@@ -93,7 +92,7 @@ public final class EntitiesResult {
      * @param statistics the statistics value to set.
      * @return the EntitiesResult object itself.
      */
-    public EntitiesResult setStatistics(TextBatchStatistics statistics) {
+    public EntitiesResult setStatistics(RequestStatistics statistics) {
         this.statistics = statistics;
         return this;
     }

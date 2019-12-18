@@ -4,7 +4,6 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -32,7 +31,7 @@ public final class DocumentKeyPhrases {
      * information about the document payload.
      */
     @JsonProperty(value = "statistics")
-    private TextDocumentStatistics statistics;
+    private DocumentStatistics statistics;
 
     /**
      * Get the id property: Unique, non-empty document identifier.
@@ -84,7 +83,7 @@ public final class DocumentKeyPhrases {
      *
      * @return the statistics value.
      */
-    public TextDocumentStatistics getStatistics() {
+    public DocumentStatistics getStatistics() {
         return this.statistics;
     }
 
@@ -95,7 +94,7 @@ public final class DocumentKeyPhrases {
      * @param statistics the statistics value to set.
      * @return the DocumentKeyPhrases object itself.
      */
-    public DocumentKeyPhrases setStatistics(TextDocumentStatistics statistics) {
+    public DocumentKeyPhrases setStatistics(DocumentStatistics statistics) {
         this.statistics = statistics;
         return this;
     }

@@ -4,7 +4,6 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.ai.textanalytics.models.Error;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,7 +22,7 @@ public final class DocumentError {
      * Document Error.
      */
     @JsonProperty(value = "error", required = true)
-    private Error error;
+    private TextAnalyticsError error;
 
     /**
      * Get the id property: Document Id.
@@ -50,7 +49,7 @@ public final class DocumentError {
      *
      * @return the error value.
      */
-    public Error getError() {
+    public TextAnalyticsError getError() {
         return this.error;
     }
 
@@ -60,7 +59,7 @@ public final class DocumentError {
      * @param error the error value to set.
      * @return the DocumentError object itself.
      */
-    public DocumentError setError(Error error) {
+    public DocumentError setError(TextAnalyticsError error) {
         this.error = error;
         return this;
     }

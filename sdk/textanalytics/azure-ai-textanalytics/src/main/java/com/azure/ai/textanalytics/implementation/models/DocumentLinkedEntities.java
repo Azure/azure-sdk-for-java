@@ -4,8 +4,6 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -32,7 +30,7 @@ public final class DocumentLinkedEntities {
      * information about the document payload.
      */
     @JsonProperty(value = "statistics")
-    private TextDocumentStatistics statistics;
+    private DocumentStatistics statistics;
 
     /**
      * Get the id property: Unique, non-empty document identifier.
@@ -82,7 +80,7 @@ public final class DocumentLinkedEntities {
      *
      * @return the statistics value.
      */
-    public TextDocumentStatistics getStatistics() {
+    public DocumentStatistics getStatistics() {
         return this.statistics;
     }
 
@@ -93,7 +91,7 @@ public final class DocumentLinkedEntities {
      * @param statistics the statistics value to set.
      * @return the DocumentLinkedEntities object itself.
      */
-    public DocumentLinkedEntities setStatistics(TextDocumentStatistics statistics) {
+    public DocumentLinkedEntities setStatistics(DocumentStatistics statistics) {
         this.statistics = statistics;
         return this;
     }

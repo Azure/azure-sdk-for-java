@@ -6,33 +6,25 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import java.util.List;
 
 /**
- * The InnerError model.
+ * The TextAnalyticsError model.
  */
 @Fluent
-public final class InnerError {
+public final class TextAnalyticsError {
     /*
-     * Error code. Possible values include: 'invalidParameterValue',
-     * 'invalidRequestBodyFormat', 'emptyRequest', 'missingInputRecords',
-     * 'invalidDocument', 'modelVersionIncorrect', 'invalidDocumentBatch',
-     * 'unsupportedLanguageCode', 'invalidCountryHint'
+     * Error code. Possible values include: 'invalidRequest',
+     * 'invalidArgument', 'internalServerError', 'serviceUnavailable'
      */
     @JsonProperty(value = "code", required = true)
-    private InnerErrorCodeValue code;
+    private ErrorCodeValue code;
 
     /*
      * Error message.
      */
     @JsonProperty(value = "message", required = true)
     private String message;
-
-    /*
-     * Error details.
-     */
-    @JsonProperty(value = "details")
-    private Map<String, String> details;
 
     /*
      * Error target.
@@ -46,28 +38,32 @@ public final class InnerError {
     @JsonProperty(value = "innerError")
     private InnerError innerError;
 
+    /*
+     * Details about specific errors that led to this reported error.
+     */
+    @JsonProperty(value = "details")
+    private List<TextAnalyticsError> details;
+
     /**
      * Get the code property: Error code. Possible values include:
-     * 'invalidParameterValue', 'invalidRequestBodyFormat', 'emptyRequest',
-     * 'missingInputRecords', 'invalidDocument', 'modelVersionIncorrect',
-     * 'invalidDocumentBatch', 'unsupportedLanguageCode', 'invalidCountryHint'.
+     * 'invalidRequest', 'invalidArgument', 'internalServerError',
+     * 'serviceUnavailable'.
      *
      * @return the code value.
      */
-    public InnerErrorCodeValue getCode() {
+    public ErrorCodeValue getCode() {
         return this.code;
     }
 
     /**
      * Set the code property: Error code. Possible values include:
-     * 'invalidParameterValue', 'invalidRequestBodyFormat', 'emptyRequest',
-     * 'missingInputRecords', 'invalidDocument', 'modelVersionIncorrect',
-     * 'invalidDocumentBatch', 'unsupportedLanguageCode', 'invalidCountryHint'.
+     * 'invalidRequest', 'invalidArgument', 'internalServerError',
+     * 'serviceUnavailable'.
      *
      * @param code the code value to set.
-     * @return the InnerError object itself.
+     * @return the TextAnalyticsError object itself.
      */
-    public InnerError setCode(InnerErrorCodeValue code) {
+    public TextAnalyticsError setCode(ErrorCodeValue code) {
         this.code = code;
         return this;
     }
@@ -85,30 +81,10 @@ public final class InnerError {
      * Set the message property: Error message.
      *
      * @param message the message value to set.
-     * @return the InnerError object itself.
+     * @return the TextAnalyticsError object itself.
      */
-    public InnerError setMessage(String message) {
+    public TextAnalyticsError setMessage(String message) {
         this.message = message;
-        return this;
-    }
-
-    /**
-     * Get the details property: Error details.
-     *
-     * @return the details value.
-     */
-    public Map<String, String> getDetails() {
-        return this.details;
-    }
-
-    /**
-     * Set the details property: Error details.
-     *
-     * @param details the details value to set.
-     * @return the InnerError object itself.
-     */
-    public InnerError setDetails(Map<String, String> details) {
-        this.details = details;
         return this;
     }
 
@@ -125,9 +101,9 @@ public final class InnerError {
      * Set the target property: Error target.
      *
      * @param target the target value to set.
-     * @return the InnerError object itself.
+     * @return the TextAnalyticsError object itself.
      */
-    public InnerError setTarget(String target) {
+    public TextAnalyticsError setTarget(String target) {
         this.target = target;
         return this;
     }
@@ -147,10 +123,32 @@ public final class InnerError {
      * information.
      *
      * @param innerError the innerError value to set.
-     * @return the InnerError object itself.
+     * @return the TextAnalyticsError object itself.
      */
-    public InnerError setInnerError(InnerError innerError) {
+    public TextAnalyticsError setInnerError(InnerError innerError) {
         this.innerError = innerError;
+        return this;
+    }
+
+    /**
+     * Get the details property: Details about specific errors that led to this
+     * reported error.
+     *
+     * @return the details value.
+     */
+    public List<TextAnalyticsError> getDetails() {
+        return this.details;
+    }
+
+    /**
+     * Set the details property: Details about specific errors that led to this
+     * reported error.
+     *
+     * @param details the details value to set.
+     * @return the TextAnalyticsError object itself.
+     */
+    public TextAnalyticsError setDetails(List<TextAnalyticsError> details) {
+        this.details = details;
         return this;
     }
 }

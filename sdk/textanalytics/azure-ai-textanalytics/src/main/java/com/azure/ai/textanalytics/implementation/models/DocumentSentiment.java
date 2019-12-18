@@ -4,7 +4,6 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -26,13 +25,13 @@ public final class DocumentSentiment {
      * 'mixed'
      */
     @JsonProperty(value = "sentiment", required = true)
-    private String sentiment;
+    private DocumentSentimentValue sentiment;
 
     /*
      * The statistics property.
      */
     @JsonProperty(value = "statistics")
-    private TextDocumentStatistics statistics;
+    private DocumentStatistics statistics;
 
     /*
      * Document level sentiment confidence scores between 0 and 1 for each
@@ -74,7 +73,7 @@ public final class DocumentSentiment {
      *
      * @return the sentiment value.
      */
-    public String getSentiment() {
+    public DocumentSentimentValue getSentiment() {
         return this.sentiment;
     }
 
@@ -86,7 +85,7 @@ public final class DocumentSentiment {
      * @param sentiment the sentiment value to set.
      * @return the DocumentSentiment object itself.
      */
-    public DocumentSentiment setSentiment(String sentiment) {
+    public DocumentSentiment setSentiment(DocumentSentimentValue sentiment) {
         this.sentiment = sentiment;
         return this;
     }
@@ -96,7 +95,7 @@ public final class DocumentSentiment {
      *
      * @return the statistics value.
      */
-    public TextDocumentStatistics getStatistics() {
+    public DocumentStatistics getStatistics() {
         return this.statistics;
     }
 
@@ -106,7 +105,7 @@ public final class DocumentSentiment {
      * @param statistics the statistics value to set.
      * @return the DocumentSentiment object itself.
      */
-    public DocumentSentiment setStatistics(TextDocumentStatistics statistics) {
+    public DocumentSentiment setStatistics(DocumentStatistics statistics) {
         this.statistics = statistics;
         return this;
     }
