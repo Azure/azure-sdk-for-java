@@ -30,11 +30,6 @@ public class ClientLoggerTests {
     private PrintStream originalSystemErr;
     private ByteArrayOutputStream logCaptureStream;
 
-    @Test
-    public void test() {
-        setupLogLevel(1);
-    }
-
     @BeforeEach
     public void setupLoggingConfiguration() {
         /*
