@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.polling.PollerFlux
+import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareStorageException
@@ -456,7 +457,8 @@ class FileAsyncAPITests extends APISpec {
         }.expectComplete().verify(Duration.ofMinutes(1))
     }
 
-    def "Start copy with args fpk"() {
+    @Unroll
+    def "Start copy with args"() {
         given:
         primaryFileAsyncClient.create(1024).block()
         def sourceURL = primaryFileAsyncClient.getFileUrl()
@@ -464,52 +466,27 @@ class FileAsyncAPITests extends APISpec {
         // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .setFilePermissionKey(filePermissionKey)
+        if (setFilePermissionKey) {
+            smbProperties.setFilePermissionKey(filePermissionKey)
+        }
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, smbProperties, null,
-            PermissionCopyModeType.OVERRIDE, null, null, null, null)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, smbProperties,
+            setFilePermission ? filePermission : null, permissionType, ignoreReadOnly,
+            setArchiveAttribute, null, null)
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
         copyInfoVerifier.assertNext {
             assert it.getValue().getCopyId() != null
         }.expectComplete().verify(Duration.ofMinutes(1))
-    }
 
-    def "Start copy with args fp"() {
-        given:
-        primaryFileAsyncClient.create(1024).block()
-        def sourceURL = primaryFileAsyncClient.getFileUrl()
-
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
-
-        when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, smbProperties, filePermission,
-            PermissionCopyModeType.OVERRIDE, null, null, null, null)
-        def copyInfoVerifier = StepVerifier.create(poller)
-
-        then:
-        copyInfoVerifier.assertNext {
-            assert it.getValue().getCopyId() != null
-        }.expectComplete().verify(Duration.ofMinutes(1))
-    }
-
-    def "Start copy with args source and booleans"() {
-        given:
-        primaryFileAsyncClient.create(1024).block()
-        def sourceURL = primaryFileAsyncClient.getFileUrl()
-
-        when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, null,
-            PermissionCopyModeType.SOURCE, true, false, null, null)
-        def copyInfoVerifier = StepVerifier.create(poller)
-
-        then:
-        copyInfoVerifier.assertNext {
-            assert it.getValue().getCopyId() != null
-        }.expectComplete().verify(Duration.ofMinutes(1))
+        where:
+        setFilePermissionKey | setFilePermission | ignoreReadOnly | setArchiveAttribute | permissionType
+        true                 | false             | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | true              | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | false             | true           | false               | PermissionCopyModeType.SOURCE
+        false                | false             | false          | true                | PermissionCopyModeType.SOURCE
     }
 
     @Ignore("There is a race condition in Poller where it misses the first observed event if there is a gap between the time subscribed and the time we start observing events.")
