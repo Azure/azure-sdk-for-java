@@ -3,29 +3,37 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * The KeyPhraseResult model.
  */
-@Fluent
+@Immutable
 public final class KeyPhraseResult extends DocumentResult {
-    private List<String> keyPhrases;
+    private final List<String> keyPhrases;
 
+    /**
+     * Create a {@code KeyPhraseResult} model that describes extracted key phrases result
+     *
+     * @param id Unique, non-empty document identifier.
+     * @param textDocumentStatistics text document statistics
+     * @param error the document error.
+     * @param keyPhrases a list of key phrases string
+     */
     public KeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
         List<String> keyPhrases) {
         super(id, textDocumentStatistics, error);
         this.keyPhrases = keyPhrases;
     }
 
+    /**
+     * Get a list of key phrase string
+     *
+     * @return a list of key phrase string
+     */
     public List<String> getKeyPhrases() {
         return keyPhrases;
-    }
-
-    KeyPhraseResult setKeyPhrases(List<String> keyPhrases) {
-        this.keyPhrases = keyPhrases;
-        return this;
     }
 }

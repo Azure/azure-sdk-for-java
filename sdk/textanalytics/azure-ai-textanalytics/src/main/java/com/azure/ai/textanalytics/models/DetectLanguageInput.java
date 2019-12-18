@@ -4,26 +4,38 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The DetectLanguageInput model.
  */
-@Fluent
+@Immutable
 public final class DetectLanguageInput {
 
+    /**
+     * Creates an input for detect language that will takes {@code id} and {@code text} as required inputs
+     *
+     * @param id unique, non-empty document identifier
+     * @param text the text property
+     */
     public DetectLanguageInput(String id, String text) {
-        this.id = id;
-        this.text = text;
+        this(id, text, null);
     }
 
+    /**
+     * Creates an input for detect language that will takes {@code id}, {@code text} and {@code countryHint}
+     *
+     * @param id unique, non-empty document identifier
+     * @param text the text property
+     * @param countryHint the country hint
+     */
     public DetectLanguageInput(String id, String text, String countryHint) {
         this.id = id;
         this.text = text;
         this.countryHint = countryHint;
     }
-    
+
     /*
      * Unique, non-empty document identifier.
      */

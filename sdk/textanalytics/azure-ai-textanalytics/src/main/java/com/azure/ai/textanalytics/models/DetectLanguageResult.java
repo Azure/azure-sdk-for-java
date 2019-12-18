@@ -2,18 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * The DetectedLanguageResult model.
  */
-@Fluent
+@Immutable
 public final class DetectLanguageResult extends DocumentResult {
-    private DetectedLanguage primaryLanguage;
-    private List<DetectedLanguage> detectedLanguages;
+    private final DetectedLanguage primaryLanguage;
+    private final List<DetectedLanguage> detectedLanguages;
 
+    /**
+     * Create a {@code DetectedLanguageResult} model that describes detected languages result
+     *
+     * @param id Unique, non-empty document identifier.
+     * @param textDocumentStatistics text document statistics
+     * @param error the document error.
+     * @param primaryLanguage the detected primary language
+     * @param detectedLanguages a list of detected language result
+     */
     public DetectLanguageResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
                                 DetectedLanguage primaryLanguage, List<DetectedLanguage> detectedLanguages) {
         super(id, textDocumentStatistics, error);
@@ -21,21 +30,21 @@ public final class DetectLanguageResult extends DocumentResult {
         this.detectedLanguages = detectedLanguages;
     }
 
+    /**
+     * Get the detected primary language
+     *
+     * @return the detected language
+     */
     public DetectedLanguage getPrimaryLanguage() {
         return primaryLanguage;
     }
 
-    DetectLanguageResult setPrimaryLanguage(DetectedLanguage detectedLanguage) {
-        this.primaryLanguage = detectedLanguage;
-        return this;
-    }
-
+    /**
+     * Get the list of detected languages
+     *
+     * @return the list of detected language
+     */
     public List<DetectedLanguage> getDetectedLanguages() {
         return detectedLanguages;
-    }
-
-    DetectLanguageResult setDetectedLanguages(List<DetectedLanguage> detectedLanguages) {
-        this.detectedLanguages = detectedLanguages;
-        return this;
     }
 }

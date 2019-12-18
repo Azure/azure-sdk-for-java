@@ -3,24 +3,23 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
-
 
 /**
  * The LinkedEntityResult model.
  */
-@Fluent
+@Immutable
 public final class LinkedEntityResult extends DocumentResult {
     private final List<LinkedEntity> linkedEntities;
 
     /**
-     * LinkedEntityResult model constructor
+     * Creates a {@code LinkedEntityResult} model that describes recognized linked entities result
      *
-     * @param id document id
+     * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
-     * @param error the document error.
+     * @param error the document error
      * @param linkedEntities a list of linked entities
      */
     public LinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
@@ -31,6 +30,7 @@ public final class LinkedEntityResult extends DocumentResult {
 
     /**
      * Get a list of linked entities
+     *
      * @return a list of linked entities.
      */
     public List<LinkedEntity> getLinkedEntities() {

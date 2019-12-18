@@ -3,22 +3,22 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * The TextSentimentResult model.
  */
-@Fluent
+@Immutable
 public final class TextSentimentResult extends DocumentResult {
     private final TextSentiment documentSentiment;
     private final List<TextSentiment> sentenceSentiments;
 
     /**
-     * TextSentimentResult model constructor
+     * Creates a {@code TextSentimentResult} model that describes analyzed sentiment result
      *
-     * @param id document id
+     * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
      * @param error the document error
      * @param documentSentiment the document sentiment
@@ -48,4 +48,6 @@ public final class TextSentimentResult extends DocumentResult {
     public List<TextSentiment> getSentenceSentiments() {
         return sentenceSentiments;
     }
+
+
 }
