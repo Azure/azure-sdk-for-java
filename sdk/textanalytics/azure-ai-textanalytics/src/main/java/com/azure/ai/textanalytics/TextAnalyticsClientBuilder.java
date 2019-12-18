@@ -189,7 +189,7 @@ public final class TextAnalyticsClientBuilder {
             .pipeline(pipeline)
             .build();
 
-        return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion);
+        return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, clientOptions);
     }
 
     /**

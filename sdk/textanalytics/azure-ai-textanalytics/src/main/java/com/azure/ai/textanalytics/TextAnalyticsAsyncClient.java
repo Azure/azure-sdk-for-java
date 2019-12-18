@@ -56,8 +56,8 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Text Analytics.
- * Operations allow by the client to detect language, recognize entities, recognize PII entities,
- * recognize linked entities, and analyze sentiment for a text input or a list of text input.
+ * Operations allowed by the client are language detection, sentiment analysis, and recognition entities, PII entities,
+ * and linked entities of a text input or list of test inputs.
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation}
@@ -91,17 +91,6 @@ public final class TextAnalyticsAsyncClient {
         this.serviceVersion = serviceVersion;
         defaultCountryHint = clientOptions == null ? null : clientOptions.getDefaultCountryHint();
         defaultLanguage =  clientOptions == null ? null : clientOptions.getDefaultLanguage();
-    }
-
-    /**
-     * Create a {@code TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint.
-     * Each service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
-     *
-     * @param service The proxy service used to perform REST calls.
-     * @param serviceVersion The versions of Azure Text Analytics supported by this client library.
-     */
-    TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion) {
-        this(service, serviceVersion, null);
     }
 
     /**
