@@ -15,6 +15,7 @@ import com.azure.search.models.ValueFacetResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.unitils.reflectionassert.ReflectionComparatorMode;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertTrue;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 /**
  * Abstract base class for all Search API tests
@@ -36,6 +37,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     static final String HOTELS_INDEX_NAME = "hotels";
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
+    static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
     private static final String SEARCH_SCORE_FIELD = "@search.score";
     static final String MODEL_WITH_VALUE_TYPES_INDEX_JSON = "ModelWithValueTypesIndexData.json";
     static final String MODEL_WITH_VALUE_TYPES_DOCS_JSON = "ModelWithValueTypesDocsData.json";
@@ -84,17 +86,16 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             Map<String, Object> result = searchIterator.next();
             Map<String, Object> hotel = hotelsIterator.next();
 
-            assertTrue(hotel.entrySet().stream().allMatch(e -> checkEquals(e, result)));
+            hotel.entrySet().forEach(e -> checkEquals(e, result));
         }
 
         return true;
     }
 
-    private boolean checkEquals(Map.Entry<String, Object> hotel, Map<String, Object> result) {
-        if (hotel.getValue() != null) {
-            return hotel.getValue().equals(result.get(hotel.getKey()));
+    private void checkEquals(Map.Entry<String, Object> hotel, Map<String, Object> result) {
+        if (hotel.getValue() != null && result.get(hotel.getKey()) != null) {
+            assertReflectionEquals(hotel.getValue(), result.get(hotel.getKey()), ReflectionComparatorMode.IGNORE_DEFAULTS);
         }
-        return true;
     }
 
     void assertRangeFacets(List<RangeFacetResult> baseRateFacets, List<RangeFacetResult> lastRenovationDateFacets) {

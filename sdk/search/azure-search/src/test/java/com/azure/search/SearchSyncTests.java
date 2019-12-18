@@ -62,7 +62,7 @@ public class SearchSyncTests extends SearchTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
-        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION);
 
         PagedIterableBase<SearchResult, SearchPagedResponse> searchResults = client.search("*");
         Assert.assertNotNull(searchResults);
@@ -160,7 +160,7 @@ public class SearchSyncTests extends SearchTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
-        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION);
 
         PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("*",
             new SearchOptions(), generateRequestOptions(), Context.NONE);
