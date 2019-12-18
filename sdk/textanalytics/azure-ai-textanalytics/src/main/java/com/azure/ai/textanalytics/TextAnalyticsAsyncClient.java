@@ -1033,7 +1033,8 @@ public final class TextAnalyticsAsyncClient {
             return null;
         }
 
-        final double[] sentimentScores = getTextSentimentScore(documentSentiment.getDocumentScores(), documentSentimentClass);
+        final double[] sentimentScores = getTextSentimentScore(documentSentiment.getDocumentScores(),
+            documentSentimentClass);
 
         // Sentence text sentiment
         final List<TextSentiment> sentenceSentimentTexts =

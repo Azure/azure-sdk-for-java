@@ -207,14 +207,14 @@ The following are types of text analysis that the service offers:
 See [Language and regional support](https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support) for what is currently available for each operation.
 
 ### Text Analytics Client
-``` sync
+``` java
 TextAnalyticsClient client = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
     .buildClient();
 ```
 
-``` asynchronous
+``` java
 TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")

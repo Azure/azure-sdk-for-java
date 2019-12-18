@@ -35,7 +35,7 @@ public class HelloWorld {
             detectedDocumentLanguage.getScore());
 
         final List<DetectedLanguage> detectedLanguages = detectLanguageResult.getDetectedLanguages();
-        for(DetectedLanguage detectedLanguage : detectedLanguages) {
+        for (DetectedLanguage detectedLanguage : detectedLanguages) {
             System.out.printf("Other detected languages: %s, ISO 6391 Name: %s, Score: %s.%n",
                 detectedLanguage.getName(),
                 detectedLanguage.getIso6391Name(),
