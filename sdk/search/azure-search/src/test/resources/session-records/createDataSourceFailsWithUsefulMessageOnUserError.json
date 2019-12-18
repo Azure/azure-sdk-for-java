@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk0d02118080a1.search-dogfood.windows-int.net/datasources('azs-java-test-sql')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk94d530753382.search.windows.net/datasources('azs-java-test-sql')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b836f67f-824c-4e45-bbae-15e14524df3f",
+      "request-id" : "7a35612a-2f36-4d1e-a1bc-428c158eb0df",
       "StatusCode" : "400",
-      "Date" : "Mon, 25 Nov 2019 07:00:24 GMT",
+      "Date" : "Sun, 15 Dec 2019 12:29:52 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "25",
+      "elapsed-time" : "28",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "70",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Data source type '' is not supported\"}}",
+      "Content-Length" : "90",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Data source type 'thistypedoesnotexist' is not supported\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

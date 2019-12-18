@@ -11,19 +11,34 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
     public abstract void createSynonymMapReturnsCorrectDefinition();
 
     @Test
+    public abstract void createSynonymMapReturnsCorrectDefinitionWithResponse();
+
+    @Test
     public abstract void createSynonymMapFailsWithUsefulMessageOnUserError();
 
     @Test
     public abstract void getSynonymMapReturnsCorrectDefinition();
 
     @Test
+    public abstract void getSynonymMapReturnsCorrectDefinitionWithResponse();
+
+    @Test
     public abstract void getSynonymMapThrowsOnNotFound();
+
+    @Test
+    public abstract void getSynonymMapThrowsOnNotFoundWithResponse();
 
     @Test
     public abstract void canUpdateSynonymMap();
 
     @Test
+    public abstract void canUpdateSynonymMapWithResponse();
+
+    @Test
     public abstract void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExist();
+
+    @Test
+    public abstract void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExistWithResponse();
 
     @Test
     public abstract void createOrUpdateSynonymMapIfNotExistsFailsOnExistingResource();
@@ -65,7 +80,13 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
     public abstract void existsReturnsTrueForExistingSynonymMap();
 
     @Test
+    public abstract void existsReturnsTrueForExistingSynonymMapWithResponse();
+
+    @Test
     public abstract void existsReturnsFalseForNonExistingSynonymMap();
+
+    @Test
+    public abstract void existsReturnsFalseForNonExistingSynonymMapWithResponse();
 
     void assertSynonymMapsEqual(SynonymMap actual, SynonymMap expected) {
         Assert.assertEquals(actual.getName(), expected.getName());

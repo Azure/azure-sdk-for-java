@@ -4,7 +4,6 @@ package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.search.Document;
-import com.azure.search.implementation.models.IndexAction;
 import com.azure.search.implementation.models.IndexActionType;
 import com.azure.search.implementation.models.IndexBatchImpl;
 
@@ -13,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * TODO: add class desc
+ * Contains a batch of document write actions to send to the index.
  */
 @Fluent
 public class IndexBatch<T> extends IndexBatchImpl<T> {

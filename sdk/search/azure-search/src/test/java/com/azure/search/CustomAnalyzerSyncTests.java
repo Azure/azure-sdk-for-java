@@ -153,7 +153,7 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
 
         // All analyzer names can be set on the analyzer property.
         for (int i = 0; i < allAnalyzerNames.size(); i++) {
-            DataType fieldType = (i % 2 == 0) ? DataType.EDM_STRING : DataType.COLLECTION_EDM_STRING;
+            DataType fieldType = (i % 2 == 0) ? DataType.EDM_STRING : DataType.Collection(DataType.EDM_STRING);
             fields.add(new Field()
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)
@@ -163,7 +163,7 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
         List<AnalyzerName> searchAnalyzersAndIndexAnalyzers = getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer();
 
         for (int i = 0; i < searchAnalyzersAndIndexAnalyzers.size(); i++) {
-            DataType fieldType = (i % 2 == 0) ? DataType.EDM_STRING : DataType.COLLECTION_EDM_STRING;
+            DataType fieldType = (i % 2 == 0) ? DataType.EDM_STRING : DataType.Collection(DataType.EDM_STRING);
             fields.add(new Field()
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)

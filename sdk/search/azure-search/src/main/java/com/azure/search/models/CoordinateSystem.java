@@ -12,11 +12,11 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * TODO: Add class description
+ * The EPSG:4326 is the coordinate system used for GeographyPoints in Azure Cognitive Search.
  */
 @Fluent
 public class CoordinateSystem {
-    public static final String NAME_PROPERTY = "name";
+    private static final String NAME_PROPERTY = "name";
 
     @JsonProperty
     private String type;

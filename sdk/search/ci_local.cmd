@@ -15,7 +15,7 @@ call mvn -f sdk/search/pom.service.xml -DskipTests -Dmaven.javadoc.skip=true -Di
 @echo ===========================================================================================================================
 @echo Test
 @echo ===========================================================================================================================
-call mvn -f sdk/search/pom.service.xml -Dmaven.wagon.http.pool=false test || exit /b
+call mvn -f sdk/search/pom.service.xml -Dmaven.wagon.http.pool=false verify || exit /b
 @echo on
 
 

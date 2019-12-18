@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * TODO: Add class description
+ * Representation of GeographyPoint as used Azure Cognitive Search.
  */
 @Fluent
 public final class GeoPoint {
@@ -38,9 +38,9 @@ public final class GeoPoint {
     }
 
     /**
-     * TODO: Add desc
-     * @param latitude TODO: Add desc
-     * @param longitude TODO: Add desc
+     * Create GeoPoint object from latitude and longitude
+     * @param latitude latitude value of the GeographyPoint
+     * @param longitude longitude value of the GeographyPoint
      * @return Add desc
      */
     public static GeoPoint create(double latitude, double longitude) {
@@ -48,10 +48,10 @@ public final class GeoPoint {
     }
 
     /**
-     * TODO: Add desc
-     * @param latitude Add desc
-     * @param longitude Add desc
-     * @param coordinateSystem Add desc
+     * Create GeoPoint object from latitude, longitude and coordinae system
+     * @param latitude latitude value of the GeographyPoint
+     * @param longitude longitude value of the GeographyPoint
+     * @param coordinateSystem EPSG:4326 coordination system
      * @return Add desc
      */
     public static GeoPoint create(double latitude, double longitude, CoordinateSystem coordinateSystem) {
@@ -118,7 +118,7 @@ public final class GeoPoint {
 
     /**
      * Retrieve coordinates
-     * @return TODO
+     * @return List of coordinates values
      */
     public List<Double> getCoordinates() {
         return coordinates;
@@ -126,7 +126,7 @@ public final class GeoPoint {
 
     /**
      * Set coordinates
-     * @param coordinates TODO
+     * @param coordinates list of coordinates
      * @return GeoPoint updated
      */
     public GeoPoint setCoordinates(List<Double> coordinates) {

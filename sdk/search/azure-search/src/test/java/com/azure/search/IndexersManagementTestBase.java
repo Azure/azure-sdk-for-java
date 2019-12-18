@@ -55,6 +55,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void canResetIndexerAndGetIndexerStatus();
 
     @Test
+    public abstract void canResetIndexerAndGetIndexerStatusWithResponse();
+
+    @Test
     public abstract void canRunIndexer();
 
     @Test
@@ -100,6 +103,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void canCreateAndDeleteIndexer();
 
     @Test
+    public abstract void canCreateAndDeleteIndexerWithResponse();
+
+    @Test
     public abstract void canCreateAndGetIndexer();
 
     @Test
@@ -131,6 +137,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void existsReturnsTrueForExistingIndexer();
+
+    @Test
+    public abstract void existsReturnsTrueForExistingIndexerWithResponse();
 
     @Test
     public abstract void existsReturnsFalseForNonExistingIndexer();

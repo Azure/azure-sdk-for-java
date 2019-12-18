@@ -1,63 +1,63 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk38e190549c46.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk88705160779d.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "99cad104-2929-4f10-91f7-25399f9b03bc",
+      "request-id" : "17e8fa62-2291-4193-a4b0-78925f29f463",
       "StatusCode" : "201",
-      "Date" : "Mon, 02 Dec 2019 21:56:04 GMT",
+      "Date" : "Sun, 15 Dec 2019 12:28:38 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D777726DDD1966\"",
-      "elapsed-time" : "48",
+      "ETag" : "W/\"0x8D7815A4FAB54F7\"",
+      "elapsed-time" : "74",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "410",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk38e190549c46.search-dogfood.windows-int.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D777726DDD1966\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Content-Length" : "398",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk88705160779d.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7815A4FAB54F7\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk38e190549c46.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk88705160779d.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk38e190549c46.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk88705160779d.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6399d7ea-c0e1-4e4c-bed6-4268a39d8a8d",
+      "request-id" : "84e37de3-be52-4a01-8ef0-b43a54e9a85c",
       "StatusCode" : "200",
-      "Date" : "Mon, 02 Dec 2019 21:56:04 GMT",
+      "Date" : "Sun, 15 Dec 2019 12:28:38 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D777726E18F6A6\"",
-      "elapsed-time" : "63",
+      "ETag" : "W/\"0x8D7815A4FCE9AE8\"",
+      "elapsed-time" : "40",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "410",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk38e190549c46.search-dogfood.windows-int.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D777726E18F6A6\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Content-Length" : "394",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk88705160779d.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7815A4FCE9AE8\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"somethingnew\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk38e190549c46.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk88705160779d.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "4eec9176-1f36-40b5-9b51-5d02848c3a38",
+      "request-id" : "8498c7ac-aada-4e6d-a302-60a82b3d36ad",
       "StatusCode" : "412",
-      "Date" : "Mon, 02 Dec 2019 21:56:05 GMT",
+      "Date" : "Sun, 15 Dec 2019 12:28:38 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
       "elapsed-time" : "5",
@@ -72,18 +72,18 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk38e190549c46.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk88705160779d.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "59",
+      "elapsed-time" : "23",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "694cb75a-895a-459b-a79a-ba4dc606543a",
+      "request-id" : "00f7a4b6-5d75-4896-9fbf-906e8fbd4635",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Dec 2019 21:56:04 GMT"
+      "Date" : "Sun, 15 Dec 2019 12:28:38 GMT"
     },
     "Exception" : null
   } ],

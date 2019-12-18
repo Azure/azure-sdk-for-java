@@ -6,9 +6,7 @@ package com.azure.storage.blob
 import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
-import com.azure.identity.DefaultAzureCredential
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.identity.implementation.IdentityClientOptions
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobErrorCode
@@ -31,6 +29,8 @@ import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.common.implementation.Constants
+import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -482,40 +482,47 @@ class BlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Download file etag lock"() {
         setup:
-        def file = getRandomFile(1 * 1024 * 1024)
+        def file = getRandomFile(Constants.MB)
         bc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(testName + "")
-        if (outFile.exists()) {
-            assert outFile.delete()
-        }
+        Files.deleteIfExists(file.toPath())
 
-        when:
-        /*
-         Set up a large download in small chunks so it makes a lot of requests. This will give us time to cut in an
-         operation that will change the etag.
-         */
-        def etagConflict = false
-        def bac = new BlobClientBuilder().pipeline(bc.getHttpPipeline()).endpoint(bc.getBlobUrl()).buildAsyncClient()
+        expect:
+        def bac = new BlobClientBuilder()
+            .pipeline(bc.getHttpPipeline())
+            .endpoint(bc.getBlobUrl())
+            .buildAsyncClient()
             .getBlockBlobAsyncClient()
-        bac.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions(1024, null, null), null, null, false)
-            .subscribe({ etagConflict = false }, {
-                if (it instanceof BlobStorageException && ((BlobStorageException) it).getStatusCode() == 412) {
-                    etagConflict = true
-                    return
-                }
-                etagConflict = false
-                throw it
+
+        /*
+         * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
+         * to change the ETag therefore failing the download.
+         */
+        def options = new ParallelTransferOptions(Constants.KB, null, null)
+
+        /*
+         * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
+         * registered for onErrorDropped the error is logged at the ERROR level.
+         *
+         * onErrorDropped is triggered once the reactive stream has emitted one element, after that exceptions are
+         * dropped.
+         */
+        Hooks.onErrorDropped({ ignored -> /* do nothing with it */ })
+
+        /*
+         * When the download begins trigger an upload to overwrite the downloading blob after waiting 500 milliseconds
+         * so that the download is able to get an ETag before it is changed.
+         */
+        StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
+            .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
+            .verifyErrorSatisfies({
+                assert it instanceof BlobStorageException
+                assert ((BlobStorageException) it).getStatusCode() == 412
             })
 
-        sleep(500) // Give some time for the download request to start.
-        bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
-
-        sleep(1000) // Allow time for the upload operation
-
-        then:
-        etagConflict
-        !outFile.exists() // We should delete the file we tried to create
+        // Give the file a chance to be deleted by the download operation before verifying its deletion
+        sleep(500)
+        !outFile.exists()
 
         cleanup:
         file.delete()
@@ -1051,17 +1058,19 @@ class BlobAPITest extends APISpec {
         }).blockLast()
 
         expect:
-        def properties = copyDestBlob.getProperties().block()
-
-        properties.getCopyStatus() == CopyStatusType.SUCCESS
-        properties.getCopyCompletionTime() != null
-        properties.getCopyProgress() != null
-        properties.getCopySource() != null
-        properties.getCopyId() != null
-
         lastResponse != null
         lastResponse.getValue() != null
-        lastResponse.getValue().getCopyId() == properties.getCopyId()
+
+        StepVerifier.create(copyDestBlob.getProperties())
+            .assertNext({
+                assert it.getCopyId() == lastResponse.getValue().getCopyId()
+                assert it.getCopyStatus() == CopyStatusType.SUCCESS
+                assert it.getCopyCompletionTime() != null
+                assert it.getCopyProgress() != null
+                assert it.getCopySource() != null
+                assert it.getCopyId() != null
+            })
+            .verifyComplete()
     }
 
     @Unroll
@@ -1081,7 +1090,9 @@ class BlobAPITest extends APISpec {
         poller.blockLast()
 
         then:
-        bu2.getProperties().block().getMetadata() == metadata
+        StepVerifier.create(bu2.getProperties())
+            .assertNext({ assert it.getMetadata() == metadata })
+            .verifyComplete()
 
         where:
         key1  | value1 | key2   | value2
@@ -1800,6 +1811,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
+
         bc.getProperties()
 
         then:

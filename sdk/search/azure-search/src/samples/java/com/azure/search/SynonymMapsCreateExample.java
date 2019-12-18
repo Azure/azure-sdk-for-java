@@ -23,7 +23,7 @@ public class SynonymMapsCreateExample {
      * and set the values of these environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
-    private static final String API_ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
+    private static final String API_ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
 
     public static void main(String[] args) {
         SearchServiceClient serviceClient = new SearchServiceClientBuilder()

@@ -41,21 +41,12 @@ directive:
           from: "search-request-options"
           to: "request-options"
 
-    # Add missing data types to DataType
-    - from: swagger-document
-      where: $.definitions.DataType.enum
-      transform: |
-          if (!$.includes("Collection(Edm.String)")) {
-            $.push("Collection(Edm.String)",
-              "Collection(Edm.Int32)",
-              "Collection(Edm.Int64)",
-              "Collection(Edm.Double)",
-              "Collection(Edm.Boolean)",
-              "Collection(Edm.DateTimeOffset)",
-              "Collection(Edm.GeographyPoint)",
-              "Collection(Edm.ComplexType)"
-            );
-          }
+    # Add static Collection<DataType> method to DataType
+    - from: DataType.java
+      where: $
+      transform: >-
+          return $
+          .replace(/(public static final DataType EDM_COMPLEX_TYPE = fromString\("Edm.ComplexType"\);)/g, "$1\n\n    /**\n     * Returns a collection of a specific DataType\n     * @param dataType the corresponding DataType\n     * @return a Collection of the corresponding DataType\n     */\n    @JsonCreator\n    public static DataType Collection(DataType dataType) {\n        return fromString(String.format(\"Collection(%s)\", dataType.toString()));\n    }")
 
     # Workaround to fix bad host path parameters
     - from:
@@ -100,16 +91,6 @@ directive:
           path: "$.definitions.CustomAnalyzer.properties.tokenFilters.items"
     - change-object-ref-to-string:
           path: "$.definitions.CustomAnalyzer.properties.charFilters.items"
-
-    # Throw exception for language analyzers passed into setIndexAnalyzer and setSearchAnalyzer in Field
-    - from:
-          - Field.java
-      where: $
-      transform: >-
-          return $
-          .replace(/(this.indexAnalyzer = indexAnalyzer;)/g, "if (indexAnalyzer != null && (indexAnalyzer.endsWith(\".lucene\") || indexAnalyzer.endsWith(\".microsoft\"))) {\n            throw new IllegalArgumentException(\"Only non-language analyzer can be used as index analyzer.\");\n        } \n        this.indexAnalyzer = indexAnalyzer;")
-          .replace(/(this.searchAnalyzer = searchAnalyzer;)/g, "if (searchAnalyzer != null && (searchAnalyzer.endsWith(\".lucene\") || searchAnalyzer.endsWith(\".microsoft\"))) {\n            throw new IllegalArgumentException(\"Only non-language analyzer can be used as search analyzer.\");\n        } \n        this.searchAnalyzer = searchAnalyzer;")
-      reason: Only non-language analyzers can be used as search analyzer and index analyzer.
 
     - from:
           - SearchServiceRestClientImpl.java

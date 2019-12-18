@@ -16,7 +16,7 @@ mvn -f sdk/search/pom.service.xml -DskipTests -Dmaven.javadoc.skip=true -Dinclud
 echo ===========================================================================================================================
 echo Test
 echo ===========================================================================================================================
-mvn -f sdk/search/pom.service.xml -Dmaven.wagon.http.pool=false test
+mvn -f sdk/search/pom.service.xml -Dmaven.wagon.http.pool=false verify #verify performs test and code coverage reports
 
 
 echo ===========================================================================================================================

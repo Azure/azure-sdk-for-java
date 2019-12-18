@@ -10,7 +10,7 @@ import com.azure.search.models.DataSourceType;
 import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit Test DataSources utility class

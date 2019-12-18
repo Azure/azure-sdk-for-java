@@ -5,7 +5,7 @@ package com.azure.search.models;
 
 
 /**
- * TODO: add class desc
+ * Contains value facet found by a search query
  */
 public class ValueFacetResult {
     private final Long count;

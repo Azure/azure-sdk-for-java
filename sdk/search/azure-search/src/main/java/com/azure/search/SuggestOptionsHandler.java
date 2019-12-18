@@ -6,9 +6,10 @@ package com.azure.search;
 import com.azure.search.models.SuggestOptions;
 
 /**
- * TODO: Add class description
+ * Ensure all suggest parameters are correct
+ * Use this whenever SuggestOptions are passed to the search service
  */
-public class SuggestOptionsHandler {
+class SuggestOptionsHandler {
 
     /**
      * Ensure all suggest parameters are correct
@@ -17,7 +18,7 @@ public class SuggestOptionsHandler {
      * @param suggestOptions suggest parameters
      * @return SuggestOptions ensured suggest parameters
      */
-    public static SuggestOptions ensureSuggestOptions(SuggestOptions suggestOptions) {
+    static SuggestOptions ensureSuggestOptions(SuggestOptions suggestOptions) {
         if (suggestOptions == null) {
             return null;
         }

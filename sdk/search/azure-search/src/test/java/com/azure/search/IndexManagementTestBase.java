@@ -14,6 +14,9 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     public abstract void createIndexReturnsCorrectDefinition();
 
     @Test
+    public abstract void createIndexReturnsCorrectDefinitionWithResponse();
+
+    @Test
     public abstract void createIndexReturnsCorrectDefaultValues();
 
     @Test
@@ -23,10 +26,16 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     public abstract void getIndexReturnsCorrectDefinition();
 
     @Test
+    public abstract void getIndexReturnsCorrectDefinitionWithResponse();
+
+    @Test
     public abstract void getIndexThrowsOnNotFound();
 
     @Test
     public abstract void existsReturnsTrueForExistingIndex();
+
+    @Test
+    public abstract void existsReturnsTrueForExistingIndexWithResponse();
 
     @Test
     public abstract void existsReturnsFalseForNonExistingIndex();
@@ -68,6 +77,9 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     public abstract void createOrUpdateIndexCreatesWhenIndexDoesNotExist();
 
     @Test
+    public abstract void createOrUpdateIndexCreatesWhenIndexDoesNotExistWithResponse();
+
+    @Test
     public abstract void createOrUpdateIndexIfNotExistsFailsOnExistingResource();
 
     @Test
@@ -87,6 +99,9 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void canCreateAndGetIndexStats();
+
+    @Test
+    public abstract void canCreateAndGetIndexStatsWithResponse();
 
     protected void assertIndexesEqual(Index expected, Index actual) {
         expected.setETag("none");

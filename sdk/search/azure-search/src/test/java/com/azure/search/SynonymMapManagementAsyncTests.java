@@ -65,9 +65,14 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
                 assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap)
             )
             .verifyComplete();
+    }
+
+    @Test
+    public void createSynonymMapReturnsCorrectDefinitionWithResponse() {
+        SynonymMap expectedSynonymMap = createTestSynonymMap();
 
         StepVerifier
-            .create(client.createSynonymMapWithResponse(expectedSynonymMap.setName("test-synonym2"), generateRequestOptions()))
+            .create(client.createSynonymMapWithResponse(expectedSynonymMap, generateRequestOptions()))
             .assertNext(actualSynonymMap ->
                 assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap.getValue())
             )
@@ -97,6 +102,12 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .create(client.getSynonymMap(expected.getName()))
             .assertNext(actual -> assertSynonymMapsEqual(expected, actual))
             .verifyComplete();
+    }
+
+    @Test
+    public void getSynonymMapReturnsCorrectDefinitionWithResponse() {
+        SynonymMap expected = createTestSynonymMap();
+        client.createSynonymMap(expected).block();
 
         StepVerifier
             .create(client.getSynonymMapWithResponse(expected.getName(), generateRequestOptions()))
@@ -114,6 +125,12 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             HttpResponseStatus.NOT_FOUND,
             exceptionMessage
         );
+    }
+
+    @Test
+    public void getSynonymMapThrowsOnNotFoundWithResponse() {
+        final String synonymMapName = "thisSynonymMapDoesNotExist";
+        final String exceptionMessage = String.format("No synonym map with the name '%s' was found", synonymMapName);
 
         assertHttpResponseExceptionAsync(
             client.getSynonymMapWithResponse(synonymMapName, generateRequestOptions()),
@@ -144,6 +161,28 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
     }
 
     @Test
+    public void canUpdateSynonymMapWithResponse() {
+        SynonymMap initial = createTestSynonymMap();
+
+        client.createSynonymMap(initial).block();
+
+        SynonymMap updatedExpected = createTestSynonymMap()
+            .setName(initial.getName())
+            .setSynonyms("newword1,newword2");
+
+        StepVerifier
+            .create(client.createOrUpdateSynonymMapWithResponse(updatedExpected, new AccessCondition(),
+                generateRequestOptions()))
+            .assertNext(updatedActual -> assertSynonymMapsEqual(updatedExpected, updatedActual.getValue()))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.listSynonymMaps().collectList())
+            .assertNext(e -> Assert.assertEquals(1, e.size()))
+            .verifyComplete();
+    }
+
+    @Test
     public void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExist() {
         SynonymMap expected = createTestSynonymMap();
 
@@ -154,6 +193,20 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
         StepVerifier
             .create(client.createOrUpdateSynonymMapWithResponse(expected.setName("test-synonym2"),
+                new AccessCondition(), generateRequestOptions()))
+            .assertNext(res -> {
+                Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode());
+                assertSynonymMapsEqual(expected, res.getValue());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExistWithResponse() {
+        SynonymMap expected = createTestSynonymMap();
+
+        StepVerifier
+            .create(client.createOrUpdateSynonymMapWithResponse(expected,
                 new AccessCondition(), generateRequestOptions()))
             .assertNext(res -> {
                 Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode());
@@ -307,13 +360,18 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
     @Test
     public void existsReturnsTrueForExistingSynonymMap() {
         SynonymMap synonymMap = createTestSynonymMap();
-
         client.createSynonymMap(synonymMap).block();
 
         StepVerifier
             .create(client.synonymMapExists(synonymMap.getName()))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
+    }
+
+    @Test
+    public void existsReturnsTrueForExistingSynonymMapWithResponse() {
+        SynonymMap synonymMap = createTestSynonymMap();
+        client.createSynonymMap(synonymMap).block();
 
         StepVerifier
             .create(client.synonymMapExistsWithResponse(synonymMap.getName(), generateRequestOptions()))
@@ -323,15 +381,16 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
     @Test
     public void existsReturnsFalseForNonExistingSynonymMap() {
-        String synonymMapName = "thisSynonymMapDoesNotExist";
-
         StepVerifier
-            .create(client.synonymMapExists(synonymMapName))
+            .create(client.synonymMapExists("thisSynonymMapDoesNotExist"))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
+    }
 
+    @Test
+    public void existsReturnsFalseForNonExistingSynonymMapWithResponse() {
         StepVerifier
-            .create(client.synonymMapExistsWithResponse(synonymMapName, generateRequestOptions()))
+            .create(client.synonymMapExistsWithResponse("thisSynonymMapDoesNotExist", generateRequestOptions()))
             .assertNext(res -> Assert.assertFalse(res.getValue()))
             .verifyComplete();
     }

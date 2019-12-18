@@ -5,6 +5,8 @@ package com.azure.search;
 
 import com.azure.search.models.DataDeletionDetectionPolicy;
 import com.azure.search.models.DataSource;
+import com.azure.search.models.DataSourceCredentials;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
@@ -12,7 +14,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 public abstract class DataSourceTestBase extends SearchServiceTestBase {
 
     private static final String FAKE_DESCRIPTION = "Some data source";
-    static final String FAKE_STORAGE_CONNECTION_STRING =
+    private static final String FAKE_STORAGE_CONNECTION_STRING =
         "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;";
     private static final String FAKE_COSMOS_CONNECTION_STRING =
         "AccountEndpoint=https://NotaRealAccount.documents.azure.com;AccountKey=fake;Database=someFakeDatabase";
@@ -23,7 +25,10 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     }
 
     @Test
-    public abstract void createAndListDataSources();
+    public abstract void canCreateAndListDataSources();
+
+    @Test
+    public abstract void canCreateAndListDataSourcesWithResponse();
 
     @Test
     public abstract void createDataSourceFailsWithUsefulMessageOnUserError();
@@ -74,16 +79,35 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     public abstract void existsReturnsTrueForExistingDatasource();
 
     @Test
-    public abstract void canCreateAndDeleteDatasource();
+    public abstract void existsReturnsTrueForExistingDatasourceWithResponse();
 
     @Test
-    public abstract void canUpdateConnectionData();
+    public abstract void canCreateAndDeleteDatasource();
 
     @Test
     public abstract void canCreateDataSource();
 
     @Test
     public abstract void canCreateDataSourceWithResponse();
+
+    @Test
+    public void canUpdateConnectionData() {
+        // Note: since connection string is not returned when queried from the service, actually saving the
+        // datasource, retrieving it and verifying the change, won't work.
+        // Hence, we only validate that the properties on the local items can change.
+
+        // Create an initial dataSource
+        DataSource initial = createTestBlobDataSource(null);
+        Assert.assertEquals(initial.getCredentials().getConnectionString(),
+            FAKE_STORAGE_CONNECTION_STRING);
+
+        // tweak the connection string and verify it was changed
+        String newConnString =
+            "DefaultEndpointsProtocol=https;AccountName=NotaRealYetDifferentAccount;AccountKey=AnotherFakeKey;";
+        initial.setCredentials(new DataSourceCredentials().setConnectionString(newConnString));
+
+        Assert.assertEquals(initial.getCredentials().getConnectionString(), newConnString);
+    }
 
     DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return DataSources.azureBlobStorage(

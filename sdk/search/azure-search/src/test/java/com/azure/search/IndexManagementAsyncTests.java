@@ -59,7 +59,11 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .create(client.createIndex(index))
             .assertNext(createdIndex -> assertIndexesEqual(index, createdIndex))
             .verifyComplete();
+    }
 
+    @Test
+    public void createIndexReturnsCorrectDefinitionWithResponse() {
+        Index index = createTestIndex();
         StepVerifier
             .create(client.createIndexWithResponse(index.setName("hotel2"), generateRequestOptions()))
             .assertNext(createdIndex -> assertIndexesEqual(index, createdIndex.getValue()))
@@ -120,6 +124,12 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .create(client.getIndex(index.getName()))
             .assertNext(res -> assertIndexesEqual(index, res))
             .verifyComplete();
+    }
+
+    @Test
+    public void getIndexReturnsCorrectDefinitionWithResponse() {
+        Index index = createTestIndex();
+        client.createIndex(index).block();
 
         StepVerifier
             .create(client.getIndexWithResponse(index.getName(), generateRequestOptions()))
@@ -145,6 +155,12 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .create(client.indexExists(index.getName()))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
+    }
+
+    @Test
+    public void existsReturnsTrueForExistingIndexWithResponse() {
+        Index index = createTestIndex();
+        client.createIndex(index).block();
 
         StepVerifier
             .create(client.indexExistsWithResponse(index.getName(), generateRequestOptions()))
@@ -468,6 +484,27 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
 
         StepVerifier
+            .create(client.createOrUpdateIndex(expected.setName("hotel1")))
+            .assertNext(res -> assertIndexesEqual(expected, res))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.createOrUpdateIndex(expected.setName("hotel2")))
+            .assertNext(res -> Assert.assertEquals(expected.getName(), res.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void createOrUpdateIndexCreatesWhenIndexDoesNotExistWithResponse() {
+        Index expected = createTestIndex();
+
+        StepVerifier
+            .create(client.createOrUpdateIndexWithResponse(expected, false, new AccessCondition(),
+                generateRequestOptions()))
+            .assertNext(res -> assertIndexesEqual(expected, res.getValue()))
+            .verifyComplete();
+
+        StepVerifier
             .create(client.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
                 false, new AccessCondition(), generateRequestOptions()))
             .assertNext(res -> assertIndexesEqual(expected, res.getValue()))
@@ -547,6 +584,13 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
                 Assert.assertEquals(0, stats.getStorageSize());
             })
             .verifyComplete();
+    }
+
+    @Test
+    public void canCreateAndGetIndexStatsWithResponse() {
+        Index testIndex = createTestIndex();
+        Index index = client.createOrUpdateIndex(testIndex).block();
+        assert index != null;
 
         StepVerifier
             .create(client.getIndexStatisticsWithResponse(index.getName(), generateRequestOptions()))

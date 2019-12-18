@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * TODO: Add class description
+ * Policy that adds the Cognitive Search Service api-key into the request's Authorization header.
  */
 public class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
 

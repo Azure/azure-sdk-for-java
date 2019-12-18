@@ -1,0 +1,75 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdka1911050f02b.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "20b3c617-9014-4e48-9c57-7aea6d2457fb",
+      "StatusCode" : "201",
+      "Date" : "Sun, 15 Dec 2019 12:29:43 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7815A76F8802B\"",
+      "elapsed-time" : "51",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "398",
+      "Body" : "{\"@odata.context\":\"https://azs-sdka1911050f02b.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7815A76F8802B\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdka1911050f02b.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdka1911050f02b.search.windows.net/datasources('azs-java-test-sql')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "d1aa49b3-7b50-4b39-b4b7-cd7c6fd1c8fd",
+      "StatusCode" : "201",
+      "Date" : "Sun, 15 Dec 2019 12:29:43 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7815A771DE955\"",
+      "elapsed-time" : "35",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "383",
+      "Body" : "{\"@odata.context\":\"https://azs-sdka1911050f02b.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7815A771DE955\\\"\",\"name\":\"azs-java-test-sql\",\"description\":\"Some data source\",\"type\":\"azuresql\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"GeoNamesRI\",\"query\":null},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdka1911050f02b.search.windows.net/datasources('azs-java-test-sql')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdka1911050f02b.search.windows.net/datasources?$select=name&api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "c0e81a55-489f-4317-bb02-7ee6e2d6a545",
+      "StatusCode" : "200",
+      "Date" : "Sun, 15 Dec 2019 12:29:43 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "34",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "164",
+      "Body" : "{\"@odata.context\":\"https://azs-sdka1911050f02b.search.windows.net/$metadata#datasources(name)\",\"value\":[{\"name\":\"azs-java-test-blob\"},{\"name\":\"azs-java-test-sql\"}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

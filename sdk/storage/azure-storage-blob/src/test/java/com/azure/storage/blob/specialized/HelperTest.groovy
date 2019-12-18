@@ -29,19 +29,6 @@ import java.time.ZoneOffset
 
 class HelperTest extends APISpec {
 
-    // TODO (alzimmer): Turn this on when nextPageLink can be passed into listing
-    /*def "responseError"() {
-        when:
-        cc.listBlobsFlat().iterator().hasNext()
-
-        then:
-        def e = thrown(BlobStorageException)
-        e.getErrorCode() == BlobErrorCode.INVALID_QUERY_PARAMETER_VALUE
-        e.getStatusCode() == 400
-        e.message().contains("Value for one of the query parameters specified in the request URI is invalid.")
-        e.getServiceMessage().contains("<?xml") // Ensure that the details in the payload are printable
-    }*/
-
     /*
     This test is to validate the workaround for the autorest bug that forgets to set the request property on the
     response.

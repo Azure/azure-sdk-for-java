@@ -49,6 +49,9 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     public abstract void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhrase();
 
     @Test
+    public abstract void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhraseWithResponse();
+
+    @Test
     public abstract void createSkillsetReturnsCorrectDefinitionLanguageDetection();
 
     @Test
@@ -97,6 +100,9 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     public abstract void getOcrSkillsetReturnsCorrectDefinition();
 
     @Test
+    public abstract void getOcrSkillsetReturnsCorrectDefinitionWithResponse();
+
+    @Test
     public abstract void getOcrSkillsetWithShouldDetectOrientationReturnsCorrectDefinition();
 
     @Test
@@ -118,6 +124,9 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     public abstract void createOrUpdateCreatesWhenSkillsetDoesNotExist();
 
     @Test
+    public abstract void createOrUpdateCreatesWhenSkillsetDoesNotExistWithResponse();
+
+    @Test
     public abstract void createOrUpdateUpdatesWhenSkillsetExists();
 
     @Test
@@ -125,6 +134,9 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void existsReturnsTrueForExistingSkillset();
+
+    @Test
+    public abstract void existsReturnsTrueForExistingSkillsetWithResponse();
 
     @Test
     public abstract void createCustomSkillsetReturnsCorrectDefinition();

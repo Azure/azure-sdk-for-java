@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk4ee71169764f.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk0d13225382ab.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c67a0c78-ef9a-4db8-bd54-ad63df2d325a",
+      "request-id" : "0380a1a4-11b0-4727-b28a-9f1745dc24c9",
       "StatusCode" : "404",
-      "Date" : "Mon, 25 Nov 2019 06:59:09 GMT",
+      "Date" : "Sun, 15 Dec 2019 12:28:01 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "33",
+      "elapsed-time" : "29",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "134",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob' was found in a service named 'azs-sdk4ee71169764f'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob' was found in a service named 'azs-sdk0d13225382ab'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
@@ -23,62 +23,62 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk4ee71169764f.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk0d13225382ab.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c95b7716-fbbc-4012-927b-2c27ffc13534",
+      "request-id" : "2caf929c-ab05-4426-b650-b57f66377263",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 06:59:09 GMT",
+      "Date" : "Sun, 15 Dec 2019 12:28:01 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D77174F8C79D5C\"",
-      "elapsed-time" : "78",
+      "ETag" : "W/\"0x8D7815A3A9C895D\"",
+      "elapsed-time" : "50",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "410",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk4ee71169764f.search-dogfood.windows-int.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D77174F8C79D5C\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Content-Length" : "398",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk0d13225382ab.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7815A3A9C895D\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk4ee71169764f.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk0d13225382ab.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk4ee71169764f.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk0d13225382ab.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "20",
+      "elapsed-time" : "39",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "a71063eb-4e39-442d-bafd-75123e38ca7f",
+      "request-id" : "c83e467f-5c2e-491a-8cd9-e1e0480f06bd",
       "StatusCode" : "204",
-      "Date" : "Mon, 25 Nov 2019 06:59:09 GMT"
+      "Date" : "Sun, 15 Dec 2019 12:28:02 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk4ee71169764f.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk0d13225382ab.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "95bfabf0-9f9c-44da-b457-8f79bed4fb40",
+      "request-id" : "f1243ba0-1400-41c4-a943-d5ebfc78b97c",
       "StatusCode" : "404",
-      "Date" : "Mon, 25 Nov 2019 06:59:09 GMT",
+      "Date" : "Sun, 15 Dec 2019 12:28:02 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "7",
+      "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "134",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob' was found in a service named 'azs-sdk4ee71169764f'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob' was found in a service named 'azs-sdk0d13225382ab'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdk81934741dfd2.search-dogfood.windows-int.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "2569cd42-b1fc-4738-9fde-0c8b009510d0",
+      "StatusCode" : "404",
+      "Date" : "Sun, 15 Dec 2019 09:28:44 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "32",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "135",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'azs-sdk81934741dfd2'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -36,7 +36,7 @@ public class RefineSearchCapabilitiesExample {
      * and set the values of these environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
-    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
 
     private static final String INDEX_NAME = "hotels-sample-index";
     private static final String INDEXER_NAME = "hotels-sample-indexer";

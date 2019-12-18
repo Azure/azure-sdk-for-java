@@ -1,49 +1,49 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdkf9597483efae.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc1e05533c82f.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c71201d4-14b7-49e8-b750-6ee4b5bb4136",
+      "request-id" : "fcd33670-ce29-40df-b094-239828e0dce2",
       "StatusCode" : "201",
-      "Date" : "Mon, 02 Dec 2019 21:57:14 GMT",
+      "Date" : "Sun, 15 Dec 2019 12:30:22 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7777297CD0BD9\"",
-      "elapsed-time" : "47",
+      "ETag" : "W/\"0x8D7815A8DDCD65C\"",
+      "elapsed-time" : "56",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "410",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkf9597483efae.search-dogfood.windows-int.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7777297CD0BD9\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Content-Length" : "398",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc1e05533c82f.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7815A8DDCD65C\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdkf9597483efae.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkc1e05533c82f.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdkf9597483efae.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc1e05533c82f.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d1ea2c48-1efb-428b-9dff-26feb730e09f",
+      "request-id" : "d9fd642a-35a2-4a2c-ba9f-87724019ea49",
       "StatusCode" : "200",
-      "Date" : "Mon, 02 Dec 2019 21:57:14 GMT",
+      "Date" : "Sun, 15 Dec 2019 12:30:22 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7777297FA66F8\"",
-      "elapsed-time" : "54",
+      "ETag" : "W/\"0x8D7815A8DFB606F\"",
+      "elapsed-time" : "40",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "406",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkf9597483efae.search-dogfood.windows-int.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7777297FA66F8\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"somethingnew\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Content-Length" : "394",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc1e05533c82f.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7815A8DFB606F\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"somethingnew\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

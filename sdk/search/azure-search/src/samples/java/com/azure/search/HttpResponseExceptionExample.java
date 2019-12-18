@@ -28,6 +28,8 @@ public class HttpResponseExceptionExample {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
 
+    private static final String INDEX_NAME = "hotels-sample-index";
+
     public static void main(String[] args) {
         handleErrorsWithSyncClient();
         handleErrorsWithAsyncClient();
@@ -40,7 +42,7 @@ public class HttpResponseExceptionExample {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new SearchApiKeyCredential(API_KEY))
-            .indexName("hotels")
+            .indexName(INDEX_NAME)
             .buildClient();
 
         try {
@@ -71,7 +73,7 @@ public class HttpResponseExceptionExample {
         SearchIndexAsyncClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new SearchApiKeyCredential(API_KEY))
-            .indexName("hotels")
+            .indexName(INDEX_NAME)
             .buildAsyncClient();
 
         SearchOptions searchOptions = new SearchOptions()
