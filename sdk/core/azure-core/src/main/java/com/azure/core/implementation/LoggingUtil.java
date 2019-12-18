@@ -21,7 +21,7 @@ public final class LoggingUtil {
     public static LogLevel getEnvironmentLoggingLevel() {
         String environmentLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
 
-        return LogLevel.getLogLevel(environmentLogLevel);
+        return LogLevel.getLogLevelFromString(environmentLogLevel);
     }
 
     // Private constructor
