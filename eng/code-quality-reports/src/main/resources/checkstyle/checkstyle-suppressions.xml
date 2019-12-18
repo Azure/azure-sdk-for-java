@@ -3,11 +3,6 @@
     "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suppressions PUBLIC
-    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
-    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
-
 <suppressions>
   <!-- AutoRest generates 'final' on interfaces. Remove this suppression when:
   https://github.com/Azure/autorest-clientruntime-for-java/issues/589 is fixed. -->

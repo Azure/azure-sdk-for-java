@@ -529,7 +529,8 @@ class FileAsyncAPITests extends APISpec {
 
 
         when:
-        def verifier = StepVerifier.create(primaryFileAsyncClient.uploadFromFile(uploadFile, new ShareRequestConditions().setLeaseId(getRandomUUID())))
+        def verifier = StepVerifier.create(primaryFileAsyncClient.uploadFromFile(uploadFile,
+            new ShareRequestConditions().setLeaseId(getRandomUUID())))
 
         then:
         verifier.verifyError(ShareStorageException)
