@@ -245,8 +245,8 @@ public class ClientLogger {
      * @return Flag indicating if the environment and logger are configured to support logging at the given log level.
      */
     private boolean canLogAtLevel(LogLevel logLevel, LogLevel environmentLoggingLevel) {
-        // Do not log if logLevel is null or env variable is not set.
-        if (logLevel == null || environmentLoggingLevel == null) {
+        // Do not log if logLevel is null is not set.
+        if (logLevel == null) {
             return false;
         }
 

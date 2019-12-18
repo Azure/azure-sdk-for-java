@@ -39,7 +39,7 @@ public enum LogLevel {
     private final String[] allowedLogLevelVariables;
     private static final HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();
 
-    static{
+    static {
         for (LogLevel logLevel: LogLevel.values()) {
             for (String val: logLevel.allowedLogLevelVariables) {
                 LOG_LEVEL_STRING_MAPPER.put(val, logLevel);
@@ -66,6 +66,7 @@ public enum LogLevel {
      *
      * @param logLevelVal The log level value which needs to convert
      * @return The LogLevel Enum.
+     * @throws IllegalArgumentException if the log level value is invalid.
      */
     public static LogLevel fromString(String logLevelVal) {
         if (logLevelVal == null) {
