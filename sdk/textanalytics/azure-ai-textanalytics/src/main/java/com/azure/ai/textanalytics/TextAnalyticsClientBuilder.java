@@ -147,8 +147,9 @@ public final class TextAnalyticsClientBuilder {
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
 
+        HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
-        if (httpPipeline == null) {
+        if (pipeline == null) {
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -177,7 +178,7 @@ public final class TextAnalyticsClientBuilder {
 
             policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-            httpPipeline = new HttpPipelineBuilder()
+            pipeline = new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .build();
@@ -185,7 +186,7 @@ public final class TextAnalyticsClientBuilder {
 
         final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
             .endpoint(endpoint)
-            .pipeline(httpPipeline)
+            .pipeline(pipeline)
             .build();
 
         return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion);
@@ -295,8 +296,8 @@ public final class TextAnalyticsClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link TextAnalyticsClientBuilder#endpoint(String) endpoint} to build {@link TextAnalyticsAsyncClient} or {@link
-     * TextAnalyticsClient}.
+     * {@link TextAnalyticsClientBuilder#endpoint(String) endpoint} to build {@link TextAnalyticsAsyncClient} or
+     * {@link TextAnalyticsClient}.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated TextAnalyticsClientBuilder object.

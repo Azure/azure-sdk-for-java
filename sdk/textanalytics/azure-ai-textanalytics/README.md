@@ -34,7 +34,7 @@ Text Analytics to use Netty HTTP client.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-netty</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -64,7 +64,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
