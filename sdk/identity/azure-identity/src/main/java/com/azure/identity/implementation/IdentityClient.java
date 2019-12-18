@@ -115,7 +115,7 @@ public class IdentityClient {
         String azCommand = "az account get-access-token --resource ";
         String azureCliNotInstalled = "Azure CLI not installed";
         String errorString = "'az' is not recognized";
-        String otherErrorString = "az:(.*)not found";
+        String otherErrorString = "(.*)az:(.*)not found";
     
         StringBuilder command = new StringBuilder();
         command.append(azCommand);
