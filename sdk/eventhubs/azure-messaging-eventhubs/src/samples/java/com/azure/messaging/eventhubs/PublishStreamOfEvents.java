@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 
 /**
  * Demonstrates how to continuously publish events using {@link EventHubProducerAsyncClient}.
+ * {@link CustomPublisher} is publishes size-limited batches when they are full. In addition, it checks for periodically
+ * for a partial batch that needs to be sent.
  */
 public class PublishStreamOfEvents {
     private static final String EVENT_NUMBER = "EVENT_NUMBER";
