@@ -47,6 +47,7 @@ import java.security.cert.CertificateException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -122,7 +123,17 @@ public class IdentityClient {
     
         AccessToken token = null;
         try {
-            ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", command.toString());
+            String starter;
+            String switcher;
+            if (System.getProperty("os.name").contains("Windows")) {
+                starter = "cmd.exe";
+                switcher = "/c";
+            } else {
+                starter = "/bin/sh";
+                switcher = "-c";
+            }
+
+            ProcessBuilder builder = new ProcessBuilder(starter, switcher, command.toString());
             builder.redirectErrorStream(true);
             Process p = builder.start();
                 
@@ -146,8 +157,8 @@ public class IdentityClient {
             String time = objectMap.get("expiresOn");
             String timeToSecond = time.substring(0, time.indexOf("."));
             String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
-            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                        .atOffset(ZoneOffset.UTC);
+            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault())
+                                                    .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
             } catch (Exception e) {
                 return Mono.error(e);
