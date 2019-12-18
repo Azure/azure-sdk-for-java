@@ -6,9 +6,9 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.KeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextBatchStatistics;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.util.Context;
 
@@ -38,10 +38,10 @@ public class ExtractKeyPhrasesBatchDocuments {
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
-        final DocumentResultCollection<KeyPhraseResult> detectedBatchResult = client.extractBatchKeyPhrasesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+        final DocumentResultCollection<ExtractKeyPhraseResult> detectedBatchResult = client.extractBatchKeyPhrasesWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
-        final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
+        final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
@@ -49,8 +49,8 @@ public class ExtractKeyPhrasesBatchDocuments {
             batchStatistics.getValidDocumentCount());
 
         // Detecting key phrase for each of document from a batch of documents
-        for (KeyPhraseResult keyPhraseResult: detectedBatchResult) {
-            for (String keyPhrases : keyPhraseResult.getKeyPhrases()) {
+        for (ExtractKeyPhraseResult extractKeyPhraseResult : detectedBatchResult) {
+            for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
                 System.out.printf("Recognized Phrases: %s.%n", keyPhrases);
             }
         }

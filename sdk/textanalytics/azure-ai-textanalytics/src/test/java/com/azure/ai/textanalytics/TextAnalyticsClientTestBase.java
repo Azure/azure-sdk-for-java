@@ -8,14 +8,14 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.Error;
-import com.azure.ai.textanalytics.models.KeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.LinkedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.NamedEntity;
-import com.azure.ai.textanalytics.models.NamedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextBatchStatistics;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
@@ -516,22 +516,22 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 });
                 break;
             case NAMED_ENTITY:
-                final List<NamedEntityResult> namedEntityResults = expectedResult.stream()
-                    .filter(element -> element instanceof NamedEntityResult)
-                    .map(element -> (NamedEntityResult) element)
+                final List<RecognizeEntitiesResult> recognizeEntitiesResults = expectedResult.stream()
+                    .filter(element -> element instanceof RecognizeEntitiesResult)
+                    .map(element -> (RecognizeEntitiesResult) element)
                     .collect(Collectors.toList());
 
-                final List<NamedEntityResult> actualNamedEntityResults = actualResult.stream()
-                    .filter(element -> element instanceof NamedEntityResult)
-                    .map(element -> (NamedEntityResult) element)
+                final List<RecognizeEntitiesResult> actualRecognizeEntitiesResults = actualResult.stream()
+                    .filter(element -> element instanceof RecognizeEntitiesResult)
+                    .map(element -> (RecognizeEntitiesResult) element)
                     .collect(Collectors.toList());
-                assertEquals(namedEntityResults.size(), actualNamedEntityResults.size());
+                assertEquals(recognizeEntitiesResults.size(), actualRecognizeEntitiesResults.size());
 
-                actualNamedEntityResults.forEach(actualItem -> {
-                    Optional<NamedEntityResult> optionalExpectedItem = namedEntityResults.stream().filter(
+                actualRecognizeEntitiesResults.forEach(actualItem -> {
+                    Optional<RecognizeEntitiesResult> optionalExpectedItem = recognizeEntitiesResults.stream().filter(
                         expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId())).findFirst();
                     assertTrue(optionalExpectedItem.isPresent());
-                    NamedEntityResult expectedItem = optionalExpectedItem.get();
+                    RecognizeEntitiesResult expectedItem = optionalExpectedItem.get();
                     if (actualItem.getError() == null) {
                         if (this.showStatistics) {
                             validateDocumentStatistics(expectedItem.getStatistics(), actualItem.getStatistics());
@@ -541,22 +541,22 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 });
                 break;
             case LINKED_ENTITY:
-                final List<LinkedEntityResult> linkedEntityResults = expectedResult.stream()
-                    .filter(element -> element instanceof LinkedEntityResult)
-                    .map(element -> (LinkedEntityResult) element)
+                final List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults = expectedResult.stream()
+                    .filter(element -> element instanceof RecognizeLinkedEntitiesResult)
+                    .map(element -> (RecognizeLinkedEntitiesResult) element)
                     .collect(Collectors.toList());
 
-                final List<LinkedEntityResult> actualLinkedEntityResults = actualResult.stream()
-                    .filter(element -> element instanceof LinkedEntityResult)
-                    .map(element -> (LinkedEntityResult) element)
+                final List<RecognizeLinkedEntitiesResult> actualRecognizeLinkedEntitiesResults = actualResult.stream()
+                    .filter(element -> element instanceof RecognizeLinkedEntitiesResult)
+                    .map(element -> (RecognizeLinkedEntitiesResult) element)
                     .collect(Collectors.toList());
-                assertEquals(linkedEntityResults.size(), actualLinkedEntityResults.size());
+                assertEquals(recognizeLinkedEntitiesResults.size(), actualRecognizeLinkedEntitiesResults.size());
 
-                actualLinkedEntityResults.forEach(actualItem -> {
-                    Optional<LinkedEntityResult> optionalExpectedItem = linkedEntityResults.stream().filter(
+                actualRecognizeLinkedEntitiesResults.forEach(actualItem -> {
+                    Optional<RecognizeLinkedEntitiesResult> optionalExpectedItem = recognizeLinkedEntitiesResults.stream().filter(
                         expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId())).findFirst();
                     assertTrue(optionalExpectedItem.isPresent());
-                    LinkedEntityResult expectedItem = optionalExpectedItem.get();
+                    RecognizeLinkedEntitiesResult expectedItem = optionalExpectedItem.get();
                     if (actualItem.getError() == null) {
                         if (this.showStatistics) {
                             validateDocumentStatistics(expectedItem.getStatistics(), actualItem.getStatistics());
@@ -566,22 +566,22 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 });
                 break;
             case KEY_PHRASES:
-                final List<KeyPhraseResult> keyPhraseResults = expectedResult.stream()
-                    .filter(element -> element instanceof KeyPhraseResult)
-                    .map(element -> (KeyPhraseResult) element)
+                final List<ExtractKeyPhraseResult> extractKeyPhraseResults = expectedResult.stream()
+                    .filter(element -> element instanceof ExtractKeyPhraseResult)
+                    .map(element -> (ExtractKeyPhraseResult) element)
                     .collect(Collectors.toList());
 
-                final List<KeyPhraseResult> actualKeyPhraseResults = actualResult.stream()
-                    .filter(element -> element instanceof KeyPhraseResult)
-                    .map(element -> (KeyPhraseResult) element)
+                final List<ExtractKeyPhraseResult> actualExtractKeyPhraseResults = actualResult.stream()
+                    .filter(element -> element instanceof ExtractKeyPhraseResult)
+                    .map(element -> (ExtractKeyPhraseResult) element)
                     .collect(Collectors.toList());
-                assertEquals(keyPhraseResults.size(), actualKeyPhraseResults.size());
+                assertEquals(extractKeyPhraseResults.size(), actualExtractKeyPhraseResults.size());
 
-                actualKeyPhraseResults.forEach(actualItem -> {
-                    Optional<KeyPhraseResult> optionalExpectedItem = keyPhraseResults.stream().filter(
+                actualExtractKeyPhraseResults.forEach(actualItem -> {
+                    Optional<ExtractKeyPhraseResult> optionalExpectedItem = extractKeyPhraseResults.stream().filter(
                         expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId())).findFirst();
                     assertTrue(optionalExpectedItem.isPresent());
-                    KeyPhraseResult expectedItem = optionalExpectedItem.get();
+                    ExtractKeyPhraseResult expectedItem = optionalExpectedItem.get();
                     if (actualItem.getError() == null) {
                         if (this.showStatistics) {
                             validateDocumentStatistics(expectedItem.getStatistics(), actualItem.getStatistics());
@@ -633,8 +633,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedStatistics the expected value for TextBatchStatistics.
      * @param actualStatistics the value returned by API.
      */
-    private static void validateBatchStatistics(TextBatchStatistics expectedStatistics,
-        TextBatchStatistics actualStatistics) {
+    private static void validateBatchStatistics(TextDocumentBatchStatistics expectedStatistics,
+        TextDocumentBatchStatistics actualStatistics) {
         assertEquals(expectedStatistics.getDocumentCount(), actualStatistics.getDocumentCount());
         assertEquals(expectedStatistics.getErroneousDocumentCount(), actualStatistics.getErroneousDocumentCount());
         assertEquals(expectedStatistics.getValidDocumentCount(), actualStatistics.getValidDocumentCount());
@@ -684,7 +684,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedError.getCode(), actualError.getCode());
         assertEquals(expectedError.getMessage(), actualError.getMessage());
         assertEquals(expectedError.getTarget(), actualError.getTarget());
-        assertEquals(expectedError.getInnererror(), actualError.getInnererror());
+        assertEquals(expectedError.getInnerError(), actualError.getInnerError());
     }
 
     /**
@@ -873,13 +873,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, null, detectedLanguage2, detectedLanguageList2);
         DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, null, detectedLanguage3, detectedLanguageList3);
 
-        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(3).setErroneousDocumentCount(0).setTransactionCount(3).setValidDocumentCount(3);
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics().setDocumentCount(3).setErroneousDocumentCount(0).setTransactionCount(3).setValidDocumentCount(3);
         List<DetectLanguageResult> detectLanguageResultList = Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3);
 
-        return new DocumentResultCollection<>(detectLanguageResultList, MODEL_VERSION, textBatchStatistics);
+        return new DocumentResultCollection<>(detectLanguageResultList, MODEL_VERSION, textDocumentBatchStatistics);
     }
 
-    static DocumentResultCollection<NamedEntityResult> getExpectedBatchNamedEntities() {
+    static DocumentResultCollection<RecognizeEntitiesResult> getExpectedBatchNamedEntities() {
         NamedEntity namedEntity1 = new NamedEntity().setText("Seattle").setType("Location").setOffset(26).setLength(7).setScore(0.80624294281005859);
         NamedEntity namedEntity2 = new NamedEntity().setText("last week").setType("DateTime").setSubtype("DateRange").setOffset(34).setLength(9).setScore(0.8);
         NamedEntity namedEntity3 = new NamedEntity().setText("Microsoft").setType("Organization").setOffset(10).setLength(9).setScore(0.99983596801757812);
@@ -890,16 +890,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(44).setTransactionCount(1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(20).setTransactionCount(1);
 
-        NamedEntityResult namedEntityResult1 = new NamedEntityResult("0", textDocumentStatistics1, null, namedEntityList1);
-        NamedEntityResult namedEntityResult2 = new NamedEntityResult("1", textDocumentStatistics2, null, namedEntityList2);
+        RecognizeEntitiesResult recognizeEntitiesResult1 = new RecognizeEntitiesResult("0", textDocumentStatistics1, null, namedEntityList1);
+        RecognizeEntitiesResult recognizeEntitiesResult2 = new RecognizeEntitiesResult("1", textDocumentStatistics2, null, namedEntityList2);
 
-        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
-        List<NamedEntityResult> namedEntityResultList = Arrays.asList(namedEntityResult1, namedEntityResult2);
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
+        List<RecognizeEntitiesResult> recognizeEntitiesResultList = Arrays.asList(recognizeEntitiesResult1, recognizeEntitiesResult2);
 
-        return new DocumentResultCollection<>(namedEntityResultList, MODEL_VERSION, textBatchStatistics);
+        return new DocumentResultCollection<>(recognizeEntitiesResultList, MODEL_VERSION, textDocumentBatchStatistics);
     }
 
-    static DocumentResultCollection<NamedEntityResult> getExpectedBatchPiiEntities() {
+    static DocumentResultCollection<RecognizeEntitiesResult> getExpectedBatchPiiEntities() {
         NamedEntity namedEntity1 = new NamedEntity().setText("859-98-0987").setType("U.S. Social Security Number (SSN)").setSubtype("").setOffset(28).setLength(11).setScore(0.65);
         NamedEntity namedEntity2 = new NamedEntity().setText("111000025").setType("ABA Routing Number").setSubtype("").setOffset(18).setLength(9).setScore(0.75);
 
@@ -909,16 +909,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(67).setTransactionCount(1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(105).setTransactionCount(1);
 
-        NamedEntityResult namedEntityResult1 = new NamedEntityResult("0", textDocumentStatistics1, null, namedEntityList1);
-        NamedEntityResult namedEntityResult2 = new NamedEntityResult("1", textDocumentStatistics2, null, namedEntityList2);
+        RecognizeEntitiesResult recognizeEntitiesResult1 = new RecognizeEntitiesResult("0", textDocumentStatistics1, null, namedEntityList1);
+        RecognizeEntitiesResult recognizeEntitiesResult2 = new RecognizeEntitiesResult("1", textDocumentStatistics2, null, namedEntityList2);
 
-        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
-        List<NamedEntityResult> namedEntityResultList = Arrays.asList(namedEntityResult1, namedEntityResult2);
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
+        List<RecognizeEntitiesResult> recognizeEntitiesResultList = Arrays.asList(recognizeEntitiesResult1, recognizeEntitiesResult2);
 
-        return new DocumentResultCollection<>(namedEntityResultList, MODEL_VERSION, textBatchStatistics);
+        return new DocumentResultCollection<>(recognizeEntitiesResultList, MODEL_VERSION, textDocumentBatchStatistics);
     }
 
-    static DocumentResultCollection<LinkedEntityResult> getExpectedBatchLinkedEntities() {
+    static DocumentResultCollection<RecognizeLinkedEntitiesResult> getExpectedBatchLinkedEntities() {
         LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch().setText("Seattle").setLength(7).setOffset(26).setScore(0.11472424095537814);
         LinkedEntityMatch linkedEntityMatch2 = new LinkedEntityMatch().setText("Microsoft").setLength(9).setOffset(10).setScore(0.18693659716732069);
 
@@ -944,29 +944,29 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(44).setTransactionCount(1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(20).setTransactionCount(1);
 
-        LinkedEntityResult linkedEntityResult1 = new LinkedEntityResult("0", textDocumentStatistics1, null, linkedEntityList1);
-        LinkedEntityResult linkedEntityResult2 = new LinkedEntityResult("1", textDocumentStatistics2, null, linkedEntityList2);
+        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult1 = new RecognizeLinkedEntitiesResult("0", textDocumentStatistics1, null, linkedEntityList1);
+        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult2 = new RecognizeLinkedEntitiesResult("1", textDocumentStatistics2, null, linkedEntityList2);
 
-        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
-        List<LinkedEntityResult> linkedEntityResultList = Arrays.asList(linkedEntityResult1, linkedEntityResult2);
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
+        List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResultList = Arrays.asList(recognizeLinkedEntitiesResult1, recognizeLinkedEntitiesResult2);
 
-        return new DocumentResultCollection<>(linkedEntityResultList, MODEL_VERSION, textBatchStatistics);
+        return new DocumentResultCollection<>(recognizeLinkedEntitiesResultList, MODEL_VERSION, textDocumentBatchStatistics);
     }
 
-    static DocumentResultCollection<KeyPhraseResult> getExpectedBatchKeyPhrases() {
+    static DocumentResultCollection<ExtractKeyPhraseResult> getExpectedBatchKeyPhrases() {
         List<String> keyPhrasesList1 = Arrays.asList("input text", "world");
         List<String> keyPhrasesList2 = Arrays.asList("monde");
 
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(49).setTransactionCount(1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(21).setTransactionCount(1);
 
-        KeyPhraseResult keyPhraseResult1 = new KeyPhraseResult("0", textDocumentStatistics1, null, keyPhrasesList1);
-        KeyPhraseResult keyPhraseResult2 = new KeyPhraseResult("1", textDocumentStatistics2, null, keyPhrasesList2);
+        ExtractKeyPhraseResult extractKeyPhraseResult1 = new ExtractKeyPhraseResult("0", textDocumentStatistics1, null, keyPhrasesList1);
+        ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResult("1", textDocumentStatistics2, null, keyPhrasesList2);
 
-        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
-        List<KeyPhraseResult> keyPhraseResultList = Arrays.asList(keyPhraseResult1, keyPhraseResult2);
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
+        List<ExtractKeyPhraseResult> extractKeyPhraseResultList = Arrays.asList(extractKeyPhraseResult1, extractKeyPhraseResult2);
 
-        return new DocumentResultCollection<>(keyPhraseResultList, MODEL_VERSION, textBatchStatistics);
+        return new DocumentResultCollection<>(extractKeyPhraseResultList, MODEL_VERSION, textDocumentBatchStatistics);
     }
 
     static DocumentResultCollection<TextSentimentResult> getExpectedBatchTextSentiment() {
@@ -996,7 +996,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
         return new DocumentResultCollection<>(Arrays.asList(textSentimentResult1, textSentimentResult2),
             MODEL_VERSION,
-            new TextBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0)
+            new TextDocumentBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0)
                 .setTransactionCount(2).setValidDocumentCount(2));
     }
 

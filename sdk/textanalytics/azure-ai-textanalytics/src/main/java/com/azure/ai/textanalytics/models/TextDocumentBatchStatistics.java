@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * information about the request payload.
  */
 @Fluent
-public final class TextBatchStatistics {
+public final class TextDocumentBatchStatistics {
     /*
      * Number of documents submitted in the request.
      */
@@ -56,7 +56,7 @@ public final class TextBatchStatistics {
      * @param documentCount the documentCount value to set.
      * @return the TextBatchStatistics object itself.
      */
-    public TextBatchStatistics setDocumentCount(int documentCount) {
+    public TextDocumentBatchStatistics setDocumentCount(int documentCount) {
         this.documentCount = documentCount;
         return this;
     }
@@ -78,7 +78,7 @@ public final class TextBatchStatistics {
      * @param validDocumentCount the validDocumentCount value to set.
      * @return the TextBatchStatistics object itself.
      */
-    public TextBatchStatistics setValidDocumentCount(int validDocumentCount) {
+    public TextDocumentBatchStatistics setValidDocumentCount(int validDocumentCount) {
         this.validDocumentCount = validDocumentCount;
         return this;
     }
@@ -102,7 +102,7 @@ public final class TextBatchStatistics {
      * @param erroneousDocumentCount the erroneousDocumentCount value to set.
      * @return the TextBatchStatistics object itself.
      */
-    public TextBatchStatistics setErroneousDocumentCount(int erroneousDocumentCount) {
+    public TextDocumentBatchStatistics setErroneousDocumentCount(int erroneousDocumentCount) {
         this.erroneousDocumentCount = erroneousDocumentCount;
         return this;
     }
@@ -124,7 +124,7 @@ public final class TextBatchStatistics {
      * @param transactionCount the transactionCount value to set.
      * @return the TextBatchStatistics object itself.
      */
-    public TextBatchStatistics setTransactionCount(long transactionCount) {
+    public TextDocumentBatchStatistics setTransactionCount(long transactionCount) {
         this.transactionCount = transactionCount;
         return this;
     }

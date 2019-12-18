@@ -8,21 +8,21 @@ import com.azure.core.annotation.Immutable;
 import java.util.List;
 
 /**
- * The LinkedEntityResult model.
+ * The RecognizeLinkedEntitiesResult model.
  */
 @Immutable
-public final class LinkedEntityResult extends DocumentResult {
+public final class RecognizeLinkedEntitiesResult extends DocumentResult {
     private final List<LinkedEntity> linkedEntities;
 
     /**
-     * Creates a {@code LinkedEntityResult} model that describes recognized linked entities result
+     * Creates a {@code RecognizeLinkedEntitiesResult} model that describes recognized linked entities result
      *
      * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
      * @param error the document error
      * @param linkedEntities a list of linked entities
      */
-    public LinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
+    public RecognizeLinkedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
         List<LinkedEntity> linkedEntities) {
         super(id, textDocumentStatistics, error);
         this.linkedEntities = linkedEntities;

@@ -7,9 +7,9 @@ import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.LinkedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextBatchStatistics;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.util.Context;
 
@@ -39,10 +39,10 @@ public class RecognizeLinkedEntitiesBatchDocuments {
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
-        final DocumentResultCollection<LinkedEntityResult> detectedBatchResult = client.recognizeBatchLinkedEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+        final DocumentResultCollection<RecognizeLinkedEntitiesResult> detectedBatchResult = client.recognizeBatchLinkedEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
-        final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
+        final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
@@ -50,7 +50,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
             batchStatistics.getValidDocumentCount());
 
         // Detecting linked entities from a batch of documents
-        for (LinkedEntityResult linkedEntityDocumentResult : detectedBatchResult) {
+        for (RecognizeLinkedEntitiesResult linkedEntityDocumentResult : detectedBatchResult) {
             for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getLinkedEntities()) {
                 System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s%n",
                     linkedEntity.getName(), linkedEntity.getUri(), linkedEntity.getDataSource());
