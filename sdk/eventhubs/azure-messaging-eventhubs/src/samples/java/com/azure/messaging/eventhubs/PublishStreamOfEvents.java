@@ -165,15 +165,15 @@ public class PublishStreamOfEvents {
                             });
                         }).block();
                 }, error -> {
-                    sink.error(new RuntimeException("Error fetching next event.", error));
-                }, () -> {
-                    final EventDataBatch lastBatch = currentBatch.getAndSet(null);
-                    if (lastBatch != null) {
-                        sink.next(lastBatch);
-                    }
+                        sink.error(new RuntimeException("Error fetching next event.", error));
+                    }, () -> {
+                        final EventDataBatch lastBatch = currentBatch.getAndSet(null);
+                        if (lastBatch != null) {
+                            sink.next(lastBatch);
+                        }
 
-                    sink.complete();
-                });
+                        sink.complete();
+                    });
             }).publish().autoConnect();
 
             // Periodically checks to see if there is an available, not full, batch to send. If there is, it sends that

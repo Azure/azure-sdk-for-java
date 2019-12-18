@@ -36,7 +36,8 @@ public class ConsumeEvents {
         // 2. Creating an Event Hub instance.
         // 3. Creating a "Shared access policy" for your Event Hub instance.
         // 4. Copying the connection string from the policy's properties.
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
+            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
         // Instantiate a client that will be used to call the service.
         // Create a consumer.
         // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
@@ -62,16 +63,16 @@ public class ConsumeEvents {
         // countDownLatch.
         Disposable subscription = consumer.receiveFromPartition(firstPartition, EventPosition.latest())
             .subscribe(partitionEvent -> {
-                    EventData event = partitionEvent.getData();
-                    PartitionContext partitionContext = partitionEvent.getPartitionContext();
+                EventData event = partitionEvent.getData();
+                PartitionContext partitionContext = partitionEvent.getPartitionContext();
 
-                    String contents = new String(event.getBody(), UTF_8);
-                    System.out.printf("[#%s] Partition id: %s. Sequence Number: %s. Contents: '%s'%n",
-                        countDownLatch.getCount(), partitionContext.getPartitionId(), event.getSequenceNumber(),
-                        contents);
+                String contents = new String(event.getBody(), UTF_8);
+                System.out.printf("[#%s] Partition id: %s. Sequence Number: %s. Contents: '%s'%n",
+                    countDownLatch.getCount(), partitionContext.getPartitionId(), event.getSequenceNumber(),
+                    contents);
 
-                    countDownLatch.countDown();
-                },
+                countDownLatch.countDown();
+            },
                 error -> {
                     System.err.println("Error occurred while consuming events: " + error);
 
