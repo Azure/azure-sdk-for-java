@@ -809,10 +809,9 @@ class BlockBlobAPITest extends APISpec {
         where:
         dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
         BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES - 1 | null             | null      || 0 // Test that the default for singleUploadSize is the maximum
-        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 / (double) BlobClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
         100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
-
     }
 
     def "Upload min"() {
@@ -1317,6 +1316,28 @@ class BlockBlobAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload options"() {
+        setup:
+        def data = getRandomData(dataSize)
+
+        when:
+        blobAsyncClient.uploadWithResponse(Flux.just(data),
+            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null, null, null).block()
+
+        then:
+        blobAsyncClient.getBlockBlobAsyncClient()
+            .listBlocks(BlockListType.COMMITTED).block().getCommittedBlocks().size() == expectedBlockCount
+
+        where:
+        dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES - 1 | null             | null      || 0 // Test that the default for singleUploadSize is the maximum
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
+        100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
+        100                                            | 50               | 20        || 5 // Test that blockSize is respected
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
