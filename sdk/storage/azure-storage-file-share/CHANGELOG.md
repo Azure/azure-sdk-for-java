@@ -1,6 +1,8 @@
 # Release History
 
-## 12.1.0-beta.1 (Unreleased)
+## 12.1.0-beta.2 (Unreleased)
+
+## 12.1.0-beta.1 (2019-12-18)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setFilePath, setShareName generateSasQueryParameters methods on ShareServiceSasSignatureValues to direct users to using the methods added on clients.
 
 ## 12.0.0 (2019-12-04)
