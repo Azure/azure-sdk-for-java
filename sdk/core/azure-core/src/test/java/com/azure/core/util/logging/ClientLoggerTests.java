@@ -112,7 +112,7 @@ public class ClientLoggerTests {
         assertThrows(IllegalArgumentException.class, () ->
             logMessage(new ClientLogger(ClientLoggerTests.class), logLevel, logMessage));
     }
-    
+
     /**
      * Tests that logging an exception when the log level isn't VERBOSE only log the exception message.
      */

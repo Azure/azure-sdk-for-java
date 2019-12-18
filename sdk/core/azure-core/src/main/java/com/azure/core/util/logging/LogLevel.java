@@ -13,7 +13,7 @@ public enum LogLevel {
     /**
      * Indicates that log level is at verbose level.
      */
-    VERBOSE(1, "1", "verbose"),
+    VERBOSE(1, "1", "verbose", "debug"),
 
     /**
      * Indicates that log level is at information level.
@@ -37,7 +37,7 @@ public enum LogLevel {
 
     private final int numericValue;
     private final String[] allowedLogLevelVariables;
-    private static HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();
+    private static final HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();
 
     static{
         for (LogLevel logLevel: LogLevel.values()) {
