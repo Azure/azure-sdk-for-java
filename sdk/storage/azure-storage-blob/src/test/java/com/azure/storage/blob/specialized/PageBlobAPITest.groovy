@@ -828,7 +828,7 @@ class PageBlobAPITest extends APISpec {
         managedDiskBlob.clearPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1))
 
         when:
-        def response = managedDiskBlob.getPageRangesDiffFromUrlWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapUrl, null, null, null)
+        def response = managedDiskBlob.getManagedDiskRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapUrl, null, null, null)
 
         then:
         response.getValue().getPageRange().size() == 1

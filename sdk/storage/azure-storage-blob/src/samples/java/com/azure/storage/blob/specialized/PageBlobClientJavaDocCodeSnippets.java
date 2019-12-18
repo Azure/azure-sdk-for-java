@@ -267,10 +267,10 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#getPageRangesDiffFromUrl(BlobRange, String)}
+     * Code snippets for {@link PageBlobClient#getManagedDiskRangesDiff(BlobRange, String)}
      */
     public void getPageRangesDiffFromUrlCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffFromUrl#BlobRange-String
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskRangesDiff#BlobRange-String
         BlobRange blobRange = new BlobRange(offset);
         final String prevSnapshotUrl = "previous snapshot url";
         PageList pageList = client.getPageRangesDiff(blobRange, prevSnapshotUrl);
@@ -279,15 +279,15 @@ public class PageBlobClientJavaDocCodeSnippets {
         for (PageRange pageRange : pageList.getPageRange()) {
             System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
         }
-        // END: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffFromUrl#BlobRange-String
+        // END: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskRangesDiff#BlobRange-String
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#getPageRangesDiffFromUrlWithResponse(BlobRange, String, BlobRequestConditions,
+     * Code snippets for {@link PageBlobClient#getManagedDiskRangesDiffWithResponse(BlobRange, String, BlobRequestConditions,
      * Duration, Context)}
      */
     public void getPageRangesDiffFromUrlWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffFromUrlWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context
         BlobRange blobRange = new BlobRange(offset);
         final String prevSnapshotUrl = "previous snapshot url";
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
@@ -300,7 +300,7 @@ public class PageBlobClientJavaDocCodeSnippets {
         for (PageRange pageRange : pageList.getPageRange()) {
             System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
         }
-        // END: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffFromUrlWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context
     }
 
     /**

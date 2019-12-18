@@ -603,13 +603,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * This API only works for managed disk accounts.
+     * <p>Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
-     * Docs</a>.
+     * Docs</a>.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrl#BlobRange-String}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskRangesDiff#BlobRange-String}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
@@ -619,9 +620,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response emitting all the different page ranges.
      */
-    public Mono<PageList> getPageRangesDiffFromUrl(BlobRange blobRange, String prevSnapshotUrl) {
+    public Mono<PageList> getManagedDiskRangesDiff(BlobRange blobRange, String prevSnapshotUrl) {
         try {
-            return getPageRangesDiffFromUrlWithResponse(blobRange, prevSnapshotUrl, null).flatMap(FluxUtil::toMono);
+            return getManagedDiskRangesDiffWithResponse(blobRange, prevSnapshotUrl, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -635,7 +636,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrlWithResponse#BlobRange-String-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskRangesDiffWithResponse#BlobRange-String-BlobRequestConditions}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
@@ -647,7 +648,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
-    public Mono<Response<PageList>> getPageRangesDiffFromUrlWithResponse(BlobRange blobRange, String prevSnapshotUrl,
+    public Mono<Response<PageList>> getManagedDiskRangesDiffWithResponse(BlobRange blobRange, String prevSnapshotUrl,
         BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->

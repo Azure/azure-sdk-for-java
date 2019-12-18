@@ -254,10 +254,10 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#getPageRangesDiffFromUrl(BlobRange, String)}
+     * Code snippets for {@link PageBlobAsyncClient#getManagedDiskRangesDiff(BlobRange, String)}
      */
     public void getPageRangesDiffFromUrlCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrl#BlobRange-String
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskRangesDiff#BlobRange-String
         BlobRange blobRange = new BlobRange(offset);
         final String prevSnapshotUrl = "previous snapshot url";
 
@@ -267,15 +267,15 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
             }
         });
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrl#BlobRange-String
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskRangesDiff#BlobRange-String
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#getPageRangesDiffFromUrlWithResponse(BlobRange, String,
+     * Code snippets for {@link PageBlobAsyncClient#getManagedDiskRangesDiffWithResponse(BlobRange, String,
      * BlobRequestConditions)}
      */
     public void getPageRangesDiffFromUrlWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrlWithResponse#BlobRange-String-BlobRequestConditions
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskRangesDiffWithResponse#BlobRange-String-BlobRequestConditions
         BlobRange blobRange = new BlobRange(offset);
         final String prevSnapshotUrl = "previous snapshot url";
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
@@ -287,7 +287,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
                 }
             });
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffFromUrlWithResponse#BlobRange-String-BlobRequestConditions
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskRangesDiffWithResponse#BlobRange-String-BlobRequestConditions
     }
 
     /**
