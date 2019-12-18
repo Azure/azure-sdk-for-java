@@ -13,6 +13,18 @@ jobs:
     pool:
       vmImage: windows-2019
     steps:
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+
+      - template: eng/pipelines/templates/scripts/replace-relative-links.yml@azure-sdk-tools
+        parameters:
+          TargetFolder: $(Build.SourcesDirectory)
+          RootFolder: $(Build.SourcesDirectory)
+          BuildSHA: $(Build.SourceVersion)
+          RepoId: 'Azure/azure-sdk-for-java'
+
       - pwsh: |
           Invoke-WebRequest -Uri "https://github.com/dotnet/docfx/releases/download/v2.43.2/docfx.zip" `
           -OutFile "docfx.zip" | Wait-Process; Expand-Archive -Path "docfx.zip" -DestinationPath "./docfx/"

@@ -80,7 +80,7 @@ Format of the release tags are `<package-name>_<package-version>`. For more info
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide](CONTRIBUTING.md).
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit
 https://cla.microsoft.com.
@@ -94,8 +94,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 Many people all over the world have helped make this project better.  You'll want to check out:
 
 * [What are some good first issues for new contributors to the repo?](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3A%22up+for+grabs%22)
-* [How to build and test your change](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md#developer-guide)
-* [How you can make a change happen!](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md#pull-requests)
+* [How to build and test your change](CONTRIBUTING.md#developer-guide)
+* [How you can make a change happen!](CONTRIBUTING.md#pull-requests)
 * Frequently Asked Questions (FAQ) and Conceptual Topics in the detailed [Azure SDK for Java wiki](https://github.com/azure/azure-sdk-for-java/wiki).
 
 ### Community
@@ -108,6 +108,6 @@ Security issues and bugs should be reported privately, via email, to the Microso
 
 ### License
 
-Azure SDK for Java is licensed under the [MIT](https://github.com/Azure/azure-sdk-for-java/blob/master/LICENSE.txt) license.
+Azure SDK for Java is licensed under the [MIT](LICENSE.txt) license.
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2FREADME.png)
