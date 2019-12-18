@@ -28,3 +28,4 @@ com.azure:azure-storage-file-share;12.0.0;12.1.0-beta.1
 com.azure:azure-storage-file-datalake;12.0.0-beta.7;12.0.0-beta.8
 com.azure:azure-storage-queue;12.1.0;12.2.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-search;1.0.0-beta.2;1.0.0-beta.2
