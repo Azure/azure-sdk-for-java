@@ -158,7 +158,7 @@ public class IdentityClient {
             String timeToSecond = time.substring(0, time.indexOf("."));
             String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
             OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault())
-            .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+                                                    .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
             } catch (Exception e) {
                 return Mono.error(e);
