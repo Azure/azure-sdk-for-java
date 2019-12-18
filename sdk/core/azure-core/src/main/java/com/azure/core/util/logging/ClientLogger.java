@@ -172,7 +172,7 @@ public class ClientLogger {
         return runtimeException;
     }
 
-    /*
+    /**
      * Determines if the environment and logger support logging at the given log level.
      *
      * @param logLevel The {@link LogLevel} being validated as supported.

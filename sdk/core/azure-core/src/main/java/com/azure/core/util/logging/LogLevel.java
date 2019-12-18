@@ -50,9 +50,9 @@ public enum LogLevel {
     }
 
     /**
-     * Converts the log level into a numeric representation used for comparisons.
+     * Converts the log level into string representations used for comparisons.
      *
-     * @return The numeric representation of the log level.
+     * @return The string representations of the log level.
      */
     public Set<String> getAllowedLogLevels() {
         return allowedLogLevelVariables;
