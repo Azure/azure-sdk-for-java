@@ -208,7 +208,7 @@ public class ClientLogger {
              * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
              * stack trace which is only expected when logging at a verbose level.
              */
-            if (environmentLogLevel.getNumericLogLevel() > LogLevel.VERBOSE.getNumericLogLevel()) {
+            if (environmentLogLevel.getLogLevel() > LogLevel.VERBOSE.getLogLevel()) {
                 args = removeThrowable(args);
             }
         }
@@ -252,7 +252,7 @@ public class ClientLogger {
         }
 
         // Attempting to log at a level not supported by the environment.
-        if (logLevel.getNumericLogLevel() < environmentLoggingLevel.getNumericLogLevel()) {
+        if (logLevel.getLogLevel() < environmentLoggingLevel.getLogLevel()) {
             return false;
         }
 

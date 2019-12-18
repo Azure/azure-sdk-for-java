@@ -283,7 +283,7 @@ public class ClientLoggerTests {
         "1, VERBOSE, true", "1, info, true", "1, warning, true", "1, error, true", "2, verbose, false", "2, invalid, false"})
     public void canLogAtLevel(int logLevelToConfigure, String logLevelToValidate, boolean expected) {
         setupLogLevel(logLevelToConfigure);
-        LogLevel logLevel = LogLevel.getLogLevelFromString(logLevelToValidate);
+        LogLevel logLevel = LogLevel.fromString(logLevelToValidate);
         System.out.println(logLevel);
         assertEquals(new ClientLogger(ClientLoggerTests.class).canLogAtLevel(logLevel), expected);
     }

@@ -47,7 +47,7 @@ public enum LogLevel {
      *
      * @return The numeric representation of the log level.
      */
-    public int getNumericLogLevel() {
+    public int getLogLevel() {
         return Integer.parseInt(allowedLogLevelVariables[0]);
     }
 
@@ -70,16 +70,7 @@ public enum LogLevel {
      * @param logLevelVal The log level value which needs to convert
      * @return The LogLevel Enum.
      */
-    public static LogLevel getLogLevelFromString(String logLevelVal) {
+    public static LogLevel fromString(String logLevelVal) {
         return LOG_LEVEL_STRING_MAPPER.get(logLevelVal);
     }
-
-    /**
-     * Check if the log level value matches the LogLevel enum.
-     */
-    private static boolean isValueMatch(LogLevel logLevel, String logLevelVal) {
-        return String.valueOf(logLevel.getNumericLogLevel()).equals(logLevelVal)
-            || logLevel.getAllowedLogLevels().contains(logLevelVal.toLowerCase(Locale.ROOT));
-    }
-
 }

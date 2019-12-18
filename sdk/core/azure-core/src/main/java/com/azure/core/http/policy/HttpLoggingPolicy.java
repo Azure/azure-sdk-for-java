@@ -101,7 +101,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A Mono which will emit the string to log.
      */
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
-        int numericLogLevel = LoggingUtil.getEnvironmentLoggingLevel().getNumericLogLevel();
+        int numericLogLevel = LoggingUtil.getEnvironmentLoggingLevel().getLogLevel();
         if (shouldLoggingBeSkipped(numericLogLevel)) {
             return Mono.empty();
         }
@@ -181,7 +181,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A Mono containing the HTTP response.
      */
     private Mono<HttpResponse> logResponse(final ClientLogger logger, final HttpResponse response, long startNs) {
-        int numericLogLevel = LoggingUtil.getEnvironmentLoggingLevel().getNumericLogLevel();
+        int numericLogLevel = LoggingUtil.getEnvironmentLoggingLevel().getLogLevel();
         if (shouldLoggingBeSkipped(numericLogLevel)) {
             return Mono.just(response);
         }
@@ -260,7 +260,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A flag indicating if logging should be skipped.
      */
     private boolean shouldLoggingBeSkipped(int environmentLogLevel) {
-        return environmentLogLevel > LogLevel.INFORMATIONAL.getNumericLogLevel();
+        return environmentLogLevel > LogLevel.INFORMATIONAL.getLogLevel();
     }
 
     /*
@@ -318,7 +318,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     private void addHeadersToLogMessage(HttpHeaders headers, StringBuilder sb, int logLevel) {
         // Either headers shouldn't be logged or the logging level isn't set to VERBOSE, don't add headers.
-        if (!httpLogDetailLevel.shouldLogHeaders() || logLevel > LogLevel.VERBOSE.getNumericLogLevel()) {
+        if (!httpLogDetailLevel.shouldLogHeaders() || logLevel > LogLevel.VERBOSE.getLogLevel()) {
             return;
         }
 
