@@ -1489,6 +1489,7 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
      * @param range Optional byte range which returns file data only from the specified range.
+     * @param requestConditions {@link ShareRequestConditions}
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      */
     public PagedFlux<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions) {
@@ -1507,7 +1508,7 @@ public class ShareFileAsyncClient {
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString,
-                    finalRequestConditions.getLeaseId(), context),timeout)
+                    finalRequestConditions.getLeaseId(), context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),

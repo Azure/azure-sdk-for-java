@@ -237,8 +237,8 @@ public final class ShareLeaseAsyncClient {
     }
 
     Mono<Response<String>> changeLeaseWithResponse(String proposedId, Context context) {
-            return this.client.files().changeLeaseWithRestResponseAsync(null, null, this.leaseId, null, proposedId,
-                null, context).map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+        return this.client.files().changeLeaseWithRestResponseAsync(null, null, this.leaseId, null, proposedId,
+            null, context).map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
     }
 
     /**
