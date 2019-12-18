@@ -185,7 +185,7 @@ public class ShareDirectoryJavaDocCodeSamples {
             httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed creating the file with status code: " + response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareDirectoryClient.createFile#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context
+        // END: com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context
     }
 
     /**
