@@ -645,14 +645,15 @@ class SASTest extends APISpec {
             .setExpiryTime(expiryTime)
             .generateSasQueryParameters(primaryCredential)
             .encode()
+        def sasContainerName = generateContainerName()
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
-        def sasContainer = sc.createBlobContainer(generateContainerName())
+        sc.createBlobContainer(sasContainerName)
 
         then:
         notThrown(BlobStorageException)
 
         cleanup:
-        sasContainer.delete()
+        primaryBlobServiceClient.deleteBlobContainer(sasContainerName)
     }
 
     def "accountSAS network account sas token on endpoint"() {
@@ -694,7 +695,7 @@ class SASTest extends APISpec {
         notThrown(BlobStorageException)
 
         cleanup:
-        cc.delete()
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     /*
