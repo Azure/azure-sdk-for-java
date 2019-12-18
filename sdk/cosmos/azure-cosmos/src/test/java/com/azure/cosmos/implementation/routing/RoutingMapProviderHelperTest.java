@@ -173,14 +173,14 @@ public class RoutingMapProviderHelperTest {
 
         Mono<List<PartitionKeyRange>> overlappingRanges;
         overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock,
-                                                                          "/dbs/db1/colls/coll1",
+                                                                          "coll1",
                                                                           Arrays.asList(new Range<String>("000D", "0012", true, false),
                                                                                         new Range<String>("0012", "0015", true, false),
                                                                                         new Range<>("0015", "0020", true, false)));
         assertThat("2,3,4").isEqualTo(overlappingRanges.block().stream().map(func).collect(Collectors.joining(",")));
 
         overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock,
-                                                                          "/dbs/db1/colls/coll1",
+                                                                          "coll1",
                                                                           Arrays.asList(new Range<String>("000D", "0012", true, false)));
         assertThat("2").isEqualTo(overlappingRanges.block().stream().map(func).collect(Collectors.joining(",")));
 
