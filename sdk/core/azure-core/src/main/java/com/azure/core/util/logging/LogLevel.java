@@ -4,10 +4,8 @@
 package com.azure.core.util.logging;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -71,6 +69,6 @@ public enum LogLevel {
      * @return The LogLevel Enum.
      */
     public static LogLevel fromString(String logLevelVal) {
-        return LOG_LEVEL_STRING_MAPPER.get(logLevelVal);
+        return LOG_LEVEL_STRING_MAPPER.get(logLevelVal.toLowerCase(Locale.ROOT));
     }
 }

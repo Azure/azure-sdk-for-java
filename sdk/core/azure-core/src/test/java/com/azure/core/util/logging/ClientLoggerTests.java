@@ -278,13 +278,11 @@ public class ClientLoggerTests {
         assertTrue(logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
 
-    @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
-    @CsvSource({"1, 1, true", "1, 2, true", "1, 3, true", "1, 4, true", "2, 1, false", "2, 5, false",
-        "1, VERBOSE, true", "1, info, true", "1, warning, true", "1, error, true", "2, verbose, false", "2, invalid, false"})
+    @ParameterizedTest(name = "{index} from logLevelToConfigure = {0}, logLevelToValidate={1}, expected={2}")
+    @CsvSource({"1, 1, true", "1, 2, true", "1, 3, true", "1, 4, true", "2, 1, false", "2, 5, false", "1, VERBOSE, true", "1, info, true", "1, warning, true", "1, error, true", "2, verbose, false", "2, invalid, false"})
     public void canLogAtLevel(int logLevelToConfigure, String logLevelToValidate, boolean expected) {
         setupLogLevel(logLevelToConfigure);
         LogLevel logLevel = LogLevel.fromString(logLevelToValidate);
-        System.out.println(logLevel);
         assertEquals(new ClientLogger(ClientLoggerTests.class).canLogAtLevel(logLevel), expected);
     }
 
