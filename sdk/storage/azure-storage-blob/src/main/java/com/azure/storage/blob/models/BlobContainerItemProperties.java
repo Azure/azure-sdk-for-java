@@ -65,6 +65,18 @@ public final class BlobContainerItemProperties {
     @JsonProperty(value = "HasLegalHold")
     private Boolean hasLegalHold;
 
+    /*
+     * The defaultEncryptionScope property.
+     */
+    @JsonProperty(value = "DefaultEncryptionScope")
+    private String defaultEncryptionScope;
+
+    /*
+     * The denyEncryptionScopeOverride property.
+     */
+    @JsonProperty(value = "DenyEncryptionScopeOverride")
+    private Boolean denyEncryptionScopeOverride;
+
     /**
      * Get the lastModified property: The lastModified property.
      *
@@ -239,6 +251,51 @@ public final class BlobContainerItemProperties {
      */
     public BlobContainerItemProperties setHasLegalHold(Boolean hasLegalHold) {
         this.hasLegalHold = hasLegalHold;
+        return this;
+    }
+
+    /**
+     * Get the defaultEncryptionScope property: The defaultEncryptionScope
+     * property.
+     *
+     * @return the defaultEncryptionScope value.
+     */
+    public String getDefaultEncryptionScope() {
+        return this.defaultEncryptionScope;
+    }
+
+    /**
+     * Set the defaultEncryptionScope property: The defaultEncryptionScope
+     * property.
+     *
+     * @param defaultEncryptionScope the defaultEncryptionScope value to set.
+     * @return the BlobContainerItemProperties object itself.
+     */
+    public BlobContainerItemProperties setDefaultEncryptionScope(String defaultEncryptionScope) {
+        this.defaultEncryptionScope = defaultEncryptionScope;
+        return this;
+    }
+
+    /**
+     * Get the denyEncryptionScopeOverride property: The
+     * denyEncryptionScopeOverride property.
+     *
+     * @return the denyEncryptionScopeOverride value.
+     */
+    public Boolean isDenyEncryptionScopeOverride() {
+        return this.denyEncryptionScopeOverride;
+    }
+
+    /**
+     * Set the denyEncryptionScopeOverride property: The
+     * denyEncryptionScopeOverride property.
+     *
+     * @param denyEncryptionScopeOverride the denyEncryptionScopeOverride value
+     * to set.
+     * @return the BlobContainerItemProperties object itself.
+     */
+    public BlobContainerItemProperties setDenyEncryptionScopeOverride(Boolean denyEncryptionScopeOverride) {
+        this.denyEncryptionScopeOverride = denyEncryptionScopeOverride;
         return this;
     }
 }
