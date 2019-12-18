@@ -84,7 +84,7 @@ public final class TextAnalyticsClientBuilder {
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
     private Configuration configuration;
-    private HttpPipelinePolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private TextAnalyticsClientOptions clientOptions;
     private TextAnalyticsServiceVersion version;
 
@@ -336,7 +336,7 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpPipelinePolicy} that is used when each request is sent.
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
      * <p>
      * The default retry policy will be used if not provided {@link TextAnalyticsClientBuilder#buildAsyncClient()}
      * to build {@link TextAnalyticsAsyncClient} or {@link TextAnalyticsClient}.
@@ -345,7 +345,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @return The updated TextAnalyticsClientBuilder object.
      */
-    public TextAnalyticsClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
+    public TextAnalyticsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }

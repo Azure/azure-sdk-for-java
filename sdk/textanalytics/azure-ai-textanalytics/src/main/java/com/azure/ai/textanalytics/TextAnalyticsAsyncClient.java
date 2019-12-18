@@ -1016,6 +1016,24 @@ public final class TextAnalyticsAsyncClient {
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
+    /**
+     * Get default country hint code.
+     *
+     * @return the default country hint code
+     */
+    public String getDefaultCountryHint() {
+        return defaultCountryHint;
+    }
+
+    /**
+     * Get default language when the builder is setup.
+     *
+     * @return the default language
+     */
+    public String getDefaultLanguage() {
+        return defaultLanguage;
+    }
+
     private DocumentResultCollection<TextSentimentResult> toDocumentResultCollection(
         final SentimentResponse sentimentResponse) {
         return new DocumentResultCollection<>(getDocumentTextSentiment(sentimentResponse),
@@ -1181,23 +1199,5 @@ public final class TextAnalyticsAsyncClient {
         return IntStream.range(0, textInputs.size())
             .mapToObj(index -> mappingFunction.apply(String.valueOf(index), textInputs.get(index)))
             .collect(Collectors.toList());
-    }
-
-    /**
-     * Get default country hint code.
-     *
-     * @return the default country hint code
-     */
-    String getDefaultCountryHint() {
-        return defaultCountryHint;
-    }
-
-    /**
-     * Get default language when the builder is setup.
-     *
-     * @return the default language
-     */
-    String getDefaultLanguage() {
-        return defaultLanguage;
     }
 }
