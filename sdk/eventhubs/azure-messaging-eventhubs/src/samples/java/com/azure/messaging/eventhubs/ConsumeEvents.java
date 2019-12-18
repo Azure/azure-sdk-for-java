@@ -25,8 +25,8 @@ public class ConsumeEvents {
      * Main method to invoke this demo about how to receive events from an Azure Event Hub instance.
      *
      * @param args Unused arguments to the program.
-     * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
-     *         complete.
+     *
+     * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to complete.
      */
     public static void main(String[] args) throws InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(NUMBER_OF_EVENTS);
@@ -62,24 +62,26 @@ public class ConsumeEvents {
         // countDownLatch.
         Disposable subscription = consumer.receiveFromPartition(firstPartition, EventPosition.latest())
             .subscribe(partitionEvent -> {
-                EventData event = partitionEvent.getData();
-                PartitionContext partitionContext = partitionEvent.getPartitionContext();
+                    EventData event = partitionEvent.getData();
+                    PartitionContext partitionContext = partitionEvent.getPartitionContext();
 
-                String contents = new String(event.getBody(), UTF_8);
-                System.out.printf("[#%s] Partition id: %s. Sequence Number: %s. Contents: '%s'%n",
-                    countDownLatch.getCount(), partitionContext.getPartitionId(), event.getSequenceNumber(), contents);
+                    String contents = new String(event.getBody(), UTF_8);
+                    System.out.printf("[#%s] Partition id: %s. Sequence Number: %s. Contents: '%s'%n",
+                        countDownLatch.getCount(), partitionContext.getPartitionId(), event.getSequenceNumber(),
+                        contents);
 
-                countDownLatch.countDown();
-            }, error -> {
-                System.err.println("Error occurred while consuming events: " + error);
-
-                // Count down until 0, so the main thread does not keep waiting for events.
-                while (countDownLatch.getCount() > 0) {
                     countDownLatch.countDown();
-                }
-            }, () -> {
-                System.out.println("Finished reading events.");
-            });
+                },
+                error -> {
+                    System.err.println("Error occurred while consuming events: " + error);
+
+                    // Count down until 0, so the main thread does not keep waiting for events.
+                    while (countDownLatch.getCount() > 0) {
+                        countDownLatch.countDown();
+                    }
+                }, () -> {
+                    System.out.println("Finished reading events.");
+                });
 
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
