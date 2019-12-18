@@ -3,12 +3,8 @@
 
 package com.azure.core.util.logging;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 /**
  * Enum which represent logging levels used in Azure SDKs.
@@ -17,26 +13,42 @@ public enum LogLevel {
     /**
      * Indicates that log level is at verbose level.
      */
-    VERBOSE("1", "verbose"),
+    VERBOSE(1, "1", "verbose"),
 
     /**
      * Indicates that log level is at information level.
      */
-    INFORMATIONAL("2", "info", "information", "informational"),
+    INFORMATIONAL(2, "2", "info", "information", "informational"),
 
     /**
      * Indicates that log level is at warning level.
      */
-    WARNING("3", "warn", "warning"),
+    WARNING(3, "3", "warn", "warning"),
 
     /**
      * Indicates that log level is at error level.
      */
-    ERROR("4", "err", "error");
+    ERROR(4, "4", "err", "error"),
 
+    /**
+     * Indicates that no log level is set.
+     */
+    NOT_SET(5);
+
+    private final int numericValue;
     private final String[] allowedLogLevelVariables;
+    private static HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();
 
-    LogLevel(String... allowedLogLevelVariables) {
+    static{
+        for (LogLevel logLevel: LogLevel.values()) {
+            for (String val: logLevel.allowedLogLevelVariables) {
+                LOG_LEVEL_STRING_MAPPER.put(val, logLevel);
+            }
+        }
+    }
+
+    LogLevel(int numericValue, String... allowedLogLevelVariables) {
+        this.numericValue = numericValue;
         this.allowedLogLevelVariables = allowedLogLevelVariables;
     }
 
@@ -46,21 +58,8 @@ public enum LogLevel {
      * @return The numeric representation of the log level.
      */
     public int getLogLevel() {
-        return Integer.parseInt(allowedLogLevelVariables[0]);
+        return numericValue;
     }
-
-    /**
-     * Converts the log level into string representations used for comparisons.
-     *
-     * @return The string representations of the log level.
-     */
-    private String[] getAllowedLogLevels() {
-        return allowedLogLevelVariables;
-    }
-
-    private static final Map<String, LogLevel> LOG_LEVEL_STRING_MAPPER = Arrays.stream(LogLevel.values())
-        .flatMap(logLevel -> Arrays.stream(logLevel.getAllowedLogLevels()).map(v -> Tuples.of(v, logLevel)))
-        .collect(Collectors.toMap(Tuple2::getT1, Tuple2::getT2));
 
     /**
      * Converts the passed log level string to the corresponding {@link LogLevel}.
@@ -70,7 +69,11 @@ public enum LogLevel {
      */
     public static LogLevel fromString(String logLevelVal) {
         if (logLevelVal == null) {
-            return null;
+            return LogLevel.NOT_SET;
+        }
+        if (!LOG_LEVEL_STRING_MAPPER.containsKey(logLevelVal.toLowerCase(Locale.ROOT))) {
+            throw new IllegalArgumentException("We currently do not support the log level you set. LogLevel: "
+                + logLevelVal);
         }
         return LOG_LEVEL_STRING_MAPPER.get(logLevelVal.toLowerCase(Locale.ROOT));
     }

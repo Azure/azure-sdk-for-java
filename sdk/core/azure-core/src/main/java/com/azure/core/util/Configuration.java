@@ -347,7 +347,7 @@ public class Configuration implements Cloneable {
         } else {
             // Value changed, log it!
             configurations.put(name, value);
-            logger.verbose(logMessage, name);
+            //logger.verbose(logMessage, name);
             return true;
         }
     }

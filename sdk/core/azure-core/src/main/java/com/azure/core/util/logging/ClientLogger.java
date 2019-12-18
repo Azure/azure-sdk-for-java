@@ -179,8 +179,7 @@ public class ClientLogger {
      * @return Flag indicating if the environment and logger support logging at the given log level.
      */
     public boolean canLogAtLevel(LogLevel logLevel) {
-        LogLevel environmentLoggingLevel = getEnvironmentLoggingLevel();
-        return canLogAtLevel(logLevel, environmentLoggingLevel);
+        return canLogAtLevel(logLevel, getEnvironmentLoggingLevel());
     }
 
     /*
