@@ -114,6 +114,14 @@ public class ClientLoggerTests {
     }
 
     /**
+     * Tests that logging when the environment log level is disabled nothing is logged.
+     */
+    @Test
+    public void logWhenLoggingNotSet() {
+        assertEquals(LogLevel.NOT_SET, LogLevel.fromString(null));
+    }
+
+    /**
      * Tests that logging an exception when the log level isn't VERBOSE only log the exception message.
      */
     @Test
