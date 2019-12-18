@@ -46,10 +46,10 @@ jobs:
 
     strategy:
       matrix:
-        Java 8:
-          ArtifactName: 'packages'
-          ProfileFlag: ''
-          JavaVersion: '1.8'
+#        Java 8:
+#          ArtifactName: 'packages'
+#          ProfileFlag: ''
+#          JavaVersion: '1.8'
         Java LTS:
           ArtifactName: 'java-lts-packages'
           ProfileFlag: '-Djava-lts'

@@ -14,6 +14,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
@@ -195,8 +196,9 @@ public class DataLakeFileSystemClient {
      */
     public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Duration timeout, Context context) {
-        return blobContainerClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType), timeout,
-            context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobContainerClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType), timeout,
+                context), logger);
     }
 
     /**
@@ -228,8 +230,9 @@ public class DataLakeFileSystemClient {
      */
     public Response<Void> deleteWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
-        return blobContainerClient.deleteWithResponse(Transforms.toBlobRequestConditions(requestConditions),
-             timeout, context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobContainerClient.deleteWithResponse(Transforms.toBlobRequestConditions(requestConditions), timeout,
+                context), logger);
     }
 
     /**
@@ -260,9 +263,11 @@ public class DataLakeFileSystemClient {
      * @return A response containing the file system properties.
      */
     public Response<FileSystemProperties> getPropertiesWithResponse(String leaseId, Duration timeout, Context context) {
-        Response<BlobContainerProperties> response = blobContainerClient.getPropertiesWithResponse(leaseId, timeout,
-            context);
-        return new SimpleResponse<>(response, Transforms.toFileSystemProperties(response.getValue()));
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<BlobContainerProperties> response = blobContainerClient.getPropertiesWithResponse(leaseId, timeout,
+                context);
+            return new SimpleResponse<>(response, Transforms.toFileSystemProperties(response.getValue()));
+        }, logger);
     }
 
     /**
@@ -294,8 +299,9 @@ public class DataLakeFileSystemClient {
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return blobContainerClient.setMetadataWithResponse(metadata,
-            Transforms.toBlobRequestConditions(requestConditions), timeout, context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobContainerClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
+                timeout, context), logger);
     }
 
     /**
@@ -523,9 +529,11 @@ public class DataLakeFileSystemClient {
      */
     public Response<FileSystemAccessPolicies> getAccessPolicyWithResponse(String leaseId, Duration timeout,
         Context context) {
-        Response<BlobContainerAccessPolicies> response = blobContainerClient.getAccessPolicyWithResponse(leaseId,
-            timeout, context);
-        return new SimpleResponse<>(response, Transforms.toFileSystemAccessPolicies(response.getValue()));
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<BlobContainerAccessPolicies> response = blobContainerClient.getAccessPolicyWithResponse(leaseId,
+                timeout, context);
+            return new SimpleResponse<>(response, Transforms.toFileSystemAccessPolicies(response.getValue()));
+        }, logger);
     }
 
     /**
@@ -575,10 +583,11 @@ public class DataLakeFileSystemClient {
     public Response<Void> setAccessPolicyWithResponse(PublicAccessType accessType,
         List<DataLakeSignedIdentifier> identifiers, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
-        return blobContainerClient
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobContainerClient
             .setAccessPolicyWithResponse(Transforms.toBlobPublicAccessType(accessType),
                 Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions),
-                timeout, context);
+                timeout, context), logger);
     }
 
     BlobContainerClient getBlobContainerClient() {

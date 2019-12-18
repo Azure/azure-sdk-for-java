@@ -42,11 +42,11 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 
 /**
@@ -397,11 +397,20 @@ public class EventHubProducerAsyncClient implements Closeable {
             ? new AtomicReference<>(Context.NONE)
             : null;
 
-        final List<Message> messages = batch.getEvents().stream().map(event -> {
-            final Message message = messageSerializer.serialize(event);
+        Context sharedContext = null;
+        List<Message> messages = new ArrayList<>();
+
+        for (int i = 0; i < batch.getEvents().size(); i++) {
+            final EventData event = batch.getEvents().get(i);
             if (isTracingEnabled) {
                 parentContext.set(event.getContext());
+                if (i == 0) {
+                    sharedContext = tracerProvider.getSharedSpanBuilder(parentContext.get());
+                }
+                tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
             }
+            final Message message = messageSerializer.serialize(event);
+
             if (!CoreUtils.isNullOrEmpty(partitionKey)) {
                 final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
                     ? new MessageAnnotations(new HashMap<>())
@@ -409,15 +418,14 @@ public class EventHubProducerAsyncClient implements Closeable {
                 messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
                 message.setMessageAnnotations(messageAnnotations);
             }
+            messages.add(message);
+        }
 
-            return message;
-        }).collect(Collectors.toList());
-
+        Context finalSharedContext = sharedContext;
         return getSendLink(batch.getPartitionId())
             .flatMap(link -> {
                 if (isTracingEnabled) {
-                    Context userSpanContext = parentContext.get();
-                    Context entityContext = userSpanContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
+                    Context entityContext = finalSharedContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
                     // start send span and store updated context
                     parentContext.set(tracerProvider.startSpan(
                         entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));

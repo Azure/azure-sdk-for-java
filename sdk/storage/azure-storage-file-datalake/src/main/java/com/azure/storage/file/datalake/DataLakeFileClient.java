@@ -11,7 +11,9 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -187,6 +189,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
+     * <p>By default this method will not overwrite existing data.</p>
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
@@ -201,7 +204,32 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return Information about the created resource.
      */
     public PathInfo flush(long position) {
-        return flushWithResponse(position, false, false, null, null, null, Context.NONE).getValue();
+        return flush(position, false);
+    }
+
+    /**
+     * Flushes (writes) data previously appended to the file through a call to append.
+     * The previously uploaded data must be contiguous.
+     *
+     * <p><strong>Code Samples>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.flush#long-boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * Docs</a></p>
+     *
+     * @param position The length of the file after all data has been written.
+     * @param overwrite Whether or not to overwrite, should data exist on the file.
+     *
+     * @return Information about the created resource.
+     */
+    public PathInfo flush(long position, boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (overwrite) {
+            requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return flushWithResponse(position, false, false, null, requestConditions, null, Context.NONE).getValue();
     }
 
     /**
@@ -276,10 +304,12 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public FileReadResponse readWithResponse(OutputStream stream, FileRange range, DownloadRetryOptions options,
         DataLakeRequestConditions requestConditions, boolean getRangeContentMd5, Duration timeout, Context context) {
-        BlobDownloadResponse response = blockBlobClient.downloadWithResponse(stream, Transforms.toBlobRange(range),
-            Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
-            getRangeContentMd5, timeout, context);
-        return Transforms.toFileReadResponse(response);
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            BlobDownloadResponse response = blockBlobClient.downloadWithResponse(stream, Transforms.toBlobRange(range),
+                Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
+                getRangeContentMd5, timeout, context);
+            return Transforms.toFileReadResponse(response);
+        }, logger);
     }
 
     /**

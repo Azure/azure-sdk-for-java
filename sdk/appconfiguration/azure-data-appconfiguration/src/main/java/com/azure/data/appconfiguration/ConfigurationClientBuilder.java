@@ -10,6 +10,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -76,16 +77,16 @@ public final class ConfigurationClientBuilder {
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final String ACCEPT_HEADER = "Accept";
     private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
-    private static final String APP_CONFIG_PROPERTIES = "azure-appconfig.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
+    // This is properties file's name.
+    private static final String APP_CONFIG_PROPERTIES = "azure-data-appconfiguration.properties";
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final HttpHeaders headers;
-    private final String clientName;
-    private final String clientVersion;
+    private final Map<String, String> properties;
 
     private ConfigurationClientCredentials credential;
     private TokenCredential tokenCredential;
@@ -105,9 +106,7 @@ public final class ConfigurationClientBuilder {
         policies = new ArrayList<>();
         httpLogOptions = new HttpLogOptions();
 
-        Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+        properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
 
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true")
@@ -175,9 +174,13 @@ public final class ConfigurationClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+
         policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));
         policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
 
