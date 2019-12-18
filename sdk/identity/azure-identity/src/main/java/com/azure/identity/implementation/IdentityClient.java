@@ -146,7 +146,7 @@ public class IdentityClient {
                     if (line == null) {
                         break;
                     }
-                    if(line.startsWith(errorString) || line.startsWith(otherErrorString)){
+                    if(line.startsWith(errorString) || line.matches(otherErrorString)){
                         throw new Exception(azureCliNotInstalled);
                     }
                     output.append(line);
