@@ -23,6 +23,9 @@ import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.charset.Charset;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 
 import static com.azure.data.cosmos.internal.http.HttpClientConfig.REACTOR_NETWORK_LOG_CATEGORY;
@@ -32,11 +35,14 @@ import static com.azure.data.cosmos.internal.http.HttpClientConfig.REACTOR_NETWO
  */
 class ReactorNettyClient implements HttpClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(ReactorNettyClient.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(ReactorNettyClient.class);
 
     private HttpClientConfig httpClientConfig;
     private reactor.netty.http.client.HttpClient httpClient;
     private ConnectionProvider connectionProvider;
+
+    private Set<Integer> openChannels;
+    private AtomicInteger maxConnectionsSoFar;
 
     private ReactorNettyClient() {}
 
@@ -46,6 +52,8 @@ class ReactorNettyClient implements HttpClient {
     public static ReactorNettyClient create(HttpClientConfig httpClientConfig) {
         ReactorNettyClient reactorNettyClient = new ReactorNettyClient();
         reactorNettyClient.httpClientConfig = httpClientConfig;
+        reactorNettyClient.openChannels = ConcurrentHashMap.newKeySet();
+        reactorNettyClient.maxConnectionsSoFar = new AtomicInteger();
         reactorNettyClient.httpClient = reactor.netty.http.client.HttpClient.newConnection();
         reactorNettyClient.configureChannelPipelineHandlers();
         return reactorNettyClient;
@@ -58,6 +66,8 @@ class ReactorNettyClient implements HttpClient {
         ReactorNettyClient reactorNettyClient = new ReactorNettyClient();
         reactorNettyClient.connectionProvider = connectionProvider;
         reactorNettyClient.httpClientConfig = httpClientConfig;
+        reactorNettyClient.openChannels = ConcurrentHashMap.newKeySet();
+        reactorNettyClient.maxConnectionsSoFar = new AtomicInteger();
         reactorNettyClient.httpClient = reactor.netty.http.client.HttpClient.create(connectionProvider);
         reactorNettyClient.configureChannelPipelineHandlers();
         return reactorNettyClient;
@@ -79,6 +89,35 @@ class ReactorNettyClient implements HttpClient {
                 //  By default, keep alive is enabled on http client
                 tcpClient = tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                     configs.getConnectionAcquireTimeoutInMillis());
+
+                tcpClient = tcpClient.doOnConnect(connection -> {
+                    logger.info("About to connect {}", connection.hashCode());
+                });
+
+                tcpClient = tcpClient.doOnConnected(connection -> {
+                    int connectionHashCode = connection.hashCode();
+                    openChannels.add(connectionHashCode);
+
+                    //  Update maxConnectionsSoFar with maximum open connection so far
+                    synchronized (this) {
+                        if (openChannels.size() > maxConnectionsSoFar.get()) {
+                            maxConnectionsSoFar.set(openChannels.size());
+                        }
+                    }
+                    logger.info("Connection established {}", connection.hashCode());
+                    logger.info("Current connected channels {}", openChannels.size());
+                    logger.info("Max connections so far {}", maxConnectionsSoFar);
+                });
+
+                tcpClient = tcpClient.doOnDisconnected(connection -> {
+                    int connectionHashCode = connection.hashCode();
+                    openChannels.remove(connectionHashCode);
+                    logger.info("Connection disconnected {}", connectionHashCode);
+                    logger.info("Current connected channels {}", openChannels.size());
+                    connection.onDispose(() -> {
+                        logger.info("Connection disposed {}", connection.hashCode());
+                    });
+                });
 
                 return tcpClient;
             }).httpResponseDecoder(httpResponseDecoderSpec -> {
@@ -192,6 +231,7 @@ class ReactorNettyClient implements HttpClient {
 
         @Override
         public void close() {
+            logger.info("Disposing connection {}", reactorNettyConnection.hashCode());
             if (reactorNettyConnection.channel().eventLoop().inEventLoop()) {
                 reactorNettyConnection.dispose();
             } else {
