@@ -29,7 +29,7 @@ Text Analytics is a cloud-based service that provides advanced natural language 
 All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
 Text Analytics to use Netty HTTP client. 
 
-[//]: # ({x-version-update-start;com.azure:azure-core-http-netty;current})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-netty;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -58,7 +58,7 @@ Netty and include OkHTTP client in your pom.xml.
     </exclusions>
 </dependency>
 ```
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;dependency})
 ```xml
 <!-- Add OkHTTP client to use with Text Analytics -->
 <dependency>
