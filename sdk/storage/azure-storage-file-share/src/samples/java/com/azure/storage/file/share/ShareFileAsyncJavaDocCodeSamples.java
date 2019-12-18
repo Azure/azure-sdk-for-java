@@ -270,7 +270,8 @@ public class ShareFileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#flux-long-long-ShareRequestConditions
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        shareFileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 0L, requestConditions).subscribe(
+        shareFileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 0L, requestConditions)
+            .subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete deleting the file!")
@@ -482,7 +483,8 @@ public class ShareFileAsyncJavaDocCodeSamples {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.downloadToFileWithResponse#string-ShareFileRange-ShareRequestConditions
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
-        shareFileAsyncClient.downloadToFileWithResponse("somelocalfilepath", new ShareFileRange(1024, 2047L), requestConditions)
+        shareFileAsyncClient.downloadToFileWithResponse("somelocalfilepath", new ShareFileRange(1024, 2047L),
+            requestConditions)
             .subscribe(
                 response -> {
                     if (Files.exists(Paths.get("somelocalfilepath"))) {

@@ -138,8 +138,9 @@ public class ShareFileJavaDocCodeSamples {
             .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
-        Response<ShareFileInfo> response = fileClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission,
-            Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
+        Response<ShareFileInfo> response = fileClient.createWithResponse(1024, httpHeaders, smbProperties,
+            filePermission, Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1),
+            new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context
     }
@@ -167,8 +168,9 @@ public class ShareFileJavaDocCodeSamples {
 
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
 
-        Response<ShareFileInfo> response = fileClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission,
-            Collections.singletonMap("directory", "metadata"), requestConditions, Duration.ofSeconds(1), new Context(key1, value1));
+        Response<ShareFileInfo> response = fileClient.createWithResponse(1024, httpHeaders, smbProperties,
+            filePermission, Collections.singletonMap("directory", "metadata"), requestConditions, Duration.ofSeconds(1),
+            new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context
     }
@@ -238,8 +240,8 @@ public class ShareFileJavaDocCodeSamples {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.abortCopyWithResponse#string-ShareRequestConditions-duration-context
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
-        Response<Void> response = fileClient.abortCopyWithResponse("someCopyId", requestConditions, Duration.ofSeconds(1),
-            new Context(key1, value1));
+        Response<Void> response = fileClient.abortCopyWithResponse("someCopyId", requestConditions,
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Abort copying the file completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareFileClient.abortCopyWithResponse#string-ShareRequestConditions-duration-context
     }
@@ -285,8 +287,8 @@ public class ShareFileJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadWithResponse#InputStream-long-Long-ShareRequestConditions-Duration-Context
         InputStream uploadData = new ByteArrayInputStream(data);
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
-        Response<ShareFileUploadInfo> response = fileClient.uploadWithResponse(uploadData, data.length, 0L, requestConditions,
-            Duration.ofSeconds(30), null);
+        Response<ShareFileUploadInfo> response = fileClient.uploadWithResponse(uploadData, data.length, 0L,
+            requestConditions, Duration.ofSeconds(30), null);
         System.out.printf("Completed uploading the data with response %d%n.", response.getStatusCode());
         System.out.printf("ETag of the file is %s%n", response.getValue().getETag());
         // END: com.azure.storage.file.share.ShareFileClient.uploadWithResponse#InputStream-long-Long-ShareRequestConditions-Duration-Context
@@ -447,8 +449,8 @@ public class ShareFileJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#String-ShareFileRange-ShareRequestConditions-Duration-Context
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         Response<ShareFileProperties> response =
-            fileClient.downloadToFileWithResponse("somelocalfilepath", new ShareFileRange(1024, 2047L), requestConditions,
-                Duration.ofSeconds(1), Context.NONE);
+            fileClient.downloadToFileWithResponse("somelocalfilepath", new ShareFileRange(1024, 2047L),
+                requestConditions, Duration.ofSeconds(1), Context.NONE);
         if (Files.exists(Paths.get("somelocalfilepath"))) {
             System.out.println("Complete downloading the file with status code " + response.getStatusCode());
         }
@@ -473,8 +475,8 @@ public class ShareFileJavaDocCodeSamples {
     public void uploadFileFromURLWithResponseAsync() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-Duration-Context
-        Response<ShareFileUploadRangeFromUrlInfo> response = fileClient.uploadRangeFromUrlWithResponse(6, 8, 0, "sourceUrl",
-            Duration.ofSeconds(1), Context.NONE);
+        Response<ShareFileUploadRangeFromUrlInfo> response =
+            fileClient.uploadRangeFromUrlWithResponse(6, 8, 0, "sourceUrl", Duration.ofSeconds(1), Context.NONE);
         System.out.println("Completed upload range from url!");
         // END: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-Duration-Context
     }
@@ -487,8 +489,8 @@ public class ShareFileJavaDocCodeSamples {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-ShareRequestConditions-Duration-Context
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
-        Response<ShareFileUploadRangeFromUrlInfo> response = fileClient.uploadRangeFromUrlWithResponse(6, 8, 0, "sourceUrl",
-            requestConditions, Duration.ofSeconds(1), Context.NONE);
+        Response<ShareFileUploadRangeFromUrlInfo> response = fileClient.uploadRangeFromUrlWithResponse(6, 8, 0,
+            "sourceUrl", requestConditions, Duration.ofSeconds(1), Context.NONE);
         System.out.println("Completed upload range from url!");
         // END: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-ShareRequestConditions-Duration-Context
     }
@@ -686,7 +688,8 @@ public class ShareFileJavaDocCodeSamples {
             .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
-        fileClient.setPropertiesWithResponse(1024, httpHeaders, smbProperties, filePermission, requestConditions, null, null);
+        fileClient.setPropertiesWithResponse(1024, httpHeaders, smbProperties, filePermission, requestConditions, null,
+            null);
         System.out.println("Setting the file httpHeaders completed.");
         // END: com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-Duration-Context
     }
