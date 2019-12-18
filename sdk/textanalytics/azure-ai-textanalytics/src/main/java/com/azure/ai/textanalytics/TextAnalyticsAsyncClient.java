@@ -34,7 +34,6 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.Error;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.InnerError;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
@@ -1330,22 +1329,14 @@ public final class TextAnalyticsAsyncClient {
 
     private Error convertToError(TextAnalyticsError textAnalyticsError) {
         return new Error().setCode(textAnalyticsError.getCode().toString()).setMessage(textAnalyticsError.getMessage())
-            .setTarget(textAnalyticsError.getTarget()).setDetails(setErrors(textAnalyticsError.getDetails()))
-            .setInnerError(mapInnerError(textAnalyticsError.getInnerError()));
-    }
-
-    private InnerError mapInnerError(com.azure.ai.textanalytics.implementation.models.InnerError innerError) {
-        return new InnerError().setCode(innerError.getCode().toString())
-            .setInnererror(mapInnerError(innerError.getInnerError()))
-            .setMessage(innerError.getMessage()).setTarget(innerError.getTarget());
+            .setTarget(textAnalyticsError.getTarget()).setDetails(setErrors(textAnalyticsError.getDetails()));
     }
 
     private List<Error> setErrors(List<TextAnalyticsError> details) {
         List<Error> detailsList = new ArrayList<>();
         for (TextAnalyticsError error : details) {
             detailsList.add(new Error().setCode(error.getCode().toString()).setMessage(error.getMessage())
-                .setTarget(error.getTarget()).setDetails(setErrors(error.getDetails()))
-                .setInnerError(mapInnerError(error.getInnerError())));
+                .setTarget(error.getTarget()).setDetails(setErrors(error.getDetails())));
         }
         return detailsList;
     }

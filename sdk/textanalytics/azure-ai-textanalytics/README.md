@@ -154,6 +154,7 @@ cognitive services.
     ```java
     TextAnalyticsClient client = new TextAnalyticsClientBuilder()
             .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
     ```
 
