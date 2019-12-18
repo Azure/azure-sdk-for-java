@@ -188,7 +188,8 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecognizeEntitiesResult> recognizeEntitiesWithResponse(String text, String language, Context context) {
+    public Response<RecognizeEntitiesResult> recognizeEntitiesWithResponse(
+        String text, String language, Context context) {
         return client.recognizeEntitiesWithResponse(text, language, context).block();
     }
 
@@ -232,7 +233,8 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizeEntitiesResult> recognizeBatchEntities(List<TextDocumentInput> textInputs) {
+    public DocumentResultCollection<RecognizeEntitiesResult> recognizeBatchEntities(
+        List<TextDocumentInput> textInputs) {
         return recognizeBatchEntitiesWithResponse(textInputs, null, Context.NONE).getValue();
     }
 
@@ -280,12 +282,13 @@ public final class TextAnalyticsClient {
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} whose {@link Response#getValue() value} has the {@link RecognizeEntitiesResult named entity}
-     * of the text.
+     * @return A {@link Response} whose {@link Response#getValue() value} has the
+     * {@link RecognizeEntitiesResult named entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecognizeEntitiesResult> recognizePiiEntitiesWithResponse(String text, String language, Context context) {
+    public Response<RecognizeEntitiesResult> recognizePiiEntitiesWithResponse(String text, String language,
+        Context context) {
         return client.recognizePiiEntitiesWithResponse(text, language, context).block();
     }
 
@@ -335,7 +338,8 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizeEntitiesResult> recognizeBatchPiiEntities(List<TextDocumentInput> textInputs) {
+    public DocumentResultCollection<RecognizeEntitiesResult> recognizeBatchPiiEntities(
+        List<TextDocumentInput> textInputs) {
         return recognizeBatchPiiEntitiesWithResponse(textInputs, null, Context.NONE).getValue();
     }
 
@@ -400,7 +404,8 @@ public final class TextAnalyticsClient {
      *
      * @param textInputs A list of text to recognize linked entities for.
      *
-     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeLinkedEntitiesResult linked entity} of the text.
+     * @return A {@link DocumentResultCollection batch} of the
+     * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -485,12 +490,13 @@ public final class TextAnalyticsClient {
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} whose {@link Response#getValue() value} has the {@link ExtractKeyPhraseResult key phrases}
-     * of the text.
+     * @return A {@link Response} whose {@link Response#getValue() value} has the
+     * {@link ExtractKeyPhraseResult key phrases} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExtractKeyPhraseResult> extractKeyPhrasesWithResponse(String text, String language, Context context) {
+    public Response<ExtractKeyPhraseResult> extractKeyPhrasesWithResponse(String text, String language,
+        Context context) {
         return client.extractKeyPhrasesWithResponse(text, language, context).block();
     }
 
