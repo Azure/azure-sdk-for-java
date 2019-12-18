@@ -69,6 +69,9 @@ public enum LogLevel {
      * @return The LogLevel Enum.
      */
     public static LogLevel fromString(String logLevelVal) {
+        if (logLevelVal == null) {
+            return null;
+        }
         return LOG_LEVEL_STRING_MAPPER.get(logLevelVal.toLowerCase(Locale.ROOT));
     }
 }
