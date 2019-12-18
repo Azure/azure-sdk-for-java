@@ -5,14 +5,12 @@ package com.azure.core.util.logging;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import org.eclipse.jetty.util.log.Log;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ArgumentsSources;
-import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
@@ -32,6 +30,11 @@ public class ClientLoggerTests {
 
     private PrintStream originalSystemErr;
     private ByteArrayOutputStream logCaptureStream;
+
+    @Test
+    public void test() {
+        setupLogLevel(1);
+    }
 
     @BeforeEach
     public void setupLoggingConfiguration() {
@@ -282,10 +285,12 @@ public class ClientLoggerTests {
     }
 
     @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
-    @CsvSource({"1, 1, true", "1, 2, true", "1, 3, true", "1, 4, true", "2, 1, false", "2, 5, false"})
-    public void canLogAtLevel(int logLevelToConfigure, int logLevelToValidate, boolean expected) {
+    @CsvSource({"1, 1, true", "1, 2, true", "1, 3, true", "1, 4, true", "2, 1, false", "2, 5, false",
+        "1, VERBOSE, true", "1, info, true", "1, warning, true", "1, error, true", "2, verbose, false", "2, invalid, false"})
+    public void canLogAtLevel(int logLevelToConfigure, String logLevelToValidate, boolean expected) {
         setupLogLevel(logLevelToConfigure);
-        LogLevel logLevel = convertToLogLevel(logLevelToValidate);
+        LogLevel logLevel = LogLevel.getLogLevel(logLevelToValidate);
+        System.out.println(logLevel);
         assertEquals(new ClientLogger(ClientLoggerTests.class).canLogAtLevel(logLevel), expected);
     }
 
