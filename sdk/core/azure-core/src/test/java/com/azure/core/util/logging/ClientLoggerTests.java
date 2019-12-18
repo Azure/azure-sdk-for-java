@@ -5,7 +5,6 @@ package com.azure.core.util.logging;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import org.eclipse.jetty.util.log.Log;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
