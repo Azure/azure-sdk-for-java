@@ -91,6 +91,7 @@ known_presence_issues:
   - ['sdk/keyvault/microsoft-azure-keyvault-webkey/CHANGELOG.md', '#2847']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/CHANGELOG.md', '#2847']
   - ['sdk/mediaservices/microsoft-azure-media/CHANGELOG.md', '#2847']
+  - ['sdk/e2e/CHANGELOG.md', '#2847']
 
 known_content_issues:
   - ['cosmosdb/data-plane/benchmark/README.md', '#3113']
