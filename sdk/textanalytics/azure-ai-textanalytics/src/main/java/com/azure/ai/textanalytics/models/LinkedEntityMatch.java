@@ -3,38 +3,40 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The LinkedEntityMatch model.
  */
-@Fluent
+@Immutable
 public final class LinkedEntityMatch {
     /*
      * If a well-known item is recognized, a decimal number denoting the
      * confidence level between 0 and 1 will be returned.
      */
-    @JsonProperty(value = "score", required = true)
-    private double score;
+    private final double score;
 
     /*
      * Entity text as appears in the request.
      */
-    @JsonProperty(value = "text", required = true)
-    private String text;
+    private final String text;
 
     /*
      * Start position (in Unicode characters) for the entity match text.
      */
-    @JsonProperty(value = "offset", required = true)
-    private int offset;
+    private final int offset;
 
     /*
      * Length (in Unicode characters) for the entity match text.
      */
-    @JsonProperty(value = "length", required = true)
-    private int length;
+    private final int length;
+
+    public LinkedEntityMatch(String text, double score, int offset, int length) {
+        this.text = text;
+        this.score = score;
+        this.offset = offset;
+        this.length = length;
+    }
 
     /**
      * Get the score property: If a well-known item is recognized, a decimal
@@ -47,35 +49,12 @@ public final class LinkedEntityMatch {
     }
 
     /**
-     * Set the score property: If a well-known item is recognized, a decimal
-     * number denoting the confidence level between 0 and 1 will be returned.
-     *
-     * @param score the score value to set.
-     * @return the LinkedEntityMatch object itself.
-     */
-    public LinkedEntityMatch setScore(double score) {
-        this.score = score;
-        return this;
-    }
-
-    /**
      * Get the text property: Entity text as appears in the request.
      *
      * @return the text value.
      */
     public String getText() {
         return this.text;
-    }
-
-    /**
-     * Set the text property: Entity text as appears in the request.
-     *
-     * @param text the text value to set.
-     * @return the LinkedEntityMatch object itself.
-     */
-    public LinkedEntityMatch setText(String text) {
-        this.text = text;
-        return this;
     }
 
     /**
@@ -89,18 +68,6 @@ public final class LinkedEntityMatch {
     }
 
     /**
-     * Set the offset property: Start position (in Unicode characters) for the
-     * entity match text.
-     *
-     * @param offset the offset value to set.
-     * @return the LinkedEntityMatch object itself.
-     */
-    public LinkedEntityMatch setOffset(int offset) {
-        this.offset = offset;
-        return this;
-    }
-
-    /**
      * Get the length property: Length (in Unicode characters) for the entity
      * match text.
      *
@@ -108,17 +75,5 @@ public final class LinkedEntityMatch {
      */
     public int getLength() {
         return this.length;
-    }
-
-    /**
-     * Set the length property: Length (in Unicode characters) for the entity
-     * match text.
-     *
-     * @param length the length value to set.
-     * @return the LinkedEntityMatch object itself.
-     */
-    public LinkedEntityMatch setLength(int length) {
-        this.length = length;
-        return this;
     }
 }

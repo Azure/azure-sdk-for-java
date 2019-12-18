@@ -3,33 +3,35 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The DetectedLanguage model.
  */
-@Fluent
+@Immutable
 public final class DetectedLanguage {
     /*
      * Long name of a detected language (e.g. English, French).
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * A two letter representation of the detected language according to the
      * ISO 639-1 standard (e.g. en, fr).
      */
-    @JsonProperty(value = "iso6391Name", required = true)
-    private String iso6391Name;
+    private final String iso6391Name;
 
     /*
      * A confidence score between 0 and 1. Scores close to 1 indicate 100%
      * certainty that the identified language is true.
      */
-    @JsonProperty(value = "score", required = true)
-    private double score;
+    private final double score;
+
+    public DetectedLanguage(String name, String iso6391Name, double score) {
+        this.name = name;
+        this.iso6391Name = iso6391Name;
+        this.score = score;
+    }
 
     /**
      * Get the name property: Long name of a detected language (e.g. English,
@@ -39,18 +41,6 @@ public final class DetectedLanguage {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: Long name of a detected language (e.g. English,
-     * French).
-     *
-     * @param name the name value to set.
-     * @return the DetectedLanguage object itself.
-     */
-    public DetectedLanguage setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -64,18 +54,6 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Set the iso6391Name property: A two letter representation of the
-     * detected language according to the ISO 639-1 standard (e.g. en, fr).
-     *
-     * @param iso6391Name the iso6391Name value to set.
-     * @return the DetectedLanguage object itself.
-     */
-    public DetectedLanguage setIso6391Name(String iso6391Name) {
-        this.iso6391Name = iso6391Name;
-        return this;
-    }
-
-    /**
      * Get the score property: A confidence score between 0 and 1. Scores close
      * to 1 indicate 100% certainty that the identified language is true.
      *
@@ -83,17 +61,5 @@ public final class DetectedLanguage {
      */
     public double getScore() {
         return this.score;
-    }
-
-    /**
-     * Set the score property: A confidence score between 0 and 1. Scores close
-     * to 1 indicate 100% certainty that the identified language is true.
-     *
-     * @param score the score value to set.
-     * @return the DetectedLanguage object itself.
-     */
-    public DetectedLanguage setScore(double score) {
-        this.score = score;
-        return this;
     }
 }

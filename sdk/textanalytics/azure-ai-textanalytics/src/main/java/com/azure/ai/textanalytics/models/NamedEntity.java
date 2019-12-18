@@ -3,49 +3,51 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The NamedEntity model.
  */
-@Fluent
+@Immutable
 public final class NamedEntity {
     /*
      * NamedEntity text as appears in the request.
      */
-    @JsonProperty(value = "text", required = true)
-    private String text;
+    private final String text;
 
     /*
      * NamedEntity type, such as Person/Location/Org/SSN etc
      */
-    @JsonProperty(value = "type", required = true)
-    private String type;
+    private final String type;
 
     /*
      * NamedEntity sub type, such as Age/Year/TimeRange etc
      */
-    @JsonProperty(value = "subtype")
-    private String subtype;
+    private final String subtype;
 
     /*
      * Start position (in Unicode characters) for the entity text.
      */
-    @JsonProperty(value = "offset", required = true)
-    private int offset;
+    private final int offset;
 
     /*
      * Length (in Unicode characters) for the entity text.
      */
-    @JsonProperty(value = "length", required = true)
-    private int length;
+    private final int length;
 
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
-    @JsonProperty(value = "score", required = true)
-    private double score;
+    private final double score;
+
+    public NamedEntity(String text, String type, String subtype, int offset, int length, double score) {
+        this.text = text;
+        this.type = type;
+        this.subtype = subtype;
+        this.offset = offset;
+        this.length = length;
+        this.score = score;
+    }
 
     /**
      * Get the text property: NamedEntity text as appears in the request.
@@ -57,34 +59,12 @@ public final class NamedEntity {
     }
 
     /**
-     * Set the text property: NamedEntity text as appears in the request.
-     *
-     * @param text the text value to set.
-     * @return the NamedEntity object itself.
-     */
-    public NamedEntity setText(String text) {
-        this.text = text;
-        return this;
-    }
-
-    /**
      * Get the type property: NamedEntity type, such as Person/Location/Org/SSN etc.
      *
      * @return the type value.
      */
     public String getType() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: NamedEntity type, such as Person/Location/Org/SSN etc.
-     *
-     * @param type the type value to set.
-     * @return the NamedEntity object itself.
-     */
-    public NamedEntity setType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**
@@ -98,18 +78,6 @@ public final class NamedEntity {
     }
 
     /**
-     * Set the subtype property: NamedEntity sub type, such as Age/Year/TimeRange
-     * etc.
-     *
-     * @param subtype the subtype value to set.
-     * @return the NamedEntity object itself.
-     */
-    public NamedEntity setSubtype(String subtype) {
-        this.subtype = subtype;
-        return this;
-    }
-
-    /**
      * Get the offset property: Start position (in Unicode characters) for the
      * entity text.
      *
@@ -117,18 +85,6 @@ public final class NamedEntity {
      */
     public int getOffset() {
         return this.offset;
-    }
-
-    /**
-     * Set the offset property: Start position (in Unicode characters) for the
-     * entity text.
-     *
-     * @param offset the offset value to set.
-     * @return the NamedEntity object itself.
-     */
-    public NamedEntity setOffset(int offset) {
-        this.offset = offset;
-        return this;
     }
 
     /**
@@ -142,18 +98,6 @@ public final class NamedEntity {
     }
 
     /**
-     * Set the length property: Length (in Unicode characters) for the entity
-     * text.
-     *
-     * @param length the length value to set.
-     * @return the NamedEntity object itself.
-     */
-    public NamedEntity setLength(int length) {
-        this.length = length;
-        return this;
-    }
-
-    /**
      * Get the score property: Confidence score between 0 and 1 of the
      * extracted entity.
      *
@@ -161,17 +105,5 @@ public final class NamedEntity {
      */
     public double getScore() {
         return this.score;
-    }
-
-    /**
-     * Set the score property: Confidence score between 0 and 1 of the
-     * extracted entity.
-     *
-     * @param score the score value to set.
-     * @return the NamedEntity object itself.
-     */
-    public NamedEntity setScore(double score) {
-        this.score = score;
-        return this;
     }
 }

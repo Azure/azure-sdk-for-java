@@ -3,40 +3,43 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
 
 /**
  * if showStats=true was specified in the request this field will contain
  * information about the request payload.
  */
-@Fluent
+@Immutable
 public final class TextDocumentBatchStatistics {
     /*
      * Number of documents submitted in the request.
      */
-    @JsonProperty(value = "documentsCount", required = true)
-    private int documentCount;
+    private final int documentCount;
 
     /*
      * Number of valid documents. This excludes empty, over-size limit or
      * non-supported languages documents.
      */
-    @JsonProperty(value = "validDocumentsCount", required = true)
-    private int validDocumentCount;
+    private final int validDocumentCount;
 
     /*
      * Number of invalid documents. This includes empty, over-size limit or
      * non-supported languages documents.
      */
-    @JsonProperty(value = "erroneousDocumentsCount", required = true)
-    private int erroneousDocumentCount;
+    private final int erroneousDocumentCount;
 
     /*
      * Number of transactions for the request.
      */
-    @JsonProperty(value = "transactionsCount", required = true)
-    private long transactionCount;
+    private final long transactionCount;
+
+    public TextDocumentBatchStatistics(int documentCount, int validDocumentCount, int erroneousDocumentCount,
+        long transactionCount) {
+        this.documentCount = documentCount;
+        this.validDocumentCount = validDocumentCount;
+        this.erroneousDocumentCount = erroneousDocumentCount;
+        this.transactionCount = transactionCount;
+    }
 
     /**
      * Get the documentCount property: Number of documents submitted in the
@@ -49,18 +52,6 @@ public final class TextDocumentBatchStatistics {
     }
 
     /**
-     * Set the documentCount property: Number of documents submitted in the
-     * request.
-     *
-     * @param documentCount the documentCount value to set.
-     * @return the TextBatchStatistics object itself.
-     */
-    public TextDocumentBatchStatistics setDocumentCount(int documentCount) {
-        this.documentCount = documentCount;
-        return this;
-    }
-
-    /**
      * Get the validDocumentCount property: Number of valid documents. This
      * excludes empty, over-size limit or non-supported languages documents.
      *
@@ -68,18 +59,6 @@ public final class TextDocumentBatchStatistics {
      */
     public int getValidDocumentCount() {
         return this.validDocumentCount;
-    }
-
-    /**
-     * Set the validDocumentCount property: Number of valid documents. This
-     * excludes empty, over-size limit or non-supported languages documents.
-     *
-     * @param validDocumentCount the validDocumentCount value to set.
-     * @return the TextBatchStatistics object itself.
-     */
-    public TextDocumentBatchStatistics setValidDocumentCount(int validDocumentCount) {
-        this.validDocumentCount = validDocumentCount;
-        return this;
     }
 
     /**
@@ -94,19 +73,6 @@ public final class TextDocumentBatchStatistics {
     }
 
     /**
-     * Set the erroneousDocumentCount property: Number of invalid documents.
-     * This includes empty, over-size limit or non-supported languages
-     * documents.
-     *
-     * @param erroneousDocumentCount the erroneousDocumentCount value to set.
-     * @return the TextBatchStatistics object itself.
-     */
-    public TextDocumentBatchStatistics setErroneousDocumentCount(int erroneousDocumentCount) {
-        this.erroneousDocumentCount = erroneousDocumentCount;
-        return this;
-    }
-
-    /**
      * Get the transactionCount property: Number of transactions for the
      * request.
      *
@@ -114,17 +80,5 @@ public final class TextDocumentBatchStatistics {
      */
     public long getTransactionCount() {
         return this.transactionCount;
-    }
-
-    /**
-     * Set the transactionCount property: Number of transactions for the
-     * request.
-     *
-     * @param transactionCount the transactionCount value to set.
-     * @return the TextBatchStatistics object itself.
-     */
-    public TextDocumentBatchStatistics setTransactionCount(long transactionCount) {
-        this.transactionCount = transactionCount;
-        return this;
     }
 }

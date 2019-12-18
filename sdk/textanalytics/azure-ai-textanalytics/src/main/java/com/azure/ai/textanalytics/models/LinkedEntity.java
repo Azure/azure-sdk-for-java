@@ -3,50 +3,54 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+
 import java.util.List;
 
 /**
  * The LinkedEntity model.
  */
-@Fluent
+@Immutable
 public final class LinkedEntity {
     /*
      * Entity Linking formal name.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * List of instances this entity appears in the text.
      */
-    @JsonProperty(value = "matches", required = true)
-    private List<LinkedEntityMatch> linkedEntityMatches;
+    private final List<LinkedEntityMatch> linkedEntityMatches;
 
     /*
      * Language used in the data source.
      */
-    @JsonProperty(value = "language", required = true)
-    private String language;
+    private final String language;
 
     /*
      * Unique identifier of the recognized entity from the data source.
      */
-    @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * URL for the entity's page from the data source.
      */
-    @JsonProperty(value = "url", required = true)
-    private String url;
+    private final String url;
 
     /*
      * Data source used to extract entity linking, such as Wiki/Bing etc.
      */
-    @JsonProperty(value = "dataSource", required = true)
-    private String dataSource;
+    private final String dataSource;
+
+    public LinkedEntity(String name, List<LinkedEntityMatch> linkedEntityMatches, String language, String id,
+        String url, String dataSource) {
+        this.name = name;
+        this.linkedEntityMatches = linkedEntityMatches;
+        this.language = language;
+        this.id = id;
+        this.url = url;
+        this.dataSource = dataSource;
+    }
 
     /**
      * Get the name property: Entity Linking formal name.
@@ -55,17 +59,6 @@ public final class LinkedEntity {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: Entity Linking formal name.
-     *
-     * @param name the name value to set.
-     * @return the LinkedEntity object itself.
-     */
-    public LinkedEntity setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -79,35 +72,12 @@ public final class LinkedEntity {
     }
 
     /**
-     * Set the linkedEntityMatches property: List of instances this entity appears in the
-     * text.
-     *
-     * @param linkedEntityMatches the linkedEntityMatches value to set.
-     * @return the LinkedEntity object itself.
-     */
-    public LinkedEntity setLinkedEntityMatches(List<LinkedEntityMatch> linkedEntityMatches) {
-        this.linkedEntityMatches = linkedEntityMatches;
-        return this;
-    }
-
-    /**
      * Get the language property: Language used in the data source.
      *
      * @return the language value.
      */
     public String getLanguage() {
         return this.language;
-    }
-
-    /**
-     * Set the language property: Language used in the data source.
-     *
-     * @param language the language value to set.
-     * @return the LinkedEntity object itself.
-     */
-    public LinkedEntity setLanguage(String language) {
-        this.language = language;
-        return this;
     }
 
     /**
@@ -121,35 +91,12 @@ public final class LinkedEntity {
     }
 
     /**
-     * Set the id property: Unique identifier of the recognized entity from the
-     * data source.
-     *
-     * @param id the id value to set.
-     * @return the LinkedEntity object itself.
-     */
-    public LinkedEntity setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the url property: URL for the entity's page from the data source.
      *
      * @return the url value.
      */
     public String getUri() {
         return this.url;
-    }
-
-    /**
-     * Set the url property: URL for the entity's page from the data source.
-     *
-     * @param url the url value to set.
-     * @return the LinkedEntity object itself.
-     */
-    public LinkedEntity setUrl(String url) {
-        this.url = url;
-        return this;
     }
 
     /**
@@ -160,17 +107,5 @@ public final class LinkedEntity {
      */
     public String getDataSource() {
         return this.dataSource;
-    }
-
-    /**
-     * Set the dataSource property: Data source used to extract entity linking,
-     * such as Wiki/Bing etc.
-     *
-     * @param dataSource the dataSource value to set.
-     * @return the LinkedEntity object itself.
-     */
-    public LinkedEntity setDataSource(String dataSource) {
-        this.dataSource = dataSource;
-        return this;
     }
 }

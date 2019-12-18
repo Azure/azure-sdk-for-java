@@ -3,26 +3,29 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
 
 /**
  * if showStats=true was specified in the request this field will contain
  * information about the document payload.
  */
-@Fluent
+@Immutable
 public final class TextDocumentStatistics {
     /*
      * Number of text elements recognized in the document.
      */
-    @JsonProperty(value = "charactersCount", required = true)
-    private int characterCount;
+    private final int characterCount;
 
     /*
      * Number of transactions for the document.
      */
-    @JsonProperty(value = "transactionsCount", required = true)
-    private int transactionCount;
+    private final int transactionCount;
+
+    public TextDocumentStatistics(int characterCount, int transactionCount) {
+        this.characterCount = characterCount;
+        this.transactionCount = transactionCount;
+    }
+
 
     /**
      * Get the charactersCount property: Number of text elements recognized in
@@ -35,19 +38,6 @@ public final class TextDocumentStatistics {
     }
 
     /**
-     * Set the charactersCount property: Number of text elements recognized in
-     * the document.
-     *
-     * @param characterCount the charactersCount value to set.
-     *
-     * @return the TextDocumentStatistics object itself.
-     */
-    public TextDocumentStatistics setCharacterCount(int characterCount) {
-        this.characterCount = characterCount;
-        return this;
-    }
-
-    /**
      * Get the transactionsCount property: Number of transactions for the
      * document.
      *
@@ -55,18 +45,5 @@ public final class TextDocumentStatistics {
      */
     public int getTransactionCount() {
         return this.transactionCount;
-    }
-
-    /**
-     * Set the transactionsCount property: Number of transactions for the
-     * document.
-     *
-     * @param transactionCount the transactionsCount value to set.
-     *
-     * @return the TextDocumentStatistics object itself.
-     */
-    public TextDocumentStatistics setTransactionCount(int transactionCount) {
-        this.transactionCount = transactionCount;
-        return this;
     }
 }
