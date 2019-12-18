@@ -23,7 +23,7 @@ public final class LinkedEntityResult extends DocumentResult {
      * @param linkedEntities a list of linked entities
      */
     public LinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
-                              List<LinkedEntity> linkedEntities) {
+        List<LinkedEntity> linkedEntities) {
         super(id, textDocumentStatistics, error);
         this.linkedEntities = linkedEntities;
     }

@@ -73,7 +73,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
 
     static final String MODEL_VERSION = "2019-10-01";
-    static final int ZERO = 0;
 
     enum TestEndpoint {
         LANGUAGE, NAMED_ENTITY, LINKED_ENTITY, KEY_PHRASES, SENTIMENT
@@ -976,28 +975,23 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         final TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(67)
             .setTransactionCount(1);
 
-        final TextSentiment expectedDocumentSentiment = new TextSentiment()
-            .setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(ZERO)
-            .setNegativeScore(0.00019).setNeutralScore(0.5).setPositiveScore(0.4);
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED,
+            0.00019, 0.5, 0.4, 66, 0);
 
         final TextSentimentResult textSentimentResult1 = new TextSentimentResult("0", textDocumentStatistics1,
             null,
             expectedDocumentSentiment,
             Arrays.asList(
-                new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(0)
-                    .setNegativeScore(0.99),
-                new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(32)
-                    .setPositiveScore(0.99)
+                new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.0, 0.0, 31, 0),
+                new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.99, 35, 32)
             ));
 
         final TextSentimentResult textSentimentResult2 = new TextSentimentResult("1", textDocumentStatistics2,
             null,
             expectedDocumentSentiment,
             Arrays.asList(
-                new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(0)
-                    .setPositiveScore(0.99),
-                new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(36)
-                    .setNegativeScore(0.99)
+                new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.99, 35, 0),
+                new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.0, 0.0, 31, 36)
             ));
 
         return new DocumentResultCollection<>(Arrays.asList(textSentimentResult1, textSentimentResult2),

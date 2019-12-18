@@ -398,14 +398,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForTextInput() {
-        final TextSentiment expectedDocumentSentiment = new TextSentiment()
-            .setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(0).setNegativeScore(0.00019)
-            .setNeutralScore(0.5).setPositiveScore(0.4);
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED, 0.1, 0.5, 0.4, 66, 0);
         final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-            new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(0)
-                .setNegativeScore(0.99),
-            new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(32)
-                .setPositiveScore(0.99));
+            new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.0, 0.0, 31, 0),
+            new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.99, 35, 32));
 
         StepVerifier
             .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))

@@ -86,7 +86,7 @@ public final class TextAnalyticsAsyncClient {
      * that could be used as default values for each request.
      */
     TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion,
-                             TextAnalyticsClientOptions clientOptions) {
+        TextAnalyticsClientOptions clientOptions) {
         this.service = service;
         this.serviceVersion = serviceVersion;
         defaultCountryHint = clientOptions == null ? null : clientOptions.getDefaultCountryHint();
@@ -1039,63 +1039,64 @@ public final class TextAnalyticsAsyncClient {
 
     private TextSentimentResult convertToTextSentimentResult(final DocumentSentiment documentSentiment) {
         // Document text sentiment
-        final TextSentiment documentSentimentText = new TextSentiment();
         final TextSentimentClass documentSentimentClass = convertToTextSentimentClass(documentSentiment.getSentiment());
         if (documentSentimentClass == null) {
             return null;
         }
 
-        documentSentimentText.setTextSentimentClass(documentSentimentClass);
-        setTextSentimentScore(documentSentiment.getDocumentScores(), documentSentimentClass, documentSentimentText);
+        final double[] sentimentScores = getTextSentimentScore(documentSentiment.getDocumentScores(), documentSentimentClass);
 
         // Sentence text sentiment
         final List<TextSentiment> sentenceSentimentTexts =
             convertToSentenceSentiments(documentSentiment.getSentences());
 
-        documentSentimentText.setLength(sentenceSentimentTexts.stream().mapToInt(TextSentiment::getLength).sum());
-        documentSentimentText.setOffset(0);
-
         return new TextSentimentResult(documentSentiment.getId(), documentSentiment.getStatistics(), null,
-            documentSentimentText, sentenceSentimentTexts);
+            new TextSentiment(documentSentimentClass, sentimentScores[0], sentimentScores[1], sentimentScores[2],
+                sentenceSentimentTexts.stream().mapToInt(TextSentiment::getLength).sum(), 0),
+            sentenceSentimentTexts);
     }
 
     private List<TextSentiment> convertToSentenceSentiments(final List<SentenceSentiment> sentenceSentiments) {
         final List<TextSentiment> sentenceSentimentCollection = new ArrayList<>();
         sentenceSentiments.forEach(sentenceSentiment -> {
-            final TextSentiment singleSentenceSentiment = new TextSentiment()
-                .setLength(sentenceSentiment.getLength())
-                .setOffset(sentenceSentiment.getOffset());
-
             final TextSentimentClass sentimentClass = convertToTextSentimentClass(sentenceSentiment.getSentiment());
-            singleSentenceSentiment.setTextSentimentClass(sentimentClass);
+            final double[] sentimentScores =
+                getTextSentimentScore(sentenceSentiment.getSentenceScores(), sentimentClass);
 
-            setTextSentimentScore(sentenceSentiment.getSentenceScores(), sentimentClass, singleSentenceSentiment);
-
-            sentenceSentimentCollection.add(singleSentenceSentiment);
+            sentenceSentimentCollection.add(new TextSentiment(sentimentClass, sentimentScores[0], sentimentScores[1],
+                sentimentScores[2], sentenceSentiment.getLength(), sentenceSentiment.getOffset()));
         });
         return sentenceSentimentCollection;
     }
 
-    private void setTextSentimentScore(final SentimentConfidenceScorePerLabel sentimentScore,
-        final TextSentimentClass textSentimentClass, final TextSentiment textSentimentResult) {
+    private double[] getTextSentimentScore(SentimentConfidenceScorePerLabel sentimentScore,
+        TextSentimentClass textSentimentClass) {
+        double[] sentimentScores = new double[3];
         switch (textSentimentClass) {
-            case POSITIVE:
-                textSentimentResult.setPositiveScore(sentimentScore.getPositive());
+            case NEGATIVE:
+                sentimentScores[0] = sentimentScore.getNegative();
+                sentimentScores[1] = 0.0;
+                sentimentScores[2] = 0.0;
                 break;
             case NEUTRAL:
-                textSentimentResult.setNeutralScore(sentimentScore.getNeutral());
+                sentimentScores[0] = 0.0;
+                sentimentScores[1] = sentimentScore.getNeutral();
+                sentimentScores[2] = 0.0;
                 break;
-            case NEGATIVE:
-                textSentimentResult.setNegativeScore(sentimentScore.getNegative());
+            case POSITIVE:
+                sentimentScores[0] = 0.0;
+                sentimentScores[1] = 0.0;
+                sentimentScores[2] = sentimentScore.getPositive();
                 break;
             case MIXED:
-                textSentimentResult.setPositiveScore(sentimentScore.getPositive())
-                    .setNeutralScore(sentimentScore.getNeutral())
-                    .setNegativeScore(sentimentScore.getNegative());
+                sentimentScores[0] = sentimentScore.getNegative();
+                sentimentScores[1] = sentimentScore.getNeutral();
+                sentimentScores[2] = sentimentScore.getPositive();
                 break;
             default:
                 break;
         }
+        return sentimentScores;
     }
 
     private TextSentimentClass convertToTextSentimentClass(final String sentiment) {
