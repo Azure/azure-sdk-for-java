@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 /**
  * Code snippets for {@link EventProcessorClient}.
  */
-public final class EventProcessorJavaDocCodeSamples {
+public final class EventProcessorClientJavaDocCodeSamples {
 
     /**
      * Code snippet for showing how to start and stop an {@link EventProcessorClient}.
