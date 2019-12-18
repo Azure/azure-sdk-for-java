@@ -8,9 +8,9 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.Error;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.LinkedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.NamedEntity;
-import com.azure.ai.textanalytics.models.NamedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Disabled;
@@ -141,8 +141,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeEntitiesForTextInput() {
         NamedEntity namedEntity1 = new NamedEntity().setText("Seattle").setType("Location").setOffset(26).setLength(7).setScore(0.80624294281005859);
         NamedEntity namedEntity2 = new NamedEntity().setText("last week").setType("DateTime").setSubtype("DateRange").setOffset(34).setLength(9).setScore(0.8);
-        NamedEntityResult namedEntityResultList = new NamedEntityResult("0", null, null, Arrays.asList(namedEntity1, namedEntity2));
-        validateNamedEntities(namedEntityResultList.getNamedEntities(),
+        RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(namedEntity1, namedEntity2));
+        validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(),
             client.recognizeEntities("I had a wonderful trip to Seattle last week.").getNamedEntities());
     }
 
@@ -173,8 +173,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizePiiEntitiesForTextInput() {
         NamedEntity namedEntity1 = new NamedEntity().setText("859-98-0987").setType("U.S. Social Security Number (SSN)").setSubtype("").setOffset(28).setLength(11).setScore(0.65);
-        NamedEntityResult namedEntityResultList = new NamedEntityResult("0", null, null, Collections.singletonList(namedEntity1));
-        validateNamedEntities(namedEntityResultList.getNamedEntities(),
+        RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Collections.singletonList(namedEntity1));
+        validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(),
             client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.").getNamedEntities());
     }
 
@@ -235,9 +235,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeLinkedEntitiesForTextInput() {
         LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch().setText("Seattle").setLength(7).setOffset(26).setScore(0.11472424095537814);
         LinkedEntity linkedEntity1 = new LinkedEntity().setName("Seattle").setUrl("https://en.wikipedia.org/wiki/Seattle").setDataSource("Wikipedia").setLinkedEntityMatches(Collections.singletonList(linkedEntityMatch1)).setLanguage("en").setId("Seattle");
-        LinkedEntityResult linkedEntityResultList = new LinkedEntityResult("0", null, null, Collections.singletonList(linkedEntity1));
+        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResultList = new RecognizeLinkedEntitiesResult("0", null, null, Collections.singletonList(linkedEntity1));
 
-        validateLinkedEntities(linkedEntityResultList.getLinkedEntities(), client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.").getLinkedEntities());
+        validateLinkedEntities(recognizeLinkedEntitiesResultList.getLinkedEntities(), client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.").getLinkedEntities());
     }
 
     @Test

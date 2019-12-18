@@ -7,9 +7,9 @@ import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.NamedEntity;
-import com.azure.ai.textanalytics.models.NamedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextBatchStatistics;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.util.Context;
 
@@ -39,19 +39,19 @@ public class RecognizeEntitiesBatchDocuments {
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
-        final DocumentResultCollection<NamedEntityResult> detectedBatchResult =
+        final DocumentResultCollection<RecognizeEntitiesResult> detectedBatchResult =
             client.recognizeBatchEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
-        final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
+        final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
-        for (NamedEntityResult namedEntityResult : detectedBatchResult) {
-            for (NamedEntity entity : namedEntityResult.getNamedEntities()) {
+        for (RecognizeEntitiesResult recognizeEntitiesResult : detectedBatchResult) {
+            for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                 System.out.printf("Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
                     entity.getText(),
                     entity.getType(),

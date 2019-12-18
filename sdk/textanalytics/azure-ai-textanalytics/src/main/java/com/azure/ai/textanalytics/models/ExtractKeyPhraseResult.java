@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import java.util.List;
 
 /**
- * The KeyPhraseResult model.
+ * The ExtractKeyPhraseResult model.
  */
 @Immutable
-public final class KeyPhraseResult extends DocumentResult {
+public final class ExtractKeyPhraseResult extends DocumentResult {
     private final List<String> keyPhrases;
 
     /**
@@ -22,7 +22,7 @@ public final class KeyPhraseResult extends DocumentResult {
      * @param error the document error.
      * @param keyPhrases a list of key phrases string
      */
-    public KeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
+    public ExtractKeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
         List<String> keyPhrases) {
         super(id, textDocumentStatistics, error);
         this.keyPhrases = keyPhrases;

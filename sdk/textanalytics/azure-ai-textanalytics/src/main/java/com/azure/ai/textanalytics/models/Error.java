@@ -37,7 +37,7 @@ public final class Error {
      * Inner error contains more specific information.
      */
     @JsonProperty(value = "innererror")
-    private InnerError innererror;
+    private InnerError innerError;
 
     /*
      * Details about specific errors that led to this reported error.
@@ -115,19 +115,19 @@ public final class Error {
      *
      * @return the innererror value.
      */
-    public InnerError getInnererror() {
-        return this.innererror;
+    public InnerError getInnerError() {
+        return this.innerError;
     }
 
     /**
      * Set the innererror property: Inner error contains more specific
      * information.
      *
-     * @param innererror the innererror value to set.
+     * @param innerError the innererror value to set.
      * @return the Error object itself.
      */
-    public Error setInnererror(InnerError innererror) {
-        this.innererror = innererror;
+    public Error setInnerError(InnerError innerError) {
+        this.innerError = innerError;
         return this;
     }
 

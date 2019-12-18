@@ -10,24 +10,39 @@ import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.DocumentLinkedEntities;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
+import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.Entity;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
+import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
+import com.azure.ai.textanalytics.implementation.models.LinkedEntity;
+import com.azure.ai.textanalytics.implementation.models.Match;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
+import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentiment;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.Error;
-import com.azure.ai.textanalytics.models.KeyPhraseResult;
-import com.azure.ai.textanalytics.models.LinkedEntityResult;
-import com.azure.ai.textanalytics.models.NamedEntityResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.InnerError;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsClientOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.ai.textanalytics.models.TextSentimentResult;
@@ -75,22 +90,22 @@ public final class TextAnalyticsAsyncClient {
     private final String defaultLanguage;
 
     /**
-     * Create a {@code TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint.
-     * Each service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
+     * Create a {@code TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
+     * service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
      *
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Text Analytics supported by this client library.
      * @param clientOptions The {@link TextAnalyticsClientOptions client option} contains
      * {@link TextAnalyticsClientOptions#getDefaultLanguage default language} and
-     * {@link TextAnalyticsClientOptions#getDefaultCountryHint()} default country hint}
-     * that could be used as default values for each request.
+     * {@link TextAnalyticsClientOptions#getDefaultCountryHint()} default country hint} that could be used as default
+     * values for each request.
      */
     TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion,
         TextAnalyticsClientOptions clientOptions) {
         this.service = service;
         this.serviceVersion = serviceVersion;
         defaultCountryHint = clientOptions == null ? null : clientOptions.getDefaultCountryHint();
-        defaultLanguage =  clientOptions == null ? null : clientOptions.getDefaultLanguage();
+        defaultLanguage = clientOptions == null ? null : clientOptions.getDefaultLanguage();
     }
 
     /**
@@ -109,6 +124,7 @@ public final class TextAnalyticsAsyncClient {
      * @param text The text to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DetectLanguageResult detected language} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -117,15 +133,16 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a {@link Response} containing the detected language and a numeric score between zero and one.
-     * Scores close to one indicate 100% certainty that the identified language is true.
+     * Returns a {@link Response} containing the detected language and a numeric score between zero and one. Scores
+     * close to one indicate 100% certainty that the identified language is true.
      *
      * @param text The text to be analyzed.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link DetectLanguageResult detected language} of the text.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the {@link
+     * DetectLanguageResult detected language} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -154,8 +171,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs The list of texts to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link DetectLanguageResult
+     * detected languages}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -167,11 +185,12 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language for a batch of input with the provided country hint.
      *
      * @param textInputs The list of texts to be analyzed.
-     * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
-     * alpha-2. Defaults to "US" if not specified.
+     * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO
+     * 3166-1 alpha-2. Defaults to "US" if not specified.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * DetectLanguageResult detected languages}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -197,8 +216,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link DetectLanguageResult
+     * detected languages}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -214,8 +234,9 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
+     * DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -231,7 +252,8 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
         List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(textInputs);
+
+        final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(convertToLanguageInput(textInputs));
         return service.languagesWithRestResponseAsync(
             languageBatchInput, options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
@@ -244,34 +266,35 @@ public final class TextAnalyticsAsyncClient {
     // Named Entity
 
     /**
-     * Returns a list of general named entities in the provided text.
-     * For a list of supported entity types, check: https://aka.ms/taner
-     * For a list of enabled languages, check: https://aka.ms/talangs
+     * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
+     * https://aka.ms/taner For a list of enabled languages, check: https://aka.ms/talangs
      *
      * @param text the text to recognize entities for.
      *
-     * @return A {@link Mono} containing the {@link NamedEntityResult named entity} of the text.
+     * @return A {@link Mono} containing the {@link RecognizeEntitiesResult named entity} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NamedEntityResult> recognizeEntities(String text) {
+    public Mono<RecognizeEntitiesResult> recognizeEntities(String text) {
         return recognizeEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Returns a list of general named entities in the provided text.
-     * For a list of supported entity types, check: https://aka.ms/taner
-     * For a list of enabled languages, check: https://aka.ms/talangs
+     * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
+     * https://aka.ms/taner For a list of enabled languages, check: https://aka.ms/talangs
      *
      * @param text the text to recognize entities for.
-     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
+     * default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link NamedEntityResult named entity} of the text.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the {@link
+     * RecognizeEntitiesResult named entity} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NamedEntityResult>> recognizeEntitiesWithResponse(String text, String language) {
+    public Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language) {
         try {
             return withContext(context -> recognizeEntitiesWithResponse(text, language, context));
         } catch (RuntimeException ex) {
@@ -279,17 +302,14 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<NamedEntityResult>> recognizeEntitiesWithResponse(String text, String language, Context context) {
+    Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language,
+        Context context) {
         return recognizeBatchEntitiesWithResponse(
             Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
-                .flatMap(response -> {
-                    Iterator<NamedEntityResult> responseItem = response.getValue().iterator();
-                    if (responseItem.hasNext()) {
-                        return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-                    }
-                    return monoError(logger,
-                        new RuntimeException("Unable to recognize entities for the provided text."));
-                });
+            .flatMap(response -> {
+                Iterator<RecognizeEntitiesResult> responseItem = response.getValue().iterator();
+                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
+            });
     }
 
     /**
@@ -297,12 +317,13 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of texts to recognize entities for.
      *
-     *  @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link NamedEntityResult named entity} of the text.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * RecognizeEntitiesResult named entity} of the text.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<NamedEntityResult>> recognizeEntities(List<String> textInputs) {
+    public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntities(List<String> textInputs) {
         return recognizeEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
@@ -310,14 +331,16 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of general named entities for the provided list of texts.
      *
      * @param textInputs A list of texts to recognize entities for.
-     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
+     * default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link NamedEntityResult named entity}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * RecognizeEntitiesResult named entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeEntitiesWithResponse(
+    public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
             return withContext(context -> recognizeEntitiesWithResponse(textInputs, language, context));
@@ -326,7 +349,7 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
@@ -338,12 +361,13 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link NamedEntityResult named entity}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * RecognizeEntitiesResult named entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<NamedEntityResult>> recognizeBatchEntities(
+    public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeBatchEntities(
         List<TextDocumentInput> textInputs) {
         return recognizeBatchEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
@@ -355,12 +379,13 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link NamedEntityResult named entity}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
+     * DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeBatchEntitiesWithResponse(
+    public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
             return withContext(context -> recognizeBatchEntitiesWithResponse(textInputs, options, context));
@@ -369,9 +394,9 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeBatchEntitiesWithResponse(
-        List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(document);
+    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
+        List<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(convertToMultiLanguageInput(documents));
         return service.entitiesRecognitionGeneralWithRestResponseAsync(
             batchInput,
             options == null ? null : options.getModelVersion(),
@@ -383,36 +408,39 @@ public final class TextAnalyticsAsyncClient {
     }
 
     // PII Entity
+
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text.
-     * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text. For the list of
+     * supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of enabled
+     * languages.
      *
      * @param text the text to recognize PII entities for.
      *
-     * @return A {@link Mono} containing the {@link NamedEntityResult PII entity} of the text.
+     * @return A {@link Mono} containing the {@link RecognizeEntitiesResult PII entity} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NamedEntityResult> recognizePiiEntities(String text) {
+    public Mono<RecognizeEntitiesResult> recognizePiiEntities(String text) {
         return recognizePiiEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text.
-     * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text. For the list of
+     * supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of enabled
+     * languages.
      *
      * @param text the text to recognize PII entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link NamedEntityResult named entity} of the text.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the {@link
+     * RecognizeEntitiesResult named entity} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NamedEntityResult>> recognizePiiEntitiesWithResponse(String text, String language) {
+    public Mono<Response<RecognizeEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language) {
         try {
             return withContext(context -> recognizePiiEntitiesWithResponse(text, language, context));
         } catch (RuntimeException ex) {
@@ -420,51 +448,50 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<NamedEntityResult>> recognizePiiEntitiesWithResponse(String text, String language, Context context) {
+    Mono<Response<RecognizeEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language,
+        Context context) {
         return recognizeBatchPiiEntitiesWithResponse(
             Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
-                .flatMap(response -> {
-                    Iterator<NamedEntityResult> responseItem = response.getValue().iterator();
-                    if (responseItem.hasNext()) {
-                        return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-                    }
-                    return monoError(logger,
-                        new RuntimeException("Unable to recognize PII entities for the provided text."));
-                });
+            .flatMap(response -> {
+                Iterator<RecognizeEntitiesResult> responseItem = response.getValue().iterator();
+                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
+            });
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts.
-     * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts. For the list
+     * of supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of enabled
+     * languages.
      *
      * @param textInputs A list of text to recognize PII entities for.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link NamedEntityResult named entity} of the text.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * RecognizeEntitiesResult named entity} of the text.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<NamedEntityResult>> recognizePiiEntities(List<String> textInputs) {
+    public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizePiiEntities(List<String> textInputs) {
         return recognizePiiEntitiesWithResponse(textInputs, defaultLanguage)
             .flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts.
-     * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts. For the list
+     * of supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of enabled
+     * languages.
      *
      * @param textInputs A list of text to recognize PII entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link NamedEntityResult named entity}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * RecognizeEntitiesResult named entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizePiiEntitiesWithResponse(
+    public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
             return withContext(context -> recognizePiiEntitiesWithResponse(textInputs, language, context));
@@ -473,7 +500,7 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizePiiEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
@@ -481,37 +508,39 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs.
-     * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs. For
+     * the list of supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of
+     * enabled languages.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link NamedEntityResult named entity}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * RecognizeEntitiesResult named entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<NamedEntityResult>> recognizeBatchPiiEntities(
+    public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeBatchPiiEntities(
         List<TextDocumentInput> textInputs) {
         return recognizeBatchPiiEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs.
-     * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs. For
+     * the list of supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of
+     * enabled languages.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link NamedEntityResult named entity}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
+     * DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeBatchPiiEntitiesWithResponse(
+    public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
             return withContext(context -> recognizeBatchPiiEntitiesWithResponse(textInputs, options, context));
@@ -520,9 +549,9 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeBatchPiiEntitiesWithResponse(
-        List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(document);
+    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
+        List<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(convertToMultiLanguageInput(documents));
         return service.entitiesRecognitionPiiWithRestResponseAsync(
             batchInput,
             options == null ? null : options.getModelVersion(),
@@ -534,33 +563,38 @@ public final class TextAnalyticsAsyncClient {
     }
 
     // Linked Entity
+
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the provided text.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * Returns a list of recognized entities with links to a well-known knowledge base for the provided text. See
+     * https://aka.ms/talangs for supported languages in Text Analytics API.
      *
      * @param text the text to recognize linked entities for.
-     * @return A {@link Mono} containing the {@link LinkedEntityResult linked entity} of the text.
+     *
+     * @return A {@link Mono} containing the {@link RecognizeLinkedEntitiesResult linked entity} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkedEntityResult> recognizeLinkedEntities(String text) {
+    public Mono<RecognizeLinkedEntitiesResult> recognizeLinkedEntities(String text) {
         return recognizeLinkedEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the provided text.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * Returns a list of recognized entities with links to a well-known knowledge base for the provided text. See
+     * https://aka.ms/talangs for supported languages in Text Analytics API.
      *
      * @param text the text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link LinkedEntityResult named entity} of the text.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the {@link
+     * RecognizeLinkedEntitiesResult named entity} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LinkedEntityResult>> recognizeLinkedEntitiesWithResponse(String text, String language) {
+    public Mono<Response<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(String text,
+        String language) {
         try {
             return withContext(context -> recognizeLinkedEntitiesWithResponse(text, language, context));
         } catch (RuntimeException ex) {
@@ -568,50 +602,49 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<LinkedEntityResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
+    Mono<Response<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
         Context context) {
         return recognizeBatchLinkedEntitiesWithResponse(
             Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
-                .flatMap(response -> {
-                    Iterator<LinkedEntityResult> responseItem = response.getValue().iterator();
-                    if (responseItem.hasNext()) {
-                        return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-                    }
-                    return monoError(logger,
-                        new RuntimeException("Unable to recognize linked entities for the provided text."));
-                });
+            .flatMap(response -> {
+                Iterator<RecognizeLinkedEntitiesResult> responseItem = response.getValue().iterator();
+                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
+            });
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts. See
+     * https://aka.ms/talangs for supported languages in Text Analytics API.
      *
      * @param textInputs A list of text to recognize linked entities for.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link LinkedEntityResult linked entity} of the text.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * RecognizeLinkedEntitiesResult linked entity} of the text.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<LinkedEntityResult>> recognizeLinkedEntities(List<String> textInputs) {
+    public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntities(
+        List<String> textInputs) {
         return recognizeLinkedEntitiesWithResponse(textInputs, defaultLanguage)
             .flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts. See
+     * https://aka.ms/talangs for supported languages in Text Analytics API.
      *
      * @param textInputs A list of text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link LinkedEntityResult linked entity}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * RecognizeLinkedEntitiesResult linked entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<LinkedEntityResult>>> recognizeLinkedEntitiesWithResponse(
+    public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
             return withContext(context -> recognizeLinkedEntitiesWithResponse(textInputs, language, context));
@@ -620,7 +653,7 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<DocumentResultCollection<LinkedEntityResult>>> recognizeLinkedEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
@@ -628,35 +661,37 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs. See
+     * https://aka.ms/talangs for supported languages in Text Analytics API.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link LinkedEntityResult linked entity}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * RecognizeLinkedEntitiesResult linked entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<LinkedEntityResult>> recognizeBatchLinkedEntities(
+    public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeBatchLinkedEntities(
         List<TextDocumentInput> textInputs) {
         return recognizeBatchLinkedEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs. See
+     * https://aka.ms/talangs for supported languages in Text Analytics API.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link LinkedEntityResult linked entity}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
+     * DocumentResultCollection batch} of {@link RecognizeLinkedEntitiesResult linked entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<LinkedEntityResult>>> recognizeBatchLinkedEntitiesWithResponse(
+    public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeBatchLinkedEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
             return withContext(context -> recognizeBatchLinkedEntitiesWithResponse(textInputs, options, context));
@@ -665,9 +700,9 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<DocumentResultCollection<LinkedEntityResult>>> recognizeBatchLinkedEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeBatchLinkedEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(textInputs);
+        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(convertToMultiLanguageInput(textInputs));
         return service.entitiesLinkingWithRestResponseAsync(
             batchInput,
             options == null ? null : options.getModelVersion(),
@@ -678,60 +713,60 @@ public final class TextAnalyticsAsyncClient {
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
-    private DocumentResultCollection<LinkedEntityResult> toDocumentResultCollection(
+    private DocumentResultCollection<RecognizeLinkedEntitiesResult> toDocumentResultCollection(
         final EntityLinkingResult entityLinkingResult) {
         return new DocumentResultCollection<>(getDocumentLinkedEntities(entityLinkingResult),
-            entityLinkingResult.getModelVersion(), entityLinkingResult.getStatistics());
+            entityLinkingResult.getModelVersion(), mapBatchStatistics(entityLinkingResult.getStatistics()));
     }
 
-    private List<LinkedEntityResult> getDocumentLinkedEntities(final EntityLinkingResult entitiesResult) {
-        Stream<LinkedEntityResult> validDocumentList = entitiesResult.getDocuments().stream()
-            .map(this::convertToLinkedEntityResult);
-        Stream<LinkedEntityResult> errorDocumentList = entitiesResult.getErrors().stream()
-            .map(this::convertToErrorLinkedEntityResult);
-
-        return Stream.concat(validDocumentList, errorDocumentList).collect(Collectors.toList());
+    private List<RecognizeLinkedEntitiesResult> getDocumentLinkedEntities(final EntityLinkingResult entitiesResult) {
+        List<RecognizeLinkedEntitiesResult> validDocumentList = new ArrayList<>();
+        for (DocumentLinkedEntities documentLinkedEntities : entitiesResult.getDocuments()) {
+            validDocumentList.add(new RecognizeLinkedEntitiesResult(documentLinkedEntities.getId(), convertToTextDocumentStatistics(documentLinkedEntities.getStatistics()),
+                null, mapLinkedEntity(documentLinkedEntities.getEntities())));
+        }
+        List<RecognizeLinkedEntitiesResult> errorDocumentList = new ArrayList<>();
+        for (DocumentError documentError : entitiesResult.getErrors()) {
+            final Error serviceError = convertToError(documentError.getError());
+            final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
+                .setTarget(serviceError.getTarget());
+            errorDocumentList.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null, error, null));
+        }
+        return Stream.concat(validDocumentList.stream(), errorDocumentList.stream()).collect(Collectors.toList());
     }
 
-    private LinkedEntityResult convertToLinkedEntityResult(final DocumentLinkedEntities documentLinkedEntities) {
-        return new LinkedEntityResult(documentLinkedEntities.getId(), documentLinkedEntities.getStatistics(),
-            null, documentLinkedEntities.getEntities());
-    }
-
-    private LinkedEntityResult convertToErrorLinkedEntityResult(final DocumentError documentError) {
-        final Error serviceError = documentError.getError();
-        final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
-            .setTarget(serviceError.getTarget());
-        return new LinkedEntityResult(documentError.getId(), null, error, null);
-    }
 
     // Key Phrases
+
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      *
      * @param text the text to be analyzed.
-     * @return A {@link Mono} containing the {@link KeyPhraseResult key phrases} of the text.
+     *
+     * @return A {@link Mono} containing the {@link ExtractKeyPhraseResult key phrases} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyPhraseResult> extractKeyPhrases(String text) {
+    public Mono<ExtractKeyPhraseResult> extractKeyPhrases(String text) {
         return extractKeyPhrasesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the input text.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * Returns a list of strings denoting the key phrases in the input text. See https://aka.ms/talangs for the list of
+     * enabled languages.
      *
      * @param text the text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link KeyPhraseResult key phrases} of the text.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the {@link
+     * ExtractKeyPhraseResult key phrases} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language) {
+    public Mono<Response<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language) {
         try {
             return withContext(context -> extractKeyPhrasesWithResponse(text, language, context));
         } catch (RuntimeException ex) {
@@ -739,17 +774,14 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language, Context context) {
+    Mono<Response<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language,
+        Context context) {
         return extractBatchKeyPhrasesWithResponse(
             Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
-                .flatMap(response -> {
-                    Iterator<KeyPhraseResult> responseItem = response.getValue().iterator();
-                    if (responseItem.hasNext()) {
-                        return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-                    }
-                    return monoError(logger,
-                        new RuntimeException("Unable to extract key phrases for the provided text."));
-                });
+            .flatMap(response -> {
+                Iterator<ExtractKeyPhraseResult> responseItem = response.getValue().iterator();
+                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
+            });
     }
 
     /**
@@ -757,29 +789,31 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of text to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link KeyPhraseResult key phrases} of the text.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link ExtractKeyPhraseResult
+     * key phrases} of the text.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrases(List<String> textInputs) {
+    public Mono<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrases(List<String> textInputs) {
         return extractKeyPhrasesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the input text.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * Returns a list of strings denoting the key phrases in the input text. See https://aka.ms/talangs for the list of
+     * enabled languages.
      *
      * @param textInputs A list of text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link KeyPhraseResult key phrases}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * ExtractKeyPhraseResult key phrases}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractKeyPhrasesWithResponse(
+    public Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
         List<String> textInputs, String language) {
         try {
             return withContext(context -> extractKeyPhrasesWithResponse(textInputs, language, context));
@@ -788,7 +822,7 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractKeyPhrasesWithResponse(
+    Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
         List<String> textInputs, String language, Context context) {
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
@@ -800,29 +834,32 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link KeyPhraseResult key phrases}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link ExtractKeyPhraseResult
+     * key phrases}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<KeyPhraseResult>> extractBatchKeyPhrases(List<TextDocumentInput> textInputs) {
+    public Mono<DocumentResultCollection<ExtractKeyPhraseResult>> extractBatchKeyPhrases(
+        List<TextDocumentInput> textInputs) {
         return extractBatchKeyPhrasesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the input text.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * Returns a list of strings denoting the key phrases in the input text. See https://aka.ms/talangs for the list of
+     * enabled languages.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link KeyPhraseResult key phrases}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
+     * DocumentResultCollection batch} of {@link ExtractKeyPhraseResult key phrases}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
+    public Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
             return withContext(context -> extractBatchKeyPhrasesWithResponse(textInputs, options, context));
@@ -831,9 +868,9 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
-        List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(document);
+    Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
+        List<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(convertToMultiLanguageInput(documents));
         return service.keyPhrasesWithRestResponseAsync(
             batchInput,
             options == null ? null : options.getModelVersion(),
@@ -844,42 +881,41 @@ public final class TextAnalyticsAsyncClient {
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
-    private DocumentResultCollection<KeyPhraseResult> toDocumentResultCollection(
+    private DocumentResultCollection<ExtractKeyPhraseResult> toDocumentResultCollection(
         final com.azure.ai.textanalytics.implementation.models.KeyPhraseResult keyPhraseResult) {
-        return new DocumentResultCollection<>(getDocumentNamedEntities(keyPhraseResult),
-            keyPhraseResult.getModelVersion(), keyPhraseResult.getStatistics());
+        return new DocumentResultCollection<>(getKeyPhraseResults(keyPhraseResult),
+            keyPhraseResult.getModelVersion(), mapBatchStatistics(keyPhraseResult.getStatistics()));
     }
 
-    private List<KeyPhraseResult> getDocumentNamedEntities(
+    private List<ExtractKeyPhraseResult> getKeyPhraseResults(
         final com.azure.ai.textanalytics.implementation.models.KeyPhraseResult keyPhraseResult) {
-        Stream<KeyPhraseResult> validDocumentList = keyPhraseResult.getDocuments().stream()
-            .map(this::convertToKeyPhraseResult);
-        Stream<KeyPhraseResult> errorDocumentList = keyPhraseResult.getErrors().stream()
-            .map(this::convertToErrorKeyPhraseResult);
+        List<ExtractKeyPhraseResult> validDocumentList = new ArrayList<>();
+        for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
+            validDocumentList.add(new ExtractKeyPhraseResult(documentKeyPhrases.getId(),
+                convertToTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
+                documentKeyPhrases.getKeyPhrases()));
+        }
+        List<ExtractKeyPhraseResult> errorDocumentList = new ArrayList<>();
 
-        return Stream.concat(validDocumentList, errorDocumentList).collect(Collectors.toList());
-    }
-
-    private KeyPhraseResult convertToKeyPhraseResult(final DocumentKeyPhrases documentKeyPhrases) {
-        return new KeyPhraseResult(documentKeyPhrases.getId(), documentKeyPhrases.getStatistics(), null,
-            documentKeyPhrases.getKeyPhrases());
-    }
-
-    private KeyPhraseResult convertToErrorKeyPhraseResult(final DocumentError documentError) {
-        final Error serviceError = documentError.getError();
-        final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
-            .setTarget(serviceError.getTarget());
-        return new KeyPhraseResult(documentError.getId(), null, error, null);
+        for (DocumentError documentError : keyPhraseResult.getErrors()) {
+            final Error serviceError = convertToError(documentError.getError());
+            final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
+                .setTarget(serviceError.getTarget());
+            errorDocumentList.add(new ExtractKeyPhraseResult(documentError.getId(), null, error, null));
+        }
+        return Stream.concat(validDocumentList.stream(), errorDocumentList.stream()).collect(Collectors.toList());
     }
 
     // Sentiment
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
-     * (Positive, Negative, and Neutral) for the document and each sentence within i
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Neutral) for the document and each sentence within i
      *
      * @param text the text to be analyzed.
+     *
      * @return A {@link Mono} containing the {@link TextSentimentResult text sentiment} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -888,15 +924,16 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
-     * (Positive, Negative, and Neutral) for the document and each sentence within i
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Neutral) for the document and each sentence within i
      *
      * @param text the text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link TextSentimentResult text sentiment} of the text.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the {@link
+     * TextSentimentResult text sentiment} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -911,24 +948,21 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<TextSentimentResult>> analyzeSentimentWithResponse(String text, String language, Context context) {
         return analyzeBatchSentimentWithResponse(
             Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
-                .flatMap(response -> {
-                    Iterator<TextSentimentResult> responseItem = response.getValue().iterator();
-                    if (responseItem.hasNext()) {
-                        return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-                    }
-                    return monoError(logger,
-                        new RuntimeException("Unable to analyze sentiment for the provided text."));
-                });
+            .flatMap(response -> {
+                Iterator<TextSentimentResult> responseItem = response.getValue().iterator();
+                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
+            });
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
-     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Neutral) for the document and each sentence within it.
      *
      * @param textInputs A list of text to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link TextSentimentResult text sentiment} of the text.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link TextSentimentResult
+     * text sentiment} of the text.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -937,15 +971,16 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
-     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Neutral) for the document and each sentence within it.
      *
      * @param textInputs A list of text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link TextSentimentResult text sentiment}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
+     * TextSentimentResult text sentiment}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -966,13 +1001,14 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
-     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Neutral) for the document and each sentence within it.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link TextSentimentResult text sentiment}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link TextSentimentResult
+     * text sentiment}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -982,15 +1018,16 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
-     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Neutral) for the document and each sentence within it.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link TextSentimentResult text sentiment}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
+     * DocumentResultCollection batch} of {@link TextSentimentResult text sentiment}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1004,8 +1041,8 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<DocumentResultCollection<TextSentimentResult>>> analyzeBatchSentimentWithResponse(
-        List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(document);
+        List<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(convertToMultiLanguageInput(documents));
         return service.sentimentWithRestResponseAsync(
             batchInput,
             options == null ? null : options.getModelVersion(),
@@ -1016,28 +1053,28 @@ public final class TextAnalyticsAsyncClient {
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
-    /**
-     * Get default country hint code.
-     *
-     * @return the default country hint code
-     */
-    public String getDefaultCountryHint() {
-        return defaultCountryHint;
+    private List<LanguageInput> convertToLanguageInput(List<DetectLanguageInput> textInputs) {
+        List<LanguageInput> languageInputList = new ArrayList<>();
+        for (DetectLanguageInput detectLanguageInput : textInputs) {
+            languageInputList.add(new LanguageInput().setId(detectLanguageInput.getId())
+                .setText(detectLanguageInput.getText()).setCountryHint(detectLanguageInput.getCountryHint()));
+        }
+        return languageInputList;
     }
 
-    /**
-     * Get default language when the builder is setup.
-     *
-     * @return the default language
-     */
-    public String getDefaultLanguage() {
-        return defaultLanguage;
+    private List<MultiLanguageInput> convertToMultiLanguageInput(List<TextDocumentInput> textInputs) {
+        List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
+        for (TextDocumentInput textDocumentInput : textInputs) {
+            multiLanguageInputs.add(new MultiLanguageInput().setId(textDocumentInput.getId())
+                .setText(textDocumentInput.getText()).setLanguage(textDocumentInput.getLanguage()));
+        }
+        return multiLanguageInputs;
     }
 
     private DocumentResultCollection<TextSentimentResult> toDocumentResultCollection(
         final SentimentResponse sentimentResponse) {
         return new DocumentResultCollection<>(getDocumentTextSentiment(sentimentResponse),
-            sentimentResponse.getModelVersion(), sentimentResponse.getStatistics());
+            sentimentResponse.getModelVersion(), mapBatchStatistics(sentimentResponse.getStatistics()));
     }
 
     private List<TextSentimentResult> getDocumentTextSentiment(final SentimentResponse sentimentResponse) {
@@ -1063,7 +1100,7 @@ public final class TextAnalyticsAsyncClient {
         final List<TextSentiment> sentenceSentimentTexts =
             convertToSentenceSentiments(documentSentiment.getSentences());
 
-        return new TextSentimentResult(documentSentiment.getId(), documentSentiment.getStatistics(), null,
+        return new TextSentimentResult(documentSentiment.getId(), convertToTextDocumentStatistics(documentSentiment.getStatistics()), null,
             new TextSentiment(documentSentimentClass, sentimentScores[0], sentimentScores[1], sentimentScores[2],
                 sentenceSentimentTexts.stream().mapToInt(TextSentiment::getLength).sum(), 0),
             sentenceSentimentTexts);
@@ -1129,7 +1166,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     private TextSentimentResult convertToErrorTextSentimentResult(final DocumentError documentError) {
-        final Error serviceError = documentError.getError();
+        final Error serviceError = convertToError(documentError.getError());
         final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
             .setTarget(serviceError.getTarget());
         return new TextSentimentResult(documentError.getId(), null, error, null,
@@ -1145,8 +1182,8 @@ public final class TextAnalyticsAsyncClient {
      */
     private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(
         final LanguageResult languageResult) {
-        return new DocumentResultCollection<>(getDocumentLanguages(languageResult), languageResult.getModelVersion(),
-            languageResult.getStatistics());
+        return new DocumentResultCollection<DetectLanguageResult>(getDocumentLanguages(languageResult), languageResult.getModelVersion(),
+            mapBatchStatistics(languageResult.getStatistics()));
     }
 
     /**
@@ -1156,15 +1193,17 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return the combined error and document list.
      */
-    private static List<DetectLanguageResult> getDocumentLanguages(final LanguageResult languageResult) {
+    private List<DetectLanguageResult> getDocumentLanguages(final LanguageResult languageResult) {
         List<DetectLanguageResult> validDocumentList = new ArrayList<>();
-        for (DocumentLanguage documentLanguage: languageResult.getDocuments()) {
-            validDocumentList.add(new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
-                null, documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages()));
+        for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
+            validDocumentList.add(new DetectLanguageResult(documentLanguage.getId(),
+                convertToTextDocumentStatistics(documentLanguage.getStatistics()),
+                null, setPrimaryLanguage(documentLanguage.getDetectedLanguages()),
+                convertToDetectLanguages(documentLanguage.getDetectedLanguages())));
         }
         List<DetectLanguageResult> errorDocumentList = new ArrayList<>();
-        for (DocumentError documentError: languageResult.getErrors()) {
-            Error serviceError = documentError.getError();
+        for (DocumentError documentError : languageResult.getErrors()) {
+            Error serviceError = convertToError(documentError.getError());
             Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
                 .setTarget(serviceError.getTarget());
             errorDocumentList.add(new DetectLanguageResult(documentError.getId(), null, error, null,
@@ -1173,31 +1212,122 @@ public final class TextAnalyticsAsyncClient {
         return Stream.concat(validDocumentList.stream(), errorDocumentList.stream()).collect(Collectors.toList());
     }
 
-    private DocumentResultCollection<NamedEntityResult> toDocumentResultCollection(
-        final EntitiesResult entitiesResult) {
-        return new DocumentResultCollection<>(getDocumentNamedEntities(entitiesResult),
-            entitiesResult.getModelVersion(), entitiesResult.getStatistics());
+    private List<DetectedLanguage> convertToDetectLanguages(
+        List<com.azure.ai.textanalytics.implementation.models.DetectedLanguage> detectedLanguages) {
+        List<DetectedLanguage> detectedLanguagesList = new ArrayList<>();
+        for (com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguage : detectedLanguages) {
+            detectedLanguagesList.add(new DetectedLanguage().setName(detectedLanguage.getName())
+                .setIso6391Name(detectedLanguage.getIso6391Name()).setScore(detectedLanguage.getScore()));
+        }
+        return detectedLanguagesList;
     }
 
-    private List<NamedEntityResult> getDocumentNamedEntities(final EntitiesResult entitiesResult) {
-        List<NamedEntityResult> validDocumentList = new ArrayList<>();
-        for (DocumentEntities documentEntities: entitiesResult.getDocuments()) {
-            validDocumentList.add(new NamedEntityResult(documentEntities.getId(), documentEntities.getStatistics(),
-                null, documentEntities.getEntities()));
+    private DetectedLanguage setPrimaryLanguage(
+        List<com.azure.ai.textanalytics.implementation.models.DetectedLanguage> detectedLanguages) {
+        if (detectedLanguages.size() > 1) {
+            com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguageResult = detectedLanguages.get(0);
+            return new DetectedLanguage().setName(detectedLanguageResult.getName())
+                .setIso6391Name(detectedLanguageResult.getIso6391Name()).setScore(detectedLanguageResult.getScore());
         }
-        List<NamedEntityResult> errorDocumentList = new ArrayList<>();
-        for (DocumentError documentError: entitiesResult.getErrors()) {
-            final Error serviceError = documentError.getError();
+        return null;
+    }
+
+    private TextDocumentBatchStatistics mapBatchStatistics(RequestStatistics statistics) {
+        return new TextDocumentBatchStatistics().setDocumentCount(statistics.getDocumentsCount())
+            .setErroneousDocumentCount(statistics.getErroneousDocumentsCount())
+            .setTransactionCount(statistics.getTransactionsCount())
+            .setValidDocumentCount(statistics.getValidDocumentsCount());
+    }
+
+    private DocumentResultCollection<RecognizeEntitiesResult> toDocumentResultCollection(
+        final EntitiesResult entitiesResult) {
+        return new DocumentResultCollection<>(getDocumentNamedEntities(entitiesResult),
+            entitiesResult.getModelVersion(), mapBatchStatistics(entitiesResult.getStatistics()));
+    }
+
+    private List<RecognizeEntitiesResult> getDocumentNamedEntities(final EntitiesResult entitiesResult) {
+        List<RecognizeEntitiesResult> validDocumentList = new ArrayList<>();
+        for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
+            validDocumentList.add(new RecognizeEntitiesResult(documentEntities.getId(), convertToTextDocumentStatistics(documentEntities.getStatistics()),
+                null, mapToNamedEntities(documentEntities.getEntities())));
+        }
+        List<RecognizeEntitiesResult> errorDocumentList = new ArrayList<>();
+        for (DocumentError documentError : entitiesResult.getErrors()) {
+            final Error serviceError = convertToError(documentError.getError());
             final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
                 .setTarget(serviceError.getTarget());
-            errorDocumentList.add(new NamedEntityResult(documentError.getId(), null, error, null));
+            errorDocumentList.add(new RecognizeEntitiesResult(documentError.getId(), null, error, null));
         }
         return Stream.concat(validDocumentList.stream(), errorDocumentList.stream()).collect(Collectors.toList());
+    }
+
+    private List<NamedEntity> mapToNamedEntities(List<Entity> entities) {
+        List<NamedEntity> namedEntityList = new ArrayList<>();
+        for (Entity entity : entities) {
+            namedEntityList.add(new NamedEntity().setScore(entity.getScore()).setSubtype(entity.getSubtype())
+                .setType(entity.getType()).setLength(entity.getLength()).setOffset(entity.getOffset())
+                .setText(entity.getText()));
+        }
+        return namedEntityList;
     }
 
     private static <T> List<T> mapByIndex(List<String> textInputs, BiFunction<String, String, T> mappingFunction) {
         return IntStream.range(0, textInputs.size())
             .mapToObj(index -> mappingFunction.apply(String.valueOf(index), textInputs.get(index)))
             .collect(Collectors.toList());
+    }
+
+    private TextDocumentStatistics convertToTextDocumentStatistics(DocumentStatistics statistics) {
+        return new TextDocumentStatistics().setCharacterCount(statistics.getCharactersCount()).setTransactionCount(statistics.getTransactionsCount());
+    }
+
+    private List<com.azure.ai.textanalytics.models.LinkedEntity> mapLinkedEntity(List<LinkedEntity> linkedEntities) {
+        List<com.azure.ai.textanalytics.models.LinkedEntity> linkedEntitiesList = new ArrayList<>();
+        for (LinkedEntity linkedEntity : linkedEntities) {
+            linkedEntitiesList.add(new com.azure.ai.textanalytics.models.LinkedEntity().setDataSource(linkedEntity.getDataSource()).setId(linkedEntity.getId()).setLanguage(linkedEntity.getLanguage()).setName(linkedEntity.getName()).setLinkedEntityMatches(mapLinkedEntityMatches(linkedEntity.getMatches())).setUrl(linkedEntity.getUrl()));
+        }
+        return linkedEntitiesList;
+    }
+
+    private List<LinkedEntityMatch> mapLinkedEntityMatches(List<Match> matches) {
+        List<LinkedEntityMatch> linkedEntityMatchesList = new ArrayList<>();
+        for (Match match : matches) {
+            linkedEntityMatchesList.add(new LinkedEntityMatch().setScore(match.getScore()).setLength(match.getLength()).setText(match.getText()).setOffset(match.getOffset()));
+        }
+        return linkedEntityMatchesList;
+    }
+
+    private Error convertToError(TextAnalyticsError textAnalyticsError) {
+        return new Error().setCode(textAnalyticsError.getCode().toString()).setMessage(textAnalyticsError.getMessage()).setTarget(textAnalyticsError.getTarget()).setDetails(setErrors(textAnalyticsError.getDetails())).setInnerError(mapInnerError(textAnalyticsError.getInnerError()));
+    }
+
+    private InnerError mapInnerError(com.azure.ai.textanalytics.implementation.models.InnerError innerError) {
+        return new InnerError().setCode(innerError.getCode().toString()).setInnererror(mapInnerError(innerError.getInnerError())).setMessage(innerError.getMessage()).setTarget(innerError.getTarget());
+    }
+
+    private List<Error> setErrors(List<TextAnalyticsError> details) {
+        List<Error> detailsList = new ArrayList<>();
+        for (TextAnalyticsError error : details) {
+            detailsList.add(new Error().setCode(error.getCode().toString()).setMessage(error.getMessage()).setTarget(error.getTarget()).setDetails(setErrors(error.getDetails())).setInnerError(mapInnerError(error.getInnerError())));
+        }
+        return detailsList;
+    }
+
+    /**
+     * Get default country hint code.
+     *
+     * @return the default country hint code
+     */
+    public String getDefaultCountryHint() {
+        return defaultCountryHint;
+    }
+
+    /**
+     * Get default language when the builder is setup.
+     *
+     * @return the default language
+     */
+    public String getDefaultLanguage() {
+        return defaultLanguage;
     }
 }

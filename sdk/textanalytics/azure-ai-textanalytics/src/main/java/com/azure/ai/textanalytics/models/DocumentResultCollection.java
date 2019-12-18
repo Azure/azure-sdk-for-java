@@ -15,7 +15,7 @@ import com.azure.core.util.IterableStream;
 public class DocumentResultCollection<T> extends IterableStream<T> {
 
     private final String modelVersion;
-    private final TextBatchStatistics statistics;
+    private final TextDocumentBatchStatistics statistics;
 
     /**
      * Create a document result collection
@@ -24,7 +24,7 @@ public class DocumentResultCollection<T> extends IterableStream<T> {
      * @param modelVersion model version
      * @param statistics Text batch statistics
      */
-    public DocumentResultCollection(Iterable<T> iterable, String modelVersion, TextBatchStatistics statistics) {
+    public DocumentResultCollection(Iterable<T> iterable, String modelVersion, TextDocumentBatchStatistics statistics) {
         super(iterable);
         this.modelVersion = modelVersion;
         this.statistics = statistics;
@@ -44,7 +44,7 @@ public class DocumentResultCollection<T> extends IterableStream<T> {
      *
      * @return the statistics of the batch documents
      */
-    public TextBatchStatistics getStatistics() {
+    public TextDocumentBatchStatistics getStatistics() {
         return statistics;
     }
 }
