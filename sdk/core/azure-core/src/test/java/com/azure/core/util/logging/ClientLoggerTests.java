@@ -106,7 +106,7 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
     @ValueSource(ints = { 1, 2, 3, 4 })
-    public void logWhenLoggingDisabled(int logLevel) {
+    public void logWhenLoggingInvalidNumeric(int logLevel) {
         String logMessage = "This is a test";
         setupLogLevel(5);
         assertThrows(IllegalArgumentException.class, () ->
