@@ -425,7 +425,8 @@ class FileAPITests extends APISpec {
         assert pollResponse.getValue().getCopyId() != null
     }
 
-    def "Start copy with args fpk"() {
+    @Unroll
+    def "Start copy with args"() {
         given:
         primaryFileClient.create(1024)
         def sourceURL = primaryFileClient.getFileUrl()
@@ -433,49 +434,26 @@ class FileAPITests extends APISpec {
         // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .setFilePermissionKey(filePermissionKey)
+        if (setFilePermissionKey) {
+            smbProperties.setFilePermissionKey(filePermissionKey)
+        }
 
         when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, smbProperties, null,
-            PermissionCopyModeType.OVERRIDE, null, null, null, null)
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, smbProperties,
+            setFilePermission ? filePermission : null, permissionType, ignoreReadOnly,
+            setArchiveAttribute, null, null)
 
         def pollResponse = poller.poll()
 
         then:
-        assert pollResponse.getValue().getCopyId() != null
-    }
+        pollResponse.getValue().getCopyId() != null
 
-    def "Start copy with args fp"() {
-        given:
-        primaryFileClient.create(1024)
-        def sourceURL = primaryFileClient.getFileUrl()
-
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
-
-        when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, smbProperties, filePermission,
-            PermissionCopyModeType.OVERRIDE, null, null, null, null)
-
-        def pollResponse = poller.poll()
-
-        then:
-        assert pollResponse.getValue().getCopyId() != null
-    }
-
-    def "Start copy with args source and booleans"() {
-        given:
-        primaryFileClient.create(1024)
-        def sourceURL = primaryFileClient.getFileUrl()
-
-        when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, null, null,
-            PermissionCopyModeType.SOURCE, true, false, null, null)
-
-        def pollResponse = poller.poll()
-
-        then:
-        assert pollResponse.getValue().getCopyId() != null
+        where:
+        setFilePermissionKey | setFilePermission | ignoreReadOnly | setArchiveAttribute | permissionType
+        true                 | false             | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | true              | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | false             | true           | false               | PermissionCopyModeType.SOURCE
+        false                | false             | false          | true                | PermissionCopyModeType.SOURCE
     }
 
     @Ignore("There is a race condition in Poller where it misses the first observed event if there is a gap between the time subscribed and the time we start observing events.")
