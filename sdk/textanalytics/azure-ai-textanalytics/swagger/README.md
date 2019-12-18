@@ -21,7 +21,7 @@ autorest --java --use= ..\autorest.java
 ``` yaml
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/master/specification/cognitiveservices/data-plane/TextAnalytics/preview/v3.0-preview.1/TextAnalytics.json
 java: true
-output-folder: ..\azure-sdk-for-java\sdk\cognitiveservices\azure-cs-textanalytics\
+output-folder: ..\azure-sdk-for-java\sdk\textanalytics\azure-ai-textanalytics\
 namespace: com.azure.ai.textanalytics
 enable-xml: true
 generate-client-interfaces: false
@@ -29,6 +29,5 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: DetectedLanguage
 custom-types-subpackage: models
 ```
