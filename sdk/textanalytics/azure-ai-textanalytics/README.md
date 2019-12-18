@@ -1,4 +1,4 @@
-# Azure Core Text Analytics client library for Java
+# Azure Text Analytics client library for Java
 
 
 ## Getting started
