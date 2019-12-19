@@ -71,7 +71,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private boolean showStatistics = false;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
 
-    static final String MODEL_VERSION = "2019-10-01";
+    private static final String MODEL_VERSION = "2019-10-01";
 
     enum TestEndpoint {
         LANGUAGE, NAMED_ENTITY, LINKED_ENTITY, KEY_PHRASES, SENTIMENT

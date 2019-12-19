@@ -1,5 +1,5 @@
 
-## Azure Text Analytics Samples
+## Azure Text Analytics client library for Java Samples
 
 Azure Text Analytics samples are a set of self-contained Java programs that demonstrate interacting with Azure Text Analytics service
 using the client library. Each sample focuses on a specific scenario and can be executed independently. 

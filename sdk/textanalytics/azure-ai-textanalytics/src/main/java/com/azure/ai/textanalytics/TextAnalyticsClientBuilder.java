@@ -63,7 +63,6 @@ public final class TextAnalyticsClientBuilder {
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final String ACCEPT_HEADER = "Accept";
-    private static final String ACCEPT_HEADER_VALUE = "application/json";
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private static final String NAME = "name";
@@ -102,7 +101,7 @@ public final class TextAnalyticsClientBuilder {
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true")
             .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
-            .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
+            .put(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
