@@ -17,6 +17,16 @@ public final class TextSentiment {
     private final int offset;
     private final TextSentimentClass textSentimentClass;
 
+    /**
+     * Creates a {@code TextSentiment}  model that describes the sentiment analysis of text
+     *
+     * @param textSentimentClass text sentiment class of text
+     * @param negativeScore negative score value, range in between 0 and 1.0
+     * @param neutralScore neutral score value, range in between 0 and 1.0
+     * @param positiveScore positive score value, range in between 0 and 1.0
+     * @param length length of the text
+     * @param offset the offset from the start of the document
+     */
     public TextSentiment(TextSentimentClass textSentimentClass, double negativeScore, double neutralScore,
                          double positiveScore, int length, int offset) {
         this.negativeScore = negativeScore;

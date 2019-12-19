@@ -33,6 +33,16 @@ public final class TextDocumentBatchStatistics {
      */
     private final long transactionCount;
 
+    /**
+     * Creates a {@code TextDocumentBatchStatistics} model that describes the statistics of batch text
+     *
+     * @param documentCount number of documents submitted in the request
+     * @param validDocumentCount number of valid documents. This excludes empty, over-size limit or
+     * non-supported languages documents
+     * @param erroneousDocumentCount Number of invalid documents. This includes empty, over-size limit or
+     * non-supported languages documents
+     * @param transactionCount number of transactions for the request
+     */
     public TextDocumentBatchStatistics(int documentCount, int validDocumentCount, int erroneousDocumentCount,
         long transactionCount) {
         this.documentCount = documentCount;

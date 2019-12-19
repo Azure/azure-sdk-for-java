@@ -33,6 +33,14 @@ public final class InnerError {
      */
     private final InnerError innererror;
 
+    /**
+     * Creates a {@code InnerError} model that describes inner error information.
+     *
+     * @param code error code
+     * @param message error message
+     * @param target error target
+     * @param innerError inner error contains more specific information
+     */
     public InnerError(String code, String message, String target, InnerError innerError) {
         this.code = code;
         this.message = message;

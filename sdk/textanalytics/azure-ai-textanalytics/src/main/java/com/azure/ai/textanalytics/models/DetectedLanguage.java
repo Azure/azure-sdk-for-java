@@ -27,6 +27,14 @@ public final class DetectedLanguage {
      */
     private final double score;
 
+    /**
+     * Creates a {@code DetectedLanguage} model that describes detected language content.
+     *
+     * @param name name of a detected language
+     * @param iso6391Name a two letter representation of the detected language according to the
+     * ISO 639-1 standard
+     * @param score a confidence score between 0 and 1
+     */
     public DetectedLanguage(String name, String iso6391Name, double score) {
         this.name = name;
         this.iso6391Name = iso6391Name;

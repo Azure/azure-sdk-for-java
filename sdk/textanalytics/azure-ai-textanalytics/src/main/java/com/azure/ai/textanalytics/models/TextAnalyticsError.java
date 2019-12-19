@@ -34,6 +34,14 @@ public final class TextAnalyticsError {
      */
     private final List<TextAnalyticsError> details;
 
+    /**
+     * Creates a {@code TextAnalyticsError} model that describes text analytics error.
+     *
+     * @param code error code
+     * @param message error message
+     * @param target error target
+     * @param details details about specific errors that led to this reported error
+     */
     public TextAnalyticsError(ErrorCodeValue code, String message, String target, List<TextAnalyticsError> details) {
         this.code = code;
         this.message = message;

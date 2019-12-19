@@ -21,11 +21,16 @@ public final class TextDocumentStatistics {
      */
     private final int transactionCount;
 
+    /**
+     * Creates a {@code TextDocumentStatistics} model that describes the statistics of text document.
+     *
+     * @param characterCount number of text elements recognized in the document
+     * @param transactionCount number of transactions for the document
+     */
     public TextDocumentStatistics(int characterCount, int transactionCount) {
         this.characterCount = characterCount;
         this.transactionCount = transactionCount;
     }
-
 
     /**
      * Get the charactersCount property: Number of text elements recognized in

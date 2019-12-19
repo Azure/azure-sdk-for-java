@@ -36,6 +36,12 @@ public enum ErrorCodeValue {
      */
     private final String value;
 
+    /**
+     * Creates a {@code ErrorCodeValue} model that describes error code value, 'invalidRequest', 'invalidArgument',
+     * 'internalServerError', or 'serviceUnavailable'.
+     *
+     * @param value the enum value for the error code value
+     */
     ErrorCodeValue(String value) {
         this.value = value;
     }

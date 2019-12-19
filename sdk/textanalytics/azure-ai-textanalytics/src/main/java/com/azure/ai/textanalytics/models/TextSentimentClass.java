@@ -35,6 +35,11 @@ public enum TextSentimentClass {
      */
     private final String value;
 
+    /**
+     * Creates a {@code TextSentimentClass} enum model that describes the sentiment class of text
+     *
+     * @param value an enum value, could be positive, neutral, negative, or mixed
+     */
     TextSentimentClass(String value) {
         this.value = value;
     }

@@ -40,6 +40,16 @@ public final class NamedEntity {
      */
     private final double score;
 
+    /**
+     * Creates a {@code NamedEntity} model that describes entity.
+     *
+     * @param text namedEntity text as appears in the request
+     * @param type namedEntity type, such as Person/Location/Org/SSN etc
+     * @param subtype namedEntity sub type, such as Age/Year/TimeRange etc
+     * @param offset start position (in Unicode characters) for the entity text
+     * @param length length (in Unicode characters) for the entity text
+     * @param score confidence score between 0 and 1 of the extracted entity
+     */
     public NamedEntity(String text, String type, String subtype, int offset, int length, double score) {
         this.text = text;
         this.type = type;

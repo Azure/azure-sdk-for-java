@@ -31,6 +31,15 @@ public final class LinkedEntityMatch {
      */
     private final int length;
 
+    /**
+     * Creates a {@code LinkedEntityMatch} model that describes linked entity match.
+     *
+     * @param text entity text as appears in the request
+     * @param score if a well-known item is recognized, a decimal number denoting the
+     * confidence level between 0 and 1 will be returned
+     * @param offset start position (in Unicode characters) for the entity match text
+     * @param length length (in Unicode characters) for the entity match text
+     */
     public LinkedEntityMatch(String text, double score, int offset, int length) {
         this.text = text;
         this.score = score;

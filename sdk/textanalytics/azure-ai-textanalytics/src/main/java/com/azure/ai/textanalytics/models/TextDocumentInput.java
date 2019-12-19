@@ -28,10 +28,23 @@ public final class TextDocumentInput {
      */
     private final String language;
 
+    /**
+     * Creates a {@code TextDocumentInput} model that describes the text inputs.
+     *
+     * @param id a unique, non-empty document identifier
+     * @param text the input text to process
+     */
     public TextDocumentInput(String id, String text) {
         this(id, text, null);
     }
 
+    /**
+     * Creates a {@code TextDocumentInput} model that describes the text inputs.
+     *
+     * @param id a unique, non-empty document identifier
+     * @param text the input text to process
+     * @param language Optional. This is the 2 letter ISO 639-1 representation of a language
+     */
     public TextDocumentInput(String id, String text, String language) {
         this.id = id;
         this.text = text;
