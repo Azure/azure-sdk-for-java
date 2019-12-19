@@ -7,19 +7,19 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
-import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicReference;
-import reactor.core.Disposable;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
-
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
+import reactor.core.Disposable;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * EventProcessorClient provides a convenient mechanism to consume events from all partitions of an Event Hub in the
@@ -54,33 +54,31 @@ public class EventProcessorClient {
      * @param eventHubClientBuilder The {@link EventHubClientBuilder}.
      * @param consumerGroup The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
-     * @param initialEventPosition Initial event position to start consuming events.
      * @param checkpointStore The store used for reading and updating partition ownership and checkpoints. information.
      * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this
      * EventProcessorClient will also include the last enqueued event properties for it's respective partitions.
      * @param tracerProvider The tracer implementation.
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
-        Supplier<PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
-        CheckpointStore checkpointStore, boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider) {
+        Supplier<PartitionProcessor> partitionProcessorFactory,  CheckpointStore checkpointStore,
+        boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider, Consumer<ErrorContext> processError) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
-        Objects.requireNonNull(initialEventPosition, "initialEventPosition cannot be null.");
 
         this.checkpointStore = Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null");
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
-            initialEventPosition, eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider);
+            eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider);
         EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
                 eventHubAsyncClient.getFullyQualifiedNamespace().toLowerCase(Locale.ROOT),
                 eventHubAsyncClient.getEventHubName().toLowerCase(Locale.ROOT),
                 consumerGroup.toLowerCase(Locale.ROOT), identifier, TimeUnit.MINUTES.toSeconds(1),
-                partitionPumpManager);
+                partitionPumpManager, processError);
     }
 
     /**

@@ -3,7 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.exception.AmqpException;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -12,15 +15,13 @@ import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
-import reactor.core.publisher.Signal;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Locale;
@@ -28,10 +29,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import reactor.core.publisher.Signal;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}.
@@ -50,7 +48,6 @@ class PartitionPumpManager {
     private final CheckpointStore checkpointStore;
     private final Map<String, EventHubConsumerAsyncClient> partitionPumps = new ConcurrentHashMap<>();
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
-    private final EventPosition initialEventPosition;
     private final EventHubClientBuilder eventHubClientBuilder;
     private final TracerProvider tracerProvider;
     private final boolean trackLastEnqueuedEventProperties;
@@ -61,8 +58,6 @@ class PartitionPumpManager {
      * @param checkpointStore The partition manager that is used to store and update checkpoints.
      * @param partitionProcessorFactory The partition processor factory that is used to create new instances of {@link
      * PartitionProcessor} when new partition pumps are started.
-     * @param initialEventPosition The initial event position to use when a new partition pump is created and no
-     * checkpoint for the partition is available.
      * @param eventHubClientBuilder The client builder used to create new clients (and new connections) for each
      * partition processed by this {@link EventProcessorClient}.
      * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this
@@ -70,12 +65,10 @@ class PartitionPumpManager {
      * @param tracerProvider The tracer implementation.
      */
     PartitionPumpManager(CheckpointStore checkpointStore,
-        Supplier<PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
-        EventHubClientBuilder eventHubClientBuilder, boolean trackLastEnqueuedEventProperties,
-        TracerProvider tracerProvider) {
+        Supplier<PartitionProcessor> partitionProcessorFactory, EventHubClientBuilder eventHubClientBuilder,
+        boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider) {
         this.checkpointStore = checkpointStore;
         this.partitionProcessorFactory = partitionProcessorFactory;
-        this.initialEventPosition = initialEventPosition;
         this.eventHubClientBuilder = eventHubClientBuilder;
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
         this.tracerProvider = tracerProvider;
@@ -124,7 +117,7 @@ class PartitionPumpManager {
         } else if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
             startFromEventPosition = EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber(), true);
         } else {
-            startFromEventPosition = initialEventPosition;
+            startFromEventPosition = initializationContext.getInitialPosition();
         }
 
         ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
@@ -148,42 +141,27 @@ class PartitionPumpManager {
                     partitionProcessor.processEvent(new EventContext(partitionContext, eventData, checkpointStore,
                         partitionEvent.getLastEnqueuedEventProperties()));
                     endProcessTracingSpan(processSpanContext, Signal.complete());
-                } catch (Exception ex) {
-                    /* event processing threw an exception */
-                    handleProcessingError(claimedOwnership, partitionProcessor, ex, partitionContext);
-                    endProcessTracingSpan(processSpanContext, Signal.error(ex));
+                } catch (Throwable throwable) {
+                    /* user code for event processing threw an exception - log and bubble up */
+                    endProcessTracingSpan(processSpanContext, Signal.error(throwable));
+                    throw logger.logExceptionAsError(new RuntimeException(throwable));
 
                 }
             }, /* EventHubConsumer receive() returned an error */
                 ex -> handleReceiveError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
                 () -> partitionProcessor.close(new CloseContext(partitionContext,
                     CloseReason.EVENT_PROCESSOR_SHUTDOWN)));
-            // @formatter:on
-    }
-
-    private void handleProcessingError(PartitionOwnership claimedOwnership, PartitionProcessor partitionProcessor,
-        Throwable error, PartitionContext partitionContext) {
-        try {
-            // There was an error in process event (user provided code), call process error and if that
-            // also fails just log and continue
-            partitionProcessor.processError(new ErrorContext(partitionContext, error));
-        } catch (Exception ex) {
-            logger.warning(Messages.FAILED_WHILE_PROCESSING_ERROR, claimedOwnership.getPartitionId(), ex);
-        }
+        // @formatter:on
     }
 
     private void handleReceiveError(PartitionOwnership claimedOwnership, EventHubConsumerAsyncClient eventHubConsumer,
-        PartitionProcessor partitionProcessor, Throwable error, PartitionContext partitionContext) {
+        PartitionProcessor partitionProcessor, Throwable throwable, PartitionContext partitionContext) {
         try {
+            logger.warning("Error receiving events for partition {}", partitionContext.getPartitionId(), throwable);
             // if there was an error on receive, it also marks the end of the event data stream
-            partitionProcessor.processError(new ErrorContext(partitionContext, error));
-            CloseReason closeReason = CloseReason.EVENT_HUB_EXCEPTION;
-            // If the exception indicates that the partition was stolen (i.e some other consumer with same ownerlevel
-            // started consuming the partition), update the closeReason
-            // TODO: Find right exception type to determine stolen partition
-            if (error instanceof AmqpException) {
-                closeReason = CloseReason.LOST_PARTITION_OWNERSHIP;
-            }
+            partitionProcessor.processError(new ErrorContext(partitionContext, throwable));
+            // Any exception while receiving events will result in the processor losing ownership
+            CloseReason closeReason = CloseReason.LOST_PARTITION_OWNERSHIP;
             partitionProcessor.close(new CloseContext(partitionContext, closeReason));
         } catch (Exception ex) {
             logger.warning(Messages.FAILED_PROCESSING_ERROR_RECEIVE, claimedOwnership.getPartitionId(), ex);
