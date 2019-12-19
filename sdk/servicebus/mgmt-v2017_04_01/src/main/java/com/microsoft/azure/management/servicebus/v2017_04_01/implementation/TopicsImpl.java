@@ -67,10 +67,14 @@ class TopicsImpl extends WrapperImpl<TopicsInner> implements Topics {
     public Observable<SBTopic> getAsync(String resourceGroupName, String namespaceName, String topicName) {
         TopicsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, topicName)
-        .map(new Func1<SBTopicInner, SBTopic>() {
+        .flatMap(new Func1<SBTopicInner, Observable<SBTopic>>() {
             @Override
-            public SBTopic call(SBTopicInner inner) {
-                return wrapModel(inner);
+            public Observable<SBTopic> call(SBTopicInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SBTopic)wrapModel(inner));
+                }
             }
        });
     }
@@ -107,10 +111,14 @@ class TopicsImpl extends WrapperImpl<TopicsInner> implements Topics {
     public Observable<TopicNamespaceSBAuthorizationRule> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
         TopicsInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, topicName, authorizationRuleName)
-        .map(new Func1<SBAuthorizationRuleInner, TopicNamespaceSBAuthorizationRule>() {
+        .flatMap(new Func1<SBAuthorizationRuleInner, Observable<TopicNamespaceSBAuthorizationRule>>() {
             @Override
-            public TopicNamespaceSBAuthorizationRule call(SBAuthorizationRuleInner inner) {
-                return wrapTopicNamespaceSBAuthorizationRuleModel(inner);
+            public Observable<TopicNamespaceSBAuthorizationRule> call(SBAuthorizationRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((TopicNamespaceSBAuthorizationRule)wrapTopicNamespaceSBAuthorizationRuleModel(inner));
+                }
             }
        });
     }
