@@ -354,7 +354,7 @@ public class EventProcessorClientTest {
         identifiers.add("1");
         identifiers.add("2");
         identifiers.add("3");
-        final EventPosition position = EventPosition.latest();
+        final EventPosition position = EventPosition.earliest();
 
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));

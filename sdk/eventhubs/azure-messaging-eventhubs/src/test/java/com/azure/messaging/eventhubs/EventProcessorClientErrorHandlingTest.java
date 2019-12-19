@@ -87,11 +87,9 @@ public class EventProcessorClientErrorHandlingTest {
             Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
         });
         client.start();
-
-        if (!countDownLatch.await(3, TimeUnit.SECONDS)) {
-            Assertions.fail();
-        }
+        boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
+        Assertions.assertTrue(completed);
     }
 
     private static Stream<Arguments> checkpointStoreSupplier() {
