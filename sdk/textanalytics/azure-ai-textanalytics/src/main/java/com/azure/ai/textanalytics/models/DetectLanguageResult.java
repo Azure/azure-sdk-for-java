@@ -4,6 +4,7 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public final class DetectLanguageResult extends DocumentResult {
                                 DetectedLanguage primaryLanguage, List<DetectedLanguage> detectedLanguages) {
         super(id, textDocumentStatistics, error);
         this.primaryLanguage = primaryLanguage;
-        this.detectedLanguages = detectedLanguages;
+        this.detectedLanguages = detectedLanguages == null ? new ArrayList<>() : detectedLanguages;
     }
 
     /**

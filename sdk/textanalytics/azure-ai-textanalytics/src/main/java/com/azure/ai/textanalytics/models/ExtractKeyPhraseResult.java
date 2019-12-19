@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public final class ExtractKeyPhraseResult extends DocumentResult {
     public ExtractKeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
         List<String> keyPhrases) {
         super(id, textDocumentStatistics, error);
-        this.keyPhrases = keyPhrases;
+        this.keyPhrases = keyPhrases == null ? new ArrayList<>() : keyPhrases;
     }
 
     /**

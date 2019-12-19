@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public final class AnalyzeSentimentResult extends DocumentResult {
         TextSentiment documentSentiment, List<TextSentiment> sentenceSentiments) {
         super(id, textDocumentStatistics, error);
         this.documentSentiment = documentSentiment;
-        this.sentenceSentiments = sentenceSentiments;
+        this.sentenceSentiments = sentenceSentiments == null ? new ArrayList<>() : sentenceSentiments;
     }
 
     /**

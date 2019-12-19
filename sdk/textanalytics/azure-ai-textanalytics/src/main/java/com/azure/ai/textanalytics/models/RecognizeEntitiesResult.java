@@ -5,6 +5,8 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,7 +27,7 @@ public final class RecognizeEntitiesResult extends DocumentResult {
     public RecognizeEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
         List<NamedEntity> namedEntities) {
         super(id, textDocumentStatistics, error);
-        this.namedEntities = namedEntities;
+        this.namedEntities = namedEntities == null ? new ArrayList<>() : namedEntities;
     }
 
     /**

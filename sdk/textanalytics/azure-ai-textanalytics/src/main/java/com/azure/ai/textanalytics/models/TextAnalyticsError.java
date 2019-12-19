@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public final class TextAnalyticsError {
         this.code = code;
         this.message = message;
         this.target = target;
-        this.details = details;
+        this.details = details == null ? new ArrayList<>() : details;
     }
 
     /**

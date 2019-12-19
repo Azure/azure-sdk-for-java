@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public final class RecognizeLinkedEntitiesResult extends DocumentResult {
     public RecognizeLinkedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error, List<LinkedEntity> linkedEntities) {
         super(id, textDocumentStatistics, error);
-        this.linkedEntities = linkedEntities;
+        this.linkedEntities = linkedEntities == null ? new ArrayList<>() : linkedEntities;
     }
 
     /**
