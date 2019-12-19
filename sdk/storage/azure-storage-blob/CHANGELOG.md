@@ -1,6 +1,9 @@
 # Release History
 
-## 12.2.0-beta.1 (Unreleased)
+## 12.2.0-beta.2 (Unreleased)
+- Added a field to ParallelTransferOptions that allows customers to configure the maximum size to upload in a single PUT. Data sizes larger than this value will be chunked and parallelized.
+
+## 12.2.0-beta.1 (2019-12-17)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setContainerName, setBlobName, setSnapshotId, generateSasQueryParameters methods on BlobServiceSasSignatureValues to direct users to using the methods added on clients.
 - Fixed a bug where Account SAS would not work when set on clients.
 
