@@ -671,7 +671,7 @@ public class ShareFileJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareFileClient#setPropertiesWithResponse(long, ShareFileHttpHeaders,
      * FileSmbProperties, String, ShareRequestConditions, Duration, Context)}
      */
-    public void setHTTPHeadersWithLease() {
+    public void setHttpHeadersWithLease() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-Duration-Context
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
@@ -792,7 +792,7 @@ public class ShareFileJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareFileClient.listRanges#ShareFileRange-ShareRequestConditions-Duration-Context
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         Iterable<ShareFileRange> ranges = fileClient.listRanges(new ShareFileRange(1024, 2048L), requestConditions,
-            Duration.ofSeconds(1),new Context(key1, value1));
+            Duration.ofSeconds(1), new Context(key1, value1));
         ranges.forEach(range ->
             System.out.printf("List ranges completed with start: %d, end: %d", range.getStart(), range.getEnd()));
         // END: com.azure.storage.file.share.ShareFileClient.listRanges#ShareFileRange-ShareRequestConditions-Duration-Context

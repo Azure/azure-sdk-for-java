@@ -189,9 +189,9 @@ public class ShareFileAsyncJavaDocCodeSamples {
             Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2), requestConditions);
 
         poller.subscribe(response -> {
-                final ShareFileCopyInfo value = response.getValue();
-                System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
-            }, error -> System.err.println("Error: " + error),
+            final ShareFileCopyInfo value = response.getValue();
+            System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
+        }, error -> System.err.println("Error: " + error),
             () -> System.out.println("Complete copying the file."));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-map-duration-ShareRequestConditions
     }
@@ -272,10 +272,10 @@ public class ShareFileAsyncJavaDocCodeSamples {
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         shareFileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 0L, requestConditions)
             .subscribe(
-            response -> { },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete deleting the file!")
-        );
+                response -> { },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete deleting the file!")
+            );
         // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#flux-long-long-ShareRequestConditions
     }
 
