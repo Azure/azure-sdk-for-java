@@ -294,13 +294,17 @@ public class ShareFileAsyncClient {
         String fileCreationTime = FileSmbProperties.parseFileSMBDate(finalSmbProperties.getFileCreationTime());
         String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(finalSmbProperties.getFileLastWriteTime());
 
-        if (filePermissionCopyMode == PermissionCopyModeType.SOURCE) {
+        if (filePermissionCopyMode == null) {
+            if (filePermission== null && filePermissionKey == null) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "File permission or file permission key can not be set when PermissionCopyModeType is null"));
+            }
+        } else if (filePermissionCopyMode == PermissionCopyModeType.SOURCE) {
             if (filePermission != null || filePermissionKey != null) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(
                     "File permission and file permission key can not be set when PermissionCopyModeType is source"));
             }
-        }
-        if (filePermissionCopyMode == PermissionCopyModeType.OVERRIDE) {
+        } else if (filePermissionCopyMode == PermissionCopyModeType.OVERRIDE) {
             // Checks that file permission and file permission key are valid
             validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
         }
@@ -323,9 +327,12 @@ public class ShareFileAsyncClient {
                             .map(response -> {
                                 final FileStartCopyHeaders headers = response.getDeserializedHeaders();
                                 copyId.set(headers.getCopyId());
+                                final FileSmbProperties fileSmbProperties =
+                                    new FileSmbProperties(response.getHeaders());
 
                                 return new ShareFileCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
-                                        headers.getETag(), headers.getLastModified(), headers.getErrorCode());
+                                        headers.getETag(), headers.getLastModified(), headers.getErrorCode(),
+                                        fileSmbProperties);
                             });
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
@@ -370,7 +377,8 @@ public class ShareFileAsyncClient {
             .map(response -> {
                 final CopyStatusType status = response.getCopyStatus();
                 final ShareFileCopyInfo result = new ShareFileCopyInfo(response.getCopySource(), response.getCopyId(),
-                    status, response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
+                    status, response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription(),
+                    response.getSmbProperties());
 
                 LongRunningOperationStatus operationStatus;
                 switch (status) {
@@ -605,7 +613,7 @@ public class ShareFileAsyncClient {
         String rangeString = range == null ? null : range.toString();
 
         return azureFileStorageClient.files()
-            .downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5, context)
+            .downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5, null, context)
             .map(response -> new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
     }
@@ -709,7 +717,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileProperties>> getPropertiesWithResponse(Context context) {
         return azureFileStorageClient.files()
-            .getPropertiesWithRestResponseAsync(shareName, filePath, snapshot, null, context)
+            .getPropertiesWithRestResponseAsync(shareName, filePath, snapshot, null, null, context)
             .map(this::getPropertiesResponse);
     }
 
@@ -1173,7 +1181,7 @@ public class ShareFileAsyncClient {
         String rangeString = range == null ? null : range.toString();
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, context),
+                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, null, context),
                 timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),

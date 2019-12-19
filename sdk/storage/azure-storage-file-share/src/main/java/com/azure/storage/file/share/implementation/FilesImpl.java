@@ -101,7 +101,7 @@ public final class FilesImpl {
         @Put("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesBreakLeaseResponse> breakLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, Context context);
+        Mono<FilesBreakLeaseResponse> breakLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({201})
@@ -111,11 +111,11 @@ public final class FilesImpl {
         @Get("{shareName}/{filePath}")
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesDownloadResponse> download(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, Context context);
+        Mono<FilesDownloadResponse> download(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Head("{shareName}/{filePath}")
         @ExpectedResponses({200})
-        Mono<FilesGetPropertiesResponse> getProperties(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
+        Mono<FilesGetPropertiesResponse> getProperties(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Delete("{shareName}/{filePath}")
         @ExpectedResponses({202})
@@ -145,7 +145,7 @@ public final class FilesImpl {
         @Get("{shareName}/{filePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesGetRangeListResponse> getRangeList(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @QueryParam("comp") String comp, Context context);
+        Mono<FilesGetRangeListResponse> getRangeList(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({202})
@@ -277,35 +277,39 @@ public final class FilesImpl {
     /**
      * [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations.
      *
-     * @param leaseId Specifies the current lease ID on the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesBreakLeaseResponse> breakLeaseWithRestResponseAsync(String leaseId, Context context) {
+    public Mono<FilesBreakLeaseResponse> breakLeaseWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "lease";
         final String action = "break";
-        return service.breakLease(this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, action, context);
+        final String leaseId = null;
+        return service.breakLease(this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, action, leaseId, context);
     }
 
     /**
      * [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations.
      *
-     * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesBreakLeaseResponse> breakLeaseWithRestResponseAsync(String leaseId, Integer timeout, String requestId, Context context) {
+    public Mono<FilesBreakLeaseResponse> breakLeaseWithRestResponseAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, Context context) {
         final String comp = "lease";
         final String action = "break";
-        return service.breakLease(this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, action, context);
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        return service.breakLease(this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, action, leaseId, context);
     }
 
     /**
@@ -406,7 +410,8 @@ public final class FilesImpl {
         final Integer timeout = null;
         final String range = null;
         final Boolean rangeGetContentMD5 = null;
-        return service.download(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), range, rangeGetContentMD5, context);
+        final String leaseId = null;
+        return service.download(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId, context);
     }
 
     /**
@@ -417,13 +422,18 @@ public final class FilesImpl {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param range Return file data only from the specified byte range.
      * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesDownloadResponse> downloadWithRestResponseAsync(String shareName, String filePath, Integer timeout, String range, Boolean rangeGetContentMD5, Context context) {
-        return service.download(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), range, rangeGetContentMD5, context);
+    public Mono<FilesDownloadResponse> downloadWithRestResponseAsync(String shareName, String filePath, Integer timeout, String range, Boolean rangeGetContentMD5, LeaseAccessConditions leaseAccessConditions, Context context) {
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        return service.download(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId, context);
     }
 
     /**
@@ -439,7 +449,8 @@ public final class FilesImpl {
     public Mono<FilesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String shareName, String filePath, Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
-        return service.getProperties(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), context);
+        final String leaseId = null;
+        return service.getProperties(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), leaseId, context);
     }
 
     /**
@@ -449,13 +460,18 @@ public final class FilesImpl {
      * @param filePath The path of the target file.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String shareName, String filePath, String sharesnapshot, Integer timeout, Context context) {
-        return service.getProperties(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), context);
+    public Mono<FilesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String shareName, String filePath, String sharesnapshot, Integer timeout, LeaseAccessConditions leaseAccessConditions, Context context) {
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        return service.getProperties(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), leaseId, context);
     }
 
     /**
@@ -744,7 +760,8 @@ public final class FilesImpl {
         final Integer timeout = null;
         final String range = null;
         final String comp = "rangelist";
-        return service.getRangeList(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), range, comp, context);
+        final String leaseId = null;
+        return service.getRangeList(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), range, comp, leaseId, context);
     }
 
     /**
@@ -755,14 +772,19 @@ public final class FilesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(String shareName, String filePath, String sharesnapshot, Integer timeout, String range, Context context) {
+    public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(String shareName, String filePath, String sharesnapshot, Integer timeout, String range, LeaseAccessConditions leaseAccessConditions, Context context) {
         final String comp = "rangelist";
-        return service.getRangeList(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), range, comp, context);
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        return service.getRangeList(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), range, comp, leaseId, context);
     }
 
     /**

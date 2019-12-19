@@ -444,9 +444,17 @@ class FileAPITests extends APISpec {
             setArchiveAttribute, null, null)
 
         def pollResponse = poller.poll()
+        def smbProperties = pollResponse.getValue().getSmbProperties()
 
         then:
         pollResponse.getValue().getCopyId() != null
+        smbProperties.getFilePermissionKey()
+        smbProperties.getNtfsFileAttributes()
+        smbProperties.getFileLastWriteTime()
+        smbProperties.getFileCreationTime()
+        smbProperties.getFileChangeTime()
+        smbProperties.getParentId()
+        smbProperties.getFileId()
 
         where:
         setFilePermissionKey | setFilePermission | ignoreReadOnly | setArchiveAttribute | permissionType

@@ -195,14 +195,15 @@ public class FileSmbProperties {
      */
     FileSmbProperties(HttpHeaders httpHeaders) {
         this.filePermissionKey = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PERMISSION_KEY);
-        this.ntfsFileAttributes = NtfsFileAttributes
-            .toAttributes(httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ATTRIBUTES));
-        this.fileCreationTime = OffsetDateTime.parse(httpHeaders
-            .getValue(FileConstants.HeaderConstants.FILE_CREATION_TIME));
-        this.fileLastWriteTime = OffsetDateTime.parse(httpHeaders
-            .getValue(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME));
-        this.fileChangeTime = OffsetDateTime.parse(httpHeaders
-            .getValue(FileConstants.HeaderConstants.FILE_CHANGE_TIME));
+        String attributes = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ATTRIBUTES);
+        this.ntfsFileAttributes = attributes == null ? null : NtfsFileAttributes.toAttributes(attributes);
+        String fileCreation = httpHeaders
+            .getValue(FileConstants.HeaderConstants.FILE_CREATION_TIME);
+        this.fileCreationTime = fileCreation == null ? null : OffsetDateTime.parse(fileCreation);
+        String fileLastWrite = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME);
+        this.fileLastWriteTime = fileLastWrite == null ? null : OffsetDateTime.parse(fileLastWrite);
+        String fileChange = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_CHANGE_TIME);
+        this.fileChangeTime = fileChange == null ? null : OffsetDateTime.parse(fileChange);
         this.fileId = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ID);
         this.parentId = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PARENT_ID);
     }
