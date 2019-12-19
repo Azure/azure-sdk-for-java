@@ -90,10 +90,6 @@ class ReactorNettyClient implements HttpClient {
                 tcpClient = tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                     configs.getConnectionAcquireTimeoutInMillis());
 
-                tcpClient = tcpClient.doOnConnect(connection -> {
-                    logger.info("About to connect {}", connection.hashCode());
-                });
-
                 tcpClient = tcpClient.doOnConnected(connection -> {
                     int connectionHashCode = connection.hashCode();
                     openChannels.add(connectionHashCode);
@@ -104,19 +100,12 @@ class ReactorNettyClient implements HttpClient {
                             maxConnectionsSoFar.set(openChannels.size());
                         }
                     }
-                    logger.info("Connection established {}", connection.hashCode());
-                    logger.info("Current connected channels {}", openChannels.size());
                     logger.info("Max connections so far {}", maxConnectionsSoFar);
                 });
 
                 tcpClient = tcpClient.doOnDisconnected(connection -> {
                     int connectionHashCode = connection.hashCode();
                     openChannels.remove(connectionHashCode);
-                    logger.info("Connection disconnected {}", connectionHashCode);
-                    logger.info("Current connected channels {}", openChannels.size());
-                    connection.onDispose(() -> {
-                        logger.info("Connection disposed {}", connection.hashCode());
-                    });
                 });
 
                 return tcpClient;
@@ -231,7 +220,6 @@ class ReactorNettyClient implements HttpClient {
 
         @Override
         public void close() {
-            logger.info("Disposing connection {}", reactorNettyConnection.hashCode());
             if (reactorNettyConnection.channel().eventLoop().inEventLoop()) {
                 reactorNettyConnection.dispose();
             } else {
