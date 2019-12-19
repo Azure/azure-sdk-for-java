@@ -183,8 +183,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs The list of texts to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link DetectLanguageResult
-     * detected languages}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link DetectLanguageResult detected languages}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -204,8 +204,8 @@ public final class TextAnalyticsAsyncClient {
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO
      * 3166-1 alpha-2. Defaults to "US" if not specified.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * DetectLanguageResult detected languages}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link DetectLanguageResult detected languages}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -222,7 +222,8 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> textInputs,
         String countryHint, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-        List<DetectLanguageInput> detectLanguageInputs = mapByIndex(textInputs, (index, value) -> new DetectLanguageInput(index, value, countryHint));
+        List<DetectLanguageInput> detectLanguageInputs = mapByIndex(textInputs, (index, value) ->
+            new DetectLanguageInput(index, value, countryHint));
 
         return detectBatchLanguagesWithResponse(detectLanguageInputs, null, context);
     }
@@ -232,8 +233,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link DetectLanguageResult
-     * detected languages}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link DetectLanguageResult detected languages}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -254,8 +255,8 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     * DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -291,7 +292,8 @@ public final class TextAnalyticsAsyncClient {
     // Named Entity
     /**
      * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
-     * <a href="https://aka.ms/taner"></a>. For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
+     * <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
+     * check: <a href="https://aka.ms/talangs"></a>
      *
      * @param text the text to recognize entities for.
      *
@@ -310,14 +312,15 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
-     * <a href="https://aka.ms/taner"></a>. For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
+     * <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
+     * check: <a href="https://aka.ms/talangs"></a>
      *
      * @param text the text to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the {@link
-     * RecognizeEntitiesResult named entity} of the text.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
+     * {@link RecognizeEntitiesResult named entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -344,8 +347,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of texts to recognize entities for.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * RecognizeEntitiesResult named entity} of the text.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link RecognizeEntitiesResult named entity} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -365,8 +368,8 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * RecognizeEntitiesResult named entity}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link RecognizeEntitiesResult named entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -394,8 +397,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * RecognizeEntitiesResult named entity}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link RecognizeEntitiesResult named entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -416,8 +419,8 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     * DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -450,8 +453,8 @@ public final class TextAnalyticsAsyncClient {
     // PII Entity
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text. For the list of
-     * supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of enabled
-     * languages.
+     * supported entity types, check <a href="https://aka.ms/tanerpii"></a>. See <a href="https://aka.ms/talangs"></a>
+     * for the list of enabled languages.
      *
      * @param text the text to recognize PII entities for.
      *
@@ -477,8 +480,8 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the {@link
-     * RecognizeEntitiesResult named entity} of the text.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
+     * {@link RecognizeEntitiesResult named entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -507,8 +510,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of text to recognize PII entities for.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * RecognizeEntitiesResult named entity} of the text.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link RecognizeEntitiesResult named entity} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -531,8 +534,8 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * RecognizeEntitiesResult named entity}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link RecognizeEntitiesResult named entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -566,8 +569,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * RecognizeEntitiesResult named entity}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link RecognizeEntitiesResult named entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -590,8 +593,8 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     * DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -623,7 +626,7 @@ public final class TextAnalyticsAsyncClient {
     // Linked Entity
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text. See
-     * https://aka.ms/talangs for supported languages in Text Analytics API.
+     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * @param text the text to recognize linked entities for.
      *
@@ -642,14 +645,14 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text. See
-     * https://aka.ms/talangs for supported languages in Text Analytics API.
+     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * @param text the text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the {@link
-     * RecognizeLinkedEntitiesResult named entity} of the text.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
+     * {@link RecognizeLinkedEntitiesResult named entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -674,12 +677,12 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts. See
-     * https://aka.ms/talangs for supported languages in Text Analytics API.
+     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * @param textInputs A list of text to recognize linked entities for.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * RecognizeLinkedEntitiesResult linked entity} of the text.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -702,8 +705,8 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * RecognizeLinkedEntitiesResult linked entity}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link RecognizeLinkedEntitiesResult linked entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -736,8 +739,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * RecognizeLinkedEntitiesResult linked entity}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link RecognizeLinkedEntitiesResult linked entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -753,14 +756,14 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs. See
-     * <a href="https://aka.ms/talangs" supported languages></a> in Text Analytics API.
+     * <a href="https://aka.ms/talangs"></a> supported languages in Text Analytics API.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     * DocumentResultCollection batch} of {@link RecognizeLinkedEntitiesResult linked entity}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link DocumentResultCollection batch} of {@link RecognizeLinkedEntitiesResult linked entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -812,15 +815,15 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the input text. See https://aka.ms/talangs for the list of
-     * enabled languages.
+     * Returns a list of strings denoting the key phrases in the input text. See <a href="https://aka.ms/talangs"></a>
+     * for the list of enabled languages.
      *
      * @param text the text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the {@link
-     * ExtractKeyPhraseResult key phrases} of the text.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
+     * {@link ExtractKeyPhraseResult key phrases} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -847,8 +850,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of text to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link ExtractKeyPhraseResult
-     * key phrases} of the text.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link ExtractKeyPhraseResult key phrases} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -862,15 +865,15 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the input text. See https://aka.ms/talangs for the list of
-     * enabled languages.
+     * Returns a list of strings denoting the key phrases in the input text. See <a href="https://aka.ms/talangs"></a>
+     * for the list of enabled languages.
      *
      * @param textInputs A list of text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * ExtractKeyPhraseResult key phrases}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link ExtractKeyPhraseResult key phrases}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -902,8 +905,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link ExtractKeyPhraseResult
-     * key phrases}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link ExtractKeyPhraseResult key phrases}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -918,15 +921,15 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the input text. See https://aka.ms/talangs for the list of
-     * enabled languages.
+     * Returns a list of strings denoting the key phrases in the input text. See <a href="https://aka.ms/talangs"></a>
+     * for the list of enabled languages.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     * DocumentResultCollection batch} of {@link ExtractKeyPhraseResult key phrases}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link DocumentResultCollection batch} of {@link ExtractKeyPhraseResult key phrases}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -1004,8 +1007,8 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the {@link
-     * AnalyzeSentimentResult text sentiment} of the text.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
+     * {@link AnalyzeSentimentResult text sentiment} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -1032,8 +1035,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of text to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link AnalyzeSentimentResult
-     * text sentiment} of the text.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link AnalyzeSentimentResult text sentiment} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -1054,8 +1057,8 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link
-     * AnalyzeSentimentResult text sentiment}.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link AnalyzeSentimentResult text sentiment}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -1084,8 +1087,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the {@link AnalyzeSentimentResult
-     * text sentiment}.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link AnalyzeSentimentResult text sentiment}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -1107,8 +1110,8 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     * DocumentResultCollection batch} of {@link AnalyzeSentimentResult text sentiment}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link DocumentResultCollection batch} of {@link AnalyzeSentimentResult text sentiment}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */

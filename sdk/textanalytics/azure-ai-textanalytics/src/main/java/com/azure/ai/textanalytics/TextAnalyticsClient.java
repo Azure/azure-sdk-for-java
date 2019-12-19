@@ -160,7 +160,7 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of general named entities in the provided text.
-     * For a list of supported entity types, check: https://aka.ms/taner
+     * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>
      *
      * @param text the text to recognize entities for.
      *
@@ -174,8 +174,8 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of general named entities in the provided text.
-     * For a list of supported entity types, check: https://aka.ms/taner
-     * For a list of enabled languages, check: https://aka.ms/talangs
+     * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
      *
      * @param text the text to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
@@ -256,8 +256,8 @@ public final class TextAnalyticsClient {
     // PII Entities
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text.
-     * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * For the list of supported entity types, check <a href="https://aka.ms/taner"></a> pii.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * @param text the text to recognize pii entities for.
      * @return A {@link RecognizePiiEntitiesResult PII entity} of the text.
@@ -272,7 +272,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text.
      * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * @param text the text to recognize pii entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -292,7 +292,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts.
      * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * @param textInputs A list of text to recognize pii entities for.
      *
@@ -307,8 +307,8 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts.
-     * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      * *
      * @param textInputs A list of text to recognize pii entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -327,8 +327,8 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs.
-     * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize pii entities for.
      *
@@ -343,8 +343,8 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs.
-     * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize pii entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -364,7 +364,7 @@ public final class TextAnalyticsClient {
     // Linked Entities
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * @param text the text to recognize linked entities for.
      *
@@ -378,7 +378,7 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * @param text the text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -397,7 +397,7 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * @param textInputs A list of text to recognize linked entities for.
      *
@@ -412,7 +412,7 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * @param textInputs A list of text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -431,7 +431,7 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      *
@@ -446,7 +446,7 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs.
-     * See https://aka.ms/talangs for supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -480,7 +480,7 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of strings denoting the key phrases in the input text.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * @param text the text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -512,7 +512,7 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of strings denoting the key phrases in the input text.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * @param textInputs A list of text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -544,7 +544,7 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of strings denoting the key phrases in the input text.
-     * See https://aka.ms/talangs for the list of enabled languages.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
