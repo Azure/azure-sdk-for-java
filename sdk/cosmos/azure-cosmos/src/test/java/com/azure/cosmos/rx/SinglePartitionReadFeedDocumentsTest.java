@@ -36,7 +36,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments() {
         final FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         options.maxItemCount(2);
         final Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
         final int expectedPageSize = (createdDocuments.size() + options.maxItemCount() - 1) / options.maxItemCount();

@@ -50,7 +50,7 @@ public class TopQueryTests extends TestSuiteBase {
     public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         options.maxItemCount(9);
         options.setMaxDegreeOfParallelism(2);
         options.populateQueryMetrics(qmEnabled);
@@ -88,8 +88,6 @@ public class TopQueryTests extends TestSuiteBase {
 
             if (i == 0) {
                 options.partitionKey(new PartitionKey(firstPk));
-                options.setEnableCrossPartitionQuery(false);
-
                 expectedTotalSize = 10;
                 expectedNumberOfPages = 2;
                 expectedPageLengths = new int[] { 9, 1 };
@@ -148,7 +146,7 @@ public class TopQueryTests extends TestSuiteBase {
         do {
             FeedOptions options = new FeedOptions();
             options.maxItemCount(pageSize);
-            options.setEnableCrossPartitionQuery(true);
+            
             options.setMaxDegreeOfParallelism(2);
             options.requestContinuation(requestContinuation);
             Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);

@@ -413,7 +413,6 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
 
         // Assert document is deleted
         FeedOptions queryOptions = new FeedOptions();
-        queryOptions.setEnableCrossPartitionQuery(true);
         List<Document> listOfDocuments = client
                 .queryDocuments(getCollectionLink(), String.format("SELECT * FROM r where r.id = '%s'", createdDocument.getId()), queryOptions)
                 .map(FeedResponse::getResults) // Map page to its list of documents

@@ -50,7 +50,6 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
 
             FeedOptions options = new FeedOptions();
             options.maxItemCount(10);
-            options.setEnableCrossPartitionQuery(true);
 
             String sqlQuery = "Select top 100 * from c order by c._ts";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options)

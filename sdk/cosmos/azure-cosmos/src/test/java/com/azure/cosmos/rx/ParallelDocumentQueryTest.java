@@ -75,7 +75,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from c where c.prop = 99";
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        options.setEnableCrossPartitionQuery(true);
+        
         options.populateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -99,7 +99,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from c where c.prop = 99";
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        options.setEnableCrossPartitionQuery(true);
+        
         options.populateQueryMetrics(true);
         options.setMaxDegreeOfParallelism(0);
 
@@ -134,7 +134,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     public void queryDocuments_NoResults() {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
@@ -154,7 +154,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         int pageSize = 3;
         options.maxItemCount(pageSize);
         options.setMaxDegreeOfParallelism(-1);
-        options.setEnableCrossPartitionQuery(true);
+        
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments;
@@ -179,14 +179,14 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     public void invalidQuerySyntax() {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(CosmosClientException.class)
-                .statusCode(400)
-                .notNullActivityId()
-                .build();
+                                         .instanceOf(CosmosClientException.class)
+                                         .statusCode(400)
+                                         .notNullActivityId()
+                                         .build();
         validateQueryFailure(queryObservable, validator);
     }
 
@@ -196,11 +196,16 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
-        FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(CosmosClientException.class)
-                .statusCode(400)
+        List<CosmosItemProperties> expectedDocs = createdDocuments;
+        FeedResponseListValidator<CosmosItemProperties> validator =
+            new FeedResponseListValidator.Builder<CosmosItemProperties>()
+                .totalSize(expectedDocs.size())
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(Resource::getResourceId).collect(Collectors.toList()))
+                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
+                                     .requestChargeGreaterThanOrEqualTo(1.0)
+                                     .build())
                 .build();
-        validateQueryFailure(queryObservable, validator);
+        validateQuerySuccess(queryObservable, validator);
     }
 
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
@@ -273,7 +278,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" })
     public void queryDocumentsStringValue(){
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         options.setMaxDegreeOfParallelism(2);
 
         List<String> expectedValues = createdDocuments.stream().map(d -> d.getId()).collect(Collectors.toList());
@@ -291,7 +296,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" })
     public void queryDocumentsArrayValue(){
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         options.setMaxDegreeOfParallelism(2);
 
         Collection<List<List<Integer>>> expectedValues = new ArrayList<>();
@@ -323,7 +328,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" })
     public void queryDocumentsIntegerValue(){
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         options.setMaxDegreeOfParallelism(2);
 
         List<Integer> expectedValues = createdDocuments.stream().map(d -> d.getInt("prop")).collect(Collectors.toList());
@@ -341,7 +346,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" })
     public void queryDocumentsPojo(){
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         options.setMaxDegreeOfParallelism(2);
         String query = "Select * from c";
         Flux<FeedResponse<TestObject>> queryObservable = createdCollection.queryItems(query, options, TestObject.class);
@@ -362,6 +367,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             .containsAll(assertTuples);
         
     }
+    
 
 
     // TODO (DANOBLE) ParallelDocumentQueryTest initialization intermittently fails in CI environments
@@ -475,7 +481,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
 		String query = "I am an invalid query";
 		FeedOptions options = new FeedOptions();
-		options.setEnableCrossPartitionQuery(true);
+		
 		Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
 		FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosClientException.class)
@@ -514,7 +520,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         do {
             FeedOptions options = new FeedOptions();
             options.maxItemCount(pageSize);
-            options.setEnableCrossPartitionQuery(true);
+            
             options.setMaxDegreeOfParallelism(2);
             options.requestContinuation(requestContinuation);
             Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);

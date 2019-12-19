@@ -43,7 +43,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
     // TODO (DANOBLE) VeryLargeDocumentQueryTest::queryLargeDocuments intermittently times out
     //  Move this test back into the emulator group after we've addressed query performance on 4.X.
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6377
-    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
     public void queryLargeDocuments() {
 
         int cnt = 5;
@@ -53,8 +53,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         }
 
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
-
+        
         Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
             options, CosmosItemProperties.class);
 
@@ -66,7 +65,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
                         return true;
                     })
                     .expectComplete()
-                    .verify(Duration.ofMillis(subscriberValidationTimeout));
+                    .verify(Duration.ofMillis(2 * TIMEOUT)); // TODO: Doubling timeout. Remove after increasing perf.
     }
 
     private void createLargeDocument() {
@@ -86,14 +85,14 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
     // TODO (DANOBLE) beforeClass method intermittently times out within the SETUP_TIMEOUT interval.
     //  see see https://github.com/Azure/azure-sdk-for-java/issues/6377
-    @BeforeClass(groups = { "emulator" }, timeOut = 2 * SETUP_TIMEOUT)
+    @BeforeClass(groups = { "simple" }, timeOut = 2 * SETUP_TIMEOUT)
     public void before_VeryLargeDocumentQueryTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.FeedOptions;
@@ -72,6 +74,10 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
+                if (feedOptions.partitionKey() != null && feedOptions.partitionKey() != PartitionKey.NONE) {
+                    headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, 
+                                BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey()).toJson());
+                }
                 return this.createDocumentServiceRequest(headers, querySpecForInit, partitionKeyRange, collectionRid);
             };
 

@@ -76,7 +76,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
@@ -94,7 +94,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.maxItemCount(3);
-        options.setEnableCrossPartitionQuery(true);
+        
         Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
         List<CosmosUserDefinedFunctionProperties> expectedDocs = createdUDF;
@@ -118,7 +118,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
         FailureValidator validator = new FailureValidator.Builder()
