@@ -35,8 +35,6 @@ import java.util.List;
 @ServiceClient(builder = TextAnalyticsClientBuilder.class)
 public final class TextAnalyticsClient {
     private final TextAnalyticsAsyncClient client;
-    private final String defaultCountryHint;
-    private final String defaultLanguage;
 
     /**
      * Create a {@code TextAnalyticsClient client} that sends requests to the Text Analytics service's endpoint.
@@ -46,8 +44,6 @@ public final class TextAnalyticsClient {
      */
     TextAnalyticsClient(TextAnalyticsAsyncClient client) {
         this.client = client;
-        this.defaultCountryHint = client.getDefaultCountryHint();
-        this.defaultLanguage = client.getDefaultLanguage();
     }
 
     /**
@@ -60,7 +56,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectLanguageResult detectLanguage(String text) {
-        return detectLanguage(text, defaultCountryHint);
+        return detectLanguage(text, client.getDefaultCountryHint());
     }
 
     /**
@@ -107,7 +103,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> textInputs) {
-        return detectLanguagesWithResponse(textInputs, defaultCountryHint, Context.NONE).getValue();
+        return detectLanguagesWithResponse(textInputs, client.getDefaultCountryHint(), Context.NONE).getValue();
     }
 
     /**
@@ -172,7 +168,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizeEntitiesResult recognizeEntities(String text) {
-        return recognizeEntitiesWithResponse(text, defaultLanguage, Context.NONE).getValue();
+        return recognizeEntitiesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -204,7 +200,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<RecognizeEntitiesResult> recognizeEntities(List<String> textInputs) {
-        return recognizeEntitiesWithResponse(textInputs, defaultLanguage, Context.NONE).getValue();
+        return recognizeEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -269,7 +265,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizeEntitiesResult recognizePiiEntities(String text) {
-        return recognizePiiEntitiesWithResponse(text, defaultLanguage, Context.NONE).getValue();
+        return recognizePiiEntitiesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -304,7 +300,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<RecognizeEntitiesResult> recognizePiiEntities(List<String> textInputs) {
-        return recognizePiiEntitiesWithResponse(textInputs, defaultLanguage, Context.NONE).getValue();
+        return recognizePiiEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -376,7 +372,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizeLinkedEntitiesResult recognizeLinkedEntities(String text) {
-        return recognizeLinkedEntitiesWithResponse(text, defaultLanguage, Context.NONE).getValue();
+        return recognizeLinkedEntitiesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -410,7 +406,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntities(List<String> textInputs) {
-        return recognizeLinkedEntitiesWithResponse(textInputs, defaultLanguage, Context.NONE).getValue();
+        return recognizeLinkedEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -478,7 +474,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtractKeyPhraseResult extractKeyPhrases(String text) {
-        return extractKeyPhrasesWithResponse(text, defaultLanguage, Context.NONE).getValue();
+        return extractKeyPhrasesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -510,7 +506,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhrases(List<String> textInputs) {
-        return extractKeyPhrasesWithResponse(textInputs, defaultLanguage, Context.NONE).getValue();
+        return extractKeyPhrasesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -576,7 +572,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResult analyzeSentiment(String text) {
-        return analyzeBatchSentimentWithResponse(text, defaultLanguage, Context.NONE).getValue();
+        return analyzeBatchSentimentWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -609,7 +605,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<AnalyzeSentimentResult> analyzeSentiment(List<String> textInputs) {
-        return analyzeSentimentWithResponse(textInputs, defaultLanguage, Context.NONE).getValue();
+        return analyzeSentimentWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
