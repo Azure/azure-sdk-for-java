@@ -184,10 +184,14 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<SBNamespace, SBNamespace
     public Observable<IpFilterRule> getIpFilterRuleAsync(String resourceGroupName, String namespaceName, String ipFilterRuleName) {
         NamespacesInner client = this.inner();
         return client.getIpFilterRuleAsync(resourceGroupName, namespaceName, ipFilterRuleName)
-        .map(new Func1<IpFilterRuleInner, IpFilterRule>() {
+        .flatMap(new Func1<IpFilterRuleInner, Observable<IpFilterRule>>() {
             @Override
-            public IpFilterRule call(IpFilterRuleInner inner) {
-                return wrapIpFilterRuleModel(inner);
+            public Observable<IpFilterRule> call(IpFilterRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((IpFilterRule)wrapIpFilterRuleModel(inner));
+                }
             }
        });
     }
@@ -220,10 +224,14 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<SBNamespace, SBNamespace
     public Observable<VirtualNetworkRule> getVirtualNetworkRuleAsync(String resourceGroupName, String namespaceName, String virtualNetworkRuleName) {
         NamespacesInner client = this.inner();
         return client.getVirtualNetworkRuleAsync(resourceGroupName, namespaceName, virtualNetworkRuleName)
-        .map(new Func1<VirtualNetworkRuleInner, VirtualNetworkRule>() {
+        .flatMap(new Func1<VirtualNetworkRuleInner, Observable<VirtualNetworkRule>>() {
             @Override
-            public VirtualNetworkRule call(VirtualNetworkRuleInner inner) {
-                return wrapVirtualNetworkRuleModel(inner);
+            public Observable<VirtualNetworkRule> call(VirtualNetworkRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((VirtualNetworkRule)wrapVirtualNetworkRuleModel(inner));
+                }
             }
        });
     }
