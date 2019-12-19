@@ -14,14 +14,14 @@ npm install -g autorest
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --java --use=..\..\..\..\..\autorest.java
+autorest --java --use=C:/work/autorest.java
 ```
 
 ### Code generation settings
 ``` yaml
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/master/specification/cognitiveservices/data-plane/TextAnalytics/preview/v3.0-preview.1/TextAnalytics.json
 java: true
-output-folder: ..\..\..\..\..\azure-sdk-for-java\sdk\textanalytics\azure-ai-textanalytics\
+output-folder: ..\
 namespace: com.azure.ai.textanalytics
 enable-xml: true
 generate-client-interfaces: false

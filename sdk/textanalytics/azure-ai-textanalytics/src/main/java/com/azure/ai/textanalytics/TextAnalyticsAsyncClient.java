@@ -104,6 +104,24 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
+     * Get default country hint code.
+     *
+     * @return the default country hint code
+     */
+    public String getDefaultCountryHint() {
+        return defaultCountryHint;
+    }
+
+    /**
+     * Get default language when the builder is setup.
+     *
+     * @return the default language
+     */
+    public String getDefaultLanguage() {
+        return defaultLanguage;
+    }
+
+    /**
      * Gets the service version the client is using.
      *
      * @return the service version the client is using.
@@ -1113,24 +1131,6 @@ public final class TextAnalyticsAsyncClient {
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
-    /**
-     * Get default country hint code.
-     *
-     * @return the default country hint code
-     */
-    public String getDefaultCountryHint() {
-        return defaultCountryHint;
-    }
-
-    /**
-     * Get default language when the builder is setup.
-     *
-     * @return the default language
-     */
-    public String getDefaultLanguage() {
-        return defaultLanguage;
-    }
-
     private List<MultiLanguageInput> convertToMultiLanguageInput(List<TextDocumentInput> textInputs) {
         List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
         for (TextDocumentInput textDocumentInput : textInputs) {
@@ -1168,7 +1168,9 @@ public final class TextAnalyticsAsyncClient {
         final TextSentimentClass documentSentimentClass = TextSentimentClass.fromString(documentSentiment.
             getSentiment().toString());
         if (documentSentimentClass == null) {
-            throw logger.logExceptionAsWarning(
+            // Not throw exception for an invalid Sentiment type because we should not skip processing the
+            // other response. It is a service issue.
+            logger.logExceptionAsWarning(
                 new RuntimeException(String.format("'%s' is not valid text sentiment.",
                     documentSentiment.getSentiment())));
         }
@@ -1180,7 +1182,9 @@ public final class TextAnalyticsAsyncClient {
                 TextSentimentClass sentimentClass = TextSentimentClass.fromString(sentenceSentiment
                     .getSentiment().toString());
                 if (sentimentClass == null) {
-                    throw logger.logExceptionAsWarning(
+                    // Not throw exception for an invalid Sentiment type because we should not skip processing the
+                    // other response. It is a service issue.
+                    logger.logExceptionAsWarning(
                         new RuntimeException(String.format("'%s' is not valid text sentiment.",
                             sentenceSentiment.getSentiment())));
                 }

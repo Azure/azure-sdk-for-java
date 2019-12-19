@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.NamedEntity;
 
 /**
- * Sample demonstrate how to recognize PII(personal information identification) entities of a text input.
+ * Sample demonstrate how to recognize PII(Personally Identifiable Information) entities of a text input.
  */
 public class RecognizePii {
     /**
