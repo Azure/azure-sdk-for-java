@@ -67,10 +67,14 @@ class QueuesImpl extends WrapperImpl<QueuesInner> implements Queues {
     public Observable<QueueResource> getAsync(String resourceGroupName, String namespaceName, String queueName) {
         QueuesInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, queueName)
-        .map(new Func1<QueueResourceInner, QueueResource>() {
+        .flatMap(new Func1<QueueResourceInner, Observable<QueueResource>>() {
             @Override
-            public QueueResource call(QueueResourceInner inner) {
-                return wrapModel(inner);
+            public Observable<QueueResource> call(QueueResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((QueueResource)wrapModel(inner));
+                }
             }
        });
     }
@@ -107,10 +111,14 @@ class QueuesImpl extends WrapperImpl<QueuesInner> implements Queues {
     public Observable<QueueNamespaceSharedAccessAuthorizationRuleResource> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
         QueuesInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName)
-        .map(new Func1<SharedAccessAuthorizationRuleResourceInner, QueueNamespaceSharedAccessAuthorizationRuleResource>() {
+        .flatMap(new Func1<SharedAccessAuthorizationRuleResourceInner, Observable<QueueNamespaceSharedAccessAuthorizationRuleResource>>() {
             @Override
-            public QueueNamespaceSharedAccessAuthorizationRuleResource call(SharedAccessAuthorizationRuleResourceInner inner) {
-                return wrapQueueNamespaceSharedAccessAuthorizationRuleResourceModel(inner);
+            public Observable<QueueNamespaceSharedAccessAuthorizationRuleResource> call(SharedAccessAuthorizationRuleResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((QueueNamespaceSharedAccessAuthorizationRuleResource)wrapQueueNamespaceSharedAccessAuthorizationRuleResourceModel(inner));
+                }
             }
        });
     }
