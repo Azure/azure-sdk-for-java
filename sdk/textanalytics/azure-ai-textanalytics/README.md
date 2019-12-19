@@ -59,6 +59,8 @@ Netty and include OkHTTP client in your pom.xml.
     </exclusions>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
+
 [//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;dependency})
 ```xml
 <!-- Add OkHTTP client to use with Text Analytics -->

@@ -3,6 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
+import com.azure.ai.textanalytics.models.TextAnalyticsClientOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -23,9 +26,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
-import com.azure.ai.textanalytics.models.TextAnalyticsClientOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -164,7 +164,7 @@ public final class TextAnalyticsClientBuilder {
                 headers.put(OCP_APIM_SUBSCRIPTION_KEY, subscriptionKey);
             } else {
                 // Throw exception that credential and tokenCredential cannot be null
-                logger.logExceptionAsError(
+                throw logger.logExceptionAsError(
                     new IllegalArgumentException("Missing credential information while building a client."));
             }
 
@@ -279,7 +279,7 @@ public final class TextAnalyticsClientBuilder {
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public TextAnalyticsClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy);
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
         policies.add(policy);
         return this;
     }
