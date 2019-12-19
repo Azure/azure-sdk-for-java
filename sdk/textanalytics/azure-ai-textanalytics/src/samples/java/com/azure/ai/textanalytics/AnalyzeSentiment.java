@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.models.TextSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class AnalyzeSentiment {
         // The text that need be analysed.
         String text = "The hotel was dark and unclean.";
 
-        final TextSentimentResult sentimentResult = client.analyzeSentiment(text);
+        final AnalyzeSentimentResult sentimentResult = client.analyzeSentiment(text);
 
         final TextSentiment documentSentiment = sentimentResult.getDocumentSentiment();
         System.out.printf(

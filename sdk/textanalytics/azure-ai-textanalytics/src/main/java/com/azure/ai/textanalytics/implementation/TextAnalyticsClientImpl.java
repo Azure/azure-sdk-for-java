@@ -11,7 +11,6 @@ import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Host;
@@ -22,6 +21,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
@@ -105,32 +105,32 @@ public final class TextAnalyticsClientImpl {
     private interface TextAnalyticsClientService {
         @Post("entities/recognition/general")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionGeneral(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
 
         @Post("entities/recognition/pii")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionPii(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
 
         @Post("entities/linking")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<EntityLinkingResult>> entitiesLinking(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
 
         @Post("keyPhrases")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<KeyPhraseResult>> keyPhrases(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
 
         @Post("languages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<LanguageResult>> languages(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") LanguageBatchInput input, Context context);
 
         @Post("sentiment")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<SentimentResponse>> sentiment(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
     }
 
