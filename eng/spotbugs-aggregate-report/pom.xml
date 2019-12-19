@@ -35,7 +35,6 @@
             </goals>
             <configuration>
               <sources>
-                <source>..\..\sdk\textanalytics\azure-ai-textanalytics\src\main\java\com</source>
                 <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\main\java\com</source>
                 <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\samples\java\com</source>
                 <source>..\..\sdk\core\azure-core\src\main\java\com</source>
@@ -74,6 +73,7 @@
                 <source>..\..\sdk\storage\azure-storage-file-datalake\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-queue\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-queue\src\samples\java\com</source>
+                <source>..\..\sdk\textanalytics\azure-ai-textanalytics\src\main\java\com</source>
               </sources>
             </configuration>
           </execution>

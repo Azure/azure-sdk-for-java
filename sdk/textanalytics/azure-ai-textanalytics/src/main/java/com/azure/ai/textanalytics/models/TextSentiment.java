@@ -27,11 +27,11 @@ public final class TextSentiment {
      * @param length length of the text
      * @param offset the offset from the start of the document
      */
-    public TextSentiment(TextSentimentClass textSentimentClass, double negativeScore, double neutralScore,
-                         double positiveScore, int length, int offset) {
-        this.negativeScore = negativeScore;
-        this.neutralScore = neutralScore;
-        this.positiveScore = positiveScore;
+    public TextSentiment(TextSentimentClass textSentimentClass, Double negativeScore, Double neutralScore,
+                         Double positiveScore, int length, int offset) {
+        this.negativeScore = negativeScore == null ? 0.0 : negativeScore;
+        this.neutralScore = neutralScore == null ? 0.0 : neutralScore;
+        this.positiveScore = positiveScore == null ? 0.0 : positiveScore;
         this.length = length;
         this.offset = offset;
         this.textSentimentClass = textSentimentClass;

@@ -48,6 +48,4 @@ public final class AnalyzeSentimentResult extends DocumentResult {
     public List<TextSentiment> getSentenceSentiments() {
         return sentenceSentiments;
     }
-
-
 }

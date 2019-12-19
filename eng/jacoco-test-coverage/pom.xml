@@ -38,6 +38,11 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-ai-textanalytics</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
@@ -71,11 +76,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opencensus</artifactId>
       <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-ai-textanalytics</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

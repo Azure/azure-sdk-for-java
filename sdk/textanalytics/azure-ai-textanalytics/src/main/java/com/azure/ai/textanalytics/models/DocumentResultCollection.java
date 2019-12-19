@@ -12,7 +12,7 @@ import com.azure.core.util.IterableStream;
  * @param <T> the type of DocumentResultCollection holds
  */
 @Immutable
-public class DocumentResultCollection<T> extends IterableStream<T> {
+public final class DocumentResultCollection<T> extends IterableStream<T> {
 
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;

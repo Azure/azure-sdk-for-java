@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrate how to recognize PII(personal information identification) entities of a text input.
+ * Sample demonstrate how to recognize PII(Personally Identifiable Information) entities of a text input.
  */
 public class RecognizePiiBatchDocuments {
     /**

@@ -1139,6 +1139,24 @@ public final class TextAnalyticsAsyncClient {
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
+    /**
+     * Get default country hint code.
+     *
+     * @return the default country hint code
+     */
+    public String getDefaultCountryHint() {
+        return defaultCountryHint;
+    }
+
+    /**
+     * Get default language when the builder is setup.
+     *
+     * @return the default language
+     */
+    public String getDefaultLanguage() {
+        return defaultLanguage;
+    }
+
     private List<LanguageInput> convertToLanguageInput(List<DetectLanguageInput> textInputs) {
         List<LanguageInput> languageInputList = new ArrayList<>();
         for (DetectLanguageInput detectLanguageInput : textInputs) {
@@ -1180,7 +1198,7 @@ public final class TextAnalyticsAsyncClient {
             return null;
         }
 
-        final double[] sentimentScores = getTextSentimentScore(documentSentiment.getDocumentScores(),
+        final Double[] sentimentScores = getTextSentimentScore(documentSentiment.getDocumentScores(),
             documentSentimentClass);
 
         // Sentence text sentiment
@@ -1199,7 +1217,7 @@ public final class TextAnalyticsAsyncClient {
         final List<TextSentiment> sentenceSentimentCollection = new ArrayList<>();
         sentenceSentiments.forEach(sentenceSentiment -> {
             final TextSentimentClass sentimentClass = convertToTextSentimentClass(sentenceSentiment.getSentiment());
-            final double[] sentimentScores =
+            final Double[] sentimentScores =
                 getTextSentimentScore(sentenceSentiment.getSentenceScores(), sentimentClass);
 
             sentenceSentimentCollection.add(new TextSentiment(sentimentClass, sentimentScores[0], sentimentScores[1],
@@ -1208,23 +1226,17 @@ public final class TextAnalyticsAsyncClient {
         return sentenceSentimentCollection;
     }
 
-    private double[] getTextSentimentScore(SentimentConfidenceScorePerLabel sentimentScore,
+    private Double[] getTextSentimentScore(SentimentConfidenceScorePerLabel sentimentScore,
         TextSentimentClass textSentimentClass) {
-        double[] sentimentScores = new double[3];
+        Double[] sentimentScores = new Double[3];
         switch (textSentimentClass) {
             case NEGATIVE:
                 sentimentScores[0] = sentimentScore.getNegative();
-                sentimentScores[1] = 0.0;
-                sentimentScores[2] = 0.0;
                 break;
             case NEUTRAL:
-                sentimentScores[0] = 0.0;
                 sentimentScores[1] = sentimentScore.getNeutral();
-                sentimentScores[2] = 0.0;
                 break;
             case POSITIVE:
-                sentimentScores[0] = 0.0;
-                sentimentScores[1] = 0.0;
                 sentimentScores[2] = sentimentScore.getPositive();
                 break;
             case MIXED:
@@ -1233,7 +1245,8 @@ public final class TextAnalyticsAsyncClient {
                 sentimentScores[2] = sentimentScore.getPositive();
                 break;
             default:
-                break;
+                throw logger.logExceptionAsWarning(
+                    new RuntimeException(String.format("'%s' is not valid text sentiment class", textSentimentClass)));
         }
         return sentimentScores;
     }
@@ -1250,7 +1263,7 @@ public final class TextAnalyticsAsyncClient {
                 return TextSentimentClass.MIXED;
             default:
                 throw logger.logExceptionAsWarning(
-                    new RuntimeException(String.format("'%s' is not valid text sentiment.")));
+                    new RuntimeException(String.format("'%s' is not valid text sentiment.", sentimentValue)));
         }
     }
 
@@ -1264,7 +1277,7 @@ public final class TextAnalyticsAsyncClient {
                 return TextSentimentClass.NEGATIVE;
             default:
                 throw logger.logExceptionAsWarning(
-                    new RuntimeException(String.format("'%s' is not valid text sentiment.")));
+                    new RuntimeException(String.format("'%s' is not valid text sentiment.", sentimentValue)));
         }
     }
 
@@ -1420,23 +1433,5 @@ public final class TextAnalyticsAsyncClient {
     private ErrorCodeValue convertToErrorCodeValue(
         com.azure.ai.textanalytics.implementation.models.ErrorCodeValue errorCodeValue) {
         return ErrorCodeValue.fromString(errorCodeValue.toString());
-    }
-
-    /**
-     * Get default country hint code.
-     *
-     * @return the default country hint code
-     */
-    public String getDefaultCountryHint() {
-        return defaultCountryHint;
-    }
-
-    /**
-     * Get default language when the builder is setup.
-     *
-     * @return the default language
-     */
-    public String getDefaultLanguage() {
-        return defaultLanguage;
     }
 }

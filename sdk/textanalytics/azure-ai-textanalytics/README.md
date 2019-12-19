@@ -265,7 +265,7 @@ for (NamedEntity entity : client.recognizeEntities(text).getNamedEntities()) {
 }
 ```
 
-### Recognize PII(Personal Information Identification) entity
+### Recognize PII(PPersonally Identifiable Information) entity
 ```java
 TextAnalyticsClient client = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
