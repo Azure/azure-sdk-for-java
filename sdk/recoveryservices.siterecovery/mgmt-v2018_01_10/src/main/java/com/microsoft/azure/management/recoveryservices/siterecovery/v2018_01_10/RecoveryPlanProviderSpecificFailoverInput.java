@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Recovery plan provider specific failover input base class.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = RecoveryPlanProviderSpecificFailoverInput.class)
 @JsonTypeName("RecoveryPlanProviderSpecificFailoverInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = RecoveryPlanA2AFailoverInput.class),

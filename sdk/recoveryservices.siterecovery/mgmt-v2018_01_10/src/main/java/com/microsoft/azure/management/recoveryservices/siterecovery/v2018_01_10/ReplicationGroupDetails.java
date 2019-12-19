@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Replication group details. This will be used in case of San and Wvr.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = ReplicationGroupDetails.class)
 @JsonTypeName("ReplicationGroupDetails")
 public class ReplicationGroupDetails extends ConfigurationSettings {
 }

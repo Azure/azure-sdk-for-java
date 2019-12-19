@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * VMwareCbt provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VMwareCbtMigrationDetails.class)
 @JsonTypeName("VMwareCbt")
 public class VMwareCbtMigrationDetails extends MigrationProviderSpecificSettings {
     /**
