@@ -19,6 +19,7 @@ import rx.Completable;
 import com.microsoft.azure.management.servicebus.v2017_04_01.implementation.NamespacesInner;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.servicebus.v2017_04_01.NamespaceSBAuthorizationRule;
+import com.microsoft.azure.management.servicebus.v2017_04_01.NetworkRuleSet;
 import com.microsoft.azure.management.servicebus.v2017_04_01.implementation.NetworkRuleSetInner;
 
 /**
@@ -106,6 +107,16 @@ public interface Namespaces extends SupportsCreating<SBNamespace.DefinitionStage
      * @return the observable for the request
      */
     Observable<AccessKeys> regenerateKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, RegenerateAccessKeyParameters parameters);
+
+    /**
+     * Gets list of NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkRuleSet> listNetworkRuleSetsAsync(final String resourceGroupName, final String namespaceName);
 
     /**
      * Create or update NetworkRuleSet for a Namespace.
