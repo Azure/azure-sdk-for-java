@@ -14,7 +14,6 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -91,7 +90,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguagesNullInput() {
-        assertThrows(HttpResponseException.class, () -> client.detectBatchLanguagesWithResponse(null, null,
+        assertThrows(NullPointerException.class, () -> client.detectBatchLanguagesWithResponse(null, null,
             Context.NONE).getValue());
     }
 
@@ -122,7 +121,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid Country Hint.", null, null);
         validateErrorDocument(client.detectLanguage("Este es un document escrito en Español.", "en")
                                   .getError(), expectedError);
     }
@@ -235,7 +234,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.11472424095537814, 26, 7);
+        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.11472424095537814, 7, 26);
         LinkedEntity linkedEntity1 = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch1), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
         RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResultList = new RecognizeLinkedEntitiesResult("0", null, null, Collections.singletonList(linkedEntity1));
 
@@ -295,7 +294,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         validateErrorDocument(expectedError, client.extractKeyPhrases("").getError());
     }
 
-    @Disabled
     @Test
     public void extractKeyPhrasesForFaultyText() {
         assertEquals(client.extractKeyPhrases("!@#%%").getKeyPhrases().size(), 0);

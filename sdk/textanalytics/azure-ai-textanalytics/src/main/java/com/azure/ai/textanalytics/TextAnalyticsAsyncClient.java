@@ -53,13 +53,12 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -154,12 +153,11 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
-        List<DetectLanguageInput> languageInputs = Arrays.asList(
-            new DetectLanguageInput(Integer.toString(0), text, countryHint));
-        return detectBatchLanguagesWithResponse(languageInputs, null, context).flatMap(response -> {
-            Iterator<DetectLanguageResult> responseItem = response.getValue().iterator();
-            return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-        });
+        Objects.requireNonNull(text, "'text' cannot be null.");
+        List<DetectLanguageInput> languageInputs = Collections.singletonList(new DetectLanguageInput("0",
+            text, countryHint));
+        return detectBatchLanguagesWithResponse(languageInputs, null, context).map(response ->
+            new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
@@ -205,8 +203,8 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> textInputs,
         String countryHint, Context context) {
-        List<DetectLanguageInput> detectLanguageInputs = mapByIndex(textInputs, (index, value) ->
-            new DetectLanguageInput(index, value, countryHint));
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+        List<DetectLanguageInput> detectLanguageInputs = mapByIndex(textInputs, (index, value) -> new DetectLanguageInput(index, value, countryHint));
 
         return detectBatchLanguagesWithResponse(detectLanguageInputs, null, context);
     }
@@ -256,6 +254,7 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
         List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
         final LanguageBatchInput languageBatchInput = new LanguageBatchInput()
             .setDocuments(textInputs.stream().map(detectLanguageInput -> new LanguageInput()
@@ -272,10 +271,9 @@ public final class TextAnalyticsAsyncClient {
     }
 
     // Named Entity
-
     /**
      * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
-     * https://aka.ms/taner For a list of enabled languages, check: https://aka.ms/talangs
+     * <a href="https://aka.ms/taner"></a> For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
      *
      * @param text the text to recognize entities for.
      *
@@ -294,7 +292,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
-     * https://aka.ms/taner For a list of enabled languages, check: https://aka.ms/talangs
+     * <a href="https://aka.ms/taner"></a> For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
      *
      * @param text the text to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
@@ -316,12 +314,11 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language,
         Context context) {
+        Objects.requireNonNull(text, "'text' cannot be null.");
+
         return recognizeBatchEntitiesWithResponse(
-            Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
-            .flatMap(response -> {
-                Iterator<RecognizeEntitiesResult> responseItem = response.getValue().iterator();
-                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-            });
+            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
+            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
@@ -367,6 +364,8 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
         return recognizeBatchEntitiesWithResponse(documentInputs, null, context);
@@ -415,9 +414,11 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
-        List<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+
         final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(convertToMultiLanguageInput(documents));
+            .setDocuments(convertToMultiLanguageInput(textInputs));
         return service.entitiesRecognitionGeneralWithRestResponseAsync(
             batchInput,
             options == null ? null : options.getModelVersion(),
@@ -451,8 +452,8 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text. For the list of
-     * supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of enabled
-     * languages.
+     * supported entity types, check: <a href="https://aka.ms/taner"></a> For a list of enabled languages,
+     * check: <a href="https://aka.ms/talangs"></a>.
      *
      * @param text the text to recognize PII entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -474,18 +475,17 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language,
         Context context) {
+        Objects.requireNonNull(text, "'text' cannot be null.");
+
         return recognizeBatchPiiEntitiesWithResponse(
-            Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
-            .flatMap(response -> {
-                Iterator<RecognizePiiEntitiesResult> responseItem = response.getValue().iterator();
-                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-            });
+           Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
+            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts. For the list
-     * of supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of enabled
-     * languages.
+     * of supported entity types, check: <a href="https://aka.ms/taner"></a> For a list of enabled languages,
+     * check: <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * @param textInputs A list of text to recognize PII entities for.
      *
@@ -506,8 +506,8 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts. For the list
-     * of supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of enabled
-     * languages.
+     * of supported entity types, check <a href="https://aka.ms/taner"></a> For a list of enabled languages,
+     * check: <a href="https://aka.ms/talangs"></a>.
      *
      * @param textInputs A list of text to recognize PII entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -530,6 +530,8 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
         try {
@@ -541,8 +543,8 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs. For
-     * the list of supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of
-     * enabled languages.
+     * the list of supported entity types, check: <a href="https://aka.ms/taner"></a>
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      *
@@ -563,8 +565,8 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs. For
-     * the list of supported entity types, check https://aka.ms/tanerpii. See https://aka.ms/talangs for the list of
-     * enabled languages.
+     * the list of supported entity types,check: <a href="https://aka.ms/taner"></a> For a list of enabled languages,
+     * check: <a href="https://aka.ms/talangs"></a>.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -586,9 +588,10 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
-        List<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(convertToMultiLanguageInput(documents));
+            .setDocuments(convertToMultiLanguageInput(textInputs));
         return service.entitiesRecognitionPiiWithRestResponseAsync(
             batchInput,
             options == null ? null : options.getModelVersion(),
@@ -644,12 +647,11 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
         Context context) {
+        Objects.requireNonNull(text, "'text' cannot be null.");
+
         return recognizeBatchLinkedEntitiesWithResponse(
-            Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
-            .flatMap(response -> {
-                Iterator<RecognizeLinkedEntitiesResult> responseItem = response.getValue().iterator();
-                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-            });
+            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
+            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
@@ -676,7 +678,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts. See
-     * https://aka.ms/talangs for supported languages in Text Analytics API.
+     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * @param textInputs A list of text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -699,6 +701,8 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
         try {
@@ -710,7 +714,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs. See
-     * https://aka.ms/talangs for supported languages in Text Analytics API.
+     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      *
@@ -731,7 +735,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs. See
-     * https://aka.ms/talangs for supported languages in Text Analytics API.
+     * <a href="https://aka.ms/talangs" supported languages></a> in Text Analytics API.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -755,6 +759,8 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeBatchLinkedEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+
         final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
             .setDocuments(convertToMultiLanguageInput(textInputs));
         return service.entitiesLinkingWithRestResponseAsync(
@@ -811,12 +817,11 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language,
         Context context) {
+        Objects.requireNonNull(text, "'text' cannot be null.");
+
         return extractBatchKeyPhrasesWithResponse(
-            Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
-            .flatMap(response -> {
-                Iterator<ExtractKeyPhraseResult> responseItem = response.getValue().iterator();
-                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-            });
+            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
+            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
@@ -863,6 +868,8 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
         List<String> textInputs, String language, Context context) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
         try {
@@ -916,9 +923,11 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
-        List<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+
         final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(convertToMultiLanguageInput(documents));
+            .setDocuments(convertToMultiLanguageInput(textInputs));
         return service.keyPhrasesWithRestResponseAsync(
             batchInput,
             options == null ? null : options.getModelVersion(),
@@ -931,27 +940,22 @@ public final class TextAnalyticsAsyncClient {
 
     private DocumentResultCollection<ExtractKeyPhraseResult> toDocumentResultCollection(
         final com.azure.ai.textanalytics.implementation.models.KeyPhraseResult keyPhraseResult) {
-        return new DocumentResultCollection<>(getKeyPhraseResults(keyPhraseResult),
-            keyPhraseResult.getModelVersion(), keyPhraseResult.getStatistics() == null ? null
-            : mapBatchStatistics(keyPhraseResult.getStatistics()));
-    }
-
-    private List<ExtractKeyPhraseResult> getKeyPhraseResults(
-        final com.azure.ai.textanalytics.implementation.models.KeyPhraseResult keyPhraseResult) {
-        List<ExtractKeyPhraseResult> validDocumentList = new ArrayList<>();
+        List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
         for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
-            validDocumentList.add(new ExtractKeyPhraseResult(documentKeyPhrases.getId(),
+            keyPhraseResultList.add(new ExtractKeyPhraseResult(documentKeyPhrases.getId(),
                 documentKeyPhrases.getStatistics() == null ? null
                     : convertToTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
                 documentKeyPhrases.getKeyPhrases()));
         }
-        List<ExtractKeyPhraseResult> errorDocumentList = new ArrayList<>();
 
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error = convertToError(documentError.getError());
-            errorDocumentList.add(new ExtractKeyPhraseResult(documentError.getId(), null, error, null));
+            keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null, error, null));
         }
-        return Stream.concat(validDocumentList.stream(), errorDocumentList.stream()).collect(Collectors.toList());
+
+        return new DocumentResultCollection<>(keyPhraseResultList,
+            keyPhraseResult.getModelVersion(), keyPhraseResult.getStatistics() == null ? null
+            : mapBatchStatistics(keyPhraseResult.getStatistics()));
     }
 
     // Sentiment
@@ -997,12 +1001,11 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<AnalyzeSentimentResult>> analyzeSentimentWithResponse(String text, String language, Context context) {
+        Objects.requireNonNull(text, "'text' cannot be null.");
+
         return analyzeBatchSentimentWithResponse(
-            Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
-            .flatMap(response -> {
-                Iterator<AnalyzeSentimentResult> responseItem = response.getValue().iterator();
-                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-            });
+            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
+            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
@@ -1050,6 +1053,8 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentWithResponse(
         List<String> textInputs, String language, Context context) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
         return analyzeBatchSentimentWithResponse(documentInputs, null, context);
@@ -1100,9 +1105,11 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeBatchSentimentWithResponse(
-        List<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+
         final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(convertToMultiLanguageInput(documents));
+            .setDocuments(convertToMultiLanguageInput(textInputs));
         return service.sentimentWithRestResponseAsync(
             batchInput,
             options == null ? null : options.getModelVersion(),
