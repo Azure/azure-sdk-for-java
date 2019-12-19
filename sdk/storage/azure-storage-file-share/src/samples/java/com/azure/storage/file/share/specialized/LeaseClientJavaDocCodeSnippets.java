@@ -22,9 +22,9 @@ public class LeaseClientJavaDocCodeSnippets {
      * Code snippets for {@link ShareLeaseClient#acquireLease()}
      */
     public void acquireLease() {
-        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLease#int
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLease
         System.out.printf("Lease ID is %s%n", client.acquireLease());
-        // END: com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLease#int
+        // END: com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLease
     }
 
     /**

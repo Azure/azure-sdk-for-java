@@ -28,7 +28,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Instantiating a ShareLeaseAsyncClient</strong></p>
  *
- * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.asyncInstantiationWithShareFile}
+ * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.asyncInstantiation}
  *
  * <p>View {@link ShareLeaseClientBuilder this} for additional ways to construct the client.</p>
  *

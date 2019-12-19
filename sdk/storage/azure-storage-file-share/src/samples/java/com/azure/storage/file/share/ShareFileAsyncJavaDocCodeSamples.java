@@ -134,7 +134,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void createWithLease() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareAccessConditions
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
@@ -155,7 +155,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
             Collections.singletonMap("directory", "metadata"), requestConditions)
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
                 response.getStatusCode()));
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareAccessConditions
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
     }
 
     /**
@@ -530,13 +530,13 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void deleteWithLease() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteWithResponse-ShareRequestConditions
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteWithResponse#ShareRequestConditions
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         shareFileAsyncClient.deleteWithResponse(requestConditions).subscribe(
             response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
             error -> System.err.print(error.toString())
         );
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteWithResponse-ShareRequestConditions
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteWithResponse#ShareRequestConditions
     }
 
     /**
@@ -571,14 +571,14 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void getPropertiesWithLease() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.getPropertiesWithResponse-ShareRequestConditions
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.getPropertiesWithResponse#ShareRequestConditions
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         shareFileAsyncClient.getPropertiesWithResponse(requestConditions)
             .subscribe(response -> {
                 ShareFileProperties properties = response.getValue();
                 System.out.printf("File latest modified date is %s.", properties.getLastModified());
             });
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.getPropertiesWithResponse-ShareRequestConditions
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.getPropertiesWithResponse#ShareRequestConditions
     }
 
     /**
@@ -749,12 +749,12 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void clearHTTPHeadersAsyncWithLease() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-String.clearHttpHeaderspreserveSMBProperties
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions.clearHttpHeaderspreserveSMBProperties
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         shareFileAsyncClient.setPropertiesWithResponse(1024, null, null, null, requestConditions)
             .subscribe(response -> System.out.printf("Setting the file httpHeaders completed with status code %d",
                 response.getStatusCode()));
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-String.clearHttpHeaderspreserveSMBProperties
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions.clearHttpHeaderspreserveSMBProperties
     }
 
     /**

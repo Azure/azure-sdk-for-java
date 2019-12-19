@@ -20,7 +20,7 @@ import java.time.Duration;
  *
  * <p><strong>Instantiating a ShareLeaseClient</strong></p>
  *
- * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.syncInstantiationWithShareFile}
+ * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.syncInstantiation}
  *
  * <p>View {@link ShareLeaseClientBuilder this} for additional ways to construct the client.</p>
  *

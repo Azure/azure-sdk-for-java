@@ -474,11 +474,11 @@ public class ShareFileJavaDocCodeSamples {
      */
     public void uploadFileFromURLWithResponseAsync() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-Duration-Context
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-Duration-Context
         Response<ShareFileUploadRangeFromUrlInfo> response =
             fileClient.uploadRangeFromUrlWithResponse(6, 8, 0, "sourceUrl", Duration.ofSeconds(1), Context.NONE);
         System.out.println("Completed upload range from url!");
-        // END: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-Duration-Context
+        // END: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-Duration-Context
     }
 
     /**
@@ -673,7 +673,7 @@ public class ShareFileJavaDocCodeSamples {
      */
     public void setHTTPHeadersWithLease() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-Duration-Context
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
@@ -691,7 +691,7 @@ public class ShareFileJavaDocCodeSamples {
         fileClient.setPropertiesWithResponse(1024, httpHeaders, smbProperties, filePermission, requestConditions, null,
             null);
         System.out.println("Setting the file httpHeaders completed.");
-        // END: com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-Duration-Context
+        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-Duration-Context
     }
 
     /**
@@ -712,7 +712,7 @@ public class ShareFileJavaDocCodeSamples {
      */
     public void setHttpHeadersWithResponse() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-Duration-Context
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Duration-Context
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
@@ -729,7 +729,7 @@ public class ShareFileJavaDocCodeSamples {
         Response<ShareFileInfo> response = fileClient.setPropertiesWithResponse(1024, httpHeaders, smbProperties,
             filePermission, Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-Duration-Context
+        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Duration-Context
     }
 
     /**
@@ -738,11 +738,11 @@ public class ShareFileJavaDocCodeSamples {
      */
     public void clearHTTPHeaders() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-Duration-Context.clearHttpHeaderspreserveSMBProperties
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Duration-Context.clearHttpHeaderspreserveSMBProperties
         Response<ShareFileInfo> response = fileClient.setPropertiesWithResponse(1024, null, null, null,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-Duration-Context.clearHttpHeaderspreserveSMBProperties
+        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Duration-Context.clearHttpHeaderspreserveSMBProperties
     }
 
     /**
@@ -751,12 +751,12 @@ public class ShareFileJavaDocCodeSamples {
      */
     public void clearHTTPHeadersWithLease() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-ShareRequestConditions-Duration-Context.clearHttpHeaderspreserveSMBProperties
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-Duration-Context.clearHttpHeaderspreserveSMBProperties
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         Response<ShareFileInfo> response = fileClient.setPropertiesWithResponse(1024, null, null, null, requestConditions,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-ShareRequestConditions-Duration-Context.clearHttpHeaderspreserveSMBProperties
+        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-Duration-Context.clearHttpHeaderspreserveSMBProperties
     }
 
     /**
