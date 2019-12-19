@@ -1,6 +1,8 @@
 # Release History
 
-## 12.2.0-beta.1 (Unreleased)
+## 12.2.0-beta.2 (Unreleased)
+
+## 12.2.0-beta.1 (2019-12-17)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setContainerName, setBlobName, setSnapshotId, generateSasQueryParameters methods on BlobServiceSasSignatureValues to direct users to using the methods added on clients.
 - Fixed a bug where Account SAS would not work when set on clients.
 
