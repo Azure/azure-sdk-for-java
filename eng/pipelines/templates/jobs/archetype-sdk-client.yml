@@ -8,26 +8,38 @@ parameters:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.8'
+      RunTitle: 'Linux on Java 1.8'
     macOS - Java 8:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.8'
+      RunTitle: 'macOS on Java 1.8'
     Windows - Java 8:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
+      RunTitle: 'Windows on Java 1.8'
     Linux - Java 11:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.11'
+      RunTitle: 'Linux on Java 1.11'
     macOS - Java 11:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.11'
+      RunTitle: 'macOS on Java 1.11'
     Windows - Java 11:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
+      RunTitle: 'Windows on Java 1.11'
+    Windows From Source - Java 8:
+      OSName: 'Windows'
+      OSVmImage: 'windows-2019'
+      JavaVersion: '1.8'
+      RunTitle: 'From Source: Windows on Java 1.8'
+      TestFromSource: true
 
 jobs:
   - job: 'Build'
@@ -101,6 +113,10 @@ jobs:
         displayName: 'Publish Artifacts $(ArtifactName)'
         artifact: '$(ArtifactName)'
 
+      - publish: $(System.DefaultWorkingDirectory)
+        condition: and(eq(variables['CaptureRepositoryOnFailure'], 'true'), failed())
+        displayName: 'Capture repo state for analysis'
+        artifact: repository
 
   - job: 'Analyze'
     condition: ne(variables['Skip.Analyze'], 'true')
@@ -273,6 +289,35 @@ jobs:
 
       - ${{ parameters.PreTestSteps }}
 
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+        condition: and(ne(variables['SdkType'], 'data'), eq(variables['TestFromSource'],'true'))
+
+      - pwsh: |
+          python --version
+          python eng/versioning/set_versions.py --build-type client --pst
+          if ($LastExitCode -eq 5678) {
+            echo "##vso[task.setvariable variable=ShouldRunSourceTests]$true"
+            echo "Changes detected, return code from set_versions.py is $($LastExitCode)"
+            exit 0
+          } elseif ($LastExitCode -eq 0) {
+            echo "No changes detected, return code from set_versions.py is $($LastExitCode)"
+            exit 0
+          } else {
+            echo "Invalid return code from set_versions.py, return code is $($LastExitCode)"
+            exit 1
+          }
+        displayName: 'Set versions for source build'
+        condition: and(ne(variables['SdkType'], 'data'), eq(variables['TestFromSource'],'true'))
+
+      - script: |
+          python --version
+          python eng/versioning/update_versions.py --update-type library --build-type client
+        condition: eq(variables['ShouldRunSourceTests'],'true')
+        displayName: 'Update versions for source build'
+
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
@@ -284,9 +329,12 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: ${{ parameters.TestGoals }}
+        # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set) 
+        # OR when ShouldRunSourceTests is true
+        condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
       - task: PublishTestResults@2
-        condition: succeededOrFailed()
+        condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
         inputs:
           mergeTestResults: true
-          testRunTitle: '$(OSName) on Java $(JavaVersion)'
+          testRunTitle: $(RunTitle)

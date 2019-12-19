@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
@@ -54,7 +55,7 @@ public class ListOperationsAsync {
         Thread.sleep(22000);
 
         //Let's create a certificate issuer.
-        certificateAsyncClient.createIssuer("myIssuer", "Test")
+        certificateAsyncClient.createIssuer(new CertificateIssuer("myIssuer", "Test"))
             .subscribe(issuer -> {
                 System.out.printf("Issuer created with %s and %s\n", issuer.getName(), issuer.getProvider());
             });
@@ -74,8 +75,8 @@ public class ListOperationsAsync {
 
         // Let's list all the certificates in the key vault.
         certificateAsyncClient.listPropertiesOfCertificates()
-            .subscribe(certificateProeprties -> certificateAsyncClient
-                .getCertificateVersion(certificateProeprties.getName(), certificateProeprties.getVersion())
+            .subscribe(certificateProperties -> certificateAsyncClient
+                .getCertificateVersion(certificateProperties.getName(), certificateProperties.getVersion())
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s \n",
                     certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
 
@@ -99,7 +100,7 @@ public class ListOperationsAsync {
         Thread.sleep(5000);
 
         // Let's set certificate contacts on the Key vault.
-        CertificateContact oontactToAdd = new CertificateContact("user", "useremail@exmaple.com");
+        CertificateContact oontactToAdd = new CertificateContact().setName("user").setEmail("useremail@exmaple.com");
         certificateAsyncClient.setContacts(Arrays.asList(oontactToAdd)).subscribe(contact ->
             System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmail())
         );

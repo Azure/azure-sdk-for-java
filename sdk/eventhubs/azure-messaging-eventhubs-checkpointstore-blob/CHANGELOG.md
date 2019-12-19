@@ -1,4 +1,7 @@
 # Release History
+
+## 1.0.0-beta.5 (Unreleased)
+
 ## 1.0.0-beta.4 (2019-12-02)
 - Artifact name changed from `preview` to `beta`.
 - `BlobCheckpointStore` implementation updated to match changes in `CheckpointStore` interface.
