@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.batch;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
@@ -11,6 +12,7 @@ import reactor.core.publisher.Mono;
  *
  * @param <T> Type that is returned by the operation.
  */
+@Immutable
 final class BlobBatchOperation<T> {
     private final BlobBatchOperationResponse<T> batchOperationResponse;
     private final Mono<Response<T>> response;

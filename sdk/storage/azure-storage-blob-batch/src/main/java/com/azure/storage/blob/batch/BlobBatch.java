@@ -31,6 +31,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
 /**
  * This class allows for batching of multiple Azure Storage operations in a single request via {@link
  * BlobBatchClient#submitBatch(BlobBatch)} or {@link BlobBatchAsyncClient#submitBatch(BlobBatch)}.
@@ -279,7 +281,7 @@ public final class BlobBatch {
 
     Mono<BlobBatchOperationInfo> prepareBlobBatchSubmission() {
         if (batchOperationQueue.isEmpty()) {
-            return Mono.error(new UnsupportedOperationException("Empty batch requests aren't allowed."));
+            return monoError(logger, new UnsupportedOperationException("Empty batch requests aren't allowed."));
         }
 
         BlobBatchOperationInfo operationInfo = new BlobBatchOperationInfo();

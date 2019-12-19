@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.batch;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
 
@@ -18,6 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Contains the information necessary for submitting a batch.
  */
+@Immutable
 final class BlobBatchOperationInfo {
     private static final String X_MS_VERSION = "x-ms-version";
     private static final String BATCH_BOUNDARY_TEMPLATE = "batch_%s";
@@ -98,6 +100,11 @@ final class BlobBatchOperationInfo {
         }
         appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
 
+        /*
+         * The 'x-ms-version' header is removed from batch operations as all batch operations will use the
+         * 'x-ms-version' used in the batch request. This header is illegal and will fail the batch request if present
+         * in any operation.
+         */
         request.getHeaders().stream()
             .filter(header -> !X_MS_VERSION.equalsIgnoreCase(header.getName()))
             .forEach(header -> appendWithNewline(batchRequestBuilder,
