@@ -14,7 +14,7 @@ public final class TextAnalyticsRequestOptions {
     private boolean showStatistics;
 
     /**
-     * Get the model version
+     * Gets the version of the text analytics model used by this operation.
      *
      * @return the model version
      */
@@ -23,7 +23,8 @@ public final class TextAnalyticsRequestOptions {
     }
 
     /**
-     * Set the model version
+     * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
+     * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion the model version
      * @return the TextAnalyticsRequestOptions object itself

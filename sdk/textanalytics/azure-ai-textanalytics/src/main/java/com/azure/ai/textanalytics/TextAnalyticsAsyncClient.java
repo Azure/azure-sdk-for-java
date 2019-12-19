@@ -282,7 +282,7 @@ public final class TextAnalyticsAsyncClient {
         return service.languagesWithRestResponseAsync(
             languageBatchInput, options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", ignoredValue))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of detected language output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to detected languages - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
@@ -291,7 +291,7 @@ public final class TextAnalyticsAsyncClient {
     // Named Entity
     /**
      * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
-     * <a href="https://aka.ms/taner"></a> For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
+     * <a href="https://aka.ms/taner"></a>. For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
      *
      * @param text the text to recognize entities for.
      *
@@ -310,7 +310,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
-     * <a href="https://aka.ms/taner"></a> For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
+     * <a href="https://aka.ms/taner"></a>. For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
      *
      * @param text the text to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
@@ -441,7 +441,7 @@ public final class TextAnalyticsAsyncClient {
             batchInput,
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of named entities input - {}", ignoredValue))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of named entities input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of named entities output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to named entities - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
@@ -470,7 +470,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text. For the list of
-     * supported entity types, check: <a href="https://aka.ms/taner"></a> For a list of enabled languages,
+     * supported entity types, check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>.
      *
      * @param text the text to recognize PII entities for.
@@ -502,7 +502,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts. For the list
-     * of supported entity types, check: <a href="https://aka.ms/taner"></a> For a list of enabled languages,
+     * of supported entity types, check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * @param textInputs A list of text to recognize PII entities for.
@@ -524,7 +524,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts. For the list
-     * of supported entity types, check <a href="https://aka.ms/taner"></a> For a list of enabled languages,
+     * of supported entity types, check <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>.
      *
      * @param textInputs A list of text to recognize PII entities for.
@@ -583,7 +583,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs. For
-     * the list of supported entity types,check: <a href="https://aka.ms/taner"></a> For a list of enabled languages,
+     * the list of supported entity types,check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
@@ -614,7 +614,7 @@ public final class TextAnalyticsAsyncClient {
             batchInput,
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of PII entities input - {}", ignoredValue))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of PII entities input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of PII entities output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to PII entities - {}", error))
             .map(response -> new SimpleResponse<>(response, toPiiDocumentResultCollection(response.getValue())));
@@ -785,7 +785,7 @@ public final class TextAnalyticsAsyncClient {
             batchInput,
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of linked entities input - {}", ignoredValue))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of linked entities input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of linked entities output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to linked entities - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
@@ -950,7 +950,7 @@ public final class TextAnalyticsAsyncClient {
             batchInput,
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of key phrases input - {}", ignoredValue))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of key phrases input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to key phrases - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
@@ -1132,7 +1132,7 @@ public final class TextAnalyticsAsyncClient {
             batchInput,
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of text sentiment input - {}", ignoredValue))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of text sentiment input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))
             .doOnError(error -> logger.warning("Failed to text sentiment - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));

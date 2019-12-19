@@ -324,7 +324,6 @@ for (TextSentiment textSentiment : client.analyzeSentiment(text).getSentenceSent
 
 ## Troubleshooting
 ## General
-// TODO (savaity) update exceptions
 
 ## Next steps
 - Samples are explained in detail [here][samples_readme].

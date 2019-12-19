@@ -1,5 +1,5 @@
 # Release History
-## Version 1.0.0-beta.1 (2020-01-06)
+## Version 1.0.0-beta.1 ((Unreleased))
 For details on the Azure SDK for Java (January 2020 Preview) release refer to the [release announcement]().
 
 - Initial release of this module.
