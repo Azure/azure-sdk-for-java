@@ -73,6 +73,7 @@
                 <source>..\..\sdk\storage\azure-storage-file-datalake\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-queue\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-queue\src\samples\java\com</source>
+                <source>..\..\sdk\textanalytics\azure-ai-textanalytics\src\main\java\com</source>
               </sources>
             </configuration>
           </execution>
@@ -144,6 +145,11 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <dependencies>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-ai-textanalytics</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+        </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-data-appconfiguration</artifactId>
