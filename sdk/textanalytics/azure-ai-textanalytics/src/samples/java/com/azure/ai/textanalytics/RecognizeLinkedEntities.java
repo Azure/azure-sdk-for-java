@@ -27,7 +27,7 @@ public class RecognizeLinkedEntities {
         for (LinkedEntity linkedEntity : client.recognizeLinkedEntities(text).getLinkedEntities()) {
             System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.%n",
                 linkedEntity.getName(),
-                linkedEntity.getUri(),
+                linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
         }
     }

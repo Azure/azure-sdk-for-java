@@ -53,7 +53,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
         for (RecognizeLinkedEntitiesResult linkedEntityDocumentResult : detectedBatchResult) {
             for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getLinkedEntities()) {
                 System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s%n",
-                    linkedEntity.getName(), linkedEntity.getUri(), linkedEntity.getDataSource());
+                    linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
             }
         }
     }

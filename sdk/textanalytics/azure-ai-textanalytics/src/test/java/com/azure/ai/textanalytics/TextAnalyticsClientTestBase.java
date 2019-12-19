@@ -762,7 +762,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLinkedEntity.getName(), actualLinkedEntity.getName());
         assertEquals(expectedLinkedEntity.getDataSource(), actualLinkedEntity.getDataSource());
         assertEquals(expectedLinkedEntity.getLanguage(), actualLinkedEntity.getLanguage());
-        assertEquals(expectedLinkedEntity.getUri(), actualLinkedEntity.getUri());
+        assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
         assertEquals(expectedLinkedEntity.getId(), actualLinkedEntity.getId());
         validateLinkedEntityMatches(expectedLinkedEntity.getLinkedEntityMatches(), actualLinkedEntity.getLinkedEntityMatches());
     }
