@@ -297,7 +297,8 @@ public class ShareFileAsyncClient {
         if (filePermissionCopyMode == null || filePermissionCopyMode == PermissionCopyModeType.SOURCE) {
             if (filePermission != null || filePermissionKey != null) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "File permission and file permission key can not be set when PermissionCopyModeType is source"));
+                    "File permission and file permission key can not be set when PermissionCopyModeType is source or "
+                        + "null"));
             }
         } else if (filePermissionCopyMode == PermissionCopyModeType.OVERRIDE) {
             // Checks that file permission and file permission key are valid
