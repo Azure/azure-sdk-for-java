@@ -1,6 +1,8 @@
 # Release History
 
-## 12.0.0-beta.8 (Unreleased)
+## 12.0.0-beta.9 (Unreleased)
+
+## 12.0.0-beta.8 (2019-12-18)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas.
 - Mapped StorageErrorException and BlobStorageException to DataLakeStorageException.
 - Added support for exists method on FileClients and DirectoryClients
