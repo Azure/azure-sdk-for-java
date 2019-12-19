@@ -18,14 +18,14 @@
 #
 # Use case: increment the version of a given artifact in the approprate version_[client|data|management].txt file
 #
-#    python eng/versioning/set_versions.py --bt [client|data|management] --increase-version --artifact-id <artifactId>
-# For example: To update increase the version of azure-core
+#    python eng/versioning/set_versions.py --bt [client|data|management] --increment-version --artifact-id <artifactId>
+# For example: To update increment the version of azure-core
 #    python eng/versioning/update_versions.py --bt client --iv -ar azure-core
 #
 # Use case: verify the version of a given artifact in the approprate version_[client|data|management].txt file
 #
 #    python eng/versioning/set_versions.py --bt [client|data|management] --verify-version --artifact-id <artifactId>
-# For example: To update increase the version of azure-core
+# For example: To update increment the version of azure-core
 #    python eng/versioning/update_versions.py --bt client --vv -ar azure-core
 #
 # The script must be run at the root of azure-sdk-for-java.
@@ -67,7 +67,7 @@ def update_versions_file_for_nightly_devops(update_type, build_type, build_quali
                             module.current += "." + build_qualifier
                         else:
                             module.current += '-' + build_qualifier
-                        match = version_regex.match(module.current)
+                        match = version_regex_named.match(module.current)
                         if not match:
                             raise ValueError('{}\'s current version + build qualifier {} is not a valid semver version'.format(module.name, module.current + build_qualifier))
                     if update_type == UpdateType.external_dependency or update_type == UpdateType.all:
@@ -75,7 +75,7 @@ def update_versions_file_for_nightly_devops(update_type, build_type, build_quali
                             module.dependency += "." + build_qualifier
                         else:
                             module.dependency += '-' + build_qualifier
-                        match = version_regex.match(module.dependency)
+                        match = version_regex_named.match(module.dependency)
                         if not match:
                             raise ValueError('{}\'s dependency version + build qualifier {} is not a valid semver version'.format(module.name, module.dependency + build_qualifier))
                 newlines.append(module.string_for_version_file())
@@ -111,7 +111,7 @@ def prep_version_file_for_source_testing(build_type):
     return file_changed
 
 # given a build type and artifact id
-def increase_version_for_artifact(build_type, artifact_id):
+def increment_version_for_artifact(build_type, artifact_id):
 
     if not build_type:
         raise ValueError('build_type cannot be empty.')
@@ -133,7 +133,8 @@ def increase_version_for_artifact(build_type, artifact_id):
                 module = CodeModule(stripped_line)
                 # Tick up the version here. If the version is already a pre-release
                 # version then just increment the revision. Otherwise increment the
-                # hotfix version and add the prerelease tag "-beta.1" to the end
+                # minor version, zero the patch and add "-beta.1" to the end
+                # https://github.com/Azure/azure-sdk/blob/master/docs/policies/releases.md#java
                 if module.artifact_id == artifact_id:
                     artifact_found = True
                     vmatch = version_regex_named.match(module.current)
@@ -143,9 +144,9 @@ def increase_version_for_artifact(build_type, artifact_id):
                         rev += 1
                         new_version = '{}.{}.{}-beta.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'), str(rev))
                     else:
-                        hotfix = int(vmatch.group('patch'))
-                        hotfix += 1
-                        new_version = '{}.{}.{}-beta.1'.format(vmatch.group('major'), vmatch.group('minor'), hotfix)
+                        minor = int(vmatch.group('minor'))
+                        minor += 1
+                        new_version = '{}.{}.{}-beta.1'.format(vmatch.group('major'), minor, 0)
                     print('artifact_id {}, previous version={}, new current version={}'.format(artifact_id, module.current, new_version))
                     module.current = new_version
                 newlines.append(module.string_for_version_file())
@@ -221,7 +222,7 @@ def main():
     parser.add_argument('--build-qualifier', '--bq', help='build qualifier to append onto the version string.')
     parser.add_argument('--artifact-id', '--ar', help='artifactId to target.')
     parser.add_argument('--prep-source-testing', '--pst', action='store_true', help='prep the version file for source testing')
-    parser.add_argument('--increase-version', '--iv', action='store_true', help='increase the version for a given artifact')
+    parser.add_argument('--increment-version', '--iv', action='store_true', help='increment the version for a given artifact')
     parser.add_argument('--verify-version', '--vv', action='store_true', help='verify the version for a given artifact')
     args = parser.parse_args()
     if (args.build_type == BuildType.management):
@@ -230,8 +231,8 @@ def main():
     file_changed = False
     if (args.prep_source_testing):
         file_changed = prep_version_file_for_source_testing(args.build_type)
-    elif (args.increase_version):
-        increase_version_for_artifact(args.build_type, args.artifact_id)
+    elif (args.increment_version):
+        increment_version_for_artifact(args.build_type, args.artifact_id)
     elif (args.verify_version):
         verify_current_version_of_artifact(args.build_type, args.artifact_id)
     else:
