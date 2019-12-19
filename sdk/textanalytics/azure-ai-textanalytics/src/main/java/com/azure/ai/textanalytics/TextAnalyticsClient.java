@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -259,12 +260,12 @@ public final class TextAnalyticsClient {
      * See https://aka.ms/talangs for the list of enabled languages.
      *
      * @param text the text to recognize pii entities for.
-     * @return A {@link RecognizeEntitiesResult PII entity} of the text.
+     * @return A {@link RecognizePiiEntitiesResult PII entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecognizeEntitiesResult recognizePiiEntities(String text) {
+    public RecognizePiiEntitiesResult recognizePiiEntities(String text) {
         return recognizePiiEntitiesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
@@ -279,11 +280,11 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizeEntitiesResult named entity} of the text.
+     * {@link RecognizePiiEntitiesResult named entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecognizeEntitiesResult> recognizePiiEntitiesWithResponse(String text, String language,
+    public Response<RecognizePiiEntitiesResult> recognizePiiEntitiesWithResponse(String text, String language,
         Context context) {
         return client.recognizePiiEntitiesWithResponse(text, language, context).block();
     }
@@ -295,11 +296,12 @@ public final class TextAnalyticsClient {
      *
      * @param textInputs A list of text to recognize pii entities for.
      *
-     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntitiesResult named entity} of the text.
+     * @return A {@link DocumentResultCollection batch} of the {@link RecognizePiiEntitiesResult named entity}
+     * of the text.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizeEntitiesResult> recognizePiiEntities(List<String> textInputs) {
+    public DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntities(List<String> textInputs) {
         return recognizePiiEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
@@ -314,11 +316,11 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity}.
+     * {@link RecognizePiiEntitiesResult named entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizeEntitiesResult>> recognizePiiEntitiesWithResponse(
+    public Response<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         return client.recognizePiiEntitiesWithResponse(textInputs, language, context).block();
     }
@@ -334,7 +336,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizeEntitiesResult> recognizeBatchPiiEntities(
+    public DocumentResultCollection<RecognizePiiEntitiesResult> recognizeBatchPiiEntities(
         List<TextDocumentInput> textInputs) {
         return recognizeBatchPiiEntitiesWithResponse(textInputs, null, Context.NONE).getValue();
     }
@@ -354,13 +356,12 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizeEntitiesResult>> recognizeBatchPiiEntitiesWithResponse(
+    public Response<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizeBatchPiiEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         return client.recognizeBatchPiiEntitiesWithResponse(textInputs, options, context).block();
     }
 
     // Linked Entities
-
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text.
      * See https://aka.ms/talangs for supported languages in Text Analytics API.
