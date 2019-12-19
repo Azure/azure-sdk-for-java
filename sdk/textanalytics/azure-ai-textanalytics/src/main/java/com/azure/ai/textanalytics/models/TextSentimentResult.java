@@ -24,7 +24,7 @@ public final class TextSentimentResult extends DocumentResult {
      * @param documentSentiment the document sentiment
      * @param sentenceSentiments a list of sentence sentiments
      */
-    public TextSentimentResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
+    public TextSentimentResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
         TextSentiment documentSentiment, List<TextSentiment> sentenceSentiments) {
         super(id, textDocumentStatistics, error);
         this.documentSentiment = documentSentiment;

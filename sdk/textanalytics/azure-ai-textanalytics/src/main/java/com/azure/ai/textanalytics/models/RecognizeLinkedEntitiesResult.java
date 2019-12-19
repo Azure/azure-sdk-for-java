@@ -22,8 +22,8 @@ public final class RecognizeLinkedEntitiesResult extends DocumentResult {
      * @param error the document error
      * @param linkedEntities a list of linked entities
      */
-    public RecognizeLinkedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
-        List<LinkedEntity> linkedEntities) {
+    public RecognizeLinkedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error, List<LinkedEntity> linkedEntities) {
         super(id, textDocumentStatistics, error);
         this.linkedEntities = linkedEntities;
     }

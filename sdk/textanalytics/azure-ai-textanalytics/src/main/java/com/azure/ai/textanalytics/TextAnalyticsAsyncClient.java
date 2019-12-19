@@ -32,7 +32,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.Error;
+import com.azure.ai.textanalytics.models.ErrorCodeValue;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.NamedEntity;
@@ -732,8 +732,8 @@ public final class TextAnalyticsAsyncClient {
         }
         List<RecognizeLinkedEntitiesResult> errorDocumentList = new ArrayList<>();
         for (DocumentError documentError : entitiesResult.getErrors()) {
-            final Error serviceError = convertToError(documentError.getError());
-            final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
+            final TextAnalyticsError serviceError = convertToError(documentError.getError());
+            final TextAnalyticsError error = new TextAnalyticsError().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
                 .setTarget(serviceError.getTarget());
             errorDocumentList.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null, error, null));
         }
@@ -904,8 +904,8 @@ public final class TextAnalyticsAsyncClient {
         List<ExtractKeyPhraseResult> errorDocumentList = new ArrayList<>();
 
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
-            final Error serviceError = convertToError(documentError.getError());
-            final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
+            final TextAnalyticsError serviceError = convertToError(documentError.getError());
+            final TextAnalyticsError error = new TextAnalyticsError().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
                 .setTarget(serviceError.getTarget());
             errorDocumentList.add(new ExtractKeyPhraseResult(documentError.getId(), null, error, null));
         }
@@ -1188,8 +1188,8 @@ public final class TextAnalyticsAsyncClient {
     }
 
     private TextSentimentResult convertToErrorTextSentimentResult(final DocumentError documentError) {
-        final Error serviceError = convertToError(documentError.getError());
-        final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
+        final TextAnalyticsError serviceError = convertToError(documentError.getError());
+        final TextAnalyticsError error = new TextAnalyticsError().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
             .setTarget(serviceError.getTarget());
         return new TextSentimentResult(documentError.getId(), null, error, null,
             null);
@@ -1225,8 +1225,8 @@ public final class TextAnalyticsAsyncClient {
         }
         List<DetectLanguageResult> errorDocumentList = new ArrayList<>();
         for (DocumentError documentError : languageResult.getErrors()) {
-            Error serviceError = convertToError(documentError.getError());
-            Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
+            TextAnalyticsError serviceError = convertToError(documentError.getError());
+            TextAnalyticsError error = new TextAnalyticsError().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
                 .setTarget(serviceError.getTarget());
             errorDocumentList.add(new DetectLanguageResult(documentError.getId(), null, error, null,
                 null));
@@ -1277,8 +1277,8 @@ public final class TextAnalyticsAsyncClient {
         }
         List<RecognizeEntitiesResult> errorDocumentList = new ArrayList<>();
         for (DocumentError documentError : entitiesResult.getErrors()) {
-            final Error serviceError = convertToError(documentError.getError());
-            final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
+            final TextAnalyticsError serviceError = convertToError(documentError.getError());
+            final TextAnalyticsError error = new TextAnalyticsError().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
                 .setTarget(serviceError.getTarget());
             errorDocumentList.add(new RecognizeEntitiesResult(documentError.getId(), null, error, null));
         }
@@ -1327,20 +1327,29 @@ public final class TextAnalyticsAsyncClient {
         return linkedEntityMatchesList;
     }
 
-    private Error convertToError(TextAnalyticsError textAnalyticsError) {
-        return new Error().setCode(textAnalyticsError.getCode().toString()).setMessage(textAnalyticsError.getMessage())
-            .setTarget(textAnalyticsError.getTarget()).setDetails(setErrors(textAnalyticsError.getDetails()));
+    private com.azure.ai.textanalytics.models.TextAnalyticsError convertToError(TextAnalyticsError textAnalyticsError) {
+        return new com.azure.ai.textanalytics.models.TextAnalyticsError(
+            convertToErrorCodeValue(textAnalyticsError.getCode()), textAnalyticsError.getMessage(),
+            textAnalyticsError.getTarget(), textAnalyticsError.getInnerError(),
+            setErrors(textAnalyticsError.getDetails()));
     }
 
-    private List<Error> setErrors(List<TextAnalyticsError> details) {
-        List<Error> detailsList = new ArrayList<>();
+    private List<com.azure.ai.textanalytics.models.TextAnalyticsError> setErrors(List<TextAnalyticsError> details) {
+        List<com.azure.ai.textanalytics.models.TextAnalyticsError> detailsList = new ArrayList<>();
         for (TextAnalyticsError error : details) {
-            detailsList.add(new Error().setCode(error.getCode().toString()).setMessage(error.getMessage())
-                .setTarget(error.getTarget()).setDetails(setErrors(error.getDetails())));
+            detailsList.add(new com.azure.ai.textanalytics.models.TextAnalyticsError(
+                convertToErrorCodeValue(error.getCode()),
+                error.getMessage(),
+                error.getTarget(), error.getInnerError(), setErrors(error.getDetails())));
         }
         return detailsList;
     }
 
+    private ErrorCodeValue convertToErrorCodeValue(
+        com.azure.ai.textanalytics.implementation.models.ErrorCodeValue errorCodeValue) {
+        return ErrorCodeValue.fromString(errorCodeValue.toString());
+    }
+    
     /**
      * Get default country hint code.
      *

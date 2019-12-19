@@ -77,15 +77,16 @@ public final class TextAnalyticsError {
         return this.target;
     }
 
-    /**
-     * Get the innerError property: Inner error contains more specific
-     * information.
-     *
-     * @return the innerError value.
-     */
-    public InnerError getInnerError() {
-        return this.innerError;
-    }
+    // TODO: spotbugs errors. infinite call
+//    /**
+//     * Get the innerError property: Inner error contains more specific
+//     * information.
+//     *
+//     * @return the innerError value.
+//     */
+//    public InnerError getInnerError() {
+//        return this.innerError;
+//    }
 
     /**
      * Get the details property: Details about specific errors that led to this

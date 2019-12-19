@@ -22,7 +22,7 @@ public final class ExtractKeyPhraseResult extends DocumentResult {
      * @param error the document error.
      * @param keyPhrases a list of key phrases string
      */
-    public ExtractKeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
+    public ExtractKeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
         List<String> keyPhrases) {
         super(id, textDocumentStatistics, error);
         this.keyPhrases = keyPhrases;

@@ -11,7 +11,7 @@ import com.azure.core.annotation.Immutable;
 public class DocumentResult {
     private final String id;
     private final TextDocumentStatistics textDocumentStatistics;
-    private final Error error;
+    private final TextAnalyticsError error;
     private final boolean isError;
 
     /**
@@ -22,7 +22,7 @@ public class DocumentResult {
      * @param textDocumentStatistics text document statistics
      * @param error the document error.
      */
-    DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics, final Error error) {
+    DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics, final TextAnalyticsError error) {
         this.id = id;
         this.error = error;
         this.isError = error != null;
@@ -52,7 +52,7 @@ public class DocumentResult {
      *
      * @return the error of text document
      */
-    public Error getError() {
+    public TextAnalyticsError getError() {
         return error;
     }
 

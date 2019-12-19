@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
@@ -103,7 +104,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
-        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid Country Hint.");
+        TextAnalyticsError expectedError = new TextAnalyticsError().setCode("InvalidArgument").setMessage("Invalid Country Hint.");
         StepVerifier.create(client.detectLanguageWithResponse("Este es un document escrito en Español.", "en"))
             .assertNext(response -> validateErrorDocument(expectedError, response.getValue().getError()))
             .verifyComplete();

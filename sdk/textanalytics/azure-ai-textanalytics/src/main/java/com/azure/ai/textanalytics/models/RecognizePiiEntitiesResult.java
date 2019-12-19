@@ -22,8 +22,8 @@ public final class RecognizePiiEntitiesResult extends DocumentResult {
      * @param error the document error
      * @param namedEntities a list of {@link NamedEntity}
      */
-    public RecognizePiiEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
-                             List<NamedEntity> namedEntities) {
+    public RecognizePiiEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error, List<NamedEntity> namedEntities) {
         super(id, textDocumentStatistics, error);
         this.namedEntities = namedEntities;
     }
