@@ -985,22 +985,22 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         final TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(67, 1);
 
         final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED,
-            0.00019, 0.5, 0.4, 66, 0);
+            0.1, 0.5, 0.4, 66, 0);
 
         final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResult("0", textDocumentStatistics1,
             null,
             expectedDocumentSentiment,
             Arrays.asList(
-                new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.0, 0.0, 31, 0),
-                new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.99, 35, 32)
+                new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.005, 0.005, 31, 0),
+                new TextSentiment(TextSentimentClass.POSITIVE, 0.005, 0.005, 0.99, 35, 32)
             ));
 
         final AnalyzeSentimentResult analyzeSentimentResult2 = new AnalyzeSentimentResult("1", textDocumentStatistics2,
             null,
             expectedDocumentSentiment,
             Arrays.asList(
-                new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.99, 35, 0),
-                new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.0, 0.0, 31, 36)
+                new TextSentiment(TextSentimentClass.POSITIVE, 0.005, 0.005, 0.99, 35, 0),
+                new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.005, 0.005, 31, 36)
             ));
 
         return new DocumentResultCollection<>(Arrays.asList(analyzeSentimentResult1, analyzeSentimentResult2),

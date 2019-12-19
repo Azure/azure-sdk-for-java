@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.ai.textanalytics {
-    requires com.azure.core;
+    requires transitive com.azure.core;
     requires com.fasterxml.jackson.annotation;
 
     exports com.azure.ai.textanalytics;
