@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
