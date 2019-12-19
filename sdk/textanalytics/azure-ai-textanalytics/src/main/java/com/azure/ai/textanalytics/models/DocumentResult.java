@@ -22,7 +22,7 @@ public class DocumentResult {
      * @param textDocumentStatistics text document statistics
      * @param error the document error.
      */
-    DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics, final TextAnalyticsError error) {
+    DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
         this.id = id;
         this.error = error;
         this.isError = error != null;

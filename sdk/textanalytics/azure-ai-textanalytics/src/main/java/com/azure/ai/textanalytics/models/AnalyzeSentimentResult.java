@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import java.util.List;
 
 /**
- * The TextSentimentResult model.
+ * The AnalyzeSentimentResult model.
  */
 @Immutable
-public final class TextSentimentResult extends DocumentResult {
+public final class AnalyzeSentimentResult extends DocumentResult {
     private final TextSentiment documentSentiment;
     private final List<TextSentiment> sentenceSentiments;
 
@@ -24,7 +24,7 @@ public final class TextSentimentResult extends DocumentResult {
      * @param documentSentiment the document sentiment
      * @param sentenceSentiments a list of sentence sentiments
      */
-    public TextSentimentResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
+    public AnalyzeSentimentResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
         TextSentiment documentSentiment, List<TextSentiment> sentenceSentiments) {
         super(id, textDocumentStatistics, error);
         this.documentSentiment = documentSentiment;

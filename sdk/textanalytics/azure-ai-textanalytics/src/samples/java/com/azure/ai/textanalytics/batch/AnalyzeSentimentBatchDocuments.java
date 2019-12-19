@@ -10,7 +10,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.models.TextSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.core.util.Context;
 
 import java.util.Arrays;
@@ -39,7 +39,7 @@ public class AnalyzeSentimentBatchDocuments {
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
-        DocumentResultCollection<TextSentimentResult> detectedBatchResult = client.analyzeBatchSentimentWithResponse(inputs, requestOptions, Context.NONE).getValue();
+        DocumentResultCollection<AnalyzeSentimentResult> detectedBatchResult = client.analyzeBatchSentimentWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
@@ -50,8 +50,8 @@ public class AnalyzeSentimentBatchDocuments {
             batchStatistics.getValidDocumentCount());
 
         // Detecting sentiment for each of document from a batch of documents
-        for (TextSentimentResult textSentimentResult : detectedBatchResult) {
-            final TextSentiment documentSentiment = textSentimentResult.getDocumentSentiment();
+        for (AnalyzeSentimentResult analyzeSentimentResult : detectedBatchResult) {
+            final TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
             System.out.printf("Recognized document sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s.%n",
                 documentSentiment.getTextSentimentClass(),
                 documentSentiment.getPositiveScore(),
@@ -59,7 +59,7 @@ public class AnalyzeSentimentBatchDocuments {
                 documentSentiment.getNegativeScore(),
                 documentSentiment.getLength(),
                 documentSentiment.getOffset());
-            for (TextSentiment sentenceSentiment : textSentimentResult.getSentenceSentiments()) {
+            for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
                 System.out.printf("Recognized sentence sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s.%n",
                     sentenceSentiment.getTextSentimentClass(),
                     sentenceSentiment.getPositiveScore(),

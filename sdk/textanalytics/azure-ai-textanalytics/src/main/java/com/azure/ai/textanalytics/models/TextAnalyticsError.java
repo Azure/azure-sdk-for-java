@@ -30,21 +30,14 @@ public final class TextAnalyticsError {
     private final String target;
 
     /*
-     * Inner error contains more specific information.
-     */
-    private final InnerError innerError;
-
-    /*
      * Details about specific errors that led to this reported error.
      */
     private final List<TextAnalyticsError> details;
 
-    public TextAnalyticsError(ErrorCodeValue code, String message, String target, InnerError innerError,
-        List<TextAnalyticsError> details) {
+    public TextAnalyticsError(ErrorCodeValue code, String message, String target, List<TextAnalyticsError> details) {
         this.code = code;
         this.message = message;
         this.target = target;
-        this.innerError = innerError;
         this.details = details;
     }
 
@@ -76,17 +69,6 @@ public final class TextAnalyticsError {
     public String getTarget() {
         return this.target;
     }
-
-    // TODO: spotbugs errors. infinite call
-//    /**
-//     * Get the innerError property: Inner error contains more specific
-//     * information.
-//     *
-//     * @return the innerError value.
-//     */
-//    public InnerError getInnerError() {
-//        return this.innerError;
-//    }
 
     /**
      * Get the details property: Details about specific errors that led to this

@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -570,12 +570,12 @@ public final class TextAnalyticsClient {
      * (Positive, Negative, and Neutral) for the document and each sentence within i
      *
      * @param text the text to be analyzed.
-     * @return the {@link TextSentimentResult text sentiments} of the text.
+     * @return the {@link AnalyzeSentimentResult text sentiments} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TextSentimentResult analyzeSentiment(String text) {
+    public AnalyzeSentimentResult analyzeSentiment(String text) {
         return analyzeBatchSentimentWithResponse(text, defaultLanguage, Context.NONE).getValue();
     }
 
@@ -588,11 +588,11 @@ public final class TextAnalyticsClient {
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link TextSentimentResult text sentiments} of the text.
+     * @return A {@link Response} containing the {@link AnalyzeSentimentResult text sentiments} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TextSentimentResult> analyzeBatchSentimentWithResponse(
+    public Response<AnalyzeSentimentResult> analyzeBatchSentimentWithResponse(
         String text, String language, Context context) {
         return client.analyzeSentimentWithResponse(text, language, context).block();
     }
@@ -604,11 +604,11 @@ public final class TextAnalyticsClient {
      * @param textInputs A list of text to be analyzed.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
-     * {@link TextSentimentResult text sentiments} with their numeric scores.
+     * {@link AnalyzeSentimentResult text sentiments} with their numeric scores.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<TextSentimentResult> analyzeSentiment(List<String> textInputs) {
+    public DocumentResultCollection<AnalyzeSentimentResult> analyzeSentiment(List<String> textInputs) {
         return analyzeSentimentWithResponse(textInputs, defaultLanguage, Context.NONE).getValue();
     }
 
@@ -622,11 +622,11 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
-     * {@link TextSentimentResult text sentiments} with their numeric scores.
+     * {@link AnalyzeSentimentResult text sentiments} with their numeric scores.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<TextSentimentResult>> analyzeSentimentWithResponse(
+    public Response<DocumentResultCollection<AnalyzeSentimentResult>> analyzeSentimentWithResponse(
         List<String> textInputs, String language, Context context) {
         return client.analyzeSentimentWithResponse(textInputs, language, context).block();
     }
@@ -637,11 +637,11 @@ public final class TextAnalyticsClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
      *
-     * @return A {@link DocumentResultCollection batch} of {@link TextSentimentResult text sentiments}.
+     * @return A {@link DocumentResultCollection batch} of {@link AnalyzeSentimentResult text sentiments}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<TextSentimentResult> analyzeBatchSentiment(List<TextDocumentInput> textInputs) {
+    public DocumentResultCollection<AnalyzeSentimentResult> analyzeBatchSentiment(List<TextDocumentInput> textInputs) {
         return analyzeBatchSentimentWithResponse(textInputs, null, Context.NONE).getValue();
     }
 
@@ -655,11 +655,11 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
-     * {@link TextSentimentResult text sentiments}.
+     * {@link AnalyzeSentimentResult text sentiments}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<TextSentimentResult>> analyzeBatchSentimentWithResponse(
+    public Response<DocumentResultCollection<AnalyzeSentimentResult>> analyzeBatchSentimentWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         return client.analyzeBatchSentimentWithResponse(textInputs, options, context).block();
     }

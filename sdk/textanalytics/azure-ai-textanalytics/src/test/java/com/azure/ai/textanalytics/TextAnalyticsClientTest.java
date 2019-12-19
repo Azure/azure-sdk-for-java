@@ -5,7 +5,8 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.Error;
+import com.azure.ai.textanalytics.models.ErrorCodeValue;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
@@ -15,6 +16,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -79,7 +81,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectSingleTextLanguage() {
-        DetectedLanguage primaryLanguage = new DetectedLanguage().setName("English").setIso6391Name("en").setScore(1.0);
+        DetectedLanguage primaryLanguage = new DetectedLanguage("English", "en", 1.0);
         List<DetectedLanguage> expectedLanguageList = Arrays.asList(primaryLanguage);
         validateDetectedLanguages(
             client.detectLanguage("This is a test English Text").getDetectedLanguages(), expectedLanguageList);
@@ -99,7 +101,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageEmptyText() {
-        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         DetectLanguageResult result = client.detectLanguage("");
         assertNotNull(result.getError());
         validateErrorDocument(expectedError, result.getError());
@@ -121,7 +123,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
-        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid Country Hint.");
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         validateErrorDocument(client.detectLanguage("Este es un document escrito en Español.", "en")
                                   .getError(), expectedError);
     }
@@ -139,8 +141,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity().setText("Seattle").setType("Location").setOffset(26).setLength(7).setScore(0.80624294281005859);
-        NamedEntity namedEntity2 = new NamedEntity().setText("last week").setType("DateTime").setSubtype("DateRange").setOffset(34).setLength(9).setScore(0.8);
+        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.80624294281005859);
+        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.8);
         RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(namedEntity1, namedEntity2));
         validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(),
             client.recognizeEntities("I had a wonderful trip to Seattle last week.").getNamedEntities());
@@ -148,13 +150,14 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForEmptyText() {
-        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         validateErrorDocument(expectedError, client.recognizeEntities("").getError());
     }
 
     @Test
     public void recognizeEntitiesForFaultyText() {
         // TODO: (savaity) confirm with service team.
+        assertEquals(client.recognizeEntities("!@#%%").getNamedEntities().size(), 0);
     }
 
     @Test
@@ -172,7 +175,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizePiiEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity().setText("859-98-0987").setType("U.S. Social Security Number (SSN)").setSubtype("").setOffset(28).setLength(11).setScore(0.65);
+        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.65);
         RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Collections.singletonList(namedEntity1));
         validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(),
             client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.").getNamedEntities());
@@ -180,13 +183,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizePiiEntitiesForEmptyText() {
-        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         validateErrorDocument(expectedError, client.recognizePiiEntities("").getError());
     }
 
     @Test
     public void recognizePiiEntitiesForFaultyText() {
-        // TODO: (savaity) confirm with service team.
+        assertEquals(client.recognizePiiEntities("!@#%%").getNamedEntities().size(), 0);
     }
 
     @Test
@@ -233,8 +236,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch().setText("Seattle").setLength(7).setOffset(26).setScore(0.11472424095537814);
-        LinkedEntity linkedEntity1 = new LinkedEntity().setName("Seattle").setUrl("https://en.wikipedia.org/wiki/Seattle").setDataSource("Wikipedia").setLinkedEntityMatches(Collections.singletonList(linkedEntityMatch1)).setLanguage("en").setId("Seattle");
+        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.11472424095537814, 26, 7);
+        LinkedEntity linkedEntity1 = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch1), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
         RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResultList = new RecognizeLinkedEntitiesResult("0", null, null, Collections.singletonList(linkedEntity1));
 
         validateLinkedEntities(recognizeLinkedEntitiesResultList.getLinkedEntities(), client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.").getLinkedEntities());
@@ -242,13 +245,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForEmptyText() {
-        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         validateErrorDocument(expectedError, client.recognizeLinkedEntities("").getError());
     }
 
     @Test
     public void recognizeLinkedEntitiesForFaultyText() {
-
+        assertEquals(client.recognizeLinkedEntities("!@#%%").getLinkedEntities().size(), 0);
     }
 
     @Test
@@ -289,14 +292,14 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void extractKeyPhrasesForEmptyText() {
-        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         validateErrorDocument(expectedError, client.extractKeyPhrases("").getError());
     }
 
     @Disabled
     @Test
     public void extractKeyPhrasesForFaultyText() {
-
+        assertEquals(client.extractKeyPhrases("!@#%%").getKeyPhrases().size(), 0);
     }
 
     @Test
@@ -342,7 +345,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForEmptyText() {
-        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         validateErrorDocument(expectedError, client.analyzeSentiment("").getError());
     }
 
