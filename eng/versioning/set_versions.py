@@ -39,12 +39,10 @@ import time
 from utils import BuildType
 from utils import CodeModule
 from utils import UpdateType
-from utils import version_regex_str_with_anchor
 from utils import version_regex_str_with_names_anchored
 from utils import prerelease_version_regex_with_name
 
 # The regex string we want should be the anchored one since the entire string is what's being matched
-version_regex = re.compile(version_regex_str_with_anchor)
 version_regex_named = re.compile(version_regex_str_with_names_anchored)
 prerelease_regex_named = re.compile(prerelease_version_regex_with_name)
 
