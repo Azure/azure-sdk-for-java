@@ -294,12 +294,7 @@ public class ShareFileAsyncClient {
         String fileCreationTime = FileSmbProperties.parseFileSMBDate(finalSmbProperties.getFileCreationTime());
         String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(finalSmbProperties.getFileLastWriteTime());
 
-        if (filePermissionCopyMode == null) {
-            if (filePermission== null && filePermissionKey == null) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "File permission or file permission key can not be set when PermissionCopyModeType is null"));
-            }
-        } else if (filePermissionCopyMode == PermissionCopyModeType.SOURCE) {
+        if (filePermissionCopyMode == null || filePermissionCopyMode == PermissionCopyModeType.SOURCE) {
             if (filePermission != null || filePermissionKey != null) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(
                     "File permission and file permission key can not be set when PermissionCopyModeType is source"));
