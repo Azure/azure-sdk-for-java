@@ -4,6 +4,7 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: eventhubs
+      TimeoutInMinutes: 120
       EnvVars:
         AZURE_EVENTHUBS_CONNECTION_STRING: $(AZURE_EVENTHUBS_CONNECTION_STRING)
         AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME: $(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME)

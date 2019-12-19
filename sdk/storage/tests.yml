@@ -10,6 +10,7 @@ jobs:
             JavaVersion: '1.8'
             DisplayName: 'Windows - Java 8'
       ServiceDirectory: storage
+      TimeoutInMinutes: 120
       EnvVars:
         AZURE_TEST_MODE: LIVE
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
