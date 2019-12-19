@@ -29,7 +29,8 @@ com.azure:azure-storage-file-datalake;12.0.0-beta.7;12.0.0-beta.8
 com.azure:azure-storage-queue;12.1.0;12.2.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 
-# This is a temporary fix for libaries that need the unreleased dependency version of core
+# This is a temporary fix for libaries that need the unreleased dependency version of core. It's worth
+# noting that the 'current' version isn't used, these entries are for the dependency versions
 unreleased_com.azure:azure-core;1.2.0-beta.1;1.2.0-beta.1
 
 # This is a temporary fix for libaries that need the unreleased dependency version of azure-core-test
