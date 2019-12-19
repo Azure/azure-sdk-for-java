@@ -1198,8 +1198,7 @@ public final class TextAnalyticsAsyncClient {
             return null;
         }
 
-        final Double[] sentimentScores = getTextSentimentScore(documentSentiment.getDocumentScores(),
-            documentSentimentClass);
+        final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getDocumentScores();
 
         // Sentence text sentiment
         final List<TextSentiment> sentenceSentimentTexts =
@@ -1208,7 +1207,8 @@ public final class TextAnalyticsAsyncClient {
         return new AnalyzeSentimentResult(documentSentiment.getId(),
             documentSentiment.getStatistics() == null ? null
                 : convertToTextDocumentStatistics(documentSentiment.getStatistics()), null,
-            new TextSentiment(documentSentimentClass, sentimentScores[0], sentimentScores[1], sentimentScores[2],
+            new TextSentiment(documentSentimentClass, confidenceScorePerLabel.getNegative(),
+                confidenceScorePerLabel.getNeutral(), confidenceScorePerLabel.getPositive(),
                 sentenceSentimentTexts.stream().mapToInt(TextSentiment::getLength).sum(), 0),
             sentenceSentimentTexts);
     }
@@ -1217,38 +1217,14 @@ public final class TextAnalyticsAsyncClient {
         final List<TextSentiment> sentenceSentimentCollection = new ArrayList<>();
         sentenceSentiments.forEach(sentenceSentiment -> {
             final TextSentimentClass sentimentClass = convertToTextSentimentClass(sentenceSentiment.getSentiment());
-            final Double[] sentimentScores =
-                getTextSentimentScore(sentenceSentiment.getSentenceScores(), sentimentClass);
 
-            sentenceSentimentCollection.add(new TextSentiment(sentimentClass, sentimentScores[0], sentimentScores[1],
-                sentimentScores[2], sentenceSentiment.getLength(), sentenceSentiment.getOffset()));
+            final SentimentConfidenceScorePerLabel confidenceScorePerLabel = sentenceSentiment.getSentenceScores();
+
+            sentenceSentimentCollection.add(new TextSentiment(sentimentClass, confidenceScorePerLabel.getNegative(),
+                confidenceScorePerLabel.getNeutral(), confidenceScorePerLabel.getPositive(),
+                sentenceSentiment.getLength(), sentenceSentiment.getOffset()));
         });
         return sentenceSentimentCollection;
-    }
-
-    private Double[] getTextSentimentScore(SentimentConfidenceScorePerLabel sentimentScore,
-        TextSentimentClass textSentimentClass) {
-        Double[] sentimentScores = new Double[3];
-        switch (textSentimentClass) {
-            case NEGATIVE:
-                sentimentScores[0] = sentimentScore.getNegative();
-                break;
-            case NEUTRAL:
-                sentimentScores[1] = sentimentScore.getNeutral();
-                break;
-            case POSITIVE:
-                sentimentScores[2] = sentimentScore.getPositive();
-                break;
-            case MIXED:
-                sentimentScores[0] = sentimentScore.getNegative();
-                sentimentScores[1] = sentimentScore.getNeutral();
-                sentimentScores[2] = sentimentScore.getPositive();
-                break;
-            default:
-                throw logger.logExceptionAsWarning(
-                    new RuntimeException(String.format("'%s' is not valid text sentiment class", textSentimentClass)));
-        }
-        return sentimentScores;
     }
 
     private TextSentimentClass convertToTextSentimentClass(final DocumentSentimentValue sentimentValue) {
