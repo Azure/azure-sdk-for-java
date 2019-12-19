@@ -1284,21 +1284,23 @@ public final class TextAnalyticsAsyncClient {
      * @return the combined error and document list.
      */
     private List<DetectLanguageResult> getDocumentLanguages(final LanguageResult languageResult) {
-        List<DetectLanguageResult> validDocumentList = new ArrayList<>();
+        final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
-            validDocumentList.add(new DetectLanguageResult(documentLanguage.getId(),
-                documentLanguage.getStatistics() == null ? null
-                    : convertToTextDocumentStatistics(documentLanguage.getStatistics()),
-                null, setPrimaryLanguage(documentLanguage.getDetectedLanguages()),
+            detectLanguageResults.add(new DetectLanguageResult(documentLanguage.getId(),
+                documentLanguage.getStatistics() == null
+                    ? null : convertToTextDocumentStatistics(documentLanguage.getStatistics()),
+                null,
+                setPrimaryLanguage(documentLanguage.getDetectedLanguages()),
                 convertToDetectLanguages(documentLanguage.getDetectedLanguages())));
         }
-        List<DetectLanguageResult> errorDocumentList = new ArrayList<>();
+
         for (DocumentError documentError : languageResult.getErrors()) {
             com.azure.ai.textanalytics.models.TextAnalyticsError error = convertToError(documentError.getError());
-            errorDocumentList.add(new DetectLanguageResult(documentError.getId(), null, error, null,
-                null));
+            detectLanguageResults.add(
+                new DetectLanguageResult(documentError.getId(), null, error, null, null));
         }
-        return Stream.concat(validDocumentList.stream(), errorDocumentList.stream()).collect(Collectors.toList());
+
+        return detectLanguageResults;
     }
 
     private List<DetectedLanguage> convertToDetectLanguages(
