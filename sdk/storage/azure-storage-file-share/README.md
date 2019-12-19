@@ -24,7 +24,7 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.0.0</version>
+  <version>12.1.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -43,7 +43,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-share</artifactId>
-      <version>12.0.0</version>
+      <version>12.1.0-beta.2</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
