@@ -9,10 +9,10 @@
             "defaultValue": "azure-sdk-java-key-vault",
             "type": "String"
         },
-        "tenant_id": {
+        "tenantId": {
             "type": "String"
         },
-        "test_app_id": {
+        "testApplicationId": {
             "type": "String"
         },
         "endpointSuffix": {
@@ -35,11 +35,11 @@
                     "family": "A",
                     "name": "standard"
                 },
-                "tenantId": "[parameters('tenant_id')]",
+                "tenantId": "[parameters('tenantId')]",
                 "accessPolicies": [
                     {
-                        "tenantId": "[parameters('tenant_id')]",
-                        "objectId": "[parameters('test_app_id')]",
+                        "tenantId": "[parameters('tenantId')]",
+                        "objectId": "[parameters('testApplicationId')]",
                         "permissions": {
                             "keys": [
                                 "all"
