@@ -121,10 +121,14 @@ class ReplicationMigrationItemsImpl extends WrapperImpl<ReplicationMigrationItem
     public Observable<MigrationItem> getAsync(String fabricName, String protectionContainerName, String migrationItemName) {
         ReplicationMigrationItemsInner client = this.inner();
         return client.getAsync(fabricName, protectionContainerName, migrationItemName)
-        .map(new Func1<MigrationItemInner, MigrationItem>() {
+        .flatMap(new Func1<MigrationItemInner, Observable<MigrationItem>>() {
             @Override
-            public MigrationItem call(MigrationItemInner inner) {
-                return wrapModel(inner);
+            public Observable<MigrationItem> call(MigrationItemInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((MigrationItem)wrapModel(inner));
+                }
             }
        });
     }

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A2A Network Mapping fabric specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = AzureToAzureNetworkMappingSettings.class)
 @JsonTypeName("AzureToAzure")
 public class AzureToAzureNetworkMappingSettings extends NetworkMappingFabricSpecificSettings {
     /**

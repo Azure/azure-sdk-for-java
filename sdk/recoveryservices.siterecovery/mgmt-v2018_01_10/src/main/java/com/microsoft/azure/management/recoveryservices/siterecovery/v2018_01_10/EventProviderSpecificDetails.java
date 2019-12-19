@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Model class for provider specific details for an event.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = EventProviderSpecificDetails.class)
 @JsonTypeName("EventProviderSpecificDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AEventDetails.class),

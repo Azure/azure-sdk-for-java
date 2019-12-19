@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * VMwareCbt specific enable migration input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VMwareCbtEnableMigrationInput.class)
 @JsonTypeName("VMwareCbt")
 public class VMwareCbtEnableMigrationInput extends EnableMigrationProviderSpecificInput {
     /**

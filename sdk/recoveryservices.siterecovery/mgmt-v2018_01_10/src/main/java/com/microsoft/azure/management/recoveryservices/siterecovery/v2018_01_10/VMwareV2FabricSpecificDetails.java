@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * VMwareV2 fabric specific details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VMwareV2FabricSpecificDetails.class)
 @JsonTypeName("VMwareV2")
 public class VMwareV2FabricSpecificDetails extends FabricSpecificDetails {
     /**
