@@ -189,9 +189,9 @@ The following are types of text analysis that the service offers:
     
     Use named entity recognition (NER) to identify different entities in text and categorize them into pre-defined classes, or types.
     Entity recognition in the client library provides three different methods depending on what you are interested in.
-    * `recognize_entities()` can be used to identify and categorize entities in your text as people, places, organizations, date/time, quantities, percentages, currencies, and more.
-    * `recognize_pii_entities()` can be used to recognize personally identifiable information such as SSNs and bank account numbers.
-    * `recognize_linked_entities()` can be used to identify and disambiguate the identity of an entity found in text (For example, determining whether
+    * `recognizeEntities()` can be used to identify and categorize entities in your text as people, places, organizations, date/time, quantities, percentages, currencies, and more.
+    * `recognizePiiEntities()` can be used to recognize personally identifiable information such as SSNs and bank account numbers.
+    * `recognizeLinkedEntities()` can be used to identify and disambiguate the identity of an entity found in text (For example, determining whether
     "Mars" is being used as the planet or as the Roman god of war). This process uses Wikipedia as the knowledge base to which recognized entities are linked.
     
     See a full list of [Named Entity Recognition Types](https://docs.microsoft.com/azure/cognitive-services/text-analytics/named-entity-types?tabs=personal).
@@ -268,7 +268,7 @@ for (NamedEntity entity : client.recognizeEntities(text).getNamedEntities()) {
 }
 ```
 
-### Recognize PII(PPersonally Identifiable Information) entity
+### Recognize PII(Personally Identifiable Information) entity
 ```java
 TextAnalyticsClient client = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")

@@ -35,7 +35,7 @@ Batch Samples:
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
 ## Next steps
-See [Next steps][ta_docs]. 
+See [Next steps][SDK_README_NEXT_STEPS]. 
 
 ## Contributing
 If you would like to become an active contributor to this project please refer to our [Contribution
