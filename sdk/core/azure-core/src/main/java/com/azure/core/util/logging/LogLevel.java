@@ -72,11 +72,11 @@ public enum LogLevel {
         if (logLevelVal == null) {
             return LogLevel.NOT_SET;
         }
-        String caseIncensitiveLogLevel = logLevelVal.toLowerCase(Locale.ROOT);
-        if (!LOG_LEVEL_STRING_MAPPER.containsKey(caseIncensitiveLogLevel)) {
+        String caseInsensitiveLogLevel = logLevelVal.toLowerCase(Locale.ROOT);
+        if (!LOG_LEVEL_STRING_MAPPER.containsKey(caseInsensitiveLogLevel)) {
             throw new IllegalArgumentException("We currently do not support the log level you set. LogLevel: "
                 + logLevelVal);
         }
-        return LOG_LEVEL_STRING_MAPPER.get(caseIncensitiveLogLevel);
+        return LOG_LEVEL_STRING_MAPPER.get(caseInsensitiveLogLevel);
     }
 }
