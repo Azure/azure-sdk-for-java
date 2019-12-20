@@ -439,15 +439,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
 [samples_readme]: ./src/samples/README.md
 [sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/
-[sample_consume_event]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEvents.java
-[sample_consume_sequence_number]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEventsFromKnownSequenceNumberPosition.java
-[sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/EventProcessorSample.java
-[sample_get_event_hubs_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
-[sample_publish_custom_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
-[sample_publish_identity]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithAzureIdentity.java
-[sample_publish_partitionId]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsToSpecificPartition.java
-[sample_publish_partitionKey]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithPartitionKey.java
-[sample_publish_size_limited]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithSizeLimitedBatches.java
 [source_code]: ./
 [AmqpException]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
 [AmqpErrorCondition]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorCondition.java
