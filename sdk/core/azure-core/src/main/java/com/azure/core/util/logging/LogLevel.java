@@ -3,8 +3,10 @@
 
 package com.azure.core.util.logging;
 
+import com.azure.core.util.Configuration;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Enum which represent logging levels used in Azure SDKs.
@@ -69,13 +71,14 @@ public enum LogLevel {
      * @throws IllegalArgumentException if the log level value is invalid.
      */
     public static LogLevel fromString(String logLevelVal) {
-        if (logLevelVal == null) {
-            return LogLevel.NOT_SET;
-        }
-        if (!LOG_LEVEL_STRING_MAPPER.containsKey(logLevelVal.toLowerCase(Locale.ROOT))) {
+        // logLevelVal cannot be null
+        Objects.requireNonNull(logLevelVal);
+
+        String caseInsensitiveLogLevel = logLevelVal.toLowerCase(Locale.ROOT);
+        if (!LOG_LEVEL_STRING_MAPPER.containsKey(caseInsensitiveLogLevel)) {
             throw new IllegalArgumentException("We currently do not support the log level you set. LogLevel: "
                 + logLevelVal);
         }
-        return LOG_LEVEL_STRING_MAPPER.get(logLevelVal.toLowerCase(Locale.ROOT));
+        return LOG_LEVEL_STRING_MAPPER.get(caseInsensitiveLogLevel);
     }
 }
