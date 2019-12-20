@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 /**
- * Demonstrates how to use manage state using {@link EventProcessorClient}. Shows usage of
+ * Demonstrates state management while processing events with {@link EventProcessorClient}. Shows usage of
  * {@link EventProcessorClientBuilder#processPartitionInitialization(Consumer)},
  * {@link EventProcessorClientBuilder#processError(Consumer)},
  * {@link EventProcessorClientBuilder#processEvent(Consumer)}, and
@@ -43,7 +43,8 @@ import java.util.function.Consumer;
  *
  * A manufacturer has several machines on their assembly lines that emit temperature data. The manufacturer can use
  * {@link EventProcessorClient} to aggregate the temperature data to look for anomalies. For example, the temperature
- * data can say if a machine is over heating, or if no data for a machine has been emitted in awhile, it may be offline.
+ * data can say if a machine is over heating, or if no temperature data for a machine has been collected for a while, it
+ * may be offline.
  *
  * The partition key for each produced event is the name of the machine. This ensures that the temperature data for that
  * machine always gets routed to the same partition. The contents of each event is the temperature of that machine in
@@ -283,6 +284,12 @@ class MachineInformation implements AutoCloseable {
 
     private volatile Instant lastReported = Instant.EPOCH;
 
+    /**
+     * Creates a new instance.
+     *
+     * @param identifier Identifier for the machine.
+     * @param reportingInterval Interval at which to emit average temperature information.
+     */
     MachineInformation(String identifier, Duration reportingInterval) {
         this.identifier = identifier;
         this.averageTemperatures = Flux.interval(reportingInterval)
@@ -305,6 +312,12 @@ class MachineInformation implements AutoCloseable {
         averageTemperatures.connect();
     }
 
+    /**
+     * Submits additional temperature data for that machine.
+     *
+     * @param dateEnqueued The time the temperature was acquired.
+     * @param temperature The temperature.
+     */
     void onTemperatureEvent(Instant dateEnqueued, int temperature) {
         lastReported = dateEnqueued;
         temperatures.getAndUpdate(list -> {
@@ -313,14 +326,36 @@ class MachineInformation implements AutoCloseable {
         });
     }
 
+    /**
+     * Gets the machine identifier.
+     *
+     * @return The machine identifier.
+     */
     String getIdentifier() {
         return identifier;
     }
 
+    /**
+     * A stream of average temperature information for the machine.
+     *
+     * @return Stream of average temperature information.
+     */
     Flux<AverageTemperature> getAverageTemperatures() {
         return averageTemperatures;
     }
 
+    /**
+     * Gets the last reported time.
+     *
+     * @return The last reported time.
+     */
+    public Instant getLastReported() {
+        return lastReported;
+    }
+
+    /**
+     * Disposes of the information.
+     */
     @Override
     public void close() {
         if (isDisposed.getAndSet(true)) {
@@ -330,10 +365,6 @@ class MachineInformation implements AutoCloseable {
         final FluxSink<Boolean> sink = onDispose.sink();
         sink.next(true);
         sink.complete();
-    }
-
-    public Instant getLastReported() {
-        return lastReported;
     }
 }
 
