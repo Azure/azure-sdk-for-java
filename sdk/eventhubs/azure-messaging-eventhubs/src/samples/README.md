@@ -9,6 +9,16 @@ Key concepts are explained in detail [here][sdk_readme_key_concepts].
 ## Getting started
 Please refer to the [Getting Started][sdk_readme_getting_started] section.
 
+### Obtaining an Event Hub instance connection string
+
+All the samples authorize with an Event Hub using a connection string generated for that Event Hub. The connection
+string value can be obtained by:
+
+1. Going to your Event Hubs namespace in Azure Portal.
+1. Creating an Event Hub instance.
+1. Creating a "Shared access policy" for your Event Hub instance.
+1. Copying the connection string from the policy's properties.
+
 ## Examples
 
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
