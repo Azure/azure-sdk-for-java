@@ -35,7 +35,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,PermissionCopyModeType
+custom-types: HandleItem,LeaseDurationType,LeaseStateType,LeaseStatusType,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,PermissionCopyModeType
 ```
 
 ### Query Parameters

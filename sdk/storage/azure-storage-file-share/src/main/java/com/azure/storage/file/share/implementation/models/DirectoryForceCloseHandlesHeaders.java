@@ -50,10 +50,10 @@ public final class DirectoryForceCloseHandlesHeaders {
     private Integer numberOfHandlesClosed;
 
     /*
-     * Contains count of number of handles that failed to closed.
+     * Contains count of number of handles that failed to close.
      */
     @JsonProperty(value = "x-ms-number-of-handles-failed")
-    private Integer numberOfHandlesFailedToClosed;
+    private Integer numberOfHandlesFailedToClose;
 
     /*
      * The errorCode property.
@@ -181,25 +181,25 @@ public final class DirectoryForceCloseHandlesHeaders {
     }
 
     /**
-     * Get the numberOfHandlesFailedToClosed property: Contains count of number
-     * of handles that failed to closed.
+     * Get the numberOfHandlesFailedToClose property: Contains count of number
+     * of handles that failed to close.
      *
-     * @return the numberOfHandlesFailedToClosed value.
+     * @return the numberOfHandlesFailedToClose value.
      */
-    public Integer getNumberOfHandlesFailedToClosed() {
-        return this.numberOfHandlesFailedToClosed;
+    public Integer getNumberOfHandlesFailedToClose() {
+        return this.numberOfHandlesFailedToClose;
     }
 
     /**
-     * Set the numberOfHandlesFailedToClosed property: Contains count of number
-     * of handles that failed to closed.
+     * Set the numberOfHandlesFailedToClose property: Contains count of number
+     * of handles that failed to close.
      *
-     * @param numberOfHandlesFailedToClosed the numberOfHandlesFailedToClosed
+     * @param numberOfHandlesFailedToClose the numberOfHandlesFailedToClose
      * value to set.
      * @return the DirectoryForceCloseHandlesHeaders object itself.
      */
-    public DirectoryForceCloseHandlesHeaders setNumberOfHandlesFailedToClosed(Integer numberOfHandlesFailedToClosed) {
-        this.numberOfHandlesFailedToClosed = numberOfHandlesFailedToClosed;
+    public DirectoryForceCloseHandlesHeaders setNumberOfHandlesFailedToClose(Integer numberOfHandlesFailedToClose) {
+        this.numberOfHandlesFailedToClose = numberOfHandlesFailedToClose;
         return this;
     }
 
