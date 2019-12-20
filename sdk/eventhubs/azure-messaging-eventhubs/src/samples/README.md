@@ -31,8 +31,9 @@ string value can be obtained by:
 - [Publish stream of events][sample_publish_stream_events]
 - [Consume events from an Event Hub partition][sample_consume_event]
 - [Consume events from all partitions using EventProcessorClient][sample_event_processor]
+- [Consume events from all partitions and manage state of processed events][sample_event_processor_state_management]
 - [Consume events from all partitions and manage state of events using
-  EventProcessorClient][sample_event_processor_state_management]
+  EventProcessorClient][sample_event_processor_aggregate_state_management]
 - [Consume events starting from an event sequence number][sample_consume_sequence_number]
 
 ## Troubleshooting
@@ -54,7 +55,8 @@ Guidelines](../../CONTRIBUTING.md) for more information.
 [sample_consume_event]: ./java/com/azure/messaging/eventhubs/ConsumeEvents.java
 [sample_consume_sequence_number]: ./java/com/azure/messaging/eventhubs/ConsumeEventsFromKnownSequenceNumberPosition.java
 [sample_event_processor]: ./java/com/azure/messaging/eventhubs/EventProcessorClientSample.java
-[sample_event_processor_state_management]: ./java/com/azure/messaging/eventhubs/EventProcessorClientWithStateManagement.java
+[sample_event_processor_aggregate_state_management]: ./java/com/azure/messaging/eventhubs/EventProcessorClientAggregateEventsSample.java
+[sample_event_processor_state_management]: ./java/com/azure/messaging/eventhubs/EventProcessorClientStateManagement.java
 [sample_get_event_hubs_metadata]: ./java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
 [sample_publish_custom_metadata]: ./java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
 [sample_publish_identity]: ./java/com/azure/messaging/eventhubs/PublishEventsWithAzureIdentity.java
