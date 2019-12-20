@@ -14,19 +14,19 @@
 # and the current versions.
 #
 #
-#    python eng\versioning\set_versions.py --ut [library|external_dependency|all] --bt [client|data|management] --bq <BuildQualifierString> --ar <artifactId>
+#    python eng/versioning/set_versions.py --ut [library|external_dependency|all] --bt [client|data|management] --bq <BuildQualifierString> --ar <artifactId>
 #
 # Use case: increment the version of a given artifact in the approprate version_[client|data|management].txt file
 #
-#    python eng\versioning\set_versions.py --bt [client|data|management] --increment-version --artifact-id <artifactId>
+#    python eng/versioning/set_versions.py --bt [client|data|management] --increment-version --artifact-id <artifactId>
 # For example: To update increment the version of azure-core
-#    python eng\versioning\set_versions.py --bt client --iv --ar azure-core
+#    python eng/versioning/set_versions.py --bt client --iv --ar azure-core
 #
 # Use case: verify the version of a given artifact in the approprate version_[client|data|management].txt file
 #
-#    python eng\versioning\set_versions.py --bt [client|data|management] --verify-version --artifact-id <artifactId>
+#    python eng/versioning/set_versions.py --bt [client|data|management] --verify-version --artifact-id <artifactId>
 # For example: To update increment the version of azure-core
-#    python eng\versioning\set_versions.py --bt client --vv --ar azure-core
+#    python eng/versioning/set_versions.py --bt client --vv --ar azure-core
 #
 # The script must be run at the root of azure-sdk-for-java.
 
