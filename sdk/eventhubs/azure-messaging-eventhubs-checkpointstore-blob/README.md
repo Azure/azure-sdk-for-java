@@ -69,7 +69,7 @@ sequence number and the timestamp of when it was enqueued.
 
 ### Create an instance of Storage container with SAS token
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L25-L29 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/ReadmeSamples.java#L25-L29 -->
 ```java
 BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
     .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
@@ -92,33 +92,35 @@ In our example, we will focus on building the [`EventProcessor`][source_eventpro
 [`BlobCheckpointStore`][source_blobcheckpointstore], and a simple callback function to process the events 
 received from the Event Hubs, writes to console and updates the checkpoint in Blob storage after each event.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L36-L62 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/ReadmeSamples.java#L36-L62 -->
 ```java
-class Program {
-    public static void main(String[] args) {
-        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
-            .consumerGroup("<< CONSUMER GROUP NAME >>")
-            .connectionString("<< EVENT HUB CONNECTION STRING >>")
-            .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
-            .processEvent(eventContext -> {
-                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
-            })
-            .processError(errorContext -> {
-                System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
-            })
-            .buildEventProcessorClient();
+BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
+    .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
+    .containerName("<CONTAINER_NAME>")
+    .sasToken("<SAS_TOKEN>")
+    .buildAsyncClient();
 
-        // This will start the processor. It will start processing events from all partitions.
-        eventProcessorClient.start();
-        
-        // (for demo purposes only - adding sleep to wait for receiving events)
-        TimeUnit.SECONDS.sleep(2); 
+EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
+    .consumerGroup("<< CONSUMER GROUP NAME >>")
+    .connectionString("<< EVENT HUB CONNECTION STRING >>")
+    .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
+    .processEvent(eventContext -> {
+        System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+            + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+    })
+    .processError(errorContext -> {
+        System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
+    })
+    .buildEventProcessorClient();
 
-        // When the user wishes to stop processing events, they can call `stop()`.
-        eventProcessorClient.stop();
-    }
-}
+// This will start the processor. It will start processing events from all partitions.
+eventProcessorClient.start();
+
+// (for demo purposes only - adding sleep to wait for receiving events)
+TimeUnit.SECONDS.sleep(2);
+
+// When the user wishes to stop processing events, they can call `stop()`.
+eventProcessorClient.stop();
 ```
 
 ## Troubleshooting
