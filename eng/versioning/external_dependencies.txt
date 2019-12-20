@@ -13,7 +13,7 @@ com.google.guava:guava;24.1.1-jre
 com.microsoft.azure:azure-annotations;1.7.0
 com.microsoft.azure:azure-arm-client-runtime;1.6.15
 com.microsoft.azure:azure-client-authentication;1.6.15
-com.microsoft.azure:azure-client-runtime;1.7.0
+com.microsoft.azure:azure-client-runtime;1.6.15
 com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:client-runtime;1.6.15
@@ -208,7 +208,7 @@ media_org.mockito:mockito-all;1.9.0
 media_com.microsoft.azure:adal4j;1.2.0
 
 # sdk\servicebus\microsoft-azure-servicebus\pom.xml
-servicebus_com.microsoft.azure:azure-client-authentication;1.6.7
+servicebus_com.microsoft.azure:azure-client-authentication;1.7.0
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0
