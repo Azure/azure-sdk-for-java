@@ -24,7 +24,6 @@ public final class ShareFileCopyInfo {
     private final String copyId;
     private final CopyStatusType copyStatus;
     private final String error;
-    private final FileSmbProperties smbProperties;
 
     /**
      * Creates an instance of copy information about a specific File.
@@ -43,34 +42,12 @@ public final class ShareFileCopyInfo {
      */
     public ShareFileCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
                              OffsetDateTime lastModified, String error) {
-        this(copySource, copyId, copyStatus, eTag, lastModified, error, null);
-    }
-
-    /**
-     * Creates an instance of copy information about a specific File.
-     *
-     * @param eTag If the copy is completed, contains the ETag of the destination file. If the copy is not complete,
-     *     contains the ETag of the empty file created at the start of the copy.
-     * @param lastModified The date/time that the copy operation to the destination file completed.
-     * @param copyId String identifier for this copy operation.
-     * @param copyStatus State of the copy operation with these values:
-     *                       <ul>
-     *                           <li>success: the copy completed successfully.</li>
-     *                           <li>pending: the copy is still in progress.</li>
-     *                       </ul>
-     * @param copySource The url of the source file.
-     * @param error An error message for the copy operation. {@code null} if there are no errors.
-     * @param smbProperties {@link FileSmbProperties}
-     */
-    public ShareFileCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
-        OffsetDateTime lastModified, String error, FileSmbProperties smbProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.copyId = copyId;
         this.copyStatus = copyStatus;
         this.copySource = copySource;
         this.error = error;
-        this.smbProperties = smbProperties;
     }
 
     /**
@@ -131,12 +108,5 @@ public final class ShareFileCopyInfo {
      */
     public String getError() {
         return error;
-    }
-
-    /**
-     * @return The SMB Properties of the file.
-     */
-    public FileSmbProperties getSmbProperties() {
-        return smbProperties;
     }
 }

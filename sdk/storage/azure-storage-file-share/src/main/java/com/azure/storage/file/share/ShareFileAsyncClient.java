@@ -323,12 +323,9 @@ public class ShareFileAsyncClient {
                             .map(response -> {
                                 final FileStartCopyHeaders headers = response.getDeserializedHeaders();
                                 copyId.set(headers.getCopyId());
-                                final FileSmbProperties fileSmbProperties =
-                                    new FileSmbProperties(response.getHeaders());
 
                                 return new ShareFileCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
-                                        headers.getETag(), headers.getLastModified(), headers.getErrorCode(),
-                                        fileSmbProperties);
+                                        headers.getETag(), headers.getLastModified(), headers.getErrorCode());
                             });
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
@@ -373,8 +370,7 @@ public class ShareFileAsyncClient {
             .map(response -> {
                 final CopyStatusType status = response.getCopyStatus();
                 final ShareFileCopyInfo result = new ShareFileCopyInfo(response.getCopySource(), response.getCopyId(),
-                    status, response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription(),
-                    response.getSmbProperties());
+                    status, response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
 
                 LongRunningOperationStatus operationStatus;
                 switch (status) {

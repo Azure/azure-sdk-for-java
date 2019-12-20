@@ -478,15 +478,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         copyInfoVerifier.assertNext {
-            def smbProperties = it.getValue().getSmbProperties()
             assert it.getValue().getCopyId() != null
-            smbProperties.getFilePermissionKey()
-            smbProperties.getNtfsFileAttributes()
-            smbProperties.getFileLastWriteTime()
-            smbProperties.getFileCreationTime()
-            smbProperties.getFileChangeTime()
-            smbProperties.getParentId()
-            smbProperties.getFileId()
         }.expectComplete().verify(Duration.ofMinutes(1))
 
         where:
