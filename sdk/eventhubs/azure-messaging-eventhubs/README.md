@@ -414,7 +414,6 @@ Beyond those discussed, the Azure Event Hubs client library offers support for m
 advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios,
 the following set of sample is available [here][samples_readme].
 
-
 ## Contributing
 
 If you would like to become an active contributor to this project please refer to our [Contribution
