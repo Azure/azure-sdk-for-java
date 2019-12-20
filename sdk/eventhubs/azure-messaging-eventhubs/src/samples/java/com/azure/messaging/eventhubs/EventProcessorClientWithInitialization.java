@@ -15,6 +15,8 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -74,11 +76,16 @@ public class EventProcessorClientWithInitialization {
             .buildEventProcessorClient();
 
         System.out.println("Starting event processor");
+        final AtomicBoolean isRunning = new AtomicBoolean(true);
         client.start();
 
-        // Continue to perform other tasks while the processor is running in the background.
-        generateEvents().subscribe();
-        TimeUnit.MINUTES.sleep(1);
+        // Continue to perform other tasks while the processor is running in the background. In this sample, we are
+        // randomly generating fake machine events.
+        generateEvents(isRunning).subscribe();
+
+        System.out.println("Sleeping...");
+        Thread.sleep(TimeUnit.SECONDS.toMillis(30));
+        isRunning.set(false);
 
         System.out.println("Stopping event processor");
         client.stop();
@@ -88,18 +95,19 @@ public class EventProcessorClientWithInitialization {
     /**
      * Helper method that generates events for machines "A2" and "C9" and sends them to the service.
      */
-    private static Mono<Void> generateEvents() {
-        final Logger logger = LoggerFactory.getLogger("EventGenerator");
+    private static Mono<Void> generateEvents(AtomicBoolean isRunning) {
+        final Logger logger = LoggerFactory.getLogger("Producer");
+        final Scheduler scheduler = Schedulers.newElastic("produce");
         final Duration operationTimeout = Duration.ofSeconds(5);
-        final String[] machineIds = new String[] { "A2", "C9" };
+        final String[] machineIds = new String[]{"2A", "9B", "6C"};
         final Random random = new Random();
         final EventHubProducerAsyncClient client = new EventHubClientBuilder()
             .connectionString(EH_CONNECTION_STRING)
             .buildAsyncProducerClient();
 
         return Mono.<Void>fromRunnable(() -> {
-            for (int i = 0; i < 50; i++) {
-                int milliseconds = random.nextInt(250);
+            while (isRunning.get()) {
+                int milliseconds = random.nextInt(1000);
 
                 try {
                     TimeUnit.MILLISECONDS.sleep(milliseconds);
@@ -110,7 +118,7 @@ public class EventProcessorClientWithInitialization {
                 // We want a temperature between 0 - 100.
                 final int temperature = Math.abs(random.nextInt() % 101);
 
-                logger.info("Machine [{}]. Temperature: {}C", machineId, temperature);
+                logger.info("[{}] Temperature: {}C", machineId, temperature);
 
                 final EventData event = new EventData(String.valueOf(temperature));
                 final CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey(machineId);
@@ -121,8 +129,9 @@ public class EventProcessorClientWithInitialization {
                 }).block(operationTimeout);
             }
         }).doFinally(signal -> {
+            logger.info("Disposing of producer.");
             client.close();
-        });
+        }).subscribeOn(scheduler);
     }
 }
 
@@ -321,7 +330,6 @@ class MachineInformation implements AutoCloseable {
         final FluxSink<Boolean> sink = onDispose.sink();
         sink.next(true);
         sink.complete();
-        onDispose.dispose();
     }
 
     public Instant getLastReported() {
