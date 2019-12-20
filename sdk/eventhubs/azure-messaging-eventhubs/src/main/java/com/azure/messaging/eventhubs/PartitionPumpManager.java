@@ -62,8 +62,8 @@ class PartitionPumpManager {
      * PartitionProcessor} when new partition pumps are started.
      * @param eventHubClientBuilder The client builder used to create new clients (and new connections) for each
      * partition processed by this {@link EventProcessorClient}.
-     * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this
-     * EventProcessorClient will also include the last enqueued event properties for it's respective partitions.
+     * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this EventProcessorClient
+     * will also include the last enqueued event properties for it's respective partitions.
      * @param tracerProvider The tracer implementation.
      */
     PartitionPumpManager(CheckpointStore checkpointStore,
@@ -114,10 +114,15 @@ class PartitionPumpManager {
         partitionProcessor.initialize(initializationContext);
 
         EventPosition startFromEventPosition = null;
+        // A checkpoint indicates the last known successfully processed event.
+        // So, the event position to start a new partition processing should be exclusive of the
+        // offset/sequence number in the checkpoint. If no checkpoint is available, start from
+        // the position in set in the InitializationContext (either the earliest event in the partition or
+        // the user provided initial position)
         if (checkpoint != null && checkpoint.getOffset() != null) {
-            startFromEventPosition = EventPosition.fromOffset(checkpoint.getOffset());
+            startFromEventPosition = EventPosition.fromOffset(checkpoint.getOffset(), false);
         } else if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
-            startFromEventPosition = EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber(), true);
+            startFromEventPosition = EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber(), false);
         } else {
             startFromEventPosition = initializationContext.getInitialPosition();
         }
@@ -147,8 +152,8 @@ class PartitionPumpManager {
                 } catch (Throwable throwable) {
                     /* user code for event processing threw an exception - log and bubble up */
                     endProcessTracingSpan(processSpanContext, Signal.error(throwable));
-                    throw logger.logExceptionAsError(new RuntimeException(throwable));
-
+                    throw logger.logExceptionAsError(new RuntimeException("Error in event processing callback",
+                        throwable));
                 }
             }, /* EventHubConsumer receive() returned an error */
                 ex -> handleReceiveError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),

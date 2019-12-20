@@ -366,7 +366,7 @@ final class PartitionBasedLoadBalancer {
                         ownedPartitionCheckpointsTuple.getT2().get(po.getPartitionId())));
             },
                 ex -> {
-                    throw logger.logExceptionAsError(new RuntimeException(ex));
+                    throw logger.logExceptionAsError(new RuntimeException("Error while listing checkpoints", ex));
                 });
     }
 

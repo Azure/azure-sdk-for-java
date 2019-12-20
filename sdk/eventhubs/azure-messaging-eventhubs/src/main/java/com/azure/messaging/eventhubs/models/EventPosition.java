@@ -108,7 +108,7 @@ public final class EventPosition {
      *     received.
      * @return An {@link EventPosition} object.
      */
-    private static EventPosition fromOffset(long offset, boolean isInclusive) {
+    public static EventPosition fromOffset(long offset, boolean isInclusive) {
         return new EventPosition(isInclusive, offset, null, null);
     }
 
