@@ -3,6 +3,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.CloseContext;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
@@ -13,12 +14,14 @@ import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +35,9 @@ import java.util.function.Consumer;
  * {@link EventProcessorClientBuilder#processError(Consumer)},
  * {@link EventProcessorClientBuilder#processEvent(Consumer)}, and
  * {@link EventProcessorClientBuilder#processPartitionClose(Consumer)}.
+ *
+ * An in-memory {@link CheckpointStore} is used to store checkpoint information for the sake of this demo. Production
+ * environments should leverage a durable store.
  *
  * A manufacturer has several machines on their assembly lines that emit temperature data. The manufacturer can use
  * {@link EventProcessorClient} to aggregate the temperature data to look for anomalies. For example, the temperature
@@ -71,11 +77,52 @@ public class EventProcessorClientWithInitialization {
         client.start();
 
         // Continue to perform other tasks while the processor is running in the background.
+        generateEvents().subscribe();
         TimeUnit.MINUTES.sleep(1);
 
         System.out.println("Stopping event processor");
         client.stop();
         System.out.println("Exiting process");
+    }
+
+    /**
+     * Helper method that generates events for machines "A2" and "C9" and sends them to the service.
+     */
+    private static Mono<Void> generateEvents() {
+        final Logger logger = LoggerFactory.getLogger("EventGenerator");
+        final Duration operationTimeout = Duration.ofSeconds(5);
+        final String[] machineIds = new String[] { "A2", "C9" };
+        final Random random = new Random();
+        final EventHubProducerAsyncClient client = new EventHubClientBuilder()
+            .connectionString(EH_CONNECTION_STRING)
+            .buildAsyncProducerClient();
+
+        return Mono.<Void>fromRunnable(() -> {
+            for (int i = 0; i < 50; i++) {
+                int milliseconds = random.nextInt(250);
+
+                try {
+                    TimeUnit.MILLISECONDS.sleep(milliseconds);
+                } catch (InterruptedException ignored) {
+                }
+
+                final String machineId = machineIds[random.nextInt(machineIds.length)];
+                // We want a temperature between 0 - 100.
+                final int temperature = Math.abs(random.nextInt() % 101);
+
+                logger.info("Machine [{}]. Temperature: {}C", machineId, temperature);
+
+                final EventData event = new EventData(String.valueOf(temperature));
+                final CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey(machineId);
+
+                client.createBatch(batchOptions).flatMap(batch -> {
+                    batch.tryAdd(event);
+                    return client.send(batch);
+                }).block(operationTimeout);
+            }
+        }).doFinally(signal -> {
+            client.close();
+        });
     }
 }
 
@@ -219,7 +266,7 @@ class MachineEventsProcessor implements AutoCloseable {
  */
 class MachineInformation implements AutoCloseable {
     private final String identifier;
-
+    private final Logger logger = LoggerFactory.getLogger(MachineInformation.class);
     private final AtomicReference<List<Integer>> temperatures = new AtomicReference<>(new ArrayList<>());
     private final ConnectableFlux<AverageTemperature> averageTemperatures;
     private final DirectProcessor<Boolean> onDispose = DirectProcessor.create();
@@ -235,12 +282,14 @@ class MachineInformation implements AutoCloseable {
                 final Instant timeCalculated = Instant.now();
                 final List<Integer> temperaturesInInterval = temperatures.getAndSet(new ArrayList<>());
                 if (temperaturesInInterval.size() == 0) {
+                    logger.info("[{}]: Average: null", this.identifier);
                     return new AverageTemperature(timeCalculated, null);
                 }
 
                 final int sum = temperaturesInInterval.stream().reduce(0, Integer::sum);
                 double average = sum / (double) temperaturesInInterval.size();
 
+                logger.info("[{}]: Average: {}", this.identifier, average);
                 return new AverageTemperature(timeCalculated, average);
             }).publish();
 
