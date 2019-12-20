@@ -4,7 +4,6 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 
 import java.time.Duration;
