@@ -19,6 +19,7 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -64,6 +65,7 @@ public final class SpecializedBlobClientBuilder {
     private String snapshot;
 
     private CpkInfo customerProvidedKey;
+    private EncryptionScope encryptionScope;
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
@@ -102,7 +104,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new AppendBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
     }
 
     /**
@@ -133,7 +135,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new BlockBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
     }
 
     /**
@@ -163,7 +165,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new PageBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
     }
 
     /*
@@ -174,6 +176,11 @@ public final class SpecializedBlobClientBuilder {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
+
+        if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption"
+                + "scope cannot both be set"));
+        }
     }
 
     /*
@@ -213,6 +220,7 @@ public final class SpecializedBlobClientBuilder {
         serviceVersion(blobClient.getServiceVersion());
         this.snapshot = blobClient.getSnapshotId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
+        this.encryptionScope = blobClient.getEncryptionScope();
         return this;
     }
 
@@ -228,6 +236,7 @@ public final class SpecializedBlobClientBuilder {
         serviceVersion(blobAsyncClient.getServiceVersion());
         this.snapshot = blobAsyncClient.getSnapshotId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
+        this.encryptionScope = blobAsyncClient.getEncryptionScope();
         return this;
     }
 
@@ -244,6 +253,7 @@ public final class SpecializedBlobClientBuilder {
         serviceVersion(blobContainerClient.getServiceVersion());
         blobName(blobName);
         this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
+        this.encryptionScope = blobContainerClient.getEncryptionScope();
         return this;
     }
 
@@ -262,6 +272,7 @@ public final class SpecializedBlobClientBuilder {
         serviceVersion(blobContainerAsyncClient.getServiceVersion());
         blobName(blobName);
         this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
+        this.encryptionScope = blobContainerAsyncClient.getEncryptionScope();
         return this;
     }
 
@@ -310,6 +321,18 @@ public final class SpecializedBlobClientBuilder {
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
 
+        return this;
+    }
+
+
+    /**
+     * Sets the {@link EncryptionScope encryption scope} that is used to encrypt blob contents on the server.
+     *
+     * @param encryptionScope Encryption scope containing the encryption key information.
+     * @return the updated BlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder encryptionScope(EncryptionScope encryptionScope) {
+        this.encryptionScope = encryptionScope;
         return this;
     }
 
