@@ -90,6 +90,7 @@ consumers.
 
 The snippet below creates a synchronous Event Hub producer.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L30-L34 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
@@ -123,6 +124,7 @@ Follow the instructions in [Creating a service principal using Azure Portal][app
 service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
 obtained from the [App registration page][app_registration_page].
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L41-L53 -->
 ```java
 ClientSecretCredential credential = new ClientSecretCredentialBuilder()
     .clientId("<< APPLICATION (CLIENT) ID >>")
@@ -188,6 +190,7 @@ Event Hubs service to hash the events and send them to the same partition.
 The snippet below creates a synchronous producer and sends events to any partition, allowing Event Hubs service to route
 the event to an available partition.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L60-L83 -->
 ```java
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -226,6 +229,7 @@ Hub, their names are assigned at the time of creation. To understand what partit
 using `EventHubsClientBuilder` can query for metadata about the Event Hub using `getPartitionIds()` or
 `getEventHubProperties()`.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L90-L98 -->
 ```java
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -244,7 +248,12 @@ When an Event Hub producer is not associated with any specific partition, it may
 Hubs service keep different events or batches of events together on the same partition. This can be accomplished by
 setting a `partition key` when publishing the events.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L105-L113 -->
 ```java
+EventHubProducerClient producer = new EventHubClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
+    .buildProducerClient();
+
 CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey("grouping-key");
 EventDataBatch eventDataBatch = producer.createBatch(batchOptions);
 
@@ -266,6 +275,7 @@ to newest events that get pushed to the partition by invoking `receiveFromPartit
 can begin receiving events from multiple partitions using the same EventHubConsumerAsyncClient by calling
 `receiveFromPartition(String, EventPosition)` with another partition id, and subscribing to that Flux.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L120-L128 -->
 ```java
 EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -283,6 +293,7 @@ consumer.receiveFromPartition("0", EventPosition.latest()).subscribe(event -> {
 Developers can create a synchronous consumer that returns events in batches using an `EventHubConsumerClient`. In the
 snippet below, a consumer is created that starts reading events from the beginning of the partition's event stream.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L135-L147 -->
 ```java
 EventHubConsumerClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -313,32 +324,30 @@ In our example, we will focus on building the [`EventProcessorClient`][EventProc
 [`InMemoryCheckpointStore`][InMemoryCheckpointStore] available in samples, and a callback function that processes events
 received from the Event Hub and writes to console.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L154-L175 -->
 ```java
-class Program {
-    public static void main(String[] args) {
-        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
-            .consumerGroup("<< CONSUMER GROUP NAME >>")
-            .connectionString("<< EVENT HUB CONNECTION STRING >>")
-            .checkpointStore(new InMemoryCheckpointStore())
-            .processEvent(eventContext -> {
-                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
-            })
-            .processError(errorContext -> {
-                System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
-            })
-            .buildEventProcessorClient();
+EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
+    .consumerGroup("<< CONSUMER GROUP NAME >>")
+    .connectionString("<< EVENT HUB CONNECTION STRING >>")
+    .checkpointStore(new InMemoryCheckpointStore())
+    .processEvent(eventContext -> {
+        System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+            + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+    })
+    .processError(errorContext -> {
+        System.out
+            .println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
+    })
+    .buildEventProcessorClient();
 
-        // This will start the processor. It will start processing events from all partitions.
-        eventProcessorClient.start();
+// This will start the processor. It will start processing events from all partitions.
+eventProcessorClient.start();
 
-        // (for demo purposes only - adding sleep to wait for receiving events)
-        TimeUnit.SECONDS.sleep(2);
+// (for demo purposes only - adding sleep to wait for receiving events)
+TimeUnit.SECONDS.sleep(2);
 
-        // When the user wishes to stop processing events, they can call `stop()`.
-        eventProcessorClient.stop();
-    }
-}
+// This will stop processing events.
+eventProcessorClient.stop();
 ```
 
 ## Troubleshooting
