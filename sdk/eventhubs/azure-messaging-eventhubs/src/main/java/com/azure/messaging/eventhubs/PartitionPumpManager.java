@@ -120,9 +120,9 @@ class PartitionPumpManager {
         // the position in set in the InitializationContext (either the earliest event in the partition or
         // the user provided initial position)
         if (checkpoint != null && checkpoint.getOffset() != null) {
-            startFromEventPosition = EventPosition.fromOffset(checkpoint.getOffset(), false);
+            startFromEventPosition = EventPosition.fromOffset(checkpoint.getOffset());
         } else if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
-            startFromEventPosition = EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber(), false);
+            startFromEventPosition = EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
         } else {
             startFromEventPosition = initializationContext.getInitialPosition();
         }
