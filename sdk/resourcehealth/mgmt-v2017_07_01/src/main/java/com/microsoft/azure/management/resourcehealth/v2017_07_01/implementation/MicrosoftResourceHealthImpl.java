@@ -185,6 +185,19 @@ public class MicrosoftResourceHealthImpl extends AzureServiceClient {
     }
 
     /**
+     * The EmergingIssuesInner object to access its operations.
+     */
+    private EmergingIssuesInner emergingIssues;
+
+    /**
+     * Gets the EmergingIssuesInner object to access its operations.
+     * @return the EmergingIssuesInner object.
+     */
+    public EmergingIssuesInner emergingIssues() {
+        return this.emergingIssues;
+    }
+
+    /**
      * Initializes an instance of MicrosoftResourceHealth client.
      *
      * @param credentials the management credentials for Azure
@@ -223,6 +236,7 @@ public class MicrosoftResourceHealthImpl extends AzureServiceClient {
         this.childAvailabilityStatuses = new ChildAvailabilityStatusesInner(restClient().retrofit(), this);
         this.childResources = new ChildResourcesInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.emergingIssues = new EmergingIssuesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
