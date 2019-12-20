@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.implementation.models.PageBlobsClearPagesResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsCopyIncrementalResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsCreateResponse;
@@ -36,6 +35,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -178,13 +178,13 @@ public final class PageBlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param blobHttpHeaders Additional parameters for the operation.
      * @param cpkInfo Additional parameters for the operation.
-     * @param cpkScopeInfo Additional parameters for the operation.
+     * @param encryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, long blobContentLength, Integer timeout, PremiumPageBlobAccessTier tier, Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, Long blobSequenceNumber, String requestId, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, CpkScopeInfo cpkScopeInfo, Context context) {
+    public Mono<PageBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, long blobContentLength, Integer timeout, PremiumPageBlobAccessTier tier, Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, Long blobSequenceNumber, String requestId, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String blobType = "PageBlob";
         String contentType = null;
         if (blobHttpHeaders != null) {
@@ -222,14 +222,14 @@ public final class PageBlobsImpl {
         if (cpkInfo != null) {
             encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope = null;
-        if (cpkScopeInfo != null) {
-            encryptionScope = cpkScopeInfo.getEncryptionScope();
+        String encryptionScope1 = null;
+        if (encryptionScope != null) {
+            encryptionScope1 = encryptionScope.getEncryptionScope();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**
@@ -288,13 +288,13 @@ public final class PageBlobsImpl {
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Additional parameters for the operation.
-     * @param cpkScopeInfo Additional parameters for the operation.
+     * @param encryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUploadPagesResponse> uploadPagesWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, CpkScopeInfo cpkScopeInfo, Context context) {
+    public Mono<PageBlobsUploadPagesResponse> uploadPagesWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String comp = "page";
         final String pageWrite = "update";
         String encryptionKey = null;
@@ -309,15 +309,15 @@ public final class PageBlobsImpl {
         if (cpkInfo != null) {
             encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope = null;
-        if (cpkScopeInfo != null) {
-            encryptionScope = cpkScopeInfo.getEncryptionScope();
+        String encryptionScope1 = null;
+        if (encryptionScope != null) {
+            encryptionScope1 = encryptionScope.getEncryptionScope();
         }
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.uploadPages(containerName, blob, this.client.getUrl(), body, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.uploadPages(containerName, blob, this.client.getUrl(), body, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**
@@ -370,13 +370,13 @@ public final class PageBlobsImpl {
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Additional parameters for the operation.
-     * @param cpkScopeInfo Additional parameters for the operation.
+     * @param encryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsClearPagesResponse> clearPagesWithRestResponseAsync(String containerName, String blob, long contentLength, Integer timeout, String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, CpkScopeInfo cpkScopeInfo, Context context) {
+    public Mono<PageBlobsClearPagesResponse> clearPagesWithRestResponseAsync(String containerName, String blob, long contentLength, Integer timeout, String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String comp = "page";
         final String pageWrite = "clear";
         String encryptionKey = null;
@@ -391,13 +391,13 @@ public final class PageBlobsImpl {
         if (cpkInfo != null) {
             encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope = null;
-        if (cpkScopeInfo != null) {
-            encryptionScope = cpkScopeInfo.getEncryptionScope();
+        String encryptionScope1 = null;
+        if (encryptionScope != null) {
+            encryptionScope1 = encryptionScope.getEncryptionScope();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.clearPages(containerName, blob, this.client.getUrl(), contentLength, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.clearPages(containerName, blob, this.client.getUrl(), contentLength, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**
@@ -466,13 +466,13 @@ public final class PageBlobsImpl {
      * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Additional parameters for the operation.
-     * @param cpkScopeInfo Additional parameters for the operation.
+     * @param encryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURLWithRestResponseAsync(String containerName, String blob, URL sourceUrl, String sourceRange, long contentLength, String range, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout, String leaseId, Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, String requestId, CpkInfo cpkInfo, CpkScopeInfo cpkScopeInfo, Context context) {
+    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURLWithRestResponseAsync(String containerName, String blob, URL sourceUrl, String sourceRange, long contentLength, String range, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout, String leaseId, Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String comp = "page";
         final String pageWrite = "update";
         String encryptionKey = null;
@@ -487,9 +487,9 @@ public final class PageBlobsImpl {
         if (cpkInfo != null) {
             encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope = null;
-        if (cpkScopeInfo != null) {
-            encryptionScope = cpkScopeInfo.getEncryptionScope();
+        String encryptionScope1 = null;
+        if (encryptionScope != null) {
+            encryptionScope1 = encryptionScope.getEncryptionScope();
         }
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
@@ -497,7 +497,7 @@ public final class PageBlobsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.uploadPagesFromURL(containerName, blob, this.client.getUrl(), sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, contentLength, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.uploadPagesFromURL(containerName, blob, this.client.getUrl(), sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, contentLength, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**
@@ -645,13 +645,13 @@ public final class PageBlobsImpl {
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Additional parameters for the operation.
-     * @param cpkScopeInfo Additional parameters for the operation.
+     * @param encryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsResizeResponse> resizeWithRestResponseAsync(String containerName, String blob, long blobContentLength, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, CpkScopeInfo cpkScopeInfo, Context context) {
+    public Mono<PageBlobsResizeResponse> resizeWithRestResponseAsync(String containerName, String blob, long blobContentLength, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String comp = "properties";
         String encryptionKey = null;
         if (cpkInfo != null) {
@@ -665,13 +665,13 @@ public final class PageBlobsImpl {
         if (cpkInfo != null) {
             encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope = null;
-        if (cpkScopeInfo != null) {
-            encryptionScope = cpkScopeInfo.getEncryptionScope();
+        String encryptionScope1 = null;
+        if (encryptionScope != null) {
+            encryptionScope1 = encryptionScope.getEncryptionScope();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.resize(containerName, blob, this.client.getUrl(), timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.resize(containerName, blob, this.client.getUrl(), timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**

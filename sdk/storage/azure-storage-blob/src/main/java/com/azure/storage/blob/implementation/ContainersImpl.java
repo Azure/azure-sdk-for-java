@@ -23,7 +23,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.storage.blob.implementation.models.ContainerCpkScopeInfo;
 import com.azure.storage.blob.implementation.models.ContainersAcquireLeaseResponse;
 import com.azure.storage.blob.implementation.models.ContainersBreakLeaseResponse;
 import com.azure.storage.blob.implementation.models.ContainersChangeLeaseResponse;
@@ -39,6 +38,7 @@ import com.azure.storage.blob.implementation.models.ContainersRenewLeaseResponse
 import com.azure.storage.blob.implementation.models.ContainersSetAccessPolicyResponse;
 import com.azure.storage.blob.implementation.models.ContainersSetMetadataResponse;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -178,21 +178,21 @@ public final class ContainersImpl {
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
      * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param containerCpkScopeInfo Additional parameters for the operation.
+     * @param blobContainerEncryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainersCreateResponse> createWithRestResponseAsync(String containerName, Integer timeout, Map<String, String> metadata, PublicAccessType access, String requestId, ContainerCpkScopeInfo containerCpkScopeInfo, Context context) {
+    public Mono<ContainersCreateResponse> createWithRestResponseAsync(String containerName, Integer timeout, Map<String, String> metadata, PublicAccessType access, String requestId, BlobContainerEncryptionScope blobContainerEncryptionScope, Context context) {
         final String restype = "container";
         String defaultEncryptionScope = null;
-        if (containerCpkScopeInfo != null) {
-            defaultEncryptionScope = containerCpkScopeInfo.getDefaultEncryptionScope();
+        if (blobContainerEncryptionScope != null) {
+            defaultEncryptionScope = blobContainerEncryptionScope.getDefaultEncryptionScope();
         }
         Boolean denyEncryptionScopeOverride = null;
-        if (containerCpkScopeInfo != null) {
-            denyEncryptionScopeOverride = containerCpkScopeInfo.isDenyEncryptionScopeOverride();
+        if (blobContainerEncryptionScope != null) {
+            denyEncryptionScopeOverride = blobContainerEncryptionScope.isDenyEncryptionScopeOverride();
         }
         return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, defaultEncryptionScope, denyEncryptionScopeOverride, context);
     }

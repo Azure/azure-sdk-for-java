@@ -43,7 +43,6 @@ import com.azure.storage.blob.implementation.models.BlobsSetMetadataResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetTierResponse;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlobsUndeleteResponse;
-import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.implementation.models.DataLakeStorageErrorException;
 import com.azure.storage.blob.implementation.models.DirectoryHttpHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -52,6 +51,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.PathRenameMode;
 import com.azure.storage.blob.models.RehydratePriority;
 import java.net.URL;
@@ -707,13 +707,13 @@ public final class BlobsImpl {
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Additional parameters for the operation.
-     * @param cpkScopeInfo Additional parameters for the operation.
+     * @param encryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsSetMetadataResponse> setMetadataWithRestResponseAsync(String containerName, String blob, Integer timeout, Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, CpkScopeInfo cpkScopeInfo, Context context) {
+    public Mono<BlobsSetMetadataResponse> setMetadataWithRestResponseAsync(String containerName, String blob, Integer timeout, Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String comp = "metadata";
         String encryptionKey = null;
         if (cpkInfo != null) {
@@ -727,13 +727,13 @@ public final class BlobsImpl {
         if (cpkInfo != null) {
             encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope = null;
-        if (cpkScopeInfo != null) {
-            encryptionScope = cpkScopeInfo.getEncryptionScope();
+        String encryptionScope1 = null;
+        if (encryptionScope != null) {
+            encryptionScope1 = encryptionScope.getEncryptionScope();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setMetadata(containerName, blob, this.client.getUrl(), timeout, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.setMetadata(containerName, blob, this.client.getUrl(), timeout, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**
@@ -1021,13 +1021,13 @@ public final class BlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Additional parameters for the operation.
-     * @param cpkScopeInfo Additional parameters for the operation.
+     * @param encryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsCreateSnapshotResponse> createSnapshotWithRestResponseAsync(String containerName, String blob, Integer timeout, Map<String, String> metadata, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String leaseId, String requestId, CpkInfo cpkInfo, CpkScopeInfo cpkScopeInfo, Context context) {
+    public Mono<BlobsCreateSnapshotResponse> createSnapshotWithRestResponseAsync(String containerName, String blob, Integer timeout, Map<String, String> metadata, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String leaseId, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String comp = "snapshot";
         String encryptionKey = null;
         if (cpkInfo != null) {
@@ -1041,13 +1041,13 @@ public final class BlobsImpl {
         if (cpkInfo != null) {
             encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope = null;
-        if (cpkScopeInfo != null) {
-            encryptionScope = cpkScopeInfo.getEncryptionScope();
+        String encryptionScope1 = null;
+        if (encryptionScope != null) {
+            encryptionScope1 = encryptionScope.getEncryptionScope();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.createSnapshot(containerName, blob, this.client.getUrl(), timeout, metadata, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.createSnapshot(containerName, blob, this.client.getUrl(), timeout, metadata, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**
