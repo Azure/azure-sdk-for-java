@@ -14,19 +14,19 @@
 # and the current versions.
 #
 #
-#    python utilities/set_versions.py --ut [library|external_dependency|all] --bt [client|data|management] --bq <BuildQualifierString> --ar <artifactId>
+#    python eng\versioning\set_versions.py --ut [library|external_dependency|all] --bt [client|data|management] --bq <BuildQualifierString> --ar <artifactId>
 #
 # Use case: increment the version of a given artifact in the approprate version_[client|data|management].txt file
 #
-#    python eng/versioning/set_versions.py --bt [client|data|management] --increment-version --artifact-id <artifactId>
+#    python eng\versioning\set_versions.py --bt [client|data|management] --increment-version --artifact-id <artifactId>
 # For example: To update increment the version of azure-core
-#    python eng/versioning/update_versions.py --bt client --iv -ar azure-core
+#    python eng\versioning\set_versions.py --bt client --iv --ar azure-core
 #
 # Use case: verify the version of a given artifact in the approprate version_[client|data|management].txt file
 #
-#    python eng/versioning/set_versions.py --bt [client|data|management] --verify-version --artifact-id <artifactId>
+#    python eng\versioning\set_versions.py --bt [client|data|management] --verify-version --artifact-id <artifactId>
 # For example: To update increment the version of azure-core
-#    python eng/versioning/update_versions.py --bt client --vv -ar azure-core
+#    python eng\versioning\set_versions.py --bt client --vv --ar azure-core
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -42,6 +42,9 @@ from utils import UpdateType
 from utils import version_regex_str_with_names_anchored
 from utils import prerelease_version_regex_with_name
 
+# some things that should not be updated for devops builds, in the case where everything is being updated in one call
+items_we_should_not_update = ['com.azure:azure-sdk-all', 'com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'azure-data-sdk-parent']
+
 # The regex string we want should be the anchored one since the entire string is what's being matched
 version_regex_named = re.compile(version_regex_str_with_names_anchored)
 prerelease_regex_named = re.compile(prerelease_version_regex_with_name)
@@ -50,7 +53,7 @@ def update_versions_file_for_nightly_devops(update_type, build_type, build_quali
 
     version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
     print('version_file=' + version_file)
-
+    version_map = {}
     newlines = []
     with open(version_file, encoding='utf-8') as f:
         for raw_line in f:
@@ -59,23 +62,44 @@ def update_versions_file_for_nightly_devops(update_type, build_type, build_quali
                 newlines.append(raw_line)
             else:
                 module = CodeModule(stripped_line)
+                # basically we don't want to change any of the parent versions here, only
+                # library versions
+                if not artifact_id and module.name in items_we_should_not_update:
+                    newlines.append(module.string_for_version_file())
+                    continue
                 if not artifact_id or module.artifact_id == artifact_id:
-                    if update_type == UpdateType.library or update_type == UpdateType.all:
-                        if '-' in module.current:
-                            module.current += "." + build_qualifier
+                    if (update_type == UpdateType.library or update_type == UpdateType.all):
+                        if hasattr(module, 'current'):
+                            set_both = False
+                            # In the case where the current and dependency are both equal then both
+                            # need to be updated. In theory, this should only really happen when a
+                            # new library has been added and has not yet been released but can also
+                            # happen if a library has just been released and the devops build kicks
+                            # of before the human submits the PR to increase the current version. Being
+                            # that it's a devops build and both versions are being updated this should
+                            # be OK.
+                            if module.current == module.dependency:
+                                set_both = True
+                            if '-' in module.current:
+                                module.current += "." + build_qualifier
+                            else:
+                                module.current += '-' + build_qualifier
+                            match = version_regex_named.match(module.current)
+                            if not match:
+                                raise ValueError('{}\'s current version + build qualifier {} is not a valid semver version'.format(module.name, module.current + build_qualifier))
+                            if set_both:
+                                module.dependency = module.current
+                        # we need to handle the unreleased dependency which should have the same version as the "current" dependency
+                        # of the non-unreleased artifact
                         else:
-                            module.current += '-' + build_qualifier
-                        match = version_regex_named.match(module.current)
-                        if not match:
-                            raise ValueError('{}\'s current version + build qualifier {} is not a valid semver version'.format(module.name, module.current + build_qualifier))
-                    if update_type == UpdateType.external_dependency or update_type == UpdateType.all:
-                        if '-' in module.dependency:
-                            module.dependency += "." + build_qualifier
-                        else:
-                            module.dependency += '-' + build_qualifier
-                        match = version_regex_named.match(module.dependency)
-                        if not match:
-                            raise ValueError('{}\'s dependency version + build qualifier {} is not a valid semver version'.format(module.name, module.dependency + build_qualifier))
+                            if (module.name.startswith('unreleased_')):
+                                # strip off the 'unreleased_' prepend to get the regular module entry
+                                real_name = module.name.replace('unreleased_', '')
+                                real_module = version_map[real_name]
+                                module.dependency = real_module.current
+                            else:
+                                raise ValueError('{}\' does not have a current dependency and its groupId does not the required unreleased_ prepend'.format(module.name))
+                version_map[module.name] = module
                 newlines.append(module.string_for_version_file())
 
     with open(version_file, 'w', encoding='utf-8') as f:
@@ -97,7 +121,7 @@ def prep_version_file_for_source_testing(build_type):
                 newlines.append(raw_line)
             else:
                 module = CodeModule(stripped_line)
-                if not module.current == module.dependency:
+                if hasattr(module, 'current') and not module.current == module.dependency:
                     module.dependency = module.current
                     file_changed = True
                 newlines.append(module.string_for_version_file())
@@ -133,7 +157,7 @@ def increment_version_for_artifact(build_type, artifact_id):
                 # version then just increment the revision. Otherwise increment the
                 # minor version, zero the patch and add "-beta.1" to the end
                 # https://github.com/Azure/azure-sdk/blob/master/docs/policies/releases.md#java
-                if module.artifact_id == artifact_id:
+                if module.artifact_id == artifact_id and hasattr(module, 'current'):
                     artifact_found = True
                     vmatch = version_regex_named.match(module.current)
                     if (vmatch.group('prerelease') is not None):
@@ -181,7 +205,7 @@ def verify_current_version_of_artifact(build_type, artifact_id):
                 # of the following:
                 # <major>.<minor>.<patch/hotfix>
                 # <major>.<minor>.<patch/hotfix>-beta.<prerelease>
-                if module.artifact_id == artifact_id:
+                if module.artifact_id == artifact_id and hasattr(module, 'current'):
                     artifact_found = True
                     vmatch = version_regex_named.match(module.current)
                     temp_ver = '{}.{}.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'))
@@ -207,7 +231,7 @@ def verify_current_version_of_artifact(build_type, artifact_id):
                     if module.current != temp_ver:
                         raise ValueError('artifact ({}) version ({}) in version file ({}) does not match the version constructed from the semver pieces ({})'.format(artifact_id, module.current, version_file, temp_ver)) 
 
-                    print('The version {} for artifact_id {} looks good!'.format(module.name, module.current))
+                    print('The version {} for {} looks good!'.format(module.current, module.name))
                     
 
     if not artifact_found:
