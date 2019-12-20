@@ -93,7 +93,7 @@ public class EventProcessorClientWithInitialization {
     }
 
     /**
-     * Helper method that generates events for machines "A2" and "C9" and sends them to the service.
+     * Helper method that generates events for machines "2A", "9B", and "6C" and sends them to the service.
      */
     private static Mono<Void> generateEvents(AtomicBoolean isRunning) {
         final Logger logger = LoggerFactory.getLogger("Producer");
