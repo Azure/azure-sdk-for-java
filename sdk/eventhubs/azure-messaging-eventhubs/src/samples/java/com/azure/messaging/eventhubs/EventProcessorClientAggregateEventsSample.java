@@ -52,7 +52,7 @@ import java.util.function.Consumer;
  *
  * Every 5 seconds, {@link MachineInformation} reports the current average temperature of the machine.
  */
-public class EventProcessorClientWithStateManagement {
+public class EventProcessorClientAggregateEventsSample {
     private static final Duration REPORTING_INTERVAL = Duration.ofSeconds(5);
     private static final String EH_CONNECTION_STRING = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
         + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
