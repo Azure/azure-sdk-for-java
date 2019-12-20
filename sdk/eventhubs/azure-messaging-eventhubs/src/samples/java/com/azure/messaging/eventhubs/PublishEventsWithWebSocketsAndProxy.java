@@ -1,24 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.time.Duration;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
+
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.Arrays;
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to send an {@link EventDataBatch} to an Azure Event Hub using Azure Identity.
+ * Demonstrates how to publish events when using web sockets and a proxy and synchronous producer.
  */
-public class PublishEventsWithAzureIdentity {
-    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
-
+public class PublishEventsWithWebSocketsAndProxy {
     /**
-     * Main method to invoke this demo on how to send an {@link EventDataBatch} to an Azure Event Hub.
+     * Main method to invoke this sample.
      *
      * @param args Unused arguments to the program.
      */
@@ -29,26 +31,25 @@ public class PublishEventsWithAzureIdentity {
             new EventData("Tofu".getBytes(UTF_8)),
             new EventData("Turkey".getBytes(UTF_8)));
 
-        // The default azure credential checks multiple locations for credentials and determines the best one to use.
-        // For the purpose of this sample, create a service principal and set the following environment variables.
-        // See https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal for
-        // information on how to create a service principal.
-        System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-id>>");
-        System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-application-secret>>");
-        System.setProperty("AZURE_TENANT_ID", "<<insert-service-principal-tenant-id>>");
+        // The connection string value can be obtained by:
+        // 1. Going to your Event Hubs namespace in Azure Portal.
+        // 2. Creating an Event Hub instance.
+        // 3. Creating a "Shared access policy" for your Event Hub instance.
+        // 4. Copying the connection string from the policy's properties.
+        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        // DefaultAzureCredentialBuilder exists inside the azure-identity package.
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
-            .build();
+        // By default, the AMQP port 5671 is used, but clients can use web sockets, port 443.
+        // When using web sockets, developers can specify proxy options.
+        // ProxyOptions.SYSTEM_DEFAULTS can be used if developers want to use the JVM configured proxy.
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.DIGEST,
+            new Proxy(Proxy.Type.HTTP, InetSocketAddress.createUnresolved("10.13.1.3", 9992)),
+            "digest-user", "digest-user-password");
 
-        // Create a producer.
-        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+        // Instantiate a client that will be used to call the service.
         EventHubProducerClient producer = new EventHubClientBuilder()
-            .credential(
-                "<<fully-qualified-namespace>>",
-                "<<event-hub-name>>",
-                credential)
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .proxyOptions(proxyOptions)
+            .connectionString(connectionString)
             .buildProducerClient();
 
         // Creates an EventDataBatch where the Event Hubs service will automatically load balance the events between all
@@ -73,5 +74,7 @@ public class PublishEventsWithAzureIdentity {
                     currentBatch.getMaxSizeInBytes(), event.getBodyAsString());
             }
         }
+
+        producer.close();
     }
 }

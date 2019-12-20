@@ -96,7 +96,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromOffset(long offset) {
-        return fromOffset(offset, true);
+        return fromOffset(offset, false);
     }
 
     /**
