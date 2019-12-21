@@ -1,5 +1,5 @@
 # Format;
-# groupId:artifactId;dependency-version;current-version
+# <groupId>:<artifactId>;dependency-version;current-version
 
 com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
@@ -30,9 +30,9 @@ com.azure:azure-storage-file-share;12.1.0-beta.1;12.1.0-beta.2
 com.azure:azure-storage-file-datalake;12.0.0-beta.8;12.0.0-beta.9
 com.azure:azure-storage-queue;12.2.0-beta.1;12.2.0-beta.2
 
-# This is a temporary fix for libaries that need the unreleased dependency version of core. It's worth
-# noting that the 'current' version isn't used, these entries are for the dependency versions
-unreleased_com.azure:azure-core;1.2.0-beta.1;1.2.0-beta.1
-
-# This is a temporary fix for libaries that need the unreleased dependency version of azure-core-test
-unreleased_com.azure:azure-core-test;1.1.0-beta.2;1.1.0-beta.2
+# Unreleased dependencies: Copy the entry from above, prepent "unreleased_" and remove the current
+# version. Unreleased dependencies are only valid for dependency versions
+# Format;
+# unreleased_<groupId>:<artifactId>;dependency-version
+unreleased_com.azure:azure-core;1.2.0-beta.1
+unreleased_com.azure:azure-core-test;1.1.0-beta.2
