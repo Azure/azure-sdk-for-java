@@ -55,6 +55,7 @@ public class ReadmeSamples {
 
     /**
      * Code sample for publishing events.
+     * @throws IllegalArgumentException if the event data is bigger than max batch size.
      */
     public void publishEvents() {
         EventHubProducerClient producer = new EventHubClientBuilder()
@@ -76,7 +77,6 @@ public class ReadmeSamples {
                 }
             }
         }
-
         // send the last batch of remaining events
         if (eventDataBatch.getCount() > 0) {
             producer.send(eventDataBatch);
@@ -149,6 +149,7 @@ public class ReadmeSamples {
 
     /**
      * Code sample for using Event Processor to consume events.
+     * @throws InterruptedException if the thread is interrupted.
      */
     public void consumeEventsUsingEventProcessor() throws InterruptedException {
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()

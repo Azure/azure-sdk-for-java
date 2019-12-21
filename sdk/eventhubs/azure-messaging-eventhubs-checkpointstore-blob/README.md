@@ -92,7 +92,7 @@ In our example, we will focus on building the [`EventProcessor`][source_eventpro
 [`BlobCheckpointStore`][source_blobcheckpointstore], and a simple callback function to process the events 
 received from the Event Hubs, writes to console and updates the checkpoint in Blob storage after each event.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/ReadmeSamples.java#L36-L62 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/ReadmeSamples.java#L37-L63 -->
 ```java
 BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
     .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")

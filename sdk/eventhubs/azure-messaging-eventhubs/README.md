@@ -190,7 +190,7 @@ Event Hubs service to hash the events and send them to the same partition.
 The snippet below creates a synchronous producer and sends events to any partition, allowing Event Hubs service to route
 the event to an available partition.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L60-L83 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L61-L83 -->
 ```java
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -211,7 +211,6 @@ for (EventData eventData : allEvents) {
         }
     }
 }
-
 // send the last batch of remaining events
 if (eventDataBatch.getCount() > 0) {
     producer.send(eventDataBatch);
@@ -324,7 +323,7 @@ In our example, we will focus on building the [`EventProcessorClient`][EventProc
 [`InMemoryCheckpointStore`][InMemoryCheckpointStore] available in samples, and a callback function that processes events
 received from the Event Hub and writes to console.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L154-L175 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L155-L176 -->
 ```java
 EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
     .consumerGroup("<< CONSUMER GROUP NAME >>")
