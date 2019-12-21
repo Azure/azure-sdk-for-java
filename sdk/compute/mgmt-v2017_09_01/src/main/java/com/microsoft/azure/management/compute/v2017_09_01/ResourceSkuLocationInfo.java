@@ -28,7 +28,7 @@ public class ResourceSkuLocationInfo {
     private List<String> zones;
 
     /**
-     * Get the location value.
+     * Get location of the SKU.
      *
      * @return the location value
      */
@@ -37,7 +37,7 @@ public class ResourceSkuLocationInfo {
     }
 
     /**
-     * Get the zones value.
+     * Get list of availability zones where the SKU is supported.
      *
      * @return the zones value
      */
