@@ -106,13 +106,14 @@
             }
         },
         {
+            "apiVersion": "2017-04-01",
+            "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
             "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
-            "apiVersion": "[variables('eventHubsApiVersion')]",
-            "name": "[variables('AuthorizationRulesName')]",
-            "location": "[variables('location')]",
-            "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNameSpaceName'))]"],
+            "dependsOn": [
+                "[concat('Microsoft.EventHub/namespaces/', variables('eventHubNameSpaceName'))]"
+            ],
             "properties": {
-                "rights": ["Listen", "Manage", "Send"]
+                "rights": ["Send", "Listen", "Manage"]
             }
         },
         {
