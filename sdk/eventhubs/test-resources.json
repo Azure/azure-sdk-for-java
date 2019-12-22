@@ -28,7 +28,8 @@
         "storageApiVersion": "2019-04-01",
         "eventHubsApiVersion": "2017-04-01",
         "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b')]",
-        "primaryAccountName": "[concat('prim', parameters('baseName'))]",
+        "AuthorizationRulesName": "[concat('authr', parameters('baseName'))]",
+        "primaryAccountName",: "[concat('prim', parameters('baseName'))]",
         "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
         "premiumAccountName": "[concat('prem', parameters('baseName'))]",
         "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
@@ -102,6 +103,16 @@
             "properties": {
                 "messageRetentionInDays": 7,
                 "partitionCount": 1
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+            "apiVersion": "[variables('apiVersion')]",
+            "name": "[variables('AuthorizationRulesName')]",
+            "location": "[variables('location')]",
+            "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNameSpaceName'))]"],
+            "properties": {
+                "rights": ["Listen", "Manage", "Send"]
             }
         },
         {
