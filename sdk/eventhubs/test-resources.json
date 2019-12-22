@@ -107,7 +107,7 @@
         },
         {
             "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "[variables('eventHubsApiVersion')]",
             "name": "[variables('AuthorizationRulesName')]",
             "location": "[variables('location')]",
             "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNameSpaceName'))]"],
