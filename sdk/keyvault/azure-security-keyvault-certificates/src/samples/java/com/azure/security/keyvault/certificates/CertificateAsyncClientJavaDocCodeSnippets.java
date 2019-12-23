@@ -205,19 +205,10 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#createIssuer(String, String)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#createIssuer(CertificateIssuer)}
      */
     public void createCertificateIssuerCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#String-String
-        certificateAsyncClient.createIssuer("issuerName", "providerName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(issuer -> {
-                System.out.printf("Issuer created with %s and %s", issuer.getName(),
-                    issuer.getProvider());
-            });
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#String-String
-
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#CertificateIssuer
         CertificateIssuer issuer = new CertificateIssuer("issuerName", "providerName")
             .setAccountId("keyvaultuser")
@@ -579,8 +570,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     public void contactsOperationsCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts
-        CertificateContact oontactToAdd = new CertificateContact("user", "useremail@exmaple.com");
-        certificateAsyncClient.setContacts(Arrays.asList(oontactToAdd)).subscribe(contact ->
+        CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@exmaple.com");
+        certificateAsyncClient.setContacts(Arrays.asList(contactToAdd)).subscribe(contact ->
             System.out.printf("Contact name %s and email %s", contact.getName(), contact.getEmail())
         );
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts
@@ -615,6 +606,18 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscribe(certificateOperation -> System.out.printf("Deleted Certificate operation last status %s",
                 certificateOperation.getStatus()));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperation#string
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperation#string
+        certificateAsyncClient.cancelCertificateOperation("certificateName")
+            .subscribe(certificateOperation -> System.out.printf("Certificate operation status %s",
+                certificateOperation.getStatus()));
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperation#string
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperationWithResponse#string
+        certificateAsyncClient.cancelCertificateOperationWithResponse("certificateName")
+            .subscribe(certificateOperationResponse -> System.out.printf("Certificate operation status %s",
+                certificateOperationResponse.getValue().getStatus()));
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperationWithResponse#string
     }
 
     /**
