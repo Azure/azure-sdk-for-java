@@ -65,7 +65,8 @@ public enum LogLevel {
      * Converts the passed log level string to the corresponding {@link LogLevel}.
      *
      * @param logLevelVal The log level value which needs to convert
-     * @return The LogLevel Enum.
+     * @return The LogLevel Enum if pass in the valid string listed in {@code allowedLogLevelVariables}.
+     * Returns NOT_SET if null is passed in.
      * @throws IllegalArgumentException if the log level value is invalid.
      */
     public static LogLevel fromString(String logLevelVal) {
