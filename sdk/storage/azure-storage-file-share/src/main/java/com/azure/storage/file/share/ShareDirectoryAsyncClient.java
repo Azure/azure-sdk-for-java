@@ -627,7 +627,8 @@ public class ShareDirectoryAsyncClient {
         return this.azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath,
             handleId, null, null, snapshot, false, context)
             .map(response -> new SimpleResponse<>(response,
-                new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed())));
+                new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
+                    response.getDeserializedHeaders().getNumberOfHandlesFailedToClosed())));
     }
 
     /**
@@ -649,8 +650,9 @@ public class ShareDirectoryAsyncClient {
     public Mono<CloseHandlesInfo> forceCloseAllHandles(boolean recursive) {
         try {
             return withContext(context -> forceCloseAllHandlesWithTimeout(recursive, null, context)
-                .reduce(new CloseHandlesInfo(0),
-                    (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles())));
+                .reduce(new CloseHandlesInfo(0, 0),
+                    (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
+                        accu.getFailedHandles() + next.getFailedHandles())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -665,7 +667,8 @@ public class ShareDirectoryAsyncClient {
                     response.getStatusCode(),
                     response.getHeaders(),
                     Collections.singletonList(
-                        new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed())),
+                        new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
+                             response.getDeserializedHeaders().getNumberOfHandlesFailedToClosed())),
                     response.getDeserializedHeaders().getMarker(),
                     response.getDeserializedHeaders()));
 

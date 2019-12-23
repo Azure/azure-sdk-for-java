@@ -484,8 +484,9 @@ public class ShareDirectoryClient {
      */
     public CloseHandlesInfo forceCloseAllHandles(boolean recursive, Duration timeout, Context context) {
         return new PagedIterable<>(shareDirectoryAsyncClient.forceCloseAllHandlesWithTimeout(recursive, timeout,
-            context)).stream().reduce(new CloseHandlesInfo(0),
-                (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles()));
+            context)).stream().reduce(new CloseHandlesInfo(0, 0),
+                (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
+                    accu.getFailedHandles() + next.getFailedHandles()));
     }
 
     /**

@@ -511,8 +511,9 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     public void forceCloseAllHandles() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.forceCloseAllHandles#boolean
-        shareDirectoryAsyncClient.forceCloseAllHandles(true).subscribe(numberOfHandlesClosed ->
-            System.out.printf("Closed %d open handles on the directory%n", numberOfHandlesClosed));
+        shareDirectoryAsyncClient.forceCloseAllHandles(true).subscribe(closeHandlesInfo ->
+            System.out.printf("Closed %d open handles on the directory%nFailed to close %d open handles on the "
+                + "directory%n", closeHandlesInfo.getClosedHandles(), closeHandlesInfo.getFailedHandles()));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.forceCloseAllHandles#boolean
     }
 

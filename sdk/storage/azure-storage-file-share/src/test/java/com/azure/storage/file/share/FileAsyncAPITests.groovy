@@ -1102,6 +1102,7 @@ class FileAsyncAPITests extends APISpec {
         StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("1"))
             .assertNext {
                 assert it.getClosedHandles() == 0
+                assert it.getFailedHandles() == 0
             }.verifyComplete()
     }
 
@@ -1120,8 +1121,10 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.forceCloseAllHandles())
-            .assertNext({ it.getClosedHandles() == 0 })
-            .verifyComplete()
+            .assertNext {
+                assert it.getClosedHandles() == 0
+                assert it.getFailedHandles() == 0
+            }.verifyComplete()
     }
 
     def "Get snapshot id"() {

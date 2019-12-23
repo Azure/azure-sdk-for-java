@@ -858,6 +858,7 @@ public class ShareFileJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareFileClient.forceCloseAllHandles#Duration-Context
         CloseHandlesInfo closeHandlesInfo = fileClient.forceCloseAllHandles(Duration.ofSeconds(30), Context.NONE);
         System.out.printf("Closed %d open handles on the file%n", closeHandlesInfo.getClosedHandles());
+        System.out.printf("Failed to close %d open handles on the file%n", closeHandlesInfo.getFailedHandles());
         // END: com.azure.storage.file.share.ShareFileClient.forceCloseAllHandles#Duration-Context
     }
 
