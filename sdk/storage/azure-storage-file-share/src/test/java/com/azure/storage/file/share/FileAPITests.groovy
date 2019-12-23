@@ -10,6 +10,7 @@ import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
@@ -422,6 +423,37 @@ class FileAPITests extends APISpec {
 
         then:
         assert pollResponse.getValue().getCopyId() != null
+    }
+
+    @Unroll
+    def "Start copy with args"() {
+        given:
+        primaryFileClient.create(1024)
+        def sourceURL = primaryFileClient.getFileUrl()
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+        if (setFilePermissionKey) {
+            smbProperties.setFilePermissionKey(filePermissionKey)
+        }
+
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, smbProperties,
+            setFilePermission ? filePermission : null, permissionType, ignoreReadOnly,
+            setArchiveAttribute, null, null, null)
+
+        def pollResponse = poller.poll()
+
+        then:
+        pollResponse.getValue().getCopyId() != null
+
+        where:
+        setFilePermissionKey | setFilePermission | ignoreReadOnly | setArchiveAttribute | permissionType
+        true                 | false             | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | true              | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | false             | true           | false               | PermissionCopyModeType.SOURCE
+        false                | false             | false          | true                | PermissionCopyModeType.SOURCE
     }
 
     @Ignore("There is a race condition in Poller where it misses the first observed event if there is a gap between the time subscribed and the time we start observing events.")

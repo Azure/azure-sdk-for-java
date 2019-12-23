@@ -25,15 +25,15 @@ public final class FileAcquireLeaseHeaders {
     private String eTag;
 
     /*
-     * Returns the date and time the blob was last modified. Any operation that
-     * modifies the blob, including an update of the blob's metadata or
-     * properties, changes the last-modified time of the blob.
+     * Returns the date and time the file was last modified. Any operation that
+     * modifies the file, including an update of the file's metadata or
+     * properties, changes the last-modified time of the file.
      */
     @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /*
-     * Uniquely identifies a blobs's lease
+     * Uniquely identifies a file's lease
      */
     @JsonProperty(value = "x-ms-lease-id")
     private String leaseId;
@@ -53,9 +53,7 @@ public final class FileAcquireLeaseHeaders {
     private String requestId;
 
     /*
-     * Indicates the version of the Blob service used to execute the request.
-     * This header is returned for requests made against version 2009-09-19 and
-     * above.
+     * Indicates the version of the File service used to execute the request.
      */
     @JsonProperty(value = "x-ms-version")
     private String version;
@@ -98,10 +96,10 @@ public final class FileAcquireLeaseHeaders {
     }
 
     /**
-     * Get the lastModified property: Returns the date and time the blob was
-     * last modified. Any operation that modifies the blob, including an update
-     * of the blob's metadata or properties, changes the last-modified time of
-     * the blob.
+     * Get the lastModified property: Returns the date and time the file was
+     * last modified. Any operation that modifies the file, including an update
+     * of the file's metadata or properties, changes the last-modified time of
+     * the file.
      *
      * @return the lastModified value.
      */
@@ -113,10 +111,10 @@ public final class FileAcquireLeaseHeaders {
     }
 
     /**
-     * Set the lastModified property: Returns the date and time the blob was
-     * last modified. Any operation that modifies the blob, including an update
-     * of the blob's metadata or properties, changes the last-modified time of
-     * the blob.
+     * Set the lastModified property: Returns the date and time the file was
+     * last modified. Any operation that modifies the file, including an update
+     * of the file's metadata or properties, changes the last-modified time of
+     * the file.
      *
      * @param lastModified the lastModified value to set.
      * @return the FileAcquireLeaseHeaders object itself.
@@ -131,7 +129,7 @@ public final class FileAcquireLeaseHeaders {
     }
 
     /**
-     * Get the leaseId property: Uniquely identifies a blobs's lease.
+     * Get the leaseId property: Uniquely identifies a file's lease.
      *
      * @return the leaseId value.
      */
@@ -140,7 +138,7 @@ public final class FileAcquireLeaseHeaders {
     }
 
     /**
-     * Set the leaseId property: Uniquely identifies a blobs's lease.
+     * Set the leaseId property: Uniquely identifies a file's lease.
      *
      * @param leaseId the leaseId value to set.
      * @return the FileAcquireLeaseHeaders object itself.
@@ -197,9 +195,8 @@ public final class FileAcquireLeaseHeaders {
     }
 
     /**
-     * Get the version property: Indicates the version of the Blob service used
-     * to execute the request. This header is returned for requests made
-     * against version 2009-09-19 and above.
+     * Get the version property: Indicates the version of the File service used
+     * to execute the request.
      *
      * @return the version value.
      */
@@ -208,9 +205,8 @@ public final class FileAcquireLeaseHeaders {
     }
 
     /**
-     * Set the version property: Indicates the version of the Blob service used
-     * to execute the request. This header is returned for requests made
-     * against version 2009-09-19 and above.
+     * Set the version property: Indicates the version of the File service used
+     * to execute the request.
      *
      * @param version the version value to set.
      * @return the FileAcquireLeaseHeaders object itself.

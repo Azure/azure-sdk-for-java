@@ -628,7 +628,7 @@ public class ShareDirectoryAsyncClient {
             handleId, null, null, snapshot, false, context)
             .map(response -> new SimpleResponse<>(response,
                 new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
-                    response.getDeserializedHeaders().getNumberOfHandlesFailedToClosed())));
+                    response.getDeserializedHeaders().getNumberOfHandlesFailedToClose())));
     }
 
     /**
@@ -668,7 +668,7 @@ public class ShareDirectoryAsyncClient {
                     response.getHeaders(),
                     Collections.singletonList(
                         new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
-                             response.getDeserializedHeaders().getNumberOfHandlesFailedToClosed())),
+                             response.getDeserializedHeaders().getNumberOfHandlesFailedToClose())),
                     response.getDeserializedHeaders().getMarker(),
                     response.getDeserializedHeaders()));
 

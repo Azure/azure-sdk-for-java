@@ -21,6 +21,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FileStartCopyHeaders;
 import com.azure.storage.file.share.implementation.models.FileUploadRangeFromURLHeaders;
@@ -34,6 +35,7 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeRespon
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
@@ -289,16 +291,16 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
      *
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
-     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
-     * is used.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
      * @return A {@link PollerFlux} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
     public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
         Duration pollInterval) {
-        return this.beginCopy(sourceUrl, metadata, pollInterval, null);
+        return beginCopy(sourceUrl, null, null, null, null, null, metadata, pollInterval, null);
     }
 
     /**
@@ -308,34 +310,70 @@ public class ShareFileAsyncClient {
      *
      * <p>Copy file from source url to the {@code resourcePath} </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-map-duration-ShareRequestConditions}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration-ShareRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
      *
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
-     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
-     * is used.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file.
+     * @param filePermissionCopyMode Mode of file permission acquisition.
+     * @param ignoreReadOnly Whether or not to copy despite target being read only. (default is false)
+     * @param setArchiveAttribute Whether or not the archive attribute is to be set on the target. (default is true)
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
      * @param destinationRequestConditions {@link ShareRequestConditions}
      * @return A {@link PollerFlux} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
-        Duration pollInterval, ShareRequestConditions destinationRequestConditions) {
+    public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, FileSmbProperties smbProperties,
+        String filePermission, PermissionCopyModeType filePermissionCopyMode, Boolean ignoreReadOnly,
+        Boolean setArchiveAttribute, Map<String, String> metadata, Duration pollInterval,
+        ShareRequestConditions destinationRequestConditions) {
+
         final ShareRequestConditions finalRequestConditions =
             destinationRequestConditions == null ? new ShareRequestConditions() : destinationRequestConditions;
         final AtomicReference<String> copyId = new AtomicReference<>();
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
+
+        FileSmbProperties finalSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        String filePermissionKey = finalSmbProperties.getFilePermissionKey();
+
+        String fileAttributes = finalSmbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
+        String fileCreationTime = FileSmbProperties.parseFileSMBDate(finalSmbProperties.getFileCreationTime());
+        String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(finalSmbProperties.getFileLastWriteTime());
+
+        if (filePermissionCopyMode == null || filePermissionCopyMode == PermissionCopyModeType.SOURCE) {
+            if (filePermission != null || filePermissionKey != null) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "File permission and file permission key can not be set when PermissionCopyModeType is source or "
+                        + "null"));
+            }
+        } else if (filePermissionCopyMode == PermissionCopyModeType.OVERRIDE) {
+            // Checks that file permission and file permission key are valid
+            validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
+        }
+
+        final CopyFileSmbInfo copyFileSmbInfo = new CopyFileSmbInfo()
+            .setFilePermissionCopyMode(filePermissionCopyMode)
+            .setFileAttributes(fileAttributes)
+            .setFileCreationTime(fileCreationTime)
+            .setFileLastWriteTime(fileLastWriteTime)
+            .setIgnoreReadOnly(ignoreReadOnly)
+            .setSetArchiveAttribute(setArchiveAttribute);
 
         return new PollerFlux<>(interval,
             (pollingContext) -> {
                 try {
                     return withContext(context -> azureFileStorageClient.files()
                             .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null,
-                                    metadata, null /* file permission */, null /* file permission key */,
-                                    finalRequestConditions.getLeaseId(), null /* copy file smb info */, context))
+                                metadata, filePermission, finalSmbProperties.getFilePermissionKey(),
+                                finalRequestConditions.getLeaseId(), copyFileSmbInfo, context))
+
                             .map(response -> {
                                 final FileStartCopyHeaders headers = response.getDeserializedHeaders();
                                 copyId.set(headers.getCopyId());
@@ -845,7 +883,8 @@ public class ShareFileAsyncClient {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         return azureFileStorageClient.files()
             .getPropertiesWithRestResponseAsync(shareName, filePath, snapshot, null, requestConditions.getLeaseId(),
-                context).map(this::getPropertiesResponse);
+                context)
+            .map(this::getPropertiesResponse);
     }
 
     /**
@@ -1632,7 +1671,7 @@ public class ShareFileAsyncClient {
                 context)
             .map(response -> new SimpleResponse<>(response,
                 new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
-                    response.getDeserializedHeaders().getNumberOfHandlesFailedToClosed())));
+                    response.getDeserializedHeaders().getNumberOfHandlesFailedToClose())));
     }
 
     /**
@@ -1670,7 +1709,7 @@ public class ShareFileAsyncClient {
                     response.getHeaders(),
                     Collections.singletonList(
                         new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
-                            response.getDeserializedHeaders().getNumberOfHandlesFailedToClosed())),
+                            response.getDeserializedHeaders().getNumberOfHandlesFailedToClose())),
                     response.getDeserializedHeaders().getMarker(),
                     response.getDeserializedHeaders()));
 

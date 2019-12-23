@@ -8,38 +8,38 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for PermissionCopyModeType.
+ * Defines values for LeaseDurationType.
  */
-public enum PermissionCopyModeType {
+public enum LeaseDurationType {
     /**
-     * Enum value source.
+     * Enum value infinite.
      */
-    SOURCE("source"),
+    INFINITE("infinite"),
 
     /**
-     * Enum value override.
+     * Enum value fixed.
      */
-    OVERRIDE("override");
+    FIXED("fixed");
 
     /**
-     * The actual serialized value for a PermissionCopyModeType instance.
+     * The actual serialized value for a LeaseDurationType instance.
      */
     private final String value;
 
-    PermissionCopyModeType(String value) {
+    LeaseDurationType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a PermissionCopyModeType instance.
+     * Parses a serialized value to a LeaseDurationType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed PermissionCopyModeType object, or null if unable to parse.
+     * @return the parsed LeaseDurationType object, or null if unable to parse.
      */
     @JsonCreator
-    public static PermissionCopyModeType fromString(String value) {
-        PermissionCopyModeType[] items = PermissionCopyModeType.values();
-        for (PermissionCopyModeType item : items) {
+    public static LeaseDurationType fromString(String value) {
+        LeaseDurationType[] items = LeaseDurationType.values();
+        for (LeaseDurationType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

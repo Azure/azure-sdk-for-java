@@ -4,7 +4,8 @@
 - Added support for the 2019-07-07 service version.
 - Added support for file leases. Includes adding the ShareLeaseClientBuilder, ShareLeaseClient, and ShareLeaseAsync client and overloads accepting leaseIds for operations that support leases.
 - Added failedClosedHandles property to CloseHandlesInfo to allow users to access number of failed handles in forceCloseAllHandles and closeHandle.
-- Added support for obtaining premium file properties in ShareServiceClient.listShares and ShareClient.getProperties
+- Added support for obtaining premium file properties in ShareServiceClient.listShares and ShareClient.getProperties.
+- Added support for additional start copy parameters - FileSmbProperties, file permission, file permission copy mode, set archive and ignore read only.
 
 ## Version 12.0.0 (2019-12-04)
 This package's

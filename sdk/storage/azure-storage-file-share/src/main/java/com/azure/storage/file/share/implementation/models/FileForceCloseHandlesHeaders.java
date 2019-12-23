@@ -50,10 +50,10 @@ public final class FileForceCloseHandlesHeaders {
     private Integer numberOfHandlesClosed;
 
     /*
-     * Contains count of number of handles that failed to closed.
+     * Contains count of number of handles that failed to close.
      */
     @JsonProperty(value = "x-ms-number-of-handles-failed")
-    private Integer numberOfHandlesFailedToClosed;
+    private Integer numberOfHandlesFailedToClose;
 
     /*
      * The errorCode property.
@@ -181,25 +181,25 @@ public final class FileForceCloseHandlesHeaders {
     }
 
     /**
-     * Get the numberOfHandlesFailedToClosed property: Contains count of number
-     * of handles that failed to closed.
+     * Get the numberOfHandlesFailedToClose property: Contains count of number
+     * of handles that failed to close.
      *
-     * @return the numberOfHandlesFailedToClosed value.
+     * @return the numberOfHandlesFailedToClose value.
      */
-    public Integer getNumberOfHandlesFailedToClosed() {
-        return this.numberOfHandlesFailedToClosed;
+    public Integer getNumberOfHandlesFailedToClose() {
+        return this.numberOfHandlesFailedToClose;
     }
 
     /**
-     * Set the numberOfHandlesFailedToClosed property: Contains count of number
-     * of handles that failed to closed.
+     * Set the numberOfHandlesFailedToClose property: Contains count of number
+     * of handles that failed to close.
      *
-     * @param numberOfHandlesFailedToClosed the numberOfHandlesFailedToClosed
+     * @param numberOfHandlesFailedToClose the numberOfHandlesFailedToClose
      * value to set.
      * @return the FileForceCloseHandlesHeaders object itself.
      */
-    public FileForceCloseHandlesHeaders setNumberOfHandlesFailedToClosed(Integer numberOfHandlesFailedToClosed) {
-        this.numberOfHandlesFailedToClosed = numberOfHandlesFailedToClosed;
+    public FileForceCloseHandlesHeaders setNumberOfHandlesFailedToClose(Integer numberOfHandlesFailedToClose) {
+        this.numberOfHandlesFailedToClose = numberOfHandlesFailedToClose;
         return this;
     }
 

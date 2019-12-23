@@ -25,9 +25,9 @@ public final class FileReleaseLeaseHeaders {
     private String eTag;
 
     /*
-     * Returns the date and time the blob was last modified. Any operation that
-     * modifies the blob, including an update of the blob's metadata or
-     * properties, changes the last-modified time of the blob.
+     * Returns the date and time the file was last modified. Any operation that
+     * modifies the file, including an update of the file's metadata or
+     * properties, changes the last-modified time of the file.
      */
     @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
@@ -47,9 +47,7 @@ public final class FileReleaseLeaseHeaders {
     private String requestId;
 
     /*
-     * Indicates the version of the Blob service used to execute the request.
-     * This header is returned for requests made against version 2009-09-19 and
-     * above.
+     * Indicates the version of the File service used to execute the request.
      */
     @JsonProperty(value = "x-ms-version")
     private String version;
@@ -92,10 +90,10 @@ public final class FileReleaseLeaseHeaders {
     }
 
     /**
-     * Get the lastModified property: Returns the date and time the blob was
-     * last modified. Any operation that modifies the blob, including an update
-     * of the blob's metadata or properties, changes the last-modified time of
-     * the blob.
+     * Get the lastModified property: Returns the date and time the file was
+     * last modified. Any operation that modifies the file, including an update
+     * of the file's metadata or properties, changes the last-modified time of
+     * the file.
      *
      * @return the lastModified value.
      */
@@ -107,10 +105,10 @@ public final class FileReleaseLeaseHeaders {
     }
 
     /**
-     * Set the lastModified property: Returns the date and time the blob was
-     * last modified. Any operation that modifies the blob, including an update
-     * of the blob's metadata or properties, changes the last-modified time of
-     * the blob.
+     * Set the lastModified property: Returns the date and time the file was
+     * last modified. Any operation that modifies the file, including an update
+     * of the file's metadata or properties, changes the last-modified time of
+     * the file.
      *
      * @param lastModified the lastModified value to set.
      * @return the FileReleaseLeaseHeaders object itself.
@@ -171,9 +169,8 @@ public final class FileReleaseLeaseHeaders {
     }
 
     /**
-     * Get the version property: Indicates the version of the Blob service used
-     * to execute the request. This header is returned for requests made
-     * against version 2009-09-19 and above.
+     * Get the version property: Indicates the version of the File service used
+     * to execute the request.
      *
      * @return the version value.
      */
@@ -182,9 +179,8 @@ public final class FileReleaseLeaseHeaders {
     }
 
     /**
-     * Set the version property: Indicates the version of the Blob service used
-     * to execute the request. This header is returned for requests made
-     * against version 2009-09-19 and above.
+     * Set the version property: Indicates the version of the File service used
+     * to execute the request.
      *
      * @param version the version value to set.
      * @return the FileReleaseLeaseHeaders object itself.

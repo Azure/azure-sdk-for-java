@@ -124,6 +124,9 @@ public enum NtfsFileAttributes {
      * @throws IllegalArgumentException If {@code ntfsAttributes} contains an attribute that is unknown.
      */
     public static EnumSet<NtfsFileAttributes> toAttributes(String ntfsAttributes) {
+        if (ntfsAttributes == null) {
+            return null;
+        }
         EnumSet<NtfsFileAttributes> attributes = EnumSet.noneOf(NtfsFileAttributes.class);
         String[] splitAttributes = ntfsAttributes.split("\\|");
 

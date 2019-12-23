@@ -7,7 +7,9 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.polling.PollerFlux
+import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
@@ -700,6 +702,38 @@ class FileAsyncAPITests extends APISpec {
         }.expectComplete().verify(Duration.ofMinutes(1))
     }
 
+    @Unroll
+    def "Start copy with args"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+        if (setFilePermissionKey) {
+            smbProperties.setFilePermissionKey(filePermissionKey)
+        }
+
+        when:
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, smbProperties,
+            setFilePermission ? filePermission : null, permissionType, ignoreReadOnly,
+            setArchiveAttribute, null, null, null)
+        def copyInfoVerifier = StepVerifier.create(poller)
+
+        then:
+        copyInfoVerifier.assertNext {
+            assert it.getValue().getCopyId() != null
+        }.expectComplete().verify(Duration.ofMinutes(1))
+
+        where:
+        setFilePermissionKey | setFilePermission | ignoreReadOnly | setArchiveAttribute | permissionType
+        true                 | false             | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | true              | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | false             | true           | false               | PermissionCopyModeType.SOURCE
+        false                | false             | false          | true                | PermissionCopyModeType.SOURCE
+    }
+
     @Ignore("There is a race condition in Poller where it misses the first observed event if there is a gap between the time subscribed and the time we start observing events.")
     def "Start copy error"() {
         given:
@@ -729,8 +763,8 @@ class FileAsyncAPITests extends APISpec {
         def leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block()
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null,
-            Duration.ofSeconds(1), new ShareRequestConditions().setLeaseId(leaseId))
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, null, null,
+            false, false, null, Duration.ofSeconds(1), new ShareRequestConditions().setLeaseId(leaseId))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -749,8 +783,8 @@ class FileAsyncAPITests extends APISpec {
         createLeaseClient(primaryFileAsyncClient).acquireLease().block()
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null,
-            Duration.ofSeconds(1), new ShareRequestConditions().setLeaseId(getRandomUUID()))
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, null, null,
+            false, false, null, Duration.ofSeconds(1), new ShareRequestConditions().setLeaseId(getRandomUUID()))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
