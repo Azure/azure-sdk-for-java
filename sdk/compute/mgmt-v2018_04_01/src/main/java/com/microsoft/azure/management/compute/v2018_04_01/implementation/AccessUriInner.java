@@ -21,7 +21,7 @@ public class AccessUriInner {
     private String accessSAS;
 
     /**
-     * Get the accessSAS value.
+     * Get a SAS uri for accessing a disk.
      *
      * @return the accessSAS value
      */
