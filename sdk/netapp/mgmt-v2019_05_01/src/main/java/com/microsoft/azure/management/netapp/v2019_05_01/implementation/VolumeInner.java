@@ -10,6 +10,7 @@ package com.microsoft.azure.management.netapp.v2019_05_01.implementation;
 
 import com.microsoft.azure.management.netapp.v2019_05_01.ServiceLevel;
 import com.microsoft.azure.management.netapp.v2019_05_01.VolumePropertiesExportPolicy;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -38,17 +39,17 @@ public class VolumeInner extends Resource {
      * The service level of the file system. Possible values include:
      * 'Standard', 'Premium', 'Ultra'.
      */
-    @JsonProperty(value = "properties.serviceLevel", required = true)
+    @JsonProperty(value = "properties.serviceLevel")
     private ServiceLevel serviceLevel;
 
     /**
      * usageThreshold.
      * Maximum storage quota allowed for a file system in bytes. This is a soft
      * quota used for alerting only. Minimum size is 100 GiB. Upper limit is
-     * 100TiB.
+     * 100TiB. Specified in bytes.
      */
-    @JsonProperty(value = "properties.usageThreshold")
-    private Long usageThreshold;
+    @JsonProperty(value = "properties.usageThreshold", required = true)
+    private long usageThreshold;
 
     /**
      * exportPolicy.
@@ -56,6 +57,13 @@ public class VolumeInner extends Resource {
      */
     @JsonProperty(value = "properties.exportPolicy")
     private VolumePropertiesExportPolicy exportPolicy;
+
+    /**
+     * protocolTypes.
+     * Set of protocol types.
+     */
+    @JsonProperty(value = "properties.protocolTypes")
+    private List<String> protocolTypes;
 
     /**
      * Azure lifecycle management.
@@ -81,8 +89,15 @@ public class VolumeInner extends Resource {
      * The Azure Resource URI for a delegated subnet. Must have the delegation
      * Microsoft.NetApp/volumes.
      */
-    @JsonProperty(value = "properties.subnetId")
+    @JsonProperty(value = "properties.subnetId", required = true)
     private String subnetId;
+
+    /**
+     * mountTargets.
+     * List of mount targets.
+     */
+    @JsonProperty(value = "properties.mountTargets")
+    private Object mountTargets;
 
     /**
      * Get unique FileSystem Identifier.
@@ -134,21 +149,21 @@ public class VolumeInner extends Resource {
     }
 
     /**
-     * Get maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
+     * Get maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
      *
      * @return the usageThreshold value
      */
-    public Long usageThreshold() {
+    public long usageThreshold() {
         return this.usageThreshold;
     }
 
     /**
-     * Set maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
+     * Set maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
      *
      * @param usageThreshold the usageThreshold value to set
      * @return the VolumeInner object itself.
      */
-    public VolumeInner withUsageThreshold(Long usageThreshold) {
+    public VolumeInner withUsageThreshold(long usageThreshold) {
         this.usageThreshold = usageThreshold;
         return this;
     }
@@ -170,6 +185,26 @@ public class VolumeInner extends Resource {
      */
     public VolumeInner withExportPolicy(VolumePropertiesExportPolicy exportPolicy) {
         this.exportPolicy = exportPolicy;
+        return this;
+    }
+
+    /**
+     * Get set of protocol types.
+     *
+     * @return the protocolTypes value
+     */
+    public List<String> protocolTypes() {
+        return this.protocolTypes;
+    }
+
+    /**
+     * Set set of protocol types.
+     *
+     * @param protocolTypes the protocolTypes value to set
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withProtocolTypes(List<String> protocolTypes) {
+        this.protocolTypes = protocolTypes;
         return this;
     }
 
@@ -228,6 +263,26 @@ public class VolumeInner extends Resource {
      */
     public VolumeInner withSubnetId(String subnetId) {
         this.subnetId = subnetId;
+        return this;
+    }
+
+    /**
+     * Get list of mount targets.
+     *
+     * @return the mountTargets value
+     */
+    public Object mountTargets() {
+        return this.mountTargets;
+    }
+
+    /**
+     * Set list of mount targets.
+     *
+     * @param mountTargets the mountTargets value to set
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withMountTargets(Object mountTargets) {
+        this.mountTargets = mountTargets;
         return this;
     }
 
