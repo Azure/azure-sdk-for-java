@@ -1,11 +1,13 @@
 # Azure Text Analytics client library for Java
 Text Analytics is a cloud-based service that provides advanced natural language processing over raw text, 
-and includes four main functions:
+and includes six main functions:
 
-- Sentiment Analysis
-- Named Entity Recognition
 - Language Detection
+- Sentiment Analysis
 - Key Phrase Extraction
+- Named Entity Recognition
+- Recognition of Personally Identifiable Information 
+- Linked Entity Recognition
 
 [Source code][source_code] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -179,6 +181,28 @@ TextAnalyticsClient client = new TextAnalyticsClientBuilder()
 
 ## Key concepts
 
+### Text Input
+A text input, sometimes called a `document`, is a single unit of input to be analyzed by the predictive models
+in the Text Analytics service. Operations on Text Analytics client may take a single text input or a collection
+of inputs to be analyzed as a batch.
+
+### Operation Result
+An operation result, such as `AnalyzeSentimentResult`, is the result of a Text Analytics operation, containing a 
+prediction or predictions about a single text input. An operation's result type also may optionally include information
+about the input document and how it was processed.
+
+### Operation Result Collection
+An operation result collection, such as `DocumentResultCollection<AnalyzeSentimentResult>`, which is the collection of 
+the result of a Text Analytics analyzing sentiment operation. `DocumentResultCollection` includes the model version of
+the operation and statistics of the batch documents. Since `DocumentResultCollection<T>` extends `IterableStream<T>`,
+the list of item can be retrieved by streaming or iterating the list.
+
+### Operation Overloads
+For each supported operation, the Text Analytics client provides method overloads to take a single text input, a batch 
+of text inputs as strings, or a batch of either `TextDocumentInput` or `DetectLanguageInput` objects. The overload 
+taking the `TextDocumentInput` or `DetectLanguageInput` batch allows callers to give each document a unique ID, or 
+indicate that the documents in the batch are written in different languages.
+
 The following are types of text analysis that the service offers:
 
 1. [Sentiment Analysis](https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-sentiment-analysis)
@@ -212,8 +236,16 @@ The following are types of text analysis that the service offers:
 
 See [Language and regional support](https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support) for what is currently available for each operation.
 
+## Examples
+The following sections provide several code snippets covering some of the most common text analytics tasks, including:
+
 ### Text Analytics Client
+Text analytics support both synchronous and asynchronous client creation by using
+`TextAnalyticsClientBuilder`,
+
 ``` java
+// An example of creating a synchronous client
+
 TextAnalyticsClient client = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
@@ -221,14 +253,13 @@ TextAnalyticsClient client = new TextAnalyticsClientBuilder()
 ```
 
 ``` java
+// An example of creating an asynchronous client
+
 TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
     .buildAsyncClient();
 ```
-
-## Examples
-The following sections provide several code snippets covering some of the most common text analytics tasks, including:
 
 ### Detect language
 Detect language in a batch of documents.
@@ -250,6 +281,7 @@ for(DetectedLanguage detectedLanguage : client.detectLanguage(text, "US").getDet
 ```
 
 ### Recognize entity
+
 ```java
 TextAnalyticsClient client = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
@@ -340,7 +372,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free
-[api_reference_doc]: https://azure.github.io/azure-sdk-for-java/
+[api_reference_doc]: https://azure.github.io/azure-sdk-for-java/cognitiveservices.html
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
