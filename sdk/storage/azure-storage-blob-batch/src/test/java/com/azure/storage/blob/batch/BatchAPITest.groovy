@@ -7,6 +7,7 @@ import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
+import spock.lang.Unroll
 
 class BatchAPITest extends APISpec {
     static def setupCustomPolicyBatch(BlobServiceAsyncClient blobServiceAsyncClient, HttpPipelinePolicy customPolicy) {
@@ -389,5 +390,56 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Single operation exception throws BlobBatchStorageException"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobName1 = generateBlobName()
+        def batch = batchClient.getBlobBatch()
+        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
+        containerClient.create()
+
+        when:
+        def response1 = batch.deleteBlob(containerName, blobName1)
+        batchClient.submitBatch(batch)
+
+        then:
+        thrown(BlobBatchStorageException)
+
+        when:
+        response1.getStatusCode()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    @Unroll
+    def "Submitting same batch many times"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobName1 = generateBlobName()
+        def blobName2 = generateBlobName()
+        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
+        containerClient.create()
+        containerClient.getBlobClient(blobName2).getPageBlobClient().create(0)
+
+        when:
+        def batch = batchClient.getBlobBatch()
+        batch.deleteBlob(containerName, blobName1, DeleteSnapshotsOptionType.INCLUDE, null)
+        batch.deleteBlob(containerName, blobName2, DeleteSnapshotsOptionType.INCLUDE, null)
+        batchClient.submitBatch(batch)
+
+        then:
+        thrown(BlobBatchStorageException)
+
+        when:
+        batchClient.submitBatch(batch)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        i << (1..20)
     }
 }

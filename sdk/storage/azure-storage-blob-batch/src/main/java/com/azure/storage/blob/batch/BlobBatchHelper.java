@@ -51,8 +51,8 @@ class BlobBatchHelper {
         .compile("application\\/http", Pattern.CASE_INSENSITIVE);
 
     // This method connects the batch response values to the individual batch operations based on their Content-Id
-    static Mono<SimpleResponse<Void>> mapBatchResponse(BlobBatch batch, ServicesSubmitBatchResponse batchResponse,
-        boolean throwOnAnyFailure, ClientLogger logger) {
+    static Mono<SimpleResponse<Void>> mapBatchResponse(BlobBatchOperationInfo batchOperationInfo,
+        ServicesSubmitBatchResponse batchResponse, boolean throwOnAnyFailure, ClientLogger logger) {
         /*
          * Content-Type will contain the boundary for each batch response. The expected format is:
          * "Content-Type: multipart/mixed; boundary=batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"
@@ -74,7 +74,7 @@ class BlobBatchHelper {
                 List<BlobStorageException> exceptions = new ArrayList<>();
 
                 String[] subResponses = body.split("--" + boundary);
-                if (subResponses.length == 3 && batch.getOperationCount() != 1) {
+                if (subResponses.length == 3 && batchOperationInfo.getOperationCount() != 1) {
                     String[] exceptionSections = subResponses[1].split(HTTP_NEWLINE + HTTP_NEWLINE);
                     int statusCode = getStatusCode(exceptionSections[1], logger);
                     HttpHeaders headers = getHttpHeaders(exceptionSections[1]);
@@ -95,7 +95,7 @@ class BlobBatchHelper {
 
                     // The first section will contain batching metadata.
                     BlobBatchOperationResponse<?> batchOperationResponse =
-                        getBatchOperation(batch, subResponseSections[0], logger);
+                        getBatchOperation(batchOperationInfo, subResponseSections[0], logger);
 
                     // The second section will contain status code and header information.
                     batchOperationResponse.setStatusCode(getStatusCode(subResponseSections[1], logger));
@@ -117,8 +117,8 @@ class BlobBatchHelper {
             }));
     }
 
-    private static BlobBatchOperationResponse<?> getBatchOperation(BlobBatch batch, String responseBatchInfo,
-        ClientLogger logger) {
+    private static BlobBatchOperationResponse<?> getBatchOperation(BlobBatchOperationInfo batchOperationInfo,
+        String responseBatchInfo, ClientLogger logger) {
         Matcher contentIdMatcher = CONTENT_ID_PATTERN.matcher(responseBatchInfo);
 
         int contentId;
@@ -129,7 +129,7 @@ class BlobBatchHelper {
                 new IllegalStateException("Batch operation response doesn't contain a 'Content-Id' header."));
         }
 
-        return batch.getBatchRequest(contentId).setResponseReceived();
+        return batchOperationInfo.getBatchRequest(contentId).setResponseReceived();
     }
 
     private static int getStatusCode(String responseMetadata, ClientLogger logger) {
