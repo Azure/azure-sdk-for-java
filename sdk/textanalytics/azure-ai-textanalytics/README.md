@@ -340,7 +340,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free
-[api_reference_doc]: https://aka.ms/azsdk-python-textanalytics-ref-docs
+[api_reference_doc]: https://azure.github.io/azure-sdk-for-java/
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
