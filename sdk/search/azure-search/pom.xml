@@ -57,22 +57,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.9</version> <!-- {x-version-update;com.azure:azure-core;external_dependency} -->
+      <version>3.8.1</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-     <version>3.3.0.RELEASE</version> <!-- {x-version-update;com.azure:azure-core;external_dependency } -->
+     <version>3.3.0.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.10.0</version> <!-- {x-version-update;com.azure:azure-core;external_dependency -->
+      <version>2.10.0</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -109,13 +109,13 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.6.15</version> <!-- {x-version-update;com.azure:azure-core;external_dependency} -->
+      <version>1.6.15</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.unitils</groupId>
       <artifactId>unitils-core</artifactId>
-      <version>3.4.2</version> <!-- {x-version-update;com.azure:azure-core;external_dependency} -->
+      <version>3.4.2</version> <!-- {x-version-update;org.unitils:unitils-core;current} -->
       <scope>test</scope>
     </dependency>
 
@@ -123,31 +123,31 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure</artifactId>
-      <version>1.24.1</version> <!-- {x-version-update;com.azure:azure-core;external_dependency} -->
+      <version>1.24.1</version> <!-- {x-version-update;com.microsoft.azure:azure;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
-      <version>1.6.15</version> <!-- {x-version-update;com.azure:azure-core;external_dependency} -->
+      <version>1.6.15</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-search</artifactId>
-      <version>1.24.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.24.1</version> <!-- {x-version-update;com.microsoft.azure:azure-mgmt-search;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
-      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core;external_dependency} -->
+      <version>1.26.0</version> <!-- {x-version-update;com.microsoft.azure:azure-mgmt-resources;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.1.0</version>
+      <version>12.1.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
