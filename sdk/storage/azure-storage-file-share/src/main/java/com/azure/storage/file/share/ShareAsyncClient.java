@@ -1120,7 +1120,12 @@ public class ShareAsyncClient {
         ShareProperties shareProperties = new ShareProperties().setQuota(headers.getQuota())
             .setETag(headers.getETag())
             .setLastModified(headers.getLastModified())
-            .setMetadata(headers.getMetadata());
+            .setMetadata(headers.getMetadata())
+            .setQuota(headers.getQuota())
+            .setNextAllowedQuotaDowngradeTime(headers.getNextAllowedQuotaDowngradeTime())
+            .setProvisionedEgressMBps(headers.getProvisionedEgressMBps())
+            .setProvisionedIngressMBps(headers.getProvisionedIngressMBps())
+            .setProvisionedIops(headers.getProvisionedIops());
 
         return new SimpleResponse<>(response, shareProperties);
     }

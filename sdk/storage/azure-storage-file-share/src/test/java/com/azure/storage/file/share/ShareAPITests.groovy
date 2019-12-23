@@ -197,6 +197,24 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
     }
 
+    def "Get properties premium"() {
+        given:
+        def premiumShareClient = premiumFileServiceClient.createShareWithResponse(generateShareName(), testMetadata, null, null, null).getValue()
+
+        when:
+        def getPropertiesResponse = premiumShareClient.getPropertiesWithResponse(null, null)
+        def shareProperties = getPropertiesResponse.getValue()
+
+        then:
+        FileTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
+        testMetadata == shareProperties.getMetadata()
+        shareProperties.getQuota()
+        shareProperties.getNextAllowedQuotaDowngradeTime()
+        shareProperties.getProvisionedEgressMBps()
+        shareProperties.getProvisionedIngressMBps()
+        shareProperties.getProvisionedIops()
+    }
+
     def "Set quota"() {
         given:
         primaryShareClient.createWithResponse(null, 1, null, null)
