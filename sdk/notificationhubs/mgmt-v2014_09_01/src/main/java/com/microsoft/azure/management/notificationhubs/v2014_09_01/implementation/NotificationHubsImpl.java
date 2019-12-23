@@ -98,10 +98,14 @@ class NotificationHubsImpl extends WrapperImpl<NotificationHubsInner> implements
     public Observable<NotificationHubResource> getAsync(String resourceGroupName, String namespaceName, String notificationHubName) {
         NotificationHubsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, notificationHubName)
-        .map(new Func1<NotificationHubResourceInner, NotificationHubResource>() {
+        .flatMap(new Func1<NotificationHubResourceInner, Observable<NotificationHubResource>>() {
             @Override
-            public NotificationHubResource call(NotificationHubResourceInner inner) {
-                return wrapModel(inner);
+            public Observable<NotificationHubResource> call(NotificationHubResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((NotificationHubResource)wrapModel(inner));
+                }
             }
        });
     }
