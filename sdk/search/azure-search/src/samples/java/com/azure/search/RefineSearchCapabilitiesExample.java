@@ -4,9 +4,9 @@
 package com.azure.search;
 
 import com.azure.core.util.Configuration;
-import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
+import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.InputFieldMappingEntry;
 import com.azure.search.models.OutputFieldMappingEntry;
@@ -116,7 +116,7 @@ public class RefineSearchCapabilitiesExample {
         hotels.add(new Hotel().setHotelId("300"));
 
         // Perform index operations on a list of documents
-        DocumentIndexResult result = client.mergeOrUploadDocuments(hotels);
+        IndexDocumentsResult result = client.mergeOrUploadDocuments(hotels);
         System.out.printf("Indexed %s documents%n", result.getResults().size());
     }
 

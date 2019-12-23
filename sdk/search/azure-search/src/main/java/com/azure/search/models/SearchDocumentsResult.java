@@ -15,7 +15,7 @@ import java.util.Map;
  * Response containing search results from an index.
  */
 @Fluent
-public final class DocumentSearchResult {
+public final class SearchDocumentsResult {
     /*
      * The total count of results found by the search operation, or null if the
      * count was not requested. If present, the count may be greater than the

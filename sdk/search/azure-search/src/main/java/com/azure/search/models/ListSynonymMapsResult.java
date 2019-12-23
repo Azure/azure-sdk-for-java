@@ -11,23 +11,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Response from a List Indexes request. If successful, it includes the full
- * definitions of all indexes.
+ * Response from a List SynonymMaps request. If successful, it includes the
+ * full definitions of all synonym maps.
  */
 @Fluent
-public final class IndexListResult {
+public final class ListSynonymMapsResult {
     /*
-     * The indexes in the Search service.
+     * The synonym maps in the Search service.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Index> indexes;
+    private List<SynonymMap> synonymMaps;
 
     /**
-     * Get the indexes property: The indexes in the Search service.
+     * Get the synonymMaps property: The synonym maps in the Search service.
      *
-     * @return the indexes value.
+     * @return the synonymMaps value.
      */
-    public List<Index> getIndexes() {
-        return this.indexes;
+    public List<SynonymMap> getSynonymMaps() {
+        return this.synonymMaps;
     }
 }

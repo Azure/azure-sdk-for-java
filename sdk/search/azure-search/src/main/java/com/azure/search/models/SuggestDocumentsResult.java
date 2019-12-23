@@ -14,7 +14,7 @@ import java.util.List;
  * Response containing suggestion query results from an index.
  */
 @Fluent
-public final class DocumentSuggestResult {
+public final class SuggestDocumentsResult {
     /*
      * The sequence of results returned by the query.
      */

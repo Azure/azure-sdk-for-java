@@ -38,27 +38,6 @@ vararg-properties: >-
     SuggestOptions.orderBy, SuggestOptions.searchFields, SuggestOptions.select
 
 directive:
-    # Rename custom properties
-    - rename-custom-property:
-          path: "$.paths.*.*.parameters[*]['x-ms-parameter-grouping']"
-          from: AutocompleteParameters
-          to: AutocompleteOptions
-
-    - rename-custom-property:
-          path: "$.paths.*.*.parameters[*]['x-ms-parameter-grouping']"
-          from: SearchParameters
-          to: SearchOptions
-
-    - rename-custom-property:
-          path: "$.paths.*.*.parameters[*]['x-ms-parameter-grouping']"
-          from: SuggestParameters
-          to: SuggestOptions
-
-    - rename-custom-property:
-          path: "$.parameters.ClientRequestIdParameter['x-ms-parameter-grouping']"
-          from: "search-request-options"
-          to: "request-options"
-
     # Rename IndexBatch to IndexBatchImpl when processing the API spec
     - rename-model:
           from: IndexBatch
@@ -156,8 +135,8 @@ directive:
           return $
           .replace(/(IndexBatchImpl)/g, "IndexBatch")
           .replace(/(IndexBatch )/g, "IndexBatch<T> ")
-          .replace(/(Mono<DocumentIndexResult> indexAsync)/g, "<T> $1")
-          .replace(/(Mono<SimpleResponse<DocumentIndexResult>> index)/g, "<T> $1")
+          .replace(/(Mono<IndexDocumentsResult> indexAsync)/g, "<T> $1")
+          .replace(/(Mono<SimpleResponse<IndexDocumentsResult>> index)/g, "<T> $1")
 
     # Change get to is
     - from: DocumentsImpl.java

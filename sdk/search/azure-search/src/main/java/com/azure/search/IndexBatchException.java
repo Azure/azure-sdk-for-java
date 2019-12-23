@@ -4,7 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.exception.AzureException;
-import com.azure.search.models.DocumentIndexResult;
+import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.IndexingResult;
 
 import java.util.ArrayList;
@@ -22,11 +22,11 @@ public class IndexBatchException extends AzureException {
     private final ArrayList<IndexingResult> results;
 
     /**
-     * Constructs an {@code IndexBatchException} from the given {@link DocumentIndexResult}.
+     * Constructs an {@code IndexBatchException} from the given {@link IndexDocumentsResult}.
      *
      * @param result The DocumentIndexResult returned from the service.
      */
-    IndexBatchException(DocumentIndexResult result) {
+    IndexBatchException(IndexDocumentsResult result) {
         super(createMessage(result));
         this.results = new ArrayList<>(result.getResults());
     }
@@ -38,7 +38,7 @@ public class IndexBatchException extends AzureException {
         return this.results;
     }
 
-    private static String createMessage(DocumentIndexResult result) {
+    private static String createMessage(IndexDocumentsResult result) {
         long failedResultCount = result.getResults().stream()
             .filter(r -> !r.isSucceeded())
             .count();

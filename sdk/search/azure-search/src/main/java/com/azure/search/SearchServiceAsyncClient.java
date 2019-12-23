@@ -21,8 +21,8 @@ import com.azure.search.implementation.SearchServiceRestClientImpl;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.DataSource;
+import com.azure.search.models.GetIndexStatisticsResult;
 import com.azure.search.models.Index;
-import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.RequestOptions;
@@ -759,7 +759,7 @@ public class SearchServiceAsyncClient {
      * @param indexName the name of the index for which to retrieve statistics
      * @return the index statistics result.
      */
-    public Mono<IndexGetStatisticsResult> getIndexStatistics(String indexName) {
+    public Mono<GetIndexStatisticsResult> getIndexStatistics(String indexName) {
         return this.getIndexStatisticsWithResponse(indexName, null)
             .map(Response::getValue);
     }
@@ -772,12 +772,12 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the index statistics result.
      */
-    public Mono<Response<IndexGetStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
+    public Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
                                                                                    RequestOptions requestOptions) {
         return withContext(context -> this.getIndexStatisticsWithResponse(indexName, requestOptions, context));
     }
 
-    Mono<Response<IndexGetStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
+    Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
                                                                             RequestOptions requestOptions,
                                                                             Context context) {
         return restClient

@@ -11,23 +11,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Response from a list Skillset request. If successful, it includes the full
- * definitions of all skillsets.
+ * Response from a List Indexes request. If successful, it includes the full
+ * definitions of all indexes.
  */
 @Fluent
-public final class SkillsetListResult {
+public final class ListIndexesResult {
     /*
-     * The skillsets defined in the Search service.
+     * The indexes in the Search service.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Skillset> skillsets;
+    private List<Index> indexes;
 
     /**
-     * Get the skillsets property: The skillsets defined in the Search service.
+     * Get the indexes property: The indexes in the Search service.
      *
-     * @return the skillsets value.
+     * @return the indexes value.
      */
-    public List<Skillset> getSkillsets() {
-        return this.skillsets;
+    public List<Index> getIndexes() {
+        return this.indexes;
     }
 }

@@ -11,8 +11,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.DataSource;
+import com.azure.search.models.GetIndexStatisticsResult;
 import com.azure.search.models.Index;
-import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.RequestOptions;
@@ -531,7 +531,7 @@ public class SearchServiceClient {
      * @param indexName the name of the index for which to retrieve statistics
      * @return the index statistics result.
      */
-    public IndexGetStatisticsResult getIndexStatistics(String indexName) {
+    public GetIndexStatisticsResult getIndexStatistics(String indexName) {
         return asyncClient.getIndexStatistics(indexName).block();
     }
 
@@ -544,7 +544,7 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the index statistics result.
      */
-    public Response<IndexGetStatisticsResult> getIndexStatisticsWithResponse(String indexName,
+    public Response<GetIndexStatisticsResult> getIndexStatisticsWithResponse(String indexName,
                                                                              RequestOptions requestOptions,
                                                                              Context context) {
         return asyncClient.getIndexStatisticsWithResponse(indexName, requestOptions, context).block();

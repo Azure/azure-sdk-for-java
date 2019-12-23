@@ -11,8 +11,8 @@ import com.azure.search.models.DistanceScoringParameters;
 import com.azure.search.models.Field;
 import com.azure.search.models.FreshnessScoringFunction;
 import com.azure.search.models.FreshnessScoringParameters;
+import com.azure.search.models.GetIndexStatisticsResult;
 import com.azure.search.models.Index;
-import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.ScoringFunctionAggregation;
@@ -103,7 +103,7 @@ public class IndexAndServiceStatisticsExample {
     private static void getIndexStatistics(SearchServiceClient client) {
         Index testIndex = createTestIndex();
         Index index = client.createOrUpdateIndex(testIndex);
-        IndexGetStatisticsResult result = client.getIndexStatistics(index.getName());
+        GetIndexStatisticsResult result = client.getIndexStatistics(index.getName());
         long documentCount = result.getDocumentCount();
         long storageSize = result.getStorageSize();
 

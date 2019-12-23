@@ -15,7 +15,7 @@ import java.util.List;
  * indexing request.
  */
 @Fluent
-public final class DocumentIndexResult {
+public final class IndexDocumentsResult {
     /*
      * The list of status information for each document in the indexing
      * request.

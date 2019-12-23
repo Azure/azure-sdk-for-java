@@ -75,7 +75,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         doc.put("Name", "test");
         doc.put("Location", GeoPoint.create(1.0, 100.0));
         docs.add(doc);
-        DocumentIndexResult indexResult = client.uploadDocuments(docs);
+        IndexDocumentsResult indexResult = client.uploadDocuments(docs);
 
         Assert.assertNotNull(indexResult);
         Assert.assertTrue(indexResult.getResults().get(0).isSucceeded());

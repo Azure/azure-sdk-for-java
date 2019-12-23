@@ -7,7 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.search.models.DocumentSuggestResult;
+import com.azure.search.models.SuggestDocumentsResult;
 import com.azure.search.models.SuggestResult;
 
 import java.util.stream.Collectors;
@@ -37,7 +37,7 @@ public class SuggestPagedResponse extends PagedResponseBase<String, SuggestResul
      *
      * @param documentSearchResponse an http response with the results
      */
-    public SuggestPagedResponse(SimpleResponse<DocumentSuggestResult> documentSearchResponse) {
+    public SuggestPagedResponse(SimpleResponse<SuggestDocumentsResult> documentSearchResponse) {
         super(documentSearchResponse.getRequest(),
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),

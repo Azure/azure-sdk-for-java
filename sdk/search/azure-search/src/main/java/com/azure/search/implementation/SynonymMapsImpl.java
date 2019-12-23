@@ -24,9 +24,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
+import com.azure.search.models.ListSynonymMapsResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
-import com.azure.search.models.SynonymMapListResult;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -77,7 +77,7 @@ public final class SynonymMapsImpl {
 
         @Get("synonymmaps")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<SynonymMapListResult>> list(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<ListSynonymMapsResult>> list(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Post("synonymmaps")
         @ExpectedResponses({201})
@@ -214,7 +214,7 @@ public final class SynonymMapsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SynonymMapListResult>> listWithRestResponseAsync(Context context) {
+    public Mono<SimpleResponse<ListSynonymMapsResult>> listWithRestResponseAsync(Context context) {
         final String select = null;
         final UUID clientRequestId = null;
         return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
@@ -230,7 +230,7 @@ public final class SynonymMapsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SynonymMapListResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<ListSynonymMapsResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();

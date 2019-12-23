@@ -15,7 +15,7 @@ import java.util.List;
  * full definitions of all datasources.
  */
 @Fluent
-public final class DataSourceListResult {
+public final class ListDataSourcesResult {
     /*
      * The datasources in the Search service.
      */
