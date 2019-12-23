@@ -118,11 +118,13 @@ class APISpec extends Specification {
     static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
     static def BLOB_STORAGE = "BLOB_STORAGE_"
     static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
+    static def MANAGED_DISK_STORAGE = "MANAGED_DISK_STORAGE_"
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential alternateCredential
     static StorageSharedKeyCredential blobCredential
     static StorageSharedKeyCredential premiumCredential
+    static StorageSharedKeyCredential managedDiskCredential
     static TestMode testMode
 
     BlobServiceClient primaryBlobServiceClient
@@ -130,6 +132,7 @@ class APISpec extends Specification {
     BlobServiceClient alternateBlobServiceClient
     BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
+    BlobServiceClient managedDiskServiceClient
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
@@ -143,6 +146,7 @@ class APISpec extends Specification {
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
+        managedDiskCredential = getCredential(MANAGED_DISK_STORAGE)
     }
 
     def setup() {
@@ -162,6 +166,7 @@ class APISpec extends Specification {
         alternateBlobServiceClient = setClient(alternateCredential)
         blobServiceClient = setClient(blobCredential)
         premiumBlobServiceClient = setClient(premiumCredential)
+        managedDiskServiceClient = setClient(managedDiskCredential)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -258,6 +263,10 @@ class APISpec extends Specification {
     }
 
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential) {
+        // TODO : Remove this once its no longer preprod
+        if (credential == managedDiskCredential) {
+            return getServiceClient(credential, String.format("https://%s.blob.preprod.core.windows.net/", credential.getAccountName()), null)
+        }
         return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
     }
 

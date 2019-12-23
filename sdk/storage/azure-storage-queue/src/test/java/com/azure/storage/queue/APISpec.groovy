@@ -4,6 +4,8 @@
 package com.azure.storage.queue
 
 import com.azure.core.http.HttpClient
+import com.azure.core.http.ProxyOptions
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -139,7 +141,13 @@ class APISpec extends Specification {
     }
 
     static HttpClient getHttpClient() {
-        return HttpClient.createDefault()
+        if (enableDebugging) {
+            def builder = new NettyAsyncHttpClientBuilder()
+            builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+            return builder.build()
+        } else {
+            return HttpClient.createDefault()
+        }
     }
 
     def sleepIfLive(long milliseconds) {
@@ -149,4 +157,9 @@ class APISpec extends Specification {
 
         sleep(milliseconds)
     }
+
+    boolean liveMode() {
+        return testMode == TestMode.RECORD
+    }
+
 }
