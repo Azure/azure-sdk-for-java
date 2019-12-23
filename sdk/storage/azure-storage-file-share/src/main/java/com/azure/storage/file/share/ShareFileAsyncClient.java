@@ -325,6 +325,7 @@ public class ShareFileAsyncClient {
      * naming rules.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
+     * @param destinationRequestConditions {@link ShareRequestConditions}
      * @return A {@link PollerFlux} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
