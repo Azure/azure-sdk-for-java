@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -151,6 +152,15 @@ public final class BlobContainerClient {
      */
     public CpkInfo getCustomerProvidedKey() {
         return client.getCustomerProvidedKey();
+    }
+
+    /**
+     * Gets the {@link EncryptionScope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    public EncryptionScope getEncryptionScope() {
+        return client.getEncryptionScope();
     }
 
     /**

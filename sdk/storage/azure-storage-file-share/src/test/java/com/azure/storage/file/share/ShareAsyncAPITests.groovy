@@ -8,6 +8,8 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.ShareRequestConditions
+import com.azure.storage.file.share.models.ShareStorageException
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
@@ -186,6 +188,23 @@ class ShareAsyncAPITests extends APISpec {
             }
     }
 
+    def "Get properties premium"() {
+        given:
+        def premiumShare = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(), testMetadata, null).block().getValue()
+        when:
+        def getPropertiesVerifier = StepVerifier.create(premiumShare.getPropertiesWithResponse())
+        then:
+        getPropertiesVerifier.assertNext {
+            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert testMetadata == it.getValue().getMetadata()
+            assert it.getValue().getQuota()
+            assert it.getValue().getProvisionedIops()
+            assert it.getValue().getProvisionedIngressMBps()
+            assert it.getValue().getProvisionedEgressMBps()
+            assert it.getValue().getNextAllowedQuotaDowngradeTime()
+        }.verifyComplete()
+    }
+
     def "Set quota"() {
         given:
         primaryShareAsyncClient.createWithResponse(null, 1).block()
@@ -360,6 +379,30 @@ class ShareAsyncAPITests extends APISpec {
 
     }
 
+    def "Create file lease"() {
+        given:
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.getFileClient("testCreateFile").create(512).block()
+        def leaseId = createLeaseClient(primaryShareAsyncClient.getFileClient("testCreateFile")).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null,
+            null, new ShareRequestConditions().setLeaseId(leaseId)))
+            .expectNextCount(1).verifyComplete()
+    }
+
+    def "Create file lease fail"() {
+        given:
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.getFileClient("testCreateFile").create(512).block()
+        createLeaseClient(primaryShareAsyncClient.getFileClient("testCreateFile")).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null,
+            null, new ShareRequestConditions().setLeaseId(getRandomUUID())))
+            .verifyError(ShareStorageException)
+    }
+
     def "Create file maxOverload"() {
         given:
         primaryShareAsyncClient.create().block()
@@ -430,6 +473,32 @@ class ShareAsyncAPITests extends APISpec {
                 assert FileTestHelper.assertResponseStatusCode(it, 202)
             }.verifyComplete()
 
+    }
+
+    def "Delete file lease"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.createFile(fileName, 1024).block()
+        def leaseId = createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.deleteFileWithResponse(fileName,
+            new ShareRequestConditions().setLeaseId(leaseId)))
+            .expectNextCount(1).verifyComplete()
+    }
+
+    def "Delete file lease fail"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.createFile(fileName, 1024).block()
+        createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.deleteFileWithResponse(fileName,
+            new ShareRequestConditions().setLeaseId(getRandomUUID())))
+            .verifyError(ShareStorageException)
     }
 
     def "Delete file error"() {

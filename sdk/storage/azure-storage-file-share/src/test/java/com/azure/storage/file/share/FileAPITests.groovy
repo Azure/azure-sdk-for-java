@@ -441,7 +441,7 @@ class FileAPITests extends APISpec {
         when:
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, smbProperties,
             setFilePermission ? filePermission : null, permissionType, ignoreReadOnly,
-            setArchiveAttribute, null, null)
+            setArchiveAttribute, null, null, null)
 
         def pollResponse = poller.poll()
 
@@ -669,6 +669,7 @@ class FileAPITests extends APISpec {
 
         then:
         handlesClosedInfo.getClosedHandles() == 0
+        handlesClosedInfo.getFailedHandles() == 0
         notThrown(ShareStorageException)
     }
 
@@ -693,6 +694,7 @@ class FileAPITests extends APISpec {
         then:
         notThrown(ShareStorageException)
         handlesClosedInfo.getClosedHandles() == 0
+        handlesClosedInfo.getFailedHandles() == 0
     }
 
     def "Get snapshot id"() {

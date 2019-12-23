@@ -24,6 +24,7 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -132,6 +133,15 @@ public class BlobClientBase {
      */
     public CpkInfo getCustomerProvidedKey() {
         return client.getCustomerProvidedKey();
+    }
+
+    /**
+     * Gets the {@link EncryptionScope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    EncryptionScope getEncryptionScope() {
+        return client.getEncryptionScope();
     }
 
     /**

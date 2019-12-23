@@ -14,14 +14,28 @@ import com.azure.storage.file.share.ShareFileAsyncClient;
 public class CloseHandlesInfo {
 
     private final Integer closedHandles;
+    private final Integer failedHandles;
 
     /**
      * Creates an instance of information about close handles.
      *
      * @param closedHandles The numbers of handles closed.
+     * Note : Failed handles was added as a parameter, default value for failed handles is 0
      */
     public CloseHandlesInfo(Integer closedHandles) {
         this.closedHandles = closedHandles;
+        this.failedHandles = 0;
+    }
+
+    /**
+     * Creates an instance of information about close handles.
+     *
+     * @param closedHandles The numbers of handles closed.
+     * @param failedHandles The numbers of handles that failed to close.
+     */
+    public CloseHandlesInfo(Integer closedHandles, Integer failedHandles) {
+        this.closedHandles = closedHandles;
+        this.failedHandles = failedHandles;
     }
 
     /**
@@ -30,5 +44,13 @@ public class CloseHandlesInfo {
      */
     public int getClosedHandles() {
         return this.closedHandles;
+    }
+
+    /**
+     *
+     * @return The number of handles that failed to close.
+     */
+    public int getFailedHandles() {
+        return this.failedHandles;
     }
 }
