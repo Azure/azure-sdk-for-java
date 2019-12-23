@@ -958,4 +958,22 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
                 .setTargetName("myOutput")
         );
     }
+
+
+    protected List<Skill> getCreateOrUpdateSkills() {
+        return Collections.singletonList(
+            new KeyPhraseExtractionSkill()
+                .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
+                .setName("mykeyphrases")
+                .setDescription("Tested Key Phrase skill")
+                .setContext(CONTEXT_VALUE)
+                .setInputs(Collections.singletonList(
+                    new InputFieldMappingEntry()
+                        .setName("text")
+                        .setSource("/document/mytext")))
+                .setOutputs(Collections.singletonList(
+                    new OutputFieldMappingEntry()
+                        .setName("keyPhrases")
+                        .setTargetName("myKeyPhrases"))));
+    }
 }

@@ -9,7 +9,6 @@ import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
-import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.IndexerExecutionStatus;
 import com.azure.search.models.IndexerStatus;
 import com.azure.search.models.IndexingParameters;
@@ -167,8 +166,8 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     public void canResetIndexerAndGetIndexerStatus() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
-        client.resetIndexer(indexer.getName()).block();
-        StepVerifier.create(client.getIndexerStatus(indexer.getName()))
+        StepVerifier.create(client.resetIndexer(indexer.getName())
+            .then(client.getIndexerStatus(indexer.getName())))
             .assertNext(indexerStatus -> {
                 Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
                 Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
@@ -180,8 +179,8 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     public void canResetIndexerAndGetIndexerStatusWithResponse() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
-        client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions()).block();
-        StepVerifier.create(client.getIndexerStatusWithResponse(indexer.getName(), generateRequestOptions()))
+        StepVerifier.create(client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions())
+            .then(client.getIndexerStatusWithResponse(indexer.getName(), generateRequestOptions())))
             .assertNext(indexerStatus -> {
                 Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getValue().getStatus());
                 Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getValue().getLastResult().getStatus());
@@ -262,22 +261,23 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     public void canRunIndexer() {
         Indexer indexer = createTestDataSourceAndIndexer();
         client.runIndexer(indexer.getName());
-        IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName()).block();
 
-        assert indexerExecutionInfo != null;
-        Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
+        StepVerifier.create(client.getIndexerStatus(indexer.getName()))
+            .assertNext(indexerExecutionInfo -> Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus()))
+            .verifyComplete();
     }
 
     @Test
     public void canRunIndexerWithResponse() {
         Indexer indexer = createTestDataSourceAndIndexer();
-        Response<Void> response = client.runIndexerWithResponse(indexer.getName(), generateRequestOptions()).block();
-        IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName()).block();
 
-        assert indexerExecutionInfo != null;
-        assert response != null;
-        Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode());
-        Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
+        StepVerifier.create(client.runIndexerWithResponse(indexer.getName(), generateRequestOptions()))
+            .assertNext(response -> Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode()))
+            .verifyComplete();
+
+        StepVerifier.create(client.getIndexerStatus(indexer.getName()))
+            .assertNext(indexerExecutionInfo -> Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus()))
+            .verifyComplete();
     }
 
     @Test
@@ -294,18 +294,18 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
             .setDataSourceName(SQL_DATASOURCE_NAME);
 
-        client.createIndexer(indexer).block();
-
-        IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName()).block();
-        Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
+        StepVerifier.create(client.createIndexer(indexer)
+            .then(client.getIndexerStatus(indexer.getName())))
+            .assertNext(indexerExecutionInfo -> Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus()));
 
         client.runIndexerWithResponse(indexer.getName(), new RequestOptions())
             .subscribe(indexerRunResponse ->
                 Assert.assertEquals(HttpResponseStatus.ACCEPTED.code(), indexerRunResponse.getStatusCode()));
 
-        indexerExecutionInfo = client.getIndexerStatus(indexer.getName()).block();
+        StepVerifier
+            .create(client.getIndexerStatus(indexer.getName()))
+            .assertNext(indexerExecutionInfo -> assertValidIndexerExecutionInfo(indexerExecutionInfo));
 
-        assertValidIndexerExecutionInfo(indexerExecutionInfo);
     }
 
     @Test

@@ -4,7 +4,9 @@ package com.azure.search;
 
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
@@ -123,4 +125,17 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
             .filter(f -> f.getName().equals(name))
             .findFirst().get();
     }
+
+    protected void indexeWithSelectedFieldAssertions(Index actualIndex) {
+        Assert.assertNull(actualIndex.getFields());
+        Assert.assertNull(actualIndex.getDefaultScoringProfile());
+        Assert.assertNull(actualIndex.getCorsOptions());
+        Assert.assertNull(actualIndex.getScoringProfiles());
+        Assert.assertNull(actualIndex.getSuggesters());
+        Assert.assertNull(actualIndex.getAnalyzers());
+        Assert.assertNull(actualIndex.getTokenizers());
+        Assert.assertNull(actualIndex.getTokenFilters());
+        Assert.assertNull(actualIndex.getCharFilters());
+    }
+
 }
