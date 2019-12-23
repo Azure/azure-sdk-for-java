@@ -41,7 +41,7 @@ public class LeaseClientJavaDocCodeSnippets {
     public void breakLease() {
         // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.breakLease
         client.breakLease();
-        System.out.print("The lease has been broken");
+        System.out.println("The lease has been successfully broken");
         // END: com.azure.storage.file.share.specialized.ShareLeaseClient.breakLease
     }
 
@@ -82,6 +82,7 @@ public class LeaseClientJavaDocCodeSnippets {
     public void breakLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#Duration-Context
         client.breakLeaseWithResponse(timeout, new Context(key, value));
+        System.out.println("The lease has been successfully broken");
         // END: com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#Duration-Context
     }
 

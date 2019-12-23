@@ -134,7 +134,7 @@ public final class ShareLeaseClient {
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The remaining time in the broken lease in seconds.
+     * @return A response containing status code and HTTP headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> breakLeaseWithResponse(Duration timeout, Context context) {
