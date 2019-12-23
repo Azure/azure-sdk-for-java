@@ -34,10 +34,10 @@ public class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Specifies the targeted region in which the namespace should be created.
-     * It can be any of the following values: Australia EastAustralia
-     * SoutheastCentral USEast USEast US 2West USNorth Central USSouth Central
-     * USEast AsiaSoutheast AsiaBrazil SouthJapan EastJapan WestNorth
-     * EuropeWest Europe.
+     * It can be any of the following values: Australia East, Australia
+     * Southeast, Central US, East US, East US 2, West US, North Central US,
+     * South Central US, East Asia, Southeast Asia, Brazil South, Japan East,
+     * Japan West, North Europe, West Europe.
      */
     @JsonProperty(value = "properties.region")
     private String region;
@@ -157,7 +157,7 @@ public class NamespaceCreateOrUpdateParameters extends Resource {
     }
 
     /**
-     * Get specifies the targeted region in which the namespace should be created. It can be any of the following values: Australia EastAustralia SoutheastCentral USEast USEast US 2West USNorth Central USSouth Central USEast AsiaSoutheast AsiaBrazil SouthJapan EastJapan WestNorth EuropeWest Europe.
+     * Get specifies the targeted region in which the namespace should be created. It can be any of the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe.
      *
      * @return the region value
      */
@@ -166,7 +166,7 @@ public class NamespaceCreateOrUpdateParameters extends Resource {
     }
 
     /**
-     * Set specifies the targeted region in which the namespace should be created. It can be any of the following values: Australia EastAustralia SoutheastCentral USEast USEast US 2West USNorth Central USSouth Central USEast AsiaSoutheast AsiaBrazil SouthJapan EastJapan WestNorth EuropeWest Europe.
+     * Set specifies the targeted region in which the namespace should be created. It can be any of the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe.
      *
      * @param region the region value to set
      * @return the NamespaceCreateOrUpdateParameters object itself.
