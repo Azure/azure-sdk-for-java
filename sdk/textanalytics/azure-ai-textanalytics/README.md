@@ -7,6 +7,8 @@ and includes four main functions:
 - Language Detection
 - Key Phrase Extraction
 
+[Source code][source_code] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
+
 ## Getting started
 
 ### Prerequisites
@@ -338,10 +340,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free
+[api_reference_doc]: https://aka.ms/azsdk-python-textanalytics-ref-docs
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[product_documentation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview
 [samples_readme]: src/samples/README.md
 [source_code]: src
 
