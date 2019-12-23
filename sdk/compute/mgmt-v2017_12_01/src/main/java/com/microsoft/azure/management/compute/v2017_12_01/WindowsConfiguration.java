@@ -53,7 +53,7 @@ public class WindowsConfiguration {
     private WinRMConfiguration winRM;
 
     /**
-     * Get the provisionVMAgent value.
+     * Get indicates whether virtual machine agent should be provisioned on the virtual machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set it to true.  This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.
      *
      * @return the provisionVMAgent value
      */
@@ -62,7 +62,7 @@ public class WindowsConfiguration {
     }
 
     /**
-     * Set the provisionVMAgent value.
+     * Set indicates whether virtual machine agent should be provisioned on the virtual machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set it to true.  This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.
      *
      * @param provisionVMAgent the provisionVMAgent value to set
      * @return the WindowsConfiguration object itself.
@@ -73,7 +73,7 @@ public class WindowsConfiguration {
     }
 
     /**
-     * Get the enableAutomaticUpdates value.
+     * Get indicates whether virtual machine is enabled for automatic updates.
      *
      * @return the enableAutomaticUpdates value
      */
@@ -82,7 +82,7 @@ public class WindowsConfiguration {
     }
 
     /**
-     * Set the enableAutomaticUpdates value.
+     * Set indicates whether virtual machine is enabled for automatic updates.
      *
      * @param enableAutomaticUpdates the enableAutomaticUpdates value to set
      * @return the WindowsConfiguration object itself.
@@ -93,7 +93,7 @@ public class WindowsConfiguration {
     }
 
     /**
-     * Get the timeZone value.
+     * Get specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
      *
      * @return the timeZone value
      */
@@ -102,7 +102,7 @@ public class WindowsConfiguration {
     }
 
     /**
-     * Set the timeZone value.
+     * Set specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
      *
      * @param timeZone the timeZone value to set
      * @return the WindowsConfiguration object itself.
@@ -113,7 +113,7 @@ public class WindowsConfiguration {
     }
 
     /**
-     * Get the additionalUnattendContent value.
+     * Get specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup.
      *
      * @return the additionalUnattendContent value
      */
@@ -122,7 +122,7 @@ public class WindowsConfiguration {
     }
 
     /**
-     * Set the additionalUnattendContent value.
+     * Set specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup.
      *
      * @param additionalUnattendContent the additionalUnattendContent value to set
      * @return the WindowsConfiguration object itself.
@@ -133,7 +133,7 @@ public class WindowsConfiguration {
     }
 
     /**
-     * Get the winRM value.
+     * Get specifies the Windows Remote Management listeners. This enables remote Windows PowerShell.
      *
      * @return the winRM value
      */
@@ -142,7 +142,7 @@ public class WindowsConfiguration {
     }
 
     /**
-     * Set the winRM value.
+     * Set specifies the Windows Remote Management listeners. This enables remote Windows PowerShell.
      *
      * @param winRM the winRM value to set
      * @return the WindowsConfiguration object itself.
