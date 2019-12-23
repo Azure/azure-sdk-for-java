@@ -66,7 +66,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         switch (processKind) {
             case SEND:
-                spanBuilder = getSpanBuilder(spanName, context);
+                // use previously created span builder from the LINK process.
+                spanBuilder = getOrDefault(context, SPAN_BUILDER_KEY, null, Builder.class);
+                if (spanBuilder == null) {
+                    return Context.NONE;
+                }
                 span = spanBuilder.setSpanKind(Span.Kind.PRODUCER).startSpan();
                 if (span.isRecording()) {
                     // If span is sampled in, add additional request attributes
@@ -172,6 +176,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         return AmqpPropagationFormatUtil.extractContext(diagnosticId, context);
     }
 
+    @Override
+    public Context getSharedSpanBuilder(String spanName, Context context) {
+        return context.addData(SPAN_BUILDER_KEY, getSpanBuilder(spanName, context));
+    }
+
     /**
      * Starts a new child {@link Span} with parent being the remote and uses the {@link Span} is in the current Context,
      * to return an object that represents that scope.
@@ -190,6 +199,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         } else {
             Builder spanBuilder = getSpanBuilder(spanName, context);
             span = spanBuilder.setSpanKind(Span.Kind.SERVER).startSpan();
+        }
+        if (span.isRecording()) {
+            // If span is sampled in, add additional request attributes
+            addSpanRequestAttributes(span, context, spanName);
         }
         return context.addData(PARENT_SPAN_KEY, span).addData("scope", TRACER.withSpan(span));
     }
@@ -243,15 +256,14 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     /**
      * Extracts the component name from the given span name.
      *
-     * @param spanName The spanName containing the component name i.e spanName = "Azure.eventhubs.send"
+     * @param spanName The spanName containing the component name i.e spanName = "EventHubs.send"
      * @return The component name contained in the context i.e "eventhubs"
      */
     private static String parseComponentValue(String spanName) {
         if (spanName != null && !spanName.isEmpty()) {
-            int componentNameStartIndex = spanName.indexOf(".");
             int componentNameEndIndex = spanName.lastIndexOf(".");
-            if (componentNameStartIndex != -1 && componentNameEndIndex != -1) {
-                return spanName.substring(componentNameStartIndex + 1, componentNameEndIndex);
+            if (componentNameEndIndex != -1) {
+                return spanName.substring(0, componentNameEndIndex);
             }
         }
         return "";

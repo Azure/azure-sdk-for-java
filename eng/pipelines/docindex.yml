@@ -13,6 +13,18 @@ jobs:
     pool:
       vmImage: windows-2019
     steps:
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+
+      - template: eng/pipelines/templates/scripts/replace-relative-links.yml@azure-sdk-tools
+        parameters:
+          TargetFolder: .
+          RootFolder: .
+          BuildSHA: $(Build.SourceVersion)
+          RepoId: 'Azure/azure-sdk-for-java'
+
       - pwsh: |
           Invoke-WebRequest -Uri "https://github.com/dotnet/docfx/releases/download/v2.43.2/docfx.zip" `
           -OutFile "docfx.zip" | Wait-Process; Expand-Archive -Path "docfx.zip" -DestinationPath "./docfx/"
@@ -143,7 +155,8 @@ jobs:
                   }
               }
               # Only create this if there's something to create
-              if (($clientArr.Count -gt 0) -or ($mgmtArr.Count -gt 0))
+              #if (($clientArr.Count -gt 0) -or ($mgmtArr.Count -gt 0))
+              if ($clientArr.Count -gt 0)
               {
                 New-Item -Path $YmlPath -Name "$($Dir.Name).md" -Force
                 Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: $($mappedDir)`r`n  href: $($Dir.Name).md"
@@ -157,15 +170,22 @@ jobs:
                         Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $lib"
                     }
                 }
-                if ($mgmtArr.Count -gt 0) 
-                {
-                    Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# Management Libraries"
-                    foreach($lib in $clientArr) 
-                    {
-                        Write-Output "Write $($lib) to $($Dir.Name).md"
-                        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $lib"
-                    }
-                }
+                # For the moment there are no management docs and with the way some of the libraries
+                # in management are versioned is a bit wonky. They aren't versioned by releasing a new
+                # version with the same groupId/artifactId, they're versioned with the same artifactId
+                # and version with a different groupId and the groupId happens to include the date. For 
+                # example, the artifact/version of azure-mgmt-storage:1.0.0-beta has several different 
+                # groupIds. com.microsoft.azure.storage.v2016_01_01, com.microsoft.azure.storage.v2017_10_01,
+                # com.microsoft.azure.storage.v2018_11_01 etc.
+                #if ($mgmtArr.Count -gt 0) 
+                #{
+                #    Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# Management Libraries"
+                #    foreach($lib in $mgmtArr) 
+                #    {
+                #        Write-Output "Write $($lib) to $($Dir.Name).md"
+                #        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $lib"
+                #    }
+                #}
               }
           }
 

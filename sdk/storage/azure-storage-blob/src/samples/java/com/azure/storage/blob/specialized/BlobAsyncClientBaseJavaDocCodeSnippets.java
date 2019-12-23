@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -15,6 +16,9 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
@@ -36,6 +40,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     private String copyId = "copyId";
     private String url = "https://sample.com";
     private String file = "file";
+    private UserDelegationKey userDelegationKey = new BlobServiceClientBuilder().buildClient().getUserDelegationKey(null, null);
 
     /**
      * Code snippet for {@link BlobAsyncClientBase#exists()}
@@ -419,5 +424,31 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         client.getAccountInfoWithResponse().subscribe(response -> System.out.printf("Account Kind: %s, SKU: %s%n",
             response.getValue().getAccountKind(), response.getValue().getSkuName()));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfoWithResponse
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClientBase#generateUserDelegationSas(BlobServiceSasSignatureValues, UserDelegationKey)}
+     * and {@link BlobAsyncClientBase#generateSas(BlobServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        BlobSasPermission permission = new BlobSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        BlobSasPermission myPermission = new BlobSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey);
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
     }
 }

@@ -5,6 +5,7 @@ package com.azure.data.cosmos.internal.routing;
 
 import com.azure.data.cosmos.internal.IRoutingMapProvider;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
+import com.azure.data.cosmos.internal.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.mockito.Matchers;
@@ -164,7 +165,7 @@ public class RoutingMapProviderHelperTest {
 
         Mockito.doAnswer(invocationOnMock -> {
             Range range = invocationOnMock.getArgumentAt(1, Range.class);
-            return Mono.just(resultMap.get(range));
+            return Mono.just(new Utils.ValueHolder<>(resultMap.get(range)));
         }).when(routingMapProviderMock).tryGetOverlappingRangesAsync(Matchers.anyString(),
             Matchers.any(),
             Matchers.anyBoolean(),

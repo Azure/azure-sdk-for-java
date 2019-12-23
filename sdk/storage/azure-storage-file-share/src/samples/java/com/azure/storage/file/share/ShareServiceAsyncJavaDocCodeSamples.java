@@ -3,9 +3,14 @@
 package com.azure.storage.file.share;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -259,5 +264,26 @@ public class ShareServiceAsyncJavaDocCodeSamples {
                     response.getStatusCode()));
         });
         // END: com.azure.storage.file.share.ShareServiceAsyncClient.setPropertiesWithResponse#fileServiceProperties.clearCORS
+    }
+
+    /**
+     * Code snippet for {@link ShareServiceAsyncClient#generateAccountSas(AccountSasSignatureValues)}
+     */
+    public void generateAccountSas() {
+        ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = fileServiceAsyncClient.generateAccountSas(sasValues);
+        // END: com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
     }
 }

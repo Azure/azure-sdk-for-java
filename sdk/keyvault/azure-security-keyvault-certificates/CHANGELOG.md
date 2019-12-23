@@ -1,5 +1,17 @@
 # Release History
-## 4.0.0-preview.6 (2019-12-04)
+
+## 4.0.0-beta.8 (Unreleased)
+
+## 4.0.0-beta.7 (2019-12-17)
+- `beginDeleteCertificate` and `beginRecoverDeletedCertificate` methods now return a poll response with a status of SUCCESSFULLY_COMPLETED when service returns 403 status.
+- `CertificateClient.createIssuer` and `CertificateAsyncClient.createIssuer` now require a `CertificateIssuer` with both a name and provider.
+- Removed constructor overload for `CertificateIssuer(String name, String provider)` from `CertificateIssuer` model.
+- Removed `AdministratorContact` constructor overloads and introduced setters for all parameters.
+- Removed `CertificateContact` constructor overloads and introduced setters for all parameters.
+
+For details on the Azure SDK for Java (December 2019 beta) release refer to the [release announcement](https://aka.ms/azure-sdk-beta7-java).
+
+## 4.0.0-beta.6 (2019-12-04)
 For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
 
 

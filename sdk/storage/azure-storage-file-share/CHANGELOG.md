@@ -1,13 +1,16 @@
 # Release History
 
-## Version XX.X.X (XXXX-XX-XX)
+## 12.1.0-beta.2 (Unreleased)
 - Added support for the 2019-07-07 service version.
 - Added support for file leases. Includes adding the ShareLeaseClientBuilder, ShareLeaseClient, and ShareLeaseAsync client and overloads accepting leaseIds for operations that support leases.
 - Added failedClosedHandles property to CloseHandlesInfo to allow users to access number of failed handles in forceCloseAllHandles and closeHandle.
 - Added support for obtaining premium file properties in ShareServiceClient.listShares and ShareClient.getProperties.
 - Added support for additional start copy parameters - FileSmbProperties, file permission, file permission copy mode, set archive and ignore read only.
 
-## Version 12.0.0 (2019-12-04)
+## 12.1.0-beta.1 (2019-12-18)
+- Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setFilePath, setShareName generateSasQueryParameters methods on ShareServiceSasSignatureValues to direct users to using the methods added on clients.
+
+## 12.0.0 (2019-12-04)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0/sdk/storage/azure-storage-file-share/README.md)
 and
@@ -18,8 +21,7 @@ and
 - Changed return type for forceCloseAllHandles from int to CloseHandlesInfo.
 - Upgraded to version 1.1.0 of Azure Core. 
 
-## Version 12.0.0-preview.5 (2019-10-31)
-
+## 12.0.0-preview.5 (2019-10-31)
 - Renamed FileReference to StorageFileItem
 - Changed response of ShareClient.listFilesAndDirectories FileReference to StorageFileItem
 - FileUploadRangeFromUrlInfo eTag() changed to getETag() and lastModified() changed to getLastModidified()
@@ -46,7 +48,7 @@ and
 - Renamed FileSasPermission getters to use has prefix
 - Changed return type for FileClient.downloadWithProperties from Response<Void> to FileDownloadResponse and FileAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<FileDownloadAsyncResponse>
 
-## Version 12.0.0-preview.4 (2019-10-8)
+## 12.0.0-preview.4 (2019-10-8)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
 This package's
@@ -64,7 +66,7 @@ and
 - Removed SAS token generation APIs from clients, use FileServiceSasSignatureValues to generate SAS tokens. 
 - Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
 
-## Version 12.0.0-preview.3 (2019-09-10):
+## 12.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 
 This package's
@@ -93,7 +95,7 @@ demonstrate the new API.
 - Replaced setHttpHeaders with setProperties APIs on sync and async File client. Additionally Allows users to set file SMB properties and file permission.
 - Added file smb properties and file permission parameters to create APIs on sync and async File and Directory clients.
 
-## Version 12.0.0-preview.2 (2019-08-08)
+## 12.0.0-preview.2 (2019-08-08)
 Version 12.0.0-preview.2 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
 
 For details on the Azure SDK for Java (August 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).

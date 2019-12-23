@@ -128,7 +128,7 @@ public class EventProcessorClientTest {
                 return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
-        when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT_KEY, "value1")
@@ -140,7 +140,7 @@ public class EventProcessorClientTest {
 
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, EventPosition.earliest(), checkpointStore, false, tracerProvider);
+            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { });
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
         eventProcessorClient.stop();
@@ -200,7 +200,7 @@ public class EventProcessorClientTest {
                 return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
-        when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT_KEY, "value1")
@@ -211,7 +211,7 @@ public class EventProcessorClientTest {
         );
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> faultyPartitionProcessor, EventPosition.earliest(), checkpointStore, false, tracerProvider);
+            () -> faultyPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { });
 
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
@@ -256,7 +256,7 @@ public class EventProcessorClientTest {
                 return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
-        when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT_KEY, "value1")
@@ -270,14 +270,14 @@ public class EventProcessorClientTest {
 
         //Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            FaultyPartitionProcessor::new, EventPosition.earliest(), checkpointStore, false, tracerProvider);
+            FaultyPartitionProcessor::new, checkpointStore, false, tracerProvider, ec -> { });
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
         eventProcessorClient.stop();
 
         //Assert
         verify(tracer1, times(1)).extractContext(eq(diagnosticId), any());
-        verify(tracer1, times(1)).start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer1, times(1)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
         verify(tracer1, times(1)).end(eq(""), any(IllegalStateException.class), any());
     }
 
@@ -316,7 +316,7 @@ public class EventProcessorClientTest {
                 return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
-        when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (Closeable) () -> {
@@ -329,7 +329,7 @@ public class EventProcessorClientTest {
 
         //Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            TestPartitionProcessor::new, EventPosition.earliest(), checkpointStore, false, tracerProvider);
+            TestPartitionProcessor::new, checkpointStore, false, tracerProvider, ec -> { });
 
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
@@ -337,7 +337,7 @@ public class EventProcessorClientTest {
 
         //Assert
         verify(tracer1, times(1)).extractContext(eq(diagnosticId), any());
-        verify(tracer1, times(1)).start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer1, times(1)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
@@ -354,7 +354,7 @@ public class EventProcessorClientTest {
         identifiers.add("1");
         identifiers.add("2");
         identifiers.add("3");
-        final EventPosition position = EventPosition.latest();
+        final EventPosition position = EventPosition.earliest();
 
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
@@ -391,7 +391,7 @@ public class EventProcessorClientTest {
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
             "test-consumer",
-            TestPartitionProcessor::new, position, checkpointStore, false, tracerProvider);
+            TestPartitionProcessor::new, checkpointStore, false, tracerProvider, ec -> { });
         eventProcessorClient.start();
         final boolean completed = count.await(10, TimeUnit.SECONDS);
         eventProcessorClient.stop();

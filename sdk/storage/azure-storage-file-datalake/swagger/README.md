@@ -148,6 +148,56 @@ directive:
     $.TransactionalContentMD5["x-ms-parameter-grouping"].name = "path-http-headers";
 ```
 
+### Make eTag in Path JsonProperty to etag
+``` yaml
+directive:
+- from: Path.java
+  where: $
+  transform: >
+    return $.replace('@JsonProperty(value = "eTag")\n    private String eTag;', '@JsonProperty(value = "etag")\n    private String eTag;');
+```
+
+### Change StorageErrorException to StorageException
+``` yaml
+directive:
+- from: ServicesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
+        "com.azure.storage.file.datalake.models.DataLakeStorageException"
+      ).
+      replace(
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
+      );
+- from: FileSystemsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
+        "com.azure.storage.file.datalake.models.DataLakeStorageException"
+      ).
+      replace(
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
+      );
+- from: PathsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
+        "com.azure.storage.file.datalake.models.DataLakeStorageException"
+      ).
+      replace(
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
+      );
+```
+
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2Fswagger%2FREADME.png)
 

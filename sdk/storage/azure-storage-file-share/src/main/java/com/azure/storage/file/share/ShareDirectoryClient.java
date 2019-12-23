@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -20,6 +21,7 @@ import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileItem;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -812,5 +814,31 @@ public class ShareDirectoryClient {
      */
     public String getAccountName() {
         return this.shareDirectoryAsyncClient.getAccountName();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.shareDirectoryAsyncClient.getHttpPipeline();
+    }
+
+    /**
+     * Generates a service SAS for the directory using the specified {@link ShareServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues}
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
+        return this.shareDirectoryAsyncClient.generateSas(shareServiceSasSignatureValues);
     }
 }

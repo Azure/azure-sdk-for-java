@@ -14,6 +14,8 @@ import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
+import com.azure.storage.file.share.sas.ShareSasPermission;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -561,5 +563,21 @@ public class ShareJavaDocCodeSamples {
         String shareName = shareAsyncClient.getShareName();
         System.out.println("The name of the share is " + shareName);
         // END: com.azure.storage.file.share.ShareClient.getShareName
+    }
+
+    /**
+     * Code snippet for {@link ShareClient#generateSas(ShareServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        ShareClient shareClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareClient.generateSas#ShareServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareSasPermission permission = new ShareSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        shareClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.share.ShareClient.generateSas#ShareServiceSasSignatureValues
     }
 }

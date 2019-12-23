@@ -12,6 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
@@ -28,6 +29,9 @@ import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -38,6 +42,7 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
@@ -808,5 +813,41 @@ public class BlobClientBase {
         Mono<Response<StorageAccountInfo>> response = client.getAccountInfoWithResponse(context);
 
         return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Generates a user delegation SAS for the blob using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see BlobServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to get a
+     * user delegation key.
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return this.client.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
+    }
+
+    /**
+     * Generates a service SAS for the blob using the specified {@link BlobServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.generateSas#BlobServiceSasSignatureValues}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return this.client.generateSas(blobServiceSasSignatureValues);
     }
 }

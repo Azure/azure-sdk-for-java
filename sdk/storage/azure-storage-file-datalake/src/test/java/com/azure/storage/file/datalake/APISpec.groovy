@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
 import reactor.core.publisher.Flux
@@ -177,14 +178,14 @@ class APISpec extends Specification {
     }
 
     static boolean liveMode() {
-        return setupTestMode() == TestMode.RECORD
+        return setupTestMode() == TestMode.LIVE
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -214,8 +215,8 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD) {
-            if (recordLiveMode) {
+        if (testMode != TestMode.PLAYBACK) {
+            if (testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -263,7 +264,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -276,7 +277,7 @@ class APISpec extends Specification {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
@@ -298,6 +299,17 @@ class APISpec extends Specification {
             .fileClient(pathClient)
             .leaseId(leaseId)
             .buildClient()
+    }
+
+    static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileAsyncClient pathAsyncClient) {
+        return createLeaseAsyncClient(pathAsyncClient, null)
+    }
+
+    static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileAsyncClient pathAsyncClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder()
+            .fileAsyncClient(pathAsyncClient)
+            .leaseId(leaseId)
+            .buildAsyncClient()
     }
 
     static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient) {
@@ -332,7 +344,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -346,7 +358,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -360,7 +372,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -368,16 +380,20 @@ class APISpec extends Specification {
     }
 
     DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
+        getFileSystemClientBuilder(endpoint).sasToken(sasToken).buildClient()
+    }
+
+    DataLakeFileSystemClientBuilder getFileSystemClientBuilder(String endpoint) {
         DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
-        builder.sasToken(sasToken).buildClient()
+        return builder
     }
 
     def generateFileSystemName() {
@@ -600,7 +616,7 @@ class APISpec extends Specification {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
@@ -628,6 +644,13 @@ class APISpec extends Specification {
             }
         }
         return false
+    }
+
+    def sleepIfLive(long milliseconds) {
+        if (testMode == TestMode.PLAYBACK) {
+            return
+        }
+        sleep(milliseconds)
     }
 
 }

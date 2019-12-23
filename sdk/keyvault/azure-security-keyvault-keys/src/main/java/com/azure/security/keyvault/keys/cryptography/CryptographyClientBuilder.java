@@ -16,13 +16,14 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -63,7 +64,12 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
 public final class CryptographyClientBuilder {
     final List<HttpPipelinePolicy> policies;
+    final Map<String, String> properties;
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
+    // This is properties file's name.
+    private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private JsonWebKey jsonWebKey;
@@ -81,6 +87,7 @@ public final class CryptographyClientBuilder {
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
+        properties = CoreUtils.getProperties(AZURE_KEY_VAULT_KEYS);
     }
 
     /**
@@ -153,7 +160,10 @@ public final class CryptographyClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
+
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);

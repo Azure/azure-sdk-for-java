@@ -15,7 +15,9 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
@@ -33,9 +35,12 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -189,7 +194,7 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Creates a resource.
+     * Creates a resource. By default this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -203,7 +208,34 @@ public class DataLakePathAsyncClient {
      */
     public Mono<PathInfo> create() {
         try {
-            return createWithResponse(null, null, null, null, null).flatMap(FluxUtil::toMono);
+            return create(false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean}
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param overwrite Whether or not to overwrite, should data exist on the file.
+     *
+     * @return A reactive response containing information about the created resource.
+     */
+    public Mono<PathInfo> create(boolean overwrite) {
+        try {
+            DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+            if (!overwrite) {
+                requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+            return createWithResponse(null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -320,7 +352,8 @@ public class DataLakePathAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return this.blockBlobAsyncClient.setMetadataWithResponse(metadata,
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -367,7 +400,8 @@ public class DataLakePathAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -409,7 +443,43 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions requestConditions) {
         try {
             return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Determines if the path this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.exists}
+     *
+     * @return true if the path exists, false if it doesn't
+     */
+    public Mono<Boolean> exists() {
+        try {
+            return existsWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Determines if the path this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse}
+     *
+     * @return true if the path exists, false if it doesn't
+     */
+    public Mono<Response<Boolean>> existsWithResponse() {
+        try {
+            return blockBlobAsyncClient.existsWithResponse()
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -685,5 +755,45 @@ public class DataLakePathAsyncClient {
 
     BlockBlobAsyncClient getBlockBlobAsyncClient() {
         return this.blockBlobAsyncClient;
+    }
+
+    /**
+     * Generates a user delegation SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how
+     * to get a user delegation key.
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return blockBlobAsyncClient.generateUserDelegationSas(
+            Transforms.toBlobSasValues(dataLakeServiceSasSignatureValues),
+            Transforms.toBlobUserDelegationKey(userDelegationKey));
+    }
+
+    /**
+     * Generates a service SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
+        return blockBlobAsyncClient.generateSas(Transforms.toBlobSasValues(dataLakeServiceSasSignatureValues));
     }
 }

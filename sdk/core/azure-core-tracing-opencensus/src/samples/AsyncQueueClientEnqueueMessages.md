@@ -7,13 +7,14 @@ messages on queue client with tracing instrumentation.
 Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and **[Zipkin Exporter][zipkin_exporter]** as exporter.
 
 ### Adding dependencies to your project:
+
 [//]: # ({x-version-update-start;com.azure:azure-storage-queue;current})
 ```xml
 <!-- Add Storage Queue dependency -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.0.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+  <version>12.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -23,13 +24,13 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opencensus</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
+  <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
 ```xml
 <!-- Add opencensus-impl and opencensus-zipkin-exporter to your project -->
-
 <dependency>
   <groupId>io.opencensus</groupId>
   <artifactId>opencensus-exporter-trace-zipkin</artifactId>
@@ -41,6 +42,8 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
   <version>0.24.0</version>
 </dependency>
 ```
+> All client libraries, by default, use Netty HTTP client. For adding client library dependency without netty, please follow the documentation [here][alternate_http_client].
+
 #### Sample demonstrates tracing when asynchronously queueing and dequeuing of messages using [azure-storage-queue][azure_storage_queue] client library.
 ```java
 import com.azure.core.util.Context;
@@ -118,6 +121,7 @@ public class Sample {
 ```
 
 <!-- Links -->
+[alternate_http_client]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-queue#alternate-http-client
 [azure_storage_queue]: https://mvnrepository.com/artifact/com.azure/azure-storage-queue
 [opencensus_impl]: https://mvnrepository.com/artifact/io.opencensus/opencensus-impl/
 [zipkin_exporter]: https://mvnrepository.com/artifact/io.opencensus/opencensus-exporter-trace-zipkin

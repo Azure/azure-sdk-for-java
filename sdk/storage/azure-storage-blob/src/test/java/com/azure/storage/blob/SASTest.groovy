@@ -23,6 +23,7 @@ import com.azure.storage.common.StorageSharedKeyCredential
 
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.SasIpRange
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -30,6 +31,8 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 class SASTest extends APISpec {
+
+    // TODO (gapra) : Cleanup SAS Tests
 
     @Unroll
     def "Blob range"() {
@@ -647,6 +650,45 @@ class SASTest extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    def "accountSAS network account sas token on endpoint"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+        def containerName = generateContainerName()
+        def blobName = generateBlobName()
+
+        when:
+        def sc = getServiceClientBuilder(null, primaryBlobServiceClient.getAccountUrl() + "?" + sas, null).buildClient()
+        sc.createBlobContainer(containerName)
+
+        def cc = getContainerClientBuilder(primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "?" + sas).buildClient()
+        cc.getProperties()
+
+        def bc = getBlobClient(primaryCredential, primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas)
+
+        def file = getRandomFile(256)
+        bc.uploadFromFile(file.toPath().toString())
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
     /*
      This test will ensure that each field gets placed into the proper location within the string to sign and that null
      values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
@@ -1156,6 +1198,8 @@ class SASTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    // TODO : Figure out how to properly port this test over since I changed it to a common sas params
+    @Ignore
     def "BlobURLParts"() {
         setup:
         def parts = new BlobUrlParts()
