@@ -1,5 +1,9 @@
 # Release History
 
+## Version X.X.X (XXXX-XX-XX)
+- Added support for the 2019-07-07 service version.
+- Added support for file leases. Includes adding the ShareLeaseClientBuilder, ShareLeaseClient, and ShareLeaseAsync client and overloads accepting leaseIds for operations that support leases.
+
 ## Version 12.0.0 (2019-12-04)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0/sdk/storage/azure-storage-file-share/README.md)

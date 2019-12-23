@@ -14,8 +14,14 @@ import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.file.share.models.ListSharesOptions
+import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient
+import com.azure.storage.file.share.specialized.ShareLeaseClient
+import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder
+import reactor.core.publisher.Flux
 import spock.lang.Specification
 
+import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
 
@@ -40,6 +46,18 @@ class APISpec extends Specification {
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static boolean enableDebugging = false
+
+    /*
+    Note that this value is only used to check if we are depending on the received etag. This value will not actually
+    be used.
+     */
+    static final String receivedLeaseID = "received"
+
+    static final String garbageLeaseID = UUID.randomUUID().toString()
+
+    def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
+    def defaultFlux = Flux.just(defaultData)
+    Long defaultDataLength = defaultData.remaining()
 
     /**
      * Setup the File service clients commonly used for the API tests.
@@ -197,5 +215,57 @@ class APISpec extends Specification {
 
     InputStream getInputStream(byte[] data) {
         return new ByteArrayInputStream(data)
+    }
+
+    static ShareLeaseClient createLeaseClient(ShareFileClient fileClient) {
+        return createLeaseClient(fileClient, null)
+    }
+
+    static ShareLeaseClient createLeaseClient(ShareFileClient fileClient, String leaseId) {
+        return new ShareLeaseClientBuilder()
+            .fileClient(fileClient)
+            .leaseId(leaseId)
+            .buildClient()
+    }
+
+    static ShareLeaseAsyncClient createLeaseClient(ShareFileAsyncClient fileClient) {
+        return createLeaseClient(fileClient, null)
+    }
+
+    static ShareLeaseAsyncClient createLeaseClient(ShareFileAsyncClient fileClient, String leaseId) {
+        return new ShareLeaseClientBuilder()
+            .fileAsyncClient(fileClient)
+            .leaseId(leaseId)
+            .buildAsyncClient()
+    }
+
+    /**
+     * This helper method will acquire a lease on a blob to prepare for testing lease Id. We want to test
+     * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
+     * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
+     * with other AC tests.
+     *
+     * @param fc
+     *      The blob on which to acquire a lease.
+     * @param leaseID
+     *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
+     * @return
+     * The actual lease Id of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
+     * returned.
+     */
+    def setupFileLeaseCondition(ShareFileClient fc, String leaseID) {
+        String responseLeaseId = null
+        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
+            responseLeaseId = createLeaseClient(fc).acquireLease()
+        }
+        if (leaseID == receivedLeaseID) {
+            return responseLeaseId
+        } else {
+            return leaseID
+        }
+    }
+
+    String getRandomUUID() {
+        return testResourceName.randomUuid()
     }
 }
