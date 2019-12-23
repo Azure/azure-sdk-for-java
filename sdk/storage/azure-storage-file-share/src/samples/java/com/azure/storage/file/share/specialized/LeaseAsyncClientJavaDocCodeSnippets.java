@@ -35,7 +35,7 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
     public void breakLeaseCodeSnippet() {
         // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLease
         client.breakLease().subscribe(response ->
-            System.out.printf("The broken lease has %d seconds remaining on the lease", response));
+            System.out.println("The lease has been successfully broken"));
         // END: com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLease
     }
 
@@ -74,7 +74,7 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
     public void breakLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse
         client.breakLeaseWithResponse().subscribe(response ->
-            System.out.printf("The broken lease has %d seconds remaining on the lease", response.getValue()));
+            System.out.println("The lease has been successfully broken"));
         // END: com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse
     }
 

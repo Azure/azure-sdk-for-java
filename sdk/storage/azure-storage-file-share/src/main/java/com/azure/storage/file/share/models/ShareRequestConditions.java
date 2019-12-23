@@ -16,19 +16,19 @@ public class ShareRequestConditions {
     private String leaseId;
 
     /**
-     * Gets the lease ID that blobs and containers must match.
+     * Gets the lease ID that files and shares must match.
      *
-     * @return The lease ID that blobs and containers must match.
+     * @return The lease ID that files and shares must match.
      */
     public String getLeaseId() {
         return leaseId;
     }
 
     /**
-     * Optionally limits requests to blobs and containers that match the lease ID.
+     * Optionally limits requests to files and shares that match the lease ID.
      *
-     * @param leaseId Lease ID that blobs and containers must match.
-     * @return The updated BlobRequestConditions object.
+     * @param leaseId Lease ID that files and shares must match.
+     * @return The updated ShareRequestConditions object.
      */
     public ShareRequestConditions setLeaseId(String leaseId) {
         this.leaseId = leaseId;

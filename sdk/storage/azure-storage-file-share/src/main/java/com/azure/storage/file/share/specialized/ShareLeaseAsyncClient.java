@@ -158,13 +158,13 @@ public final class ShareLeaseAsyncClient {
     }
 
     /**
-     * Breaks the previously acquired lease, if it exists.
+     * Breaks the previously acquired lease, if it exists. Leases will break immediately.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLease}
      *
-     * @return A reactive response containing the remaining time in the broken lease in seconds.
+     * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> breakLease() {
@@ -182,7 +182,7 @@ public final class ShareLeaseAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse}
      *
-     * @return A reactive response containing the remaining time in the broken lease in seconds.
+     * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> breakLeaseWithResponse() {
