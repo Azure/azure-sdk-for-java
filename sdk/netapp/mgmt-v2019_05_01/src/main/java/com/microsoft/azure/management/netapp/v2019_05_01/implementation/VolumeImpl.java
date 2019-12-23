@@ -14,6 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.management.netapp.v2019_05_01.VolumePatch;
 import com.microsoft.azure.management.netapp.v2019_05_01.ServiceLevel;
 import com.microsoft.azure.management.netapp.v2019_05_01.VolumePropertiesExportPolicy;
+import java.util.List;
 import java.util.Map;
 import com.microsoft.azure.management.netapp.v2019_05_01.VolumePatchPropertiesExportPolicy;
 import rx.functions.Func1;
@@ -128,8 +129,18 @@ class VolumeImpl extends CreatableUpdatableImpl<Volume, VolumeInner, VolumeImpl>
     }
 
     @Override
+    public Object mountTargets() {
+        return this.inner().mountTargets();
+    }
+
+    @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public List<String> protocolTypes() {
+        return this.inner().protocolTypes();
     }
 
     @Override
@@ -163,7 +174,7 @@ class VolumeImpl extends CreatableUpdatableImpl<Volume, VolumeInner, VolumeImpl>
     }
 
     @Override
-    public Long usageThreshold() {
+    public long usageThreshold() {
         return this.inner().usageThreshold();
     }
 
@@ -188,8 +199,32 @@ class VolumeImpl extends CreatableUpdatableImpl<Volume, VolumeInner, VolumeImpl>
     }
 
     @Override
+    public VolumeImpl withSubnetId(String subnetId) {
+        this.inner().withSubnetId(subnetId);
+        return this;
+    }
+
+    @Override
+    public VolumeImpl withUsageThreshold(long usageThreshold) {
+        this.inner().withUsageThreshold(usageThreshold);
+        return this;
+    }
+
+    @Override
     public VolumeImpl withExportPolicy(VolumePropertiesExportPolicy exportPolicy) {
         this.inner().withExportPolicy(exportPolicy);
+        return this;
+    }
+
+    @Override
+    public VolumeImpl withMountTargets(Object mountTargets) {
+        this.inner().withMountTargets(mountTargets);
+        return this;
+    }
+
+    @Override
+    public VolumeImpl withProtocolTypes(List<String> protocolTypes) {
+        this.inner().withProtocolTypes(protocolTypes);
         return this;
     }
 
@@ -200,14 +235,14 @@ class VolumeImpl extends CreatableUpdatableImpl<Volume, VolumeInner, VolumeImpl>
     }
 
     @Override
-    public VolumeImpl withSubnetId(String subnetId) {
-        this.inner().withSubnetId(subnetId);
+    public VolumeImpl withExportPolicy(VolumePatchPropertiesExportPolicy exportPolicy) {
+        this.updateParameter.withExportPolicy(exportPolicy);
         return this;
     }
 
     @Override
-    public VolumeImpl withExportPolicy(VolumePatchPropertiesExportPolicy exportPolicy) {
-        this.updateParameter.withExportPolicy(exportPolicy);
+    public VolumeImpl withUsageThreshold(Long usageThreshold) {
+        this.updateParameter.withUsageThreshold(usageThreshold);
         return this;
     }
 
@@ -227,16 +262,6 @@ class VolumeImpl extends CreatableUpdatableImpl<Volume, VolumeInner, VolumeImpl>
             this.inner().withTags(tags);
         } else {
             this.updateParameter.withTags(tags);
-        }
-        return this;
-    }
-
-    @Override
-    public VolumeImpl withUsageThreshold(Long usageThreshold) {
-        if (isInCreateMode()) {
-            this.inner().withUsageThreshold(usageThreshold);
-        } else {
-            this.updateParameter.withUsageThreshold(usageThreshold);
         }
         return this;
     }

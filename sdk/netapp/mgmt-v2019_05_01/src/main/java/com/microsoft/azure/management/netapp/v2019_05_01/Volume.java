@@ -17,6 +17,7 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.netapp.v2019_05_01.implementation.NetAppManager;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,9 +55,19 @@ public interface Volume extends HasInner<VolumeInner>, Indexable, Refreshable<Vo
     String location();
 
     /**
+     * @return the mountTargets value.
+     */
+    Object mountTargets();
+
+    /**
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the protocolTypes value.
+     */
+    List<String> protocolTypes();
 
     /**
      * @return the provisioningState value.
@@ -91,12 +102,12 @@ public interface Volume extends HasInner<VolumeInner>, Indexable, Refreshable<Vo
     /**
      * @return the usageThreshold value.
      */
-    Long usageThreshold();
+    long usageThreshold();
 
     /**
      * The entirety of the Volume definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCapacityPool, DefinitionStages.WithCreationToken, DefinitionStages.WithLocation, DefinitionStages.WithServiceLevel, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCapacityPool, DefinitionStages.WithCreationToken, DefinitionStages.WithLocation, DefinitionStages.WithSubnetId, DefinitionStages.WithUsageThreshold, DefinitionStages.WithCreate {
     }
 
     /**
@@ -144,19 +155,31 @@ public interface Volume extends HasInner<VolumeInner>, Indexable, Refreshable<Vo
             * @param location the location parameter value
             * @return the next definition stage
             */
-            WithServiceLevel withLocation(String location);
+            WithSubnetId withLocation(String location);
         }
 
         /**
-         * The stage of the volume definition allowing to specify ServiceLevel.
+         * The stage of the volume definition allowing to specify SubnetId.
          */
-        interface WithServiceLevel {
+        interface WithSubnetId {
            /**
-            * Specifies serviceLevel.
-            * @param serviceLevel The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
+            * Specifies subnetId.
+            * @param subnetId The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
             * @return the next definition stage
             */
-            WithCreate withServiceLevel(ServiceLevel serviceLevel);
+            WithUsageThreshold withSubnetId(String subnetId);
+        }
+
+        /**
+         * The stage of the volume definition allowing to specify UsageThreshold.
+         */
+        interface WithUsageThreshold {
+           /**
+            * Specifies usageThreshold.
+            * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes
+            * @return the next definition stage
+            */
+            WithCreate withUsageThreshold(long usageThreshold);
         }
 
         /**
@@ -172,6 +195,42 @@ public interface Volume extends HasInner<VolumeInner>, Indexable, Refreshable<Vo
         }
 
         /**
+         * The stage of the volume definition allowing to specify MountTargets.
+         */
+        interface WithMountTargets {
+            /**
+             * Specifies mountTargets.
+             * @param mountTargets List of mount targets
+             * @return the next definition stage
+             */
+            WithCreate withMountTargets(Object mountTargets);
+        }
+
+        /**
+         * The stage of the volume definition allowing to specify ProtocolTypes.
+         */
+        interface WithProtocolTypes {
+            /**
+             * Specifies protocolTypes.
+             * @param protocolTypes Set of protocol types
+             * @return the next definition stage
+             */
+            WithCreate withProtocolTypes(List<String> protocolTypes);
+        }
+
+        /**
+         * The stage of the volume definition allowing to specify ServiceLevel.
+         */
+        interface WithServiceLevel {
+            /**
+             * Specifies serviceLevel.
+             * @param serviceLevel The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
+             * @return the next definition stage
+             */
+            WithCreate withServiceLevel(ServiceLevel serviceLevel);
+        }
+
+        /**
          * The stage of the volume definition allowing to specify SnapshotId.
          */
         interface WithSnapshotId {
@@ -181,18 +240,6 @@ public interface Volume extends HasInner<VolumeInner>, Indexable, Refreshable<Vo
              * @return the next definition stage
              */
             WithCreate withSnapshotId(String snapshotId);
-        }
-
-        /**
-         * The stage of the volume definition allowing to specify SubnetId.
-         */
-        interface WithSubnetId {
-            /**
-             * Specifies subnetId.
-             * @param subnetId The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
-             * @return the next definition stage
-             */
-            WithCreate withSubnetId(String subnetId);
         }
 
         /**
@@ -208,23 +255,11 @@ public interface Volume extends HasInner<VolumeInner>, Indexable, Refreshable<Vo
         }
 
         /**
-         * The stage of the volume definition allowing to specify UsageThreshold.
-         */
-        interface WithUsageThreshold {
-            /**
-             * Specifies usageThreshold.
-             * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB
-             * @return the next definition stage
-             */
-            WithCreate withUsageThreshold(Long usageThreshold);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Volume>, DefinitionStages.WithExportPolicy, DefinitionStages.WithSnapshotId, DefinitionStages.WithSubnetId, DefinitionStages.WithTags, DefinitionStages.WithUsageThreshold {
+        interface WithCreate extends Creatable<Volume>, DefinitionStages.WithExportPolicy, DefinitionStages.WithMountTargets, DefinitionStages.WithProtocolTypes, DefinitionStages.WithServiceLevel, DefinitionStages.WithSnapshotId, DefinitionStages.WithTags {
         }
     }
     /**
@@ -279,7 +314,7 @@ public interface Volume extends HasInner<VolumeInner>, Indexable, Refreshable<Vo
         interface WithUsageThreshold {
             /**
              * Specifies usageThreshold.
-             * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB
+             * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes
              * @return the next update stage
              */
             Update withUsageThreshold(Long usageThreshold);
