@@ -5,8 +5,8 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -199,6 +199,12 @@ public final class BlobItemProperties {
      */
     @JsonProperty(value = "CustomerProvidedKeySha256")
     private String customerProvidedKeySha256;
+
+    /*
+     * The name of the encryption scope under which the blob is encrypted.
+     */
+    @JsonProperty(value = "EncryptionScope")
+    private String encryptionScope;
 
     /*
      * The accessTierChangeTime property.
@@ -854,6 +860,28 @@ public final class BlobItemProperties {
      */
     public BlobItemProperties setCustomerProvidedKeySha256(String customerProvidedKeySha256) {
         this.customerProvidedKeySha256 = customerProvidedKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the encryptionScope property: The name of the encryption scope under
+     * which the blob is encrypted.
+     *
+     * @return the encryptionScope value.
+     */
+    public String getEncryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: The name of the encryption scope under
+     * which the blob is encrypted.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
         return this;
     }
 
