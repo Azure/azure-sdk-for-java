@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.MongoDBDatabaseCreateUpdateParameters;
 import java.util.Map;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.MongoDBDatabaseGetPropertiesResource;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.MongoDBDatabaseResource;
 import rx.functions.Func1;
 
@@ -94,21 +95,6 @@ class MongoDBDatabaseGetResultsImpl extends CreatableUpdatableImpl<MongoDBDataba
     }
 
     @Override
-    public String _etag() {
-        return this.inner()._etag();
-    }
-
-    @Override
-    public String _rid() {
-        return this.inner()._rid();
-    }
-
-    @Override
-    public Object _ts() {
-        return this.inner()._ts();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
     }
@@ -119,13 +105,13 @@ class MongoDBDatabaseGetResultsImpl extends CreatableUpdatableImpl<MongoDBDataba
     }
 
     @Override
-    public String mongoDBDatabaseGetResultsId() {
-        return this.inner().mongoDBDatabaseGetResultsId();
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
-    public String name() {
-        return this.inner().name();
+    public MongoDBDatabaseGetPropertiesResource resource() {
+        return this.inner().resource();
     }
 
     @Override
