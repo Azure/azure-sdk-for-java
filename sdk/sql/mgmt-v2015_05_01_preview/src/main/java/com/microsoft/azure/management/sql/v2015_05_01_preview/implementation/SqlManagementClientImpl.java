@@ -341,6 +341,19 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The VirtualClustersInner object to access its operations.
+     */
+    private VirtualClustersInner virtualClusters;
+
+    /**
+     * Gets the VirtualClustersInner object to access its operations.
+     * @return the VirtualClustersInner object.
+     */
+    public VirtualClustersInner virtualClusters() {
+        return this.virtualClusters;
+    }
+
+    /**
      * The VirtualNetworkRulesInner object to access its operations.
      */
     private VirtualNetworkRulesInner virtualNetworkRules;
@@ -404,6 +417,7 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.syncGroups = new SyncGroupsInner(restClient().retrofit(), this);
         this.syncMembers = new SyncMembersInner(restClient().retrofit(), this);
         this.subscriptionUsages = new SubscriptionUsagesInner(restClient().retrofit(), this);
+        this.virtualClusters = new VirtualClustersInner(restClient().retrofit(), this);
         this.virtualNetworkRules = new VirtualNetworkRulesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
