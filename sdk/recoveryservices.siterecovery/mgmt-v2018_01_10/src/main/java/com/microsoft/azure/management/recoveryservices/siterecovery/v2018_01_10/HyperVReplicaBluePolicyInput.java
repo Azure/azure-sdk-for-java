@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * HyperV Replica Blue policy input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = HyperVReplicaBluePolicyInput.class)
 @JsonTypeName("HyperVReplica2012R2")
 public class HyperVReplicaBluePolicyInput extends PolicyProviderSpecificInput {
     /**

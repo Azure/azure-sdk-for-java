@@ -197,10 +197,14 @@ class ReplicationProtectedItemsImpl extends WrapperImpl<ReplicationProtectedItem
     public Observable<ReplicationProtectedItem> getAsync(String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
         ReplicationProtectedItemsInner client = this.inner();
         return client.getAsync(fabricName, protectionContainerName, replicatedProtectedItemName)
-        .map(new Func1<ReplicationProtectedItemInner, ReplicationProtectedItem>() {
+        .flatMap(new Func1<ReplicationProtectedItemInner, Observable<ReplicationProtectedItem>>() {
             @Override
-            public ReplicationProtectedItem call(ReplicationProtectedItemInner inner) {
-                return wrapModel(inner);
+            public Observable<ReplicationProtectedItem> call(ReplicationProtectedItemInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ReplicationProtectedItem)wrapModel(inner));
+                }
             }
        });
     }
