@@ -11,6 +11,7 @@ package com.microsoft.azure.management.sql.v2017_10_01_preview.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceEncryptionProtectors;
+import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.Page;
@@ -26,6 +27,12 @@ class ManagedInstanceEncryptionProtectorsImpl extends WrapperImpl<ManagedInstanc
 
     public SqlManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public Completable revalidateAsync(String resourceGroupName, String managedInstanceName) {
+        ManagedInstanceEncryptionProtectorsInner client = this.inner();
+        return client.revalidateAsync(resourceGroupName, managedInstanceName).toCompletable();
     }
 
     @Override
