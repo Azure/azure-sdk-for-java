@@ -26,11 +26,7 @@ public final class Field {
     /*
      * The data type of the field. Possible values include: 'Edm.String',
      * 'Edm.Int32', 'Edm.Int64', 'Edm.Double', 'Edm.Boolean',
-     * 'Edm.DateTimeOffset', 'Edm.GeographyPoint', 'Edm.ComplexType',
-     * 'Collection(Edm.String)', 'Collection(Edm.Int32)',
-     * 'Collection(Edm.Int64)', 'Collection(Edm.Double)',
-     * 'Collection(Edm.Boolean)', 'Collection(Edm.DateTimeOffset)',
-     * 'Collection(Edm.GeographyPoint)', 'Collection(Edm.ComplexType)'
+     * 'Edm.DateTimeOffset', 'Edm.GeographyPoint', 'Edm.ComplexType'
      */
     @JsonProperty(value = "type", required = true)
     private DataType type;
@@ -191,10 +187,7 @@ public final class Field {
      * Get the type property: The data type of the field. Possible values
      * include: 'Edm.String', 'Edm.Int32', 'Edm.Int64', 'Edm.Double',
      * 'Edm.Boolean', 'Edm.DateTimeOffset', 'Edm.GeographyPoint',
-     * 'Edm.ComplexType', 'Collection(Edm.String)', 'Collection(Edm.Int32)',
-     * 'Collection(Edm.Int64)', 'Collection(Edm.Double)',
-     * 'Collection(Edm.Boolean)', 'Collection(Edm.DateTimeOffset)',
-     * 'Collection(Edm.GeographyPoint)', 'Collection(Edm.ComplexType)'.
+     * 'Edm.ComplexType'.
      *
      * @return the type value.
      */
@@ -206,10 +199,7 @@ public final class Field {
      * Set the type property: The data type of the field. Possible values
      * include: 'Edm.String', 'Edm.Int32', 'Edm.Int64', 'Edm.Double',
      * 'Edm.Boolean', 'Edm.DateTimeOffset', 'Edm.GeographyPoint',
-     * 'Edm.ComplexType', 'Collection(Edm.String)', 'Collection(Edm.Int32)',
-     * 'Collection(Edm.Int64)', 'Collection(Edm.Double)',
-     * 'Collection(Edm.Boolean)', 'Collection(Edm.DateTimeOffset)',
-     * 'Collection(Edm.GeographyPoint)', 'Collection(Edm.ComplexType)'.
+     * 'Edm.ComplexType'.
      *
      * @param type the type value to set.
      * @return the Field object itself.
@@ -491,9 +481,6 @@ public final class Field {
      * @return the Field object itself.
      */
     public Field setSearchAnalyzer(String searchAnalyzer) {
-        if (searchAnalyzer != null && (searchAnalyzer.endsWith(".lucene") || searchAnalyzer.endsWith(".microsoft"))) {
-            throw new IllegalArgumentException("Only non-language analyzer can be used as search analyzer.");
-        } 
         this.searchAnalyzer = searchAnalyzer;
         return this;
     }
@@ -524,9 +511,6 @@ public final class Field {
      * @return the Field object itself.
      */
     public Field setIndexAnalyzer(String indexAnalyzer) {
-        if (indexAnalyzer != null && (indexAnalyzer.endsWith(".lucene") || indexAnalyzer.endsWith(".microsoft"))) {
-            throw new IllegalArgumentException("Only non-language analyzer can be used as index analyzer.");
-        } 
         this.indexAnalyzer = indexAnalyzer;
         return this;
     }

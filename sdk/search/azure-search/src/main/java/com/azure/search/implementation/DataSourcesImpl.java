@@ -25,7 +25,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataSource;
-import com.azure.search.models.DataSourceListResult;
+import com.azure.search.models.ListDataSourcesResult;
 import com.azure.search.models.RequestOptions;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -77,7 +77,7 @@ public final class DataSourcesImpl {
 
         @Get("datasources")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<DataSourceListResult>> list(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<ListDataSourcesResult>> list(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Post("datasources")
         @ExpectedResponses({201})
@@ -214,7 +214,7 @@ public final class DataSourcesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DataSourceListResult>> listWithRestResponseAsync(Context context) {
+    public Mono<SimpleResponse<ListDataSourcesResult>> listWithRestResponseAsync(Context context) {
         final String select = null;
         final UUID clientRequestId = null;
         return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
@@ -230,7 +230,7 @@ public final class DataSourcesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DataSourceListResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<ListDataSourcesResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();

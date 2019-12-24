@@ -118,10 +118,10 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Test
     public void getIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
-        client.createIndex(index).block();
 
         StepVerifier
-            .create(client.getIndex(index.getName()))
+            .create(client.createIndex(index)
+                .then(client.getIndex(index.getName())))
             .assertNext(res -> assertIndexesEqual(index, res))
             .verifyComplete();
     }
@@ -129,10 +129,10 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Test
     public void getIndexReturnsCorrectDefinitionWithResponse() {
         Index index = createTestIndex();
-        client.createIndex(index).block();
 
         StepVerifier
-            .create(client.getIndexWithResponse(index.getName(), generateRequestOptions()))
+            .create(client.createIndex(index)
+                .then(client.getIndexWithResponse(index.getName(), generateRequestOptions())))
             .assertNext(res -> assertIndexesEqual(index, res.getValue()))
             .verifyComplete();
     }
@@ -149,10 +149,10 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Test
     public void existsReturnsTrueForExistingIndex() {
         Index index = createTestIndex();
-        client.createIndex(index).block();
 
         StepVerifier
-            .create(client.indexExists(index.getName()))
+            .create(client.createIndex(index)
+                .then(client.indexExists(index.getName())))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
     }
@@ -160,10 +160,10 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Test
     public void existsReturnsTrueForExistingIndexWithResponse() {
         Index index = createTestIndex();
-        client.createIndex(index).block();
 
         StepVerifier
-            .create(client.indexExistsWithResponse(index.getName(), generateRequestOptions()))
+            .create(client.createIndex(index)
+                .then(client.indexExistsWithResponse(index.getName(), generateRequestOptions())))
             .assertNext(res -> Assert.assertTrue(res.getValue()))
             .verifyComplete();
     }
@@ -242,11 +242,12 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Test
     public void canCreateAndDeleteIndex() {
         Index index = createTestIndex();
-        client.createIndex(index).block();
-        client.deleteIndex(index.getName()).block();
 
         StepVerifier
-            .create(client.indexExists(index.getName()))
+            .create(
+                client.createIndex(index)
+                .then(client.deleteIndex(index.getName()))
+                .then(client.indexExists(index.getName())))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -255,9 +256,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     public void canCreateAndListIndexes() {
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
-
-        client.createIndex(index1).block();
-        client.createIndex(index2).block();
 
         PagedFlux<Index> listResponse = client.listIndexes();
 
@@ -276,44 +274,27 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
 
-        client.createIndex(index1).block();
-        client.createIndex(index2).block();
-
-        PagedFlux<Index> selectedFieldListResponse = client.listIndexes("name", generateRequestOptions());
 
         StepVerifier
-            .create(selectedFieldListResponse.collectList())
-            .assertNext(result ->
-                result.forEach(res -> {
-                    Assert.assertNotNull(res.getName());
-                    Assert.assertNull(res.getFields());
-                    Assert.assertNull(res.getDefaultScoringProfile());
-                    Assert.assertNull(res.getCorsOptions());
-                    Assert.assertNull(res.getScoringProfiles());
-                    Assert.assertNull(res.getSuggesters());
-                    Assert.assertNull(res.getAnalyzers());
-                    Assert.assertNull(res.getTokenizers());
-                    Assert.assertNull(res.getTokenFilters());
-                    Assert.assertNull(res.getCharFilters());
-                })
-            )
-            .verifyComplete();
-
-        StepVerifier
-            .create(selectedFieldListResponse.collectList())
-            .assertNext(result -> {
-                Assert.assertEquals(2, result.size());
-                Assert.assertEquals(index1.getName(), result.get(0).getName());
-                Assert.assertEquals(index2.getName(), result.get(1).getName());
+            .create(client.createIndex(index1)
+                .then(client.createIndex(index2))
+                    .thenMany(client.listIndexes("name", generateRequestOptions())))
+            .assertNext(resultIndex1 -> {
+                Assert.assertEquals(index1.getName(), resultIndex1.getName());
+                indexeWithSelectedFieldAssertions(resultIndex1);
+            })
+            .assertNext(resultIndex2 -> {
+                Assert.assertEquals(index2.getName(), resultIndex2.getName());
+                indexeWithSelectedFieldAssertions(resultIndex2);
             })
             .verifyComplete();
+
     }
 
     @Test
     public void canAddSynonymFieldProperty() {
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap().setName(synonymMapName).setSynonyms("hotel,motel");
-        client.createSynonymMap(synonymMap).block();
 
         Index index = new Index()
             .setName(HOTEL_INDEX_NAME)
@@ -329,7 +310,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             ));
 
         StepVerifier
-            .create(client.createIndex(index))
+            .create(client.createSynonymMap(synonymMap)
+                .then(client.createIndex(index)))
             .assertNext(createdIndex -> {
                 List<String> actualSynonym = index.getFields().get(1).getSynonymMaps();
                 List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMaps();
@@ -344,8 +326,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         SynonymMap synonymMap = new SynonymMap()
             .setName(synonymMapName)
             .setSynonyms("hotel,motel");
-
-        client.createSynonymMap(synonymMap).block();
 
         // Create an index
         Index index = createTestIndex();
@@ -456,19 +436,19 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Test
     public void createOrUpdateIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields() {
         Index index = createTestIndex();
-        client.createIndex(index).block();
-
-        Index existingIndex = client.getIndex(index.getName()).block();
-        assert existingIndex != null;
-
         String existingFieldName = "Category";
-        existingIndex.setSuggesters(Collections.singletonList(new Suggester()
-            .setName("Suggestion")
-            .setSourceFields(Collections.singletonList(existingFieldName))
-        ));
 
-        assertHttpResponseExceptionAsync(
-            client.createOrUpdateIndex(existingIndex),
+        Mono<Index> updatedIndex = client.createIndex(index)
+            .then(client.getIndex(index.getName()))
+            .flatMap(existingIndex -> {
+                existingIndex.setSuggesters(Collections.singletonList(new Suggester()
+                    .setName("Suggestion")
+                    .setSourceFields(Collections.singletonList(existingFieldName))
+                ));
+                return client.createOrUpdateIndex(existingIndex);
+            });
+
+        assertHttpResponseExceptionAsync(updatedIndex,
             HttpResponseStatus.BAD_REQUEST,
             String.format("Fields that were already present in an index (%s) cannot be referenced by a new suggester."
                 + " Only new fields added in the same index update operation are allowed.", existingFieldName));
@@ -574,11 +554,10 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Test
     public void canCreateAndGetIndexStats() {
         Index testIndex = createTestIndex();
-        Index index = client.createOrUpdateIndex(testIndex).block();
-        assert index != null;
 
         StepVerifier
-            .create(client.getIndexStatistics(index.getName()))
+            .create(client.createOrUpdateIndex(testIndex)
+                .flatMap(index -> client.getIndexStatistics(index.getName())))
             .assertNext(stats -> {
                 Assert.assertEquals(0, stats.getDocumentCount());
                 Assert.assertEquals(0, stats.getStorageSize());
@@ -589,11 +568,10 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Test
     public void canCreateAndGetIndexStatsWithResponse() {
         Index testIndex = createTestIndex();
-        Index index = client.createOrUpdateIndex(testIndex).block();
-        assert index != null;
 
         StepVerifier
-            .create(client.getIndexStatisticsWithResponse(index.getName(), generateRequestOptions()))
+            .create(client.createOrUpdateIndex(testIndex)
+                .flatMap(index -> client.getIndexStatisticsWithResponse(index.getName(), generateRequestOptions())))
             .assertNext(stats -> {
                 Assert.assertEquals(0, stats.getValue().getDocumentCount());
                 Assert.assertEquals(0, stats.getValue().getStorageSize());

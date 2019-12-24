@@ -36,11 +36,6 @@ vararg-properties: >-
     CorsOptions.allowedOrigins
 
 directive:
-    - rename-custom-property:
-          path: "$.parameters.ClientRequestIdParameter['x-ms-parameter-grouping']"
-          from: "search-request-options"
-          to: "request-options"
-
     # Add static Collection<DataType> method to DataType
     - from: DataType.java
       where: $

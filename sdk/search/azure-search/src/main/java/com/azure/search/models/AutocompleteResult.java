@@ -16,10 +16,29 @@ import java.util.List;
 @Fluent
 public final class AutocompleteResult {
     /*
+     * A value indicating the percentage of the index that was considered by
+     * the autocomplete request, or null if minimumCoverage was not specified
+     * in the request.
+     */
+    @JsonProperty(value = "@search.coverage", access = JsonProperty.Access.WRITE_ONLY)
+    private Double coverage;
+
+    /*
      * The list of returned Autocompleted items.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AutocompleteItem> results;
+
+    /**
+     * Get the coverage property: A value indicating the percentage of the
+     * index that was considered by the autocomplete request, or null if
+     * minimumCoverage was not specified in the request.
+     *
+     * @return the coverage value.
+     */
+    public Double getCoverage() {
+        return this.coverage;
+    }
 
     /**
      * Get the results property: The list of returned Autocompleted items.

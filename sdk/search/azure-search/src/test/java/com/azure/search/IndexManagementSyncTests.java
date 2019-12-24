@@ -11,8 +11,8 @@ import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
+import com.azure.search.models.GetIndexStatisticsResult;
 import com.azure.search.models.Index;
-import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.RequestOptions;
@@ -524,7 +524,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     public void canCreateAndGetIndexStats() {
         Index index = createTestIndex();
         client.createOrUpdateIndex(index);
-        IndexGetStatisticsResult indexStatistics = client.getIndexStatistics(index.getName());
+        GetIndexStatisticsResult indexStatistics = client.getIndexStatistics(index.getName());
         Assert.assertEquals(0, indexStatistics.getDocumentCount());
         Assert.assertEquals(0, indexStatistics.getStorageSize());
     }
@@ -534,7 +534,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createOrUpdateIndex(index);
 
-        Response<IndexGetStatisticsResult> indexStatisticsResponse = client.getIndexStatisticsWithResponse(index.getName(),
+        Response<GetIndexStatisticsResult> indexStatisticsResponse = client.getIndexStatisticsWithResponse(index.getName(),
             generateRequestOptions(), Context.NONE);
         Assert.assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
         Assert.assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());

@@ -368,7 +368,7 @@ public class SearchAsyncTests extends SearchTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
-        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION);
 
         PagedFluxBase<SearchResult, SearchPagedResponse> results = client.search("*");
         Assert.assertNotNull(results);
@@ -398,7 +398,7 @@ public class SearchAsyncTests extends SearchTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
-        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION);
 
         PagedFluxBase<SearchResult, SearchPagedResponse> results = client.search("*", new SearchOptions(), generateRequestOptions());
         Assert.assertNotNull(results);

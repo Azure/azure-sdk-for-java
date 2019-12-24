@@ -3,16 +3,13 @@
 
 package com.azure.search;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedIterableBase;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
-import com.azure.search.models.AutocompleteResult;
-import com.azure.search.models.IndexGetStatisticsResult;
+import com.azure.search.models.GetIndexStatisticsResult;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
@@ -45,7 +42,7 @@ public class RunningSearchSolutionExample {
         SearchIndexClient indexClient = createIndexClient();
 
         // get index statistics
-        IndexGetStatisticsResult indexStatistics = serviceClient.getIndexStatistics(INDEX_NAME);
+        GetIndexStatisticsResult indexStatistics = serviceClient.getIndexStatistics(INDEX_NAME);
         System.out.printf("Index %s: Document Count = %d, Storage Size = %d%n", INDEX_NAME, indexStatistics.getDocumentCount(), indexStatistics.getStorageSize());
 
         // run indexer

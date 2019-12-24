@@ -11,8 +11,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteOptions;
-import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
@@ -63,7 +63,7 @@ public class SearchIndexClient {
      * @param documents collection of documents to upload to the target Index.
      * @return document index result.
      */
-    public DocumentIndexResult uploadDocuments(Iterable<?> documents) {
+    public IndexDocumentsResult uploadDocuments(Iterable<?> documents) {
         return this.uploadDocumentsWithResponse(documents, Context.NONE).getValue();
     }
 
@@ -74,7 +74,7 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the document index result.
      */
-    public Response<DocumentIndexResult> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
+    public Response<IndexDocumentsResult> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.uploadDocumentsWithResponse(documents, context).block();
     }
 
@@ -84,7 +84,7 @@ public class SearchIndexClient {
      * @param documents collection of documents to be merged
      * @return document index result
      */
-    public DocumentIndexResult mergeDocuments(Iterable<?> documents) {
+    public IndexDocumentsResult mergeDocuments(Iterable<?> documents) {
         return this.mergeDocumentsWithResponse(documents, Context.NONE).getValue();
     }
 
@@ -95,7 +95,7 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the document index result.
      */
-    public Response<DocumentIndexResult> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
+    public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.mergeDocumentsWithResponse(documents, context).block();
     }
 
@@ -106,7 +106,7 @@ public class SearchIndexClient {
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
      */
-    public DocumentIndexResult mergeOrUploadDocuments(Iterable<?> documents) {
+    public IndexDocumentsResult mergeOrUploadDocuments(Iterable<?> documents) {
         return this.mergeOrUploadDocumentsWithResponse(documents, Context.NONE).getValue();
     }
 
@@ -118,7 +118,7 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document index result
      */
-    public Response<DocumentIndexResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
+    public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.mergeOrUploadDocumentsWithResponse(documents, context).block();
     }
 
@@ -128,7 +128,7 @@ public class SearchIndexClient {
      * @param documents collection of documents to delete from the target Index.
      * @return document index result.
      */
-    public DocumentIndexResult deleteDocuments(Iterable<?> documents) {
+    public IndexDocumentsResult deleteDocuments(Iterable<?> documents) {
         return this.deleteDocumentsWithResponse(documents, Context.NONE).getValue();
     }
 
@@ -139,7 +139,7 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document index result.
      */
-    public Response<DocumentIndexResult> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
+    public Response<IndexDocumentsResult> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.deleteDocumentsWithResponse(documents, context).block();
     }
 
@@ -304,7 +304,7 @@ public class SearchIndexClient {
      * @param batch batch of documents to send to the index with the requested action
      * @return document index result
      */
-    public DocumentIndexResult index(IndexBatch<?> batch) {
+    public IndexDocumentsResult index(IndexBatch<?> batch) {
         return this.indexWithResponse(batch, Context.NONE).getValue();
     }
 
@@ -315,8 +315,8 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing a document index result
      */
-    public Response<DocumentIndexResult> indexWithResponse(IndexBatch<?> batch, Context context) {
-        Mono<Response<DocumentIndexResult>> results = asyncClient.indexWithResponse(batch, context);
+    public Response<IndexDocumentsResult> indexWithResponse(IndexBatch<?> batch, Context context) {
+        Mono<Response<IndexDocumentsResult>> results = asyncClient.indexWithResponse(batch, context);
         return results.block();
     }
 

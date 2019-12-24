@@ -4,9 +4,9 @@
 package com.azure.search;
 
 import com.azure.core.util.Configuration;
-import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.Hotel;
+import com.azure.search.models.IndexDocumentsResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class IndexContentManagementExample {
         hotels.add(new Hotel().setHotelId("300"));
 
         // Perform index operations on a list of documents
-        DocumentIndexResult result = client.mergeOrUploadDocuments(hotels);
+        IndexDocumentsResult result = client.mergeOrUploadDocuments(hotels);
         System.out.printf("Indexed %s documents%n", result.getResults().size());
     }
 
@@ -69,7 +69,7 @@ public class IndexContentManagementExample {
             .addDeleteAction(new Hotel().setHotelId("200"));
 
         // Send a single batch that performs many different actions
-        DocumentIndexResult result = client.index(batch);
+        IndexDocumentsResult result = client.index(batch);
         System.out.printf("Indexed %s documents%n", result.getResults().size());
     }
 }

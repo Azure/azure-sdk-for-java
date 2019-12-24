@@ -8,11 +8,8 @@ import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DefaultCognitiveServicesAccount;
 import com.azure.search.models.EntityCategory;
-import com.azure.search.models.InputFieldMappingEntry;
-import com.azure.search.models.KeyPhraseExtractionSkill;
 import com.azure.search.models.KeyPhraseExtractionSkillLanguage;
 import com.azure.search.models.OcrSkillLanguage;
-import com.azure.search.models.OutputFieldMappingEntry;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SentimentSkillLanguage;
 import com.azure.search.models.Skillset;
@@ -26,7 +23,6 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -421,23 +417,11 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset createdSkillset = client.createSkillset(skillset);
 
         // update skills
-        createdSkillset.setSkills(Collections.singletonList(
-            new KeyPhraseExtractionSkill()
-                .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
-                .setName("mykeyphrases")
-                .setDescription("Tested Key Phrase skill")
-                .setContext(CONTEXT_VALUE)
-                .setInputs(Collections.singletonList(
-                    new InputFieldMappingEntry()
-                        .setName("text")
-                        .setSource("/document/mytext")))
-                .setOutputs(Collections.singletonList(
-                    new OutputFieldMappingEntry()
-                        .setName("keyPhrases")
-                        .setTargetName("myKeyPhrases")))));
+        createdSkillset.setSkills(getCreateOrUpdateSkills());
 
         assertSkillsetsEqual(createdSkillset, client.createOrUpdateSkillset(createdSkillset));
     }
+
 
     @Test
     public void createOrUpdateUpdatesCognitiveService() {

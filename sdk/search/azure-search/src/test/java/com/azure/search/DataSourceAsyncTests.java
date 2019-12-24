@@ -73,15 +73,10 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client.createOrUpdateDataSource(dataSource1).block();
         client.createOrUpdateDataSource(dataSource2).block();
 
-        PagedFlux<DataSource> results = client.listDataSources();
-
         StepVerifier
-            .create(results.collectList())
-            .assertNext(result -> {
-                Assert.assertEquals(2, result.size());
-                Assert.assertEquals(dataSource1.getName(), result.get(0).getName());
-                Assert.assertEquals(dataSource2.getName(), result.get(1).getName());
-            })
+            .create(client.listDataSources())
+            .assertNext(ds1 -> Assert.assertEquals(dataSource1.getName(), ds1.getName()))
+            .assertNext(ds2 -> Assert.assertEquals(dataSource2.getName(), ds2.getName()))
             .verifyComplete();
     }
 
@@ -93,15 +88,10 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client.createOrUpdateDataSourceWithResponse(dataSource1, new AccessCondition(), new RequestOptions()).block();
         client.createOrUpdateDataSourceWithResponse(dataSource2, new AccessCondition(), new RequestOptions()).block();
 
-        PagedFlux<DataSource> results = client.listDataSources("name", new RequestOptions());
-
         StepVerifier
-            .create(results.collectList())
-            .assertNext(result -> {
-                Assert.assertEquals(2, result.size());
-                Assert.assertEquals(dataSource1.getName(), result.get(0).getName());
-                Assert.assertEquals(dataSource2.getName(), result.get(1).getName());
-            })
+            .create(client.listDataSources("name", new RequestOptions()))
+            .assertNext(ds1 -> Assert.assertEquals(dataSource1.getName(), ds1.getName()))
+            .assertNext(ds2 -> Assert.assertEquals(dataSource2.getName(), ds2.getName()))
             .verifyComplete();
     }
 
@@ -110,22 +100,24 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         DataSource dataSource1 = createTestBlobDataSource(null);
 
         // Try to delete before the data source exists, expect a NOT FOUND return status code
-        Response<Void> res = client.deleteDataSourceWithResponse(dataSource1.getName(), new AccessCondition(), generateRequestOptions()).block();
-        assert res != null;
-        Assert.assertEquals(HttpStatus.SC_NOT_FOUND, res.getStatusCode());
+        StepVerifier
+            .create(client.deleteDataSourceWithResponse(dataSource1.getName(), new AccessCondition(), generateRequestOptions()))
+            .assertNext(res -> Assert.assertEquals(HttpStatus.SC_NOT_FOUND, res.getStatusCode()))
+            .verifyComplete();
 
-        // Create the data source
         client.createOrUpdateDataSource(dataSource1).block();
 
         // Delete twice, expect the first to succeed (with NO CONTENT status code) and the second to return NOT FOUND
-        res = client.deleteDataSourceWithResponse(dataSource1.getName(), new AccessCondition(), generateRequestOptions()).block();
-        assert res != null;
-        Assert.assertEquals(HttpStatus.SC_NO_CONTENT, res.getStatusCode());
+        StepVerifier
+            .create(client.deleteDataSourceWithResponse(dataSource1.getName(), new AccessCondition(), generateRequestOptions()))
+            .assertNext(res -> Assert.assertEquals(HttpStatus.SC_NO_CONTENT, res.getStatusCode()))
+            .verifyComplete();
 
         // Again, expect to fail
-        res = client.deleteDataSourceWithResponse(dataSource1.getName(), new AccessCondition(), generateRequestOptions()).block();
-        assert res != null;
-        Assert.assertEquals(HttpStatus.SC_NOT_FOUND, res.getStatusCode());
+        StepVerifier
+            .create(client.deleteDataSourceWithResponse(dataSource1.getName(), new AccessCondition(), generateRequestOptions()))
+            .assertNext(res -> Assert.assertEquals(HttpStatus.SC_NOT_FOUND, res.getStatusCode()))
+            .verifyComplete();
     }
 
     @Test
@@ -172,10 +164,10 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     @Test
     public void canCreateAndDeleteDatasource() {
         DataSource dataSource = createTestBlobDataSource(null);
-        client.deleteDataSource(dataSource.getName()).block();
 
         StepVerifier
-            .create(client.dataSourceExists(dataSource.getName()))
+            .create(client.deleteDataSource(dataSource.getName())
+                .then(client.dataSourceExists(dataSource.getName())))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -253,10 +245,10 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     @Test
     public void existsReturnsTrueForExistingDatasource() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
-        client.createOrUpdateDataSource(dataSource).block();
 
         StepVerifier
-            .create(client.dataSourceExists(dataSource.getName()))
+            .create(client.createOrUpdateDataSource(dataSource)
+                .then(client.dataSourceExists(dataSource.getName())))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
     }
@@ -264,10 +256,10 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     @Test
     public void existsReturnsTrueForExistingDatasourceWithResponse() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
-        client.createOrUpdateDataSource(dataSource).block();
 
         StepVerifier
-            .create(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions()))
+            .create(client.createOrUpdateDataSource(dataSource)
+                .then(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions())))
             .assertNext(res -> Assert.assertTrue(res.getValue()))
             .verifyComplete();
     }

@@ -321,8 +321,8 @@ public class EventProcessorClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         return new EventProcessorClient(eventHubClientBuilder, this.consumerGroup,
-            getPartitionProcessorSupplier(), EventPosition.earliest(), checkpointStore,
-            trackLastEnqueuedEventProperties, tracerProvider);
+            getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties, tracerProvider,
+            processError);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

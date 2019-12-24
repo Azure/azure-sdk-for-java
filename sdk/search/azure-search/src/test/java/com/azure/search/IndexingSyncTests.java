@@ -5,11 +5,11 @@ package com.azure.search;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.DataType;
-import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.Field;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.Index;
 import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.IndexingResult;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
@@ -109,7 +109,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         IndexBatch<Hotel> deleteBatch = new IndexBatch<Hotel>()
             .addDeleteAction("HotelId", "1", "2");
 
-        DocumentIndexResult documentIndexResult = client.index(deleteBatch);
+        IndexDocumentsResult documentIndexResult = client.index(deleteBatch);
         waitForIndexing();
 
         Assert.assertEquals(2, documentIndexResult.getResults().size());
@@ -135,7 +135,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(1, client.getDocumentCount().intValue());
 
         hotel.category("ignored");
-        DocumentIndexResult documentIndexResult = client.deleteDocuments(hotels);
+        IndexDocumentsResult documentIndexResult = client.deleteDocuments(hotels);
         waitForIndexing();
 
         Assert.assertEquals(1, documentIndexResult.getResults().size());
@@ -162,7 +162,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(1, client.getDocumentCount().intValue());
 
         document.put("Category", "ignored");
-        DocumentIndexResult documentIndexResult = client.deleteDocuments(docs);
+        IndexDocumentsResult documentIndexResult = client.deleteDocuments(docs);
         waitForIndexing();
 
         Assert.assertEquals(1, documentIndexResult.getResults().size());
@@ -796,21 +796,21 @@ public class IndexingSyncTests extends IndexingTestBase {
             .addUploadAction(hotelsToUpload)
             .addMergeOrUploadAction(hotelsToMergeOrUpload);
 
-        Response<DocumentIndexResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload, Context.NONE);
+        Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload, Context.NONE);
         waitForIndexing();
 
         Assert.assertEquals(200, indexResponse.getStatusCode());
-        DocumentIndexResult result = indexResponse.getValue();
+        IndexDocumentsResult result = indexResponse.getValue();
         Assert.assertEquals(2, result.getResults().size());
 
-        Response<DocumentIndexResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge, Context.NONE);
+        Response<IndexDocumentsResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge, Context.NONE);
         waitForIndexing();
 
         Assert.assertEquals(200, updateResponse.getStatusCode());
         result = updateResponse.getValue();
         Assert.assertEquals(1, result.getResults().size());
 
-        Response<DocumentIndexResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(
+        Response<IndexDocumentsResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(
             hotelsToMergeOrUpload, Context.NONE);
         waitForIndexing();
 
@@ -818,14 +818,14 @@ public class IndexingSyncTests extends IndexingTestBase {
         result = mergeOrUploadResponse.getValue();
         Assert.assertEquals(2, result.getResults().size());
 
-        Response<DocumentIndexResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete, Context.NONE);
+        Response<IndexDocumentsResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete, Context.NONE);
         waitForIndexing();
 
         Assert.assertEquals(200, deleteResponse.getStatusCode());
         result = deleteResponse.getValue();
         Assert.assertEquals(1, result.getResults().size());
 
-        Response<DocumentIndexResult> batchResponse = client.indexWithResponse(batch, Context.NONE);
+        Response<IndexDocumentsResult> batchResponse = client.indexWithResponse(batch, Context.NONE);
         waitForIndexing();
 
         Assert.assertEquals(200, batchResponse.getStatusCode());

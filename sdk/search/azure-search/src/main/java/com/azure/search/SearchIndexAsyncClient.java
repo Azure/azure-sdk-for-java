@@ -20,10 +20,10 @@ import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
-import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexAction;
 import com.azure.search.implementation.models.IndexActionType;
 import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchRequest;
@@ -139,7 +139,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to upload to the target Index.
      * @return document index result.
      */
-    public Mono<DocumentIndexResult> uploadDocuments(Iterable<?> documents) {
+    public Mono<IndexDocumentsResult> uploadDocuments(Iterable<?> documents) {
         return this.uploadDocumentsWithResponse(documents)
             .map(Response::getValue);
     }
@@ -150,12 +150,12 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to upload to the target Index.
      * @return response containing the document index result.
      */
-    public Mono<Response<DocumentIndexResult>> uploadDocumentsWithResponse(Iterable<?> documents) {
+    public Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents) {
         return withContext(context -> uploadDocumentsWithResponse(documents, context));
     }
 
     @SuppressWarnings("unchecked")
-    Mono<Response<DocumentIndexResult>> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
+    Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.UPLOAD);
         return this.indexWithResponse(batch, context);
     }
@@ -166,7 +166,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged
      * @return document index result
      */
-    public Mono<DocumentIndexResult> mergeDocuments(Iterable<?> documents) {
+    public Mono<IndexDocumentsResult> mergeDocuments(Iterable<?> documents) {
         return this.mergeDocumentsWithResponse(documents)
             .map(Response::getValue);
     }
@@ -177,12 +177,12 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged
      * @return response containing the document index result.
      */
-    public Mono<Response<DocumentIndexResult>> mergeDocumentsWithResponse(Iterable<?> documents) {
+    public Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents) {
         return withContext(context -> mergeDocumentsWithResponse(documents, context));
     }
 
     @SuppressWarnings("unchecked")
-    Mono<Response<DocumentIndexResult>> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
+    Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
         IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE);
         return this.indexWithResponse(batch, context);
     }
@@ -194,7 +194,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
      */
-    public Mono<DocumentIndexResult> mergeOrUploadDocuments(Iterable<?> documents) {
+    public Mono<IndexDocumentsResult> mergeOrUploadDocuments(Iterable<?> documents) {
         return this.mergeOrUploadDocumentsWithResponse(documents)
             .map(Response::getValue);
     }
@@ -206,12 +206,12 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return response containing the document index result.
      */
-    public Mono<Response<DocumentIndexResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
+    public Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
         return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, context));
     }
 
     @SuppressWarnings("unchecked")
-    Mono<Response<DocumentIndexResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
+    Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD);
         return this.indexWithResponse(batch, context);
     }
@@ -222,7 +222,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to delete from the target Index.
      * @return document index result.
      */
-    public Mono<DocumentIndexResult> deleteDocuments(Iterable<?> documents) {
+    public Mono<IndexDocumentsResult> deleteDocuments(Iterable<?> documents) {
         return this.deleteDocumentsWithResponse(documents)
             .map(Response::getValue);
     }
@@ -233,12 +233,12 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to delete from the target Index.
      * @return response containing the document index result.
      */
-    public Mono<Response<DocumentIndexResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
+    public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
         return withContext(context -> deleteDocumentsWithResponse(documents, context));
     }
 
     @SuppressWarnings("unchecked")
-    Mono<Response<DocumentIndexResult>> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
+    Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
         IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.DELETE);
         return this.indexWithResponse(batch, context);
     }
@@ -447,7 +447,7 @@ public class SearchIndexAsyncClient {
      * @param batch batch of documents to send to the index with the requested action
      * @return document index result
      */
-    public Mono<DocumentIndexResult> index(IndexBatch<?> batch) {
+    public Mono<IndexDocumentsResult> index(IndexBatch<?> batch) {
         return this.indexWithResponse(batch)
             .map(Response::getValue);
     }
@@ -458,11 +458,11 @@ public class SearchIndexAsyncClient {
      * @param batch batch of documents to send to the index with the requested action
      * @return a response containing the document index result
      */
-    public Mono<Response<DocumentIndexResult>> indexWithResponse(IndexBatch<?> batch) {
+    public Mono<Response<IndexDocumentsResult>> indexWithResponse(IndexBatch<?> batch) {
         return withContext(context -> indexWithResponse(batch, context));
     }
 
-    Mono<Response<DocumentIndexResult>> indexWithResponse(IndexBatch<?> batch, Context context) {
+    Mono<Response<IndexDocumentsResult>> indexWithResponse(IndexBatch<?> batch, Context context) {
         return restClient.documents()
             .indexWithRestResponseAsync(batch, context)
             .handle((res, sink) -> {

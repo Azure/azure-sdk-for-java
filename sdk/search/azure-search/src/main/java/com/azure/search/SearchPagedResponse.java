@@ -7,8 +7,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.search.models.DocumentSearchResult;
 import com.azure.search.models.FacetResult;
+import com.azure.search.models.SearchDocumentsResult;
 import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchResult;
 
@@ -40,7 +40,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
      *
      * @param documentSearchResponse an http response with the results
      */
-    public SearchPagedResponse(SimpleResponse<DocumentSearchResult> documentSearchResponse) {
+    public SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse) {
         super(documentSearchResponse.getRequest(),
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),

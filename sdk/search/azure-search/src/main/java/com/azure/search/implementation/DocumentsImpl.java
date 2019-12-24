@@ -30,14 +30,14 @@ import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.AutocompleteResult;
-import com.azure.search.models.DocumentIndexResult;
-import com.azure.search.models.DocumentSearchResult;
-import com.azure.search.models.DocumentSuggestResult;
+import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.QueryType;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.SearchDocumentsResult;
 import com.azure.search.models.SearchMode;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchRequest;
+import com.azure.search.models.SuggestDocumentsResult;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestRequest;
 import java.util.List;
@@ -84,11 +84,11 @@ public final class DocumentsImpl {
 
         @Get("docs")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<DocumentSearchResult>> searchGet(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @QueryParam("search") String searchText, @QueryParam("api-version") String apiVersion, @QueryParam("$count") Boolean includeTotalResultCount, @QueryParam("facet") String facets, @QueryParam("$filter") String filter, @QueryParam("highlight") String highlightFields, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy, @QueryParam("queryType") QueryType queryType, @QueryParam("scoringParameter") String scoringParameters, @QueryParam("scoringProfile") String scoringProfile, @QueryParam("searchFields") String searchFields, @QueryParam("searchMode") SearchMode searchMode, @QueryParam("$select") String select, @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<SearchDocumentsResult>> searchGet(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @QueryParam("search") String searchText, @QueryParam("api-version") String apiVersion, @QueryParam("$count") Boolean includeTotalResultCount, @QueryParam("facet") String facets, @QueryParam("$filter") String filter, @QueryParam("highlight") String highlightFields, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy, @QueryParam("queryType") QueryType queryType, @QueryParam("scoringParameter") String scoringParameters, @QueryParam("scoringProfile") String scoringProfile, @QueryParam("searchFields") String searchFields, @QueryParam("searchMode") SearchMode searchMode, @QueryParam("$select") String select, @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Post("docs/search.post.search")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<DocumentSearchResult>> searchPost(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") SearchRequest searchRequest, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<SearchDocumentsResult>> searchPost(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") SearchRequest searchRequest, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Get("docs('{key}')")
         @ExpectedResponses({200})
@@ -96,15 +96,15 @@ public final class DocumentsImpl {
 
         @Get("docs/search.suggest")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<DocumentSuggestResult>> suggestGet(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName, @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter, @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy, @QueryParam("searchFields") String searchFields, @QueryParam("$select") String select, @QueryParam("$top") Integer top, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<SuggestDocumentsResult>> suggestGet(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName, @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter, @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy, @QueryParam("searchFields") String searchFields, @QueryParam("$select") String select, @QueryParam("$top") Integer top, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Post("docs/search.post.suggest")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<DocumentSuggestResult>> suggestPost(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") SuggestRequest suggestRequest, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<SuggestDocumentsResult>> suggestPost(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") SuggestRequest suggestRequest, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Post("docs/search.index")
         @ExpectedResponses({200, 207})
-        <T> Mono<SimpleResponse<DocumentIndexResult>> index(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") IndexBatch<T> batch, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        <T> Mono<SimpleResponse<IndexDocumentsResult>> index(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") IndexBatch<T> batch, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Get("docs/search.autocomplete")
         @ExpectedResponses({200})
@@ -153,7 +153,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSearchResult>> searchGetWithRestResponseAsync(Context context) {
+    public Mono<SimpleResponse<SearchDocumentsResult>> searchGetWithRestResponseAsync(Context context) {
         final String searchText = null;
         final Boolean includeTotalResultCount = null;
         final String filter = null;
@@ -186,7 +186,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSearchResult>> searchGetWithRestResponseAsync(String searchText, SearchOptions searchOptions, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<SearchDocumentsResult>> searchGetWithRestResponseAsync(String searchText, SearchOptions searchOptions, RequestOptions requestOptions, Context context) {
         Boolean includeTotalResultCount = null;
         if (searchOptions != null) {
             includeTotalResultCount = searchOptions.isIncludeTotalResultCount();
@@ -273,7 +273,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSearchResult>> searchPostWithRestResponseAsync(SearchRequest searchRequest, Context context) {
+    public Mono<SimpleResponse<SearchDocumentsResult>> searchPostWithRestResponseAsync(SearchRequest searchRequest, Context context) {
         final UUID clientRequestId = null;
         return service.searchPost(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), searchRequest, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -288,7 +288,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSearchResult>> searchPostWithRestResponseAsync(SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<SearchDocumentsResult>> searchPostWithRestResponseAsync(SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();
@@ -341,7 +341,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSuggestResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, Context context) {
+    public Mono<SimpleResponse<SuggestDocumentsResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, Context context) {
         final String filter = null;
         final Boolean useFuzzyMatching = null;
         final String highlightPostTag = null;
@@ -367,7 +367,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSuggestResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, SuggestOptions suggestOptions, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<SuggestDocumentsResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, SuggestOptions suggestOptions, RequestOptions requestOptions, Context context) {
         String filter = null;
         if (suggestOptions != null) {
             filter = suggestOptions.getFilter();
@@ -423,7 +423,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSuggestResult>> suggestPostWithRestResponseAsync(SuggestRequest suggestRequest, Context context) {
+    public Mono<SimpleResponse<SuggestDocumentsResult>> suggestPostWithRestResponseAsync(SuggestRequest suggestRequest, Context context) {
         final UUID clientRequestId = null;
         return service.suggestPost(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), suggestRequest, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -438,7 +438,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSuggestResult>> suggestPostWithRestResponseAsync(SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<SuggestDocumentsResult>> suggestPostWithRestResponseAsync(SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();
@@ -455,7 +455,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch<T> batch, Context context) {
+    public <T> Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexBatch<T> batch, Context context) {
         final UUID clientRequestId = null;
         return service.index(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), batch, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -470,7 +470,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch<T> batch, RequestOptions requestOptions, Context context) {
+    public <T> Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexBatch<T> batch, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();

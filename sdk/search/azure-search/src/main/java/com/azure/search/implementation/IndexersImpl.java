@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
-import com.azure.search.models.IndexerListResult;
+import com.azure.search.models.ListIndexersResult;
 import com.azure.search.models.RequestOptions;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -86,7 +86,7 @@ public final class IndexersImpl {
 
         @Get("indexers")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<IndexerListResult>> list(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<ListIndexersResult>> list(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Post("indexers")
         @ExpectedResponses({201})
@@ -291,7 +291,7 @@ public final class IndexersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IndexerListResult>> listWithRestResponseAsync(Context context) {
+    public Mono<SimpleResponse<ListIndexersResult>> listWithRestResponseAsync(Context context) {
         final String select = null;
         final UUID clientRequestId = null;
         return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
@@ -307,7 +307,7 @@ public final class IndexersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IndexerListResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<ListIndexersResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();

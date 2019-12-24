@@ -26,9 +26,9 @@ import com.azure.core.util.Context;
 import com.azure.search.implementation.models.AnalyzeResult;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeRequest;
+import com.azure.search.models.GetIndexStatisticsResult;
 import com.azure.search.models.Index;
-import com.azure.search.models.IndexGetStatisticsResult;
-import com.azure.search.models.IndexListResult;
+import com.azure.search.models.ListIndexesResult;
 import com.azure.search.models.RequestOptions;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -72,7 +72,7 @@ public final class IndexesImpl {
 
         @Get("indexes")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<IndexListResult>> list(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<ListIndexesResult>> list(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Put("indexes('{indexName}')")
         @ExpectedResponses({200, 201})
@@ -88,7 +88,7 @@ public final class IndexesImpl {
 
         @Get("indexes('{indexName}')/search.stats")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<IndexGetStatisticsResult>> getStatistics(@PathParam("indexName") String indexName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<GetIndexStatisticsResult>> getStatistics(@PathParam("indexName") String indexName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Post("indexes('{indexName}')/search.analyze")
         @ExpectedResponses({200})
@@ -135,7 +135,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IndexListResult>> listWithRestResponseAsync(Context context) {
+    public Mono<SimpleResponse<ListIndexesResult>> listWithRestResponseAsync(Context context) {
         final String select = null;
         final UUID clientRequestId = null;
         return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
@@ -151,7 +151,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IndexListResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<ListIndexesResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();
@@ -292,7 +292,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IndexGetStatisticsResult>> getStatisticsWithRestResponseAsync(String indexName, Context context) {
+    public Mono<SimpleResponse<GetIndexStatisticsResult>> getStatisticsWithRestResponseAsync(String indexName, Context context) {
         final UUID clientRequestId = null;
         return service.getStatistics(indexName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -307,7 +307,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IndexGetStatisticsResult>> getStatisticsWithRestResponseAsync(String indexName, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<GetIndexStatisticsResult>> getStatisticsWithRestResponseAsync(String indexName, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();

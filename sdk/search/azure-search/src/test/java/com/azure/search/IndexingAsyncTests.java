@@ -4,11 +4,11 @@ package com.azure.search;
 
 import com.azure.core.http.rest.Response;
 import com.azure.search.models.DataType;
-import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.Field;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.Index;
 import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.IndexingResult;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
@@ -65,7 +65,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         hotels.add(new Hotel()
             .hotelId(expectedHotelId)
         );
-        Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(hotels);
+        Mono<IndexDocumentsResult> asyncResult = client.uploadDocuments(hotels);
 
         StepVerifier.create(asyncResult).assertNext(res -> {
             List<IndexingResult> result = res.getResults();
@@ -93,7 +93,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 .lastName("Tolkien"))
         );
 
-        Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(books);
+        Mono<IndexDocumentsResult> asyncResult = client.uploadDocuments(books);
 
         StepVerifier.create(asyncResult).assertNext(res -> {
             List<IndexingResult> result = res.getResults();
@@ -125,7 +125,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .addMergeOrUploadAction(hotel3)
             .addUploadAction(hotel2);
 
-        Mono<DocumentIndexResult> response = client.index(batch);
+        Mono<IndexDocumentsResult> response = client.index(batch);
 
         StepVerifier.create(response)
             .verifyErrorSatisfies(err -> {
@@ -182,7 +182,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .addMergeOrUploadAction(hotel3)
             .addUploadAction(hotel2);
 
-        Mono<DocumentIndexResult> response = client.index(batch);
+        Mono<IndexDocumentsResult> response = client.index(batch);
 
         StepVerifier.create(response)
             .verifyErrorSatisfies(err -> {
@@ -333,7 +333,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         List<Hotel> hotels = new ArrayList<>();
         hotels.add(prepareStaticallyTypedHotel("1"));
 
-        Mono<DocumentIndexResult> documentIndexResult = client.mergeDocuments(hotels);
+        Mono<IndexDocumentsResult> documentIndexResult = client.mergeDocuments(hotels);
 
         StepVerifier
             .create(documentIndexResult)
@@ -515,7 +515,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         IndexBatch<Hotel> deleteBatch = new IndexBatch<Hotel>()
             .addDeleteAction("HotelId", "1", "2");
-        Mono<DocumentIndexResult> documentIndexResult = client.index(deleteBatch);
+        Mono<IndexDocumentsResult> documentIndexResult = client.index(deleteBatch);
 
         StepVerifier.create(documentIndexResult)
             .assertNext(res -> {
@@ -550,7 +550,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
 
         hotel.category("ignored");
-        Mono<DocumentIndexResult> documentIndexResult = client.deleteDocuments(hotels);
+        Mono<IndexDocumentsResult> documentIndexResult = client.deleteDocuments(hotels);
 
         StepVerifier.create(documentIndexResult)
             .assertNext(res -> {
@@ -585,7 +585,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
 
         document.put("Category", "ignored");
-        Mono<DocumentIndexResult> documentIndexResult = client.deleteDocuments(docs);
+        Mono<IndexDocumentsResult> documentIndexResult = client.deleteDocuments(docs);
 
         StepVerifier.create(documentIndexResult)
             .assertNext(res -> {
@@ -890,56 +890,56 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .addUploadAction(hotelsToUpload)
             .addMergeOrUploadAction(hotelsToMergeOrUpload);
 
-        Mono<Response<DocumentIndexResult>> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload);
+        Mono<Response<IndexDocumentsResult>> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload);
         StepVerifier.create(indexResponse)
             .assertNext(res -> {
                 Assert.assertEquals(200, res.getStatusCode());
 
-                DocumentIndexResult result = res.getValue();
+                IndexDocumentsResult result = res.getValue();
                 Assert.assertEquals(2, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
 
-        Mono<Response<DocumentIndexResult>> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge);
+        Mono<Response<IndexDocumentsResult>> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge);
         StepVerifier.create(updateResponse)
             .assertNext(res -> {
                 Assert.assertEquals(200, res.getStatusCode());
 
-                DocumentIndexResult result = res.getValue();
+                IndexDocumentsResult result = res.getValue();
                 Assert.assertEquals(1, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
 
-        Mono<Response<DocumentIndexResult>> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(hotelsToMergeOrUpload);
+        Mono<Response<IndexDocumentsResult>> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(hotelsToMergeOrUpload);
         StepVerifier.create(mergeOrUploadResponse)
             .assertNext(res -> {
                 Assert.assertEquals(200, res.getStatusCode());
 
-                DocumentIndexResult result = res.getValue();
+                IndexDocumentsResult result = res.getValue();
                 Assert.assertEquals(2, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
 
-        Mono<Response<DocumentIndexResult>> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete);
+        Mono<Response<IndexDocumentsResult>> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete);
         StepVerifier.create(deleteResponse)
             .assertNext(res -> {
                 Assert.assertEquals(200, res.getStatusCode());
 
-                DocumentIndexResult result = res.getValue();
+                IndexDocumentsResult result = res.getValue();
                 Assert.assertEquals(1, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
 
-        Mono<Response<DocumentIndexResult>> batchResponse = client.indexWithResponse(batch);
+        Mono<Response<IndexDocumentsResult>> batchResponse = client.indexWithResponse(batch);
         StepVerifier.create(batchResponse)
             .assertNext(res -> {
                 Assert.assertEquals(200, res.getStatusCode());
 
-                DocumentIndexResult result = res.getValue();
+                IndexDocumentsResult result = res.getValue();
                 Assert.assertEquals(4, result.getResults().size());
             })
             .expectComplete();

@@ -8,11 +8,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DefaultCognitiveServicesAccount;
 import com.azure.search.models.EntityCategory;
-import com.azure.search.models.InputFieldMappingEntry;
-import com.azure.search.models.KeyPhraseExtractionSkill;
 import com.azure.search.models.KeyPhraseExtractionSkillLanguage;
 import com.azure.search.models.OcrSkillLanguage;
-import com.azure.search.models.OutputFieldMappingEntry;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SentimentSkillLanguage;
 import com.azure.search.models.Skillset;
@@ -26,9 +23,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -211,12 +206,12 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .create(client.createSkillset(expectedSkillsetWithFILanguage))
             .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillsetWithFILanguage, actualSkillset))
             .verifyComplete();
-        client.deleteSkillset(expectedSkillsetWithFILanguage.getName()).block();
 
         Skillset expectedSkillsetWithDALanguage = createTestSkillsetOcrSplitText(OcrSkillLanguage.DA,
             SplitSkillLanguage.DA, TextSplitMode.SENTENCES).setName("testskillset3");
         StepVerifier
-            .create(client.createSkillset(expectedSkillsetWithDALanguage))
+            .create(client.deleteSkillset(expectedSkillsetWithFILanguage.getName())
+                .then(client.createSkillset(expectedSkillsetWithDALanguage)))
             .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillsetWithDALanguage, actualSkillset))
             .verifyComplete();
     }
@@ -244,10 +239,10 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     @Test
     public void getOcrSkillsetReturnsCorrectDefinition() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
-        client.createSkillset(expected).block();
 
         StepVerifier
-            .create(client.getSkillset(expected.getName()))
+            .create(client.createSkillset(expected)
+                .then(client.getSkillset(expected.getName())))
             .assertNext(actual -> assertSkillsetsEqual(expected, actual))
             .verifyComplete();
     }
@@ -255,10 +250,10 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     @Test
     public void getOcrSkillsetReturnsCorrectDefinitionWithResponse() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
-        client.createSkillset(expected).block();
 
         StepVerifier
-            .create(client.getSkillsetWithResponse(expected.getName(), generateRequestOptions()))
+            .create(client.createSkillset(expected)
+                .then(client.getSkillsetWithResponse(expected.getName(), generateRequestOptions())))
             .assertNext(actual -> assertSkillsetsEqual(expected, actual.getValue()))
             .verifyComplete();
     }
@@ -316,10 +311,10 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     @Test
     public void getOcrSkillsetWithShouldDetectOrientationReturnsCorrectDefinition() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, true);
-        client.createSkillset(expected).block();
 
         StepVerifier
-            .create(client.getSkillset(expected.getName()))
+            .create(client.createSkillset(expected)
+                .then(client.getSkillset(expected.getName())))
             .assertNext(actual -> assertSkillsetsEqual(expected, actual))
             .verifyComplete();
     }
@@ -359,18 +354,15 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
         Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
 
-        client.createSkillset(skillset1).block();
-        client.createSkillset(skillset2).block();
-
         PagedFlux<Skillset> listResponse = client.listSkillsets();
 
         StepVerifier
-            .create(listResponse.collectList())
-            .assertNext(result -> {
-                Assert.assertEquals(2, result.size());
-                Assert.assertEquals(skillset1.getName(), result.get(0).getName());
-                Assert.assertEquals(skillset2.getName(), result.get(1).getName());
-            })
+            .create(
+                client.createSkillset(skillset1)
+                .then(client.createSkillset(skillset2))
+                .thenMany(client.listSkillsets()))
+            .assertNext(resSkillSet1 -> Assert.assertEquals(skillset1.getName(), resSkillSet1.getName()))
+            .assertNext(resSkillSet2 -> Assert.assertEquals(skillset2.getName(), resSkillSet2.getName()))
             .verifyComplete();
     }
 
@@ -379,31 +371,23 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
         Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
 
-        client.createSkillset(skillset1).block();
-        client.createSkillset(skillset2).block();
-
-        PagedFlux<Skillset> listResponse = client.listSkillsets("name", generateRequestOptions());
-
-        StepVerifier
-            .create(listResponse.collectList())
-            .assertNext(result ->
-                result.forEach(res -> {
-                    Assert.assertNotNull(res.getName());
-                    Assert.assertNull(res.getCognitiveServicesAccount());
-                    Assert.assertNull(res.getDescription());
-                    Assert.assertNull(res.getSkills());
-                    Assert.assertNull(res.getETag());
-                })
-            )
-            .verifyComplete();
-
-        StepVerifier
-            .create(listResponse.collectList())
-            .assertNext(result -> {
-                Assert.assertEquals(2, result.size());
-                Assert.assertEquals(skillset1.getName(), result.get(0).getName());
-                Assert.assertEquals(skillset2.getName(), result.get(1).getName());
-            })
+        StepVerifier.create(client.createSkillset(skillset1)
+            .then(client.createSkillset(skillset2))
+            .thenMany(client.listSkillsets("name", generateRequestOptions())))
+            .assertNext(resSkillSet1 -> {
+                Assert.assertEquals(skillset1.getName(), resSkillSet1.getName());
+                Assert.assertNotNull(resSkillSet1.getName());
+                Assert.assertNull(resSkillSet1.getCognitiveServicesAccount());
+                Assert.assertNull(resSkillSet1.getDescription());
+                Assert.assertNull(resSkillSet1.getSkills());
+                Assert.assertNull(resSkillSet1.getETag()); })
+            .assertNext(resSkillSet2 -> {
+                Assert.assertEquals(skillset2.getName(), resSkillSet2.getName());
+                Assert.assertNotNull(resSkillSet2.getName());
+                Assert.assertNull(resSkillSet2.getCognitiveServicesAccount());
+                Assert.assertNull(resSkillSet2.getDescription());
+                Assert.assertNull(resSkillSet2.getSkills());
+                Assert.assertNull(resSkillSet2.getETag()); })
             .verifyComplete();
     }
 
@@ -438,11 +422,12 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     @Test
     public void canCreateAndDeleteSkillset() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
-        client.createSkillset(expected).block();
-        client.deleteSkillset(expected.getName()).block();
 
         StepVerifier
-            .create(client.skillsetExists(expected.getName()))
+            .create(
+                client.createSkillset(expected)
+                .then(client.deleteSkillset(expected.getName()))
+                .then(client.skillsetExists(expected.getName())))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -496,10 +481,10 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     @Test
     public void existsReturnsTrueForExistingSkillset() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
-        client.createSkillset(skillset).block();
 
         StepVerifier
-            .create(client.skillsetExists(skillset.getName()))
+            .create(client.createSkillset(skillset)
+                .then(client.skillsetExists(skillset.getName())))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
     }
@@ -507,10 +492,10 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     @Test
     public void existsReturnsTrueForExistingSkillsetWithResponse() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
-        client.createSkillset(skillset).block();
 
         StepVerifier
-            .create(client.skillsetExistsWithResponse(skillset.getName(), generateRequestOptions()))
+            .create(client.createSkillset(skillset)
+                .then(client.skillsetExistsWithResponse(skillset.getName(), generateRequestOptions())))
             .assertNext(res -> Assert.assertTrue(res.getValue()))
             .verifyComplete();
     }
@@ -519,28 +504,15 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     public void createOrUpdateUpdatesSkills() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
-        Skillset createdSkillset = client.createSkillset(skillset).block();
-        assert createdSkillset != null;
 
-        // update skills
-        createdSkillset.setSkills(Collections.singletonList(
-            new KeyPhraseExtractionSkill()
-                .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
-                .setName("mykeyphrases")
-                .setDescription("Tested Key Phrase skill")
-                .setContext(CONTEXT_VALUE)
-                .setInputs(Collections.singletonList(
-                    new InputFieldMappingEntry()
-                        .setName("text")
-                        .setSource("/document/mytext")))
-                .setOutputs(Collections.singletonList(
-                    new OutputFieldMappingEntry()
-                        .setName("keyPhrases")
-                        .setTargetName("myKeyPhrases")))));
+        Mono<Skillset> updatedSkillSetResult = client.createSkillset(skillset).map(createdSkillset ->
+            // update skills
+            createdSkillset.setSkills(getCreateOrUpdateSkills())
+        ).flatMap(updatedSkillSet -> client.createOrUpdateSkillset(updatedSkillSet));
 
         StepVerifier
-            .create(client.createOrUpdateSkillset(createdSkillset))
-            .assertNext(res -> assertSkillsetsEqual(createdSkillset, res))
+            .create(updatedSkillSetResult)
+            .assertNext(res -> assertSkillsetsEqual(skillset.setSkills(getCreateOrUpdateSkills()), res))
             .verifyComplete();
     }
 
@@ -548,15 +520,18 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     public void createOrUpdateUpdatesCognitiveService() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
-        Skillset createdSkillset = client.createSkillset(skillset).block();
-        assert createdSkillset != null;
-
-        // update Cognitive Service
-        createdSkillset.setCognitiveServicesAccount(new DefaultCognitiveServicesAccount().setDescription("description"));
+        Mono<Skillset> updatedSkillset = client.createSkillset(skillset)
+            .map(createdSkillset ->
+                // update Cognitive Service
+                createdSkillset
+                    .setCognitiveServicesAccount(new DefaultCognitiveServicesAccount().setDescription("description")))
+            .flatMap(createdSkillset -> client.createOrUpdateSkillset(createdSkillset));
 
         StepVerifier
-            .create(client.createOrUpdateSkillset(createdSkillset))
-            .assertNext(res -> assertSkillsetsEqual(createdSkillset, res))
+            .create(updatedSkillset)
+            .assertNext(res -> assertSkillsetsEqual(
+                skillset.setCognitiveServicesAccount(new DefaultCognitiveServicesAccount()
+                    .setDescription("description")), res))
             .verifyComplete();
     }
 
