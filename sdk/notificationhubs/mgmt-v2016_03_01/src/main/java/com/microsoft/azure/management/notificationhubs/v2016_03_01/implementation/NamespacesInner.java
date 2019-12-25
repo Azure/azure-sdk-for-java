@@ -656,7 +656,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
-     * @param authorizationRuleName Aauthorization Rule Name.
+     * @param authorizationRuleName Authorization Rule Name.
      * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -672,7 +672,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
-     * @param authorizationRuleName Aauthorization Rule Name.
+     * @param authorizationRuleName Authorization Rule Name.
      * @param parameters The shared access authorization rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -687,7 +687,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
-     * @param authorizationRuleName Aauthorization Rule Name.
+     * @param authorizationRuleName Authorization Rule Name.
      * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
@@ -706,7 +706,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
-     * @param authorizationRuleName Aauthorization Rule Name.
+     * @param authorizationRuleName Authorization Rule Name.
      * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
