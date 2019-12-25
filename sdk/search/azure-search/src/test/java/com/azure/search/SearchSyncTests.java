@@ -22,7 +22,6 @@ import com.azure.search.test.environment.models.Bucket;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.NonNullableModel;
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -58,7 +57,6 @@ public class SearchSyncTests extends SearchTestBase {
         client.search(searchText, searchOptions, requestOptions, Context.NONE).iterableByPage().iterator().next();
     }
 
-    @Disabled
     @Test
     public void canSearchDynamicDocuments() throws IOException {
         createHotelIndex();
@@ -157,7 +155,6 @@ public class SearchSyncTests extends SearchTestBase {
         Assert.assertNull(secondPage.getContinuationToken());
     }
 
-    @Disabled
     @Test
     public void canSearchStaticallyTypedDocuments() throws IOException {
         createHotelIndex();

@@ -20,7 +20,6 @@ import com.azure.search.test.environment.models.Bucket;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.NonNullableModel;
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -362,7 +361,6 @@ public class SearchAsyncTests extends SearchTestBase {
             }).verifyComplete();
     }
 
-    @Disabled
     @Test
     public void canSearchDynamicDocuments() throws IOException {
         createHotelIndex();
@@ -392,7 +390,6 @@ public class SearchAsyncTests extends SearchTestBase {
         Assert.assertTrue(compareResults(actualResults, hotels));
     }
 
-    @Disabled
     @Test
     public void canSearchStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
