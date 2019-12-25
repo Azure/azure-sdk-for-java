@@ -137,6 +137,7 @@ directive:
           .replace(/(IndexBatch )/g, "IndexBatch<T> ")
           .replace(/(Mono<IndexDocumentsResult> indexAsync)/g, "<T> $1")
           .replace(/(Mono<SimpleResponse<IndexDocumentsResult>> index)/g, "<T> $1")
+		  .replace(/(import com.azure.search.implementation.models.IndexBatch)/g, "import com.azure.search.models.IndexBatch")
 
     # Change get to is
     - from: DocumentsImpl.java
