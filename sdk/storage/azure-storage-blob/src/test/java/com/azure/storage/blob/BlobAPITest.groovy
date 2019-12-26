@@ -321,6 +321,8 @@ class BlobAPITest extends APISpec {
         when:
         Set<OpenOption> openOptions = new HashSet<>()
         openOptions.add(StandardOpenOption.CREATE_NEW)
+        openOptions.add(StandardOpenOption.READ)
+        openOptions.add(StandardOpenOption.WRITE)
         bc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
@@ -341,6 +343,8 @@ class BlobAPITest extends APISpec {
         Set<OpenOption> openOptions = new HashSet<>()
         openOptions.add(StandardOpenOption.CREATE)
         openOptions.add(StandardOpenOption.TRUNCATE_EXISTING)
+        openOptions.add(StandardOpenOption.READ)
+        openOptions.add(StandardOpenOption.WRITE)
         bc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:

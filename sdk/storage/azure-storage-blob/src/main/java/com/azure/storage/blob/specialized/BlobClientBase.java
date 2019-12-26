@@ -528,7 +528,8 @@ public class BlobClientBase {
      * Downloads the entire blob into a file specified by the path.
      *
      * <p>By default the file will be created and must not exist, if the file already exists a
-     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate {@link OpenOption OpenOptions} </p>
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
      *
      * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
      * AppendBlobClient}.</p>

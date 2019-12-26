@@ -68,7 +68,6 @@ import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.FileAttribute;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
@@ -766,7 +765,8 @@ public class BlobAsyncClientBase {
      * Downloads the entire blob into a file specified by the path.
      *
      * <p>By default the file will be created and must not exist, if the file already exists a
-     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate {@link OpenOption OpenOptions} </p>
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
      *
      * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
      * AppendBlobClient}.</p>
