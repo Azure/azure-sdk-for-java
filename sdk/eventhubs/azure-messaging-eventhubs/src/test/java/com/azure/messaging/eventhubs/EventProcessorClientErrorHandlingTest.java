@@ -3,6 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -10,7 +13,11 @@ import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -20,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -53,6 +61,9 @@ public class EventProcessorClientErrorHandlingTest {
 
     @Mock
     private EventHubConsumerAsyncClient eventHubConsumer;
+
+    @Mock
+    private EventData eventData1, eventData2, eventData3, eventData4;
 
     private CountDownLatch countDownLatch;
 
@@ -92,11 +103,36 @@ public class EventProcessorClientErrorHandlingTest {
         Assertions.assertTrue(completed);
     }
 
+    @Test
+    public void testUserHandlerError() throws InterruptedException {
+        countDownLatch = new CountDownLatch(1);
+        when(eventHubAsyncClient.createConsumer("cg", DEFAULT_PREFETCH_COUNT)).thenReturn(eventHubConsumer);
+        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1)));
+        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
+            () -> new BadPartitionProcessor(), new InMemoryCheckpointStore(), false,
+            null, errorContext -> {
+            countDownLatch.countDown();
+            Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
+            Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
+            Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
+        });
+        client.start();
+        boolean completed = countDownLatch.await(300, TimeUnit.SECONDS);
+        client.stop();
+        Assertions.assertTrue(completed);
+    }
+
     private static Stream<Arguments> checkpointStoreSupplier() {
         return Stream.of(
             Arguments.of(new ListOwnershipErrorStore()),
             Arguments.of(new ClaimOwnershipErrorStore()),
             Arguments.of(new ListCheckpointErrorStore()));
+    }
+
+    private PartitionEvent getEvent(EventData event) {
+        PartitionContext context = new PartitionContext("ns", "foo", "bar", "baz");
+        return new PartitionEvent(context, event, null);
     }
 
 
@@ -190,5 +226,20 @@ public class EventProcessorClientErrorHandlingTest {
             // do nothing
             return;
         }
+    }
+
+    private static final class BadPartitionProcessor extends PartitionProcessor {
+
+        @Override
+        public void processEvent(EventContext eventContext) {
+            throw new IllegalStateException("User error");
+        }
+
+        @Override
+        public void processError(ErrorContext errorContext) {
+            // do nothing
+            return;
+        }
+
     }
 }

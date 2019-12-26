@@ -207,7 +207,11 @@ final class PartitionBasedLoadBalancer {
                 // If the partitions are evenly distributed among all active event processors, no change required.
                 logger.info("Load is balanced");
                 // renew ownership of already owned partitions
-                checkpointStore.claimOwnership(ownerPartitionMap.get(this.ownerId)).subscribe();
+                checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
+                    .stream()
+                    .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
+                    .collect(Collectors.toUnmodifiableList()))
+                    .subscribe();
                 return;
             }
 
@@ -216,7 +220,11 @@ final class PartitionBasedLoadBalancer {
                 logger.info("This event processor owns {} partitions and shouldn't own more",
                     ownerPartitionMap.get(ownerId).size());
                 // renew ownership of already owned partitions
-                checkpointStore.claimOwnership(ownerPartitionMap.get(this.ownerId)).subscribe();
+                checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
+                    .stream()
+                    .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
+                    .collect(Collectors.toUnmodifiableList()))
+                    .subscribe();
                 return;
             }
 
@@ -345,11 +353,16 @@ final class PartitionBasedLoadBalancer {
         PartitionOwnership ownershipRequest = createPartitionOwnershipRequest(partitionOwnershipMap,
             partitionIdToClaim);
 
-        List<PartitionOwnership> currentPartitionsOwned = ownerPartitionsMap.get(ownerId);
-        currentPartitionsOwned.add(ownershipRequest);
+        List<PartitionOwnership> partitionsToClaim = new ArrayList<>();
+        partitionsToClaim.add(ownershipRequest);
+        partitionsToClaim.addAll(partitionPumpManager.getPartitionPumps()
+            .keySet()
+            .stream()
+            .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
+            .collect(Collectors.toList()));
 
         checkpointStore
-            .claimOwnership(currentPartitionsOwned)
+            .claimOwnership(partitionsToClaim)
             .timeout(Duration.ofMinutes(1)) // TODO: configurable
             .doOnNext(partitionOwnership -> logger.info("Successfully claimed ownership of partition {}",
                 partitionOwnership.getPartitionId()))

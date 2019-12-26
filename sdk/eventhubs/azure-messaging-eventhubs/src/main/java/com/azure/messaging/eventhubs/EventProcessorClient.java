@@ -11,6 +11,7 @@ import com.azure.messaging.eventhubs.models.ErrorContext;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,7 +41,7 @@ public class EventProcessorClient {
     private final ClientLogger logger = new ClientLogger(EventProcessorClient.class);
 
     private final String identifier;
-    private final AtomicBoolean started = new AtomicBoolean(false);
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
     private final PartitionPumpManager partitionPumpManager;
     private final PartitionBasedLoadBalancer partitionBasedLoadBalancer;
     private final CheckpointStore checkpointStore;
@@ -103,7 +104,7 @@ public class EventProcessorClient {
      * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclient.startstop}
      */
     public synchronized void start() {
-        if (!started.compareAndSet(false, true)) {
+        if (!isRunning.compareAndSet(false, true)) {
             logger.info("Event processor is already running");
             return;
         }
@@ -127,12 +128,22 @@ public class EventProcessorClient {
      * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclient.startstop}
      */
     public synchronized void stop() {
-        if (!started.compareAndSet(true, false)) {
+        if (!isRunning.compareAndSet(true, false)) {
             logger.info("Event processor has already stopped");
             return;
         }
         runner.get().dispose();
         scheduler.get().dispose();
         this.partitionPumpManager.stopAllPartitionPumps();
+    }
+
+    /**
+     * Returns {@code true} if the event processor is running. If the event processor is already running, calling
+     * {@link #start()} has no effect.
+     *
+     * @return {@code true} if the event processor is running.
+     */
+    public synchronized boolean isRunning() {
+        return isRunning.get();
     }
 }
