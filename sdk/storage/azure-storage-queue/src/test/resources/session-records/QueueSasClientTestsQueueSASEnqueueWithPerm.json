@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm99742e",
+    "Uri" : "https://gapradev.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm162875",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "88b857ad-4761-41f6-a80c-980def0e2e83"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.2 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "09ae7ab7-be6a-4725-ac5a-33425a8ff8c6"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -13,18 +13,18 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "4d3d221d-c003-0106-107e-b0815b000000",
-      "Date" : "Wed, 11 Dec 2019 23:56:48 GMT",
-      "x-ms-client-request-id" : "88b857ad-4761-41f6-a80c-980def0e2e83"
+      "x-ms-request-id" : "ddefcc68-6003-002f-2a37-bc9ff0000000",
+      "Date" : "Thu, 26 Dec 2019 21:55:19 GMT",
+      "x-ms-client-request-id" : "09ae7ab7-be6a-4725-ac5a-33425a8ff8c6"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm99742e/messages",
+    "Uri" : "https://gapradev.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm162875/messages",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "d2ba0613-2a84-4d27-b319-a315f503e52a",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.2 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e1bfa057-03b6-471d-8690-2e9666de4ae2",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -33,20 +33,20 @@
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "4d3d224e-c003-0106-3c7e-b0815b000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>28df5371-d9f1-45db-a589-668cfe97c7b4</MessageId><InsertionTime>Wed, 11 Dec 2019 23:56:49 GMT</InsertionTime><ExpirationTime>Wed, 18 Dec 2019 23:56:49 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAS5Nap36w1QE=</PopReceipt><TimeNextVisible>Wed, 11 Dec 2019 23:56:49 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
-      "Date" : "Wed, 11 Dec 2019 23:56:49 GMT",
-      "x-ms-client-request-id" : "d2ba0613-2a84-4d27-b319-a315f503e52a",
+      "x-ms-request-id" : "ddefcc6b-6003-002f-2b37-bc9ff0000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>ba55d35c-ec61-4a7e-8908-a600bceffbd4</MessageId><InsertionTime>Thu, 26 Dec 2019 21:55:19 GMT</InsertionTime><ExpirationTime>Thu, 02 Jan 2020 21:55:19 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAaxEWKje81QE=</PopReceipt><TimeNextVisible>Thu, 26 Dec 2019 21:55:19 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 26 Dec 2019 21:55:19 GMT",
+      "x-ms-client-request-id" : "e1bfa057-03b6-471d-8690-2e9666de4ae2",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm99742e/messages?sv=2019-02-02&spr=https%2Chttp&st=2019-12-10T23%3A56%3A49Z&se=2019-12-12T23%3A56%3A49Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://gapradev.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm162875/messages?sv=2019-02-02&spr=https%2Chttp&st=2019-12-25T21%3A55%3A19Z&se=2019-12-27T21%3A55%3A19Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "849ed38a-d9d8-4e14-95c6-443494185316",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.2 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "968b8cc1-1d16-4ab8-bff6-fb44517b6454",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -55,20 +55,20 @@
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "4d3d2273-c003-0106-617e-b0815b000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>b82f9a94-0421-4fd2-ba01-06aad0799ae6</MessageId><InsertionTime>Wed, 11 Dec 2019 23:56:49 GMT</InsertionTime><ExpirationTime>Wed, 18 Dec 2019 23:56:49 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAgudzp36w1QE=</PopReceipt><TimeNextVisible>Wed, 11 Dec 2019 23:56:49 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
-      "Date" : "Wed, 11 Dec 2019 23:56:49 GMT",
-      "x-ms-client-request-id" : "849ed38a-d9d8-4e14-95c6-443494185316",
+      "x-ms-request-id" : "ddefcc6c-6003-002f-2c37-bc9ff0000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>91feec67-d6bc-40be-b21c-55f3a7bffac4</MessageId><InsertionTime>Thu, 26 Dec 2019 21:55:19 GMT</InsertionTime><ExpirationTime>Thu, 02 Jan 2020 21:55:19 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAA1a1OKje81QE=</PopReceipt><TimeNextVisible>Thu, 26 Dec 2019 21:55:19 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 26 Dec 2019 21:55:19 GMT",
+      "x-ms-client-request-id" : "968b8cc1-1d16-4ab8-bff6-fb44517b6454",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm99742e/messages?numofmessages=2&visibilitytimeout=30&sv=2019-02-02&spr=https%2Chttp&st=2019-12-10T23%3A56%3A49Z&se=2019-12-12T23%3A56%3A49Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://gapradev.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm162875/messages?numofmessages=2&visibilitytimeout=30&sv=2019-02-02&spr=https%2Chttp&st=2019-12-25T21%3A55%3A19Z&se=2019-12-27T21%3A55%3A19Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "1d30eb80-b164-415d-be06-3129852b1aee"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.2 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "05fe09c8-e142-4bc6-b7b1-7791a599f6c0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -77,20 +77,20 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "4d3d2294-c003-0106-017e-b0815b000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>28df5371-d9f1-45db-a589-668cfe97c7b4</MessageId><InsertionTime>Wed, 11 Dec 2019 23:56:49 GMT</InsertionTime><ExpirationTime>Wed, 18 Dec 2019 23:56:49 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAJtVguX6w1QE=</PopReceipt><TimeNextVisible>Wed, 11 Dec 2019 23:57:19 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test</MessageText></QueueMessage><QueueMessage><MessageId>b82f9a94-0421-4fd2-ba01-06aad0799ae6</MessageId><InsertionTime>Wed, 11 Dec 2019 23:56:49 GMT</InsertionTime><ExpirationTime>Wed, 18 Dec 2019 23:56:49 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAJtVguX6w1QE=</PopReceipt><TimeNextVisible>Wed, 11 Dec 2019 23:57:19 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>sastest</MessageText></QueueMessage></QueueMessagesList>",
-      "Date" : "Wed, 11 Dec 2019 23:56:49 GMT",
-      "x-ms-client-request-id" : "1d30eb80-b164-415d-be06-3129852b1aee",
+      "x-ms-request-id" : "ddefcc6d-6003-002f-2d37-bc9ff0000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>ba55d35c-ec61-4a7e-8908-a600bceffbd4</MessageId><InsertionTime>Thu, 26 Dec 2019 21:55:19 GMT</InsertionTime><ExpirationTime>Thu, 02 Jan 2020 21:55:19 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAxYE+PDe81QE=</PopReceipt><TimeNextVisible>Thu, 26 Dec 2019 21:55:49 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test</MessageText></QueueMessage><QueueMessage><MessageId>91feec67-d6bc-40be-b21c-55f3a7bffac4</MessageId><InsertionTime>Thu, 26 Dec 2019 21:55:19 GMT</InsertionTime><ExpirationTime>Thu, 02 Jan 2020 21:55:19 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAxYE+PDe81QE=</PopReceipt><TimeNextVisible>Thu, 26 Dec 2019 21:55:49 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>sastest</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 26 Dec 2019 21:55:19 GMT",
+      "x-ms-client-request-id" : "05fe09c8-e142-4bc6-b7b1-7791a599f6c0",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm99742e/messages/28df5371-d9f1-45db-a589-668cfe97c7b4?popreceipt=AgAAAAMAAAAAAAAAS5Nap36w1QE%3d&visibilitytimeout=3600&sv=2019-02-02&spr=https%2Chttp&st=2019-12-10T23%3A56%3A49Z&se=2019-12-12T23%3A56%3A49Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://gapradev.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm162875/messages/ba55d35c-ec61-4a7e-8908-a600bceffbd4?popreceipt=AgAAAAMAAAAAAAAAaxEWKje81QE%3d&visibilitytimeout=3600&sv=2019-02-02&spr=https%2Chttp&st=2019-12-25T21%3A55%3A19Z&se=2019-12-27T21%3A55%3A19Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "21348bba-f147-4fc8-8ad3-d99b38e04978",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.2 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "efde4cda-1559-46f0-8607-a89c74b632fa",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -100,13 +100,13 @@
       "retry-after" : "0",
       "Content-Length" : "279",
       "StatusCode" : "403",
-      "x-ms-request-id" : "4d3d22b5-c003-0106-1c7e-b0815b000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:4d3d22b5-c003-0106-1c7e-b0815b000000\nTime:2019-12-11T23:56:50.1553156Z</Message></Error>",
-      "Date" : "Wed, 11 Dec 2019 23:56:49 GMT",
-      "x-ms-client-request-id" : "21348bba-f147-4fc8-8ad3-d99b38e04978",
+      "x-ms-request-id" : "ddefcc6e-6003-002f-2e37-bc9ff0000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:ddefcc6e-6003-002f-2e37-bc9ff0000000\nTime:2019-12-26T21:55:20.1537474Z</Message></Error>",
+      "Date" : "Thu, 26 Dec 2019 21:55:20 GMT",
+      "x-ms-client-request-id" : "efde4cda-1559-46f0-8607-a89c74b632fa",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queuesasclienttestsqueuesasenqueuewithperm99742e", "2019-12-11T23:56:49.822952500Z", "2019-12-11T23:56:49.832484400Z", "queue936622db" ]
+  "variables" : [ "queuesasclienttestsqueuesasenqueuewithperm162875", "2019-12-26T21:55:19.331855600Z", "2019-12-26T21:55:19.336855300Z", "queue4844299d" ]
 }
