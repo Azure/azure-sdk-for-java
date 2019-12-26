@@ -67,7 +67,7 @@ public final class MSIToken extends AccessToken {
 
     private static Long parseDateToEpochSeconds(String dateTime) {
         ClientLogger logger = new ClientLogger(MSIToken.class);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss XXX");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm:ss a XXX");
         try {
             return Long.parseLong(dateTime);
         } catch (NumberFormatException e) {
