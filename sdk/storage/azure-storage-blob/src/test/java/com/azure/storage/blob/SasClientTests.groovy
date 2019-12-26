@@ -19,6 +19,7 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -130,6 +131,8 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    // Uncomment when 71 is in prod
+    @Ignore
     def "network test blob user delegation"() {
         setup:
         def permissions = new BlobSasPermission()
@@ -195,6 +198,8 @@ class SasClientTests extends APISpec {
         validateSasProperties(properties)
     }
 
+    // Uncomment when 71 is in prod
+    @Ignore
     def "network test blob snapshot user delegation"() {
         setup:
         def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(sasClient.createSnapshot()).buildBlockBlobClient()
@@ -232,6 +237,8 @@ class SasClientTests extends APISpec {
         validateSasProperties(properties)
     }
 
+    // Uncomment when 71 is in prod
+    @Ignore
     def "network test container user delegation"() {
         setup:
         def permissions = new BlobContainerSasPermission()
