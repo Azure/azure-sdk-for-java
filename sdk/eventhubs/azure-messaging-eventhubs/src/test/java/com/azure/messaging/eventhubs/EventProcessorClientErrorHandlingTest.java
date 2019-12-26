@@ -110,15 +110,10 @@ public class EventProcessorClientErrorHandlingTest {
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
-            () -> new BadPartitionProcessor(), new InMemoryCheckpointStore(), false,
-            null, errorContext -> {
-            countDownLatch.countDown();
-            Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
-            Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
-            Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
-        });
+            () -> new BadPartitionProcessor(countDownLatch), new InMemoryCheckpointStore(), false,
+            null, errorContext -> { });
         client.start();
-        boolean completed = countDownLatch.await(300, TimeUnit.SECONDS);
+        boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
         Assertions.assertTrue(completed);
     }
@@ -230,14 +225,21 @@ public class EventProcessorClientErrorHandlingTest {
 
     private static final class BadPartitionProcessor extends PartitionProcessor {
 
+        CountDownLatch countDownLatch;
+
+        public BadPartitionProcessor(CountDownLatch countDownLatch) {
+            this.countDownLatch = countDownLatch;
+        }
+
         @Override
         public void processEvent(EventContext eventContext) {
-            throw new IllegalStateException("User error");
+            countDownLatch.countDown();
+            throw new IllegalStateException("User code error");
         }
 
         @Override
         public void processError(ErrorContext errorContext) {
-            // do nothing
+            Assertions.fail("Process error handler should not be called when process event throws exception");
             return;
         }
 
