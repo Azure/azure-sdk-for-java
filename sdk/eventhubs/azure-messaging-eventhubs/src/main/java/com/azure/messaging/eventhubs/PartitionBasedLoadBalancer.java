@@ -210,7 +210,7 @@ final class PartitionBasedLoadBalancer {
                 checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
                     .stream()
                     .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
-                    .collect(Collectors.toUnmodifiableList()))
+                    .collect(Collectors.toList()))
                     .subscribe();
                 return;
             }
@@ -223,7 +223,7 @@ final class PartitionBasedLoadBalancer {
                 checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
                     .stream()
                     .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
-                    .collect(Collectors.toUnmodifiableList()))
+                    .collect(Collectors.toList()))
                     .subscribe();
                 return;
             }
