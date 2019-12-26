@@ -339,7 +339,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         );
     }
 
-    @Override
+    @Test
     public void canCreateDataSource() {
         DataSource expectedDataSource = createTestBlobDataSource(null);
         DataSource actualDataSource = client.createDataSource(expectedDataSource);
@@ -354,7 +354,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         Assert.assertEquals(expectedDataSource.getName(), dataSourceList.get(0).getName());
     }
 
-    @Override
+    @Test
     public void canCreateDataSourceWithResponse() {
         DataSource expectedDataSource = createTestBlobDataSource(null);
         Response<DataSource> response = client.createDataSourceWithResponse(expectedDataSource, new RequestOptions(), null);

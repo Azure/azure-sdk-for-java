@@ -53,6 +53,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.reactivestreams.Publisher;
+import org.unitils.reflectionassert.ReflectionAssert;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -64,9 +65,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public abstract class SearchServiceTestBase extends TestBase {
 
@@ -572,7 +570,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     }
 
     protected void assertIndexesEqual(Index expected, Index actual) {
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+        ReflectionAssert.assertLenientEquals(expected, actual);
     }
 
     protected void waitForIndexing() {

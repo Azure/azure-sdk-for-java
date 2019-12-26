@@ -263,7 +263,8 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         client.runIndexer(indexer.getName());
 
         StepVerifier.create(client.getIndexerStatus(indexer.getName()))
-            .assertNext(indexerExecutionInfo -> Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus()))
+            .assertNext(indexerExecutionInfo -> Assert.assertEquals(
+                IndexerStatus.RUNNING, indexerExecutionInfo.getStatus()))
             .verifyComplete();
     }
 

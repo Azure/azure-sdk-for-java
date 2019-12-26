@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk7b351441d389.search.windows.net/indexers('thisindexerdoesnotexist')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk68405432ff23.search-dogfood.windows-int.net/indexers('thisindexerdoesnotexist')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "64fbc63d-edce-4a93-aecc-e14d2b908c9b",
+      "request-id" : "67241ab5-839f-4783-9930-8f6099d95f2c",
       "StatusCode" : "404",
-      "Date" : "Sun, 15 Dec 2019 12:34:41 GMT",
+      "Date" : "Tue, 24 Dec 2019 07:00:51 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "32",
+      "elapsed-time" : "50",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "115",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'thisindexerdoesnotexist' was not found in service 'azs-sdk7b351441d389'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'thisindexerdoesnotexist' was not found in service 'azs-sdk68405432ff23'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

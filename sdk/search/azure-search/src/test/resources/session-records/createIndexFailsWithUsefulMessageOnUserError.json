@@ -1,19 +1,19 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk88704014aecf.search-dogfood.windows-int.net/indexes?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk0726527526bd.search-dogfood.windows-int.net/indexes?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "0fb41cbe-d921-4d18-9163-9277d4a8eed4",
+      "request-id" : "de41e9e3-12f4-4591-9417-50d713dec73b",
       "StatusCode" : "400",
-      "Date" : "Mon, 25 Nov 2019 07:15:27 GMT",
+      "Date" : "Tue, 24 Dec 2019 07:02:07 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "51",
+      "elapsed-time" : "53",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "160",

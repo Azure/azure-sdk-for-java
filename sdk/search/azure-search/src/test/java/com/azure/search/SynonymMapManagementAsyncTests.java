@@ -190,15 +190,6 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .create(client.createOrUpdateSynonymMap(expected))
             .assertNext(res -> assertSynonymMapsEqual(expected, res))
             .verifyComplete();
-
-        StepVerifier
-            .create(client.createOrUpdateSynonymMapWithResponse(expected.setName("test-synonym2"),
-                new AccessCondition(), generateRequestOptions()))
-            .assertNext(res -> {
-                Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode());
-                assertSynonymMapsEqual(expected, res.getValue());
-            })
-            .verifyComplete();
     }
 
     @Test

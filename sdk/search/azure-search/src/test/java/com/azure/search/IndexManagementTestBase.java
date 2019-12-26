@@ -115,7 +115,7 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     }
 
     Index mutateCorsOptionsInIndex(Index index) {
-        index.setCorsOptions(index.getCorsOptions().setAllowedOrigins("*"));
+        index.getCorsOptions().setAllowedOrigins("*");
         return index;
     }
 
@@ -126,7 +126,7 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
             .findFirst().get();
     }
 
-    protected void indexeWithSelectedFieldAssertions(Index actualIndex) {
+    void indexeWithSelectedFieldAssertions(Index actualIndex) {
         Assert.assertNull(actualIndex.getFields());
         Assert.assertNull(actualIndex.getDefaultScoringProfile());
         Assert.assertNull(actualIndex.getCorsOptions());

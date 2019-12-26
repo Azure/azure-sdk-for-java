@@ -1,40 +1,40 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk1127108956b0.search-dogfood.windows-int.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc9493047d6b6.search-dogfood.windows-int.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "35b52f20-dff5-48cc-8780-14ff5f740630",
+      "request-id" : "78979db6-d585-4ecf-8b42-d86f2290df5f",
       "StatusCode" : "200",
-      "Date" : "Mon, 25 Nov 2019 23:31:18 GMT",
+      "Date" : "Tue, 24 Dec 2019 16:21:51 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "127",
+      "elapsed-time" : "173",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "239",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk1127108956b0.search-dogfood.windows-int.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc9493047d6b6.search-dogfood.windows-int.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk1127108956b0.search-dogfood.windows-int.net/indexes('hotels')/docs('2')?$select=HotelId%2cThisFieldDoesNotExist&api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc9493047d6b6.search-dogfood.windows-int.net/indexes('hotels')/docs('2')?$select=HotelId%2cThisFieldDoesNotExist&api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "985b5a8b-a145-43b7-9632-d4c5cfaad58b",
+      "request-id" : "aa1165e6-44d9-4615-aff0-0c44dc52b071",
       "StatusCode" : "400",
-      "Date" : "Mon, 25 Nov 2019 23:31:21 GMT",
+      "Date" : "Tue, 24 Dec 2019 16:21:54 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "2",
+      "elapsed-time" : "12",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "163",

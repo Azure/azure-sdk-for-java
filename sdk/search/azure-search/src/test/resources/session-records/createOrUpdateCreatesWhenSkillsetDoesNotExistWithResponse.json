@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk4562021473ec.search-dogfood.windows-int.net/skillsets('testskillset')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk1ef40383c9f8.search-dogfood.windows-int.net/skillsets('testskillset')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b62927e8-a544-4906-b7e1-5351acb9fa79",
+      "request-id" : "8e819483-94fe-4624-b5a2-b9ebd9c44447",
       "StatusCode" : "201",
-      "Date" : "Sun, 15 Dec 2019 08:59:19 GMT",
+      "Date" : "Tue, 24 Dec 2019 17:38:54 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7813D120F84C5\"",
-      "elapsed-time" : "125",
+      "ETag" : "W/\"0x8D78898260F1D88\"",
+      "elapsed-time" : "363",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "699",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk4562021473ec.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7813D120F84C5\\\"\",\"name\":\"testskillset\",\"description\":\"Skillset for testing OCR\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr-0\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext0\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk1ef40383c9f8.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D78898260F1D88\\\"\",\"name\":\"testskillset\",\"description\":\"Skillset for testing OCR\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr-0\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext0\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk4562021473ec.search-dogfood.windows-int.net/skillsets('testskillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk1ef40383c9f8.search-dogfood.windows-int.net/skillsets('testskillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

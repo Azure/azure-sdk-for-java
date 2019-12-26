@@ -18,6 +18,7 @@ import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.LoudHotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -41,7 +42,7 @@ import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAU
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;
 
-    @Override
+    @Test
     public void countingDocsOfNewIndexGivesZero() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -53,7 +54,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void indexDoesNotThrowWhenAllActionsSucceed() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -79,7 +80,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             verifyComplete();
     }
 
-    @Override
+    @Test
     public void canIndexWithPascalCaseFields() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
@@ -107,7 +108,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             verifyComplete();
     }
 
-    @Override
+    @Test
     public void canIndexStaticallyTypedDocuments() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -164,7 +165,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canIndexDynamicDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -211,7 +212,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void indexWithInvalidDocumentThrowsException() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -225,7 +226,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         );
     }
 
-    @Override
+    @Test
     public void canUseIndexWithReservedName() {
         Index indexWithReservedName = new Index()
             .setName("prototype")
@@ -257,7 +258,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canRoundtripBoundaryValues() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -279,7 +280,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
     }
 
-    @Override
+    @Test
     public void dynamicDocumentDateTimesRoundTripAsUtc() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
@@ -325,7 +326,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -346,7 +347,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             });
     }
 
-    @Override
+    @Test
     public void staticallyTypedDateTimesRoundTripAsUtc() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
@@ -381,7 +382,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canMergeStaticallyTypedDocuments() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -498,7 +499,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canDeleteBatchByKeys() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -531,7 +532,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void indexDoesNotThrowWhenDeletingDocumentWithExtraFields() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -565,7 +566,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFields() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -600,7 +601,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -728,7 +729,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canMergeDynamicDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -858,7 +859,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canIndexAndAccessResponse() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();

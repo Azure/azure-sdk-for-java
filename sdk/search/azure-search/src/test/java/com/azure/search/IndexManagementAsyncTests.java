@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
@@ -11,6 +13,7 @@ import com.azure.search.models.Field;
 import com.azure.search.models.Index;
 import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.MagnitudeScoringParameters;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.ScoringProfile;
@@ -37,14 +40,32 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     // commonly used lambda definitions
     private BiFunction<Index, AccessOptions, Mono<Index>> createOrUpdateIndexAsyncFunc =
-        (Index index, AccessOptions ac) -> client.createOrUpdateIndex(index);
+        (Index index, AccessOptions ac) -> createOrUpdateIndex(index, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Index> newIndexFunc = this::createTestIndex;
 
     private Function<Index, Index> mutateIndexFunc = this::mutateCorsOptionsInIndex;
 
     private BiFunction<String, AccessOptions, Mono<Void>> deleteIndexAsyncFunc =
-        (String name, AccessOptions ac) -> client.deleteIndex(name);
+        (String name, AccessOptions ac) -> deleteIndex(name, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private Mono<Index> createOrUpdateIndex(Index index,
+        AccessCondition accessCondition,
+        RequestOptions requestOptions) {
+        return client.createOrUpdateIndexWithResponse(
+            index,
+            false,
+            accessCondition,
+            requestOptions,
+            Context.NONE).map(Response::getValue);
+    }
+
+    private Mono<Void> deleteIndex(String indexName,
+        AccessCondition accessCondition,
+        RequestOptions requestOptions) {
+        return client.deleteIndexWithResponse(indexName, accessCondition, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
 
     @Override
     protected void beforeTest() {
@@ -257,16 +278,17 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
 
-        PagedFlux<Index> listResponse = client.listIndexes();
-
         StepVerifier
-            .create(listResponse.collectList())
-            .assertNext(result -> {
-                Assert.assertEquals(2, result.size());
-                Assert.assertEquals(index1.getName(), result.get(0).getName());
-                Assert.assertEquals(index2.getName(), result.get(1).getName());
-            })
-            .verifyComplete();
+            .create(
+                client.createIndex(index1)
+                    .then(client.createIndex(index2))
+                    .then(client.listIndexes().collectList()))
+                .assertNext(result -> {
+                    Assert.assertEquals(2, result.size());
+                    Assert.assertEquals(index1.getName(), result.get(0).getName());
+                    Assert.assertEquals(index2.getName(), result.get(1).getName());
+                })
+                .verifyComplete();
     }
 
     @Test
@@ -326,6 +348,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         SynonymMap synonymMap = new SynonymMap()
             .setName(synonymMapName)
             .setSynonyms("hotel,motel");
+        client.createSynonymMap(synonymMap).block();
 
         // Create an index
         Index index = createTestIndex();
@@ -348,6 +371,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
+    @Test
     public void canUpdateIndexDefinition() {
         Index fullFeaturedIndex = createTestIndex();
 

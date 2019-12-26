@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk63131008ff19.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk9a374950749f.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "ce5a81d6-5378-4271-a79e-bb746bd8c888",
+      "request-id" : "5dda272e-183f-44f4-8924-1bda9a0408dd",
       "StatusCode" : "201",
-      "Date" : "Mon, 02 Dec 2019 22:48:12 GMT",
+      "Date" : "Tue, 24 Dec 2019 17:35:50 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D77779B6AEEEF0\"",
+      "ETag" : "W/\"0x8D78897B7F04F9F\"",
       "elapsed-time" : "64",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "632",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk63131008ff19.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D77779B6AEEEF0\\\"\",\"name\":\"key-phrase-extraction-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"maxKeyPhraseCount\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/myText\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk9a374950749f.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D78897B7F04F9F\\\"\",\"name\":\"key-phrase-extraction-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"maxKeyPhraseCount\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/myText\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk63131008ff19.search-dogfood.windows-int.net/skillsets('key-phrase-extraction-skillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk9a374950749f.search-dogfood.windows-int.net/skillsets('key-phrase-extraction-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

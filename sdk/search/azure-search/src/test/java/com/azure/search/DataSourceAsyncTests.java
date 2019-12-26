@@ -356,7 +356,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         );
     }
 
-    @Override
+    @Test
     public void canCreateDataSource() {
         DataSource expectedDataSource = createTestBlobDataSource(null);
 
@@ -377,7 +377,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canCreateDataSourceWithResponse() {
         DataSource expectedDataSource = createTestBlobDataSource(null);
         StepVerifier.create(client.createDataSourceWithResponse(expectedDataSource, new RequestOptions(), null))

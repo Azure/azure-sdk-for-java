@@ -45,7 +45,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         AccessOptions,
         Index> createOrUpdateIndexFunc =
             (Index index, AccessOptions ac) ->
-                createIndex(index, ac.getAccessCondition(), ac.getRequestOptions());
+                createOrUpdateIndex(index, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Index> newIndexFunc = this::createTestIndex;
 
@@ -55,7 +55,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         (String name, AccessOptions ac) ->
             client.deleteIndexWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
-    private Index createIndex(Index index,
+    private Index createOrUpdateIndex(Index index,
         AccessCondition accessCondition,
         RequestOptions requestOptions) {
         return client.createOrUpdateIndexWithResponse(
@@ -128,7 +128,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         try {
             client.createIndex(index);
-            Assert.fail("createIndex did not throw an expected Exception");
+            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
             Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
@@ -336,6 +336,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         assertIndexesEqual(existingIndex, updatedIndex);
     }
 
+    @Test
     public void canUpdateIndexDefinition() {
         Index fullFeaturedIndex = createTestIndex();
 
