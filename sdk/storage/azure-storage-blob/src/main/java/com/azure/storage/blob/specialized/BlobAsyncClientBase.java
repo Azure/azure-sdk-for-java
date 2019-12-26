@@ -690,15 +690,15 @@ public class BlobAsyncClientBase {
     /**
      * Downloads the entire blob into a file specified by the path.
      *
-     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
-     * will be thrown.</p>
+     * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown.</p>
      *
      * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
      * AppendBlobClient}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -715,6 +715,8 @@ public class BlobAsyncClientBase {
                 openOptions.add(StandardOpenOption.CREATE);
                 openOptions.add(StandardOpenOption.TRUNCATE_EXISTING); // If the file already exists and it is opened
                 // for WRITE access, then its length is truncated to 0.
+                openOptions.add(StandardOpenOption.READ);
+                openOptions.add(StandardOpenOption.WRITE);
             }
             return downloadToFileWithResponse(filePath, null, null, null, null, false, openOptions)
                 .flatMap(FluxUtil::toMono);
@@ -763,8 +765,8 @@ public class BlobAsyncClientBase {
     /**
      * Downloads the entire blob into a file specified by the path.
      *
-     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
-     * will be thrown.</p>
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate {@link OpenOption OpenOptions} </p>
      *
      * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
      * AppendBlobClient}.</p>
@@ -774,7 +776,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -812,12 +814,13 @@ public class BlobAsyncClientBase {
         BlobRequestConditions finalConditions = requestConditions == null
             ? new BlobRequestConditions() : requestConditions;
 
+        // Default behavior is not to overwrite
         if (openOptions == null) {
             openOptions = new HashSet<>();
             openOptions.add(StandardOpenOption.CREATE_NEW);
+            openOptions.add(StandardOpenOption.WRITE);
+            openOptions.add(StandardOpenOption.READ);
         }
-        openOptions.add(StandardOpenOption.WRITE); // Open file for write
-        openOptions.add(StandardOpenOption.READ); // Open file for read
 
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(filePath, openOptions);
         return Mono.just(channel)

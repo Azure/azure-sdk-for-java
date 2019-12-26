@@ -454,15 +454,15 @@ public class BlobClientBase {
     /**
      * Downloads the entire blob into a file specified by the path.
      *
-     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
-     * will be thrown.</p>
+     * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown.</p>
      *
      * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
      * AppendBlobClient}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -473,13 +473,14 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public BlobProperties downloadToFile(String filePath, boolean overwrite) {
-        Set<OpenOption> openOptions = new HashSet<>();
+        Set<OpenOption> openOptions = null;
         if (overwrite) {
+            openOptions = new HashSet<>();
             openOptions.add(StandardOpenOption.CREATE);
             openOptions.add(StandardOpenOption.TRUNCATE_EXISTING); // If the file already exists and it is opened
             // for WRITE access, then its length is truncated to 0.
-        } else {
-            openOptions.add(StandardOpenOption.CREATE_NEW); // Create new file, fails if the file already exists
+            openOptions.add(StandardOpenOption.READ);
+            openOptions.add(StandardOpenOption.WRITE);
         }
         return downloadToFileWithResponse(filePath, null, null, null, null, false, openOptions, null, Context.NONE)
             .getValue();
@@ -526,8 +527,8 @@ public class BlobClientBase {
     /**
      * Downloads the entire blob into a file specified by the path.
      *
-     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
-     * will be thrown.</p>
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate {@link OpenOption OpenOptions} </p>
      *
      * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
      * AppendBlobClient}.</p>
@@ -537,7 +538,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
