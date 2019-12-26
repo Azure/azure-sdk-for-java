@@ -167,7 +167,6 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    @Requires({liveMode()}) // Uncomment once in prod - user delegation not yet set up for stg account
     def "serviceSASSignatureValues network test file user delegation"() {
         setup:
         def permissions = new PathSasPermission()
@@ -194,7 +193,6 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    @Requires({liveMode()}) // Uncomment once in prod - user delegation not yet set up for stg account
     def "serviceSASSignatureValues network test file system user delegation"() {
         setup:
         def permissions = new FileSystemSasPermission()

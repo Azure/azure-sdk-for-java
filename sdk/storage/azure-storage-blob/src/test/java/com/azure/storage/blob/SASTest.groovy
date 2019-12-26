@@ -262,8 +262,6 @@ class SASTest extends APISpec {
         notThrown(BlobStorageException)
     }
 
-    // Uncomment when 71 is in prod
-    @Ignore
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -412,8 +410,6 @@ class SASTest extends APISpec {
 
     }
 
-    // Uncomment when 71 is in prod
-    @Ignore
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -498,8 +494,6 @@ class SASTest extends APISpec {
         properties.getContentLanguage() == "language"
     }
 
-    // Uncomment when 71 is in prod
-    @Ignore
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -1205,7 +1199,6 @@ class SASTest extends APISpec {
     }
 
     // TODO : Figure out how to properly port this test over since I changed it to a common sas params
-    @Ignore
     def "BlobURLParts"() {
         setup:
         def parts = new BlobUrlParts()
