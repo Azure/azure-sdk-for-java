@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -135,6 +136,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * Verifies that a Bad request exception is returned for input documents with same ids.
      */
     @Test
+    @Disabled
     public void detectLanguageDuplicateIdInput() {
         detectLanguageDuplicateIdRunner((inputs, options) -> {
             StepVerifier.create(client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE))
