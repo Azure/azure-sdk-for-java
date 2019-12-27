@@ -29,8 +29,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     private TextAnalyticsClient client;
 
-    @Test
-    @Disabled
+    @Override
     protected void beforeTest() {
         client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint())
