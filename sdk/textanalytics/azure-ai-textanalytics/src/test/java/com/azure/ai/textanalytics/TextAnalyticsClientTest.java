@@ -14,7 +14,6 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -131,7 +130,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      * Verifies that a Bad request exception is returned for input documents with same ids.
      */
     @Test
-    @Disabled
     public void detectLanguageDuplicateIdInput() {
         detectLanguageDuplicateIdRunner((inputs, options) -> {
             assertRestException(() -> client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE),
@@ -155,7 +153,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
-    @Disabled
     public void recognizeEntitiesForFaultyText() {
         // TODO: (savaity) confirm with service team.
         assertEquals(client.recognizeEntities("!@#%%").getNamedEntities().size(), 0);
@@ -189,7 +186,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
-    @Disabled
     public void recognizePiiEntitiesForFaultyText() {
         assertEquals(client.recognizePiiEntities("!@#%%").getNamedEntities().size(), 0);
     }
