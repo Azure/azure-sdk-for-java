@@ -114,7 +114,7 @@ public class DataLakeServiceClientBuilder {
             this.accountName = parts.getAccountName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
 
-            String sasToken = parts.getSasQueryParameters().encode();
+            String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }

@@ -43,4 +43,8 @@ public final class KeyEncryptionKeyClient implements KeyEncryptionKey {
     public byte[] unwrapKey(String algorithm, byte[] encryptedKey) {
         return client.unwrapKey(algorithm, encryptedKey).block();
     }
+
+    KeyEncryptionKeyAsyncClient getKeyEncryptionKeyAsyncClient() {
+        return client;
+    }
 }

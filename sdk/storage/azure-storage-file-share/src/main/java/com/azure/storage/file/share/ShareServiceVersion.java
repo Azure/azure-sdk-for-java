@@ -10,7 +10,8 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Storage File supported by this client library.
  */
 public enum ShareServiceVersion implements ServiceVersion {
-    V2019_07_07("2019-07-07"); // TODO: (gapra) Should this be in addition to 2019-02-02?
+    V2019_02_02("2019-02-02"),
+    V2019_07_07("2019-07-07");
 
     private final String version;
 

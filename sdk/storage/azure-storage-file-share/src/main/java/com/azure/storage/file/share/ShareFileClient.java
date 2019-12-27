@@ -28,6 +28,7 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -1381,6 +1382,23 @@ public class ShareFileClient {
      */
     public String getAccountName() {
         return this.shareFileAsyncClient.getAccountName();
+    }
+
+    /**
+     * Generates a service SAS for the file using the specified {@link ShareServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.generateSas#ShareServiceSasSignatureValues}
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
+        return this.shareFileAsyncClient.generateSas(shareServiceSasSignatureValues);
     }
 }
 
