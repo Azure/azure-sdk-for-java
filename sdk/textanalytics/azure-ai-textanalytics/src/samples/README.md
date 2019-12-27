@@ -50,18 +50,18 @@ Guidelines](../../CONTRIBUTING.md) for more information.
 [SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [SDK_README_NEXT_STEPS]: ../../README.md#next-steps
 
-[sample_hello_world]: java/com/azure/cs/textanalytics/HelloWorld.java
-[sample_entities]: java/com/azure/cs/textanalytics/RecognizeEntities.java
-[sample_pii_entities]: java/com/azure/cs/textanalytics/RecognizePII.java
-[sample_linked_entities]: java/com/azure/cs/textanalytics/RecognizeLinkedEntities.java
-[sample_key_phrases]: java/com/azure/cs/textanalytics/RecognizeKeyPhrases.java
-[sample_sentiment]: java/com/azure/cs/textanalytics/DetectSentiment.java
+[sample_hello_world]: java/com/azure/ai/textanalytics/HelloWorld.java
+[sample_entities]: java/com/azure/ai/textanalytics/RecognizeEntities.java
+[sample_pii_entities]: java/com/azure/ai/textanalytics/RecognizePii.java
+[sample_linked_entities]: java/com/azure/ai/textanalytics/RecognizeLinkedEntities.java
+[sample_key_phrases]: java/com/azure/ai/textanalytics/ExtractKeyPhrases.java
+[sample_sentiment]: java/com/azure/ai/textanalytics/AnalyzeSentiment.java
 
-[sample_language_batch]: java/com/azure/cs/textanalytics/batch/DetectLanguageBatchDocuments.java
-[sample_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
-[sample_pii_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizePiiBatchDocuments.java
-[sample_linked_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
-[sample_key_phrases_batch]: java/com/azure/cs/textanalytics/batch/RecognizeKeyPhrasesBatchDocuments.java
-[sample_sentiment_batch]: java/com/azure/cs/textanalytics/batch/DetectSentimentBatchDocuments.java
+[sample_language_batch]: java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
+[sample_entities_batch]: java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
+[sample_pii_entities_batch]: java/com/azure/ai/textanalytics/batch/RecognizePiiBatchDocuments.java
+[sample_linked_entities_batch]: java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
+[sample_key_phrases_batch]: java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
+[sample_sentiment_batch]: java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)
