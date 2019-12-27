@@ -1,24 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com//text/analytics/v3.0-preview.1/languages",
+    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/languages",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "de228f54-3435-4075-bbe2-84d568ba00c5",
+      "x-ms-client-request-id" : "75c6f046-1035-4598-bc20-1ab15521f7d7",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "5",
+      "x-envoy-upstream-service-time" : "6",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=3",
-      "apim-request-id" : "ff18a335-ae1e-4041-b7ea-a723e1fe7e1c",
-      "x-aml-ta-request-id" : "0c8a99c1-0d5e-4e28-9b9d-2e5d54de567a",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=0",
+      "apim-request-id" : "4f27dd1f-ad54-45f4-9c53-f21a3e371fa8",
+      "x-aml-ta-request-id" : "267b37e1-b02b-4b66-93ee-ccf36be032a7",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"detectedLanguages\":[{\"name\":\"English\",\"iso6391Name\":\"en\",\"score\":1.0}]},{\"id\":\"1\",\"detectedLanguages\":[{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"score\":1.0}]},{\"id\":\"2\",\"detectedLanguages\":[{\"name\":\"(Unknown)\",\"iso6391Name\":\"(Unknown)\",\"score\":0.0}]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Sun, 15 Dec 2019 18:40:59 GMT",
+      "Body" : "{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"innerError\":{\"code\":\"InvalidCountryHint\",\"message\":\"Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code.\"},\"message\":\"Invalid Country Hint.\"}},{\"id\":\"1\",\"error\":{\"code\":\"InvalidArgument\",\"innerError\":{\"code\":\"InvalidCountryHint\",\"message\":\"Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code.\"},\"message\":\"Invalid Country Hint.\"}},{\"id\":\"2\",\"error\":{\"code\":\"InvalidArgument\",\"innerError\":{\"code\":\"InvalidCountryHint\",\"message\":\"Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code.\"},\"message\":\"Invalid Country Hint.\"}}],\"modelVersion\":\"2019-10-01\"}",
+      "Date" : "Fri, 27 Dec 2019 20:02:31 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
