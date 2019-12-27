@@ -113,14 +113,12 @@ public class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithAzureCli(TokenRequestContext request) {
         String azCommand = "az account get-access-token --resource ";
-        String azureCliNotInstalled = "Azure CLI not installed";
-        String errorString = "'az' is not recognized";
-    
+
         StringBuilder command = new StringBuilder();
         command.append(azCommand);
         String scopes = ScopeUtil.scopesToResource(request.getScopes());
         command.append(scopes);
-    
+
         AccessToken token = null;
         try {
             String starter;
@@ -136,34 +134,37 @@ public class IdentityClient {
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, command.toString());
             builder.redirectErrorStream(true);
             Process p = builder.start();
-                
+
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line;
             StringBuilder output = new StringBuilder();
             while (true) {
                 line = r.readLine();
-                    if (line == null) {
-                        break;
-                    }
-                    if(line.startsWith(errorString)){
-                        throw new Exception(azureCliNotInstalled);
-                    }
-                    output.append(line);
+                if (line == null) {
+                    break;
                 }
-            String tokenString = output.toString();
-            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(tokenString, Map.class,
-                        SerializerEncoding.JSON);
+                if (line.startsWith("'az' is not recognized") || line.matches("(.*)az:(.*)not found")) {
+                    throw new Exception("Azure CLI not installed");
+                }
+                output.append(line);
+            }
+            String processOutput = output.toString();
+            if (p.exitValue() != 0) {
+                throw new Exception(processOutput);
+            }
+            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(processOutput, Map.class,
+                    SerializerEncoding.JSON);
             String accessToken = objectMap.get("accessToken");
             String time = objectMap.get("expiresOn");
             String timeToSecond = time.substring(0, time.indexOf("."));
             String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
-            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault())
-                                                    .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                    .atZone(ZoneId.systemDefault()).toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
-            } catch (Exception e) {
-                return Mono.error(e);
-            }
-            return Mono.just(token);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+        return Mono.just(token);
     }
     
     /**
