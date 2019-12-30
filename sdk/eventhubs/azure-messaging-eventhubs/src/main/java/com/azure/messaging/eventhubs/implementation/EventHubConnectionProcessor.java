@@ -25,8 +25,8 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
+import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -40,10 +40,10 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     private final ClientLogger logger = new ClientLogger(EventHubConnectionProcessor.class);
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicBoolean isRequested = new AtomicBoolean();
+    private final ArrayList<ConnectionSubscriber> subscribers = new ArrayList<>();
     private final Object lock = new Object();
 
     private Subscription upstream;
-    private ConcurrentLinkedDeque<ConnectionSubscriber> subscribers = new ConcurrentLinkedDeque<>();
     private EventHubAmqpConnection currentConnection;
     private Disposable connectionSubscription;
 
@@ -70,7 +70,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
             currentConnection = eventHubAmqpConnection;
 
             subscribers.forEach(subscriber -> subscriber.complete(eventHubAmqpConnection));
-            subscribers = new ConcurrentLinkedDeque<>();
+            subscribers.clear();
 
             connectionSubscription = eventHubAmqpConnection.getEndpointStates().subscribe(
                 state -> {
@@ -112,7 +112,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
         synchronized (lock) {
             subscribers.forEach(subscriber -> subscriber.onError(throwable));
-            subscribers = new ConcurrentLinkedDeque<>();
+            subscribers.clear();
         }
     }
 
@@ -123,7 +123,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
         isTerminated.set(true);
         synchronized (lock) {
             subscribers.forEach(subscriber -> subscriber.onComplete());
-            subscribers = new ConcurrentLinkedDeque<>();
+            subscribers.clear();
         }
     }
 
