@@ -18,6 +18,9 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -29,6 +32,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.mockito.Mockito.when;
@@ -94,7 +98,7 @@ public class EventHubConnectionProcessorTest {
     }
 
     /**
-     * Verifies that we can get the same, open connection when subscribing twice.
+     * Verifies that we can get the next connection when the first one is closed.
      */
     @Test
     public void newConnectionOnClose() {
@@ -145,6 +149,84 @@ public class EventHubConnectionProcessorTest {
         StepVerifier.create(processor)
             .expectNext(connection3)
             .expectComplete()
+            .verify(timeout);
+    }
+
+    /**
+     * Verifies that we can get the next connection when the first one encounters a retryable error.
+     */
+    @Test
+    public void newConnectionOnRetryableError() {
+        // Arrange
+        final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[] {
+            connection,
+            connection2
+        };
+        final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
+            new AmqpErrorContext("test-namespace"));
+
+        final Flux<EventHubAmqpConnection> connectionsSink = createSink(connections);
+        final EventHubConnectionProcessor processor = connectionsSink.subscribeWith(eventHubConnectionProcessor);
+        final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
+
+        // Act & Assert
+        // Verify that we get the first connection.
+        StepVerifier.create(processor)
+            .then(() -> endpointSink.next(AmqpEndpointState.ACTIVE))
+            .expectNext(connection)
+            .expectComplete()
+            .verify(timeout);
+
+        endpointSink.error(amqpException);
+
+        // Expect that the next connection is returned to us.
+        StepVerifier.create(processor)
+            .expectNext(connection2)
+            .expectComplete()
+            .verify(timeout);
+
+        // Expect that the next connection is returned to us.
+        StepVerifier.create(processor)
+            .expectNext(connection2)
+            .expectComplete()
+            .verify(timeout);
+    }
+
+    /**
+     * Verifies that an error is propagated when the first connection encounters a non-retryable error.
+     */
+    @Test
+    public void nonRetryableError() {
+        // Arrange
+        final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[] {
+            connection,
+            connection2
+        };
+        final AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.ILLEGAL_STATE, "Test-error",
+            new AmqpErrorContext("test-namespace"));
+
+        final Flux<EventHubAmqpConnection> connectionsSink = createSink(connections);
+        final EventHubConnectionProcessor processor = connectionsSink.subscribeWith(eventHubConnectionProcessor);
+        final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
+
+        // Act & Assert
+        // Verify that we get the first connection.
+        StepVerifier.create(processor)
+            .then(() -> endpointSink.next(AmqpEndpointState.ACTIVE))
+            .expectNext(connection)
+            .expectComplete()
+            .verify(timeout);
+
+        endpointSink.error(amqpException);
+
+        // Expect that the error is returned to us.
+        StepVerifier.create(processor)
+            .expectErrorMatches(error -> Objects.equals(amqpException, error))
+            .verify(timeout);
+
+        // Expect that the error is returned to us again.
+        StepVerifier.create(processor)
+            .expectErrorMatches(error -> Objects.equals(amqpException, error))
             .verify(timeout);
     }
 
