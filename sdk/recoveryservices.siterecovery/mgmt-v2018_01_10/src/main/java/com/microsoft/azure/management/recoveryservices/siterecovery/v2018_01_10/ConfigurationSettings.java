@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Replication provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = ConfigurationSettings.class)
 @JsonTypeName("ConfigurationSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "HyperVVirtualMachine", value = HyperVVirtualMachineDetails.class),

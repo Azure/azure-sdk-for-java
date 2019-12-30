@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10;
 
 import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -28,6 +29,12 @@ public class ResourceHealthSummary {
      */
     @JsonProperty(value = "issues")
     private List<HealthErrorSummary> issues;
+
+    /**
+     * The categorized resource counts.
+     */
+    @JsonProperty(value = "categorizedResourceCounts")
+    private Map<String, Integer> categorizedResourceCounts;
 
     /**
      * Get the count of total resources under the container.
@@ -66,6 +73,26 @@ public class ResourceHealthSummary {
      */
     public ResourceHealthSummary withIssues(List<HealthErrorSummary> issues) {
         this.issues = issues;
+        return this;
+    }
+
+    /**
+     * Get the categorized resource counts.
+     *
+     * @return the categorizedResourceCounts value
+     */
+    public Map<String, Integer> categorizedResourceCounts() {
+        return this.categorizedResourceCounts;
+    }
+
+    /**
+     * Set the categorized resource counts.
+     *
+     * @param categorizedResourceCounts the categorizedResourceCounts value to set
+     * @return the ResourceHealthSummary object itself.
+     */
+    public ResourceHealthSummary withCategorizedResourceCounts(Map<String, Integer> categorizedResourceCounts) {
+        this.categorizedResourceCounts = categorizedResourceCounts;
         return this;
     }
 

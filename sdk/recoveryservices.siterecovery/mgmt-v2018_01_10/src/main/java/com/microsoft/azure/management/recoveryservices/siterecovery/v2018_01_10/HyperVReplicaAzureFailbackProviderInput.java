@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * HvrA provider specific input for failback.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = HyperVReplicaAzureFailbackProviderInput.class)
 @JsonTypeName("HyperVReplicaAzureFailback")
 public class HyperVReplicaAzureFailbackProviderInput extends ProviderSpecificFailoverInput {
     /**

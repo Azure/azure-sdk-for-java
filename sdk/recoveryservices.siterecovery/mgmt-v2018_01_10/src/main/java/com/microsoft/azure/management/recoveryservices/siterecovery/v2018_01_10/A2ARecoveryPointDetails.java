@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A2A provider specific recovery point details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = A2ARecoveryPointDetails.class)
 @JsonTypeName("A2A")
 public class A2ARecoveryPointDetails extends ProviderSpecificRecoveryPointDetails {
     /**
