@@ -30,18 +30,18 @@ public class CliCredentialTest {
     public void getTokenMockAsync() throws Exception {   
         // setup
         String token1 = "token1";
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("resourcename");
+        TokenRequestContext request = new TokenRequestContext().addScopes("resourcename");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithAzureCli(request1))
+        when(identityClient.authenticateWithAzureCli(request))
                 .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
         CliCredential credential = new CliCredentialBuilder().build();
-        StepVerifier.create(credential.getToken(request1))
+        StepVerifier.create(credential.getToken(request))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                         && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();

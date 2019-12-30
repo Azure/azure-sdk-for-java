@@ -82,6 +82,26 @@ public class DefaultAzureCredentialTest {
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
+    
+    @Test
+    public void testUseCliCredential() throws Exception {
+        // setup
+        String token1 = "token1";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+        when(identityClient.authenticateWithAzureCli(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
+        // test
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        StepVerifier.create(credential.getToken(request))
+            .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+            .verifyComplete();
+    }
 
     @Test
     public void testNoCredentialWorks() throws Exception {
