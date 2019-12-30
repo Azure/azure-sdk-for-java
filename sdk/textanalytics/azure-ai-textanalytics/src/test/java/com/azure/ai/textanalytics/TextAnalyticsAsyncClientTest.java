@@ -159,7 +159,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void recognizeEntitiesForFaultyText() {
         // TODO: (savaity) confirm with service team this returns no error-ed document, no exception but empty documents and error list.
         StepVerifier.create(client.recognizeEntities("!@#%%"))
@@ -285,7 +285,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void recognizePiiEntitiesForFaultyText() {
         // TODO: (savaity) confirm with service team this returns no error-ed document, no exception but empty documents and error list.
         StepVerifier.create(client.recognizePiiEntities("!@#%%"))
