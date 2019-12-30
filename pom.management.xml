@@ -101,10 +101,6 @@
     <testng.version>6.14.3</testng.version>
     <assertj.version>3.11.1</assertj.version>
     <hamcrest.version>1.3</hamcrest.version>
-    <unitils-core.version>3.4.2</unitils-core.version>
-    <azure.version>1.24.1</azure.version>
-    <azure-mgmt-search.version>1.24.1</azure-mgmt-search.version>
-    <azure-storage-blob.version>12.1.0</azure-storage-blob.version>
 
     <!-- Maven Tool Versions -->
     <maven-build-tools.version>1.0.2</maven-build-tools.version>
@@ -617,34 +613,6 @@
         <groupId>org.powermock</groupId>
         <artifactId>powermock-api-mockito2</artifactId>
         <version>2.0.2</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.unitils</groupId>
-        <artifactId>unitils-core</artifactId>
-        <version>3.4.2</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure</artifactId>
-        <version>1.24.1</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-mgmt-search</artifactId>
-        <version>1.24.1</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-storage-blob</artifactId>
-        <version>12.1.0</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
