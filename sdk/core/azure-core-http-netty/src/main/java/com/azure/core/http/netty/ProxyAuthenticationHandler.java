@@ -1,12 +1,16 @@
 package com.azure.core.http.netty;
 
+import com.azure.core.http.AuthorizationChallengeHandler;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.net.SocketAddress;
 
-public class HttpProxyHandler extends io.netty.handler.proxy.ProxyHandler {
-    protected HttpProxyHandler(SocketAddress proxyAddress, String username, String password) {
+public class ProxyAuthenticationHandler extends io.netty.handler.proxy.ProxyHandler {
+    private final AuthorizationChallengeHandler challengeHandler;
+
+    ProxyAuthenticationHandler(SocketAddress proxyAddress, String username, String password) {
         super(proxyAddress);
+        this.challengeHandler = new AuthorizationChallengeHandler(username, password);
     }
 
     @Override

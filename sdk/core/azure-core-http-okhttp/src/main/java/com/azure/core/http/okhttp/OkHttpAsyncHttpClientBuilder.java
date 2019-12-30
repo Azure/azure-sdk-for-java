@@ -3,29 +3,19 @@
 
 package com.azure.core.http.okhttp;
 
-import com.azure.core.http.AuthorizationChallengeHandler;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
-import okhttp3.Challenge;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okio.Buffer;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.Proxy;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Builder to configure and build an implementation of {@link HttpClient} for OkHttp.
@@ -167,22 +157,23 @@ public class OkHttpAsyncHttpClientBuilder {
         for (Interceptor interceptor : this.networkInterceptors) {
             httpClientBuilder = httpClientBuilder.addNetworkInterceptor(interceptor);
         }
-        if (this.readTimeout != null) {
-            httpClientBuilder = httpClientBuilder.readTimeout(this.readTimeout);
-        } else {
-            httpClientBuilder = httpClientBuilder.readTimeout(DEFAULT_READ_TIMEOUT);
-        }
-        if (this.connectionTimeout != null) {
-            httpClientBuilder = httpClientBuilder.connectTimeout(this.connectionTimeout);
-        } else {
-            httpClientBuilder = httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
-        }
+
+        httpClientBuilder = (this.readTimeout != null)
+            ? httpClientBuilder.readTimeout(this.readTimeout)
+            : httpClientBuilder.readTimeout(DEFAULT_READ_TIMEOUT);
+
+        httpClientBuilder = (this.connectionTimeout != null)
+            ? httpClientBuilder.connectTimeout(this.connectionTimeout)
+            : httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
+
         if (this.connectionPool != null) {
             httpClientBuilder = httpClientBuilder.connectionPool(connectionPool);
         }
+
         if (this.dispatcher != null) {
             httpClientBuilder = httpClientBuilder.dispatcher(dispatcher);
         }
+
         if (proxyOptions != null) {
             Proxy.Type proxyType;
             switch (proxyOptions.getType()) {
@@ -202,62 +193,14 @@ public class OkHttpAsyncHttpClientBuilder {
             Proxy proxy = new Proxy(proxyType, this.proxyOptions.getAddress());
             httpClientBuilder = httpClientBuilder.proxy(proxy);
             if (proxyOptions.getUsername() != null) {
-                AuthorizationChallengeHandler challengeHandler =
-                    new AuthorizationChallengeHandler(proxyOptions.getUsername(), proxyOptions.getPassword());
+                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(proxyOptions.getUsername(),
+                    proxyOptions.getPassword());
 
-                httpClientBuilder = httpClientBuilder.proxyAuthenticator((route, response) -> {
-                    List<Challenge> basicChallenges = response.challenges().stream()
-                        .filter(challenge -> "Basic".equalsIgnoreCase(challenge.scheme()))
-                        .collect(Collectors.toList());
-
-                    List<Challenge> digestChallenges = response.challenges().stream()
-                        .filter(challenge -> "Digest".equalsIgnoreCase(challenge.scheme()))
-                        .collect(Collectors.toList());
-
-                    String authorizationHeader = null;
-                    if (digestChallenges.size() > 0) {
-                        List<HttpHeaders> challenges = digestChallenges.stream().map(Challenge::authParams)
-                            .map(HttpHeaders::new).collect(Collectors.toList());
-                        Supplier<byte[]> bodySupplier = () -> {
-                            RequestBody requestBody = response.request().body();
-                            if (requestBody == null) {
-                                return new byte[0];
-                            }
-
-                            Buffer bodyBuffer = new Buffer();
-                            try {
-                                requestBody.writeTo(bodyBuffer);
-                            } catch (IOException e) {
-                                throw logger.logExceptionAsWarning(new UncheckedIOException(e));
-                            }
-
-                            return bodyBuffer.readByteArray();
-                        };
-
-                        authorizationHeader = challengeHandler.handleDigest(response.request().method(),
-                            response.request().url().toString(), challenges, bodySupplier);
-                    } else if (basicChallenges.size() > 0) {
-                        authorizationHeader = challengeHandler.handleBasic();
-                    }
-
-                    /*
-                     * If Digest proxy was attempted but it wasn't able to be computed and the server sent a Basic
-                     * challenge as well apply the basic authorization header.
-                     */
-                    if (authorizationHeader == null && basicChallenges.size() > 0) {
-                        authorizationHeader = challengeHandler.handleBasic();
-                    }
-
-                    Request.Builder requestBuilder = response.request().newBuilder();
-
-                    if (authorizationHeader != null) {
-                        requestBuilder.header("Proxy-Authorization", authorizationHeader);
-                    }
-
-                    return requestBuilder.build();
-                });
+                httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
+                    .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());
             }
         }
+
         return new OkHttpAsyncHttpClient(httpClientBuilder.build());
     }
 }
