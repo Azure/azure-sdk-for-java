@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 
+/**
+ * Helper class for managing detect language endpoint.
+ */
 class DetectLanguageClient {
     private final ClientLogger logger;
     private final TextAnalyticsClientImpl service;

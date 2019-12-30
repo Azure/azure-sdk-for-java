@@ -6,7 +6,10 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
+import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
+import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -29,6 +32,9 @@ import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.core.util.FluxUtil.monoError;
 
+/**
+ * Helper class for managing extract keyphrase endpoint.
+ */
 class ExtractKeyPhraseClient {
     private final ClientLogger logger;
     private final TextAnalyticsClientImpl service;
@@ -76,8 +82,15 @@ class ExtractKeyPhraseClient {
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
+    /**
+     * Helper method to convert the service response of {@link KeyPhraseResult} to {@link DocumentResultCollection}.
+     *
+     * @param keyPhraseResult the {@link KeyPhraseResult} returned by the service.
+     *
+     * @return the {@link DocumentResultCollection} of {@link KeyPhraseResult} to be returned by the SDK.
+     */
     private DocumentResultCollection<ExtractKeyPhraseResult> toDocumentResultCollection(
-        final com.azure.ai.textanalytics.implementation.models.KeyPhraseResult keyPhraseResult) {
+        final KeyPhraseResult keyPhraseResult) {
         List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
         for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
             keyPhraseResultList.add(new ExtractKeyPhraseResult(documentKeyPhrases.getId(),

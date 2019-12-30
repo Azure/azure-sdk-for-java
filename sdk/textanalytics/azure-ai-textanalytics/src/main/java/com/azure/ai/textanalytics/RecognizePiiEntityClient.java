@@ -32,6 +32,9 @@ import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.core.util.FluxUtil.monoError;
 
+/**
+ * Helper class for managing recognize pii entity endpoint.
+ */
 class RecognizePiiEntityClient {
     private final ClientLogger logger;
     private final TextAnalyticsClientImpl service;

@@ -31,6 +31,9 @@ import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 
+/**
+ * Helper class for managing recognize entity endpoint.
+ */
 class RecognizeEntityClient {
     private final ClientLogger logger;
     private final TextAnalyticsClientImpl service;

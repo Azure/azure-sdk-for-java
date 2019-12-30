@@ -33,6 +33,9 @@ import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 
+/**
+ * Helper class for managing sentiment analysis endpoint.
+ */
 class AnalyzeSentimentClient {
     private final ClientLogger logger;
     private final TextAnalyticsClientImpl service;
@@ -99,6 +102,13 @@ class AnalyzeSentimentClient {
             : toBatchStatistics(sentimentResponse.getStatistics()));
     }
 
+    /**
+     * Helper method to convert the service response of {@link DocumentSentiment} to {@link AnalyzeSentimentResult}.
+     *
+     * @param documentSentiment the {@link DocumentSentiment} returned by the service.
+     *
+     * @return the {@link AnalyzeSentimentResult} to be returned by the SDK.
+     */
     private AnalyzeSentimentResult convertToTextSentimentResult(final DocumentSentiment documentSentiment) {
         // Document text sentiment
         final TextSentimentClass documentSentimentClass = TextSentimentClass.fromString(documentSentiment.
