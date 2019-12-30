@@ -3,11 +3,17 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
@@ -52,7 +58,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
      * Closes this output stream and releases any system resources associated with this stream. If any data remains in
      * the buffer it is committed to the service.
      *
-     * @throws IOException If an I/O error occurs.
+     * @throws IOException
+     *     If an I/O error occurs.
      */
     @Override
     public synchronized void close() throws IOException {
@@ -134,39 +141,35 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     private static final class BlockBlobOutputStream extends BlobOutputStream {
+
         private final BlobRequestConditions requestConditions;
-        private final String blockIdPrefix;
-        private final List<String> blockList;
-        private final BlockBlobAsyncClient client;
+        private final BlobAsyncClient client;
 
         private BlockBlobOutputStream(final BlockBlobAsyncClient client,
             final BlobRequestConditions requestConditions) {
-            super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
-            this.client = client;
+            super(BlockBlobClient.MAX_UPLOAD_BLOB_BYTES);
+            this.client = prepareBuilder(client).buildAsyncClient();
             this.requestConditions = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
-            this.blockIdPrefix = UUID.randomUUID().toString() + '-';
-            this.blockList = new ArrayList<>();
         }
 
-        /**
-         * Generates a new block ID to be used for PutBlock.
-         *
-         * @return Base64 encoded block ID
-         */
-        private String getCurrentBlockId() {
-            String blockIdSuffix = String.format("%06d", this.blockList.size());
-            return Base64.getEncoder().encodeToString((this.blockIdPrefix + blockIdSuffix)
-                .getBytes(StandardCharsets.UTF_8));
+        @Override
+        synchronized void commit() {
+            // BlockBlob is now based on buffered upload, no need to commit.
         }
 
-        private Mono<Void> writeBlock(Flux<ByteBuffer> blockData, String blockId, long writeLength) {
-            return client.stageBlockWithResponse(blockId, blockData, writeLength, null,
-                this.requestConditions.getLeaseId())
-                .then()
-                .onErrorResume(BlobStorageException.class, e -> {
-                    this.lastError = new IOException(e);
-                    return Mono.empty();
-                });
+        private BlobClientBuilder prepareBuilder(BlobAsyncClientBase client) {
+            BlobClientBuilder builder = new BlobClientBuilder()
+                .pipeline(client.getHttpPipeline())
+                .endpoint(client.getBlobUrl())
+                .snapshot(client.getSnapshotId())
+                .serviceVersion(client.getServiceVersion());
+
+            CpkInfo cpk = client.getCustomerProvidedKey();
+            if (cpk != null) {
+                builder.customerProvidedKey(new CustomerProvidedKey(cpk.getEncryptionKey()));
+            }
+
+            return builder;
         }
 
         @Override
@@ -175,21 +178,34 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 return Mono.empty();
             }
 
-            final String blockID = this.getCurrentBlockId();
-            this.blockList.add(blockID);
-
             Flux<ByteBuffer> fbb = Flux.range(0, 1)
                 .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
 
-            return this.writeBlock(fbb.subscribeOn(Schedulers.elastic()), blockID, writeLength);
+            ParallelTransferOptions parallelTransferOptions = ModelHelper.populateAndApplyDefaults(null);
+
+            return this.writeBlock(fbb.subscribeOn(Schedulers.elastic()), parallelTransferOptions);
         }
 
-        /**
-         * Commits the blob, for block blob this uploads the block list.
-         */
+        private Mono<Void> writeBlock(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
+            return client.uploadWithResponse(data, parallelTransferOptions, null, null, null, requestConditions)
+                .then()
+                .onErrorResume(BlobStorageException.class, e -> {
+                    this.lastError = new IOException(e);
+                    return Mono.empty();
+                });
+        }
+
         @Override
-        synchronized void commit() {
-            client.commitBlockListWithResponse(this.blockList, null, null, null, this.requestConditions).block();
+        protected void writeInternal(final byte[] data, int offset, int length) {
+            dispatchWrite(data, length, offset)
+                .doOnError(t -> {
+                    if (t instanceof IOException) {
+                        lastError = (IOException) t;
+                    } else {
+                        lastError = new IOException(t);
+                    }
+                })
+                .block();
         }
     }
 
