@@ -1242,7 +1242,7 @@
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
-<!--    <module>sdk/search/azure-search</module>-->
+    <module>sdk/search/azure-search</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
 </project>
