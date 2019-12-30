@@ -7,9 +7,7 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
-import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -25,11 +23,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
-import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
+import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
+import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -39,6 +37,13 @@ class ExtractKeyPhraseClient {
     private final ClientLogger logger;
     private final TextAnalyticsClientImpl service;
 
+    /**
+     * Create a {@code ExtractKeyPhraseClient} that sends requests to the Text Analytics services's extract keyphrase
+     * endpoint.
+     *
+     * @param service The proxy service used to perform REST calls.
+     * @param logger The logger for the {@link TextAnalyticsAsyncClient} class.
+     */
     ExtractKeyPhraseClient(TextAnalyticsClientImpl service, ClientLogger logger) {
         this.logger = logger;
         this.service = service;

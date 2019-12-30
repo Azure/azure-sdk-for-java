@@ -27,11 +27,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
-import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
+import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
+import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
  * Helper class for managing sentiment analysis endpoint.
@@ -40,6 +40,13 @@ class AnalyzeSentimentClient {
     private final ClientLogger logger;
     private final TextAnalyticsClientImpl service;
 
+    /**
+     * Create a {@code AnalyzeSentimentClient} that sends requests to the Text Analytics services's sentiment analysis
+     * endpoint.
+     *
+     * @param service The proxy service used to perform REST calls.
+     * @param logger The logger for the {@link TextAnalyticsAsyncClient} class.
+     */
     AnalyzeSentimentClient(TextAnalyticsClientImpl service, ClientLogger logger) {
         this.logger = logger;
         this.service = service;

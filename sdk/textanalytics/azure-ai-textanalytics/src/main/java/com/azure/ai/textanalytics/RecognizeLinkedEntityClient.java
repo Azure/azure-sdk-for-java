@@ -40,6 +40,13 @@ class RecognizeLinkedEntityClient {
     private final ClientLogger logger;
     private final TextAnalyticsClientImpl service;
 
+    /**
+     * Create a {@code RecognizeLinkedEntityClient} that sends requests to the Text Analytics services's recognize
+     * linked entity endpoint.
+     *
+     * @param service The proxy service used to perform REST calls.
+     * @param logger The logger for the {@link TextAnalyticsAsyncClient} class.
+     */
     RecognizeLinkedEntityClient(TextAnalyticsClientImpl service, ClientLogger logger) {
         this.logger = logger;
         this.service = service;
