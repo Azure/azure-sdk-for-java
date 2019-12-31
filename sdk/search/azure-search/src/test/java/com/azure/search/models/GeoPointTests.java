@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,8 +26,6 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
     private static final String INDEX_NAME_HOTELS = "hotels";
     private static final String DATA_JSON_HOTELS = "HotelsDataArray.json";
-    private static final String INDEX_JSON_GEO_POINTS = "GeoPointsIndexData.json";
-    private static final String INDEX_NAME_GEO_POINTS = "geopoints";
 
     private SearchIndexClient client;
 
@@ -65,8 +64,30 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
     @Test
     public void canSerializeGeoPoint() {
-        setupIndexFromJsonFile(INDEX_JSON_GEO_POINTS);
-        client = getSearchIndexClientBuilder(INDEX_NAME_GEO_POINTS).buildClient();
+        Index index = new Index()
+            .setName("geopoints")
+            .setFields(Arrays.asList(
+                new Field()
+                    .setName("Id")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(true)
+                    .setFilterable(true)
+                    .setSortable(true),
+                new Field()
+                    .setName("Name")
+                    .setType(DataType.EDM_STRING)
+                    .setSearchable(true)
+                    .setFilterable(true)
+                    .setSortable(true),
+                new Field()
+                    .setName("Location")
+                    .setType(DataType.EDM_GEOGRAPHY_POINT)
+                    .setFilterable(true)
+                    .setSortable(true)
+                ));
+
+        setupIndex(index);
+        client = getSearchIndexClientBuilder(index.getName()).buildClient();
 
         List<Map<String, Object>> docs = new ArrayList<>();
 
