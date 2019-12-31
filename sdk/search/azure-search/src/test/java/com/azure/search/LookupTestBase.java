@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.search.models.DataType;
+import com.azure.search.models.Field;
 import com.azure.search.models.GeoPoint;
+import com.azure.search.models.Index;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
@@ -22,8 +25,6 @@ import static java.lang.Double.POSITIVE_INFINITY;
 public abstract class LookupTestBase extends SearchIndexClientTestBase {
 
     static final String INDEX_NAME = "hotels";
-    static final String DATA_TYPES_INDEX_NAME = "data-types-tests-index";
-    static final String MODEL_WITH_DATA_TYPES_INDEX_JSON = "DataTypesTestsIndexData.json";
 
     Hotel prepareExpectedHotel() throws ParseException {
         return new Hotel().hotelId("1")
@@ -104,6 +105,50 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
                 GeoPoint.create(49.0, -67.0),
                 GeoPoint.create(47.0, 21.0)})
             .strings(new String[]{"hello", "2019-04-14T14:56:00-07:00"});
+    }
+
+    String setupIndexWithDataTypes() {
+        Index index = new Index()
+            .setName("data-types-tests-index")
+            .setFields(Arrays.asList(
+                new Field()
+                    .setName("Key")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(true)
+                    .setRetrievable(true),
+                new Field()
+                    .setName("Bools")
+                    .setType(DataType.Collection(DataType.EDM_BOOLEAN))
+                    .setRetrievable(true),
+                new Field()
+                    .setName("Dates")
+                    .setType(DataType.Collection(DataType.EDM_DATE_TIME_OFFSET))
+                    .setRetrievable(true),
+                new Field()
+                    .setName("Doubles")
+                    .setType(DataType.Collection(DataType.EDM_DOUBLE))
+                    .setRetrievable(true),
+                new Field()
+                    .setName("Points")
+                    .setType(DataType.Collection(DataType.EDM_GEOGRAPHY_POINT))
+                    .setRetrievable(true),
+                new Field()
+                    .setName("Ints")
+                    .setType(DataType.Collection(DataType.EDM_INT32))
+                    .setRetrievable(true),
+                new Field()
+                    .setName("Longs")
+                    .setType(DataType.Collection(DataType.EDM_INT64))
+                    .setRetrievable(true),
+                new Field()
+                    .setName("Strings")
+                    .setType(DataType.Collection(DataType.EDM_STRING))
+                    .setRetrievable(true)
+            ));
+
+        setupIndex(index);
+
+        return index.getName();
     }
 
     @Test
