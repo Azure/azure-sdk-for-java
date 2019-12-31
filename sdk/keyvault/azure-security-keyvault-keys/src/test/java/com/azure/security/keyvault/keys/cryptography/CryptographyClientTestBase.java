@@ -19,6 +19,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
@@ -56,24 +57,21 @@ public abstract class CryptographyClientTestBase extends TestBase {
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        final String endpoint = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
-
         TokenCredential credential = null;
         HttpClient httpClient;
 
-        String tenantId = System.getenv("AZURE_TENANT_ID");
-        String clientId = System.getenv("AZURE_CLIENT_ID");
-        String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
         if (!interceptorManager.isPlaybackMode()) {
-            assertNotNull(tenantId);
-            assertNotNull(clientId);
-            assertNotNull(clientSecret);
-        }
-
-        if (!interceptorManager.isPlaybackMode()) {
-            credential = new DefaultAzureCredentialBuilder().build();
+            String clientId = System.getenv("ARM_CLIENTID");
+            String clientKey = System.getenv("ARM_CLIENTKEY");
+            String tenantId = System.getenv("AZURE_TENANT_ID");
+            Objects.requireNonNull(clientId, "The client id cannot be null");
+            Objects.requireNonNull(clientKey, "The client key cannot be null");
+            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
+            credential = new ClientSecretCredentialBuilder()
+                .clientSecret(clientKey)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .build();
         }
 
         // Closest to API goes first, closest to wire goes last.

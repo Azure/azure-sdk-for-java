@@ -20,6 +20,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyType;
@@ -28,11 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -58,14 +55,20 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        final String endpoint = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
-
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            credential = new DefaultAzureCredentialBuilder().build();
+            String clientId = System.getenv("ARM_CLIENTID");
+            String clientKey = System.getenv("ARM_CLIENTKEY");
+            String tenantId = System.getenv("AZURE_TENANT_ID");
+            Objects.requireNonNull(clientId, "The client id cannot be null");
+            Objects.requireNonNull(clientKey, "The client key cannot be null");
+            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
+            credential = new ClientSecretCredentialBuilder()
+                .clientSecret(clientKey)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .build();
         }
 
         HttpClient httpClient;
@@ -296,6 +299,10 @@ public abstract class KeyClientTestBase extends TestBase {
 
         }
         testRunner.accept(keys);
+    }
+
+    private String generateresourceId() {
+        return UUID.randomUUID().toString();
     }
 
     /**
