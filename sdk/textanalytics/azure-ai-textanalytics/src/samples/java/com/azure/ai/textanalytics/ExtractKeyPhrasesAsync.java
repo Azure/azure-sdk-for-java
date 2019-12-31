@@ -3,16 +3,17 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.TextSentiment;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrate how to detect language of a text input in asynchronously call.
+ * Sample demonstrate how to analyze key phrases of a text input in asynchronously call.
  */
-public class HelloWorldAsync {
+public class ExtractKeyPhrasesAsync {
     /**
-     * Main method to invoke this demo about how to detect language of a text input.
+     * Main method to invoke this demo about how to extract key phrases of a text input.
      *
      * @param args Unused arguments to the program.
      */
@@ -24,16 +25,16 @@ public class HelloWorldAsync {
             .buildAsyncClient();
 
         // The text that need be analysed.
-        String text = "hello world";
+        String text = "My cat might need to see a veterinarian.";
 
-        client.detectLanguage(text).subscribe(
+        client.extractKeyPhrases(text).subscribe(
             result -> {
-                final DetectedLanguage primaryLanguage = result.getPrimaryLanguage();
-                System.out.printf("Detected language: %s, ISO 6391 name: %s, score: %s.%n",
-                    primaryLanguage.getName(), primaryLanguage.getIso6391Name(), primaryLanguage.getScore());
+                for (String keyPhrase : result.getKeyPhrases()) {
+                    System.out.printf("Recognized phrases: %s.%n", keyPhrase);
+                }
             },
-            error -> System.err.println("There was an error detecting language of the text." + error),
-            () -> System.out.println("Language detected."));
+            error -> System.err.println("There was an error extracting key phrases of the text." + error),
+            () -> System.out.println("Key phrases extracted."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

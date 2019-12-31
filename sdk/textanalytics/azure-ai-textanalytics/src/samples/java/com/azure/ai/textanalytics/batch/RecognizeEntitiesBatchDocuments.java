@@ -28,8 +28,8 @@ public class RecognizeEntitiesBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
+            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
             .buildClient();
 
         // The texts that need be analysed.
@@ -38,24 +38,37 @@ public class RecognizeEntitiesBatchDocuments {
             new TextDocumentInput("2", "Elon Musk is the CEO of SpaceX and Tesla.", "en")
         );
 
+        // Request options: show statistics and model version
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
-        final DocumentResultCollection<RecognizeEntitiesResult> detectedBatchResult =
-            client.recognizeBatchEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
-        final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
+        // Recognizing batch entities
+        final DocumentResultCollection<RecognizeEntitiesResult> recognizedBatchResult =
+            client.recognizeBatchEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+        System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
+
+        // Batch statistics
+        final TextDocumentBatchStatistics batchStatistics = recognizedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
-        for (RecognizeEntitiesResult recognizeEntitiesResult : detectedBatchResult) {
-            for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
-                System.out.printf("Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
+        // Recognized entities for each of document from a batch of documents
+        for (RecognizeEntitiesResult recognizeEntitiesResult : recognizedBatchResult) {
+            System.out.printf("Document ID: %s%n", recognizeEntitiesResult.getId());
+            final List<NamedEntity> namedEntities = recognizeEntitiesResult.getNamedEntities();
+            // Erroneous document
+            if (namedEntities == null) {
+                System.out.printf("Cannot recognize entities. Error: %s%n", recognizeEntitiesResult.getError().getMessage());
+                continue;
+            }
+            // Valid document
+            for (NamedEntity entity : namedEntities) {
+                System.out.printf("Recognized entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
                     entity.getText(),
                     entity.getType(),
-                    entity.getSubtype(),
+                    entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
                     entity.getOffset(),
                     entity.getLength(),
                     entity.getScore());

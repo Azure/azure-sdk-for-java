@@ -20,8 +20,8 @@ public class HelloWorld {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
+            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
             .buildClient();
 
         // The text that need be analysed.
@@ -29,14 +29,14 @@ public class HelloWorld {
 
         final DetectLanguageResult detectLanguageResult = client.detectLanguage(text, "US");
         final DetectedLanguage detectedDocumentLanguage = detectLanguageResult.getPrimaryLanguage();
-        System.out.printf("Detected Primary Language: %s, ISO 6391 Name: %s, Score: %s.%n",
+        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %s.%n",
             detectedDocumentLanguage.getName(),
             detectedDocumentLanguage.getIso6391Name(),
             detectedDocumentLanguage.getScore());
 
         final List<DetectedLanguage> detectedLanguages = detectLanguageResult.getDetectedLanguages();
         for (DetectedLanguage detectedLanguage : detectedLanguages) {
-            System.out.printf("Other detected languages: %s, ISO 6391 Name: %s, Score: %s.%n",
+            System.out.printf("Other detected languages: %s, ISO 6391 name: %s, score: %s.%n",
                 detectedLanguage.getName(),
                 detectedLanguage.getIso6391Name(),
                 detectedLanguage.getScore());

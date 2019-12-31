@@ -17,15 +17,15 @@ public class RecognizeLinkedEntities {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
+            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
             .buildClient();
 
         // The text that need be analysed.
         String text = "Old Faithful is a geyser at Yellowstone Park.";
 
         for (LinkedEntity linkedEntity : client.recognizeLinkedEntities(text).getLinkedEntities()) {
-            System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.%n",
+            System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(),
                 linkedEntity.getUrl(),
                 linkedEntity.getDataSource());

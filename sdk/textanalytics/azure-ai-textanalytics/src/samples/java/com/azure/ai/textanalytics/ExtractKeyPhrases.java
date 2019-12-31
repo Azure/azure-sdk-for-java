@@ -15,15 +15,15 @@ public class ExtractKeyPhrases {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
+            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
             .buildClient();
 
         // The text that need be analysed.
         String text = "My cat might need to see a veterinarian.";
 
         for (String keyPhrase : client.extractKeyPhrases(text).getKeyPhrases()) {
-            System.out.printf("Recognized Phrases: %s.%n", keyPhrase);
+            System.out.printf("Recognized phrases: %s.%n", keyPhrase);
         }
     }
 }

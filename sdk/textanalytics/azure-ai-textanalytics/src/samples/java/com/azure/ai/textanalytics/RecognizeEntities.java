@@ -17,8 +17,8 @@ public class RecognizeEntities {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
+            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
             .buildClient();
 
         // The text that need be analysed.
@@ -26,7 +26,7 @@ public class RecognizeEntities {
 
         for (NamedEntity entity : client.recognizeEntities(text).getNamedEntities()) {
             System.out.printf(
-                "Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
+                "Recognized entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
                 entity.getText(),
                 entity.getType(),
                 entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),

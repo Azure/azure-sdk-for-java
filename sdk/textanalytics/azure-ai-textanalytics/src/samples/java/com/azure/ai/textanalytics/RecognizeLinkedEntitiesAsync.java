@@ -3,16 +3,16 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.LinkedEntity;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrate how to detect language of a text input in asynchronously call.
+ * Sample demonstrate how to recognize linked entities of a text input in asynchronously call.
  */
-public class HelloWorldAsync {
+public class RecognizeLinkedEntitiesAsync {
     /**
-     * Main method to invoke this demo about how to detect language of a text input.
+     * Main method to invoke this demo about how to recognize linked entities of a text input.
      *
      * @param args Unused arguments to the program.
      */
@@ -24,16 +24,19 @@ public class HelloWorldAsync {
             .buildAsyncClient();
 
         // The text that need be analysed.
-        String text = "hello world";
+        String text = "Old Faithful is a geyser at Yellowstone Park.";
 
-        client.detectLanguage(text).subscribe(
+        client.recognizeLinkedEntities(text).subscribe(
             result -> {
-                final DetectedLanguage primaryLanguage = result.getPrimaryLanguage();
-                System.out.printf("Detected language: %s, ISO 6391 name: %s, score: %s.%n",
-                    primaryLanguage.getName(), primaryLanguage.getIso6391Name(), primaryLanguage.getScore());
+                for (LinkedEntity linkedEntity : result.getLinkedEntities()) {
+                    System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
+                        linkedEntity.getName(),
+                        linkedEntity.getUrl(),
+                        linkedEntity.getDataSource());
+                }
             },
-            error -> System.err.println("There was an error detecting language of the text." + error),
-            () -> System.out.println("Language detected."));
+            error -> System.err.println("There was an error recognizing linked entity of the text." + error),
+            () -> System.out.println("Linked entity recognized."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

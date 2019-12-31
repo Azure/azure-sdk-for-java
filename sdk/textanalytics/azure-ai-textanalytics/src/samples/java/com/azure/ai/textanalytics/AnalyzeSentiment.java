@@ -20,8 +20,8 @@ public class AnalyzeSentiment {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
+            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
             .buildClient();
 
         // The text that need be analysed.
@@ -31,7 +31,7 @@ public class AnalyzeSentiment {
 
         final TextSentiment documentSentiment = sentimentResult.getDocumentSentiment();
         System.out.printf(
-            "Recognized TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.%n",
+            "Recognized sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
             documentSentiment.getTextSentimentClass(),
             documentSentiment.getPositiveScore(),
             documentSentiment.getNeutralScore(),
@@ -40,7 +40,7 @@ public class AnalyzeSentiment {
         final List<TextSentiment> sentiments = sentimentResult.getSentenceSentiments();
         for (TextSentiment textSentiment : sentiments) {
             System.out.printf(
-                "Recognized Sentence TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.%n",
+                "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
                 textSentiment.getTextSentimentClass(),
                 textSentiment.getPositiveScore(),
                 textSentiment.getNeutralScore(),
