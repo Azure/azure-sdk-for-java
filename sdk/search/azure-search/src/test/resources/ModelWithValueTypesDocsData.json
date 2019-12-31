@@ -1,0 +1,26 @@
+[
+    {
+        "Key": "123",
+        "IntValue": 0,
+        "Bucket": {
+            "BucketName": "A",
+            "Count": 3
+        }
+    },
+    {
+        "Key": "456",
+        "IntValue": 7,
+        "Bucket": {
+            "BucketName": "B",
+            "Count": 5
+        }
+    },
+    {
+        "Key": "789",
+        "IntValue": 1,
+        "Bucket": {
+            "BucketName": "B",
+            "Count": 99
+        }
+    }
+]

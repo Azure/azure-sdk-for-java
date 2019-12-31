@@ -66,8 +66,8 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Test
     public void canRoundtripStaticallyTypedPrimitiveCollections() {
-        String indexName = setupIndexWithDataTypes();
-        client = getSearchIndexClientBuilder(indexName).buildClient();
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
 
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
         uploadDocument(client, expected);
@@ -171,8 +171,8 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Test
     public void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays() {
-        String indexName = setupIndexWithDataTypes();
-        client = getSearchIndexClientBuilder(indexName).buildClient();
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
 
         String docKey = "3";
 
@@ -319,8 +319,8 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Test
     public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() {
-        String indexName = setupIndexWithDataTypes();
-        client = getSearchIndexClientBuilder(indexName).buildClient();
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
 
         String docKey = "1";
         OffsetDateTime dateTime = OffsetDateTime.parse("2019-08-13T14:30:00Z");

@@ -72,9 +72,8 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Test
     public void canRoundtripStaticallyTypedPrimitiveCollections() {
-        String indexName = setupIndexWithDataTypes();
-
-        client = getSearchIndexClientBuilder(indexName).buildAsyncClient();
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildAsyncClient();
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
         uploadDocument(client, expected);
 
@@ -185,9 +184,8 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Test
     public void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays() {
-        String indexName = setupIndexWithDataTypes();
-        client = getSearchIndexClientBuilder(indexName).buildAsyncClient();
-
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildAsyncClient();
         String docKey = "3";
 
         Document originalDoc = new Document() {
@@ -337,9 +335,8 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Test
     public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() {
-        String indexName = setupIndexWithDataTypes();
-        client = getSearchIndexClientBuilder(indexName).buildAsyncClient();
-
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildAsyncClient();
         String docKey = "1";
         OffsetDateTime dateTime = OffsetDateTime.parse("2019-08-13T14:30:00Z");
         GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);

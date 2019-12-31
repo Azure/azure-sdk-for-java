@@ -1,0 +1,32 @@
+{
+    "name": "testindex",
+    "fields": [
+        {
+            "name": "Key",
+            "type": "Edm.String",
+            "key": true,
+            "searchable": true
+        },
+        {
+            "name": "IntValue",
+            "type": "Edm.Int32",
+            "filterable": true
+        },
+        {
+            "name": "Bucket",
+            "type": "Edm.ComplexType",
+            "fields": [
+                {
+                    "name": "BucketName",
+                    "type": "Edm.String",
+                    "filterable": true
+                },
+                {
+                    "name": "Count",
+                    "type": "Edm.Int32",
+                    "filterable": true
+                }
+            ]
+        }
+    ]
+}

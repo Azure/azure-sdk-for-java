@@ -1,0 +1,25 @@
+{
+    "name": "geopoints",
+    "fields": [
+        {
+            "name": "Id",
+            "type": "Edm.String",
+            "key": true,
+            "filterable": true,
+            "sortable": true
+        },
+        {
+            "name": "Name",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "sortable": true
+        },
+        {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "filterable": true,
+            "sortable": true
+        }
+    ]
+}
