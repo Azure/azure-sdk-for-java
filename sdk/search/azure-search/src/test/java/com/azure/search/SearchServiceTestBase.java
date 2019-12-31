@@ -182,7 +182,6 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setName("HotelId")
                     .setType(DataType.EDM_STRING)
                     .setKey(Boolean.TRUE)
-                    .setSearchable(Boolean.FALSE)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
@@ -193,34 +192,23 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
-                    .setFacetable(Boolean.FALSE)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Description")
                     .setType(DataType.EDM_STRING)
-                    .setKey(Boolean.FALSE)
                     .setSearchable(Boolean.TRUE)
-                    .setFilterable(Boolean.FALSE)
-                    .setSortable(Boolean.FALSE)
-                    .setFacetable(Boolean.FALSE)
                     .setAnalyzer(AnalyzerName.EN_LUCENE.toString())
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("DescriptionFr")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setFilterable(Boolean.FALSE)
-                    .setSortable(Boolean.FALSE)
-                    .setFacetable(Boolean.FALSE)
                     .setAnalyzer(AnalyzerName.FR_LUCENE.toString())
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Description_Custom")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setFilterable(Boolean.FALSE)
-                    .setSortable(Boolean.FALSE)
-                    .setFacetable(Boolean.FALSE)
                     .setSearchAnalyzer(AnalyzerName.STOP.toString())
                     .setIndexAnalyzer(AnalyzerName.STOP.toString())
                     .setRetrievable(Boolean.TRUE),
@@ -237,7 +225,6 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setType(DataType.Collection(DataType.EDM_STRING))
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
-                    .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.TRUE)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
@@ -316,7 +303,6 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setType(DataType.EDM_GEOGRAPHY_POINT)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
-                    .setFacetable(Boolean.FALSE)
                     .setRetrievable(Boolean.TRUE)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
@@ -346,7 +332,6 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setName("BaseRate")
                             .setType(DataType.EDM_DOUBLE)
                             .setKey(Boolean.FALSE)
-                            .setSearchable(Boolean.FALSE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
                             .setRetrievable(Boolean.TRUE),
@@ -374,7 +359,6 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setType(DataType.Collection(DataType.EDM_STRING))
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
-                            .setSortable(Boolean.FALSE)
                             .setFacetable(Boolean.TRUE)
                             .setRetrievable(Boolean.TRUE)
                         )
@@ -384,9 +368,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setType(DataType.EDM_INT64)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
-                    .setFacetable(Boolean.TRUE)
-                    .setRetrievable(Boolean.FALSE
-                    ),
+                    .setFacetable(Boolean.TRUE),
                 new Field()
                     .setName("ProfitMargin")
                     .setType(DataType.EDM_DOUBLE)

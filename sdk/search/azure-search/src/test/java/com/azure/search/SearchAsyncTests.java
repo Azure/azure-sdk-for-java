@@ -21,6 +21,7 @@ import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.NonNullableModel;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.unitils.reflectionassert.ReflectionAssert;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -166,12 +167,15 @@ public class SearchAsyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canFilterNonNullableType() throws Exception {
-        setupIndexFromJsonFile(MODEL_WITH_VALUE_TYPES_INDEX_JSON);
-        client = getSearchIndexClientBuilder(MODEL_WITH_INDEX_TYPES_INDEX_NAME).buildAsyncClient();
+    public void canFilterNonNullableType() {
+        String indexName = createIndexWithValueTypes();
+        client = getSearchIndexClientBuilder(indexName).buildAsyncClient();
+
+        List<Map<String, Object>> docsList = createDocsListWithValueTypes();
+        uploadDocuments(client, docsList);
 
         List<Map<String, Object>> expectedDocsList =
-            uploadDocumentsJson(client, MODEL_WITH_VALUE_TYPES_DOCS_JSON)
+            docsList
                 .stream()
                 .filter(d -> !d.get("Key").equals("789"))
                 .collect(Collectors.toList());
@@ -183,9 +187,9 @@ public class SearchAsyncTests extends SearchTestBase {
         Assert.assertNotNull(results);
         StepVerifier.create(results)
             .assertNext(
-                res -> Assert.assertEquals(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(0)))
+                res -> ReflectionAssert.assertLenientEquals(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(0)))
             .assertNext(
-                res -> Assert.assertEquals(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(1)))
+                res -> ReflectionAssert.assertLenientEquals(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(1)))
             .verifyComplete();
     }
 
@@ -433,8 +437,8 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Test
     public void canRoundTripNonNullableValueTypes() throws Exception {
-        setupIndexFromJsonFile(NON_NULLABLE_INDEX_JSON);
-        client = getSearchIndexClientBuilder(NON_NULLABLE_INDEX_NAME).buildAsyncClient();
+        String indexName = createIndexWithNonNullableTypes();
+        client = getSearchIndexClientBuilder(indexName).buildAsyncClient();
 
         NonNullableModel doc1 = new NonNullableModel()
             .key("123")
