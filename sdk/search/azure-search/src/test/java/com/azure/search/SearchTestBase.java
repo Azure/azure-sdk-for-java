@@ -3,7 +3,9 @@
 
 package com.azure.search;
 
+import com.azure.search.models.DataType;
 import com.azure.search.models.FacetResult;
+import com.azure.search.models.Field;
 import com.azure.search.models.Index;
 import com.azure.search.models.QueryType;
 import com.azure.search.models.RangeFacetResult;
@@ -21,12 +23,14 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
@@ -39,11 +43,6 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
     static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
     private static final String SEARCH_SCORE_FIELD = "@search.score";
-    static final String MODEL_WITH_VALUE_TYPES_INDEX_JSON = "ModelWithValueTypesIndexData.json";
-    static final String MODEL_WITH_VALUE_TYPES_DOCS_JSON = "ModelWithValueTypesDocsData.json";
-    static final String MODEL_WITH_INDEX_TYPES_INDEX_NAME = "testindex";
-    static final String NON_NULLABLE_INDEX_JSON = "NonNullableIndexData.json";
-    static final String NON_NULLABLE_INDEX_NAME = "non-nullable-index";
 
     protected List<Map<String, Object>> hotels;
 
@@ -136,7 +135,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             .collect(Collectors.toList());
     }
 
-    List<FacetResult> getFacetsForField(
+    private List<FacetResult> getFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         Assert.assertTrue(facets.containsKey(expectedField));
         List<FacetResult> results = facets.get(expectedField);
@@ -212,6 +211,124 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         List<String> actualKeys = actual.stream().filter(item -> item.getDocument().containsKey("HotelId"))
             .map(item -> (String) item.getDocument().get("HotelId")).collect(Collectors.toList());
         Assert.assertEquals(expected, actualKeys);
+    }
+
+    String createIndexWithNonNullableTypes() {
+        Index index = new Index()
+            .setName("non-nullable-index")
+            .setFields(Arrays.asList(
+                new Field()
+                    .setName("Key")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(true)
+                    .setRetrievable(true),
+                new Field()
+                    .setName("Rating")
+                    .setType(DataType.EDM_INT32)
+                    .setRetrievable(true),
+                new Field()
+                    .setName("Count")
+                    .setType(DataType.EDM_INT64)
+                    .setRetrievable(true),
+                new Field()
+                    .setName("IsEnabled")
+                    .setType(DataType.EDM_BOOLEAN)
+                    .setRetrievable(true),
+                new Field()
+                    .setName("Ratio")
+                    .setType(DataType.EDM_DOUBLE)
+                    .setRetrievable(true),
+                new Field()
+                    .setName("StartDate")
+                    .setType(DataType.EDM_DATE_TIME_OFFSET)
+                    .setRetrievable(true),
+                new Field()
+                    .setName("EndDate")
+                    .setType(DataType.EDM_DATE_TIME_OFFSET)
+                    .setRetrievable(true),
+                new Field()
+                    .setName("TopLevelBucket")
+                    .setType(DataType.EDM_COMPLEX_TYPE)
+                    .setFields(Arrays.asList(
+                        new Field()
+                            .setName("BucketName")
+                            .setType(DataType.EDM_STRING)
+                            .setFilterable(true),
+                        new Field()
+                            .setName("Count")
+                            .setType(DataType.EDM_INT32)
+                            .setFilterable(true)
+                    ))
+                )
+            );
+
+        setupIndex(index);
+
+        return index.getName();
+    }
+
+    String createIndexWithValueTypes() {
+        Index index = new Index()
+            .setName("testindex")
+            .setFields(Arrays.asList(
+                new Field()
+                    .setName("Key")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(true)
+                    .setSearchable(true),
+                new Field()
+                    .setName("IntValue")
+                    .setType(DataType.EDM_INT32)
+                    .setFilterable(true),
+                new Field()
+                    .setName("Bucket")
+                    .setType(DataType.EDM_COMPLEX_TYPE)
+                    .setFields(Arrays.asList(
+                        new Field()
+                            .setName("BucketName")
+                            .setType(DataType.EDM_STRING)
+                            .setFilterable(true),
+                        new Field()
+                            .setName("Count")
+                            .setType(DataType.EDM_INT32)
+                            .setFilterable(true)
+                    ))
+                )
+            );
+
+        setupIndex(index);
+
+        return index.getName();
+    }
+
+    @SuppressWarnings({"cast"})
+    List<Map<String, Object>> createDocsListWithValueTypes() {
+        return Arrays.asList(
+            Stream.of(new Object[][]{
+                {"Key", "123"},
+                {"IntValue", 0},
+                {"Bucket", (Map<String, Object>) Stream.of(new Object[][]{
+                    {"BucketName", "A"},
+                    {"Count", 3}
+                }).collect(Collectors.toMap(b -> (String) b[0], b -> (Object) b[1]))}
+            }).collect(Collectors.toMap(data -> (String) data[0], data -> (Object) data[1])),
+            Stream.of(new Object[][]{
+                {"Key", "456"},
+                {"IntValue", 7},
+                {"Bucket", (Map<String, Object>) Stream.of(new Object[][]{
+                    {"BucketName", "B"},
+                    {"Count", 5}
+                }).collect(Collectors.toMap(b -> (String) b[0], b -> (Object) b[1]))}
+            }).collect(Collectors.toMap(data -> (String) data[0], data -> (Object) data[1])),
+            Stream.of(new Object[][]{
+                {"Key", "789"},
+                {"IntValue", 1},
+                {"Bucket", (Map<String, Object>) Stream.of(new Object[][]{
+                    {"BucketName", "B"},
+                    {"Count", 99}
+                }).collect(Collectors.toMap(b -> (String) b[0], b -> (Object) b[1]))}
+            }).collect(Collectors.toMap(data -> (String) data[0], data -> (Object) data[1]))
+        );
     }
 
     @Test

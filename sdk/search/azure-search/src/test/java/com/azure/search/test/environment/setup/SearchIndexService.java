@@ -8,6 +8,7 @@ import com.azure.search.SearchServiceClient;
 import com.azure.search.SearchServiceClientBuilder;
 import com.azure.search.models.Index;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.platform.commons.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,12 +27,10 @@ public class SearchIndexService {
      * Creates an instance of SearchIndexService to be used in creating a sample index in Azure Cognitive Search,
      * to be used in tests.
      *
-     * @param indexDataFileName the name of a file that contains a JSON index definition.
      * @param endpoint the endpoint of an Azure Cognitive Search instance.
      * @param apiAdminKey the Admin Key of Azure Cognitive Search service
      */
-    public SearchIndexService(String indexDataFileName, String endpoint, String apiAdminKey) {
-        this.indexDataFileName = indexDataFileName;
+    public SearchIndexService(String endpoint, String apiAdminKey) {
         this.endpoint = endpoint;
         this.apiAdminKey = apiAdminKey;
     }
@@ -39,23 +38,42 @@ public class SearchIndexService {
     /**
      * Creates a new sample Index in Azure Cognitive Search with configuration retrieved from INDEX_DATA_JSON
      *
+     * @param index the index to be created.
+     *
+     */
+    public void initializeAndCreateIndex(Index index) {
+        initServiceClient();
+
+        if (index != null) {
+            this.indexName = index.getName();
+            searchServiceClient.createOrUpdateIndex(index);
+        }
+    }
+
+    /**
+     * Creates a new sample Index in Azure Cognitive Search with configuration retrieved from INDEX_DATA_JSON
+     *
+     * @param indexDataFileName the name of a file that contains a JSON index definition.
      * @throws IOException thrown when indexDataFileName does not exist or has invalid contents.
      */
-    public void initialize() throws IOException {
+    public void initializeAndCreateIndex(String indexDataFileName) throws IOException {
+        initServiceClient();
+
+        if (StringUtils.isNotBlank(indexDataFileName)) {
+            Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(indexDataFileName));
+            Index index = new ObjectMapper().readValue(indexData, Index.class);
+            this.indexName = index.getName();
+            searchServiceClient.createOrUpdateIndex(index);
+        }
+    }
+
+    private void initServiceClient() {
         if (searchServiceClient == null) {
             searchServiceClient = new SearchServiceClientBuilder()
                 .endpoint(endpoint)
                 .credential(new SearchApiKeyCredential(apiAdminKey))
                 .buildClient();
         }
-        addIndexes();
-    }
-
-    private void addIndexes() throws IOException {
-        Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(indexDataFileName));
-        Index index = new ObjectMapper().readValue(indexData, Index.class);
-        this.indexName = index.getName();
-        searchServiceClient.createOrUpdateIndex(index);
     }
 
     /**

@@ -9,6 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.search.implementation.SerializationUtil;
+import com.azure.search.models.Index;
 import com.azure.search.test.environment.setup.SearchIndexService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -109,35 +110,32 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         }
     }
 
-    protected void createHotelIndex() {
-        if (!interceptorManager.isPlaybackMode()) {
-            try {
-                //Creating Index:
-                searchServiceHotelsIndex = new SearchIndexService(
-                    HOTELS_TESTS_INDEX_DATA_JSON,
-                    endpoint,
-                    searchApiKeyCredential.getApiKey());
-                searchServiceHotelsIndex.initialize();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    protected void setupIndexFromJsonFile(String jsonFile) {
+    protected void setupIndex(Index index) {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(
-                jsonFile,
+                endpoint,
+                searchApiKeyCredential.getApiKey());
+
+            searchIndexService.initializeAndCreateIndex(index);
+        }
+    }
+
+    void setupIndexFromJsonFile(String jsonFile) {
+        if (!interceptorManager.isPlaybackMode()) {
+            // In RECORDING mode (only), create a new index:
+            SearchIndexService searchIndexService = new SearchIndexService(
                 endpoint,
                 searchApiKeyCredential.getApiKey());
             try {
-                searchIndexService.initialize();
+                searchIndexService.initializeAndCreateIndex(jsonFile);
             } catch (IOException e) {
                 Assert.fail(e.getMessage());
             }
         }
     }
 
+    protected void createHotelIndex() {
+        setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
+    }
 }

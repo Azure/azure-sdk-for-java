@@ -23,6 +23,7 @@ import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.NonNullableModel;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.unitils.reflectionassert.ReflectionAssert;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -200,8 +201,8 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Test
     public void canRoundTripNonNullableValueTypes() throws Exception {
-        setupIndexFromJsonFile(NON_NULLABLE_INDEX_JSON);
-        client = getSearchIndexClientBuilder(NON_NULLABLE_INDEX_NAME).buildClient();
+        String indexName = createIndexWithNonNullableTypes();
+        client = getSearchIndexClientBuilder(indexName).buildClient();
 
         NonNullableModel doc1 = new NonNullableModel()
             .key("123")
@@ -480,15 +481,19 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canFilterNonNullableType() throws IOException {
-        setupIndexFromJsonFile(MODEL_WITH_VALUE_TYPES_INDEX_JSON);
-        client = getSearchIndexClientBuilder(MODEL_WITH_INDEX_TYPES_INDEX_NAME).buildClient();
+    public void canFilterNonNullableType() {
+        String indexName = createIndexWithValueTypes();
+        client = getSearchIndexClientBuilder(indexName).buildClient();
+
+        List<Map<String, Object>> docsList = createDocsListWithValueTypes();
+        uploadDocuments(client, docsList);
 
         List<Map<String, Object>> expectedDocsList =
-            uploadDocumentsJson(client, MODEL_WITH_VALUE_TYPES_DOCS_JSON)
+            docsList
                 .stream()
                 .filter(d -> !d.get("Key").equals("789"))
                 .collect(Collectors.toList());
+
 
         SearchOptions searchOptions = new SearchOptions()
             .setFilter("IntValue eq 0 or (Bucket/BucketName eq 'B' and Bucket/Count lt 10)");
@@ -500,7 +505,7 @@ public class SearchSyncTests extends SearchTestBase {
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
         Assert.assertEquals(2, searchResultsList.size());
 
-        Assert.assertEquals(expectedDocsList, searchResultsList);
+        ReflectionAssert.assertLenientEquals(expectedDocsList, searchResultsList);
     }
 
     @Test
