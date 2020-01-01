@@ -6,7 +6,8 @@ package com.azure.search.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * A single bucket of a range facet query result that reports the number of documents with a field value falling within a particular range.
+ * A single bucket of a range facet query result that reports the number of documents
+ * with a field value falling within a particular range.
  */
 @Immutable
 public class RangeFacetResult {
