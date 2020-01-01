@@ -425,8 +425,7 @@ public class SearchIndexAsyncClient {
         SuggestRequest suggestRequest = this.createSuggestRequest(searchText,
             suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
         return new PagedFluxBase<>(
-            () -> withContext(context -> this.suggestFirst(requestOptions, suggestRequest, context)),
-            nextLink -> Mono.empty());
+            () -> withContext(context -> this.suggestFirst(requestOptions, suggestRequest, context)));
     }
 
     PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
@@ -437,8 +436,7 @@ public class SearchIndexAsyncClient {
         SuggestRequest suggestRequest = this.createSuggestRequest(searchText,
             suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
         return new PagedFluxBase<>(
-            () -> this.suggestFirst(requestOptions, suggestRequest, context),
-            nextLink -> Mono.empty());
+            () -> this.suggestFirst(requestOptions, suggestRequest, context));
     }
 
     /**
@@ -504,8 +502,7 @@ public class SearchIndexAsyncClient {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
             searchText, suggesterName, autocompleteOptions);
         return new PagedFluxBase<>(
-            () -> withContext(context -> this.autocompleteFirst(requestOptions, autocompleteRequest, context)),
-            nextLink -> Mono.empty());
+            () -> withContext(context -> this.autocompleteFirst(requestOptions, autocompleteRequest, context)));
     }
 
     PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
@@ -516,8 +513,7 @@ public class SearchIndexAsyncClient {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
             searchText, suggesterName, autocompleteOptions);
         return new PagedFluxBase<>(
-            () -> this.autocompleteFirst(requestOptions, autocompleteRequest, context),
-            nextLink -> Mono.empty());
+            () -> this.autocompleteFirst(requestOptions, autocompleteRequest, context));
     }
 
     private Mono<AutocompletePagedResponse> autocompleteFirst(RequestOptions requestOptions,

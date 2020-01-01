@@ -7,7 +7,8 @@ package com.azure.search.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * Contains value facet found by a search query
+ * A single bucket of a simple or interval facet query result that reports the number of documents with a field
+ * falling within a particular interval or having a specific value.
  */
 @Immutable
 public class ValueFacetResult {
@@ -36,7 +37,7 @@ public class ValueFacetResult {
     }
 
     /**
-     * Get count
+     * Gets the approximate count of documents falling within the bucket described by this facet.
      *
      * @return count
      */
@@ -45,7 +46,7 @@ public class ValueFacetResult {
     }
 
     /**
-     * Get value
+     * Gets the value of the facet, or the inclusive lower bound if it's an interval facet.
      *
      * @return value
      */
