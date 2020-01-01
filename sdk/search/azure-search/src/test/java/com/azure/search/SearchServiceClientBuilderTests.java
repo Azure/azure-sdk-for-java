@@ -98,7 +98,7 @@ public class SearchServiceClientBuilderTests {
 
     @Test
     public void verifyEmptyEndpointIsInvalidAsyncTest() {
-        expectThrowsWithMessage("Illegal endpoint URL", () -> new SearchServiceClientBuilder()
+        expectThrowsWithMessage("'endpoint' must be a valid URL", () -> new SearchServiceClientBuilder()
             .endpoint("")
             .credential(searchApiKeyCredential)
             .apiVersion(apiVersion)
@@ -107,7 +107,7 @@ public class SearchServiceClientBuilderTests {
 
     @Test
     public void verifyEmptyEndpointIsInvalidTest() {
-        expectThrowsWithMessage("Illegal endpoint URL", () -> new SearchServiceClientBuilder()
+        expectThrowsWithMessage("'endpoint' must be a valid URL", () -> new SearchServiceClientBuilder()
             .endpoint("")
             .credential(searchApiKeyCredential)
             .apiVersion(apiVersion)
