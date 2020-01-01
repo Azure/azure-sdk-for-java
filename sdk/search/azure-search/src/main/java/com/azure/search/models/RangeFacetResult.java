@@ -3,9 +3,12 @@
 
 package com.azure.search.models;
 
+import com.azure.core.annotation.Immutable;
+
 /**
- * Contains the range facet value found by a search query
+ * A single bucket of a range facet query result that reports the number of documents with a field value falling within a particular range.
  */
+@Immutable
 public class RangeFacetResult {
     private final Long count;
     private final Object from;
@@ -23,7 +26,7 @@ public class RangeFacetResult {
     }
 
     /**
-     * Get count
+     * Gets the approximate count of documents falling within the bucket described by this facet.
      *
      * @return count
      */
@@ -32,8 +35,8 @@ public class RangeFacetResult {
     }
 
     /**
-     * Get from
-     *
+     * Gets a value indicating the inclusive lower bound of the facet's range, or null to indicate that there is
+     * no lower bound (i.e. -- for the first bucket).
      * @return from
      */
     public Object getFrom() {
@@ -41,7 +44,8 @@ public class RangeFacetResult {
     }
 
     /**
-     * Get to
+     * Gets a value indicating the exclusive upper bound of the facet's range, or null to indicate that there is
+     * no upper bound (i.e. -- for the last bucket).
      *
      * @return to
      */

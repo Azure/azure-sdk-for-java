@@ -6,19 +6,29 @@ package com.azure.search;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
@@ -36,11 +46,25 @@ import java.util.List;
  * </p>
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
-public class SearchIndexClientBuilder extends SearchClientBuilder {
+public class SearchIndexClientBuilder {
 
     // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
     // request was sent.
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
+
+    private static final String SEARCH_PROPERTIES = "azure-search.properties";
+    private static final String NAME = "name";
+    private static final String VERSION = "version";
+
+    SearchApiKeyCredential searchApiKeyCredential;
+    SearchServiceVersion apiVersion;
+    String endpoint;
+    HttpClient httpClient;
+    HttpLogOptions httpLogOptions;
+    Configuration configuration;
+    List<HttpPipelinePolicy> policies;
+    private String clientName;
+    private String clientVersion;
 
     private String indexName;
     private final HttpHeaders headers;
@@ -51,10 +75,16 @@ public class SearchIndexClientBuilder extends SearchClientBuilder {
      * Default Constructor
      */
     public SearchIndexClientBuilder() {
-        init();
+        apiVersion = SearchServiceVersion.getLatest();
+        policies = new ArrayList<>();
+        httpClient = HttpClient.createDefault();
+        httpLogOptions = new HttpLogOptions();
+
+        Map<String, String> properties = CoreUtils.getProperties(SEARCH_PROPERTIES);
+        clientName = properties.getOrDefault(NAME, "UnknownName");
+        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true");
-
     }
 
     /**
@@ -64,6 +94,9 @@ public class SearchIndexClientBuilder extends SearchClientBuilder {
      * @return the updated SearchIndexClientBuilder object
      */
     public SearchIndexClientBuilder apiVersion(SearchServiceVersion apiVersion) {
+        if (apiVersion == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
+        }
         this.apiVersion = apiVersion;
         return this;
     }
@@ -85,6 +118,11 @@ public class SearchIndexClientBuilder extends SearchClientBuilder {
      * @throws IllegalArgumentException on invalid service endpoint
      */
     public SearchIndexClientBuilder endpoint(String endpoint) {
+        try {
+            new URL(endpoint);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+        }
         this.endpoint = endpoint;
         return this;
     }
@@ -96,6 +134,9 @@ public class SearchIndexClientBuilder extends SearchClientBuilder {
      * @return the updated SearchIndexClientBuilder object
      */
     public SearchIndexClientBuilder indexName(String indexName) {
+        if (StringUtils.isBlank(indexName)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid indexName"));
+        }
         this.indexName = indexName;
         return this;
     }
@@ -147,6 +188,7 @@ public class SearchIndexClientBuilder extends SearchClientBuilder {
      * @return the updated SearchIndexClientBuilder object
      */
     public SearchIndexClientBuilder addPolicy(HttpPipelinePolicy policy) {
+        Objects.requireNonNull(policy);
         this.policies.add(policy);
         return this;
     }
@@ -200,5 +242,24 @@ public class SearchIndexClientBuilder extends SearchClientBuilder {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         return new SearchIndexAsyncClient(endpoint, indexName, apiVersion, prepareForBuildClient());
+    }
+
+    HttpPipeline prepareForBuildClient() {
+        // Global Env configuration store
+        Configuration buildConfiguration =
+            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+
+        if (searchApiKeyCredential != null) {
+            this.policies.add(new SearchApiKeyPipelinePolicy(searchApiKeyCredential));
+        }
+
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+
+        return new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 }

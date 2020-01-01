@@ -17,11 +17,6 @@ class SearchServiceUrlParser {
     static SearchServiceUrlParts parseServiceUrlParts(String endpoint) {
         ClientLogger logger = new ClientLogger(SearchServiceUrlParser.class);
 
-        if (StringUtils.isBlank(endpoint)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Illegal endpoint URL: endpoint cannot be blank"));
-        }
-
         URL url;
         try {
             // Using the URL class to validate the given endpoint structure

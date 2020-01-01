@@ -4,9 +4,12 @@
 package com.azure.search.models;
 
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * Contains value facet found by a search query
  */
+@Immutable
 public class ValueFacetResult {
     private final Long count;
     private final Object value;

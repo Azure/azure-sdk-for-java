@@ -7,7 +7,9 @@ import java.util.Map;
 
 /**
  * Represents a document
+ * <p>
  * A property bag is used for scenarios where the index schema is only known at run-time
+ * <p>
  * If the schema is known, user can convert the properties to a specific object type
  */
 public class Document extends HashMap<String, Object> {

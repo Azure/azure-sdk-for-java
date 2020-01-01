@@ -3,6 +3,7 @@
 
 package com.azure.search;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.search.models.DataChangeDetectionPolicy;
 import com.azure.search.models.DataContainer;
 import com.azure.search.models.DataDeletionDetectionPolicy;
@@ -10,7 +11,6 @@ import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceCredentials;
 import com.azure.search.models.DataSourceType;
 import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Utility class generating DataSource object per DataSourceType
@@ -135,13 +135,13 @@ public class DataSources {
         String query,
         String description,
         DataDeletionDetectionPolicy deletionDetectionPolicy) {
-        if (StringUtils.isEmpty(name)) {
+        if (CoreUtils.isNullOrEmpty(name)) {
             throw new IllegalArgumentException("name cannot be null or empty");
         }
-        if (StringUtils.isEmpty(tableName)) {
+        if (CoreUtils.isNullOrEmpty(tableName)) {
             throw new IllegalArgumentException("tableName cannot be null or empty");
         }
-        if (StringUtils.isEmpty(storageConnectionString)) {
+        if (CoreUtils.isNullOrEmpty(storageConnectionString)) {
             throw new IllegalArgumentException("storageConnectionString cannot be null or empty");
         }
         return new DataSource()
@@ -198,13 +198,13 @@ public class DataSources {
         Boolean useChangeDetection,
         String description,
         DataDeletionDetectionPolicy deletionDetectionPolicy) {
-        if (StringUtils.isEmpty(name)) {
+        if (CoreUtils.isNullOrEmpty(name)) {
             throw new IllegalArgumentException("name cannot be null or empty");
         }
-        if (StringUtils.isEmpty(collectionName)) {
+        if (CoreUtils.isNullOrEmpty(collectionName)) {
             throw new IllegalArgumentException("collectionName cannot be null or empty");
         }
-        if (StringUtils.isEmpty(cosmosConnectionString)) {
+        if (CoreUtils.isNullOrEmpty(cosmosConnectionString)) {
             throw new IllegalArgumentException("cosmosConnectionString cannot be null or empty");
         }
         return new DataSource()
