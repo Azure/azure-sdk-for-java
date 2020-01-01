@@ -107,7 +107,9 @@ az appconfig create --name <config-store-name> --resource-group <resource-group-
 
 In order to interact with the App Configuration service you'll need to create an instance of the Configuration Client class. To make this possible you'll need the connection string of the Configuration Store.
 
-#### Get credentials
+#### Use connection string
+
+##### Get credentials
 
 Use the [Azure CLI][azure_cli] snippet below to get the connection string from the Configuration Store.
 
@@ -117,7 +119,7 @@ az appconfig credential list --name <config-store-name>
 
 Alternatively, get the connection string from the Azure Portal.
 
-#### Create a Configuration Client
+##### Create a Configuration Client
 
 Once you have the value of the connection string you can create the configuration client:
 
@@ -135,14 +137,60 @@ ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .buildAsyncClient();
 ```
 
-You can also use `TokenCredential` to create a configuration client, such as an Azure Active Directory (AAD) token.
-Unlike a connection string if you're using an AAD token you must supply the endpoint of AppConfiguration service. The
-endpoint can be obtained by going to your App Configuration instance in the Azure portal and navigating to "Overview"
-page and look for the "Endpoint" keyword. 
+#### Use AAD token
+
+Here we demonstrate using [DefaultAzureCredential][default_cred_ref]
+to authenticate as a service principal. However, the configuration client
+accepts any [azure-identity][azure_identity] credential. See the
+[azure-identity][azure_identity] documentation for more information about other
+credentials.
+
+##### Create a service principal (optional)
+This [Azure CLI][azure_cli] snippet shows how to create a
+new service principal. Before using it, replace "your-application-name" with
+the appropriate name for your service principal.
+
+Create a service principal:
+```Bash
+az ad sp create-for-rbac --name http://my-application --skip-assignment
+```
+
+> Output:
+> ```json
+> {
+>     "appId": "generated app id",
+>     "displayName": "my-application",
+>     "name": "http://my-application",
+>     "password": "random password",
+>     "tenant": "tenant id"
+> }
+> ```
+
+Use the output to set **AZURE_CLIENT_ID** ("appId" above), **AZURE_CLIENT_SECRET**
+("password" above) and **AZURE_TENANT_ID** ("tenant" above) environment variables.
+The following example shows a way to do this in Bash:
+```Bash
+export AZURE_CLIENT_ID="generated app id"
+export AZURE_CLIENT_SECRET="random password"
+export AZURE_TENANT_ID="tenant id"
+```
+
+Assign one of the applicable [App Configuration roles][app_config_role] to the service principal.
+
+##### Create a client
+Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and
+**AZURE_TENANT_ID** environment variables are set,
+[DefaultAzureCredential][default_cred_ref] will be able to authenticate the
+configuration client.
+
+Constructing the client also requires your configuration store's URL, which you can
+get from the Azure CLI or the Azure Portal. In the Azure Portal, the URL can be found listed as the service "Endpoint"
 
 ```Java
-// An example of using TokenCredential and Endpoint to create a synchronous client
-TokenCredential credential = new DefaultAzureCredential();
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
 ConfigurationClient client = new ConfigurationClientBuilder()
         .credential(credential)
@@ -337,23 +385,26 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
+[add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
 [api_documentation]: https://aka.ms/java-docs
 [app_config_store]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-dotnet-core-app#create-an-app-configuration-store
+[app_config_role]: https://github.com/Azure/AppConfiguration/blob/master/docs/REST/authorization/aad.md
 [azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
 [azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[default_cred_ref]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-identity/1.0.1/com/azure/identity/DefaultAzureCredential.html
 [maven]: https://maven.apache.org/
 [package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
 [samples]: src/samples/java/com/azure/data/appconfiguration
 [samples_readme]: src/samples/README.md
 [source_code]: src
 [spring_quickstart]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-[add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2FREADME.png)
