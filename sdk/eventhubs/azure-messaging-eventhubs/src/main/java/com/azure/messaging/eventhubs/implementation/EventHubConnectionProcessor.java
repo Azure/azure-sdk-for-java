@@ -16,6 +16,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Processor;
@@ -42,12 +43,44 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     private final AtomicBoolean isRequested = new AtomicBoolean();
     private final ArrayList<ConnectionSubscriber> subscribers = new ArrayList<>();
     private final Object lock = new Object();
+    private final String fullyQualifiedNamespace;
+    private final String eventHubName;
+    private final AmqpRetryOptions retryOptions;
 
     private Subscription upstream;
     private EventHubAmqpConnection currentConnection;
     private Disposable connectionSubscription;
 
     private volatile Throwable lastError;
+
+    EventHubConnectionProcessor(String fullyQualifiedNamespace, String eventHubName, AmqpRetryOptions retryOptions) {
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
+        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+    }
+
+    /**
+     * Gets the fully qualified namespace for the connection.
+     *
+     * @return The fully qualified namespace this is connection.
+     */
+    public String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
+    }
+
+    /**
+     * Gets the name of the Event Hub.
+     *
+     * @return The name of the Event Hub.
+     */
+    public String getEventHubName() {
+        return eventHubName;
+    }
+
+    AmqpRetryOptions getRetryOptions() {
+        return retryOptions;
+    }
 
     @Override
     public void onSubscribe(Subscription subscription) {
