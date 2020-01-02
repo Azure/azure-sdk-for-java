@@ -28,7 +28,7 @@ public class RecognizePii {
             System.out.printf(
                 "Recognized PII Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
                 entity.getText(),
-                entity.getType() ,
+                entity.getType(),
                 entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
                 entity.getOffset(),
                 entity.getLength(),
