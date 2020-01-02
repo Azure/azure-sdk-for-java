@@ -23,7 +23,7 @@ sync-methods: none
 add-context-parameter: true
 generate-client-interfaces: false
 custom-types-subpackage: implementation.models
-custom-types: IndexActionType,IndexBatchImpl
+custom-types: IndexBatchImpl
 license-header: |-
     Copyright (c) Microsoft Corporation. All rights reserved.
     Licensed under the MIT License.

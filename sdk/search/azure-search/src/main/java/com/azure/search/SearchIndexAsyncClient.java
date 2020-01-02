@@ -21,7 +21,7 @@ import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.IndexAction;
-import com.azure.search.implementation.models.IndexActionType;
+import com.azure.search.models.IndexActionType;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.RequestOptions;
