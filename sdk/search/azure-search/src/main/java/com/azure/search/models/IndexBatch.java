@@ -4,7 +4,6 @@ package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.search.Document;
-import com.azure.search.implementation.models.IndexBatchImpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -4,10 +4,9 @@
 // Changes may cause incorrect behavior and will be lost if the code is
 // regenerated.
 
-package com.azure.search.implementation.models;
+package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.models.IndexAction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
