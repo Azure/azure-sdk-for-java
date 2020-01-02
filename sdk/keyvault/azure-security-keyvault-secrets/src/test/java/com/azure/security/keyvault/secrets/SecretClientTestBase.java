@@ -319,10 +319,9 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void listSecretVersionsRunner(Consumer<List<KeyVaultSecret>> testRunner) {
         List<KeyVaultSecret> secrets = new ArrayList<>();
-        String secretName;
         String secretVal;
+        String secretName = generateresourceId() + "-listSecretVersion";
         for (int i = 1; i < 5; i++) {
-            secretName = generateresourceId() + "-listSecretVersion";
             secretVal = "listSecretVersionVal" + i;
             secrets.add(new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
