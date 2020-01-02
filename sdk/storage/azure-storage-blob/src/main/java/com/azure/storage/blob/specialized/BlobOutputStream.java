@@ -161,6 +161,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 metadata, tier, requestConditions)
                 .doOnSuccess(s -> complete = true)
                 .doOnError(BlobStorageException.class, e -> {
+                    complete = true;
                     this.lastError = new IOException(e);
                 })
                 .subscribe();
@@ -185,6 +186,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         void commit() {
             sink.complete();
 
+            // Need to wait until the uploadTask completes
             while (!complete) {
                 try {
                     Thread.sleep(1000L);
