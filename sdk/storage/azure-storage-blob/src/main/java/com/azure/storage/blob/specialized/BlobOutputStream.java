@@ -156,14 +156,10 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             Flux<ByteBuffer> fbb = Flux.create((FluxSink<ByteBuffer> sink) -> this.sink = sink);
             fbb.subscribe(); // Subscribe by upload takes too long
 
-            blobClient.uploadWithResponse(fbb, parallelTransferOptions,
-                headers,
-                metadata, tier, requestConditions)
-                .doOnSuccess(s -> complete = true)
-                .doOnError(BlobStorageException.class, e -> {
-                    complete = true;
-                    this.lastError = new IOException(e);
-                })
+            blobClient.uploadWithResponse(fbb, parallelTransferOptions, headers, metadata, tier, requestConditions)
+                // This allows the operation to continue while maintaining the error that occurred.
+                .onErrorContinue(BlobStorageException.class, (e, s) -> this.lastError = new IOException(e))
+                .doOnTerminate(() -> complete = true)
                 .subscribe();
         }
 
