@@ -36,6 +36,7 @@ import java.util.List;
 @ServiceClient(builder = TextAnalyticsClientBuilder.class)
 public final class TextAnalyticsClient {
     private final TextAnalyticsAsyncClient client;
+
     /**
      * Create a {@code TextAnalyticsClient client} that sends requests to the Text Analytics service's endpoint.
      * Each service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.

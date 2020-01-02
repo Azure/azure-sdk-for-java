@@ -54,8 +54,8 @@ class Transforms {
      * @return the {@link TextDocumentBatchStatistics} returned by the SDK.
      */
     static TextDocumentBatchStatistics toBatchStatistics(RequestStatistics statistics) {
-        return new TextDocumentBatchStatistics(statistics.getDocumentsCount(), statistics.getErroneousDocumentsCount(),
-            statistics.getValidDocumentsCount(), statistics.getTransactionsCount());
+        return new TextDocumentBatchStatistics(statistics.getDocumentsCount(), statistics.getValidDocumentsCount(),
+            statistics.getErroneousDocumentsCount(), statistics.getTransactionsCount());
     }
 
     /**
