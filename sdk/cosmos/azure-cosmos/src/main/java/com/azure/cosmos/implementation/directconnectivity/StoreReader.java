@@ -294,12 +294,14 @@ public class StoreReader {
                                               boolean hasGoneException,
                                               RxDocumentServiceRequest entity) throws CosmosClientException {
         if (responseResult.size() < replicaCountToRead) {
-            logger.debug("Could not get quorum number of responses. " +
-                            "ValidResponsesReceived: {} ResponsesExpected: {}, ResolvedAddressCount: {}, ResponsesString: {}",
-                    responseResult.size(),
-                    replicaCountToRead,
-                    resolvedAddressCount,
-                    String.join(";", responseResult.stream().map(r -> r.toString()).collect(Collectors.toList())));
+            if (logger.isDebugEnabled()) {
+                logger.debug("Could not get quorum number of responses. " +
+                                 "ValidResponsesReceived: {} ResponsesExpected: {}, ResolvedAddressCount: {}, ResponsesString: {}",
+                             responseResult.size(),
+                             replicaCountToRead,
+                             resolvedAddressCount,
+                             String.join(";", responseResult.stream().map(r -> r.toString()).collect(Collectors.toList())));
+            }
 
             if (hasGoneException) {
                 if (!entity.requestContext.performLocalRefreshOnGoneException) {
