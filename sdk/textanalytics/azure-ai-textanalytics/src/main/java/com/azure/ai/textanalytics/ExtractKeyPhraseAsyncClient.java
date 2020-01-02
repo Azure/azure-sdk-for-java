@@ -76,7 +76,7 @@ class ExtractKeyPhraseAsyncClient {
             options == null ? null : options.showStatistics(), context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of key phrases input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to key phrases - {}", error))
+            .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 

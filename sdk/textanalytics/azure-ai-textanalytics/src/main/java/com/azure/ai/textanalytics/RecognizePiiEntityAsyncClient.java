@@ -77,7 +77,7 @@ class RecognizePiiEntityAsyncClient {
             options == null ? null : options.showStatistics(), context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of PII entities input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of PII entities output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to PII entities - {}", error))
+            .doOnError(error -> logger.warning("Failed to recognize PII entities - {}", error))
             .map(response -> new SimpleResponse<>(response, toPiiDocumentResultCollection(response.getValue())));
     }
 

@@ -76,7 +76,7 @@ class DetectLanguageAsyncClient {
             options == null ? null : options.showStatistics(), context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of detected language output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to detected languages - {}", error))
+            .doOnError(error -> logger.warning("Failed to detect languages - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 

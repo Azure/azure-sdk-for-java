@@ -79,7 +79,7 @@ class AnalyzeSentimentAsyncClient {
             options == null ? null : options.showStatistics(), context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of text sentiment input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))
-            .doOnError(error -> logger.warning("Failed to text sentiment - {}", error))
+            .doOnError(error -> logger.warning("Failed to analyze text sentiment - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 

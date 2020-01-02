@@ -79,7 +79,7 @@ class RecognizeLinkedEntityAsyncClient {
             options == null ? null : options.showStatistics(), context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of linked entities input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of linked entities output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to linked entities - {}", error))
+            .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 

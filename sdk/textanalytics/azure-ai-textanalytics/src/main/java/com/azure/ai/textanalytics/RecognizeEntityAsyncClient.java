@@ -78,7 +78,7 @@ class RecognizeEntityAsyncClient {
             options == null ? null : options.showStatistics(), context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of named entities input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of named entities output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to named entities - {}", error))
+            .doOnError(error -> logger.warning("Failed to recognize named entities - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
