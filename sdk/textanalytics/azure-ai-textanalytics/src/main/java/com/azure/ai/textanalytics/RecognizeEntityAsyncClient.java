@@ -34,19 +34,17 @@ import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 /**
  * Helper class for managing recognize entity endpoint.
  */
-class RecognizeEntityClient {
-    private final ClientLogger logger;
+class RecognizeEntityAsyncClient {
+    private final ClientLogger logger = new ClientLogger(RecognizeEntityAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code RecognizeEntityClient} that sends requests to the Text Analytics services's recognize entity
+     * Create a {@code RecognizeEntityAsyncClient} that sends requests to the Text Analytics services's recognize entity
      * endpoint.
      *
      * @param service The proxy service used to perform REST calls.
-     * @param logger The logger for the {@link TextAnalyticsAsyncClient} class.
      */
-    RecognizeEntityClient(TextAnalyticsClientImpl service, ClientLogger logger) {
-        this.logger = logger;
+    RecognizeEntityAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
     }
 

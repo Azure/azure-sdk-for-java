@@ -36,19 +36,17 @@ import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 /**
  * Helper class for managing sentiment analysis endpoint.
  */
-class AnalyzeSentimentClient {
-    private final ClientLogger logger;
+class AnalyzeSentimentAsyncClient {
+    private final ClientLogger logger = new ClientLogger(AnalyzeSentimentAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code AnalyzeSentimentClient} that sends requests to the Text Analytics services's sentiment analysis
-     * endpoint.
+     * Create a {@code AnalyzeSentimentAsyncClient} that sends requests to the Text Analytics services's sentiment
+     * analysis endpoint.
      *
      * @param service The proxy service used to perform REST calls.
-     * @param logger The logger for the {@link TextAnalyticsAsyncClient} class.
      */
-    AnalyzeSentimentClient(TextAnalyticsClientImpl service, ClientLogger logger) {
-        this.logger = logger;
+    AnalyzeSentimentAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
     }
 

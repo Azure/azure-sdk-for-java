@@ -25,29 +25,26 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
-import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
+import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
  * Helper class for managing recognize pii entity endpoint.
  */
-class RecognizePiiEntityClient {
-    private final ClientLogger logger;
+class RecognizePiiEntityAsyncClient {
+    private final ClientLogger logger = new ClientLogger(RecognizePiiEntityAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code RecognizePiiEntityClient} that sends requests to the Text Analytics services's recognize pii
+     * Create a {@code RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's recognize pii
      * entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
-     * @param logger The logger for the {@link TextAnalyticsAsyncClient} class.
      */
-    RecognizePiiEntityClient(TextAnalyticsClientImpl service, ClientLogger logger) {
-        this.logger = logger;
+    RecognizePiiEntityAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
     }
 
@@ -66,11 +63,7 @@ class RecognizePiiEntityClient {
 
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
-        try {
-            return recognizeBatchPiiEntitiesWithResponse(documentInputs, null, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeBatchPiiEntitiesWithResponse(documentInputs, null, context);
     }
 
     Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(

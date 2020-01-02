@@ -47,12 +47,12 @@ public final class TextAnalyticsAsyncClient {
     private final TextAnalyticsServiceVersion serviceVersion;
     private final String defaultCountryHint;
     private final String defaultLanguage;
-    final DetectLanguageClient detectLanguageClient;
-    final AnalyzeSentimentClient analyzeSentimentClient;
-    final ExtractKeyPhraseClient extractKeyPhraseClient;
-    final RecognizeEntityClient recognizeEntityClient;
-    final RecognizePiiEntityClient recognizePiiEntityClient;
-    final RecognizeLinkedEntityClient recognizeLinkedEntityClient;
+    final DetectLanguageAsyncClient detectLanguageAsyncClient;
+    final AnalyzeSentimentAsyncClient analyzeSentimentAsyncClient;
+    final ExtractKeyPhraseAsyncClient extractKeyPhraseAsyncClient;
+    final RecognizeEntityAsyncClient recognizeEntityAsyncClient;
+    final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
+    final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
 
     /**
      * Create a {@code TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
@@ -71,12 +71,12 @@ public final class TextAnalyticsAsyncClient {
         this.serviceVersion = serviceVersion;
         defaultCountryHint = clientOptions == null ? null : clientOptions.getDefaultCountryHint();
         defaultLanguage = clientOptions == null ? null : clientOptions.getDefaultLanguage();
-        this.detectLanguageClient = new DetectLanguageClient(service, logger);
-        this.analyzeSentimentClient = new AnalyzeSentimentClient(service, logger);
-        this.extractKeyPhraseClient = new ExtractKeyPhraseClient(service, logger);
-        this.recognizeEntityClient = new RecognizeEntityClient(service, logger);
-        this.recognizePiiEntityClient = new RecognizePiiEntityClient(service, logger);
-        this.recognizeLinkedEntityClient = new RecognizeLinkedEntityClient(service, logger);
+        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(service);
+        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(service);
+        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(service);
+        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
+        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
+        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
     }
 
     /**
@@ -141,7 +141,8 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint) {
         try {
-            return withContext(context -> detectLanguageClient.detectLanguageWithResponse(text, countryHint, context));
+            return withContext(context ->
+                detectLanguageAsyncClient.detectLanguageWithResponse(text, countryHint, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -182,7 +183,7 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(
         List<String> textInputs, String countryHint) {
         try {
-            return withContext(context -> detectLanguageClient.detectLanguagesWithResponse(textInputs, countryHint,
+            return withContext(context -> detectLanguageAsyncClient.detectLanguagesWithResponse(textInputs, countryHint,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -226,7 +227,7 @@ public final class TextAnalyticsAsyncClient {
         List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
             return withContext(
-                context -> detectLanguageClient.detectBatchLanguagesWithResponse(textInputs, options, context));
+                context -> detectLanguageAsyncClient.detectBatchLanguagesWithResponse(textInputs, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -270,7 +271,8 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language) {
         try {
-            return withContext(context -> recognizeEntityClient.recognizeEntitiesWithResponse(text, language, context));
+            return withContext(context ->
+                recognizeEntityAsyncClient.recognizeEntitiesWithResponse(text, language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -311,7 +313,7 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
-            return withContext(context -> recognizeEntityClient.recognizeEntitiesWithResponse(textInputs, language,
+            return withContext(context -> recognizeEntityAsyncClient.recognizeEntitiesWithResponse(textInputs, language,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -354,8 +356,8 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
-            return withContext(context -> recognizeEntityClient.recognizeBatchEntitiesWithResponse(textInputs, options,
-                context));
+            return withContext(context ->
+                recognizeEntityAsyncClient.recognizeBatchEntitiesWithResponse(textInputs, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -399,7 +401,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language) {
         try {
-            return withContext(context -> recognizePiiEntityClient.recognizePiiEntitiesWithResponse(text, language,
+            return withContext(context -> recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(text, language,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -446,7 +448,7 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
-            return withContext(context -> recognizePiiEntityClient.recognizePiiEntitiesWithResponse(textInputs,
+            return withContext(context -> recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(textInputs,
                 language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -493,8 +495,8 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
-            return withContext(context -> recognizePiiEntityClient.recognizeBatchPiiEntitiesWithResponse(textInputs,
-                options, context));
+            return withContext(context ->
+                recognizePiiEntityAsyncClient.recognizeBatchPiiEntitiesWithResponse(textInputs, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -537,7 +539,7 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(String text,
         String language) {
         try {
-            return withContext(context -> recognizeLinkedEntityClient.recognizeLinkedEntitiesWithResponse(text,
+            return withContext(context -> recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(text,
                 language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -583,8 +585,8 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
-            return withContext(context -> recognizeLinkedEntityClient.recognizeLinkedEntitiesWithResponse(textInputs,
-                language, context));
+            return withContext(context ->
+                recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs, language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -629,7 +631,7 @@ public final class TextAnalyticsAsyncClient {
         recognizeBatchLinkedEntitiesWithResponse(List<TextDocumentInput> textInputs,
         TextAnalyticsRequestOptions options) {
         try {
-            return withContext(context -> recognizeLinkedEntityClient.recognizeBatchLinkedEntitiesWithResponse(
+            return withContext(context -> recognizeLinkedEntityAsyncClient.recognizeBatchLinkedEntitiesWithResponse(
                 textInputs, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -671,7 +673,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language) {
         try {
-            return withContext(context -> extractKeyPhraseClient.extractKeyPhrasesWithResponse(text, language,
+            return withContext(context -> extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(text, language,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -714,7 +716,7 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
         List<String> textInputs, String language) {
         try {
-            return withContext(context -> extractKeyPhraseClient.extractKeyPhrasesWithResponse(textInputs,
+            return withContext(context -> extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(textInputs,
                 language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -758,8 +760,8 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
-            return withContext(context -> extractKeyPhraseClient.extractBatchKeyPhrasesWithResponse(textInputs, options,
-                context));
+            return withContext(context ->
+                extractKeyPhraseAsyncClient.extractBatchKeyPhrasesWithResponse(textInputs, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -801,7 +803,8 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeSentimentResult>> analyzeSentimentWithResponse(String text, String language) {
         try {
-            return withContext(context -> analyzeSentimentClient.analyzeSentimentWithResponse(text, language, context));
+            return withContext(context ->
+                analyzeSentimentAsyncClient.analyzeSentimentWithResponse(text, language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -844,7 +847,7 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentWithResponse(
         List<String> textInputs, String language) {
         try {
-            return withContext(context -> analyzeSentimentClient.analyzeSentimentWithResponse(textInputs, language,
+            return withContext(context -> analyzeSentimentAsyncClient.analyzeSentimentWithResponse(textInputs, language,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -889,7 +892,7 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeBatchSentimentWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
-            return withContext(context -> analyzeSentimentClient.analyzeBatchSentimentWithResponse(textInputs,
+            return withContext(context -> analyzeSentimentAsyncClient.analyzeBatchSentimentWithResponse(textInputs,
                 options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

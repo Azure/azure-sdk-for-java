@@ -26,29 +26,26 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
-import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
-import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
+import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
  * Helper class for managing recognize linked entity endpoint.
  */
-class RecognizeLinkedEntityClient {
-    private final ClientLogger logger;
+class RecognizeLinkedEntityAsyncClient {
+    private final ClientLogger logger = new ClientLogger(RecognizeLinkedEntityAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code RecognizeLinkedEntityClient} that sends requests to the Text Analytics services's recognize
+     * Create a {@code RecognizeLinkedEntityAsyncClient} that sends requests to the Text Analytics services's recognize
      * linked entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
-     * @param logger The logger for the {@link TextAnalyticsAsyncClient} class.
      */
-    RecognizeLinkedEntityClient(TextAnalyticsClientImpl service, ClientLogger logger) {
-        this.logger = logger;
+    RecognizeLinkedEntityAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
     }
 
@@ -67,11 +64,7 @@ class RecognizeLinkedEntityClient {
 
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
-        try {
-            return recognizeBatchLinkedEntitiesWithResponse(documentInputs, null, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeBatchLinkedEntitiesWithResponse(documentInputs, null, context);
     }
 
     Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeBatchLinkedEntitiesWithResponse(

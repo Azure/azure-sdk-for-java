@@ -28,24 +28,21 @@ import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
-import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Helper class for managing extract keyphrase endpoint.
  */
-class ExtractKeyPhraseClient {
-    private final ClientLogger logger;
+class ExtractKeyPhraseAsyncClient {
+    private final ClientLogger logger = new ClientLogger(ExtractKeyPhraseAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code ExtractKeyPhraseClient} that sends requests to the Text Analytics services's extract keyphrase
-     * endpoint.
+     * Create a {@code ExtractKeyPhraseAsyncClient} that sends requests to the Text Analytics services's extract
+     * keyphrase endpoint.
      *
      * @param service The proxy service used to perform REST calls.
-     * @param logger The logger for the {@link TextAnalyticsAsyncClient} class.
      */
-    ExtractKeyPhraseClient(TextAnalyticsClientImpl service, ClientLogger logger) {
-        this.logger = logger;
+    ExtractKeyPhraseAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
     }
 
@@ -64,11 +61,7 @@ class ExtractKeyPhraseClient {
 
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
-        try {
-            return extractBatchKeyPhrasesWithResponse(documentInputs, null, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return extractBatchKeyPhrasesWithResponse(documentInputs, null, context);
     }
 
     Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(

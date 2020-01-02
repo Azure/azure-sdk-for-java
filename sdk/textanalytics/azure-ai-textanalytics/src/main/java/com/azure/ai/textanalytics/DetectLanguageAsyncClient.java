@@ -31,19 +31,17 @@ import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 /**
  * Helper class for managing detect language endpoint.
  */
-class DetectLanguageClient {
-    private final ClientLogger logger;
+class DetectLanguageAsyncClient {
+    private final ClientLogger logger = new ClientLogger(DetectLanguageAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code DetectLanguageClient} that sends requests to the Text Analytics services's detect language
+     * Create a {@code DetectLanguageAsyncClient} that sends requests to the Text Analytics services's detect language
      * endpoint.
      *
      * @param service The proxy service used to perform REST calls.
-     * @param logger The logger for the {@link TextAnalyticsAsyncClient} class.
      */
-    DetectLanguageClient(TextAnalyticsClientImpl service, ClientLogger logger) {
-        this.logger = logger;
+    DetectLanguageAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
     }
 
