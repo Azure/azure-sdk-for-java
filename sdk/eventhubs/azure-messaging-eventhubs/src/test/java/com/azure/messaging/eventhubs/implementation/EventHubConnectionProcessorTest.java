@@ -21,10 +21,12 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Subscription;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -35,6 +37,9 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -103,10 +108,10 @@ public class EventHubConnectionProcessorTest {
     @Test
     public void newConnectionOnClose() {
         // Arrange
-        final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[] {
-           connection,
-           connection2,
-           connection3
+        final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
+            connection,
+            connection2,
+            connection3
         };
 
         final Flux<EventHubAmqpConnection> connectionsSink = createSink(connections);
@@ -158,7 +163,7 @@ public class EventHubConnectionProcessorTest {
     @Test
     public void newConnectionOnRetryableError() {
         // Arrange
-        final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[] {
+        final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
             connection,
             connection2
         };
@@ -198,7 +203,7 @@ public class EventHubConnectionProcessorTest {
     @Test
     public void nonRetryableError() {
         // Arrange
-        final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[] {
+        final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
             connection,
             connection2
         };
@@ -228,6 +233,60 @@ public class EventHubConnectionProcessorTest {
         StepVerifier.create(processor)
             .expectErrorMatches(error -> Objects.equals(amqpException, error))
             .verify(timeout);
+    }
+
+    /**
+     * Verifies that when there are no subscribers, no request is fetched from upstream.
+     */
+    @Test
+    public void noSubscribers() {
+        // Arrange
+        final Subscription subscription = mock(Subscription.class);
+
+        // Act
+        eventHubConnectionProcessor.onSubscribe(subscription);
+
+        // Assert
+        verify(subscription).request(eq(0L));
+    }
+
+    /**
+     * Verifies that when the processor has completed (ie. the instance is closed), no more connections are emitted.
+     */
+    @Test
+    public void completesWhenTerminated() {
+        // Arrange
+        final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
+            connection,
+        };
+
+        final Flux<EventHubAmqpConnection> connectionsSink = createSink(connections);
+        final EventHubConnectionProcessor processor = connectionsSink.subscribeWith(eventHubConnectionProcessor);
+        final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
+
+        // Act & Assert
+        // Verify that we get the first connection.
+        StepVerifier.create(eventHubConnectionProcessor)
+            .then(() -> endpointSink.next(AmqpEndpointState.ACTIVE))
+            .expectNext(connection)
+            .expectComplete()
+            .verify(timeout);
+
+        eventHubConnectionProcessor.onComplete();
+
+        // Verify that it completes without emitting a connection.
+        StepVerifier.create(processor)
+            .expectComplete()
+            .verify(timeout);
+    }
+
+    @Test
+    public void requiresNonNull() {
+        Assertions.assertThrows(NullPointerException.class,
+            () -> eventHubConnectionProcessor.onNext(null));
+
+        Assertions.assertThrows(NullPointerException.class,
+            () -> eventHubConnectionProcessor.onError(null));
     }
 
     private static Flux<EventHubAmqpConnection> createSink(EventHubAmqpConnection[] connections) {

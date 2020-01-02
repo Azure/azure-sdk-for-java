@@ -99,6 +99,8 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
     @Override
     public void onError(Throwable throwable) {
+        Objects.requireNonNull(throwable, "'throwable' is required.");
+
         if (throwable instanceof AmqpException && ((AmqpException) throwable).isTransient()) {
             logger.warning("Transient occurred in connection. Retrying. Error: {}", throwable);
             upstream.request(1);
@@ -160,6 +162,8 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
     @Override
     public void dispose() {
+        onComplete();
+
         synchronized (lock) {
             if (currentConnection != null) {
                 currentConnection.close();
