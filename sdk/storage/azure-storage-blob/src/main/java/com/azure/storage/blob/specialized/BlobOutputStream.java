@@ -2,13 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -17,16 +20,13 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 /**
  * BlobOutputStream allows for the uploading of data to a blob using a stream-like approach.
@@ -43,8 +43,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     static BlobOutputStream blockBlobOutputStream(final BlockBlobAsyncClient client,
-        final BlobRequestConditions requestConditions) {
-        return new BlockBlobOutputStream(client, requestConditions);
+        final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
+        final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
+        return new BlockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier, requestConditions);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
@@ -58,8 +59,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
      * Closes this output stream and releases any system resources associated with this stream. If any data remains in
      * the buffer it is committed to the service.
      *
-     * @throws IOException
-     *     If an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     @Override
     public synchronized void close() throws IOException {
@@ -142,19 +142,28 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
     private static final class BlockBlobOutputStream extends BlobOutputStream {
 
-        private final BlobRequestConditions requestConditions;
-        private final BlobAsyncClient client;
+        private FluxSink<ByteBuffer> sink;
+
+        boolean complete;
 
         private BlockBlobOutputStream(final BlockBlobAsyncClient client,
-            final BlobRequestConditions requestConditions) {
-            super(BlockBlobClient.MAX_UPLOAD_BLOB_BYTES);
-            this.client = prepareBuilder(client).buildAsyncClient();
-            this.requestConditions = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
-        }
+            final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
+            final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
+            super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
 
-        @Override
-        synchronized void commit() {
-            // BlockBlob is now based on buffered upload, no need to commit.
+            BlobAsyncClient blobClient = prepareBuilder(client).buildAsyncClient();
+
+            Flux<ByteBuffer> fbb = Flux.create((FluxSink<ByteBuffer> sink) -> this.sink = sink);
+            fbb.subscribe(); // Subscribe by upload takes too long
+
+            blobClient.uploadWithResponse(fbb, parallelTransferOptions,
+                headers,
+                metadata, tier, requestConditions)
+                .doOnSuccess(s -> complete = true)
+                .doOnError(BlobStorageException.class, e -> {
+                    this.lastError = new IOException(e);
+                })
+                .subscribe();
         }
 
         private BlobClientBuilder prepareBuilder(BlobAsyncClientBase client) {
@@ -173,39 +182,28 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         }
 
         @Override
-        protected Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
-            if (writeLength == 0) {
-                return Mono.empty();
+        void commit() {
+            sink.complete();
+
+            while (!complete) {
+                try {
+                    Thread.sleep(1000L);
+                } catch (InterruptedException e) {
+                    // Does this need to be caught by logger?
+                    e.printStackTrace();
+                }
             }
-
-            Flux<ByteBuffer> fbb = Flux.range(0, 1)
-                .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
-
-            ParallelTransferOptions parallelTransferOptions = ModelHelper.populateAndApplyDefaults(null);
-
-            return this.writeBlock(fbb.subscribeOn(Schedulers.elastic()), parallelTransferOptions);
-        }
-
-        private Mono<Void> writeBlock(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
-            return client.uploadWithResponse(data, parallelTransferOptions, null, null, null, requestConditions)
-                .then()
-                .onErrorResume(BlobStorageException.class, e -> {
-                    this.lastError = new IOException(e);
-                    return Mono.empty();
-                });
         }
 
         @Override
         protected void writeInternal(final byte[] data, int offset, int length) {
-            dispatchWrite(data, length, offset)
-                .doOnError(t -> {
-                    if (t instanceof IOException) {
-                        lastError = (IOException) t;
-                    } else {
-                        lastError = new IOException(t);
-                    }
-                })
-                .block();
+            sink.next(ByteBuffer.wrap(data, offset, length));
+        }
+
+        // Never called
+        @Override
+        protected Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
+            return Mono.empty();
         }
     }
 

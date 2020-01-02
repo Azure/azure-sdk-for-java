@@ -126,13 +126,6 @@
       <version>3.2.7</version> <!-- {x-version-update;cglib:cglib-nodep;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <!-- Just for now so I can test the StreamUtils.copy -->
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-      <version>5.2.2.RELEASE</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>

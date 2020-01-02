@@ -4,12 +4,7 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.common.implementation.Constants
-import org.springframework.util.StreamUtils
 import spock.lang.Requires
-
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
 
 class BlobOutputStreamTest extends APISpec {
     private static int FOUR_MB = 4 * Constants.MB
@@ -137,29 +132,5 @@ class BlobOutputStreamTest extends APISpec {
         }
 
         return outputStream.toByteArray()
-    }
-
-    @Requires({ liveMode() })
-    def "BlockBlob large file"() {
-        setup:
-        Path filePath = Paths.get("C:/Users/gapra/temptestfile1g.txt")
-        InputStream is = Files.newInputStream(filePath)
-
-        when:
-        OutputStream bos = cc.getBlobClient(generateBlobName()).getBlockBlobClient().getBlobOutputStream(null)
-
-        def startTime = System.nanoTime()
-//
-        StreamUtils.copy(is, bos)
-
-//        cc.getBlobClient(generateBlobName()).uploadFromFile(filePath.toString())
-
-        def endTime = System.nanoTime();
-
-        def duration = (endTime - startTime);
-
-        then:
-        System.out.println("Done. " + duration)
-
     }
 }
