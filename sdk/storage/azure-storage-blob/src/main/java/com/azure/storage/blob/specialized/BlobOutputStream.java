@@ -183,7 +183,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             // Need to wait until the uploadTask completes
             while (!complete) {
                 try {
-                    Thread.sleep(1000L);
+                    Thread.sleep(100L);
                 } catch (InterruptedException e) {
                     // Does this need to be caught by logger?
                     e.printStackTrace();
