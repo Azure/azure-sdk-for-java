@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient implements AsyncKeyEncryptionKey {
 
     private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyAsyncClient.class);
+    private final String keyId;
 
     /**
      * Creates a KeyEncryptionKeyAsyncClient that uses {@code pipeline} to service requests
@@ -27,18 +28,17 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
      */
     KeyEncryptionKeyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
         super(keyId, pipeline, version);
+        this.keyId = keyId;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the identifier of the key to use for cryptography operations.
+     *
+     * @return A {@link Mono} containing the key identifier.
      */
     @Override
     public Mono<String> getKeyId() {
-        try {
-            return Mono.just(key.getId());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return Mono.defer(() -> Mono.just(keyId));
     }
 
     /**
