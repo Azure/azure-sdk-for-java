@@ -62,6 +62,7 @@ public class CryptographyAsyncClient {
     private LocalKeyCryptographyClient localKeyCryptographyClient;
     private final ClientLogger logger = new ClientLogger(CryptographyAsyncClient.class);
     private String keyCollection;
+    private String keyId;
 
     /**
      * Creates a CryptographyAsyncClient that uses {@code pipeline} to service requests
@@ -102,6 +103,7 @@ public class CryptographyAsyncClient {
      */
     CryptographyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
         unpackAndValidateId(keyId);
+        this.keyId = keyId;
         service = RestProxy.create(CryptographyService.class, pipeline);
         cryptographyServiceClient = new CryptographyServiceClient(keyId, service);
         this.key = null;
@@ -121,6 +123,10 @@ public class CryptographyAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The Json Web Key Type: %s is not supported.", key.getKeyType().toString())));
         }
+    }
+
+    Mono<String> getKeyId() {
+        return Mono.defer(() -> Mono.just(keyId));
     }
 
     /**
