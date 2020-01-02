@@ -34,5 +34,5 @@ com.azure:azure-storage-queue;12.2.0-beta.1;12.2.0-beta.2
 # version. Unreleased dependencies are only valid for dependency versions
 # Format;
 # unreleased_<groupId>:<artifactId>;dependency-version
-unreleased_com.azure:azure-core;1.2.0-beta.1
+unreleased_com.azure:azure-core;1.2.0
 unreleased_com.azure:azure-core-test;1.1.0-beta.2
