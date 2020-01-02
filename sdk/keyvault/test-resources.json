@@ -18,7 +18,7 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "azureKeyVaultUrl": "[format('https://{0}.{1}', parameters('baseName'), parameters('endpointSuffix'))]"
+        "azureKeyVaultUrl": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]"
     },
     "resources": [
         {
