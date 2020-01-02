@@ -62,7 +62,7 @@ public class CryptographyAsyncClient {
     private LocalKeyCryptographyClient localKeyCryptographyClient;
     private final ClientLogger logger = new ClientLogger(CryptographyAsyncClient.class);
     private String keyCollection;
-    private String keyId;
+    private final String keyId;
 
     /**
      * Creates a CryptographyAsyncClient that uses {@code pipeline} to service requests
@@ -84,6 +84,7 @@ public class CryptographyAsyncClient {
             throw new IllegalArgumentException("Json Web Key's key type property is not configured");
         }
         this.key = key;
+        this.keyId = key.getId();
         service = RestProxy.create(CryptographyService.class, pipeline);
         if (!Strings.isNullOrEmpty(key.getId())) {
             unpackAndValidateId(key.getId());
