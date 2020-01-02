@@ -280,7 +280,7 @@ class BlobAPITest extends APISpec {
     def "Download to file exists succeeds"() {
         setup:
         def testFile = new File(testName + ".txt")
-        if (testFile.exists()) {
+        if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
 
