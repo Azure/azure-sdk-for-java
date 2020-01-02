@@ -11,9 +11,6 @@
 - Updated `RetryMode` -> `AmqpRetryMode`.
 - Updated CBS -> ClaimsBasedSecurityNode.
 - Removed final from RetryPolicy.
-- Renamed from getProperties() -> getEventHubProperties().
-- Exposed getMaxSizeInBytes API.
-- Removed fromOffset(bool) overload public method.
 - Updated Hostname -> FullyQualifiedNamespace.
 - `AmqpConnection` implements AutoCloseable. Added `getEndpointStates` API.
 - `AmqpConnection`/`Link`/`Session` implements AutoCloseable. Added `getEndpointStates` API.
@@ -47,7 +44,6 @@
 - Support tracing for azure-core-amqp.
 
 ## Version 1.0.0-preview.3 (2019-08-05)
-- Make ClientLogger thread-safe.
 - Retry implements Cloneable.
 - Rename `Retry` to `RetryPolicy`.
 - `RetryOptions` implements Cloneable.
