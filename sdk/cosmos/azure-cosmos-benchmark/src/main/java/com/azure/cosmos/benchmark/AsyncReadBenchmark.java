@@ -3,9 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncItemResponse;
-import com.azure.cosmos.implementation.Document;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
@@ -13,7 +11,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 class AsyncReadBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
-    private final CosmosAsyncContainer cosmosAsyncContainer;
 
     class LatencySubscriber<T> extends BaseSubscriber<T> {
 
@@ -48,14 +45,12 @@ class AsyncReadBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
 
     AsyncReadBenchmark(Configuration cfg) {
         super(cfg);
-        // TODO: once all benchmarks move to v4 api, we should rely on the container which is read in the parent, and remove this.
-        cosmosAsyncContainer = v4Client.getDatabase(cfg.getDatabaseId()).getContainer(cfg.getCollectionId()).read().block().getContainer();
     }
 
     @Override
     protected void performWorkload(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber, long i) throws InterruptedException {
         int index = (int) (i % docsToRead.size());
-        Document doc = docsToRead.get(index);
+        PojoizedJson doc = docsToRead.get(index);
 
         String partitionKeyValue = doc.getId();
         Mono<CosmosAsyncItemResponse> result = cosmosAsyncContainer.getItem(doc.getId(), partitionKeyValue).read();

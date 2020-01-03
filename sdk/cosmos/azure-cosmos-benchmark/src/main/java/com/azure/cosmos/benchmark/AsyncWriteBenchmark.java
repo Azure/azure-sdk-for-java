@@ -3,19 +3,17 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.UUID;
 
-class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
+class AsyncWriteBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
 
     private final String uuid;
     private final String dataFieldValue;
@@ -23,9 +21,9 @@ class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
     class LatencySubscriber<T> extends BaseSubscriber<T> {
 
         Timer.Context context;
-        BaseSubscriber<ResourceResponse<Document>> baseSubscriber;
+        BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber;
 
-        LatencySubscriber(BaseSubscriber<ResourceResponse<Document>> baseSubscriber) {
+        LatencySubscriber(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber) {
             this.baseSubscriber = baseSubscriber;
         }
 
@@ -53,31 +51,21 @@ class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
 
     AsyncWriteBenchmark(Configuration cfg) {
         super(cfg);
+
         uuid = UUID.randomUUID().toString();
         dataFieldValue = RandomStringUtils.randomAlphabetic(configuration.getDocumentDataFieldSize());
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<ResourceResponse<Document>> baseSubscriber, long i) throws InterruptedException {
-
-        String idString = uuid + i;
-        Document newDoc = new Document();
-        newDoc.setId(idString);
-        BridgeInternal.setProperty(newDoc, partitionKey, idString);
-        BridgeInternal.setProperty(newDoc, "dataField1", dataFieldValue);
-        BridgeInternal.setProperty(newDoc, "dataField2", dataFieldValue);
-        BridgeInternal.setProperty(newDoc, "dataField3", dataFieldValue);
-        BridgeInternal.setProperty(newDoc, "dataField4", dataFieldValue);
-        BridgeInternal.setProperty(newDoc, "dataField5", dataFieldValue);
-        Flux<ResourceResponse<Document>> obs = client.createDocument(getCollectionLink(), newDoc, null,
-                false);
+    protected void performWorkload(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber, long i) throws InterruptedException {
+        Mono<CosmosAsyncItemResponse> obs = cosmosAsyncContainer.createItem(generateDocument(uuid + i, dataFieldValue));
 
         concurrencyControlSemaphore.acquire();
 
         if (configuration.getOperationType() == Configuration.Operation.WriteThroughput) {
             obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
         } else {
-            LatencySubscriber<ResourceResponse<Document>> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
+            LatencySubscriber<CosmosAsyncItemResponse> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
             latencySubscriber.context = latency.time();
             obs.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
         }
