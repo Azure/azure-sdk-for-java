@@ -28,6 +28,7 @@ import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -104,6 +105,7 @@ public class EventHubClientBuilder {
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
+    private static final String EVENTHUBS_PROPERTIES_FILE = "azure-messaging-eventhubs.properties";
 
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
@@ -511,11 +513,14 @@ public class EventHubClientBuilder {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
+        Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
+        String product = properties.getOrDefault("name", "UNKNOWN");
+        String clientVersion = properties.getOrDefault("version", "UNKNOWN");
+
         final Mono<EventHubAmqpConnection> connectionMono = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
-
             return new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
-                tokenManagerProvider, messageSerializer);
+                tokenManagerProvider, messageSerializer, product, clientVersion);
         });
 
         return new EventHubConnection(connectionMono, connectionOptions);

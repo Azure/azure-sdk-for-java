@@ -15,9 +15,12 @@ import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -35,9 +38,18 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
 
     @Mock
     private MessageSerializer serializer;
+    private static String PRODUCT;
+    private static String CLIENT_VERSION;
 
     public ReactorConnectionIntegrationTest() {
         super(new ClientLogger(ReactorConnectionIntegrationTest.class));
+    }
+
+    @BeforeAll
+    public static void init() {
+        Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
+        PRODUCT = properties.get("name");
+        CLIENT_VERSION = properties.get("version");
     }
 
     @Override
@@ -58,7 +70,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
         connection = new ReactorConnection("test-connection-id", options, reactorProvider,
-            handlerProvider, tokenManagerProvider, serializer);
+            handlerProvider, tokenManagerProvider, serializer, PRODUCT, CLIENT_VERSION);
     }
 
     @Override
