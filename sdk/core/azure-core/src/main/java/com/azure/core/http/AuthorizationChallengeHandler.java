@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -43,7 +44,6 @@ public class AuthorizationChallengeHandler {
     private static final String AUTH_INT = "auth-int";
     private static final String USERHASH = "userhash";
     private static final String OPAQUE = "opaque";
-
     private static final String NEXT_NONCE = "nextnonce";
 
     /*
@@ -64,14 +64,59 @@ public class AuthorizationChallengeHandler {
 
     // TODO: Prefer SESS based challenges?
     private static final String[] ALGORITHM_PREFERENCE_ORDER = {
-        SHA_512_256_SESS,
         SHA_512_256,
-        SHA_256_SESS,
+        SHA_512_256_SESS,
         SHA_256,
         SHA_256_SESS,
         MD5,
         MD5_SESS
     };
+
+    /**
+     * Header representing a server requesting authentication.
+     */
+    public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
+
+    /**
+     * Header representing a proxy server requesting authentication.
+     */
+    public static final String PROXY_AUTHENTICATE = "Proxy-Authenticate";
+
+    /**
+     * Header representing the authorization the client is presenting to a server.
+     */
+    public static final String AUTHORIZATION = "Authorization";
+
+    /**
+     * Header representing the authorization the client is presenting to a proxy server.
+     */
+    public static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
+
+    /**
+     * Header representing additional information a server is expecting during future authentication requests.
+     */
+    public static final String AUTHENTICATION_INFO = "Authentication-Info";
+
+    /**
+     * Header representing additional information a proxy server is expecting during future authentication requests.
+     */
+    public static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
+
+    /**
+     * Entity headers that are needed when using {@code sess} based algorithms.
+     */
+    public static final Set<String> ENTITY_HEADERS = Stream.of(
+        "allow",
+        "content-encoding",
+        "content-language",
+        "content-length",
+        "content-location",
+        "content-md5",
+        "content-range",
+        "content-type",
+        "expires",
+        "last-modified")
+        .collect(Collectors.toSet());
 
     private final String username;
     private final String password;
@@ -192,6 +237,7 @@ public class AuthorizationChallengeHandler {
             }
         }
     }
+
 
     public static Map<String, String> parseChallengeHeader(String authenticationInfoHeader) {
         if (CoreUtils.isNullOrEmpty(authenticationInfoHeader)) {

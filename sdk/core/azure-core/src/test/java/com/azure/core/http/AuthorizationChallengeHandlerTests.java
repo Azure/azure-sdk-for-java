@@ -208,9 +208,6 @@ public class AuthorizationChallengeHandlerTests {
         assertEquals(expectedResponse, extractValue(authorizationHeader, RESPONSE));
     }
 
-
-    // Test digest
-
     // Test pipelining of diget auth
 
     // Test handling info

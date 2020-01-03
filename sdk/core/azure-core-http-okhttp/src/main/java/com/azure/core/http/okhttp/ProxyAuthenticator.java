@@ -20,28 +20,22 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.azure.core.http.AuthorizationChallengeHandler.ENTITY_HEADERS;
+import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
+import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
 
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.
  */
-class ProxyAuthenticator implements Authenticator {
-    private static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
-    private static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
+final class ProxyAuthenticator implements Authenticator {
+    private static final String HTTP_NEWLINE = "\r\n";
+
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
-
-    private static final String ALLOW = "Allow";
-    private static final String CONTENT_ENCODING = "Content-Encoding";
-    private static final String CONTENT_LANGUAGE = "Content-Language";
-    private static final String CONTENT_LENGTH = "Content-Length";
-    private static final String CONTENT_LOCATION = "Content-Location";
-    private static final String CONTENT_MD5 = "Content-MD5";
-    private static final String CONTENT_RANGE = "Content-Range";
-    private static final String CONTENT_TYPE = "Content-Type";
-    private static final String EXPIRES = "Expires";
-    private static final String LAST_MODIFIED = "Last-Modified";
 
     private final ClientLogger logger = new ClientLogger(ProxyAuthenticator.class);
 
@@ -68,7 +62,6 @@ class ProxyAuthenticator implements Authenticator {
     }
 
     /**
-     *
      * @param route Route being used to reach the server.
      * @param response Response from the server requesting authentication.
      * @return The initial request with an authorization header applied.
@@ -76,7 +69,7 @@ class ProxyAuthenticator implements Authenticator {
     @Override
     public Request authenticate(Route route, Response response) {
         String method = response.request().method();
-        String uri = response.request().url().toString();
+        String uri = response.request().url().encodedPath();
 
         String authorizationHeader = challengeHandler.attemptToPipelineAuthorization(method, uri,
             () -> entitySupplier(response.request()));
@@ -88,6 +81,11 @@ class ProxyAuthenticator implements Authenticator {
                 .build();
         }
 
+        // If this is a pre-emptive challenge quit now if pipelining doesn't produce anything.
+        if ("Preemptive Authenticate".equalsIgnoreCase(response.message())) {
+            return response.request();
+        }
+
         List<Challenge> basicChallenges = response.challenges().stream()
             .filter(challenge -> "Basic".equalsIgnoreCase(challenge.scheme()))
             .collect(Collectors.toList());
@@ -96,14 +94,13 @@ class ProxyAuthenticator implements Authenticator {
             .filter(challenge -> "Digest".equalsIgnoreCase(challenge.scheme()))
             .collect(Collectors.toList());
 
+        // Prefer digest challenges over basic.
         if (digestChallenges.size() > 0) {
             List<Map<String, String>> challenges = digestChallenges.stream().map(Challenge::authParams)
                 .map(HashMap::new).collect(Collectors.toList());
 
             authorizationHeader = challengeHandler.handleDigest(method, uri, challenges,
                 () -> entitySupplier(response.request()));
-        } else if (basicChallenges.size() > 0) {
-            authorizationHeader = challengeHandler.handleBasic();
         }
 
         /*
@@ -123,17 +120,33 @@ class ProxyAuthenticator implements Authenticator {
         return requestBuilder.build();
     }
 
+    /*
+     * Retrieves the HTTP entity for the given request. A HTTP entity consists of the entity headers and the body, if
+     * present.
+     */
     private byte[] entitySupplier(Request request) {
         StringBuilder entityBuilder = new StringBuilder();
 
         // Get entity headers
+        for (String headerName : request.headers().names()) {
+            if (!ENTITY_HEADERS.contains(headerName.toLowerCase(Locale.ROOT))) {
+                continue;
+            }
+
+            entityBuilder.append(headerName)
+                .append(":")
+                .append(request.header(headerName))
+                .append(HTTP_NEWLINE);
+        }
 
         // Get body
-
         RequestBody requestBody = request.body();
         if (requestBody == null) {
-            return new byte[0];
+            return entityBuilder.toString().getBytes(StandardCharsets.UTF_8);
         }
+
+        // There are two newlines between entity headers and the body.
+        entityBuilder.append(HTTP_NEWLINE).append(HTTP_NEWLINE);
 
         Buffer bodyBuffer = new Buffer();
         try {
@@ -142,9 +155,9 @@ class ProxyAuthenticator implements Authenticator {
             throw logger.logExceptionAsWarning(new UncheckedIOException(e));
         }
 
-        bodyBuffer.readString(StandardCharsets.UTF_8);
+        entityBuilder.append(bodyBuffer.readString(StandardCharsets.UTF_8));
 
-        return bodyBuffer.readByteArray();
+        return entityBuilder.toString().getBytes(StandardCharsets.UTF_8);
     }
 
     /**

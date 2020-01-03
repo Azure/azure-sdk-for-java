@@ -87,10 +87,32 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     @Test
-    public void addConfigurationSettingWithProxy() {
+    public void addConfigurationSettingWithOkHttpProxy() {
         HttpClient httpClient = new OkHttpAsyncHttpClientBuilder()
-            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 3128))
-                .setCredentials("test", "password"))
+            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888/*3128*/))
+                .setCredentials("1", "1"))
+            .build();
+
+        ConfigurationClient client = new ConfigurationClientBuilder()
+            .connectionString(connectionString)
+            .httpClient(httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
+
+        ConfigurationSetting setting = client.setConfigurationSetting("test", null, "test");
+        assertEquals("test", setting.getKey());
+        assertEquals("test", setting.getValue());
+
+        setting = client.setConfigurationSetting("test", null, "test2");
+        assertEquals("test", setting.getKey());
+        assertEquals("test2", setting.getValue());
+    }
+
+    @Test
+    public void addConfigurationSettingWithNettyProxy() {
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder()
+            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
+                .setCredentials("1", "1"))
             .build();
 
         ConfigurationClient client = new ConfigurationClientBuilder()
