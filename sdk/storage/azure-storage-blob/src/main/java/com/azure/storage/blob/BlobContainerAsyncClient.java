@@ -33,6 +33,7 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.AzureStorageClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -74,7 +75,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
 @ServiceClient(builder = BlobContainerClientBuilder.class, isAsync = true)
-public final class BlobContainerAsyncClient {
+public final class BlobContainerAsyncClient implements AzureStorageClient {
     public static final String ROOT_CONTAINER_NAME = "$root";
 
     public static final String STATIC_WEBSITE_CONTAINER_NAME = "$web";

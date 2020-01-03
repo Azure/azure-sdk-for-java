@@ -45,6 +45,7 @@ import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.AzureStorageClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -89,7 +90,7 @@ import static java.lang.StrictMath.toIntExact;
  * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
-public class BlobAsyncClientBase {
+public class BlobAsyncClientBase implements AzureStorageClient {
 
     private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;

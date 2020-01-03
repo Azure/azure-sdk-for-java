@@ -28,6 +28,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.AzureStorageClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.Constants;
@@ -66,7 +67,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
 @ServiceClient(builder = BlobServiceClientBuilder.class, isAsync = true)
-public final class BlobServiceAsyncClient {
+public final class BlobServiceAsyncClient implements AzureStorageClient {
     private final ClientLogger logger = new ClientLogger(BlobServiceAsyncClient.class);
 
     private final AzureBlobStorageImpl azureBlobStorage;

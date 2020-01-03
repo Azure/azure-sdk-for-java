@@ -30,6 +30,7 @@ import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.AzureStorageClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
@@ -57,7 +58,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
-public class BlobClientBase {
+public class BlobClientBase implements AzureStorageClient {
     private final ClientLogger logger = new ClientLogger(BlobClientBase.class);
 
     private final BlobAsyncClientBase client;

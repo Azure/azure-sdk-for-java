@@ -25,9 +25,11 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.common.AzureStorageClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -42,6 +44,8 @@ import com.azure.storage.common.policy.ScrubEtagPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -101,11 +105,14 @@ public final class EncryptedBlobClientBuilder {
     private String keyWrapAlgorithm;
     private BlobServiceVersion version;
 
+    private final HashSet<Class<?>> expectedPolicies = StorageImplUtils.getCommonPolicies();
+
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
      */
     public EncryptedBlobClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
+        expectedPolicies.add(BlobDecryptionPolicy.class);
     }
 
     /**
@@ -476,6 +483,48 @@ public final class EncryptedBlobClientBuilder {
      * @return the updated EncryptedBlobClientBuilder object
      */
     public EncryptedBlobClientBuilder pipeline(HttpPipeline httpPipeline) {
+        return pipelineHelper(httpPipeline);
+    }
+
+    /**
+     * Sets the {@link HttpPipeline} to use for the service client based off an existing client.
+     *
+     * Use this method after setting the key in {@link #key(AsyncKeyEncryptionKey, String) key} and keyResolver in
+     * {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}
+     *
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
+     *
+     * @param client The client to extract the HttpPipeline from.
+     * @param customPolicies Class types of custom policies expected to be extracted from the client's pipeline.
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    public EncryptedBlobClientBuilder pipeline(AzureStorageClient client, Class<?>... customPolicies) {
+
+        expectedPolicies.addAll(Arrays.asList(customPolicies));
+
+        checkValidEncryptionParameters();
+
+        HttpPipeline pipeline = null;
+        if (client.getHttpPipeline() != null) {
+            HttpPipeline clientPipeline = client.getHttpPipeline();
+            List<HttpPipelinePolicy> policies = new ArrayList<>();
+            policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
+            for (int i = 0; i < clientPipeline.getPolicyCount(); i++) {
+                HttpPipelinePolicy currPolicy = clientPipeline.getPolicy(i);
+                if (expectedPolicies.contains(currPolicy.getClass())) {
+                    policies.add(currPolicy);
+                }
+            }
+            pipeline = new HttpPipelineBuilder()
+                .httpClient(client.getHttpPipeline().getHttpClient())
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
+        }
+
+        return pipelineHelper(pipeline);
+    }
+
+    private EncryptedBlobClientBuilder pipelineHelper(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }

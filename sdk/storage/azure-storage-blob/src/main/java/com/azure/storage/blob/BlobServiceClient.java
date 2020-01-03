@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.AzureStorageClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
@@ -40,7 +41,7 @@ import java.util.Map;
  * information on containers.
  */
 @ServiceClient(builder = BlobServiceClientBuilder.class)
-public final class BlobServiceClient {
+public final class BlobServiceClient implements AzureStorageClient {
     private final BlobServiceAsyncClient blobServiceAsyncClient;
 
     /**

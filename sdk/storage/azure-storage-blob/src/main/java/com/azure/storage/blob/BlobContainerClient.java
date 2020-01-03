@@ -19,6 +19,7 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.AzureStorageClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import reactor.core.publisher.Mono;
 
@@ -44,7 +45,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * Docs</a> for more information on containers.
  */
 @ServiceClient(builder = BlobContainerClientBuilder.class)
-public final class BlobContainerClient {
+public final class BlobContainerClient implements AzureStorageClient {
     private final BlobContainerAsyncClient client;
 
     public static final String ROOT_CONTAINER_NAME = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;

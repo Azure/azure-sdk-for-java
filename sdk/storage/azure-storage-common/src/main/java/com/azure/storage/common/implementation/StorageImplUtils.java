@@ -3,6 +3,11 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -14,11 +19,17 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
+import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
+import com.azure.storage.common.policy.RequestRetryPolicy;
+import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
+import com.azure.storage.common.policy.ScrubEtagPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -250,5 +261,25 @@ public class StorageImplUtils {
             }
         }
         return accountName;
+    }
+
+    /**
+     * Gets policies common to all Azure Storage clients
+     * @return A collection of common policies
+     */
+    public static HashSet<Class<?>> getCommonPolicies() {
+        HashSet<Class<?>> commonPolicies = new HashSet<>();
+        commonPolicies.add(UserAgentPolicy.class);
+        commonPolicies.add(RequestIdPolicy.class);
+        commonPolicies.add(AddDatePolicy.class);
+        commonPolicies.add(StorageSharedKeyCredentialPolicy.class);
+        commonPolicies.add(BearerTokenAuthenticationPolicy.class);
+        commonPolicies.add(SasTokenCredentialPolicy.class);
+        commonPolicies.add(RequestRetryPolicy.class);
+        commonPolicies.add(ResponseValidationPolicyBuilder.ResponseValidationPolicy.class);
+        commonPolicies.add(HttpLoggingPolicy.class);
+        commonPolicies.add(ScrubEtagPolicy.class);
+
+        return commonPolicies;
     }
 }
