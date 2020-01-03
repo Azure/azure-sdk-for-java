@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2020-01-02)
+## 1.2.0 (2020-01-07)
 - Ignore null headers and allow full url paths 
 - Add missing HTTP request methods to HttpMethod enum
 - Support custom header with AddHeaderPolicy

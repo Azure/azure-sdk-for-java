@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2020-01-07)
 - Shorten tracing span names
 - Add eventhub properties to processing spans
 
