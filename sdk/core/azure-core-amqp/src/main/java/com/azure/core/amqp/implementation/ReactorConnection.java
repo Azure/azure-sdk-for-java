@@ -75,7 +75,7 @@ public class ReactorConnection implements AmqpConnection {
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
                              ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
-                             MessageSerializer messageSerializer) {
+                             MessageSerializer messageSerializer, String product, String clientVersion) {
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
@@ -86,7 +86,7 @@ public class ReactorConnection implements AmqpConnection {
         this.messageSerializer = messageSerializer;
         this.handler = handlerProvider.createConnectionHandler(connectionId,
             connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getTransportType(),
-            connectionOptions.getProxyOptions());
+            connectionOptions.getProxyOptions(), product, clientVersion);
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
 
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)

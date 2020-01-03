@@ -106,6 +106,9 @@ public class EventHubClientBuilder {
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
     private static final String EVENTHUBS_PROPERTIES_FILE = "azure-messaging-eventhubs.properties";
+    private static final String NAME_KEY = "name";
+    private static final String VERSION_KEY = "version";
+    private static final String UNKNOWN = "UNKNOWN";
 
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
@@ -514,8 +517,8 @@ public class EventHubClientBuilder {
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
         Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
-        String product = properties.getOrDefault("name", "UNKNOWN");
-        String clientVersion = properties.getOrDefault("version", "UNKNOWN");
+        String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
         final Mono<EventHubAmqpConnection> connectionMono = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");

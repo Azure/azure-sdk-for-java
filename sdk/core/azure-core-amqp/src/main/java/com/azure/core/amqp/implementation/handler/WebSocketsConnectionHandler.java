@@ -20,6 +20,7 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
 
     private static final String SOCKET_PATH = "/$servicebus/websocket";
     private static final String PROTOCOL = "AMQPWSB10";
+    private final ClientLogger logger = new ClientLogger(WebSocketsConnectionHandler.class);
 
     /**
      * Creates a handler that handles proton-j's connection events using web sockets.
@@ -27,8 +28,9 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * @param connectionId Identifier for this connection.
      * @param hostname Hostname to use for socket creation.
      */
-    public WebSocketsConnectionHandler(final String connectionId, final String hostname) {
-        super(connectionId, hostname, new ClientLogger(WebSocketsConnectionHandler.class));
+    public WebSocketsConnectionHandler(final String connectionId, final String hostname, final String product,
+        final String clientVersion) {
+        super(connectionId, hostname, product, clientVersion);
     }
 
     @Override

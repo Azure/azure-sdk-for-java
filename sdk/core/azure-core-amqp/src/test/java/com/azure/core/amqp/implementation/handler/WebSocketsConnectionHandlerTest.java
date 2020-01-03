@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.ClientConstants;
+import com.azure.core.util.CoreUtils;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -11,6 +12,7 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -39,13 +41,16 @@ public class WebSocketsConnectionHandlerTest {
     private static final String HOSTNAME = "hostname-random";
     private WebSocketsConnectionHandler handler;
 
+    private static final String PRODUCT = "test";
+    private static final String CLIENT_VERSION = "1.0.0-test";
+
     @Captor
     ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        handler = new WebSocketsConnectionHandler(CONNECTION_ID, HOSTNAME);
+        handler = new WebSocketsConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
     }
 
     @AfterEach
@@ -58,8 +63,6 @@ public class WebSocketsConnectionHandlerTest {
     public void createHandler() {
         // Arrange
         final Map<String, String> expected = new HashMap<>();
-        expected.put(PRODUCT.toString(), ClientConstants.PRODUCT_NAME);
-        expected.put(VERSION.toString(), ClientConstants.CURRENT_JAVA_CLIENT_VERSION);
         expected.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         expected.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 

@@ -39,6 +39,8 @@ public class ConnectionHandlerTest {
     private static final String CONNECTION_ID = "some-random-id";
     private static final String HOSTNAME = "hostname-random";
     private ConnectionHandler handler;
+    private static final String PRODUCT = "test";
+    private static final String CLIENT_VERSION = "1.0.0-test";
 
     @Captor
     private ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
@@ -46,7 +48,7 @@ public class ConnectionHandlerTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
+        handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
     }
 
     @AfterEach
@@ -59,8 +61,6 @@ public class ConnectionHandlerTest {
     public void createHandler() {
         // Arrange
         final Map<String, String> expected = new HashMap<>();
-        expected.put(PRODUCT.toString(), ClientConstants.PRODUCT_NAME);
-        expected.put(VERSION.toString(), ClientConstants.CURRENT_JAVA_CLIENT_VERSION);
         expected.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         expected.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
