@@ -26,7 +26,9 @@ import reactor.util.context.Context;
 
 import java.util.Optional;
 
+import static com.azure.core.util.tracing.Tracer.AZ_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.USER_SPAN_NAME_KEY;
 
 /**
  * Pipeline policy that creates an OpenTelemetry span which traces the service request.
@@ -73,7 +75,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
         // If span is sampled in, add additional TRACING attributes
         if (span.isRecording()) {
-            addSpanRequestAttributes(span, request); // Adds HTTP method, URL, & user-agent
+            addSpanRequestAttributes(span, request, context); // Adds HTTP method, URL, & user-agent
         }
 
         // For no-op tracer, SpanContext is INVALID; inject valid span headers onto outgoing request
@@ -88,10 +90,16 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             .subscriberContext(Context.of("TRACING_SPAN", span, "REQUEST", request));
     }
 
-    private static void addSpanRequestAttributes(Span span, HttpRequest request) {
+    private static void addSpanRequestAttributes(Span span, HttpRequest request,
+        HttpPipelineCallContext context) {
         putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().getValue("User-Agent"));
         putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
         putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
+        Optional<Object> spanNameContext = context.getData(USER_SPAN_NAME_KEY);
+        if (spanNameContext.isPresent()) {
+            putAttributeIfNotEmptyOrNull(span, AZ_NAMESPACE_KEY, HttpTraceUtil.parseNamespaceProvider(
+                spanNameContext.get().toString()));
+        }
     }
 
     private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {

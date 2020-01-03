@@ -24,10 +24,12 @@ import java.util.Map;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.COMPONENT;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_BUS_DESTINATION;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.PEER_ENDPOINT;
+import static com.azure.core.util.tracing.Tracer.AZ_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,17 +40,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests Azure-OpenTelemetry tracing package using opentelemetry-sdk
+ * Tests Azure-OpenTelemetry tracing package using openTelemetry-sdk
  */
 public class OpenTelemetryTracerTest {
     private static final String METHOD_NAME = "EventHubs.send";
+    private static final String HTTP_METHOD_NAME = "KeyVaultSecrets.setSecret";
     private static final String HOSTNAME_VALUE = "testEventDataNameSpace.servicebus.windows.net";
     private static final String ENTITY_PATH_VALUE = "test";
     private static final String COMPONENT_VALUE = "EventHubs";
+    private static final String AZ_NAMESPACE_HTTP_VALUE = "Microsoft.KeyVault";
     private OpenTelemetryTracer openTelemetryTracer;
     private Tracer tracer;
     private Context tracingContext;
     private Span parentSpan;
+    private static boolean isHttp = false;
 
     @BeforeEach
     public void setUp() {
@@ -71,6 +76,7 @@ public class OpenTelemetryTracerTest {
         tracingContext = null;
         assertNull(tracer);
         assertNull(tracingContext);
+        isHttp = false;
     }
 
     @Test
@@ -83,15 +89,19 @@ public class OpenTelemetryTracerTest {
     public void startSpanParentContextFlowTest() {
         // Arrange
         final SpanId parentSpanId = parentSpan.getContext().getSpanId();
+        isHttp = true;
 
         // Act
-        final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, tracingContext);
+        final Context updatedContext = openTelemetryTracer.start(HTTP_METHOD_NAME,
+            tracingContext.addData(AZ_NAMESPACE_KEY, AZ_NAMESPACE_HTTP_VALUE));
 
         // Assert
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
         assertEquals(Span.Kind.INTERNAL, recordEventsSpan.toSpanData().getKind());
+        final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
+        assertEquals(attributeMap.get(AZ_NAMESPACE_KEY), AttributeValue.stringAttributeValue(AZ_NAMESPACE_HTTP_VALUE));
     }
 
     @Test
@@ -173,7 +183,7 @@ public class OpenTelemetryTracerTest {
         // verify span created with explicit parent
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
         // verify scope returned
-        assertNotNull(updatedContext.getData("scope").get());
+        assertNotNull(updatedContext.getData(SCOPE_KEY).get());
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
         assertEquals(Span.Kind.SERVER, recordEventsSpan.toSpanData().getKind());
@@ -206,7 +216,7 @@ public class OpenTelemetryTracerTest {
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, traceContext, ProcessKind.PROCESS);
 
         // Assert
-        assertNotNull(updatedContext.getData("scope").get());
+        assertNotNull(updatedContext.getData(SCOPE_KEY).get());
         // Assert new span created with remote parent context
         assertSpanWithRemoteParent(updatedContext, testSpanId);
     }
@@ -293,7 +303,11 @@ public class OpenTelemetryTracerTest {
 
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
-        assertEquals(METHOD_NAME, recordEventsSpan.getName());
+        if (isHttp) {
+            assertEquals(HTTP_METHOD_NAME, recordEventsSpan.getName());
+        } else {
+            assertEquals(METHOD_NAME, recordEventsSpan.getName());
+        }
 
         // verify span started with explicit parent
         assertFalse(recordEventsSpan.toSpanData().getHasRemoteParent());

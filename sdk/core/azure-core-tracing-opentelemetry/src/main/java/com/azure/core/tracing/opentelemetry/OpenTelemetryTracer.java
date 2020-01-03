@@ -48,7 +48,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         Builder spanBuilder = getSpanBuilder(spanName, context);
         Span span = spanBuilder.startSpan();
-
+        if (span.isRecording()) {
+            span.setAttribute(AZ_NAMESPACE_KEY,
+                AttributeValue.stringAttributeValue(HttpTraceUtil.parseNamespaceProvider(spanName)));
+        }
         return context.addData(PARENT_SPAN_KEY, span);
     }
 

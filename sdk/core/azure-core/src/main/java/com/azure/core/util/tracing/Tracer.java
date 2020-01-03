@@ -58,6 +58,11 @@ public interface Tracer {
     String SPAN_BUILDER_KEY = "builder";
 
     /**
+     * Key for {@link Context} which indicates that the context contains the Azure resource provider namespace.
+     */
+    String AZ_NAMESPACE_KEY = "az.namespace";
+
+    /**
      * Creates a new tracing span.
      * <p>
      * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
