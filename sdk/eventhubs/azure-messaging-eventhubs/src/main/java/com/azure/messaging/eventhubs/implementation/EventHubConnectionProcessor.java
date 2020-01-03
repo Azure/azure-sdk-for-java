@@ -147,7 +147,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
             return;
         }
 
-        logger.warning("Non-retryable error occurred in connection. Error: {}", throwable);
+        logger.warning("Non-retryable error occurred in connection.", throwable);
         lastError = throwable;
         isTerminated.set(true);
         dispose();

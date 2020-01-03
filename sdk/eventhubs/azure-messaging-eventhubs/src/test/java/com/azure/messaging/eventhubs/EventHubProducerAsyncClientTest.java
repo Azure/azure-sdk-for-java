@@ -65,7 +65,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-public class EventHubProducerAsyncClientTest {
+class EventHubProducerAsyncClientTest {
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
 
@@ -100,7 +100,7 @@ public class EventHubProducerAsyncClientTest {
     private ConnectionOptions connectionOptions;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
         tracerProvider = new TracerProvider(Collections.emptyList());
@@ -123,7 +123,7 @@ public class EventHubProducerAsyncClientTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         Mockito.framework().clearInlineMocks();
         sendLink = null;
         connection = null;
@@ -135,7 +135,7 @@ public class EventHubProducerAsyncClientTest {
      * Verifies that sending multiple events will result in calling producer.send(List&lt;Message&gt;).
      */
     @Test
-    public void sendMultipleMessages() {
+    void sendMultipleMessages() {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
@@ -167,7 +167,7 @@ public class EventHubProducerAsyncClientTest {
      * Verifies that sending a single event data will result in calling producer.send(Message).
      */
     @Test
-    public void sendSingleMessage() {
+    void sendSingleMessage() {
         // Arrange
         final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
         final SendOptions options = new SendOptions();
@@ -194,7 +194,7 @@ public class EventHubProducerAsyncClientTest {
      * Verifies that a partitioned producer cannot also send events with a partition key.
      */
     @Test
-    public void partitionProducerCannotSendWithPartitionKey() {
+    void partitionProducerCannotSendWithPartitionKey() {
         // Arrange
         final Flux<EventData> testData = Flux.just(
             new EventData(TEST_CONTENTS.getBytes(UTF_8)),
@@ -222,7 +222,7 @@ public class EventHubProducerAsyncClientTest {
      * Verifies start and end span invoked when sending a single message.
      */
     @Test
-    public void sendStartSpanSingleMessage() {
+    void sendStartSpanSingleMessage() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
@@ -281,7 +281,7 @@ public class EventHubProducerAsyncClientTest {
      * already present on event).
      */
     @Test
-    public void sendMessageRetrySpanTest() {
+    void sendMessageRetrySpanTest() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
@@ -333,7 +333,7 @@ public class EventHubProducerAsyncClientTest {
      * Verifies that it fails if we try to send multiple messages that cannot fit in a single message batch.
      */
     @Test
-    public void sendTooManyMessages() {
+    void sendTooManyMessages() {
         // Arrange
         int maxLinkSize = 1024;
         final AmqpSendLink link = mock(AmqpSendLink.class);
@@ -362,7 +362,7 @@ public class EventHubProducerAsyncClientTest {
      * link.
      */
     @Test
-    public void createsEventDataBatch() {
+    void createsEventDataBatch() {
         // Arrange
         int maxLinkSize = 1024;
 
@@ -406,7 +406,7 @@ public class EventHubProducerAsyncClientTest {
      * EventDataBatch}.
      */
     @Test
-    public void startMessageSpansOnCreateBatch() {
+    void startMessageSpansOnCreateBatch() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
@@ -444,7 +444,7 @@ public class EventHubProducerAsyncClientTest {
      * Verifies we can create an EventDataBatch with partition key and link size.
      */
     @Test
-    public void createsEventDataBatchWithPartitionKey() {
+    void createsEventDataBatchWithPartitionKey() {
         // Arrange
         int maxLinkSize = 1024;
 
@@ -475,7 +475,7 @@ public class EventHubProducerAsyncClientTest {
      * Verifies we cannot create an EventDataBatch if the BatchOptions size is larger than the link.
      */
     @Test
-    public void createEventDataBatchWhenMaxSizeIsTooBig() {
+    void createEventDataBatchWhenMaxSizeIsTooBig() {
         // Arrange
         int maxLinkSize = 1024;
         int batchSize = maxLinkSize + 10;
@@ -501,7 +501,7 @@ public class EventHubProducerAsyncClientTest {
      * CreateBatchOptions#getMaximumSizeInBytes()}.
      */
     @Test
-    public void createsEventDataBatchWithSize() {
+    void createsEventDataBatchWithSize() {
         // Arrange
         int maxLinkSize = 10000;
         int batchSize = 1024;
@@ -542,7 +542,7 @@ public class EventHubProducerAsyncClientTest {
     }
 
     @Test
-    public void sendEventRequired() {
+    void sendEventRequired() {
         // Arrange
         final EventData event = new EventData("Event-data");
         final SendOptions sendOptions = new SendOptions();
@@ -555,7 +555,7 @@ public class EventHubProducerAsyncClientTest {
     }
 
     @Test
-    public void sendEventIterableRequired() {
+    void sendEventIterableRequired() {
         // Arrange
         final List<EventData> event = Collections.singletonList(new EventData("Event-data"));
         final SendOptions sendOptions = new SendOptions();
@@ -568,7 +568,7 @@ public class EventHubProducerAsyncClientTest {
     }
 
     @Test
-    public void sendEventFluxRequired() {
+    void sendEventFluxRequired() {
         // Arrange
         final Flux<EventData> event = Flux.just(new EventData("Event-data"));
         final SendOptions sendOptions = new SendOptions();
@@ -581,7 +581,7 @@ public class EventHubProducerAsyncClientTest {
     }
 
     @Test
-    public void batchOptionsIsCloned() {
+    void batchOptionsIsCloned() {
         // Arrange
         int maxLinkSize = 1024;
 
@@ -605,7 +605,7 @@ public class EventHubProducerAsyncClientTest {
     }
 
     @Test
-    public void sendsAnEventDataBatch() {
+    void sendsAnEventDataBatch() {
         // Arrange
         int maxLinkSize = 1024;
 
@@ -648,7 +648,7 @@ public class EventHubProducerAsyncClientTest {
      * Verify we can send messages to multiple partitionIds with same sender.
      */
     @Test
-    public void sendMultiplePartitions() {
+    void sendMultiplePartitions() {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
@@ -705,7 +705,7 @@ public class EventHubProducerAsyncClientTest {
      * Verifies that when we have a shared connection, the producer does not close that connection.
      */
     @Test
-    public void doesNotCloseSharedConnection() {
+    void doesNotCloseSharedConnection() {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient sharedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
@@ -722,7 +722,7 @@ public class EventHubProducerAsyncClientTest {
      * Verifies that when we have a non-shared connection, the producer closes that connection.
      */
     @Test
-    public void closesDedicatedConnection() {
+    void closesDedicatedConnection() {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
@@ -739,7 +739,7 @@ public class EventHubProducerAsyncClientTest {
      * Verifies that when we have a non-shared connection, the producer closes that connection. Only once.
      */
     @Test
-    public void closesDedicatedConnectionOnlyOnce() {
+    void closesDedicatedConnectionOnlyOnce() {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
@@ -753,8 +753,11 @@ public class EventHubProducerAsyncClientTest {
         verify(hubConnection, times(1)).dispose();
     }
 
+    /**
+     * Verifies that another link is received and we can continue publishing events on a transient failure.
+     */
     @Test
-    public void reopensOnFailure() {
+    void reopensOnFailure() {
         // Arrange
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -822,7 +825,85 @@ public class EventHubProducerAsyncClientTest {
         verifyZeroInteractions(sendLink3);
     }
 
-    static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"
+    /**
+     * Verifies that on a non-transient failure, no more event hub connections are recreated and we can not send events.
+     * An error should be propagated back to us.
+     */
+    @Test
+    void closesOnNonTransientFailure() {
+        // Arrange
+        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
+        endpointSink.next(AmqpEndpointState.ACTIVE);
+
+        EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
+            connection, connection2, connection3
+        };
+        connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> {
+            final AtomicInteger count = new AtomicInteger();
+            sink.onRequest(request -> {
+                for (int i = 0; i < request; i++) {
+                    final int current = count.getAndIncrement();
+                    final int index = current % connections.length;
+                    sink.next(connections[index]);
+                }
+            });
+        }).subscribeWith(
+            new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            tracerProvider, messageSerializer, false);
+
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
+            final EventData data = new EventData(contents);
+            return Flux.just(data);
+        });
+        final EventData testData2 = new EventData("test");
+
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+
+        final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
+        when(connection2.getEndpointStates()).thenReturn(connectionState2);
+        when(connection2.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+            .thenReturn(Mono.just(sendLink2));
+        when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
+
+        final AmqpException nonTransientError = new AmqpException(false, AmqpErrorCondition.UNAUTHORIZED_ACCESS,
+            "Test unauthorized access", new AmqpErrorContext("test-namespace"));
+
+        // Act
+        StepVerifier.create(producer.send(testData))
+            .verifyComplete();
+
+        // Send in an error signal like authorization failure.
+        endpointSink.error(nonTransientError);
+
+        StepVerifier.create(producer.send(testData2))
+            .expectErrorSatisfies(error -> {
+                Assertions.assertTrue(error instanceof AmqpException);
+
+                final AmqpException actual = (AmqpException) error;
+                Assertions.assertEquals(nonTransientError.isTransient(), actual.isTransient());
+                Assertions.assertEquals(nonTransientError.getContext(), actual.getContext());
+                Assertions.assertEquals(nonTransientError.getErrorCondition(), actual.getErrorCondition());
+                Assertions.assertEquals(nonTransientError.getMessage(), actual.getMessage());
+            })
+            .verify(Duration.ofSeconds(10));
+
+        // Assert
+        verify(sendLink).send(messagesCaptor.capture());
+        final List<Message> messagesSent = messagesCaptor.getValue();
+        Assertions.assertEquals(count, messagesSent.size());
+
+        verifyZeroInteractions(sendLink2);
+        verifyZeroInteractions(sendLink3);
+    }
+
+    private static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"
         + "Ut sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id elit scelerisque, in elementum nulla pharetra. \n"
         + "Aenean aliquet aliquet condimentum. Proin dapibus dui id libero tempus feugiat. Sed commodo ligula a lectus mattis, vitae tincidunt velit auctor. Fusce quis semper dui. Phasellus eu efficitur sem. Ut non sem sit amet enim condimentum venenatis id dictum massa. Nullam sagittis lacus a neque sodales, et ultrices arcu mattis. Aliquam erat volutpat. \n"
         + "Aenean fringilla quam elit, id mattis purus vestibulum nec. Praesent porta eros in dapibus molestie. Vestibulum orci libero, tincidunt et turpis eget, condimentum lobortis enim. Fusce suscipit ante et mauris consequat cursus nec laoreet lorem. Maecenas in sollicitudin diam, non tincidunt purus. Nunc mauris purus, laoreet eget interdum vitae, placerat a sapien. In mi risus, blandit eu facilisis nec, molestie suscipit leo. Pellentesque molestie urna vitae dui faucibus bibendum. \n"
