@@ -32,6 +32,7 @@ import java.util.Optional;
 import static com.azure.core.util.tracing.Tracer.AZ_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 
 /**
  * A class for aggregating {@link EventData} into a single, size-limited, batch. It is treated as a single message when
@@ -43,8 +44,6 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
  *     producer.
  */
 public final class EventDataBatch {
-    private static final String AZ_NAMESPACE_VALUE = "Microsoft.EventHub";
-
     private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
     private final Object lock = new Object();
     private final int maxMessageSize;
