@@ -1,6 +1,11 @@
 # Release History
 
-## 5.0.0-beta.7 (Unreleased)
+## 5.0.0 (2020-01-07)
+- Add support for different error handling cases in EventProcessor.
+- Recreate connection in client on transient errors.
+- Add tracing links when sending a batch of events.
+- Tracing link names are shortened when sending events.
+- EventPosition.fromOffset(long) is no longer inclusive.
 
 ## 5.0.0-beta.6 (2019-12-02)
 - Artifact name changed from `preview` to `beta`.
@@ -23,10 +28,10 @@ be declared at the time of receiving events and not when the client is created.
    - `EventHubProducerAsyncClient` and `EventHubProduderClient` for sending events.
    - `EventHubConsumerAsyncClient` and `EventHubConsumerClient` for receiving events.
 - Moved `InMemoryPartitionManager` from main package to samples and renamed to `InMemoryEventProcessorStore`
-- The `EventProcessorStore`, previously `PartitionManager`, has updated APIs to include `fullyQualifiedNamespace` of 
+- The `EventProcessorStore`, previously `PartitionManager`, has updated APIs to include `fullyQualifiedNamespace` of
 the Event Hub.
 - Updates to `EventProcessor` to allow functional callbacks for processing events, errors etc.
-   
+
 ## 5.0.0-preview.4 (2019-10-08)
 - Proxy support for Event Hubs sync and async clients.
 - `EventHubConsumer` and `EventHubAsyncConsumer` now provides last enqueued event information.
