@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics;
 
 /**
- * Sample demonstrate how to extract the key phrases of an input text.
+ * Sample demonstrates how to extract the key phrases of an input text.
  */
 public class ExtractKeyPhrases {
     /**

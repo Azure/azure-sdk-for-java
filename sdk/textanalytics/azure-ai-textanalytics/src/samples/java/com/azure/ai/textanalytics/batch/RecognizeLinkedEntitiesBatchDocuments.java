@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrate how to recognize the linked entities of a batch input text.
+ * Sample demonstrates how to recognize the linked entities of a batch input text.
  */
 public class RecognizeLinkedEntitiesBatchDocuments {
     /**

@@ -6,10 +6,8 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 
-import java.util.List;
-
 /**
- * Sample demonstrate how to analyze the sentiment of an input text.
+ * Sample demonstrates how to analyze the sentiment of an input text.
  */
 public class AnalyzeSentiment {
     /**

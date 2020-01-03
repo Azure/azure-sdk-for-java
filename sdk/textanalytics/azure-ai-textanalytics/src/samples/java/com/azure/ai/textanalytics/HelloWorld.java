@@ -6,10 +6,8 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 
-import java.util.List;
-
 /**
- * Sample demonstrate how to detect the language of an input text.
+ * Sample demonstrates how to detect the language of an input text.
  */
 public class HelloWorld {
     /**

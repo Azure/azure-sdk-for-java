@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrate how to detect the languages of a batch input text.
+ * Sample demonstrates how to detect the languages of a batch input text.
  */
 public class DetectLanguageBatchDocuments {
     /**

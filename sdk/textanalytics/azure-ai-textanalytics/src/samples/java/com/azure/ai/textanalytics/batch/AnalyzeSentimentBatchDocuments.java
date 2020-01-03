@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrate how to analyze the sentiments of a batch input text.
+ * Sample demonstrates how to analyze the sentiments of a batch input text.
  */
 public class AnalyzeSentimentBatchDocuments {
     /**

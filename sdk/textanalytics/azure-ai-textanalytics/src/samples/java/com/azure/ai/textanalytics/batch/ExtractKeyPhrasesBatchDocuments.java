@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrate how to extract the key phrases of a batch input text.
+ * Sample demonstrates how to extract the key phrases of a batch input text.
  */
 public class ExtractKeyPhrasesBatchDocuments {
     /**

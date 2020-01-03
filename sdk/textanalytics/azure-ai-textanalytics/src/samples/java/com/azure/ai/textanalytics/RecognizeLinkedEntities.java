@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 
 /**
- * Sample demonstrate how to recognize the linked entities of an input text.
+ * Sample demonstrates how to recognize the linked entities of an input text.
  */
 public class RecognizeLinkedEntities {
     /**
