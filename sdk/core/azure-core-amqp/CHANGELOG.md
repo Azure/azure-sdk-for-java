@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2020-01-07)
+## 1.0.1 (2020-01-07)
 - Client library name and version are no longer hard coded in connection properties.
 - Update qpid-proton-j-extensions dependency
 - Shorten tracing span names
