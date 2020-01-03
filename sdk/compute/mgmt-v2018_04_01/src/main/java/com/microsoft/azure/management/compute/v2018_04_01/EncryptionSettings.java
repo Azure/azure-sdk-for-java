@@ -37,7 +37,7 @@ public class EncryptionSettings {
     private KeyVaultAndKeyReference keyEncryptionKey;
 
     /**
-     * Get the enabled value.
+     * Get set this flag to true and provide DiskEncryptionKey and optional KeyEncryptionKey to enable encryption. Set this flag to false and remove DiskEncryptionKey and KeyEncryptionKey to disable encryption. If EncryptionSettings is null in the request object, the existing settings remain unchanged.
      *
      * @return the enabled value
      */
@@ -46,7 +46,7 @@ public class EncryptionSettings {
     }
 
     /**
-     * Set the enabled value.
+     * Set set this flag to true and provide DiskEncryptionKey and optional KeyEncryptionKey to enable encryption. Set this flag to false and remove DiskEncryptionKey and KeyEncryptionKey to disable encryption. If EncryptionSettings is null in the request object, the existing settings remain unchanged.
      *
      * @param enabled the enabled value to set
      * @return the EncryptionSettings object itself.
@@ -57,7 +57,7 @@ public class EncryptionSettings {
     }
 
     /**
-     * Get the diskEncryptionKey value.
+     * Get key Vault Secret Url and vault id of the disk encryption key.
      *
      * @return the diskEncryptionKey value
      */
@@ -66,7 +66,7 @@ public class EncryptionSettings {
     }
 
     /**
-     * Set the diskEncryptionKey value.
+     * Set key Vault Secret Url and vault id of the disk encryption key.
      *
      * @param diskEncryptionKey the diskEncryptionKey value to set
      * @return the EncryptionSettings object itself.
@@ -77,7 +77,7 @@ public class EncryptionSettings {
     }
 
     /**
-     * Get the keyEncryptionKey value.
+     * Get key Vault Key Url and vault id of the key encryption key.
      *
      * @return the keyEncryptionKey value
      */
@@ -86,7 +86,7 @@ public class EncryptionSettings {
     }
 
     /**
-     * Set the keyEncryptionKey value.
+     * Set key Vault Key Url and vault id of the key encryption key.
      *
      * @param keyEncryptionKey the keyEncryptionKey value to set
      * @return the EncryptionSettings object itself.
