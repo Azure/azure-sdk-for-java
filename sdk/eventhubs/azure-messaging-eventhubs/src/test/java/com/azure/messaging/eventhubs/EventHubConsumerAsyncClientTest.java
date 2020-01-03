@@ -58,6 +58,7 @@ import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -85,6 +86,7 @@ public class EventHubConsumerAsyncClientTest {
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(2);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
+    private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
 
     @Mock
@@ -95,14 +97,13 @@ public class EventHubConsumerAsyncClientTest {
     private EventHubSession session;
     @Mock
     private TokenCredential tokenCredential;
-    @Mock
-    private EventHubConnectionProcessor connectionProcessor;
 
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConsumerAsyncClient consumer;
+    private EventHubConnectionProcessor connectionProcessor;
 
     @BeforeEach
     public void setup() {
@@ -114,9 +115,15 @@ public class EventHubConsumerAsyncClientTest {
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
-        when(connection.createSession(any())).thenReturn(Mono.just(session));
-        when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
-            .thenReturn(Mono.just(amqpReceiveLink));
+
+        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
+        endpointSink.next(AmqpEndpointState.ACTIVE);
+
+        when(connection.createReceiveLink(anyString(), argThat(name -> name.endsWith(PARTITION_ID)),
+            any(EventPosition.class), any(ReceiveOptions.class))).thenReturn(Mono.just(amqpReceiveLink));
+        connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection))
+            .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                    connectionOptions.getEntityPath(), connectionOptions.getRetry()));
 
         consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer,
             CONSUMER_GROUP, PREFETCH, false);
