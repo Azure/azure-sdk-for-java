@@ -47,7 +47,7 @@ public class RollingUpgradeStatusInfoInner extends Resource {
     private ApiError error;
 
     /**
-     * Get the policy value.
+     * Get the rolling upgrade policies applied for this upgrade.
      *
      * @return the policy value
      */
@@ -56,7 +56,7 @@ public class RollingUpgradeStatusInfoInner extends Resource {
     }
 
     /**
-     * Get the runningStatus value.
+     * Get information about the current running state of the overall upgrade.
      *
      * @return the runningStatus value
      */
@@ -65,7 +65,7 @@ public class RollingUpgradeStatusInfoInner extends Resource {
     }
 
     /**
-     * Get the progress value.
+     * Get information about the number of virtual machine instances in each upgrade state.
      *
      * @return the progress value
      */
@@ -74,7 +74,7 @@ public class RollingUpgradeStatusInfoInner extends Resource {
     }
 
     /**
-     * Get the error value.
+     * Get error details for this upgrade, if there are any.
      *
      * @return the error value
      */
