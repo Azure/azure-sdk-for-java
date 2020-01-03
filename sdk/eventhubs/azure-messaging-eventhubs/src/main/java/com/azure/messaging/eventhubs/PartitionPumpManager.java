@@ -235,9 +235,10 @@ class PartitionPumpManager {
         }
 
         Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE)
-            .addData(ENTITY_PATH_KEY, eventHubName).addData(HOST_NAME_KEY, fullyQualifiedNamespace);
-        return tracerProvider.startSpan(spanContext.addData(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE),
-            ProcessKind.PROCESS);
+            .addData(ENTITY_PATH_KEY, eventHubName)
+            .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
+            .addData(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+        return tracerProvider.startSpan(spanContext, ProcessKind.PROCESS);
     }
 
     /*
