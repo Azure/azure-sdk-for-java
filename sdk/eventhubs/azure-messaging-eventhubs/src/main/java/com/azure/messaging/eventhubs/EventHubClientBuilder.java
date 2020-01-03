@@ -29,6 +29,7 @@ import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -517,17 +518,18 @@ public class EventHubClientBuilder {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
-        Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
-        String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
-        String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+        final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
+        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
-        final Mono<EventHubAmqpConnection> connectionMono = Mono.fromCallable(() -> {
+        final Flux<EventHubAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
-            return new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
-                tokenManagerProvider, messageSerializer, product, clientVersion);
-        });
 
-        return connectionMono.subscribeWith(new EventHubConnectionProcessor(
+            return (EventHubAmqpConnection) new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider,
+                handlerProvider, tokenManagerProvider, messageSerializer, product, clientVersion);
+        }).repeat();
+
+        return connectionFlux.subscribeWith(new EventHubConnectionProcessor(
             connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getEntityPath(),
             connectionOptions.getRetry()));
     }

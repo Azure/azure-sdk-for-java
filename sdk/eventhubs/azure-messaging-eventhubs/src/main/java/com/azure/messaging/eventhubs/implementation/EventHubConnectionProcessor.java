@@ -85,6 +85,8 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
     @Override
     public void onSubscribe(Subscription subscription) {
+        logger.verbose("Subscribing to upstream for connections.");
+
         this.upstream = subscription;
 
         // Don't request an EventHubAmqpConnection until there is a subscriber.
@@ -160,7 +162,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
     @Override
     public void onComplete() {
-        logger.info("Completing EventHubConnectionSubscriber.");
+        logger.info("Upstream connection publisher was completed. Terminating EventHubConnectionProcessor.");
 
         isTerminated.set(true);
         synchronized (lock) {
@@ -173,7 +175,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
     @Override
     public void subscribe(CoreSubscriber<? super EventHubAmqpConnection> actual) {
-        logger.info("Subscription received.");
+        logger.verbose("Subscription received.");
 
         final ConnectionSubscriber subscriber = new ConnectionSubscriber(actual, this);
         actual.onSubscribe(subscriber);
