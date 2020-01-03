@@ -4,61 +4,26 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
-import com.azure.ai.textanalytics.implementation.models.DocumentError;
-import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
-import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
-import com.azure.ai.textanalytics.implementation.models.DocumentLinkedEntities;
-import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
-import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
-import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
-import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
-import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.LanguageInput;
-import com.azure.ai.textanalytics.implementation.models.LanguageResult;
-import com.azure.ai.textanalytics.implementation.models.LinkedEntity;
-import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
-import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
-import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
-import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
-import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.ErrorCodeValue;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsClientOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -82,6 +47,12 @@ public final class TextAnalyticsAsyncClient {
     private final TextAnalyticsServiceVersion serviceVersion;
     private final String defaultCountryHint;
     private final String defaultLanguage;
+    final DetectLanguageAsyncClient detectLanguageAsyncClient;
+    final AnalyzeSentimentAsyncClient analyzeSentimentAsyncClient;
+    final ExtractKeyPhraseAsyncClient extractKeyPhraseAsyncClient;
+    final RecognizeEntityAsyncClient recognizeEntityAsyncClient;
+    final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
+    final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
 
     /**
      * Create a {@code TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
@@ -100,6 +71,12 @@ public final class TextAnalyticsAsyncClient {
         this.serviceVersion = serviceVersion;
         defaultCountryHint = clientOptions == null ? null : clientOptions.getDefaultCountryHint();
         defaultLanguage = clientOptions == null ? null : clientOptions.getDefaultLanguage();
+        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(service);
+        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(service);
+        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(service);
+        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
+        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
+        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
     }
 
     /**
@@ -164,18 +141,11 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint) {
         try {
-            return withContext(context -> detectLanguageWithResponse(text, countryHint, context));
+            return withContext(context ->
+                detectLanguageAsyncClient.detectLanguageWithResponse(text, countryHint, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
-        List<DetectLanguageInput> languageInputs = Collections.singletonList(new DetectLanguageInput("0",
-            text, countryHint));
-        return detectBatchLanguagesWithResponse(languageInputs, null, context).map(response ->
-            new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
@@ -213,19 +183,11 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(
         List<String> textInputs, String countryHint) {
         try {
-            return withContext(context -> detectLanguagesWithResponse(textInputs, countryHint, context));
+            return withContext(context -> detectLanguageAsyncClient.detectLanguagesWithResponse(textInputs, countryHint,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> textInputs,
-        String countryHint, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-        List<DetectLanguageInput> detectLanguageInputs = mapByIndex(textInputs, (index, value) ->
-            new DetectLanguageInput(index, value, countryHint));
-
-        return detectBatchLanguagesWithResponse(detectLanguageInputs, null, context);
     }
 
     /**
@@ -265,28 +227,10 @@ public final class TextAnalyticsAsyncClient {
         List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
             return withContext(
-                context -> detectBatchLanguagesWithResponse(textInputs, options, context));
+                context -> detectLanguageAsyncClient.detectBatchLanguagesWithResponse(textInputs, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
-        List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        final LanguageBatchInput languageBatchInput = new LanguageBatchInput()
-            .setDocuments(textInputs.stream().map(detectLanguageInput -> new LanguageInput()
-                .setId(detectLanguageInput.getId()).setText(detectLanguageInput.getText())
-                .setCountryHint(detectLanguageInput.getCountryHint())).collect(Collectors.toList()));
-
-        return service.languagesWithRestResponseAsync(
-            languageBatchInput, options == null ? null : options.getModelVersion(),
-            options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
-            .doOnSuccess(response -> logger.info("A batch of detected language output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to detected languages - {}", error))
-            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
     // Named Entity
@@ -327,19 +271,11 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language) {
         try {
-            return withContext(context -> recognizeEntitiesWithResponse(text, language, context));
+            return withContext(context ->
+                recognizeEntityAsyncClient.recognizeEntitiesWithResponse(text, language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language,
-        Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
-
-        return recognizeBatchEntitiesWithResponse(
-            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
@@ -377,19 +313,11 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
-            return withContext(context -> recognizeEntitiesWithResponse(textInputs, language, context));
+            return withContext(context -> recognizeEntityAsyncClient.recognizeEntitiesWithResponse(textInputs, language,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
-        List<String> textInputs, String language, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-            new TextDocumentInput(index, value, language));
-        return recognizeBatchEntitiesWithResponse(documentInputs, null, context);
     }
 
     /**
@@ -428,26 +356,11 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
-            return withContext(context -> recognizeBatchEntitiesWithResponse(textInputs, options, context));
+            return withContext(context ->
+                recognizeEntityAsyncClient.recognizeBatchEntitiesWithResponse(textInputs, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(convertToMultiLanguageInput(textInputs));
-        return service.entitiesRecognitionGeneralWithRestResponseAsync(
-            batchInput,
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of named entities input - {}", textInputs.toString()))
-            .doOnSuccess(response -> logger.info("A batch of named entities output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to named entities - {}", error))
-            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
     // PII Entity
@@ -488,19 +401,11 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language) {
         try {
-            return withContext(context -> recognizePiiEntitiesWithResponse(text, language, context));
+            return withContext(context -> recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(text, language,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language,
-        Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
-
-        return recognizeBatchPiiEntitiesWithResponse(
-           Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
@@ -543,20 +448,8 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
-            return withContext(context -> recognizePiiEntitiesWithResponse(textInputs, language, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
-        List<String> textInputs, String language, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-            new TextDocumentInput(index, value, language));
-        try {
-            return recognizeBatchPiiEntitiesWithResponse(documentInputs, null, context);
+            return withContext(context -> recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(textInputs,
+                language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -602,25 +495,11 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
-            return withContext(context -> recognizeBatchPiiEntitiesWithResponse(textInputs, options, context));
+            return withContext(context ->
+                recognizePiiEntityAsyncClient.recognizeBatchPiiEntitiesWithResponse(textInputs, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(convertToMultiLanguageInput(textInputs));
-        return service.entitiesRecognitionPiiWithRestResponseAsync(
-            batchInput,
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of PII entities input - {}", textInputs.toString()))
-            .doOnSuccess(response -> logger.info("A batch of PII entities output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to PII entities - {}", error))
-            .map(response -> new SimpleResponse<>(response, toPiiDocumentResultCollection(response.getValue())));
     }
 
     // Linked Entity
@@ -660,19 +539,11 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(String text,
         String language) {
         try {
-            return withContext(context -> recognizeLinkedEntitiesWithResponse(text, language, context));
+            return withContext(context -> recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(text,
+                language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
-        Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
-
-        return recognizeBatchLinkedEntitiesWithResponse(
-            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
@@ -714,20 +585,8 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
-            return withContext(context -> recognizeLinkedEntitiesWithResponse(textInputs, language, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
-        List<String> textInputs, String language, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-            new TextDocumentInput(index, value, language));
-        try {
-            return recognizeBatchLinkedEntitiesWithResponse(documentInputs, null, context);
+            return withContext(context ->
+                recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs, language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -772,28 +631,12 @@ public final class TextAnalyticsAsyncClient {
         recognizeBatchLinkedEntitiesWithResponse(List<TextDocumentInput> textInputs,
         TextAnalyticsRequestOptions options) {
         try {
-            return withContext(context -> recognizeBatchLinkedEntitiesWithResponse(textInputs, options, context));
+            return withContext(context -> recognizeLinkedEntityAsyncClient.recognizeBatchLinkedEntitiesWithResponse(
+                textInputs, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
-
-    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeBatchLinkedEntitiesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(convertToMultiLanguageInput(textInputs));
-        return service.entitiesLinkingWithRestResponseAsync(
-            batchInput,
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of linked entities input - {}", textInputs.toString()))
-            .doOnSuccess(response -> logger.info("A batch of linked entities output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to linked entities - {}", error))
-            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
-    }
-
 
     // Key Phrases
     /**
@@ -830,19 +673,11 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language) {
         try {
-            return withContext(context -> extractKeyPhrasesWithResponse(text, language, context));
+            return withContext(context -> extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(text, language,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language,
-        Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
-
-        return extractBatchKeyPhrasesWithResponse(
-            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
@@ -881,20 +716,8 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
         List<String> textInputs, String language) {
         try {
-            return withContext(context -> extractKeyPhrasesWithResponse(textInputs, language, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
-        List<String> textInputs, String language, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-            new TextDocumentInput(index, value, language));
-        try {
-            return extractBatchKeyPhrasesWithResponse(documentInputs, null, context);
+            return withContext(context -> extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(textInputs,
+                language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -937,46 +760,11 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
-            return withContext(context -> extractBatchKeyPhrasesWithResponse(textInputs, options, context));
+            return withContext(context ->
+                extractKeyPhraseAsyncClient.extractBatchKeyPhrasesWithResponse(textInputs, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(convertToMultiLanguageInput(textInputs));
-        return service.keyPhrasesWithRestResponseAsync(
-            batchInput,
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of key phrases input - {}", textInputs.toString()))
-            .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to key phrases - {}", error))
-            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
-    }
-
-    private DocumentResultCollection<ExtractKeyPhraseResult> toDocumentResultCollection(
-        final com.azure.ai.textanalytics.implementation.models.KeyPhraseResult keyPhraseResult) {
-        List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
-        for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
-            keyPhraseResultList.add(new ExtractKeyPhraseResult(documentKeyPhrases.getId(),
-                documentKeyPhrases.getStatistics() == null ? null
-                    : convertToTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
-                documentKeyPhrases.getKeyPhrases()));
-        }
-
-        for (DocumentError documentError : keyPhraseResult.getErrors()) {
-            final com.azure.ai.textanalytics.models.TextAnalyticsError error = convertToError(documentError.getError());
-            keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null, error, null));
-        }
-
-        return new DocumentResultCollection<>(keyPhraseResultList,
-            keyPhraseResult.getModelVersion(), keyPhraseResult.getStatistics() == null ? null
-            : mapBatchStatistics(keyPhraseResult.getStatistics()));
     }
 
     // Sentiment
@@ -1015,18 +803,11 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeSentimentResult>> analyzeSentimentWithResponse(String text, String language) {
         try {
-            return withContext(context -> analyzeSentimentWithResponse(text, language, context));
+            return withContext(context ->
+                analyzeSentimentAsyncClient.analyzeSentimentWithResponse(text, language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<AnalyzeSentimentResult>> analyzeSentimentWithResponse(String text, String language, Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
-
-        return analyzeBatchSentimentWithResponse(
-            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
     }
 
     /**
@@ -1066,19 +847,11 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentWithResponse(
         List<String> textInputs, String language) {
         try {
-            return withContext(context -> analyzeSentimentWithResponse(textInputs, language, context));
+            return withContext(context -> analyzeSentimentAsyncClient.analyzeSentimentWithResponse(textInputs, language,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentWithResponse(
-        List<String> textInputs, String language, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-            new TextDocumentInput(index, value, language));
-        return analyzeBatchSentimentWithResponse(documentInputs, null, context);
     }
 
     /**
@@ -1119,267 +892,10 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeBatchSentimentWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
-            return withContext(context -> analyzeBatchSentimentWithResponse(textInputs, options, context));
+            return withContext(context -> analyzeSentimentAsyncClient.analyzeBatchSentimentWithResponse(textInputs,
+                options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeBatchSentimentWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(convertToMultiLanguageInput(textInputs));
-        return service.sentimentWithRestResponseAsync(
-            batchInput,
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of text sentiment input - {}", textInputs.toString()))
-            .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))
-            .doOnError(error -> logger.warning("Failed to text sentiment - {}", error))
-            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
-    }
-
-    private List<MultiLanguageInput> convertToMultiLanguageInput(List<TextDocumentInput> textInputs) {
-        List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
-        for (TextDocumentInput textDocumentInput : textInputs) {
-            multiLanguageInputs.add(new MultiLanguageInput().setId(textDocumentInput.getId())
-                .setText(textDocumentInput.getText()).setLanguage(textDocumentInput.getLanguage()));
-        }
-        return multiLanguageInputs;
-    }
-
-    /**
-     * Helper method to convert the service response of {@link SentimentResponse} to {@link DocumentResultCollection}.
-     *
-     * @param sentimentResponse the {@link SentimentResponse} returned by the service.
-     *
-     * @return the {@link DocumentResultCollection} of {@link AnalyzeSentimentResult} to be returned by the SDK.
-     */
-    private DocumentResultCollection<AnalyzeSentimentResult> toDocumentResultCollection(
-        final SentimentResponse sentimentResponse) {
-        List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
-        for (DocumentSentiment documentSentiment : sentimentResponse.getDocuments()) {
-            analyzeSentimentResults.add(convertToTextSentimentResult(documentSentiment));
-        }
-        for (DocumentError documentError : sentimentResponse.getErrors()) {
-            final com.azure.ai.textanalytics.models.TextAnalyticsError error = convertToError(documentError.getError());
-            analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null, error, null,
-                null));
-        }
-        return new DocumentResultCollection<>(analyzeSentimentResults,
-            sentimentResponse.getModelVersion(), sentimentResponse.getStatistics() == null ? null
-            : mapBatchStatistics(sentimentResponse.getStatistics()));
-    }
-
-    private AnalyzeSentimentResult convertToTextSentimentResult(final DocumentSentiment documentSentiment) {
-        // Document text sentiment
-        final TextSentimentClass documentSentimentClass = TextSentimentClass.fromString(documentSentiment.
-            getSentiment().toString());
-        if (documentSentimentClass == null) {
-            // Not throw exception for an invalid Sentiment type because we should not skip processing the
-            // other response. It is a service issue.
-            logger.logExceptionAsWarning(
-                new RuntimeException(String.format("'%s' is not valid text sentiment.",
-                    documentSentiment.getSentiment())));
-        }
-        final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getDocumentScores();
-
-        // Sentence text sentiment
-        final List<TextSentiment> sentenceSentimentTexts = documentSentiment.getSentences().stream()
-            .map(sentenceSentiment -> {
-                TextSentimentClass sentimentClass = TextSentimentClass.fromString(sentenceSentiment
-                    .getSentiment().toString());
-                if (sentimentClass == null) {
-                    // Not throw exception for an invalid Sentiment type because we should not skip processing the
-                    // other response. It is a service issue.
-                    logger.logExceptionAsWarning(
-                        new RuntimeException(String.format("'%s' is not valid text sentiment.",
-                            sentenceSentiment.getSentiment())));
-                }
-                SentimentConfidenceScorePerLabel confidenceScorePerSentence = sentenceSentiment.getSentenceScores();
-
-                return new TextSentiment(sentimentClass, confidenceScorePerSentence.getNegative(),
-                    confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive(),
-                    sentenceSentiment.getLength(), sentenceSentiment.getOffset());
-
-            }).collect(Collectors.toList());
-
-        return new AnalyzeSentimentResult(documentSentiment.getId(),
-            documentSentiment.getStatistics() == null ? null
-                : convertToTextDocumentStatistics(documentSentiment.getStatistics()), null,
-            new TextSentiment(documentSentimentClass, confidenceScorePerLabel.getNegative(),
-                confidenceScorePerLabel.getNeutral(), confidenceScorePerLabel.getPositive(),
-                sentenceSentimentTexts.stream().mapToInt(TextSentiment::getLength).sum(), 0),
-            sentenceSentimentTexts);
-    }
-
-    /**
-     * Helper method to convert the service response of {@link LanguageResult} to {@link DocumentResultCollection}.
-     *
-     * @param languageResult the {@link LanguageResult} returned by the service.
-     *
-     * @return the {@link DocumentResultCollection} of {@link DetectLanguageResult} to be returned by the SDK.
-     */
-    private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(
-        final LanguageResult languageResult) {
-
-        final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
-        for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
-            DetectedLanguage primaryLanguage = null;
-            if (documentLanguage.getDetectedLanguages().size() >= 1) {
-                com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguageResult =
-                    documentLanguage.getDetectedLanguages().get(0);
-                primaryLanguage = new DetectedLanguage(detectedLanguageResult.getName(),
-                    detectedLanguageResult.getIso6391Name(), detectedLanguageResult.getScore());
-            }
-            detectLanguageResults.add(new DetectLanguageResult(documentLanguage.getId(),
-                documentLanguage.getStatistics() == null
-                    ? null : convertToTextDocumentStatistics(documentLanguage.getStatistics()),
-                null,
-                primaryLanguage,
-                documentLanguage.getDetectedLanguages().stream().map(detectedLanguage ->
-                    new DetectedLanguage(detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
-                        detectedLanguage.getScore())).collect(Collectors.toList())));
-        }
-
-        for (DocumentError documentError : languageResult.getErrors()) {
-            com.azure.ai.textanalytics.models.TextAnalyticsError error = convertToError(documentError.getError());
-            detectLanguageResults.add(
-                new DetectLanguageResult(documentError.getId(), null, error, null, null));
-        }
-
-        return new DocumentResultCollection<>(detectLanguageResults, languageResult.getModelVersion(),
-            languageResult.getStatistics() == null ? null : mapBatchStatistics(languageResult.getStatistics()));
-    }
-
-    /**
-     * Helper method to convert the service response of {@link EntitiesResult} to {@link DocumentResultCollection}.
-     *
-     * @param entitiesResult the {@link EntitiesResult} returned by the service.
-     *
-     * @return the {@link DocumentResultCollection} of {@link DetectLanguageResult} to be returned by the SDK.
-     */
-    private DocumentResultCollection<RecognizeEntitiesResult> toDocumentResultCollection(
-        final EntitiesResult entitiesResult) {
-        List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
-        for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
-            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentEntities.getId(),
-                documentEntities.getStatistics() == null ? null
-                    : convertToTextDocumentStatistics(documentEntities.getStatistics()),
-                null, documentEntities.getEntities().stream().map(entity ->
-                new NamedEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
-                    entity.getLength(), entity.getScore())).collect(Collectors.toList())));
-        }
-
-        for (DocumentError documentError : entitiesResult.getErrors()) {
-            final com.azure.ai.textanalytics.models.TextAnalyticsError error = convertToError(documentError.getError());
-            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null, error, null));
-        }
-
-        return new DocumentResultCollection<>(recognizeEntitiesResults,
-            entitiesResult.getModelVersion(), entitiesResult.getStatistics() == null ? null
-            : mapBatchStatistics(entitiesResult.getStatistics()));
-    }
-
-    /**
-     * Helper method to convert the service response of {@link EntitiesResult} to {@link DocumentResultCollection}.
-     *
-     * @param entitiesResult the {@link EntitiesResult} returned by the service.
-     *
-     * @return the {@link DocumentResultCollection} of {@link RecognizePiiEntitiesResult} to be returned by the SDK.
-     */
-    private DocumentResultCollection<RecognizePiiEntitiesResult> toPiiDocumentResultCollection(
-        final EntitiesResult entitiesResult) {
-        List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults = new ArrayList<>();
-        for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
-            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(documentEntities.getId(),
-                documentEntities.getStatistics() == null ? null
-                    : convertToTextDocumentStatistics(documentEntities.getStatistics()),
-                null, documentEntities.getEntities().stream().map(entity ->
-                new NamedEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
-                    entity.getLength(), entity.getScore())).collect(Collectors.toList())));
-        }
-
-        for (DocumentError documentError : entitiesResult.getErrors()) {
-            final com.azure.ai.textanalytics.models.TextAnalyticsError error = convertToError(documentError.getError());
-            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null, error, null));
-        }
-
-        return new DocumentResultCollection<>(recognizePiiEntitiesResults,
-            entitiesResult.getModelVersion(), entitiesResult.getStatistics() == null ? null
-            : mapBatchStatistics(entitiesResult.getStatistics()));
-    }
-
-    /**
-     * Helper method to convert the service response of {@link EntityLinkingResult} to {@link DocumentResultCollection}.
-     *
-     * @param entityLinkingResult the {@link EntityLinkingResult} returned by the service.
-     *
-     * @return the {@link DocumentResultCollection} of {@link RecognizeLinkedEntitiesResult} to be returned by the SDK.
-     */
-    private DocumentResultCollection<RecognizeLinkedEntitiesResult> toDocumentResultCollection(
-        final EntityLinkingResult entityLinkingResult) {
-        List<RecognizeLinkedEntitiesResult> linkedEntitiesResults = new ArrayList<>();
-        for (DocumentLinkedEntities documentLinkedEntities : entityLinkingResult.getDocuments()) {
-            linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentLinkedEntities.getId(),
-                documentLinkedEntities.getStatistics() == null ? null
-                    : convertToTextDocumentStatistics(documentLinkedEntities.getStatistics()),
-                null, mapLinkedEntity(documentLinkedEntities.getEntities())));
-        }
-        for (DocumentError documentError : entityLinkingResult.getErrors()) {
-            final com.azure.ai.textanalytics.models.TextAnalyticsError error = convertToError(documentError.getError());
-            linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null, error, null));
-        }
-
-        return new DocumentResultCollection<>(linkedEntitiesResults,
-            entityLinkingResult.getModelVersion(), entityLinkingResult.getStatistics() == null ? null
-            : mapBatchStatistics(entityLinkingResult.getStatistics()));
-    }
-
-    private static <T> List<T> mapByIndex(List<String> textInputs, BiFunction<String, String, T> mappingFunction) {
-        return IntStream.range(0, textInputs.size())
-            .mapToObj(index -> mappingFunction.apply(String.valueOf(index), textInputs.get(index)))
-            .collect(Collectors.toList());
-    }
-
-    private TextDocumentStatistics convertToTextDocumentStatistics(DocumentStatistics statistics) {
-        return new TextDocumentStatistics(statistics.getCharactersCount(), statistics.getTransactionsCount());
-    }
-
-    private TextDocumentBatchStatistics mapBatchStatistics(RequestStatistics statistics) {
-        return new TextDocumentBatchStatistics(statistics.getDocumentsCount(), statistics.getErroneousDocumentsCount(),
-            statistics.getValidDocumentsCount(), statistics.getTransactionsCount());
-    }
-
-    private List<com.azure.ai.textanalytics.models.LinkedEntity> mapLinkedEntity(List<LinkedEntity> linkedEntities) {
-        List<com.azure.ai.textanalytics.models.LinkedEntity> linkedEntitiesList = new ArrayList<>();
-        for (LinkedEntity linkedEntity : linkedEntities) {
-            linkedEntitiesList.add(new com.azure.ai.textanalytics.models.LinkedEntity(linkedEntity.getName(),
-                linkedEntity.getMatches().stream().map(match ->
-                    new LinkedEntityMatch(match.getText(), match.getScore(), match.getLength(),
-                        match.getOffset())).collect(Collectors.toList()), linkedEntity.getLanguage(),
-                linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource()));
-        }
-        return linkedEntitiesList;
-    }
-
-    private com.azure.ai.textanalytics.models.TextAnalyticsError convertToError(TextAnalyticsError textAnalyticsError) {
-        return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-            ErrorCodeValue.fromString(textAnalyticsError.getCode().toString()), textAnalyticsError.getMessage(),
-            textAnalyticsError.getTarget(), textAnalyticsError.getDetails() == null ? null
-            : setErrors(textAnalyticsError.getDetails()));
-    }
-
-    private List<com.azure.ai.textanalytics.models.TextAnalyticsError> setErrors(List<TextAnalyticsError> details) {
-        List<com.azure.ai.textanalytics.models.TextAnalyticsError> detailsList = new ArrayList<>();
-        for (TextAnalyticsError error : details) {
-            detailsList.add(new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                ErrorCodeValue.fromString(error.getCode().toString()),
-                error.getMessage(),
-                error.getTarget(), error.getDetails() == null ? null : setErrors(error.getDetails())));
-        }
-        return detailsList;
     }
 }
