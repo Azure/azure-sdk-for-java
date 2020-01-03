@@ -1,5 +1,10 @@
 # Release History
 
+## Version 1.0.0-beta.9 (2020-01-07)
+- Add links on batch send operation in eventhubs
+- Update qpid-proton-j-extensions dependency
+- Shorten tracing span names
+
 ## 1.0.0-beta.8 (12-03-2019)
 - Changed preview to beta.
 - Fixes authorization when using client credentials.
@@ -54,4 +59,3 @@
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-amqp_1.0.0-preview.1/core/azure-core-amqp/README.md)
 
-- Initial release. Please see the README and wiki for information on the new design.
