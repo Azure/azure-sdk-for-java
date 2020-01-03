@@ -1,5 +1,5 @@
-# Azure Storage Blob client library for Java
-
+# Azure Storage Blob implementation of Java NIO
+## This README is not yet updated for this project and is a skeleton copied from blobs
 
 [Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]
 
@@ -18,7 +18,7 @@
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-nio</artifactId>
-    <version>12.0.0-preview.1</version>
+    <version>12.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
