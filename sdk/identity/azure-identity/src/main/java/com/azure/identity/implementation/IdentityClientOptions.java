@@ -11,11 +11,15 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -115,7 +119,30 @@ public final class IdentityClientOptions {
     }
 
     public HttpPipeline getHttpPipeline() {
-        return httpPipeline;
+        if (httpPipeline != null) {
+            return httpPipeline;
+        } else {
+            NettyAsyncHttpClientBuilder httpClientBuilder = new NettyAsyncHttpClientBuilder();
+            if (proxyOptions != null) {
+                httpClientBuilder = httpClientBuilder.proxy(proxyOptions);
+            }
+            HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder()
+                    .httpClient(httpClientBuilder.build());
+            List<HttpPipelinePolicy> policies = new ArrayList<>();
+            policies.add(new UserAgentPolicy());
+            policies.add(new RetryPolicy(new RetryStrategy() {
+                @Override
+                public int getMaxRetries() {
+                    return maxRetry;
+                }
+
+                @Override
+                public Duration calculateRetryDelay(int i) {
+                    return retryTimeout.apply(Duration.ofSeconds(i));
+                }
+            }));
+            return pipelineBuilder.policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+        }
     }
 
     public void setHttpPipeline(HttpPipeline httpPipeline) {

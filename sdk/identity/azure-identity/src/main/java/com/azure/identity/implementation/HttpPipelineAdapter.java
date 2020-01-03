@@ -41,6 +41,7 @@ public class HttpPipelineAdapter implements IHttpClient {
                     httpResponse.headers(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,h -> Collections.singletonList(h.getValue()))));
                     return httpResponse;
                 })
+                // if no body
                 .switchIfEmpty(Mono.defer(() -> {
                     com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
                         .statusCode(response.getStatusCode());
