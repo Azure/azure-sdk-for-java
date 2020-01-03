@@ -28,7 +28,7 @@ public class KeyVaultSecretReference {
     private SubResource sourceVault;
 
     /**
-     * Get the secretUrl value.
+     * Get the URL referencing a secret in a Key Vault.
      *
      * @return the secretUrl value
      */
@@ -37,7 +37,7 @@ public class KeyVaultSecretReference {
     }
 
     /**
-     * Set the secretUrl value.
+     * Set the URL referencing a secret in a Key Vault.
      *
      * @param secretUrl the secretUrl value to set
      * @return the KeyVaultSecretReference object itself.
@@ -48,7 +48,7 @@ public class KeyVaultSecretReference {
     }
 
     /**
-     * Get the sourceVault value.
+     * Get the relative URL of the Key Vault containing the secret.
      *
      * @return the sourceVault value
      */
@@ -57,7 +57,7 @@ public class KeyVaultSecretReference {
     }
 
     /**
-     * Set the sourceVault value.
+     * Set the relative URL of the Key Vault containing the secret.
      *
      * @param sourceVault the sourceVault value to set
      * @return the KeyVaultSecretReference object itself.
