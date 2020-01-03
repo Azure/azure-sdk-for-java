@@ -3,7 +3,7 @@
 ## 12.2.0-beta.2 (Unreleased)
 - Added a field to ParallelTransferOptions that allows customers to configure the maximum size to upload in a single PUT. Data sizes larger than this value will be chunked and parallelized.
 - Added overloads to downloadToFile to add the option to overwrite existing files. Default behavior is to not overwrite.
-- Changed implementation of BlockBlobOutputStream to take advantage of the buffered upload method, improving performance. 
+- Improved performance of BlockBlobOutputStream.
 - Added overloads to BlockBlobClient.getBlobOutputStream to allow users to provide parallel transfer options, http headers, metadata, access tier, and request conditions.
 
 
