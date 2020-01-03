@@ -288,7 +288,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     if ($retVal)
                     {
                         $script:FoundError = $true
-                        Write-Host "$($retVal)"
+                        Write-Error-With-Color "$($retVal)"
                     }
                 }
             }
@@ -332,7 +332,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     if ($retVal)
                     {
                         $script:FoundError = $true
-                        Write-Host "$($retVal)"
+                        Write-Error-With-Color "$($retVal)"
                     }
                 }
             }
@@ -427,7 +427,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 if ($retVal)
                 {
                     $script:FoundError = $true
-                    Write-Host "$($retVal)"
+                    Write-Error-With-Color "$($retVal)"
                 }
             }
         }
@@ -444,8 +444,8 @@ Write-Host "Total run time=$($TotalRunTime)"
 
 if ($script:FoundError)
 {
-    Write-Host "There were errors encountered during execution. Please fix any errors and run the script again."
-    Write-Host "This script can be run locally from the root of the repo. .\eng\pom_file_version_scanner.ps1"
+    Write-Error-With-Color "There were errors encountered during execution. Please fix any errors and run the script again."
+    Write-Error-With-Color "This script can be run locally from the root of the repo. .\eng\pom_file_version_scanner.ps1"
     exit(1)
 }
 
