@@ -9,29 +9,27 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
-import com.azure.core.util.Context;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrate how to detect language of a batch of text inputs in asynchronously call.
+ * Sample demonstrates how to asynchronously detect the languages of a batch input text.
  */
 public class DetectLanguageBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to detect language of a batch of text inputs.
+     * Main method to invoke this demo about how to detect the languages of a batch input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
-            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         // The texts that need be analysed.
@@ -60,13 +58,13 @@ public class DetectLanguageBatchDocumentsAsync {
                 // Detected languages for a document from a batch of documents
                 for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
                     System.out.printf("Document ID: %s%n", detectLanguageResult.getId());
-                    final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
                     // Erroneous document
-                    if (detectedPrimaryLanguage == null) {
+                    if (detectLanguageResult.isError()) {
                         System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());
                         continue;
                     }
                     // Valid document
+                    final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
                     System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %s.%n",
                         detectedPrimaryLanguage.getName(),
                         detectedPrimaryLanguage.getIso6391Name(),

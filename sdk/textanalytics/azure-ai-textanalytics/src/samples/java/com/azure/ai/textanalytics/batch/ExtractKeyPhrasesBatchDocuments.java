@@ -16,19 +16,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrate how to analyze key phrases of a batch of text inputs.
+ * Sample demonstrate how to extract the key phrases of a batch input text.
  */
 public class ExtractKeyPhrasesBatchDocuments {
     /**
-     * Main method to invoke this demo about how to extract key phrases of a batch of text inputs.
+     * Main method to invoke this demo about how to extract the key phrases of a batch input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
-            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
 
         // The texts that need be analysed.
@@ -55,14 +55,13 @@ public class ExtractKeyPhrasesBatchDocuments {
         // Extracted key phrase for each of document from a batch of documents
         for (ExtractKeyPhraseResult extractKeyPhraseResult : extractedBatchResult) {
             System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
-            final List<String> documentKeyPhrases = extractKeyPhraseResult.getKeyPhrases();
             // Erroneous document
-            if (documentKeyPhrases == null) {
+            if (extractKeyPhraseResult.isError()) {
                 System.out.printf("Cannot extract key phrases. Error: %s%n", extractKeyPhraseResult.getError().getMessage());
                 continue;
             }
             // Valid document
-            for (String keyPhrases : documentKeyPhrases) {
+            for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
                 System.out.printf("Extracted phrases: %s.%n", keyPhrases);
             }
         }

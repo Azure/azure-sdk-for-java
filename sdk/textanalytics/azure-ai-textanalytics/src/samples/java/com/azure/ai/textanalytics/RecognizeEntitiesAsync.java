@@ -8,19 +8,19 @@ import com.azure.ai.textanalytics.models.NamedEntity;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrate how to recognize entities of a text input in asynchronously call.
+ * Sample demonstrates how to asynchronously recognize the entities of an input text.
  */
 public class RecognizeEntitiesAsync {
     /**
-     * Main method to invoke this demo about how to recognize entities of a text input.
+     * Main method to invoke this demo about how to recognize the entities of an input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
-            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         // The text that need be analysed.

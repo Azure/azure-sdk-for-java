@@ -8,19 +8,19 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrate how to detect language of a text input in asynchronously call.
+ * Sample demonstrates how to asynchronously detect the language of an input text.
  */
 public class HelloWorldAsync {
     /**
-     * Main method to invoke this demo about how to detect language of a text input.
+     * Main method to invoke this demo about how to detect the language of an input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
-            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         // The text that need be analysed.
@@ -29,8 +29,14 @@ public class HelloWorldAsync {
         client.detectLanguage(text).subscribe(
             result -> {
                 final DetectedLanguage primaryLanguage = result.getPrimaryLanguage();
-                System.out.printf("Detected language: %s, ISO 6391 name: %s, score: %s.%n",
+                System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %s.%n",
                     primaryLanguage.getName(), primaryLanguage.getIso6391Name(), primaryLanguage.getScore());
+                for (DetectedLanguage detectedLanguage : result.getDetectedLanguages()) {
+                    System.out.printf("Another detected language: %s, ISO 6391 name: %s, score: %s.%n",
+                        detectedLanguage.getName(),
+                        detectedLanguage.getIso6391Name(),
+                        detectedLanguage.getScore());
+                }
             },
             error -> System.err.println("There was an error detecting language of the text." + error),
             () -> System.out.println("Language detected."));

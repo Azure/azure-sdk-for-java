@@ -17,19 +17,19 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrate how to recognize entities of a batch of text inputs in asynchronously call.
+ * Sample demonstrates how to asynchronously recognize the entities of a batch input text.
  */
 public class RecognizeEntitiesBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to recognize entities of a batch of text inputs.
+     * Main method to invoke this demo about how to recognize the entities of a batch input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
-            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         // The texts that need be analysed.
@@ -58,14 +58,13 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                 // Recognized entities for each of document from a batch of documents
                 for (RecognizeEntitiesResult recognizeEntitiesResult : recognizedBatchResult) {
                     System.out.printf("Document ID: %s%n", recognizeEntitiesResult.getId());
-                    final List<NamedEntity> namedEntities = recognizeEntitiesResult.getNamedEntities();
                     // Erroneous document
-                    if (namedEntities == null) {
+                    if (recognizeEntitiesResult.isError()) {
                         System.out.printf("Cannot recognize entities. Error: %s%n", recognizeEntitiesResult.getError().getMessage());
                         continue;
                     }
                     // Valid document
-                    for (NamedEntity entity : namedEntities) {
+                    for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                         System.out.printf("Recognized entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
                             entity.getText(),
                             entity.getType(),

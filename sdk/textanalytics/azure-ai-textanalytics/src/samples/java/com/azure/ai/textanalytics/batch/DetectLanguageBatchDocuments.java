@@ -17,19 +17,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrate how to detect language of a batch of text inputs.
+ * Sample demonstrate how to detect the languages of a batch input text.
  */
 public class DetectLanguageBatchDocuments {
     /**
-     * Main method to invoke this demo about how to detect language of a batch of text inputs.
+     * Main method to invoke this demo about how to detect the languages of a batch input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
-            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
 
         // The texts that need be analysed.
@@ -42,7 +42,8 @@ public class DetectLanguageBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Detecting batch languages
-        final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = client.detectBatchLanguagesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+        final DocumentResultCollection<DetectLanguageResult> detectedBatchResult =
+            client.detectBatchLanguagesWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         // Batch statistics
@@ -56,13 +57,13 @@ public class DetectLanguageBatchDocuments {
         // Detected languages for a document from a batch of documents
         for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
             System.out.printf("Document ID: %s%n", detectLanguageResult.getId());
-            final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
             // Erroneous document
-            if (detectedPrimaryLanguage == null) {
+            if (detectLanguageResult.isError()) {
                 System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());
                 continue;
             }
             // Valid document
+            final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
             System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %s.%n",
                 detectedPrimaryLanguage.getName(),
                 detectedPrimaryLanguage.getIso6391Name(),

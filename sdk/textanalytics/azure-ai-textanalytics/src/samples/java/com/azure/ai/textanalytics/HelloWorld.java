@@ -9,34 +9,33 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import java.util.List;
 
 /**
- * Sample demonstrate how to detect language of a text input.
+ * Sample demonstrate how to detect the language of an input text.
  */
 public class HelloWorld {
     /**
-     * Main method to invoke this demo about how to detect language of a text input.
+     * Main method to invoke this demo about how to detect the language of an input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
-            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
 
         // The text that need be analysed.
         String text = "hello world";
 
         final DetectLanguageResult detectLanguageResult = client.detectLanguage(text, "US");
-        final DetectedLanguage detectedDocumentLanguage = detectLanguageResult.getPrimaryLanguage();
+        final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
         System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %s.%n",
-            detectedDocumentLanguage.getName(),
-            detectedDocumentLanguage.getIso6391Name(),
-            detectedDocumentLanguage.getScore());
+            detectedPrimaryLanguage.getName(),
+            detectedPrimaryLanguage.getIso6391Name(),
+            detectedPrimaryLanguage.getScore());
 
-        final List<DetectedLanguage> detectedLanguages = detectLanguageResult.getDetectedLanguages();
-        for (DetectedLanguage detectedLanguage : detectedLanguages) {
-            System.out.printf("Other detected languages: %s, ISO 6391 name: %s, score: %s.%n",
+        for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
+            System.out.printf("Another detected language: %s, ISO 6391 name: %s, score: %s.%n",
                 detectedLanguage.getName(),
                 detectedLanguage.getIso6391Name(),
                 detectedLanguage.getScore());

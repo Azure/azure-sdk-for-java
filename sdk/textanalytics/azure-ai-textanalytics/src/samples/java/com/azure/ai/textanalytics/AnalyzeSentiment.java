@@ -9,19 +9,19 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import java.util.List;
 
 /**
- * Sample demonstrate how to analyze sentiment of a text input.
+ * Sample demonstrate how to analyze the sentiment of an input text.
  */
 public class AnalyzeSentiment {
     /**
-     * Main method to invoke this demo about how to analyze sentiment of a text input.
+     * Main method to invoke this demo about how to analyze the sentiment of an input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
-            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
 
         // The text that need be analysed.
@@ -37,8 +37,7 @@ public class AnalyzeSentiment {
             documentSentiment.getNeutralScore(),
             documentSentiment.getNegativeScore());
 
-        final List<TextSentiment> sentiments = sentimentResult.getSentenceSentiments();
-        for (TextSentiment textSentiment : sentiments) {
+        for (TextSentiment textSentiment : sentimentResult.getSentenceSentiments()) {
             System.out.printf(
                 "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
                 textSentiment.getTextSentimentClass(),

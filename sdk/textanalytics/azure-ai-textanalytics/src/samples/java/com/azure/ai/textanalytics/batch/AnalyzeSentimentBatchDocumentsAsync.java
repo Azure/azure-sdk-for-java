@@ -17,19 +17,19 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrate how to analyze sentiment of a batch of text inputs in asynchronously call.
+ * Sample demonstrates how to asynchronously analyze the sentiments of a batch input text.
  */
 public class AnalyzeSentimentBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to analyze sentiment of a batch of text inputs.
+     * Main method to invoke this demo about how to analyze the sentiments of a batch input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
-            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         // The texts that need be analysed.
@@ -58,13 +58,13 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                 // Analyzed sentiment for each of document from a batch of documents
                 for (AnalyzeSentimentResult analyzeSentimentResult : analyzedBatchResult) {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-                    final TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     // Erroneous document
-                    if (documentSentiment == null) {
+                    if (analyzeSentimentResult.isError()) {
                         System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
                         continue;
                     }
                     // Valid document
+                    final TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     System.out.printf("Analyzed document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
                         documentSentiment.getTextSentimentClass(),
                         documentSentiment.getPositiveScore(),

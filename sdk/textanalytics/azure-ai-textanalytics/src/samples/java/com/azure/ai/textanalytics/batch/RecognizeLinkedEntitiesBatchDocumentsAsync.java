@@ -17,19 +17,19 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrate how to recognize linked entities of a batch of text inputs in asynchronously call.
+ * Sample demonstrates how to asynchronously recognize the linked entities of a batch input text.
  */
 public class RecognizeLinkedEntitiesBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to recognize linked entities of a batch of text inputs.
+     * Main method to invoke this demo about how to recognize the linked entities of a batch input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
-            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         // The texts that need be analysed.
@@ -58,14 +58,13 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                 // Recognized linked entities from a batch of documents
                 for (RecognizeLinkedEntitiesResult linkedEntityDocumentResult : recognizedBatchResult) {
                     System.out.printf("Document ID: %s%n", linkedEntityDocumentResult.getId());
-                    final List<LinkedEntity> linkedEntities = linkedEntityDocumentResult.getLinkedEntities();
                     // Erroneous document
-                    if (linkedEntities == null) {
+                    if (linkedEntityDocumentResult.isError()) {
                         System.out.printf("Cannot recognize linked entities. Error: %s%n", linkedEntityDocumentResult.getError().getMessage());
                         continue;
                     }
                     // Valid document
-                    for (LinkedEntity linkedEntity : linkedEntities) {
+                    for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getLinkedEntities()) {
                         System.out.printf("Recognized linked entities: %s, URL: %s, data source: %s%n",
                             linkedEntity.getName(),
                             linkedEntity.getUrl(),

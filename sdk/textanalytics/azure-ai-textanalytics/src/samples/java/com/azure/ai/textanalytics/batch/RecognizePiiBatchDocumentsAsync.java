@@ -17,20 +17,20 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrate how to recognize PII(Personally Identifiable Information) entities of a text input in
- * asynchronously call.
+ * Sample demonstrates how to asynchronously recognize the PII(Personally Identifiable Information) entities of a batch
+ * input text.
  */
 public class RecognizePiiBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to recognize PII entities of a batch of text inputs.
+     * Main method to invoke this demo about how to recognize the PII entities of a batch input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("<replace-with-your-text-analytics-key-here>")
-            .endpoint("<replace-with-your-text-analytics-endpoint-here>")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         // The texts that need be analysed.
@@ -59,14 +59,13 @@ public class RecognizePiiBatchDocumentsAsync {
                 // Recognized PII entities for each of document from a batch of documents
                 for (RecognizePiiEntitiesResult piiEntityDocumentResult : recognizedBatchResult) {
                     System.out.printf("Document ID: %s%n", piiEntityDocumentResult.getId());
-                    final List<NamedEntity> namedEntities = piiEntityDocumentResult.getNamedEntities();
                     // Erroneous document
-                    if (namedEntities == null) {
+                    if (piiEntityDocumentResult.isError()) {
                         System.out.printf("Cannot recognize PII entities. Error: %s%n", piiEntityDocumentResult.getError().getMessage());
                         continue;
                     }
                     // Valid document
-                    for (NamedEntity entity : namedEntities) {
+                    for (NamedEntity entity : piiEntityDocumentResult.getNamedEntities()) {
                         System.out.printf("Recognized personal identifiable information entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
                             entity.getText(),
                             entity.getType(),
