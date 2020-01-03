@@ -152,7 +152,11 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             BlobAsyncClient blobClient = prepareBuilder(client).buildAsyncClient();
 
             Flux<ByteBuffer> fbb = Flux.create((FluxSink<ByteBuffer> sink) -> this.sink = sink);
-            fbb.subscribe(); // Subscribe by upload takes too long
+
+            /* Subscribe by upload takes too long. We need to subscribe so that the sink is actually created. Since
+             this subscriber doesn't do anything and no data has started flowing, there are no drawbacks to this extra
+             subscribe. */
+            fbb.subscribe();
 
             blobClient.uploadWithResponse(fbb, parallelTransferOptions, headers, metadata, tier, requestConditions)
                 // This allows the operation to continue while maintaining the error that occurred.

@@ -2,6 +2,8 @@
 
 ## 12.2.0-beta.2 (Unreleased)
 - Added a field to ParallelTransferOptions that allows customers to configure the maximum size to upload in a single PUT. Data sizes larger than this value will be chunked and parallelized.
+- Changed implementation of BlockBlobOutputStream to take advantage of the buffered upload method, improving performance. 
+- Added overloads to BlockBlobClient.getBlobOutputStream to allow users to provide parallel transfer options, http headers, metadata, access tier, and request conditions.
 
 ## 12.2.0-beta.1 (2019-12-17)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setContainerName, setBlobName, setSnapshotId, generateSasQueryParameters methods on BlobServiceSasSignatureValues to direct users to using the methods added on clients.
