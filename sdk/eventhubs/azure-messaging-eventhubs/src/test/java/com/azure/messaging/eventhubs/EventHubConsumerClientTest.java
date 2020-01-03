@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
@@ -84,7 +85,7 @@ public class EventHubConsumerClientTest {
     private TokenCredential tokenCredential;
 
     private EventHubConsumerClient consumer;
-    private EventHubConnection linkProvider;
+    private EventHubConnectionProcessor connectionProcessor;
     private ConnectionOptions connectionOptions;
     private EventHubConsumerAsyncClient asyncConsumer;
 
@@ -100,7 +101,9 @@ public class EventHubConsumerClientTest {
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
-        linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
+        connectionProcessor = Mono.fromCallable(() -> connection).subscribeWith(new EventHubConnectionProcessor(
+            connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getEntityPath(),
+            connectionOptions.getRetry()));
         when(connection.createSession(argThat(name -> name.endsWith(PARTITION_ID))))
             .thenReturn(Mono.fromCallable(() -> session));
         when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
@@ -110,7 +113,7 @@ public class EventHubConsumerClientTest {
             }));
 
         asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
+            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
 
@@ -133,7 +136,7 @@ public class EventHubConsumerClientTest {
     public void lastEnqueuedEventInformationIsNull() {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP,
+            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP,
             PREFETCH, false);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
@@ -161,7 +164,7 @@ public class EventHubConsumerClientTest {
         // Arrange
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
+            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
 
         final int numberOfEvents = 10;
