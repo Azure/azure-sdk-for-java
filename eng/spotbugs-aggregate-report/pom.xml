@@ -68,7 +68,6 @@
                 <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob-nio\src\main\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-blob-nio\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob-nio\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-file-share\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-file-share\src\samples\java\com</source>
