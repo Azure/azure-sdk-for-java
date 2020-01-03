@@ -75,6 +75,11 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             } catch (final BlobStorageException e) {
                 throw new IOException(e);
             }
+            /* Need this check because for block blob the buffered upload error only manifests itself after commit is
+               called */
+            if (this.lastError != null) {
+                throw lastError;
+            }
         } finally {
             // if close() is called again, an exception will be thrown
             this.lastError = new IOException(Constants.STREAM_CLOSED);
@@ -160,7 +165,10 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
             blobClient.uploadWithResponse(fbb, parallelTransferOptions, headers, metadata, tier, requestConditions)
                 // This allows the operation to continue while maintaining the error that occurred.
-                .onErrorContinue(BlobStorageException.class, (e, s) -> this.lastError = new IOException(e))
+                .onErrorResume(BlobStorageException.class, e -> {
+                    this.lastError = new IOException(e);
+                    return Mono.empty();
+                })
                 .doOnTerminate(() -> complete = true)
                 .subscribe();
         }
