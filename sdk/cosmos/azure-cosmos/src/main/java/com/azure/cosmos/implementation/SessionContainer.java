@@ -187,7 +187,9 @@ public final class SessionContainer implements ISessionContainer {
         partitionKeyRangeId = tokenParts[0];
         parsedSessionToken = SessionTokenHelper.parse(tokenParts[1]);
 
-        logger.trace("UPDATE SESSION token {} {} {}", resourceId.getUniqueDocumentCollectionId(), collectionName, parsedSessionToken);
+        if (logger.isTraceEnabled()) {
+            logger.trace("UPDATE SESSION token {} {} {}", resourceId.getUniqueDocumentCollectionId(), collectionName, parsedSessionToken);
+        }
 
         boolean isKnownCollection;
 

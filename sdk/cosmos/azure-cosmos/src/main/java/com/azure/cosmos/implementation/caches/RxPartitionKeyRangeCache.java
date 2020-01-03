@@ -98,7 +98,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 // maybe we should consider changing to ArrayList to avoid conversion
                 return new Utils.ValueHolder<>(new ArrayList<>(routingMapValueHolder.v.getOverlappingRanges(range)));
             } else {
-                logger.debug("Routing Map Null for collection: {} for range: {}, forceRefresh:{}", collectionRid, range.toString(), forceRefresh);
+                logger.debug("Routing Map Null for collection: {} for range: {}, forceRefresh:{}", collectionRid, range, forceRefresh);
                 return new Utils.ValueHolder<>(null);
             }
         });
