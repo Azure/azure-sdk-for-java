@@ -145,7 +145,7 @@ public class BlobClient extends BlobClientBase {
 
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
-            if (client.uploadInBlocks(filePath) && exists()) {
+            if (client.uploadInBlocks(filePath, BlockBlobClient.MAX_UPLOAD_BLOB_BYTES) && exists()) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
@@ -157,7 +157,7 @@ public class BlobClient extends BlobClientBase {
      * Creates a new block blob, or updates the content of an existing block blob.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
-     * 
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration}

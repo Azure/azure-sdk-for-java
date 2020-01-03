@@ -48,11 +48,14 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * @param connectionId Identifier for this connection.
      * @param amqpHostname Hostname of the AMQP message broker. The hostname of the proxy is exposed in {@link
      *     #getHostname()}.
+     * @param proxyOptions The options to use for proxy.
+     * @param product The name of the product this connection handler is created for.
+     * @param clientVersion The version of the client library creating the connection handler.
      * @throws NullPointerException if {@code amqpHostname} or {@code proxyConfiguration} is null.
      */
     public WebSocketsProxyConnectionHandler(String connectionId, String amqpHostname,
-                                            ProxyOptions proxyOptions) {
-        super(connectionId, amqpHostname);
+                                            ProxyOptions proxyOptions, String product, String clientVersion) {
+        super(connectionId, amqpHostname, product, clientVersion);
         this.amqpHostname = Objects.requireNonNull(amqpHostname, "'amqpHostname' cannot be null.");
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.remoteHost = amqpHostname + ":" + HTTPS_PORT;

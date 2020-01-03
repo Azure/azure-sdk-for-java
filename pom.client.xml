@@ -475,6 +475,10 @@
                 <title>Azure Telemetry - OpenCensus</title>
                 <packages>com.azure.core.tracing*</packages>
               </group>
+              <group>
+                <title>Azure Text Analytics</title>
+                <packages>com.azure.ai.textanalytics*</packages>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -649,6 +653,7 @@
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
+                -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
               </additionalOptions>
               <doclint>all</doclint>
             </configuration>
@@ -1069,7 +1074,7 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>        
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -1229,6 +1234,7 @@
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opencensus</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
+    <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>sdk/identity/azure-identity</module>
@@ -1242,6 +1248,6 @@
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
-    <module>sdk/e2e</module>
+    <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
 </project>
