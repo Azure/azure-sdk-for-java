@@ -4,8 +4,6 @@
 package com.azure.storage.blob
 
 
-import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.HttpLogOptions
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
@@ -25,7 +23,6 @@ class AzuriteTest extends APISpec {
         def builder = new BlobServiceClientBuilder()
             .endpoint(azuriteEndpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(azuriteCredential)
 
         return builder.buildClient()

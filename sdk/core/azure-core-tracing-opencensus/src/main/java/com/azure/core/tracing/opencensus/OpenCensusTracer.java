@@ -3,13 +3,13 @@
 
 package com.azure.core.tracing.opencensus;
 
-import com.azure.core.util.tracing.ProcessKind;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.tracing.opencensus.implementation.AmqpPropagationFormatUtil;
 import com.azure.core.tracing.opencensus.implementation.AmqpTraceUtil;
 import com.azure.core.tracing.opencensus.implementation.HttpTraceUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.ProcessKind;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Link;
 import io.opencensus.trace.Span;
@@ -96,7 +96,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
     @Override
     public void end(int responseCode, Throwable throwable, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
-        final Span span = getSpan(context);
+        final Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (span == null) {
             return;
         }
@@ -118,7 +118,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
             return;
         }
 
-        final Span span = getSpan(context);
+        final Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (span != null) {
             span.putAttribute(key, AttributeValue.stringAttributeValue(value));
         } else {
@@ -139,7 +139,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void end(String statusMessage, Throwable throwable, Context context) {
-        final Span span = getSpan(context);
+        final Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (span == null) {
             logger.warning("Failed to find span to end it.");
             return;
@@ -157,13 +157,13 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void addLink(Context context) {
-        final Span span = getSpan(context);
+        final Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (span == null) {
             logger.warning("Failed to find span to link it.");
             return;
         }
 
-        final SpanContext spanContext = getSpanContext(context);
+        final SpanContext spanContext = getOrDefault(context, SPAN_CONTEXT_KEY, null, SpanContext.class);
         if (spanContext == null) {
             logger.warning("Failed to find span context to link it.");
             return;
@@ -181,6 +181,13 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
         return AmqpPropagationFormatUtil.extractContext(diagnosticId, context);
     }
 
+    @Override
+    public Context getSharedSpanBuilder(String spanName, Context context) {
+        throw logger.logExceptionAsError(
+                new UnsupportedOperationException("This operation is not supported in OpenCensus"));
+        // Remove OpenCensus support for tracing in https://github.com/Azure/azure-sdk-for-java/issues/6781
+    }
+
     /**
      * Starts a new child {@link Span} with parent being the remote and uses the {@link Span} is in the current Context,
      * to return an object that represents that scope.
@@ -193,7 +200,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
     private Context startScopedSpan(String spanName, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
         Span span;
-        SpanContext spanContext = getSpanContext(context);
+        SpanContext spanContext = getOrDefault(context, SPAN_CONTEXT_KEY, null, SpanContext.class);
         if (spanContext != null) {
             span = startSpanWithRemoteParent(spanName, spanContext);
         } else {
@@ -242,10 +249,10 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
         span.putAttribute(COMPONENT, AttributeValue.stringAttributeValue(parseComponentValue(spanName)));
         span.putAttribute(
             MESSAGE_BUS_DESTINATION,
-            AttributeValue.stringAttributeValue(getRequestKeyAttribute(context, ENTITY_PATH_KEY)));
+            AttributeValue.stringAttributeValue(getOrDefault(context, ENTITY_PATH_KEY, "", String.class)));
         span.putAttribute(
             PEER_ENDPOINT,
-            AttributeValue.stringAttributeValue(getRequestKeyAttribute(context, HOST_NAME_KEY)));
+            AttributeValue.stringAttributeValue(getOrDefault(context, HOST_NAME_KEY, "", String.class)));
     }
 
     /**
@@ -256,110 +263,12 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      */
     private static String parseComponentValue(String spanName) {
         if (spanName != null && spanName.length() > 0) {
-            int componentNameStartIndex = spanName.indexOf(".");
             int componentNameEndIndex = spanName.lastIndexOf(".");
-            if (componentNameStartIndex != -1 && componentNameEndIndex != -1) {
-                return spanName.substring(componentNameStartIndex + 1, componentNameEndIndex);
+            if (componentNameEndIndex != -1) {
+                return spanName.substring(0, componentNameEndIndex);
             }
         }
         return "";
-    }
-
-    /**
-     * Extracts request attributes from the given {@code context} and provided key.
-     *
-     * @param context The context containing the entity path.
-     * @param key The name of the attribute that needs to be extracted from the {@code Context}.
-     * @return The value for the provided key contained in the context.
-     */
-    private String getRequestKeyAttribute(Context context, String key) {
-        final Optional<Object> optionalObject = context.getData(key);
-
-        if (!optionalObject.isPresent()) {
-            logger.warning("Failed to find {} in the context.", key);
-            return "";
-        }
-
-        final Object value = optionalObject.get();
-        if (!(value instanceof String)) {
-            logger.warning("Could not extract {}. Data is not of type String. Actual class: {}",
-                key,
-                value.getClass());
-            return "";
-        }
-
-        return value.toString();
-    }
-
-    /**
-     * Extracts a {@link Span} from the given {@code context}.
-     *
-     * @param context The context containing the span.
-     * @return The {@link Span} contained in the context, and {@code null} if it does not.
-     */
-    private Span getSpan(Context context) {
-        final Optional<Object> spanOptional = context.getData(PARENT_SPAN_KEY);
-        if (!spanOptional.isPresent()) {
-            logger.warning("Failed to find span in the context.");
-            return null;
-        }
-
-        final Object value = spanOptional.get();
-        if (!(value instanceof Span)) {
-            logger.warning("Could not extract span. Data in {} is not of type Span. Actual class: {}",
-                PARENT_SPAN_KEY,
-                value.getClass());
-            return null;
-        }
-
-        return (Span) value;
-    }
-
-    /**
-     * Extracts the span name from the given {@code context}.
-     *
-     * @param context The context containing the span name.
-     * @return The span name contained in the context, and {@code null} if it does not.
-     */
-    private String getSpanName(Context context) {
-        final Optional<Object> spanNameOptional = context.getData(USER_SPAN_NAME_KEY);
-        if (!spanNameOptional.isPresent()) {
-            logger.warning("Failed to find span name in the context.");
-            return null;
-        }
-
-        final Object value = spanNameOptional.get();
-        if (!(value instanceof String)) {
-            logger.warning("Could not extract span name. Data in {} is not of type String. Actual class: {}",
-                USER_SPAN_NAME_KEY,
-                value.getClass());
-            return null;
-        }
-
-        return value.toString();
-    }
-
-    /**
-     * Extracts a {@link SpanContext} from the given {@code context}.
-     *
-     * @param context The context containing the span context.
-     * @return The {@link SpanContext} contained in the context, and {@code null} if it does not.
-     */
-    private SpanContext getSpanContext(Context context) {
-        final Optional<Object> spanContextOptional = context.getData(SPAN_CONTEXT_KEY);
-        if (!spanContextOptional.isPresent()) {
-            logger.warning("Failed to find span context in the context.");
-            return null;
-        }
-
-        final Object value = spanContextOptional.get();
-        if (!(value instanceof SpanContext)) {
-            logger.warning("Could not extract span context. Data is not of type SpanContext. Actual class: {}",
-                value.getClass());
-            return null;
-        }
-
-        return (SpanContext) value;
     }
 
     /**
@@ -368,12 +277,40 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      *
      * @param spanName The name of the returned Span.
      * @param context The context containing the span and the span name.
-     * @return A {@code SpanBuilder} to create and start a new {@code Span}.
+     * @return A {@link SpanBuilder} to create and start a new {@link Span}.
      */
     private SpanBuilder getSpanBuilder(String spanName, Context context) {
-        Span parentSpan = getSpan(context) == null ? TRACER.getCurrentSpan() : getSpan(context);
-        String spanNameKey = getSpanName(context) == null ? spanName : getSpanName(context);
-        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(spanNameKey, parentSpan);
-        return spanBuilder;
+        Span parentSpan =  getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
+        String spanNameKey =  getOrDefault(context, USER_SPAN_NAME_KEY, null, String.class);
+
+        if (spanNameKey == null) {
+            spanNameKey = spanName;
+        }
+        if (parentSpan == null) {
+            parentSpan = TRACER.getCurrentSpan();
+        }
+
+        return TRACER.spanBuilderWithExplicitParent(spanNameKey, parentSpan);
+    }
+
+    /**
+     * Returns the value of the specified key from the context.
+     *
+     * @param key The name of the attribute that needs to be extracted from the {@code Context}.
+     * @param defaultValue the value to return in data not found.
+     * @param clazz clazz the type of raw class to find data for.
+     * @param context The context containing the specified key.
+     *
+     * @return The T type of raw class object
+     */
+    @SuppressWarnings("unchecked")
+    private <T> T getOrDefault(Context context, String key, T defaultValue, Class<T> clazz) {
+        final Optional<Object> optional = context.getData(key);
+        final Object result = optional.filter(value -> clazz.isAssignableFrom(value.getClass())).orElseGet(() -> {
+            logger.warning("Could not extract key '{}' of type '{}' from context.", key, clazz);
+            return defaultValue;
+        });
+
+        return (T) result;
     }
 }

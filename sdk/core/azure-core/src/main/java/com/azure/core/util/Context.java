@@ -8,8 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies.

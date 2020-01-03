@@ -9,11 +9,11 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-containerinstance/v2017_08_01_preview</module>
-    <module>azure-mgmt-containerinstance/v2017_10_01_preview</module>
-    <module>azure-mgmt-containerinstance/v2017_12_01_preview</module>
-    <module>azure-mgmt-containerinstance/v2018_02_01_preview</module>
-    <module>azure-mgmt-containerinstance/v2018_04_01</module>
-    <module>azure-mgmt-containerinstance/v2018_10_01</module>
+    <module>mgmt-v2017_08_01_preview</module>
+    <module>mgmt-v2017_10_01_preview</module>
+    <module>mgmt-v2017_12_01_preview</module>
+    <module>mgmt-v2018_02_01_preview</module>
+    <module>mgmt-v2018_04_01</module>
+    <module>mgmt-v2018_10_01</module>
   </modules>
 </project>

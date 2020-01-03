@@ -3,29 +3,30 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryPolicyOptions;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.core.util.Configuration;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.CoreUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -76,20 +77,20 @@ public final class ConfigurationClientBuilder {
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final String ACCEPT_HEADER = "Accept";
     private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
-    private static final String APP_CONFIG_PROPERTIES = "azure-appconfig.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
-    private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(
-        new RetryPolicyOptions(new ExponentialBackoff(), RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS));
+    // This is properties file's name.
+    private static final String APP_CONFIG_PROPERTIES = "azure-data-appconfiguration.properties";
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final HttpHeaders headers;
-    private final String clientName;
-    private final String clientVersion;
+    private final Map<String, String> properties;
 
     private ConfigurationClientCredentials credential;
+    private TokenCredential tokenCredential;
+
     private String endpoint;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -105,9 +106,7 @@ public final class ConfigurationClientBuilder {
         policies = new ArrayList<>();
         httpLogOptions = new HttpLogOptions();
 
-        Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+        properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
 
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true")
@@ -151,33 +150,53 @@ public final class ConfigurationClientBuilder {
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
+        // Global Env configuration store
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
-        ConfigurationClientCredentials configurationCredentials = getConfigurationCredentials(buildConfiguration);
-        String buildEndpoint = getBuildEndpoint(configurationCredentials);
 
-        Objects.requireNonNull(buildEndpoint);
-        ConfigurationServiceVersion serviceVersion = version != null
-            ? version : ConfigurationServiceVersion.getLatest();
+        // Service version
+        ConfigurationServiceVersion serviceVersion =
+            version != null ? version : ConfigurationServiceVersion.getLatest();
 
+        // Endpoint
+        String buildEndpoint = endpoint;
+        if (tokenCredential == null) {
+            buildEndpoint = getBuildEndpoint();
+        }
+        // endpoint cannot be null, which is required in request authentication
+        Objects.requireNonNull(buildEndpoint, "'Endpoint' is required and can not be null.");
+
+        // if http pipeline is already defined
         if (pipeline != null) {
             return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
-        }
-
-        ConfigurationClientCredentials buildCredential = (credential == null) ? configurationCredentials : credential;
-        if (buildCredential == null) {
-            throw logger.logExceptionAsWarning(new IllegalStateException("'credential' is required."));
         }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName,
-            clientVersion, buildConfiguration, serviceVersion));
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
         policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
-        policies.add(new ConfigurationCredentialsPolicy(buildCredential));
+
+        if (tokenCredential != null) {
+            // User token based policy
+            policies.add(
+                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", buildEndpoint)));
+        } else if (credential != null) {
+            // Use credential based policy
+            policies.add(new ConfigurationCredentialsPolicy(credential));
+        } else {
+            // Throw exception that credential and tokenCredential cannot be null
+            logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
+        }
+
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
@@ -186,6 +205,7 @@ public final class ConfigurationClientBuilder {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
+        // customized pipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
@@ -236,6 +256,25 @@ public final class ConfigurationClientBuilder {
 
         this.endpoint = credential.getBaseUri();
 
+        // Clear TokenCredential in favor of connection string credential
+        this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     *
+     * @param tokenCredential TokenCredential used to authenticate HTTP requests.
+     * @return The updated ConfigurationClientBuilder object.
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public ConfigurationClientBuilder credential(TokenCredential tokenCredential) {
+        // token credential can not be null value
+        Objects.requireNonNull(tokenCredential);
+        this.tokenCredential = tokenCredential;
+
+        // Clear connection string based credential in favor of TokenCredential
+        this.credential = null;
         return this;
     }
 
@@ -341,24 +380,11 @@ public final class ConfigurationClientBuilder {
         return this;
     }
 
-    private ConfigurationClientCredentials getConfigurationCredentials(Configuration configuration) {
-        String connectionString = configuration.get("AZURE_APPCONFIG_CONNECTION_STRING");
-        if (CoreUtils.isNullOrEmpty(connectionString)) {
-            return credential;
-        }
-
-        try {
-            return new ConfigurationClientCredentials(connectionString);
-        } catch (InvalidKeyException | NoSuchAlgorithmException ex) {
-            return null;
-        }
-    }
-
-    private String getBuildEndpoint(ConfigurationClientCredentials buildCredentials) {
+    private String getBuildEndpoint() {
         if (endpoint != null) {
             return endpoint;
-        } else if (buildCredentials != null) {
-            return buildCredentials.getBaseUri();
+        } else if (credential != null) {
+            return credential.getBaseUri();
         } else {
             return null;
         }

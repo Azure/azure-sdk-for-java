@@ -1,0 +1,94 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.file.core.windows.net/filesasclienttestsaccountsasnetworkcreatedeleteshare113593?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7e2be6b5-1cb0-4427-a4b5-2870586edb47"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7780FD157E07E",
+      "Last-Modified" : "Tue, 03 Dec 2019 16:42:42 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "afed1108-e01a-001e-65f8-a97ee3000000",
+      "Date" : "Tue, 03 Dec 2019 16:42:42 GMT",
+      "x-ms-client-request-id" : "7e2be6b5-1cb0-4427-a4b5-2870586edb47"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.file.core.windows.net/filesasclienttestsaccountsasnetworkcreatedeleteshare113593/filename",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "755a910b-3f08-4c4c-b8e9-8bc61f59e1eb"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "15581347578553677299*8114634751575874941",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-12-03T16:42:42.9247296Z",
+      "Last-Modified" : "Tue, 03 Dec 2019 16:42:42 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 03 Dec 2019 16:42:42 GMT",
+      "ETag" : "0x8D7780FD1670740",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-12-03T16:42:42.9247296Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "afed110a-e01a-001e-66f8-a97ee3000000",
+      "x-ms-client-request-id" : "755a910b-3f08-4c4c-b8e9-8bc61f59e1eb",
+      "x-ms-file-last-write-time" : "2019-12-03T16:42:42.9247296Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.file.core.windows.net/create?restype=share&sv=2019-02-02&ss=f&srt=sco&se=2019-12-04T16%3A42%3A42Z&sp=rdc&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "519d138f-a44c-49bc-ad0a-bb4773a76e02"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7780FD17BBBF2",
+      "Last-Modified" : "Tue, 03 Dec 2019 16:42:43 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "afed110c-e01a-001e-68f8-a97ee3000000",
+      "Date" : "Tue, 03 Dec 2019 16:42:42 GMT",
+      "x-ms-client-request-id" : "519d138f-a44c-49bc-ad0a-bb4773a76e02"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://gapradev.file.core.windows.net/create?restype=share&sv=2019-02-02&ss=f&srt=sco&se=2019-12-04T16%3A42%3A42Z&sp=rdc&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e32d2076-17dd-4af8-9e24-1aa729b45517"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "afed110e-e01a-001e-69f8-a97ee3000000",
+      "Date" : "Tue, 03 Dec 2019 16:42:42 GMT",
+      "x-ms-client-request-id" : "e32d2076-17dd-4af8-9e24-1aa729b45517"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "filesasclienttestsaccountsasnetworkcreatedeleteshare113593", "2019-12-03T16:42:42.972784200Z" ]
+}

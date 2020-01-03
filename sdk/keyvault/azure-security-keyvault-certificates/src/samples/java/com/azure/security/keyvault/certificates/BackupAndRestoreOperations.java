@@ -5,14 +5,16 @@ package com.azure.security.keyvault.certificates;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,13 +50,13 @@ public class BackupAndRestoreOperations {
         // Let's create a self signed certificate valid for 1 year. if the certificate
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
-            .setReuseKey(true)
+            .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
+            .setKeyReusable(true)
             .setKeyCurveName(CertificateKeyCurveName.P_256);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName", policy, tags);
+        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller = certificateClient.beginCreateCertificate("certificateName", policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
@@ -67,9 +69,13 @@ public class BackupAndRestoreOperations {
         writeBackupToFile(certificateBackup, backupFilePath);
 
         // The certificate is no longer in use, so you delete it.
-        DeletedCertificate deletedCertificate = certificateClient.deleteCertificate("certificateName");
-        System.out.printf("Deleted certitifcate with name %s and recovery id %s", deletedCertificate.getName(),
-            deletedCertificate.getRecoveryId());
+        SyncPoller<DeletedCertificate, Void> deletedCertificatePoller =
+            certificateClient.beginDeleteCertificate("certificateName");
+        // Deleted Certificate is accessible as soon as polling beings.
+        PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
+        System.out.printf("Deleted certificate with name %s and recovery id %s", pollResponse.getValue().getName(),
+            pollResponse.getValue().getRecoveryId());
+        deletedCertificatePoller.waitForCompletion();
 
         //To ensure certificate is deleted on server side.
         Thread.sleep(30000);
@@ -84,7 +90,6 @@ public class BackupAndRestoreOperations {
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
         KeyVaultCertificate restoredCertificate = certificateClient.restoreCertificateBackup(backupFromFile);
         System.out.printf(" Restored certificate with name %s and id %s", restoredCertificate.getProperties().getName(), restoredCertificate.getProperties().getId());
-
     }
 
     private static void writeBackupToFile(byte[] bytes, String filePath) {

@@ -22,7 +22,7 @@ trigger:
     include:
       - sdk/eventgrid/
     exclude:
-      - sdk/eventgrid/azure-mgmt-
+      - sdk/eventgrid/mgmt-
 
 pr:
   branches:
@@ -35,7 +35,7 @@ pr:
     include:
       - sdk/eventgrid/
     exclude:
-      - sdk/eventgrid/azure-mgmt-
+      - sdk/eventgrid/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -1,12 +1,16 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.util.Context
+import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.Utility
-import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
+
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 
 class FileSystemAPITest extends APISpec {
 
@@ -30,7 +34,7 @@ class FileSystemAPITest extends APISpec {
         then:
         fsc.getProperties()
 
-        notThrown(Exception)
+        notThrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -66,7 +70,7 @@ class FileSystemAPITest extends APISpec {
 
         when:
         fsc.createWithResponse(null, publicAccess, null, null)
-        def access = fsc.getProperties().getPublicAccess()
+        def access = fsc.getProperties().getDataLakePublicAccess()
 
         then:
         access == publicAccess
@@ -83,9 +87,9 @@ class FileSystemAPITest extends APISpec {
         fsc.create()
 
         then:
-        def e = thrown(BlobStorageException)
+        def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 409
-        e.getErrorCode() == BlobErrorCode.CONTAINER_ALREADY_EXISTS
+        e.getErrorCode() == BlobErrorCode.CONTAINER_ALREADY_EXISTS.toString()
         e.getServiceMessage().contains("The specified container already exists.")
     }
 
@@ -95,7 +99,7 @@ class FileSystemAPITest extends APISpec {
 
         then:
         validateBasicHeaders(response.getHeaders())
-        response.getValue().getPublicAccess() == null
+        response.getValue().getDataLakePublicAccess() == null
         !response.getValue().hasImmutabilityPolicy()
         !response.getValue().hasLegalHold()
         response.getValue().getLeaseDuration() == null
@@ -122,7 +126,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getPropertiesWithResponse("garbage", null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Get properties error"() {
@@ -133,7 +137,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getProperties()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Set metadata"() {
@@ -214,7 +218,7 @@ class FileSystemAPITest extends APISpec {
         fsc.setMetadataWithResponse(null, drc, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | leaseID
@@ -251,7 +255,7 @@ class FileSystemAPITest extends APISpec {
         fsc.setMetadata(null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Delete"() {
@@ -273,9 +277,9 @@ class FileSystemAPITest extends APISpec {
         fsc.getProperties()
 
         then:
-        def e = thrown(BlobStorageException)
+        def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.CONTAINER_NOT_FOUND
+        e.getErrorCode() == BlobErrorCode.CONTAINER_NOT_FOUND.toString()
         e.getServiceMessage().contains("The specified container does not exist.")
     }
 
@@ -311,7 +315,7 @@ class FileSystemAPITest extends APISpec {
         fsc.deleteWithResponse(drc, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | leaseID
@@ -347,7 +351,7 @@ class FileSystemAPITest extends APISpec {
         fsc.delete()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Create file min"() {
@@ -355,7 +359,7 @@ class FileSystemAPITest extends APISpec {
         fsc.createFile(generatePathName())
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
     }
 
     def "Create file defaults"() {
@@ -374,7 +378,7 @@ class FileSystemAPITest extends APISpec {
             Context.NONE)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -475,7 +479,7 @@ class FileSystemAPITest extends APISpec {
         fsc.createFileWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -510,9 +514,9 @@ class FileSystemAPITest extends APISpec {
         client.getPropertiesWithResponse(null, null, null)
 
         then:
-        def e = thrown(BlobStorageException)
+        def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
 //        e.getServiceMessage().contains("The specified blob does not exist.")
     }
 
@@ -561,7 +565,7 @@ class FileSystemAPITest extends APISpec {
         fsc.deleteFileWithResponse(pathName, drc, null, null).getStatusCode()
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -578,7 +582,7 @@ class FileSystemAPITest extends APISpec {
         dir.create()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
     }
 
     def "Create dir defaults"() {
@@ -597,7 +601,7 @@ class FileSystemAPITest extends APISpec {
             Context.NONE)
 
         then:
-        thrown(Exception)
+        thrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -702,7 +706,7 @@ class FileSystemAPITest extends APISpec {
         fsc.createDirectoryWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
-        thrown(Exception)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -744,9 +748,9 @@ class FileSystemAPITest extends APISpec {
         client.getPropertiesWithResponse(null, null, null)
 
         then:
-        def e = thrown(BlobStorageException)
+        def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
 //        e.getServiceMessage().contains("The specified blob does not exist.")
     }
 
@@ -795,7 +799,7 @@ class FileSystemAPITest extends APISpec {
         fsc.deleteDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode()
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -820,23 +824,23 @@ class FileSystemAPITest extends APISpec {
         then:
         def dirPath = response.next()
         dirPath.getName() == dirName
-//        dirPath.getETag()
+        dirPath.getETag()
         dirPath.getGroup()
         dirPath.getLastModified()
         dirPath.getOwner()
         dirPath.getPermissions()
-//        dirPath.getContentLength()
+//        dirPath.getContentLength() // known issue with service
         dirPath.isDirectory()
 
         response.hasNext()
         def filePath = response.next()
         filePath.getName() == fileName
-//        filePath.getETag()
+        filePath.getETag()
         filePath.getGroup()
         filePath.getLastModified()
         filePath.getOwner()
         filePath.getPermissions()
-//        filePath.getContentLength()
+//        filePath.getContentLength() // known issue with service
         !filePath.isDirectory()
 
         !response.hasNext()
@@ -932,6 +936,225 @@ class FileSystemAPITest extends APISpec {
         "hello%20world"                                          | _
         "hello%26world"                                          | _
         "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%3F%23%5B%5D"    | _
+    }
+
+    @Unroll
+    def "Set access policy"() {
+        setup:
+        def response = fsc.setAccessPolicyWithResponse(access, null, null, null, null)
+
+        expect:
+        validateBasicHeaders(response.getHeaders())
+        fsc.getProperties().getDataLakePublicAccess() == access
+
+        where:
+        access                     | _
+        PublicAccessType.BLOB      | _
+        PublicAccessType.CONTAINER | _
+        null                       | _
+    }
+
+    def "Set access policy min access"() {
+        when:
+        fsc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+
+        then:
+        fsc.getProperties().getDataLakePublicAccess() == PublicAccessType.CONTAINER
+    }
+
+    def "Set access policy min ids"() {
+        setup:
+        def identifier = new DataLakeSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new DataLakeAccessPolicy()
+                .setStartsOn(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                    .plusDays(1))
+                .setPermissions("r"))
+
+        def ids = [identifier] as List
+
+        when:
+        fsc.setAccessPolicy(null, ids)
+
+        then:
+        fsc.getAccessPolicy().getIdentifiers().get(0).getId() == "0000"
+    }
+
+    def "Set access policy ids"() {
+        setup:
+        def identifier = new DataLakeSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new DataLakeAccessPolicy()
+                .setStartsOn(getUTCNow())
+                .setExpiresOn(getUTCNow().plusDays(1))
+                .setPermissions("r"))
+        def identifier2 = new DataLakeSignedIdentifier()
+            .setId("0001")
+            .setAccessPolicy(new DataLakeAccessPolicy()
+                .setStartsOn(getUTCNow())
+                .setExpiresOn(getUTCNow().plusDays(2))
+                .setPermissions("w"))
+        def ids = [identifier, identifier2] as List
+
+        when:
+        def response = fsc.setAccessPolicyWithResponse(null, ids, null, null, null)
+        def receivedIdentifiers = fsc.getAccessPolicyWithResponse(null, null, null).getValue().getIdentifiers()
+
+        then:
+        response.getStatusCode() == 200
+        validateBasicHeaders(response.getHeaders())
+        receivedIdentifiers.get(0).getAccessPolicy().getExpiresOn() == identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS)
+        receivedIdentifiers.get(0).getAccessPolicy().getStartsOn() == identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS)
+        receivedIdentifiers.get(0).getAccessPolicy().getPermissions() == identifier.getAccessPolicy().getPermissions()
+        receivedIdentifiers.get(1).getAccessPolicy().getExpiresOn() == identifier2.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS)
+        receivedIdentifiers.get(1).getAccessPolicy().getStartsOn() == identifier2.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS)
+        receivedIdentifiers.get(1).getAccessPolicy().getPermissions() == identifier2.getAccessPolicy().getPermissions()
+    }
+
+    @Unroll
+    def "Set access policy AC"() {
+        setup:
+        leaseID = setupFileSystemLeaseCondition(fsc, leaseID)
+        def cac = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        expect:
+        fsc.setAccessPolicyWithResponse(null, null, cac, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | leaseID
+        null     | null       | null
+        oldDate  | null       | null
+        null     | newDate    | null
+        null     | null       | receivedLeaseID
+    }
+
+    @Unroll
+    def "Set access policy AC fail"() {
+        setup:
+        def cac = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        when:
+        fsc.setAccessPolicyWithResponse(null, null, cac, null, null)
+
+        then:
+        thrown(DataLakeStorageException)
+
+        where:
+        modified | unmodified | leaseID
+        newDate  | null       | null
+        null     | oldDate    | null
+        null     | null       | garbageLeaseID
+    }
+
+    @Unroll
+    def "Set access policy AC illegal"() {
+        setup:
+        def mac = new DataLakeRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+
+        when:
+        fsc.setAccessPolicyWithResponse(null, null, mac, null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        match        | noneMatch
+        receivedEtag | null
+        null         | garbageEtag
+    }
+
+    def "Set access policy error"() {
+        setup:
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        when:
+        fsc.setAccessPolicy(null, null)
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    def "Get access policy"() {
+        setup:
+        def identifier = new DataLakeSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new DataLakeAccessPolicy()
+                .setStartsOn(getUTCNow())
+                .setExpiresOn(getUTCNow().plusDays(1))
+                .setPermissions("r"))
+        def ids = [identifier] as List
+        fsc.setAccessPolicy(PublicAccessType.BLOB, ids)
+        def response = fsc.getAccessPolicyWithResponse(null, null, null)
+
+        expect:
+        response.getStatusCode() == 200
+        response.getValue().getDataLakeAccessType() == PublicAccessType.BLOB
+        validateBasicHeaders(response.getHeaders())
+        response.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn() == identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS)
+        response.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn() == identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS)
+        response.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions() == identifier.getAccessPolicy().getPermissions()
+    }
+
+    def "Get access policy lease"() {
+        setup:
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
+
+        expect:
+        fsc.getAccessPolicyWithResponse(leaseID, null, null).getStatusCode() == 200
+    }
+
+    def "Get access policy lease fail"() {
+        when:
+        fsc.getAccessPolicyWithResponse(garbageLeaseID, null, null)
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    def "Get access policy error"() {
+        setup:
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        when:
+        fsc.getAccessPolicy()
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    def "Builder bearer token validation"() {
+        // Technically no additional checks need to be added to datalake builder since the corresponding blob builder fails
+        setup:
+        String endpoint = BlobUrlParts.parse(fsc.getFileSystemUrl()).setScheme("http").toUrl()
+        def builder = new DataLakeFileSystemClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "List Paths OAuth"() {
+        setup:
+        def client = getOAuthServiceClient()
+        def fsClient = client.getFileSystemClient(fsc.getFileSystemName())
+        fsClient.createFile(generatePathName())
+
+        when:
+        Iterator<PathItem> items = fsClient.listPaths().iterator()
+
+        then:
+        items.hasNext()
     }
 
 }

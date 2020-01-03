@@ -248,7 +248,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
-        this.globalEndpointManager.refreshLocationAsync(databaseAccount).block();
+        this.globalEndpointManager.refreshLocationAsync(databaseAccount, false).block();
     }
 
     public void init() {
@@ -869,19 +869,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request, Document document,
                                                                         RequestOptions options) {
 
-        Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
         return collectionObs
-                .map(collection -> {
-                    addPartitionKeyInformation(request, document, options, collection);
-                    return request;
-                });
+            .map(collectionValueHolder -> {
+                addPartitionKeyInformation(request, document, options, collectionValueHolder.v);
+                return request;
+            });
     }
 
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request, Document document, RequestOptions options,
-                                                                        Mono<DocumentCollection> collectionObs) {
+                                                                        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs) {
 
-        return collectionObs.map(collection -> {
-            addPartitionKeyInformation(request, document, options, collection);
+        return collectionObs.map(collectionValueHolder -> {
+            addPartitionKeyInformation(request, document, options, collectionValueHolder.v);
             return request;
         });
     }
@@ -969,7 +969,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, path,
                 typedDocument, requestHeaders, options);
 
-        Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
         return addPartitionKeyInformation(request, typedDocument, options, collectionObs);
     }
 
@@ -1217,7 +1217,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         validateResource(document);
 
-        Mono<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(request);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
         Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, document, options, collectionObs);
 
         return requestObs.flux().flatMap(req -> {
@@ -1247,7 +1247,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Document, path, requestHeaders, options);
 
-            Mono<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, options, collectionObs);
 
@@ -1283,7 +1283,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.Document, path, requestHeaders, options);
 
-            Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, options, collectionObs);
 
@@ -2587,7 +2587,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = request -> {
             return ObservableHelper.inlineIfPossibleAsObs(() -> {
-                Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+                Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
                 Mono<RxDocumentServiceRequest> requestObs = this.addPartitionKeyInformation(request, null, requestOptions, collectionObs);
 
                 return requestObs.flux().flatMap(req -> this.readFeed(req)

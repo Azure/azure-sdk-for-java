@@ -53,6 +53,11 @@ public interface Tracer {
     String SCOPE_KEY = "scope";
 
     /**
+     * Key for {@link Context} which indicates the shared span builder that is in the current Context.
+     */
+    String SPAN_BUILDER_KEY = "builder";
+
+    /**
      * Creates a new tracing span.
      * <p>
      * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
@@ -199,4 +204,23 @@ public interface Tracer {
      * @throws NullPointerException if {@code diagnosticId} or {@code context} is {@code null}.
      */
     Context extractContext(String diagnosticId, Context context);
+
+    /**
+     * Returns a span builder with the provided name in {@link Context}.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Returns a builder with the provided span name.</p>
+     * {@codesnippet com.azure.core.util.tracing.getSpanBuilder#string-context}
+     *
+     * @param spanName Name to give the span for the created builder.
+     * @param context Additional metadata that is passed through the call stack.
+     *
+     * @return The updated {@link Context} object containing the span builder.
+     * @throws NullPointerException if {@code context} or {@code spanName} is {@code null}.
+     */
+    default Context getSharedSpanBuilder(String spanName, Context context) {
+        // no-op
+        return Context.NONE;
+    }
 }

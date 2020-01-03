@@ -36,10 +36,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests OpenCensus tracing package using opencensus-impl
  */
 public class OpenCensusTracerTest {
-    private static final String METHOD_NAME = "Azure.eventhubs.send";
+    private static final String METHOD_NAME = "EventHubs.send";
     private static final String HOSTNAME_VALUE = "testEventDataNameSpace.servicebus.windows.net";
     private static final String ENTITY_PATH_VALUE = "test";
-    private static final String COMPONENT_VALUE = "eventhubs";
+    private static final String COMPONENT_VALUE = "EventHubs";
     private OpenCensusTracer openCensusTracer;
     private Tracer tracer;
     private Context tracingContext;
@@ -198,8 +198,6 @@ public class OpenCensusTracerTest {
         // Act
         assertThrows(NullPointerException.class, () -> openCensusTracer.start("", Context.NONE, null));
     }
-
-    //add tests for number of child spans created and how parent span relation
 
     @Test
     public void addLinkTest() {

@@ -24,11 +24,13 @@ class FileSASTests extends APISpec {
     private ShareFileClient primaryFileClient
     private ShareClient primaryShareClient
     private ShareServiceClient primaryFileServiceClient
+    private String shareName
 
-    private String shareName = "sharename"
     private String filePath = "filename"
 
     def setup() {
+        shareName = testResourceName.randomName(methodName, 60)
+
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
@@ -141,6 +143,7 @@ class FileSASTests extends APISpec {
     def "FileSAS network test download upload"() {
         setup:
         String data = "test"
+        primaryShareClient.create()
         primaryFileClient.create(Constants.KB)
         primaryFileClient.upload(getInputStream(data.getBytes()), (long) data.length())
 
@@ -201,6 +204,7 @@ class FileSASTests extends APISpec {
     def "FileSAS network test upload fails"() {
         setup:
         String data = "test"
+        primaryShareClient.create()
         primaryFileClient.create(Constants.KB)
 
         def permissions = new ShareFileSasPermission()
@@ -255,13 +259,13 @@ class FileSASTests extends APISpec {
         notThrown(ShareStorageException)
     }
 
-    def "ShareSAS network test identifier permissions create delete"() {
+    def "ShareSAS network identifier permissions"() {
         setup:
         ShareSignedIdentifier identifier = new ShareSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new ShareAccessPolicy().setPermissions("rcwdl")
                 .setExpiresOn(getUTCNow().plusDays(1)))
-
+        primaryShareClient.create()
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))
 
         // Check containerSASPermissions
@@ -287,8 +291,9 @@ class FileSASTests extends APISpec {
             .sasToken(sasWithId)
             .buildClient()
 
-        client1.createDirectory("dir")
-        client1.deleteDirectory("dir")
+        def dirName = testResourceName.randomName(methodName, 60)
+        client1.createDirectory(dirName)
+        client1.deleteDirectory(dirName)
 
         def sasWithPermissions = new ShareServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -302,14 +307,15 @@ class FileSASTests extends APISpec {
             .sasToken(sasWithPermissions)
             .buildClient()
 
-        client2.createDirectory("dir")
-        client2.deleteDirectory("dir")
+        def dirName2 = testResourceName.randomName(methodName, 60)
+        client2.createDirectory(dirName2)
+        client2.deleteDirectory(dirName2)
 
         then:
         notThrown(ShareStorageException)
     }
 
-    def "AccountSAS FileService network test create delete share succeeds"() {
+    def "AccountSAS network create delete share"() {
         setup:
         def service = new AccountSasService()
             .setFileAccess(true)
@@ -341,12 +347,49 @@ class FileSASTests extends APISpec {
         scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()
-        sc.createShare("create")
-        sc.deleteShare("create")
+        def shareName = testResourceName.randomName(methodName, 60)
+        sc.createShare(shareName)
+        sc.deleteShare(shareName)
 
         then:
         notThrown(ShareStorageException)
     }
 
+    def "accountSAS network account sas token on endpoint"() {
+        setup:
+        def service = new AccountSasService()
+            .setFileAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+        def shareName = testResourceName.randomName(methodName, 60)
+        def pathName = testResourceName.randomName(methodName, 60)
+
+        when:
+        def sc = getServiceClientBuilder(null, primaryFileServiceClient.getFileServiceUrl() + "?" + sas, null).buildClient()
+        sc.createShare(shareName)
+
+        def sharec = getShareClientBuilder(primaryFileServiceClient.getFileServiceUrl() + "/" + shareName + "?" + sas).buildClient()
+        sharec.createFile(pathName, 1024)
+
+        def fc = getFileClient(null, primaryFileServiceClient.getFileServiceUrl() + "/" + shareName + "/" + pathName + "?" + sas)
+        fc.download(new ByteArrayOutputStream())
+
+        then:
+        notThrown(Exception)
+    }
 
 }

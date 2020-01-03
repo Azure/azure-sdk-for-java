@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue
 
+import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.queue.models.QueueAnalyticsLogging
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueItem
@@ -148,6 +149,7 @@ class QueueServiceAPITests extends APISpec {
 
     def "List empty queues"() {
         when:
+        System.out.println(methodName);
         primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
 
         then:
@@ -181,5 +183,21 @@ class QueueServiceAPITests extends APISpec {
         QueueTestHelper.assertQueueServicePropertiesAreEqual(originalProperties, getResponseBefore)
         QueueTestHelper.assertResponseStatusCode(setResponse, 202)
         QueueTestHelper.assertQueueServicePropertiesAreEqual(updatedProperties, getResponseAfter)
+    }
+
+
+    def "Builder bearer token validation"() {
+        setup:
+        URL url = new URL(primaryQueueServiceClient.getQueueServiceUrl())
+        String endpoint = new URL("http", url.getHost(), url.getPort(), url.getFile()).toString()
+        def builder = new QueueServiceClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }

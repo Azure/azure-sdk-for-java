@@ -3,15 +3,16 @@
 
 package com.azure.core.amqp;
 
+import com.azure.core.amqp.exception.AmqpException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.Closeable;
 import java.util.Map;
 
 /**
  * Represents a TCP connection between the client and a service that uses the AMQP protocol.
  */
-public interface AmqpConnection extends EndpointStateNotifier, Closeable {
+public interface AmqpConnection extends AutoCloseable {
     /**
      * Gets the connection identifier.
      *
@@ -20,11 +21,11 @@ public interface AmqpConnection extends EndpointStateNotifier, Closeable {
     String getId();
 
     /**
-     * Gets the hostname for the AMQP connection.
+     * Gets the fully qualified namespace for the AMQP connection.
      *
      * @return The hostname for the AMQP connection.
      */
-    String getHostname();
+    String getFullyQualifiedNamespace();
 
     /**
      * Gets the maximum frame size for the connection.
@@ -45,7 +46,7 @@ public interface AmqpConnection extends EndpointStateNotifier, Closeable {
      *
      * @return Provider that authorizes access to AMQP resources.
      */
-    Mono<CBSNode> getCBSNode();
+    Mono<ClaimsBasedSecurityNode> getClaimsBasedSecurityNode();
 
     /**
      * Creates a new session with the given session name.
@@ -62,4 +63,25 @@ public interface AmqpConnection extends EndpointStateNotifier, Closeable {
      * @return {@code true} if a session with the name was removed; {@code false} otherwise.
      */
     boolean removeSession(String sessionName);
+
+    /**
+     * Gets the endpoint states for the AMQP connection. {@link AmqpException AmqpExceptions} that occur on the link are
+     * reported in the connection state. When the stream terminates, the connection is closed.
+     *
+     * @return A stream of endpoint states for the AMQP connection.
+     */
+    Flux<AmqpEndpointState> getEndpointStates();
+
+    /**
+     * Gets any shutdown signals that occur in the AMQP endpoint.
+     *
+     * @return A stream of shutdown signals that occur in the AMQP endpoint.
+     */
+    Flux<AmqpShutdownSignal> getShutdownSignals();
+
+    /**
+     * Closes the AMQP connection.
+     */
+    @Override
+    void close();
 }

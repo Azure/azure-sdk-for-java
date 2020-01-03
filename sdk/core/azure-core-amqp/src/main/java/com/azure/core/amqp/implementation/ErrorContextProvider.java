@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.exception.ErrorContext;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.exception.SessionErrorContext;
 
@@ -20,5 +20,5 @@ public interface ErrorContextProvider {
      *
      * @return The context where this exception occurred.
      */
-    ErrorContext getErrorContext();
+    AmqpErrorContext getErrorContext();
 }

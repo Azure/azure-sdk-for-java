@@ -10,6 +10,7 @@ resources:
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
+
 trigger:
   branches:
     include:
@@ -20,6 +21,7 @@ trigger:
   paths:
     include:
       - sdk/core/
+      - eng/
 
 pr:
   branches:
@@ -31,6 +33,7 @@ pr:
   paths:
     include:
       - sdk/core/
+      - eng/
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -54,4 +57,7 @@ stages:
           stagingProfileId: 88192f04117501
         - name: azure-core-tracing-opencensus
           safeName: azurecoretracingopencensus
+          stagingProfileId: 88192f04117501
+        - name: azure-core-tracing-opentelemetry
+          safeName: azurecoretracingopentelemetry
           stagingProfileId: 88192f04117501

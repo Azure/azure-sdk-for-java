@@ -185,3 +185,15 @@ As mentioned above, in the service pipeline changes, the plan after we GA is to 
   - [ ] Submit the PR for `com.azure:azure-storage-common`
   - [ ] Merge the PR for `com.azure:azure-storage-common`
   - [ ] Publish the PR for `com.azure:azure-storage-common`
+
+### Nightly package builds
+
+Each night our engineering system produces a set of packages for each component of the SDK. These can be used by other projects to test updated builds of our libraries prior to their release. The packages are published to an Azure Artifacts public feed hosted at the following URL:
+
+>> https://dev.azure.com/azure-sdk/public/_packaging?_a=feed&feed=azure-sdk-for-java
+
+For developers working within the repo, refer to the instructions above for updating versions numbers correctly. The parent POM for the Azure SDK already contains a repository reference to the daily feed and can download the packages.
+
+For developers wishing to use the daily packages for other purposes, refer to the [connect to feed instructions](https://dev.azure.com/azure-sdk/public/_packaging?_a=connect&feed=azure-sdk-for-java) in Azure Artifacts.
+
+Note: the daily package feed is considered volatile and taking dependencies on a daily package should be considered a temporary arrangement. We reserve the right to remove packages from this feed at any point in time.

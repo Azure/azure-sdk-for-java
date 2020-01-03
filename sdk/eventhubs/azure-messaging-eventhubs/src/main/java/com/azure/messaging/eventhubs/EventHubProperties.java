@@ -4,13 +4,16 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
+import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
- * Holds information about an Event Hub which can come handy while performing operations like
- * {@link EventHubConsumerAsyncClient#receive(String) receiving events from a specific partition}.
+ * Holds information about an Event Hub which can come handy while performing operations like {@link
+ * EventHubConsumerAsyncClient#receiveFromPartition(String, EventPosition) receiving events from a specific partition}.
  *
  * @see EventHubConsumerAsyncClient
  * @see EventHubConsumerClient
@@ -19,21 +22,26 @@ import java.util.Arrays;
 public final class EventHubProperties {
     private final String name;
     private final Instant createdAt;
-    private final String[] partitionIds;
+    private final IterableStream<String> partitionIds;
 
-    EventHubProperties(
-        final String name,
-        final Instant createdAt,
-        final String[] partitionIds) {
-        this.name = name;
-        this.createdAt = createdAt;
-        this.partitionIds = partitionIds != null
-            ? Arrays.copyOf(partitionIds, partitionIds.length)
-            : new String[0];
+    /**
+     * Creates an instance of {@link EventHubProperties}.
+     *
+     * @param name Name of the Event Hub.
+     * @param createdAt Datetime the Event Hub was created, in UTC.
+     * @param partitionIds The partitions ids in the Event Hub.
+     *
+     * @throws NullPointerException if {@code name}, {@code createdAt}, or {@code partitionIds} is {@code null}.
+     */
+    EventHubProperties(final String name, final Instant createdAt, final String[] partitionIds) {
+        this.name = Objects.requireNonNull(name, "'name' cannot be null.");
+        this.createdAt = Objects.requireNonNull(createdAt, "'createdAt' cannot be null.");
+        this.partitionIds = new IterableStream<>(Arrays.asList(
+            Objects.requireNonNull(partitionIds, "'partitionIds' cannot be null.")));
     }
 
     /**
-     * Gets the Event Hub name
+     * Gets the name of the Event Hub.
      *
      * @return Name of the Event Hub.
      */
@@ -42,7 +50,7 @@ public final class EventHubProperties {
     }
 
     /**
-     * Gets the instant, in UTC, at which Event Hub was created at.
+     * Gets the instant, in UTC, at which Event Hub was created.
      *
      * @return The instant, in UTC, at which the Event Hub was created.
      */
@@ -55,7 +63,7 @@ public final class EventHubProperties {
      *
      * @return The list of partition identifiers of the Event Hub.
      */
-    public String[] getPartitionIds() {
+    public IterableStream<String> getPartitionIds() {
         return partitionIds;
     }
 }

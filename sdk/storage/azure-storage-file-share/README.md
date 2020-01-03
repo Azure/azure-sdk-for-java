@@ -6,7 +6,7 @@ Files stored in Azure File Share service shares are accessible via the SMB proto
 The File Share service offers the following four resources: the storage account, shares, directories, and files.
 Shares provide a way to organize sets of files and also can be mounted as an SMB file share that is hosted in the cloud.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][storage_docs] |
+[Source code][source_code] | [API reference documentation][reference_docs] | [REST API documentation][rest_api_documentation] | [Product documentation][storage_docs] |
 [Samples][samples]
 
 ## Getting started
@@ -24,7 +24,7 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.0.0-preview.5</version>
+  <version>12.1.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -43,7 +43,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-share</artifactId>
-      <version>12.0.0-preview.5</version>
+      <version>12.1.0-beta.2</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -59,7 +59,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -524,9 +524,10 @@ If you would like to become an active contributor to this project please follow 
 
 <!-- LINKS -->
 [source_code]: src/
-[api_documentation]: https://docs.microsoft.com/rest/api/storageservices/file-service-rest-api
+[reference_docs]: https://azure.github.io/azure-sdk-for-java/
+[rest_api_documentation]: https://docs.microsoft.com/rest/api/storageservices/file-service-rest-api
 [storage_docs]: https://docs.microsoft.com/azure/storage/files/storage-files-introduction
-[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal

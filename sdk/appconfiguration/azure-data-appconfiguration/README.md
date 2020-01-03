@@ -135,6 +135,21 @@ ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .buildAsyncClient();
 ```
 
+You can also use `TokenCredential` to create a configuration client, such as an Azure Active Directory (AAD) token.
+Unlike a connection string if you're using an AAD token you must supply the endpoint of AppConfiguration service. The
+endpoint can be obtained by going to your App Configuration instance in the Azure portal and navigating to "Overview"
+page and look for the "Endpoint" keyword. 
+
+```Java
+// An example of using TokenCredential and Endpoint to create a synchronous client
+TokenCredential credential = new DefaultAzureCredential();
+
+ConfigurationClient client = new ConfigurationClientBuilder()
+        .credential(credential)
+        .endpoint(endpoint)
+        .buildClient();
+```
+
 ## Key concepts
 
 ### Configuration Setting
@@ -277,13 +292,13 @@ PagedIterable<ConfigurationSetting> settings = client.listRevisions(selector);
 Set a configuration setting to read-only status.
 ```Java
 client.setConfigurationSetting("some_key", "some_label", "some_value");
-ConfigurationSetting setting = client.setReadOnly("some_key", "some_label");
+ConfigurationSetting setting = client.setReadOnly("some_key", "some_label", true);
 ```
 ### Clear read only from a Configuration Setting
 
 Clear read-only from a configuration setting.
 ```Java
-ConfigurationSetting setting = client.clearReadOnly("some_key", "some_label");
+ConfigurationSetting setting = client.setReadOnly("some_key", "some_label", false);
 ```
 
 ## Troubleshooting
@@ -291,6 +306,22 @@ ConfigurationSetting setting = client.clearReadOnly("some_key", "some_label");
 ### General
 
 When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a configuration setting that doesn't exist in your configuration store, a `404` error is returned, indicating `Not Found`.
+
+App Configuration provides a way to define customized headers through `Context` object in the public API. 
+
+```java
+ // Add your headers
+ HttpHeaders headers = new HttpHeaders();
+ headers.put("my-header1", "my-header1-value");
+ headers.put("my-header2", "my-header2-value");
+ headers.put("my-header3", "my-header3-value");
+ // Call API by passing headers in Context.
+ configurationClient.addConfigurationSettingWithResponse(
+       new ConfigurationSetting().setKey("key").setValue("value"),
+       new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
+ // Above three HttpHeader will be added in outgoing HttpRequest.
+```
+For more detail information, check out the [AddHeadersFromContextPolicy][add_headers_from_context_policy]
 
 ## Next steps
 
@@ -323,5 +354,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source_code]: src
 [spring_quickstart]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2FREADME.png)

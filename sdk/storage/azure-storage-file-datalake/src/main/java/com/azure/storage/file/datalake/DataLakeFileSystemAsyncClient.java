@@ -15,21 +15,29 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.Path;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
+import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -234,7 +242,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType));
+            return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -276,7 +285,8 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.deleteWithResponse(
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -315,6 +325,7 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<FileSystemProperties>> getPropertiesWithResponse(String leaseId) {
         try {
             return blobContainerAsyncClient.getPropertiesWithResponse(leaseId)
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new SimpleResponse<>(response,
                     Transforms.toFileSystemProperties(response.getValue())));
         } catch (RuntimeException ex) {
@@ -361,7 +372,8 @@ public class DataLakeFileSystemAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.setMetadataWithResponse(metadata,
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -604,7 +616,150 @@ public class DataLakeFileSystemAsyncClient {
         return getDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
     }
 
+    /**
+     * Sets the file system's permissions. The permissions indicate whether paths in a file system may be accessed
+     * publicly. Note that, for each signed identifier, we will truncate the start and expiry times to the nearest
+     * second to ensure the time formatting is compatible with the service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicy#PublicAccessType-List}
+     *
+     * @param accessType Specifies how the data in this file system is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param identifiers A list of {@link DataLakeSignedIdentifier} objects that specify the permissions for the file
+     * system.
+     * Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information. Passing null will clear all access policies.
+     * @return A reactive response signalling completion.
+     */
+    public Mono<Void> setAccessPolicy(PublicAccessType accessType, List<DataLakeSignedIdentifier> identifiers) {
+        try {
+            return setAccessPolicyWithResponse(accessType, identifiers, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Sets the file system's permissions. The permissions indicate whether paths in a file system may be accessed
+     * publicly. Note that, for each signed identifier, we will truncate the start and expiry times to the nearest
+     * second to ensure the time formatting is compatible with the service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions}
+     *
+     * @param accessType Specifies how the data in this file system is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param identifiers A list of {@link DataLakeSignedIdentifier} objects that specify the permissions for the file
+     * system.
+     * Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information. Passing null will clear all access policies.
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @return A reactive response signalling completion.
+     * @throws UnsupportedOperationException If either {@link DataLakeRequestConditions#getIfMatch()} or
+     * {@link DataLakeRequestConditions#getIfNoneMatch()} is set.
+     */
+    public Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
+        List<DataLakeSignedIdentifier> identifiers, DataLakeRequestConditions requestConditions) {
+        try {
+            return blobContainerAsyncClient.setAccessPolicyWithResponse(Transforms.toBlobPublicAccessType(accessType),
+                Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Returns the file system's permissions. The permissions indicate whether file system's paths may be accessed
+     * publicly. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getAccessPolicy}
+     *
+     * @return A reactive response containing the file system access policy.
+     */
+    public Mono<FileSystemAccessPolicies> getAccessPolicy() {
+        try {
+            return getAccessPolicyWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Returns the file system's permissions. The permissions indicate whether file system's paths may be accessed
+     * publicly. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getAccessPolicyWithResponse#String}
+     *
+     * @param leaseId The lease ID the active lease on the file system must match.
+     * @return A reactive response containing the file system access policy.
+     */
+    public Mono<Response<FileSystemAccessPolicies>> getAccessPolicyWithResponse(String leaseId) {
+        try {
+            return blobContainerAsyncClient.getAccessPolicyWithResponse(leaseId)
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+                .map(response -> new SimpleResponse<>(response,
+                Transforms.toFileSystemAccessPolicies(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
     BlobContainerAsyncClient getBlobContainerAsyncClient() {
         return blobContainerAsyncClient;
+    }
+
+    /**
+     * Generates a user delegation SAS for the file system using the specified
+     * {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how
+     * to get a user delegation key.
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return blobContainerAsyncClient.generateUserDelegationSas(
+            Transforms.toBlobSasValues(dataLakeServiceSasSignatureValues),
+            Transforms.toBlobUserDelegationKey(userDelegationKey));
+    }
+
+    /**
+     * Generates a service SAS for the file system using the specified {@link DataLakeServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
+        return blobContainerAsyncClient.generateSas(Transforms.toBlobSasValues(dataLakeServiceSasSignatureValues));
     }
 }

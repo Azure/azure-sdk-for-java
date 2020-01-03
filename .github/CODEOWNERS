@@ -11,7 +11,6 @@
 # Service teams
 /sdk/appconfiguration/                            	@mssfang @alzimmermsft @conniey @sima-zhu
 /sdk/batch/                                      	@xingwu1 @bgklein @matthchr
-/sdk/cognitiveservices/ms-azure-cs-inkrecognizer	@minaltolpadi @olduroja @MAtifSaeed
 /sdk/core/                                        	@alzimmermsft @jianghaolu @srnagar @hemanttanwar
 /sdk/cosmos/                                      	@moderakh @christopheranderson @kushagraThapar
 /sdk/eventhubs/                                   	@conniey @srnagar @mssfang
@@ -33,6 +32,7 @@
 /eng/code-quality-reports/          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/     @srnagar @JonathanGiles
+/parent/                            @JimSuplizio
 
 /**/tests.yml   @danieljurek
 /**/ci.yml      @mitchdenny

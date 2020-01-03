@@ -8,6 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -19,15 +20,23 @@ import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Code snippets for {@link BlobClientBase}
@@ -44,6 +53,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
+    private UserDelegationKey userDelegationKey = new BlobServiceClientBuilder().buildClient().getUserDelegationKey(null, null);
 
     /**
      * Code snippets for {@link BlobClientBase#exists()}
@@ -105,6 +115,12 @@ public class BlobClientBaseJavaDocCodeSnippets {
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String
 
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-boolean
+        boolean overwrite = false; // Default value
+        client.downloadToFile(file, overwrite);
+        System.out.println("Completed download to file");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-boolean
+
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
         BlobRange range = new BlobRange(1024, 2048L);
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
@@ -113,6 +129,17 @@ public class BlobClientBaseJavaDocCodeSnippets {
             options, null, false, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set-Duration-Context
+        BlobRange blobRange = new BlobRange(1024, 2048L);
+        DownloadRetryOptions downloadRetryOptions = new DownloadRetryOptions().setMaxRetryRequests(5);
+        Set<OpenOption> openOptions = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+            StandardOpenOption.WRITE, StandardOpenOption.READ)); // Default options
+
+        client.downloadToFileWithResponse(file, blobRange, new ParallelTransferOptions(4 * Constants.MB, null, null),
+            downloadRetryOptions, null, false, openOptions, timeout, new Context(key2, value2));
+        System.out.println("Completed download to file");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set-Duration-Context
     }
 
     /**
@@ -374,5 +401,31 @@ public class BlobClientBaseJavaDocCodeSnippets {
         StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, new Context(key1, value1)).getValue();
         System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.getAccountKind(), accountInfo.getSkuName());
         // END: com.azure.storage.blob.specialized.BlobClientBase.getAccountInfoWithResponse#Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#generateUserDelegationSas(BlobServiceSasSignatureValues, UserDelegationKey)}
+     * and {@link BlobClientBase#generateSas(BlobServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.generateSas#BlobServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        BlobSasPermission permission = new BlobSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.blob.specialized.BlobClientBase.generateSas#BlobServiceSasSignatureValues
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        BlobSasPermission myPermission = new BlobSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey);
+        // END: com.azure.storage.blob.specialized.BlobClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
     }
 }

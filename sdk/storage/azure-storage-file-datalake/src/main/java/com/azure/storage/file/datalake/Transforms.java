@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.storage.blob.models.BlobAccessPolicy;
+import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerItemProperties;
 import com.azure.storage.blob.models.BlobContainerListDetails;
@@ -14,16 +16,22 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
 import com.azure.storage.file.datalake.models.CopyStatusType;
+import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.FileReadHeaders;
 import com.azure.storage.file.datalake.models.FileReadResponse;
+import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.FileSystemItemProperties;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
@@ -38,9 +46,12 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 class Transforms {
 
@@ -145,6 +156,21 @@ class Transforms {
             .setSignedStart(blobUserDelegationKey.getSignedStart())
             .setSignedVersion(blobUserDelegationKey.getSignedVersion())
             .setValue(blobUserDelegationKey.getValue());
+    }
+
+    static com.azure.storage.blob.models.UserDelegationKey toBlobUserDelegationKey(UserDelegationKey
+        dataLakeUserDelegationKey) {
+        if (dataLakeUserDelegationKey == null) {
+            return null;
+        }
+        return new com.azure.storage.blob.models.UserDelegationKey()
+            .setSignedExpiry(dataLakeUserDelegationKey.getSignedExpiry())
+            .setSignedObjectId(dataLakeUserDelegationKey.getSignedObjectId())
+            .setSignedTenantId(dataLakeUserDelegationKey.getSignedTenantId())
+            .setSignedService(dataLakeUserDelegationKey.getSignedService())
+            .setSignedStart(dataLakeUserDelegationKey.getSignedStart())
+            .setSignedVersion(dataLakeUserDelegationKey.getSignedVersion())
+            .setValue(dataLakeUserDelegationKey.getValue());
     }
 
     static BlobHttpHeaders toBlobHttpHeaders(PathHttpHeaders pathHTTPHeaders) {
@@ -293,8 +319,110 @@ class Transforms {
             .setDateProperty(h.getDateProperty())
             .setIsServerEncrypted(h.isServerEncrypted())
             .setEncryptionKeySha256(h.getEncryptionKeySha256())
-            .setFileContentMD5(h.getBlobContentMD5())
+            .setFileContentMd5(h.getBlobContentMD5())
             .setContentCrc64(h.getContentCrc64())
             .setErrorCode(h.getErrorCode());
+    }
+
+    static List<BlobSignedIdentifier> toBlobIdentifierList(List<DataLakeSignedIdentifier> identifiers) {
+        if (identifiers == null) {
+            return null;
+        }
+        List<BlobSignedIdentifier> blobIdentifiers = new ArrayList<>();
+        for (DataLakeSignedIdentifier identifier : identifiers) {
+            blobIdentifiers.add(Transforms.toBlobIdentifier(identifier));
+        }
+        return blobIdentifiers;
+    }
+
+    private static BlobSignedIdentifier toBlobIdentifier(DataLakeSignedIdentifier identifier) {
+        if (identifier == null) {
+            return null;
+        }
+        return new BlobSignedIdentifier()
+            .setId(identifier.getId())
+            .setAccessPolicy(Transforms.toBlobAccessPolicy(identifier.getAccessPolicy()));
+    }
+
+    private static BlobAccessPolicy toBlobAccessPolicy(DataLakeAccessPolicy accessPolicy) {
+        if (accessPolicy == null) {
+            return null;
+        }
+        return new BlobAccessPolicy()
+            .setExpiresOn(accessPolicy.getExpiresOn())
+            .setStartsOn(accessPolicy.getStartsOn())
+            .setPermissions(accessPolicy.getPermissions());
+    }
+
+    static FileSystemAccessPolicies toFileSystemAccessPolicies(BlobContainerAccessPolicies accessPolicies) {
+        if (accessPolicies == null) {
+            return null;
+        }
+        return new FileSystemAccessPolicies(Transforms.toDataLakePublicAccessType(accessPolicies.getBlobAccessType()),
+            Transforms.toDataLakeIdentifierList(accessPolicies.getIdentifiers()));
+    }
+
+    static List<DataLakeSignedIdentifier> toDataLakeIdentifierList(List<BlobSignedIdentifier> identifiers) {
+        if (identifiers == null) {
+            return null;
+        }
+        List<DataLakeSignedIdentifier> dataLakeIdentifiers = new ArrayList<>();
+        for (BlobSignedIdentifier identifier : identifiers) {
+            dataLakeIdentifiers.add(Transforms.toDataLakeIdentifier(identifier));
+        }
+        return dataLakeIdentifiers;
+    }
+
+    private static DataLakeSignedIdentifier toDataLakeIdentifier(BlobSignedIdentifier identifier) {
+        if (identifier == null) {
+            return null;
+        }
+        return new DataLakeSignedIdentifier()
+            .setId(identifier.getId())
+            .setAccessPolicy(Transforms.toDataLakeAccessPolicy(identifier.getAccessPolicy()));
+    }
+
+    private static DataLakeAccessPolicy toDataLakeAccessPolicy(BlobAccessPolicy accessPolicy) {
+        if (accessPolicy == null) {
+            return null;
+        }
+        return new DataLakeAccessPolicy()
+            .setExpiresOn(accessPolicy.getExpiresOn())
+            .setStartsOn(accessPolicy.getStartsOn())
+            .setPermissions(accessPolicy.getPermissions());
+    }
+
+    static BlobServiceSasSignatureValues toBlobSasValues(DataLakeServiceSasSignatureValues
+        dataLakeServiceSasSignatureValues) {
+        if (dataLakeServiceSasSignatureValues == null) {
+            return null;
+        }
+        BlobServiceSasSignatureValues blobServiceSasSignatureValues;
+        if (dataLakeServiceSasSignatureValues.getIdentifier() != null) {
+            blobServiceSasSignatureValues =
+                new BlobServiceSasSignatureValues(dataLakeServiceSasSignatureValues.getIdentifier());
+        } else {
+            // It's ok to use blob container sas permission since its a super set of blob sas permission
+            blobServiceSasSignatureValues =
+                new BlobServiceSasSignatureValues(dataLakeServiceSasSignatureValues.getExpiryTime(),
+                    BlobContainerSasPermission.parse(dataLakeServiceSasSignatureValues.getPermissions()));
+        }
+        blobServiceSasSignatureValues.setVersion(dataLakeServiceSasSignatureValues.getVersion())
+            .setProtocol(dataLakeServiceSasSignatureValues.getProtocol())
+            .setStartTime(dataLakeServiceSasSignatureValues.getStartTime())
+            .setExpiryTime(dataLakeServiceSasSignatureValues.getExpiryTime())
+            .setSasIpRange(dataLakeServiceSasSignatureValues.getSasIpRange())
+            .setIdentifier(dataLakeServiceSasSignatureValues.getIdentifier())
+            .setCacheControl(dataLakeServiceSasSignatureValues.getCacheControl())
+            .setContentDisposition(dataLakeServiceSasSignatureValues.getContentDisposition())
+            .setContentEncoding(dataLakeServiceSasSignatureValues.getContentEncoding())
+            .setContentLanguage(dataLakeServiceSasSignatureValues.getContentLanguage())
+            .setContentType(dataLakeServiceSasSignatureValues.getContentType());
+        if (dataLakeServiceSasSignatureValues.getPermissions() != null) {
+            // It's ok to use blob container sas permission since its a super set of blob sas permission
+            blobServiceSasSignatureValues.setPermissions(BlobContainerSasPermission.parse(
+                dataLakeServiceSasSignatureValues.getPermissions()));
+        }
+        return blobServiceSasSignatureValues;
     }
 }

@@ -109,7 +109,7 @@ public final class BlobClientBuilder {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
-        BuilderHelper.validateCpk(customerProvidedKey, endpoint);
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
 
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
@@ -122,7 +122,7 @@ public final class BlobClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, serviceVersion);
+            httpClient, additionalPolicies, configuration, logger);
 
         return new BlobAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, blobContainerName, blobName),
             serviceVersion, accountName, blobContainerName, blobName, snapshot, customerProvidedKey);
@@ -258,7 +258,7 @@ public final class BlobClientBuilder {
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
 
-            String sasToken = parts.getSasQueryParameters().encode();
+            String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }

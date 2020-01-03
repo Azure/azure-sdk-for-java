@@ -19,6 +19,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders;
@@ -32,6 +33,8 @@ import com.azure.storage.file.share.implementation.models.FilesSetMetadataRespon
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
+import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
+import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
@@ -44,6 +47,7 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1194,9 +1198,9 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
      * @param handleId Handle ID to be closed.
-     * @return An empty response.
+     * @return A response that contains information about the closed handles.
      */
-    public Mono<Void> forceCloseHandle(String handleId) {
+    public Mono<CloseHandlesInfo> forceCloseHandle(String handleId) {
         try {
             return withContext(context -> forceCloseHandleWithResponse(handleId, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -1217,9 +1221,10 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
      * @param handleId Handle ID to be closed.
-     * @return A response that only contains headers and response status code.
+     * @return A response that contains information about the closed handles along with headers and response status
+     * code.
      */
-    public Mono<Response<Void>> forceCloseHandleWithResponse(String handleId) {
+    public Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId) {
         try {
             return withContext(context -> forceCloseHandleWithResponse(handleId, context));
         } catch (RuntimeException ex) {
@@ -1227,11 +1232,12 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<Void>> forceCloseHandleWithResponse(String handleId, Context context) {
+    Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId, Context context) {
         return azureFileStorageClient.files()
             .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, snapshot,
                 context)
-            .map(response -> new SimpleResponse<>(response, null));
+            .map(response -> new SimpleResponse<>(response,
+                new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed())));
     }
 
     /**
@@ -1246,26 +1252,28 @@ public class ShareFileAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
-     * @return The number of handles closed.
+     * @return A response that contains information about the closed handles.
      */
-    public Mono<Integer> forceCloseAllHandles() {
+    public Mono<CloseHandlesInfo> forceCloseAllHandles() {
         try {
             return withContext(context -> forceCloseAllHandlesWithOptionalTimeout(null, context)
-                .reduce(0, Integer::sum));
+                .reduce(new CloseHandlesInfo(0),
+                    (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    PagedFlux<Integer> forceCloseAllHandlesWithOptionalTimeout(Duration timeout, Context context) {
-        Function<String, Mono<PagedResponse<Integer>>> retriever =
+    PagedFlux<CloseHandlesInfo> forceCloseAllHandlesWithOptionalTimeout(Duration timeout, Context context) {
+        Function<String, Mono<PagedResponse<CloseHandlesInfo>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .forceCloseHandlesWithRestResponseAsync(shareName, filePath, "*", null, marker,
                     snapshot, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    Collections.singletonList(response.getDeserializedHeaders().getNumberOfHandlesClosed()),
+                    Collections.singletonList(
+                        new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed())),
                     response.getDeserializedHeaders().getMarker(),
                     response.getDeserializedHeaders()));
 
@@ -1322,6 +1330,33 @@ public class ShareFileAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return azureFileStorageClient.getHttpPipeline();
+    }
+
+    /**
+     * Generates a service SAS for the file using the specified {@link ShareServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.generateSas#ShareServiceSasSignatureValues}
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }
 
     private Response<ShareFileInfo> createFileInfoResponse(final FilesCreateResponse response) {

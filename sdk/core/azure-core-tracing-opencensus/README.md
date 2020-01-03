@@ -19,57 +19,10 @@ documentation][api_documentation] | [Samples][samples]
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opencensus</artifactId>
-  <version>1.0.0-beta.4</version>
+  <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-### Default HTTP Client
-All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
-Tracing OpenCensus to use Netty HTTP client. 
-
-### Alternate HTTP Client
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
-Netty and include OkHTTP client in your pom.xml.
-
-[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
-```xml
-<!-- Add Tracing OpenCensus without Netty HTTP client -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-tracing-opencensus</artifactId>
-    <version>1.0.0-beta.4</version>
-    <exclusions>
-      <exclusion>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-http-netty</artifactId>
-      </exclusion>
-    </exclusions>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
-```xml
-<!-- Add OkHTTP client to use with Tracing OpenCensus package -->
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-### Configuring HTTP Clients
-When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders][create-eventhubs-builders], unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
-
-For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
-
-```java
-HttpClient client = new NettyAsyncHttpClientBuilder()
-    .port(8080)
-    .wiretap(true)
-    .build();
-```
 
 ## Key concepts
 ### Trace
@@ -134,13 +87,18 @@ private static  final Tracer TRACER;
     public static void doClientWork() {
         EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString(CONNECTION_STRING)
-            .buildProducer();
+            .buildProducerClient();
 
         try (Scope scope = TRACER.spanBuilder("tracing-user-span").startScopedSpan()) {
-            Context tracingContext = new Context(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
-            // Create an event to send
-            final EventData eventData = new EventData("Hello world!".getBytes(UTF_8), traceContext);
-            producer.send(eventData);
+            EventData event1 = new EventData("1".getBytes(UTF_8));
+            event1.addContext(PARENT_SPAN_KEY, span);
+
+            EventDataBatch eventDataBatch = producer.createBatch();
+
+            if (!eventDataBatch.tryAdd(eventData)) {
+                producer.send(eventDataBatch);
+                eventDataBatch = producer.createBatch();
+            }
         } finally {
             Tracing.getExportComponent().shutdown();
         }
