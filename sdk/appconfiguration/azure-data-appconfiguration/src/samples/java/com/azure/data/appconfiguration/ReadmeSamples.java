@@ -67,12 +67,19 @@ public class ReadmeSamples {
 
         // urlLabel is optional
         String url = configurationClient.getConfigurationSetting(urlKey, urlLabel).getValue();
-        Connection conn;
+        Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
-            conn.close();
         } catch (SQLException ex) {
             System.out.printf("Failed to get connection using url %s", url);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    System.out.printf("Failed to close connection, url %s", url);
+                }
+            }
         }
     }
 
