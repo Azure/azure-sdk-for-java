@@ -87,36 +87,4 @@ public class ManagedIdentityCredentialTest {
                 && expiresOn.getSecond() == token.getExpiresAt().getSecond())
             .verifyComplete();
     }
-
-    @Test
-    public void testParseExpiresOnOfMSIToken() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-
-        try {
-            // setup
-            String endpoint = "http://localhost";
-            String secret = "secret";
-            String token1 = "token1";
-            TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
-            String expiresAtDate="01/01/2000 0:00:51 AM +00:00";
-            configuration.put("MSI_ENDPOINT", endpoint);
-            configuration.put("MSI_SECRET", secret);
-
-            // mock
-            IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAtDate));
-            PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
-
-            // test
-            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
-            StepVerifier.create(credential.getToken(request1))
-                .expectNextMatches(token -> token1.equals(token.getToken())
-                    && 51== token.getExpiresAt().getSecond())
-                .verifyComplete();
-        } finally {
-            // clean up
-            configuration.remove("MSI_ENDPOINT");
-            configuration.remove("MSI_SECRET");
-        }
-    }
 }
