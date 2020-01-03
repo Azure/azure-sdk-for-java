@@ -139,7 +139,10 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @Test
     public void getKey() {
         getKeyRunner((original) -> {
-            client.createKey(original);
+            StepVerifier.create(client.createKey(original))
+                .assertNext(response -> assertKeyEquals(original, response))
+                .verifyComplete();
+
             StepVerifier.create(client.getKey(original.getName()))
                 .assertNext(response -> assertKeyEquals(original, response))
                 .verifyComplete();

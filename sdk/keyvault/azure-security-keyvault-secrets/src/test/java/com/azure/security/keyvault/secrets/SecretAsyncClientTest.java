@@ -135,7 +135,10 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     @Test
     public void getSecret() {
         getSecretRunner((original) -> {
-            client.setSecret(original);
+            StepVerifier.create(client.setSecret(original))
+                .assertNext(response -> assertSecretEquals(original, response))
+                .verifyComplete();
+
             StepVerifier.create(client.getSecret(original.getName()))
                     .assertNext(response -> assertSecretEquals(original, response))
                     .verifyComplete();
