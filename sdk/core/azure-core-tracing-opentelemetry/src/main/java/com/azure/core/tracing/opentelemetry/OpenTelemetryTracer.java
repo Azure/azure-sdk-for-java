@@ -32,10 +32,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static final Tracer TRACER = OpenTelemetry.getTracerFactory().get("Azure-OpenTelemetry");
 
     // standard attributes with AMQP request
-    static final String AZ_NAMESPACE_KEY = "az.namespace";
-    static final String COMPONENT = "component";
     static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
     static final String PEER_ENDPOINT = "peer.address";
+
+    static final String AZ_NAMESPACE_KEY = "az.namespace";
 
     private final ClientLogger logger = new ClientLogger(OpenTelemetryTracer.class);
 
@@ -87,6 +87,12 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             case MESSAGE:
                 spanBuilder = getSpanBuilder(spanName, context);
                 span = spanBuilder.setSpanKind(Span.Kind.PRODUCER).startSpan();
+                span = spanBuilder.startSpan();
+                if (span.isRecording()) {
+                    span.setAttribute(AZ_NAMESPACE_KEY,
+                        AttributeValue.stringAttributeValue(getOrDefault(context, AZ_NAMESPACE_KEY, "",
+                            String.class)));
+                }
                 // Add diagnostic Id and trace-headers to Context
                 context = setContextData(span);
                 return context.addData(PARENT_SPAN_KEY, span);
@@ -252,29 +258,15 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     private void addSpanRequestAttributes(Span span, Context context, String spanName) {
         Objects.requireNonNull(span, "'span' cannot be null.");
-        span.setAttribute(COMPONENT, AttributeValue.stringAttributeValue(parseComponentValue(spanName)));
         span.setAttribute(
             MESSAGE_BUS_DESTINATION,
             AttributeValue.stringAttributeValue(getOrDefault(context, ENTITY_PATH_KEY, "", String.class)));
         span.setAttribute(
             PEER_ENDPOINT,
             AttributeValue.stringAttributeValue(getOrDefault(context, HOST_NAME_KEY, "", String.class)));
-    }
-
-    /**
-     * Extracts the component name from the given span name.
-     *
-     * @param spanName The spanName containing the component name i.e spanName = "EventHubs.send"
-     * @return The component name contained in the context i.e "eventhubs"
-     */
-    private static String parseComponentValue(String spanName) {
-        if (spanName != null && !spanName.isEmpty()) {
-            int componentNameEndIndex = spanName.lastIndexOf(".");
-            if (componentNameEndIndex != -1) {
-                return spanName.substring(0, componentNameEndIndex);
-            }
-        }
-        return "";
+        span.setAttribute(
+            AZ_NAMESPACE_KEY,
+            AttributeValue.stringAttributeValue(getOrDefault(context, AZ_NAMESPACE_KEY, "", String.class)));
     }
 
     /**

@@ -48,6 +48,7 @@ import java.util.stream.Collector;
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.tracing.Tracer.AZ_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
@@ -97,6 +98,7 @@ public class EventHubProducerAsyncClient implements Closeable {
 
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
     private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS = new CreateBatchOptions();
+    private static final String AZ_NAMESPACE_VALUE = "Microsoft.EventHub";
 
     private final ClientLogger logger = new ClientLogger(EventHubProducerAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -420,7 +422,10 @@ public class EventHubProducerAsyncClient implements Closeable {
         if (isTracingEnabled) {
             final Context finalSharedContext = sharedContext == null
                 ? Context.NONE
-                : sharedContext.addData(ENTITY_PATH_KEY, eventHubName).addData(HOST_NAME_KEY, fullyQualifiedNamespace);
+                : sharedContext
+                    .addData(ENTITY_PATH_KEY, eventHubName)
+                    .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
+                    .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
             // Start send span and store updated context
             parentContext.set(tracerProvider.startSpan(finalSharedContext, ProcessKind.SEND));
         }
