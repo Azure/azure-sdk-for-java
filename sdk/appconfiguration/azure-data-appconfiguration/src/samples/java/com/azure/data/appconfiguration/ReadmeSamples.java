@@ -70,6 +70,7 @@ public class ReadmeSamples {
         Connection conn;
         try {
             conn = DriverManager.getConnection(url);
+            conn.close();
         } catch (SQLException ex) {
             System.out.printf("Failed to get connection using url %s", url);
         }
