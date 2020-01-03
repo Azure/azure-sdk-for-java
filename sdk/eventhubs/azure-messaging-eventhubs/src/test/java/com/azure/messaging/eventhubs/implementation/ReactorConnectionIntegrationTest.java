@@ -38,8 +38,8 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
 
     @Mock
     private MessageSerializer serializer;
-    private static String PRODUCT;
-    private static String CLIENT_VERSION;
+    private static String product;
+    private static String clientVersion;
 
     public ReactorConnectionIntegrationTest() {
         super(new ClientLogger(ReactorConnectionIntegrationTest.class));
@@ -48,8 +48,8 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     @BeforeAll
     public static void init() {
         Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
-        PRODUCT = properties.get("name");
-        CLIENT_VERSION = properties.get("version");
+        product = properties.get("name");
+        clientVersion = properties.get("version");
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
         connection = new ReactorConnection("test-connection-id", options, reactorProvider,
-            handlerProvider, tokenManagerProvider, serializer, PRODUCT, CLIENT_VERSION);
+            handlerProvider, tokenManagerProvider, serializer, product, clientVersion);
     }
 
     @Override

@@ -40,6 +40,9 @@ public class ReactorHandlerProvider {
      * @param connectionId Identifier associated with this connection.
      * @param hostname Host for the connection handler.
      * @param transportType Transport type used for the connection.
+     * @param proxyOptions The options to use for proxy.
+     * @param product The name of the product this connection handler is created for.
+     * @param clientVersion The version of the client library creating the connection handler.
      * @return A new {@link ConnectionHandler}.
      */
     public ConnectionHandler createConnectionHandler(String connectionId, String hostname,

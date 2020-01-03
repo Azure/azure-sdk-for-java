@@ -58,20 +58,20 @@ public class EventHubReactorConnectionTest {
     @Mock
     private ReactorHandlerProvider handlerProvider;
     private ConnectionOptions connectionOptions;
-    private static String PRODUCT;
-    private static String CLIENT_VERSION;
+    private static String product;
+    private static String clientVersion;
 
     @BeforeAll
     public static void init() throws Exception {
         Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
-        PRODUCT = properties.get("name");
-        CLIENT_VERSION = properties.get("version");
+        product = properties.get("name");
+        clientVersion = properties.get("version");
     }
 
     @BeforeEach
     public void setup() throws IOException {
-        final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT,
-            CLIENT_VERSION);
+        final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, product,
+            clientVersion);
 
         MockitoAnnotations.initMocks(this);
 
@@ -91,8 +91,8 @@ public class EventHubReactorConnectionTest {
         when(reactorProvider.createReactor(connectionHandler.getConnectionId(), connectionHandler.getMaxFrameSize()))
             .thenReturn(reactor);
 
-        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, proxy, PRODUCT,
-            CLIENT_VERSION))
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, proxy, product,
+            clientVersion))
             .thenReturn(connectionHandler);
     }
 
@@ -100,8 +100,8 @@ public class EventHubReactorConnectionTest {
     public void getsManagementChannel() {
         // Arrange
         final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID,
-            connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider, messageSerializer, PRODUCT,
-            CLIENT_VERSION);
+            connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider, messageSerializer, product,
+            clientVersion);
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())

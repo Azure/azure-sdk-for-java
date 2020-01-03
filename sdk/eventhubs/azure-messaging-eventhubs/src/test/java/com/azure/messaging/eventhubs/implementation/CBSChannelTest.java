@@ -47,8 +47,8 @@ public class CBSChannelTest extends IntegrationTestBase {
     private AzureTokenManagerProvider azureTokenManagerProvider;
     @Mock
     private MessageSerializer messageSerializer;
-    private static String PRODUCT;
-    private static String CLIENT_VERSION;
+    private static String product;
+    private static String clientVersion;
 
     public CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
@@ -57,8 +57,8 @@ public class CBSChannelTest extends IntegrationTestBase {
     @BeforeAll
     public static void init() {
         Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
-        PRODUCT = properties.get("name");
-        CLIENT_VERSION = properties.get("version");
+        product = properties.get("name");
+        clientVersion = properties.get("version");
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
-            azureTokenManagerProvider, messageSerializer, PRODUCT, CLIENT_VERSION);
+            azureTokenManagerProvider, messageSerializer, product, clientVersion);
 
         final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 

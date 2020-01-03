@@ -4,7 +4,6 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.ClientConstants;
-import com.azure.core.util.CoreUtils;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -12,7 +11,6 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -26,8 +24,6 @@ import java.util.Map;
 
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.FRAMEWORK;
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PLATFORM;
-import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PRODUCT;
-import static com.azure.core.amqp.implementation.handler.ConnectionHandler.VERSION;
 import static com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler.HTTPS_PORT;
 import static com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler.MAX_FRAME_SIZE;
 import static org.mockito.ArgumentMatchers.any;

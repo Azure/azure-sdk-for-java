@@ -43,6 +43,8 @@ public class ConnectionHandler extends Handler {
      *
      * @param connectionId Identifier for this connection.
      * @param hostname Hostname of the AMQP message broker to create a connection to.
+     * @param product The name of the product this connection handler is created for.
+     * @param clientVersion The version of the client library creating the connection handler.
      */
     public ConnectionHandler(final String connectionId, final String hostname, String product, String clientVersion) {
         super(connectionId, hostname);
