@@ -1,6 +1,11 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+# This script requires Powershell 6 which defaults LocalMachine to Restricted on Windows client machines.
+# From a Powershell 6 prompt run 'Get-ExecutionPolicy -List' and if the LocalMachine is Restricted or Undefined then
+# run the following command from an admin Powershell 6 prompt 'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned'. This
+# will enable running scripts locally in Powershell 6.
+
 # Use case: This script verifies the following:
 # 1. There are no duplicate entries in any of the version_*.txt files
 # 2. There are no duplicate entries in the external_dependencies.txt file
