@@ -162,7 +162,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
     @Override
     public void onComplete() {
-        logger.info("Upstream connection publisher was completed. Terminating EventHubConnectionProcessor.");
+        logger.info("Upstream connection publisher was completed. Terminating processor.");
 
         isTerminated.set(true);
         synchronized (lock) {
@@ -182,8 +182,10 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
         if (isTerminated.get()) {
             if (lastError != null) {
+                logger.info("Processor is already terminated. Propagating error.");
                 subscriber.onError(lastError);
             } else {
+                logger.info("Processor is already terminated. Propagating complete.");
                 subscriber.onComplete();
             }
 
