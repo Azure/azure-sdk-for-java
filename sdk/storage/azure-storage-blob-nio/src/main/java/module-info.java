@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-module com.azure.storage.blob.cryptography {
+module com.azure.storage.blob.nio {
     requires transitive com.azure.core;
     requires transitive com.azure.storage.common;
     requires com.azure.storage.blob;

@@ -18,7 +18,7 @@
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-nio</artifactId>
-    <version>12.0.0-preview1</version>
+    <version>12.0.0-preview.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
