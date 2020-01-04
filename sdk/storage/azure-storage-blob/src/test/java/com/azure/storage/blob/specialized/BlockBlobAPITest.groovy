@@ -1515,6 +1515,7 @@ class BlockBlobAPITest extends APISpec {
             .verifyError(IllegalArgumentException)
     }
 
+    @Ignore('Appears to cause OutOfMemoryException')
     @Requires({ liveMode() })
     def "Buffered upload no overwrite interrupted"() {
         setup:
