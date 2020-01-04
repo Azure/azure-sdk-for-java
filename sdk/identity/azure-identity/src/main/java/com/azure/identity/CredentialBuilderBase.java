@@ -57,6 +57,12 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
         return (T) this;
     }
 
+    /**
+     * Specifies the HttpPipeline to send all requests. This setting overrides the others.
+     *
+     * @param httpPipeline the HttpPipeline to send all requests
+     * @return itself
+     */
     @SuppressWarnings("unchecked")
     public T httpPipeline(HttpPipeline httpPipeline) {
         this.identityClientOptions.setHttpPipeline(httpPipeline);

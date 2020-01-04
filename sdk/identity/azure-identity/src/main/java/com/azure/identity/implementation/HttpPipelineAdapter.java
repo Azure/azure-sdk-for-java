@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
 import com.azure.core.http.HttpHeader;
@@ -41,14 +44,16 @@ class HttpPipelineAdapter implements IHttpClient {
                     com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
                         .body(body)
                         .statusCode(response.getStatusCode());
-                    httpResponse.headers(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,h -> Collections.singletonList(h.getValue()))));
+                    httpResponse.headers(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
+                            h -> Collections.singletonList(h.getValue()))));
                     return httpResponse;
                 })
                 // if no body
                 .switchIfEmpty(Mono.defer(() -> {
                     com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
                         .statusCode(response.getStatusCode());
-                    httpResponse.headers(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,h -> Collections.singletonList(h.getValue()))));
+                    httpResponse.headers(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
+                            h -> Collections.singletonList(h.getValue()))));
                     return Mono.just(httpResponse);
                 })))
             .block();
