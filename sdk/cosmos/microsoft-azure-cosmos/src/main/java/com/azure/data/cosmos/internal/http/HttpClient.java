@@ -36,7 +36,7 @@ public interface HttpClient {
         }
 
         //  Default pool size
-        Integer maxPoolSize = httpClientConfig.getConfigs().getReactorNettyMaxConnectionPoolSize();
+        Integer maxPoolSize = httpClientConfig.getConfigs().getDirectHttpsMaxConnectionLimit();
         if (httpClientConfig.getMaxPoolSize() != null) {
             maxPoolSize = httpClientConfig.getMaxPoolSize();
         }

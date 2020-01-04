@@ -5,6 +5,7 @@ package com.azure.data.cosmos.internal.directconnectivity;
 
 import com.azure.data.cosmos.BadRequestException;
 import com.azure.data.cosmos.ConflictException;
+import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ForbiddenException;
 import com.azure.data.cosmos.GoneException;
 import com.azure.data.cosmos.InternalServerErrorException;
@@ -109,11 +110,11 @@ public class HttpTransportClientTest {
                                                                       HttpClient httpClient) {
         class HttpTransportClientUnderTest extends HttpTransportClient {
             public HttpTransportClientUnderTest(int requestTimeout, UserAgentContainer userAgent) {
-                super(configs, requestTimeout, userAgent);
+                super(configs, ConnectionPolicy.defaultPolicy().requestTimeoutInMillis(requestTimeout * 1000), userAgent);
             }
 
             @Override
-            HttpClient createHttpClient(int requestTimeout) {
+            HttpClient createHttpClient(ConnectionPolicy connectionPolicy) {
                 return httpClient;
             }
         }

@@ -3,6 +3,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
+import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.SessionContainer;
@@ -22,17 +23,17 @@ public class StoreClientFactory implements AutoCloseable {
 
     public StoreClientFactory(
         Configs configs,
-        int requestTimeoutInSeconds,
+        ConnectionPolicy connectionPolicy,
         int maxConcurrentConnectionOpenRequests,
         UserAgentContainer userAgent) {
 
         this.configs = configs;
         this.protocol = configs.getProtocol();
-        this.requestTimeoutInSeconds = requestTimeoutInSeconds;
+        this.requestTimeoutInSeconds = connectionPolicy.requestTimeoutInMillis() / 1000;
         this.maxConcurrentConnectionOpenRequests = maxConcurrentConnectionOpenRequests;
 
         if (protocol == Protocol.HTTPS) {
-            this.transportClient = new HttpTransportClient(configs, requestTimeoutInSeconds, userAgent);
+            this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
         } else if (protocol == Protocol.TCP){
             this.transportClient = new RntbdTransportClient(configs, requestTimeoutInSeconds, userAgent);
         } else {
