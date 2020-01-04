@@ -32,6 +32,7 @@ import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Ignore
 import spock.lang.Requires
 import spock.lang.Unroll
 
