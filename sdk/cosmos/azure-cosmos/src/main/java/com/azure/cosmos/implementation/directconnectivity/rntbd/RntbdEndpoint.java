@@ -147,6 +147,11 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
+        public long requestTimerResolutionInNanos() {
+            return this.options.requestTimerResolution().toNanos();
+        }
+
+        @JsonProperty
         public long sendHangDetectionTimeInNanos() {
             return this.options.sendHangDetectionTime().toNanos();
         }
