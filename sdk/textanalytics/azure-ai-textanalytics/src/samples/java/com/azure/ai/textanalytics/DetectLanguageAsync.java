@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample demonstrates how to asynchronously detect the language of an input text.
  */
-public class HelloWorldAsync {
+public class DetectLanguageAsync {
     /**
      * Main method to invoke this demo about how to detect the language of an input text.
      *

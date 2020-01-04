@@ -9,7 +9,7 @@ and includes six main functions:
 - Recognition of Personally Identifiable Information 
 - Linked Entity Recognition
 
-[Source code][source_code] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
+[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
 ## Getting started
 
@@ -117,7 +117,7 @@ az cognitiveservices account create \
     --yes
 ```
 ### Authenticate the client
-In order to interact with the Text Analytics service, you'll need to create an instance of the [TextAnalyticsClient](#create-ta-client) class. You would need an **endpoint** and **subscription key** to instantiate a client object.
+In order to interact with the Text Analytics service, you'll need to create an instance of the [TextAnalyticsClient](#create-a-client) class. You would need an **endpoint** and **subscription key** to instantiate a client object.
 
 #### Get credentials
 ##### Types of credentials
@@ -245,7 +245,6 @@ Text analytics support both synchronous and asynchronous client creation by usin
 
 ``` java
 // An example of creating a synchronous client
-
 TextAnalyticsClient client = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
@@ -254,7 +253,6 @@ TextAnalyticsClient client = new TextAnalyticsClientBuilder()
 
 ``` java
 // An example of creating an asynchronous client
-
 TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
@@ -372,11 +370,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free
-[api_reference_doc]: https://azure.github.io/azure-sdk-for-java/cognitiveservices.html
+[api_reference_doc]: https://azure.github.io/azure-sdk-for-java/textanalytics.html
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[package]: https://mvnrepository.com/artifact/com.azure/azure-ai-textanalytics
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview
 [samples_readme]: src/samples/README.md
 [source_code]: src
