@@ -141,7 +141,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     @Override
     public void close() {
         logger.info("Disposing of connection.");
-        sendLinks.forEach((key, value) -> { value.close(); });
+        sendLinks.forEach((key, value) -> value.close());
         sendLinks.clear();
 
         super.close();
