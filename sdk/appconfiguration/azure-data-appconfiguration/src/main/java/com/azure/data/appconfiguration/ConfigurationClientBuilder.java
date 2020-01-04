@@ -239,25 +239,26 @@ public final class ConfigurationClientBuilder {
      * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
      * secret={secret_value}"
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws IllegalArgumentException if {@code connectionString} is null or an empty string. Or the secret is
+     * invalid and cannot instantiate HMAC-SHA256 MAC algorithm.
      */
     public ConfigurationClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString);
+        if (CoreUtils.isNullOrEmpty(connectionString)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'connectionString' cannot be null or an empty string."));
+        }
 
         try {
             this.credential = new ConfigurationClientCredentials(connectionString);
         } catch (InvalidKeyException err) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "The secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.", err));
+                "The secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.", err));
         } catch (NoSuchAlgorithmException err) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
         }
 
         this.endpoint = credential.getBaseUri();
-
-        // Clear TokenCredential in favor of connection string credential
-        this.tokenCredential = null;
         return this;
     }
 
@@ -272,9 +273,6 @@ public final class ConfigurationClientBuilder {
         // token credential can not be null value
         Objects.requireNonNull(tokenCredential);
         this.tokenCredential = tokenCredential;
-
-        // Clear connection string based credential in favor of TokenCredential
-        this.credential = null;
         return this;
     }
 
