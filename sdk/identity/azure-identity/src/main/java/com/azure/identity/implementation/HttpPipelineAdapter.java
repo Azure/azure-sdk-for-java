@@ -12,10 +12,13 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-public class HttpPipelineAdapter implements IHttpClient {
+/**
+ * Adapts an HttpPipeline to an instance of IHttpClient in the MSAL4j pipeline.
+ */
+class HttpPipelineAdapter implements IHttpClient {
     private final HttpPipeline httpPipeline;
 
-    public HttpPipelineAdapter(HttpPipeline httpPipeline) {
+    HttpPipelineAdapter(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
     }
 

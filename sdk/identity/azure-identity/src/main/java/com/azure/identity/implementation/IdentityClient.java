@@ -6,10 +6,10 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -37,11 +37,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -87,7 +82,8 @@ public class IdentityClient {
         } else {
             String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
-            publicClientApplicationBuilder = publicClientApplicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
+            publicClientApplicationBuilder = publicClientApplicationBuilder
+                    .httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
@@ -139,29 +135,20 @@ public class IdentityClient {
     public Mono<AccessToken> authenticateWithPfxCertificate(String pfxCertificatePath, String pfxCertificatePassword,
                                                             TokenRequestContext request) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        try {
+        return Mono.fromCallable(() -> {
             ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId,
-                    ClientCredentialFactory.createFromCertificate(new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
-                    .httpClient(new HttpPipelineAdapter(options.getHttpPipeline()))
-                    .authority(authorityUrl);
+                    ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromCertificate(
+                                new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
+                            .httpClient(new HttpPipelineAdapter(options.getHttpPipeline()))
+                            .authority(authorityUrl);
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
-            ConfidentialClientApplication application = applicationBuilder.build();
-            return Mono.fromFuture(application.acquireToken(
-                ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                    .build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                    ZoneOffset.UTC)));
-        } catch (CertificateException
-            | UnrecoverableKeyException
-            | NoSuchAlgorithmException
-            | KeyStoreException
-            | NoSuchProviderException
-            | IOException e) {
-            return Mono.error(e);
-        }
+            return applicationBuilder.build();
+        }).flatMap(application -> Mono.fromFuture(application.acquireToken(
+                ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build())))
+        .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
+                ZoneOffset.UTC)));
     }
 
     /**
@@ -176,9 +163,9 @@ public class IdentityClient {
         try {
             byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemCertificatePath));
             ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId,
-                    ClientCredentialFactory.createFromCertificate(CertificateUtil.privateKeyFromPem(pemCertificateBytes),
-                        CertificateUtil.publicKeyFromPem(pemCertificateBytes)))
+                ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromCertificate(
+                            CertificateUtil.privateKeyFromPem(pemCertificateBytes),
+                            CertificateUtil.publicKeyFromPem(pemCertificateBytes)))
                         .httpClient(new HttpPipelineAdapter(options.getHttpPipeline()))
                         .authority(authorityUrl);
             if (options.getProxyOptions() != null) {
