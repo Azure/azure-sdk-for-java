@@ -12,7 +12,8 @@ public class CosmosItemResponse extends CosmosResponse<CosmosItemProperties> {
         super(response.resourceResponseWrapper, response.getProperties());
         this.responseWrapper = response;
         if (responseWrapper.getItem() != null) {
-            this.item = new CosmosItem(responseWrapper.getItem().getId(), partitionKey, container, responseWrapper.getItem());
+            this.item = new CosmosItem(responseWrapper.getItem().getId(), partitionKey, container,
+                responseWrapper.getItem());
         } else {
             // Delete will have null container client in response
             this.item = null;

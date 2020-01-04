@@ -22,7 +22,10 @@ public class InvalidPartitionException extends CosmosClientException {
         this(RMResources.Gone);
     }
 
-    public InvalidPartitionException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public InvalidPartitionException(CosmosError cosmosError,
+                                     long lsn,
+                                     String partitionKeyRangeId,
+                                     Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -47,21 +50,21 @@ public class InvalidPartitionException extends CosmosClientException {
     }
 
     InvalidPartitionException(String message,
-                             Exception innerException,
-                             HttpHeaders headers,
-                             String requestUri) {
+                              Exception innerException,
+                              HttpHeaders headers,
+                              String requestUri) {
         super(String.format("%s: %s", RMResources.Gone, message),
-                innerException,
-                HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.GONE,
-                requestUri);
+            innerException,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.GONE,
+            requestUri);
 
         setSubStatus();
     }
 
     private void setSubStatus() {
         this.getResponseHeaders().put(
-                WFConstants.BackendHeaders.SUB_STATUS,
-                Integer.toString(HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE));
+            WFConstants.BackendHeaders.SUB_STATUS,
+            Integer.toString(HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE));
     }
 }

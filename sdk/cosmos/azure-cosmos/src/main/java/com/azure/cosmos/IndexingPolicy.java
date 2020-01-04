@@ -36,26 +36,12 @@ public final class IndexingPolicy extends JsonSerializable {
      * default index specifications for the root path.
      * <p>
      * The following example shows how to override the default indexingPolicy for root path:
-     * <pre>
-     * {@code
-     * HashIndex hashIndexOverride = Index.HASH(DataType.STRING, 5);
-     * RangeIndex rangeIndexOverride = Index.RANGE(DataType.NUMBER, 2);
-     * SpatialIndex spatialIndexOverride = Index.SPATIAL(DataType.POINT);
-     *
-     * IndexingPolicy indexingPolicy = new IndexingPolicy(hashIndexOverride, rangeIndexOverride, spatialIndexOverride);
-     * }
-     * </pre>
      * <p>
-     * If you would like to just override the indexingPolicy for Numbers you can specify just that:
-     * <pre>
-     * {@code
-     * RangeIndex rangeIndexOverride = Index.RANGE(DataType.NUMBER, 2);
-     *
-     * IndexingPolicy indexingPolicy = new IndexingPolicy(rangeIndexOverride);
-     * }
-     * </pre>
-     *
-     * @param defaultIndexOverrides comma separated set of indexes that serve as default index specifications for the root path.
+     * {@codesnippet com.azure.cosmos.indexingPolicy.defaultOverride)}
+     * <p>
+     * @param defaultIndexOverrides comma separated set of indexes that serve as default index specifications for the
+     * root path.
+     * @throws IllegalArgumentException thrown if an error occurs
      */
     public IndexingPolicy(Index[] defaultIndexOverrides) {
         this();
@@ -115,7 +101,8 @@ public final class IndexingPolicy extends JsonSerializable {
         try {
             result = IndexingMode.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.INDEXING_MODE)));
         } catch (IllegalArgumentException e) {
-            this.getLogger().warn("INVALID indexingMode value {}.", super.getString(Constants.Properties.INDEXING_MODE));
+            this.getLogger().warn("INVALID indexingMode value {}.",
+                super.getString(Constants.Properties.INDEXING_MODE));
         }
         return result;
     }
@@ -183,10 +170,10 @@ public final class IndexingPolicy extends JsonSerializable {
         if (this.compositeIndexes == null) {
             this.compositeIndexes = new ArrayList<>();
             ArrayNode compositeIndexes = (ArrayNode) super.get(Constants.Properties.COMPOSITE_INDEXES);
-            for (int i = 0; i < compositeIndexes.size(); i ++) {
+            for (int i = 0; i < compositeIndexes.size(); i++) {
                 ArrayNode compositeIndex = (ArrayNode) compositeIndexes.get(i);
                 ArrayList<CompositePath> compositePaths = new ArrayList<CompositePath>();
-                for (int j = 0; j < compositeIndex.size(); j ++) {
+                for (int j = 0; j < compositeIndex.size(); j++) {
                     CompositePath candidateCompositePath = new CompositePath(compositeIndex.get(j).toString());
                     compositePaths.add(candidateCompositePath);
                 }
@@ -241,8 +228,8 @@ public final class IndexingPolicy extends JsonSerializable {
     @Override
     void populatePropertyBag() {
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
-        if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0 &&
-                this.getExcludedPaths().size() == 0) {
+        if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0
+                && this.getExcludedPaths().size() == 0) {
             IncludedPath includedPath = new IncludedPath();
             includedPath.setPath(IndexingPolicy.DEFAULT_PATH);
             this.getIncludedPaths().add(includedPath);

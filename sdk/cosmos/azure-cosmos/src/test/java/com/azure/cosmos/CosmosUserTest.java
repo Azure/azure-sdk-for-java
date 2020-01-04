@@ -102,7 +102,7 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", userProperties.getId());
-        FeedOptions feedOptions = new FeedOptions().setEnableCrossPartitionQuery(true);
+        FeedOptions feedOptions = new FeedOptions();
 
         Iterator<FeedResponse<CosmosUserProperties>> feedResponseIterator1 =
                 createdDatabase.queryUsers(query, feedOptions);

@@ -18,11 +18,13 @@ public class GoneException extends CosmosClientException {
     public GoneException(String msg) {
         this(msg, null);
     }
+
     public GoneException() {
         this(RMResources.Gone, null);
     }
 
-    public GoneException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public GoneException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
+                         Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -33,9 +35,9 @@ public class GoneException extends CosmosClientException {
     }
 
     GoneException(String message,
-                         Exception innerException,
-                         URI requestUri,
-                         String localIpAddress) {
+                  Exception innerException,
+                  URI requestUri,
+                  String localIpAddress) {
         this(message(localIpAddress, message), innerException, null, requestUri);
     }
 
@@ -44,7 +46,9 @@ public class GoneException extends CosmosClientException {
     }
 
     public GoneException(String message, HttpHeaders headers, URI requestUrl) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUrl != null ? requestUrl.toString() : null);
+        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUrl != null
+                                                                                           ? requestUrl.toString()
+                                                                                           : null);
     }
 
     GoneException(String message, HttpHeaders headers, String requestUriString) {
@@ -55,7 +59,13 @@ public class GoneException extends CosmosClientException {
                          Exception innerException,
                          HttpHeaders headers,
                          URI requestUrl) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUrl != null ? requestUrl.toString() : null);
+        super(message,
+            innerException,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.GONE,
+            requestUrl != null 
+                ? requestUrl.toString()
+                : null);
     }
 
     public GoneException(String message,

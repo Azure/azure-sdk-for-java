@@ -24,7 +24,10 @@ public class PartitionKeyRangeGoneException extends CosmosClientException {
         this(RMResources.Gone);
     }
 
-    public PartitionKeyRangeGoneException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public PartitionKeyRangeGoneException(CosmosError cosmosError,
+                                          long lsn,
+                                          String partitionKeyRangeId,
+                                          Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -49,12 +52,14 @@ public class PartitionKeyRangeGoneException extends CosmosClientException {
         this.setSubstatus();
     }
 
-    PartitionKeyRangeGoneException(String message, Exception innerException, HttpHeaders headers, String requestUriString) {
+    PartitionKeyRangeGoneException(String message, Exception innerException, HttpHeaders headers,
+                                   String requestUriString) {
         super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUriString);
         this.setSubstatus();
     }
 
     private void setSubstatus() {
-        this.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
+        this.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS,
+            Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
     }
 }

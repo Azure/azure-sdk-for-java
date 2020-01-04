@@ -21,7 +21,8 @@ public class NotFoundException extends CosmosClientException {
         this(RMResources.NotFound);
     }
 
-    public NotFoundException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public NotFoundException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
+                             Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.NOTFOUND, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -48,20 +49,20 @@ public class NotFoundException extends CosmosClientException {
     }
 
     NotFoundException(String message,
-                                 Exception innerException,
-                                 HttpHeaders headers,
-                                 String requestUri) {
+                      Exception innerException,
+                      HttpHeaders headers,
+                      String requestUri) {
         this(message, innerException, HttpUtils.asMap(headers), requestUri);
     }
 
     NotFoundException(String message,
-                             Exception innerException,
-                             Map<String, String> headers,
-                             String requestUri) {
+                      Exception innerException,
+                      Map<String, String> headers,
+                      String requestUri) {
         super(String.format("%s: %s", RMResources.NotFound, message),
-              innerException,
-              headers,
-              HttpConstants.StatusCodes.NOTFOUND,
-              requestUri);
+            innerException,
+            headers,
+            HttpConstants.StatusCodes.NOTFOUND,
+            requestUri);
     }
 }

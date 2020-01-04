@@ -10,14 +10,15 @@ import java.util.Map;
 
 public class CosmosResponse<T extends Resource> {
     private T properties;
-    ResourceResponse resourceResponseWrapper;
+    final ResourceResponse resourceResponseWrapper;
 
-    CosmosResponse(ResourceResponse resourceResponse){
+    CosmosResponse(ResourceResponse resourceResponse) {
         this.resourceResponseWrapper = resourceResponse;
     }
 
-    CosmosResponse(T properties){
+    CosmosResponse(T properties) {
         this.properties = properties;
+        this.resourceResponseWrapper = null;
     }
 
     CosmosResponse(ResourceResponse resourceResponse, T properties) {
@@ -27,13 +28,14 @@ public class CosmosResponse<T extends Resource> {
 
     // Only used in CosmosAsyncStoredProcedureResponse compatibility with StoredProcedureResponse
     CosmosResponse(StoredProcedureResponse response) {
+        this.resourceResponseWrapper = null;
     }
 
     public T getProperties() {
         return properties;
     }
 
-    CosmosResponse<T> setProperties(T resourceSettings){
+    CosmosResponse<T> setProperties(T resourceSettings) {
         this.properties = resourceSettings;
         return this;
     }
@@ -89,7 +91,7 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return the session token.
      */
-    public String getSessionToken(){
+    public String getSessionToken() {
         return resourceResponseWrapper.getSessionToken();
     }
 

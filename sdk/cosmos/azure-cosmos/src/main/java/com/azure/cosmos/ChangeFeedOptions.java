@@ -19,10 +19,11 @@ public final class ChangeFeedOptions {
     private Integer maxItemCount;
     private String requestContinuation;
     private PartitionKey partitionkey;
-    private boolean populateQueryMetrics;
+    private final boolean populateQueryMetrics;
     private Map<String, Object> properties;
 
     public ChangeFeedOptions() {
+        this.populateQueryMetrics = false;
     }
 
     public ChangeFeedOptions(ChangeFeedOptions options) {
@@ -59,8 +60,8 @@ public final class ChangeFeedOptions {
      * </p>
      *
      * @param partitionKeyRangeId a string indicating the partition key range ID
-     * @see PartitionKeyRange
      * @return the ChangeFeedOptions.
+     * @see PartitionKeyRange
      */
     ChangeFeedOptions setPartitionKeyRangeId(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
@@ -72,7 +73,7 @@ public final class ChangeFeedOptions {
      * (false). By default it's start from current (false).
      *
      * @return a boolean value indicating change feed should start from beginning or
-     *         not
+     * not
      */
     public boolean getStartFromBeginning() {
         return startFromBeginning;
@@ -83,7 +84,7 @@ public final class ChangeFeedOptions {
      * (false). By default it's start from current (false).
      *
      * @param startFromBeginning a boolean value indicating change feed should start
-     *                           from beginning or not
+     * from beginning or not
      * @return the ChangeFeedOptions.
      */
     public ChangeFeedOptions setStartFromBeginning(boolean startFromBeginning) {
@@ -93,9 +94,9 @@ public final class ChangeFeedOptions {
 
     /**
      * Gets the zoned date time to start looking for changes after.
-     * 
+     *
      * @return a zoned date time to start looking for changes after, if set or null
-     *         otherwise
+     * otherwise
      */
     public OffsetDateTime getStartDateTime() {
         return startDateTime;
@@ -104,7 +105,7 @@ public final class ChangeFeedOptions {
     /**
      * Sets the zoned date time (exclusive) to start looking for changes after. If
      * this is specified, startFromBeginning is ignored.
-     * 
+     *
      * @param startDateTime a zoned date time to start looking for changes after.
      * @return the ChangeFeedOptions.
      */
@@ -147,8 +148,7 @@ public final class ChangeFeedOptions {
     /**
      * Sets the request continuation token.
      *
-     * @param requestContinuation
-     *            the request continuation.
+     * @param requestContinuation the request continuation.
      * @return the FeedOptionsBase.
      */
     public ChangeFeedOptions setRequestContinuation(String requestContinuation) {
@@ -170,8 +170,7 @@ public final class ChangeFeedOptions {
      * Sets the partition key used to identify the current request's target
      * partition.
      *
-     * @param partitionkey
-     *            the partition key value.
+     * @param partitionkey the partition key value.
      * @return the FeedOptionsBase.
      */
     public ChangeFeedOptions setPartitionKey(PartitionKey partitionkey) {

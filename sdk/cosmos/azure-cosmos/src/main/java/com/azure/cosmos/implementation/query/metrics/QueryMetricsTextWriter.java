@@ -178,7 +178,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
 
     @Override
     protected void writeTotalQueryExecutionTime(Duration totalQueryExecutionTime) {
-        QueryMetricsTextWriter.appendNanosecondsToStringBuilder(stringBuilder,
+        QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
                 QueryMetricsTextWriter.TotalQueryExecutionTime, durationToMilliseconds(totalQueryExecutionTime), 0);
     }
 

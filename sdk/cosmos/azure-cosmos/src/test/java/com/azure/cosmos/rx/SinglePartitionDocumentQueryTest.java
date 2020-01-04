@@ -57,9 +57,9 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        options.setEnableCrossPartitionQuery(true);
+        
         options.populateQueryMetrics(queryMetricsEnabled);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> 99 == d.getInt("prop") ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
@@ -86,8 +86,8 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(sqs, options);
+        
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(sqs, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> (3 == d.getInt("prop") || 4 == d.getInt("prop"))).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
@@ -113,8 +113,8 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(sqs, options);
+        
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(sqs, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> 3 == d.getInt("prop")).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
@@ -137,8 +137,8 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .containsExactly(new ArrayList<>())
@@ -155,8 +155,8 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.maxItemCount(3);
-        options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments;
         int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
@@ -180,9 +180,9 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         String query = "SELECT * FROM r ORDER BY r.prop ASC";
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         options.maxItemCount(3);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments;
         int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
@@ -203,10 +203,10 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     public void continuationToken() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.prop ASC";
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         options.maxItemCount(3);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
-
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>();
         queryObservable.take(1).subscribe(subscriber);
 
@@ -221,7 +221,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
 
         options.requestContinuation(page.getContinuationToken());
-        queryObservable = createdCollection.queryItems(query, options);
+        queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> (d.getInt("prop") > 2)).collect(Collectors.toList());
         int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
@@ -243,8 +243,8 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(CosmosClientException.class)

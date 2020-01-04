@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.routing;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.net.URL;
+import java.net.URI;
 
 public class LocationHelper {
     /**
@@ -16,7 +16,7 @@ public class LocationHelper {
      * @param location
      * @return
      */
-    public static URL getLocationEndpoint(URL serviceEndpoint, String location) {
+    public static URI getLocationEndpoint(URI serviceEndpoint, String location) {
 
         // Split the host into 2 parts seperated by '.'
         // For example, "contoso.documents.azure.com" is separated into "contoso" and "documents.azure.com"
@@ -35,7 +35,10 @@ public class LocationHelper {
         }
 
         try {
-            return new URL(serviceEndpoint.getProtocol(), host, serviceEndpoint.getPort(), serviceEndpoint.getFile());
+            return new URI(serviceEndpoint.getScheme(),
+                    serviceEndpoint.getUserInfo(), host, serviceEndpoint.getPort(),
+                    serviceEndpoint.getPath(), serviceEndpoint.getQuery(),
+                    serviceEndpoint.getFragment());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

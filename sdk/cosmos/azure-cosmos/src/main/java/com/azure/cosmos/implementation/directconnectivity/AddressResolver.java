@@ -161,19 +161,23 @@ public class AddressResolver implements IAddressResolver {
             // which doesn't exist, we return InvalidPartitionException. Backend does the same.
             // Caller (client SDK or whoever attached the header) supposedly has outdated collection cache and will refresh it.
             // We cannot retry here, as the logic for retry in this case is use-case specific.
-            logger.debug(
-                "Routing map for request with partitionkeyrageid {} was not found",
-                request.getPartitionKeyRangeIdentity().toHeader());
 
+            if (logger.isDebugEnabled()) {
+                logger.debug(
+                    "Routing map for request with partitionkeyrageid {} was not found",
+                    request.getPartitionKeyRangeIdentity().toHeader());
+            }
             InvalidPartitionException invalidPartitionException = new InvalidPartitionException();
             BridgeInternal.setResourceAddress(invalidPartitionException, request.getResourceAddress());
             throw invalidPartitionException;
         }
 
         if (routingMap == null) {
-            logger.debug(
-                "Routing map was not found although collection cache is upto date for collection {}",
-                collection.getResourceId());
+            if (logger.isDebugEnabled()) {
+                logger.debug(
+                    "Routing map was not found although collection cache is upto date for collection {}",
+                    collection.getResourceId());
+            }
             // Routing map not found although collection was resolved correctly.
             NotFoundException e = new NotFoundException();
             BridgeInternal.setResourceAddress(e, request.getResourceAddress());
@@ -577,7 +581,9 @@ public class AddressResolver implements IAddressResolver {
 
         PartitionKeyRange partitionKeyRange = routingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
         if (partitionKeyRange == null) {
-            logger.debug("Cannot resolve range '{}'", request.getPartitionKeyRangeIdentity().toHeader());
+            if (logger.isDebugEnabled()) {
+                logger.debug("Cannot resolve range '{}'", request.getPartitionKeyRangeIdentity().toHeader());
+            }
             return returnOrError(() -> new Utils.ValueHolder<>(this.handleRangeAddressResolutionFailure(request, collectionCacheIsUpToDate, routingMapCacheIsUpToDate, routingMap)));
         }
 
@@ -588,8 +594,9 @@ public class AddressResolver implements IAddressResolver {
 
         return addressesObs.flatMap(addressesValueHolder -> {
             if (addressesValueHolder.v == null) {
-                logger.debug("Cannot resolve addresses for range '{}'", request.getPartitionKeyRangeIdentity().toHeader());
-
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Cannot resolve addresses for range '{}'", request.getPartitionKeyRangeIdentity().toHeader());
+                }
                 try {
                     return Mono.just(new Utils.ValueHolder<>(this.handleRangeAddressResolutionFailure(request, collectionCacheIsUpToDate, routingMapCacheIsUpToDate, routingMap)));
                 } catch (CosmosClientException e) {
@@ -666,10 +673,12 @@ public class AddressResolver implements IAddressResolver {
         // * If collection rid doesn't match, server will send back InvalidPartiitonException and GATEWAY will
         //   refresh name routing cache - this will refresh partition key definition as well, and retry.
 
-        logger.debug(
-            "Cannot compute effective partition getKey. Definition has '{}' getPaths, values supplied has '{}' getPaths. Will refresh cache and retry.",
-            collection.getPartitionKey().getPaths().size(),
-            partitionKey.getComponents().size());
+        if (logger.isDebugEnabled()) {
+            logger.debug(
+                "Cannot compute effective partition getKey. Definition has '{}' getPaths, values supplied has '{}' getPaths. Will refresh cache and retry.",
+                collection.getPartitionKey().getPaths().size(),
+                partitionKey.getComponents().size());
+        }
 
         return null;
     }

@@ -5,10 +5,10 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -38,6 +38,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
@@ -59,8 +60,8 @@ public class GatewayAddressCache implements IAddressCache {
     private final ServiceConfig serviceConfig = ServiceConfig.getInstance();
 
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
-    private final URL serviceEndpoint;
-    private final URL addressEndpoint;
+    private final URI serviceEndpoint;
+    private final URI addressEndpoint;
 
     private final AsyncCache<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
     private final ConcurrentHashMap<PartitionKeyRangeIdentity, Instant> suboptimalServerPartitionTimestamps;
@@ -76,15 +77,15 @@ public class GatewayAddressCache implements IAddressCache {
     private volatile Instant suboptimalMasterPartitionTimestamp;
 
     public GatewayAddressCache(
-            URL serviceEndpoint,
+            URI serviceEndpoint,
             Protocol protocol,
             IAuthorizationTokenProvider tokenProvider,
             UserAgentContainer userAgent,
             HttpClient httpClient,
             long suboptimalPartitionForceRefreshIntervalInSeconds) {
         try {
-            this.addressEndpoint = new URL(serviceEndpoint, Paths.ADDRESS_PATH_SEGMENT);
-        } catch (MalformedURLException e) {
+            this.addressEndpoint = new URL(serviceEndpoint.toURL(), Paths.ADDRESS_PATH_SEGMENT).toURI();
+        } catch (MalformedURLException | URISyntaxException e) {
             logger.error("serviceEndpoint {} is invalid", serviceEndpoint, e);
             assert false;
             throw new IllegalStateException(e);
@@ -116,7 +117,7 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     public GatewayAddressCache(
-            URL serviceEndpoint,
+            URI serviceEndpoint,
             Protocol protocol,
             IAuthorizationTokenProvider tokenProvider,
             UserAgentContainer userAgent,
@@ -129,7 +130,7 @@ public class GatewayAddressCache implements IAddressCache {
              DefaultSuboptimalPartitionForceRefreshIntervalInSeconds);
     }
 
-    private URL getServiceEndpoint() {
+    private URI getServiceEndpoint() {
         return this.serviceEndpoint;
     }
 
@@ -289,7 +290,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         token = HttpUtils.urlEncode(token);
         headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, token);
-        URL targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(addressQuery));
+        URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(addressQuery));
         String identifier = logAddressResolutionStart(request, targetEndpoint);
 
         HttpHeaders httpHeaders = new HttpHeaders(headers.size());
@@ -297,12 +298,8 @@ public class GatewayAddressCache implements IAddressCache {
             httpHeaders.set(entry.getKey(), entry.getValue());
         }
 
-        HttpRequest httpRequest;
-        try {
-            httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint.toURI(), targetEndpoint.getPort(), httpHeaders);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(targetEndpoint.toString(), e);
-        }
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
+
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
@@ -470,7 +467,7 @@ public class GatewayAddressCache implements IAddressCache {
                 properties);
 
         headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, HttpUtils.urlEncode(token));
-        URL targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(queryParameters));
+        URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(queryParameters));
         String identifier = logAddressResolutionStart(request, targetEndpoint);
 
         HttpHeaders defaultHttpHeaders = new HttpHeaders(headers.size());
@@ -479,11 +476,7 @@ public class GatewayAddressCache implements IAddressCache {
         }
 
         HttpRequest httpRequest;
-        try {
-            httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint.toURI(), targetEndpoint.getPort(), defaultHttpHeaders);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(targetEndpoint.toString(), e);
-        }
+        httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
 
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
@@ -561,14 +554,11 @@ public class GatewayAddressCache implements IAddressCache {
         return addressInformations.length < ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize;
     }
 
-    private static String logAddressResolutionStart(RxDocumentServiceRequest request, URL targetEndpointUrl) {
-        try {
-            if (request.requestContext.cosmosResponseDiagnostics != null) {
-                return BridgeInternal.recordAddressResolutionStart(request.requestContext.cosmosResponseDiagnostics, targetEndpointUrl.toURI());
-            }
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(e);
+    private static String logAddressResolutionStart(RxDocumentServiceRequest request, URI targetEndpointUrl) {
+        if (request.requestContext.cosmosResponseDiagnostics != null) {
+            return BridgeInternal.recordAddressResolutionStart(request.requestContext.cosmosResponseDiagnostics, targetEndpointUrl);
         }
+
         return null;
     }
 

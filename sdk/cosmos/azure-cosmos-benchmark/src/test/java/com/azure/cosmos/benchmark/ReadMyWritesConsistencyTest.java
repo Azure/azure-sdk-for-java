@@ -167,11 +167,11 @@ public class ReadMyWritesConsistencyTest {
         IncludedPath includedPath = new IncludedPath();
         includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
-        Index stringIndex = Index.Range(DataType.STRING);
+        Index stringIndex = Index.range(DataType.STRING);
         BridgeInternal.setProperty(stringIndex, "precision", -1);
         indexes.add(stringIndex);
 
-        Index numberIndex = Index.Range(DataType.NUMBER);
+        Index numberIndex = Index.range(DataType.NUMBER);
         BridgeInternal.setProperty(numberIndex, "getPrecision", -1);
         indexes.add(numberIndex);
         includedPath.setIndexes(indexes);

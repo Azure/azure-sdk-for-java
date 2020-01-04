@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
+import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.Strings;
@@ -218,6 +219,10 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
     public List<IPartitionKeyComponent> getComponents() {
         return components;
+    }
+
+    public String getEffectivePartitionKeyString(PartitionKeyInternal internalPartitionKey, PartitionKeyDefinition partitionKey) {
+        return PartitionKeyInternalHelper.getEffectivePartitionKeyString(internalPartitionKey, partitionKey);
     }
 
     @SuppressWarnings("serial")

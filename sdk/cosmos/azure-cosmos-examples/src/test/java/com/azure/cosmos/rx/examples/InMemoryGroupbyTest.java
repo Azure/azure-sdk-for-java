@@ -106,10 +106,9 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.setEnableCrossPartitionQuery(true);
 
         Flux<Document> documentsObservable = client
-                .queryDocuments(getCollectionLink(),
+                .<Document>queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
                         options)
@@ -138,10 +137,9 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.setEnableCrossPartitionQuery(true);
 
         Flux<Document> documentsObservable = client
-                .queryDocuments(getCollectionLink(),
+                .<Document>queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
                         options)

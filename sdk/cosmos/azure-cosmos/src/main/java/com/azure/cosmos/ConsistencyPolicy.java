@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public final class ConsistencyPolicy extends JsonSerializable {
     private static final ConsistencyLevel DEFAULT_DEFAULT_CONSISTENCY_LEVEL =
-            ConsistencyLevel.SESSION;
+        ConsistencyLevel.SESSION;
 
     private static final int DEFAULT_MAX_STALENESS_INTERVAL = 5;
     private static final int DEFAULT_MAX_STALENESS_PREFIX = 100;
@@ -43,10 +43,11 @@ public final class ConsistencyPolicy extends JsonSerializable {
         ConsistencyLevel result = ConsistencyPolicy.DEFAULT_DEFAULT_CONSISTENCY_LEVEL;
         try {
             result = ConsistencyLevel.valueOf(
-                    StringUtils.upperCase(super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL)));
+                StringUtils.upperCase(super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL)));
         } catch (IllegalArgumentException e) {
             // ignore the exception and return the default
-            this.getLogger().warn("Unknown consistency level {}, value ignored.", super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL));
+            this.getLogger().warn("Unknown consistency level {}, value ignored.",
+                super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL));
         }
         return result;
     }

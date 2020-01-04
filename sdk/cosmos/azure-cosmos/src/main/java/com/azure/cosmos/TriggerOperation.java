@@ -51,6 +51,6 @@ public enum TriggerOperation {
 
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());        
+        return WordUtils.capitalizeFully(this.name());
     }
 }

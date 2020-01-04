@@ -441,7 +441,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         Flux<FeedResponse<CosmosItemProperties>> query = this.leaseDocumentClient.queryItems(
             this.settings.getLeaseCollectionLink(),
             querySpec,
-            this.requestOptionsFactory.createFeedOptions());
+            this.requestOptionsFactory.createFeedOptions(),
+            CosmosItemProperties.class);
 
         return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
             .map(ServiceItemLease::fromDocument);

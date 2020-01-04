@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,9 +31,9 @@ public class TransportClientWrapper {
     public final TransportClient transportClient;
     private final AtomicBoolean valid;
     private final AtomicInteger cnt;
-    private final List<Pair<URI, RxDocumentServiceRequest>> requests;
+    private final List<Pair<Uri, RxDocumentServiceRequest>> requests;
 
-    TransportClientWrapper(TransportClient transportClient, AtomicInteger cnt, AtomicBoolean valid, List<Pair<URI, RxDocumentServiceRequest>> requests) {
+    TransportClientWrapper(TransportClient transportClient, AtomicInteger cnt, AtomicBoolean valid, List<Pair<Uri, RxDocumentServiceRequest>> requests) {
         this.transportClient = transportClient;
         this.valid = valid;
         this.cnt = cnt;
@@ -68,7 +67,7 @@ public class TransportClientWrapper {
         return this;
     }
 
-    public List<Pair<URI, RxDocumentServiceRequest>> getCapturedArgs() {
+    public List<Pair<Uri, RxDocumentServiceRequest>> getCapturedArgs() {
         return requests;
     }
 
@@ -83,10 +82,10 @@ public class TransportClientWrapper {
 
     public interface Builder {
 
-         static void capture(List<Pair<URI, RxDocumentServiceRequest>> capturedRequests, InvocationOnMock invocation) {
-             URI physicalUri = invocation.getArgumentAt(0, URI.class);
+         static void capture(List<Pair<Uri, RxDocumentServiceRequest>> capturedRequests, InvocationOnMock invocation) {
+             Uri physicalUri = invocation.getArgumentAt(0, Uri.class);
              RxDocumentServiceRequest request = invocation.getArgumentAt(1, RxDocumentServiceRequest.class);
-             logger.debug("URI: {}, request {}", physicalUri, request);
+             logger.debug("Uri: {}, request {}", physicalUri, request);
              capturedRequests.add(Pair.of(physicalUri, request));
         }
 
@@ -97,9 +96,9 @@ public class TransportClientWrapper {
         }
 
         class ReplicaResponseBuilder implements Builder {
-            Map<URI, Function2WithCheckedException> responseFunctionDictionary = new HashMap<>();
+            Map<Uri, Function2WithCheckedException> responseFunctionDictionary = new HashMap<>();
 
-            public ReplicaResponseBuilder addReplica(URI replicaURI,
+            public ReplicaResponseBuilder addReplica(Uri replicaURI,
                                                      Function2WithCheckedException<Integer, RxDocumentServiceRequest, StoreResponse> invocationNumberToStoreResponse) {
 
                 responseFunctionDictionary.put(replicaURI, invocationNumberToStoreResponse);
@@ -108,16 +107,16 @@ public class TransportClientWrapper {
 
             public TransportClientWrapper build() {
 
-                Map<URI, AtomicInteger> replicaResponseCounterDict = new HashMap<>();
+                Map<Uri, AtomicInteger> replicaResponseCounterDict = new HashMap<>();
 
                 AtomicInteger i = new AtomicInteger(0);
                 AtomicBoolean valid = new AtomicBoolean(true);
-                List<Pair<URI, RxDocumentServiceRequest>> capturedArgs = Collections.synchronizedList(new ArrayList<>());
+                List<Pair<Uri, RxDocumentServiceRequest>> capturedArgs = Collections.synchronizedList(new ArrayList<>());
 
                 TransportClient transportClient = Mockito.mock(TransportClient.class);
                 Mockito.doAnswer(invocation ->  {
                     i.incrementAndGet();
-                    URI physicalUri = invocation.getArgumentAt(0, URI.class);
+                    Uri physicalUri = invocation.getArgumentAt(0, Uri.class);
                     RxDocumentServiceRequest request = invocation.getArgumentAt(1, RxDocumentServiceRequest.class);
                     Function2WithCheckedException function = responseFunctionDictionary.get(physicalUri);
                     if (function == null) {
@@ -143,7 +142,7 @@ public class TransportClientWrapper {
                         return Mono.error(e);
                     }
 
-                }).when(transportClient).invokeResourceOperationAsync(Mockito.any(URI.class), Mockito.any(RxDocumentServiceRequest.class));
+                }).when(transportClient).invokeResourceOperationAsync(Mockito.any(Uri.class), Mockito.any(RxDocumentServiceRequest.class));
 
                 return new TransportClientWrapper(transportClient, i, valid, capturedArgs);
             }
@@ -170,7 +169,7 @@ public class TransportClientWrapper {
             public TransportClientWrapper build() {
                 AtomicInteger i = new AtomicInteger(0);
                 AtomicBoolean valid = new AtomicBoolean(true);
-                List<Pair<URI, RxDocumentServiceRequest>> capturedArgs = Collections.synchronizedList(new ArrayList<>());
+                List<Pair<Uri, RxDocumentServiceRequest>> capturedArgs = Collections.synchronizedList(new ArrayList<>());
 
                 TransportClient transportClient = Mockito.mock(TransportClient.class);
                 Mockito.doAnswer(invocation ->  {
@@ -189,7 +188,7 @@ public class TransportClientWrapper {
                         return Mono.error((Exception) obj);
                     }
 
-                }).when(transportClient).invokeResourceOperationAsync(Mockito.any(URI.class), Mockito.any(RxDocumentServiceRequest.class));
+                }).when(transportClient).invokeResourceOperationAsync(Mockito.any(Uri.class), Mockito.any(RxDocumentServiceRequest.class));
 
                 return new TransportClientWrapper(transportClient, i, valid, capturedArgs);
             }
@@ -213,11 +212,11 @@ public class TransportClientWrapper {
             }
 
             private static class Tuple {
-                URI replicaURI;
+                Uri replicaURI;
                 OperationType operationType;
                 ResourceType resourceType;
 
-                public Tuple(URI replicaURI, OperationType operationType, ResourceType resourceType) {
+                public Tuple(Uri replicaURI, OperationType operationType, ResourceType resourceType) {
                     this.replicaURI = replicaURI;
                     this.operationType = operationType;
                     this.resourceType = resourceType;
@@ -250,7 +249,7 @@ public class TransportClientWrapper {
             private Map<Tuple, List<Result>> uriToResult = new HashMap<>();
 
 
-            private UriToResultBuilder resultOn(URI replicaURI, OperationType operationType, ResourceType resourceType, StoreResponse rsp, Exception ex, boolean stickyResult) {
+            private UriToResultBuilder resultOn(Uri replicaURI, OperationType operationType, ResourceType resourceType, StoreResponse rsp, Exception ex, boolean stickyResult) {
                 Tuple key = new Tuple(replicaURI, operationType, resourceType);
                 List<Result> list = uriToResult.get(key);
                 if (list == null) {
@@ -261,12 +260,12 @@ public class TransportClientWrapper {
                 return this;
             }
 
-            public UriToResultBuilder storeResponseOn(URI replicaURI, OperationType operationType, ResourceType resourceType, StoreResponse response, boolean stickyResult) {
+            public UriToResultBuilder storeResponseOn(Uri replicaURI, OperationType operationType, ResourceType resourceType, StoreResponse response, boolean stickyResult) {
                 resultOn(replicaURI, operationType, resourceType, response, null, stickyResult);
                 return this;
             }
 
-            public UriToResultBuilder exceptionOn(URI replicaURI, OperationType operationType, ResourceType resourceType, Exception exception, boolean stickyResult) {
+            public UriToResultBuilder exceptionOn(Uri replicaURI, OperationType operationType, ResourceType resourceType, Exception exception, boolean stickyResult) {
                 resultOn(replicaURI, operationType, resourceType, null, exception, stickyResult);
                 return this;
             }
@@ -274,11 +273,11 @@ public class TransportClientWrapper {
             public TransportClientWrapper build() {
                 AtomicBoolean valid = new AtomicBoolean(true);
                 AtomicInteger cnt = new AtomicInteger(0);
-                List<Pair<URI, RxDocumentServiceRequest>> capturedArgs = Collections.synchronizedList(new ArrayList<>());
+                List<Pair<Uri, RxDocumentServiceRequest>> capturedArgs = Collections.synchronizedList(new ArrayList<>());
                 TransportClient transportClient = Mockito.mock(TransportClient.class);
                 Mockito.doAnswer(invocation ->  {
                     cnt.getAndIncrement();
-                    URI physicalUri = invocation.getArgumentAt(0, URI.class);
+                    Uri physicalUri = invocation.getArgumentAt(0, Uri.class);
                     RxDocumentServiceRequest request = invocation.getArgumentAt(1, RxDocumentServiceRequest.class);
                     capture(capturedArgs, invocation);
 
@@ -301,7 +300,7 @@ public class TransportClientWrapper {
                         return Mono.error(result.exception);
                     }
 
-                }).when(transportClient).invokeResourceOperationAsync(Mockito.any(URI.class), Mockito.any(RxDocumentServiceRequest.class));
+                }).when(transportClient).invokeResourceOperationAsync(Mockito.any(Uri.class), Mockito.any(RxDocumentServiceRequest.class));
 
                 return new TransportClientWrapper(transportClient, cnt, valid, capturedArgs);
             }

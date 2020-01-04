@@ -237,7 +237,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             Mono<Void> task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> {
                 try {
                     FeedOptions feedOptions = new FeedOptions();
-                    feedOptions.setEnableCrossPartitionQuery(true);
+                    feedOptions.setAllowEmptyPages(true);
                     FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.getSelfLink(),
                                                                                  "SELECT * FROM c WHERE c.Id = " +
                                                                                          "'foo'", feedOptions)

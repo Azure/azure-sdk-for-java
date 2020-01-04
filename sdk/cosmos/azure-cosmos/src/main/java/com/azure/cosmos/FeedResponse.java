@@ -22,15 +22,15 @@ public class FeedResponse<T> {
     private final HashMap<String, Long> usageHeaders;
     private final HashMap<String, Long> quotaHeaders;
     private final boolean useEtagAsContinuation;
-    boolean nochanges;
+    final boolean nochanges;
     private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
-    private final String DefaultPartition = "0";
+    private final String defaultPartition = "0";
     private final FeedResponseDiagnostics feedResponseDiagnostics;
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
     }
-    
+
     FeedResponse(List<T> results, Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this(results, headers, false, false, queryMetricsMap);
     }
@@ -42,11 +42,11 @@ public class FeedResponse<T> {
     // TODO: need to more sure the query metrics can round trip just from the headers.
     // We can then remove it as a parameter.
     private FeedResponse(
-            List<T> results, 
-            Map<String, String> header, 
-            boolean useEtagAsContinuation, 
-            boolean nochanges, 
-            ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+        List<T> results,
+        Map<String, String> header,
+        boolean useEtagAsContinuation,
+        boolean nochanges,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this.results = results;
         this.header = header;
         this.usageHeaders = new HashMap<>();
@@ -59,7 +59,7 @@ public class FeedResponse<T> {
 
     /**
      * Results.
-     * 
+     *
      * @return the list of results.
      */
     public List<T> getResults() {
@@ -218,7 +218,7 @@ public class FeedResponse<T> {
      */
     public String getMaxResourceQuota() {
         return getValueOrNull(header,
-                HttpConstants.HttpHeaders.MAX_RESOURCE_QUOTA);
+            HttpConstants.HttpHeaders.MAX_RESOURCE_QUOTA);
     }
 
     /**
@@ -229,7 +229,7 @@ public class FeedResponse<T> {
      */
     public String getCurrentResourceQuotaUsage() {
         return getValueOrNull(header,
-                HttpConstants.HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE);
+            HttpConstants.HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE);
     }
 
     /**
@@ -239,7 +239,7 @@ public class FeedResponse<T> {
      */
     public double getRequestCharge() {
         String value = getValueOrNull(header,
-                HttpConstants.HttpHeaders.REQUEST_CHARGE);
+            HttpConstants.HttpHeaders.REQUEST_CHARGE);
         if (StringUtils.isEmpty(value)) {
             return 0;
         }
@@ -262,8 +262,8 @@ public class FeedResponse<T> {
      */
     public String getContinuationToken() {
         String headerName = useEtagAsContinuation
-                ? HttpConstants.HttpHeaders.E_TAG
-                        : HttpConstants.HttpHeaders.CONTINUATION;
+                                ? HttpConstants.HttpHeaders.E_TAG
+                                : HttpConstants.HttpHeaders.CONTINUATION;
         return getValueOrNull(header, headerName);
     }
 
@@ -285,13 +285,14 @@ public class FeedResponse<T> {
         return header;
     }
 
-    private String getQueryMetricsString(){
+    private String getQueryMetricsString() {
         return getValueOrNull(getResponseHeaders(),
-                HttpConstants.HttpHeaders.QUERY_METRICS);
+            HttpConstants.HttpHeaders.QUERY_METRICS);
     }
 
     /**
      * Gets the feed response diagnostics
+     *
      * @return Feed response diagnostics
      */
     public FeedResponseDiagnostics getFeedResponseDiagnostics() {
@@ -307,18 +308,19 @@ public class FeedResponse<T> {
         if (!StringUtils.isEmpty(getQueryMetricsString())) {
             String qm = getQueryMetricsString();
             qm += String.format(";%s=%.2f", QueryMetricsConstants.RequestCharge, getRequestCharge());
-            queryMetricsMap.put(DefaultPartition, QueryMetrics.createFromDelimitedString(qm));
+            queryMetricsMap.put(defaultPartition, QueryMetrics.createFromDelimitedString(qm));
         }
         return queryMetricsMap;
     }
 
-    ConcurrentMap<String, QueryMetrics> queryMetricsMap(){
+    ConcurrentMap<String, QueryMetrics> queryMetricsMap() {
         return queryMetricsMap;
     }
 
     private long currentQuotaHeader(String headerName) {
-        if (this.usageHeaders.size() == 0 && !StringUtils.isEmpty(this.getMaxResourceQuota()) &&
-                !StringUtils.isEmpty(this.getCurrentResourceQuotaUsage())) {
+        if (this.usageHeaders.size() == 0
+                && !StringUtils.isEmpty(this.getMaxResourceQuota())
+                && !StringUtils.isEmpty(this.getCurrentResourceQuotaUsage())) {
             this.populateQuotaHeader(this.getMaxResourceQuota(), this.getCurrentResourceQuotaUsage());
         }
 
@@ -330,9 +332,9 @@ public class FeedResponse<T> {
     }
 
     private long maxQuotaHeader(String headerName) {
-        if (this.quotaHeaders.size() == 0 &&
-                !StringUtils.isEmpty(this.getMaxResourceQuota()) &&
-                !StringUtils.isEmpty(this.getCurrentResourceQuotaUsage())) {
+        if (this.quotaHeaders.size() == 0
+                && !StringUtils.isEmpty(this.getMaxResourceQuota())
+                && !StringUtils.isEmpty(this.getCurrentResourceQuotaUsage())) {
             this.populateQuotaHeader(this.getMaxResourceQuota(), this.getCurrentResourceQuotaUsage());
         }
 
@@ -344,7 +346,7 @@ public class FeedResponse<T> {
     }
 
     private void populateQuotaHeader(String headerMaxQuota,
-            String headerCurrentUsage) {
+                                     String headerCurrentUsage) {
         String[] headerMaxQuotaWords = headerMaxQuota.split(Constants.Quota.DELIMITER_CHARS, -1);
         String[] headerCurrentUsageWords = headerCurrentUsage.split(Constants.Quota.DELIMITER_CHARS, -1);
 
@@ -373,7 +375,7 @@ public class FeedResponse<T> {
             } else if (headerMaxQuotaWords[i].equalsIgnoreCase(Constants.Quota.USER_DEFINED_FUNCTION)) {
                 this.quotaHeaders.put(Constants.Quota.USER_DEFINED_FUNCTION, Long.valueOf(headerMaxQuotaWords[i + 1]));
                 this.usageHeaders.put(Constants.Quota.USER_DEFINED_FUNCTION,
-                        Long.valueOf(headerCurrentUsageWords[i + 1]));
+                    Long.valueOf(headerCurrentUsageWords[i + 1]));
             }
         }
     }

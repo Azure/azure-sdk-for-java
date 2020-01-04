@@ -115,7 +115,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer readProvisionedThroughput() throws CosmosClientException {
-        return CosmosDatabase.throughputResponseToBlock(this.containerWrapper.readProvisionedThroughput());
+        return database.throughputResponseToBlock(this.containerWrapper.readProvisionedThroughput());
     }
 
     /**
@@ -126,7 +126,8 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) throws CosmosClientException {
-        return CosmosDatabase.throughputResponseToBlock(this.containerWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
+        return database.throughputResponseToBlock(this.containerWrapper
+                                                      .replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
 
@@ -185,12 +186,11 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    CosmosItemResponse mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse> itemMono)
-            throws CosmosClientException {
+    CosmosItemResponse mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse> itemMono) throws CosmosClientException {
         try {
             return itemMono
-                           .map(this::convertResponse)
-                           .block();
+                       .map(this::convertResponse)
+                       .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
@@ -204,33 +204,39 @@ public class CosmosContainer {
     /**
      * Read all items iterator.
      *
+     * @param <T> the type parameter
      * @param options the options
+     * @param klass the klass
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosItemProperties>> readAllItems(FeedOptions options) {
-        return getFeedIterator(this.containerWrapper.readAllItems(options));
+    public <T> Iterator<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
+        return getFeedIterator(this.containerWrapper.readAllItems(options, klass));
     }
 
     /**
      * Query items iterator.
      *
+     * @param <T> the type parameter
      * @param query the query
      * @param options the options
+     * @param klass the class type
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosItemProperties>> queryItems(String query, FeedOptions options) {
-        return getFeedIterator(this.containerWrapper.queryItems(query, options));
+    public <T> Iterator<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
+        return getFeedIterator(this.containerWrapper.queryItems(query, options, klass));
     }
 
     /**
      * Query items iterator.
      *
+     * @param <T> the type parameter
      * @param querySpec the query spec
      * @param options the options
+     * @param klass the class type
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosItemProperties>> queryItems(SqlQuerySpec querySpec, FeedOptions options) {
-        return getFeedIterator(this.containerWrapper.queryItems(querySpec, options));
+    public <T> Iterator<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
+        return getFeedIterator(this.containerWrapper.queryItems(querySpec, options, klass));
     }
 
     /**
@@ -252,9 +258,9 @@ public class CosmosContainer {
      */
     public CosmosItem getItem(String id, Object partitionKey) {
         return new CosmosItem(id,
-                partitionKey,
-                this,
-                containerWrapper.getItem(id, partitionKey));
+            partitionKey,
+            this,
+            containerWrapper.getItem(id, partitionKey));
     }
 
     /**
@@ -262,7 +268,7 @@ public class CosmosContainer {
      *
      * @return the cosmos sync scripts
      */
-    public CosmosScripts getScripts(){
+    public CosmosScripts getScripts() {
         if (this.scripts == null) {
             this.scripts = new CosmosScripts(this, containerWrapper.getScripts());
         }
@@ -270,6 +276,7 @@ public class CosmosContainer {
     }
 
     // TODO: should make partitionkey public in CosmosAsyncItem and fix the below call
+
     /**
      * Convert response cosmos sync item response.
      *
@@ -280,7 +287,7 @@ public class CosmosContainer {
         return new CosmosItemResponse(response, null, this);
     }
 
-    private Iterator<FeedResponse<CosmosItemProperties>> getFeedIterator(Flux<FeedResponse<CosmosItemProperties>> itemFlux) {
+    private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
         return itemFlux.toIterable(1).iterator();
     }
 
