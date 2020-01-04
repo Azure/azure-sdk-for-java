@@ -2,9 +2,15 @@
 // Licensed under the MIT License.
 package com.azure;
 
-import com.azure.data.cosmos.*;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.CosmosItemProperties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -21,18 +27,20 @@ public class CosmosDB {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDB.class);
 
-    private static Mono<Void> createDatabase(CosmosClient client) {
+    private static Mono<Void> createDatabase(CosmosAsyncClient client) {
         LOGGER.info("Creating database '{}'... ", DB_NAME);
         return client.createDatabaseIfNotExists(DB_NAME).then();
     }
 
-    private static Mono<CosmosContainer> createCollection(CosmosClient client) {
+    private static Mono<CosmosAsyncContainer> createCollection(CosmosAsyncClient client) {
         LOGGER.info("Creating collection '{}'... ", COLLECTION_NAME);
-        return client.getDatabase(DB_NAME).createContainer(COLLECTION_NAME, "/id")
-            .map(response -> response.container());
+        return client
+            .getDatabase(DB_NAME)
+            .createContainer(COLLECTION_NAME, "/id")
+            .map(response -> response.getContainer());
     }
 
-    private static Mono<Void> createDocuments(CosmosContainer container) {
+    private static Mono<Void> createDocuments(CosmosAsyncContainer container) {
         LOGGER.info("Inserting Items... ");
         List<Planet> planets = Arrays.asList(
             new Planet(
@@ -52,21 +60,25 @@ public class CosmosDB {
                 })
         );
 
-        return Flux.fromIterable(planets).flatMap(planet -> container.createItem(planet)).then();
+        return Flux.fromIterable(planets)
+            .flatMap(planet -> container.createItem(planet))
+            .then();
     }
 
-    private static Mono<Void> simpleQuery(CosmosContainer container) {
+    private static Mono<Void> simpleQuery(CosmosAsyncContainer container) {
         LOGGER.info("Querying collection...");
-        FeedOptions options = new FeedOptions().enableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryResults = container.queryItems("SELECT c.id FROM c", options);
+        FeedOptions options = new FeedOptions()
+            .setEnableCrossPartitionQuery(true);
+        Flux<FeedResponse<CosmosItemProperties>> queryResults = container
+            .queryItems("SELECT c.id FROM c", options);
 
         return queryResults.map(cosmosItemPropertiesFeedResponse -> {
-            LOGGER.info("\t{}",cosmosItemPropertiesFeedResponse.results().toString());
+            LOGGER.info("\t{}", cosmosItemPropertiesFeedResponse.getResults().toString());
             return cosmosItemPropertiesFeedResponse;
         }).then();
     }
 
-    private static Mono<Void> deleteDatabase(CosmosClient client) {
+    private static Mono<Void> deleteDatabase(CosmosAsyncClient client) {
         LOGGER.info("Cleaning up the resource...");
         return client.getDatabase(DB_NAME).delete().then();
     }
@@ -76,16 +88,18 @@ public class CosmosDB {
         LOGGER.info("COSMOS DB");
         LOGGER.info("---------------------");
 
-        CosmosClient client = CosmosClient
-            .builder().endpoint(AZURE_COSMOS_ENDPOINT)
-            .key(AZURE_COSMOS_KEY)
-            .build();
+        CosmosAsyncClient client = CosmosAsyncClient
+            .builder()
+            .setEndpoint(AZURE_COSMOS_ENDPOINT)
+            .setKey(AZURE_COSMOS_KEY)
+            .buildAsyncClient();
 
         try {
             //if the database already exists, it is going to be deleted with all its content.
             deleteDatabase(client).block();
         } catch (Exception e) {
             //This means that the database does not exists already, it's fine
+            LOGGER.info("\tDatabase does not presently exist");
         }
 
         try {
@@ -93,12 +107,17 @@ public class CosmosDB {
                 .then(createCollection(client))
                 .flatMap(collection -> createDocuments(collection)
                     .then(simpleQuery(collection))
-                )
-                .block();
+                ).block();
+        } catch (Exception e) {
+            LOGGER.error("ERROR");
         } finally {
            deleteDatabase(client).block();
+           LOGGER.info("Closing client...");
            client.close();
+           LOGGER.info("all done closing client");
         }
+
+        return;
     }
 }
 

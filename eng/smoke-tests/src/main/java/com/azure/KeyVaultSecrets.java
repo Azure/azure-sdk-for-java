@@ -38,7 +38,7 @@ public class KeyVaultSecrets {
         SyncPoller<DeletedSecret, Void> poller = secretClient.beginDeleteSecret(SECRET_NAME);
         DeletedSecret response = poller.poll().getValue();
 
-        LOGGER.info("\tDONE: deleted on {}.", response.getDeletedOn().toString());
+        LOGGER.info("\tDONE: deleted.");
     }
 
     public static void main(String[] args) {

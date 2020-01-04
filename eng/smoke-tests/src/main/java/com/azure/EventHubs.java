@@ -47,10 +47,10 @@ public class EventHubs {
 
     private static String getPartitionID() {
         LOGGER.info("Getting partition id... ");
-        Flux<String> partitions = producer.getPartitionIds();
+        String partitionId = producer.getPartitionIds().blockFirst();
         LOGGER.info("\tDONE.");
         //In ths sample, the events are going to be send and consume from the first partition.
-        return partitions.blockFirst();
+        return partitionId;
     }
 
     private static void createClients() {
@@ -60,15 +60,13 @@ public class EventHubs {
             .connectionString(EVENT_HUBS_CONNECTION_STRING)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildAsyncConsumerClient();
-            // TODO: Do we need to specify position?
 
         LOGGER.info("\tDONE.");
 
         LOGGER.info("Creating producer... ");
         producer = new EventHubClientBuilder()
-            .connectionString(EVENT_HUBS_CONNECTION_STRING)
+            .connectionString(EVENT_HUBS_CONNECTION_STRING, "myeventhub")
             .buildAsyncProducerClient();
-            // TODO: Do we specify an event hub name?
 
         LOGGER.info("\tDONE.");
     }
@@ -76,14 +74,15 @@ public class EventHubs {
     private static void sendAndReceiveEvents(String partitionId) throws Exception {
         LOGGER.info("Sending Events... ");
         List<EventData> events = Arrays.asList(
-            new EventData(("Test event 1 in Java")),
-            new EventData(("Test event 2 in Java")),
-            new EventData(("Test event 3 in Java"))
+            new EventData("Test event 1 in Java"),
+            new EventData("Test event 2 in Java"),
+            new EventData("Test event 3 in Java")
         );
 
         CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionId(partitionId);
-        producer
+
+        Disposable producerSubscription = producer
             .createBatch(options)
             .flatMap(batch -> {
                 for (EventData event : events) {
@@ -91,25 +90,28 @@ public class EventHubs {
                         return Mono.error(new Exception("Could not add event to batch"));
                     }
                 }
-
                 return producer.send(batch);
-            }).subscribe(
-                unused -> LOGGER.info("events sent"),
+            }).timeout(Duration.ofSeconds(5))
+            .subscribe(
+                unused -> LOGGER.info("\tEvent batch sent"),
                 error -> LOGGER.error("Error received: " + error),
-                () -> producer.close()
+                () -> LOGGER.info("\tSending finished")
             );
 
-        LOGGER.info("Consuming Events... ");
+        LOGGER.info("Consuming Events...");
         final int maxSeconds = 5;
         final int numOfEventsExpected = events.size(); // TODO: Validate that this actually errors out the program
         CountDownLatch countDownLatch = new CountDownLatch(numOfEventsExpected);
 
         Disposable consumerSubscription = consumer
             .receive(true)
+            //.timeout(Duration.ofSeconds(maxSeconds))
+            //.take(numOfEventsExpected)
             .subscribe(e -> {
                 LOGGER.info("\tEvent received: " + e.getData().getBodyAsString());
                 countDownLatch.countDown();
-            });
+            }, error -> LOGGER.info("Error received in consumption subscription"),
+            () -> LOGGER.info("Consumption finished"));
 
         //Wait to get all the events
         try {
@@ -124,11 +126,15 @@ public class EventHubs {
         } finally {
             //Dispose both subscriptions and close the clients
             consumerSubscription.dispose();
+            producerSubscription.dispose();
             producer.close();
             consumer.close();
+            LOGGER.info("Producer disposed: " + Boolean.toString(producerSubscription.isDisposed()));
+            LOGGER.info("Consumer disposed: " + Boolean.toString(consumerSubscription.isDisposed()));
         }
 
         LOGGER.info("DONE.");
+
 
     }
 }

@@ -22,15 +22,15 @@
     </dependency>
 
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
+      <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>3.1.0</version>
+      <version>4.0.0-preview.1</version>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1</version>
     </dependency>
 
     <dependency>
@@ -52,9 +52,22 @@
     </dependency>
 
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.28</version>
+    </dependency>
+
+    <!-- TODO: Do we need this? -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.10.0</version>
     </dependency>
 
   </dependencies>
@@ -63,6 +76,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
         <configuration>
           <source>8</source>
           <target>8</target>

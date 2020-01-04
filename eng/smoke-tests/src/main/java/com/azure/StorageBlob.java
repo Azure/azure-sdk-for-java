@@ -24,7 +24,7 @@ public class StorageBlob {
     private static final String CONTAINER_NAME = "mycontainer"; //This sample needs an existing container
     private static final String BLOB_NAME = "javaSmokeTestBlob-"+ UUID.randomUUID() +".txt";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDB.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StorageBlob.class);
 
     private static void uploadBlob() throws IOException {
         LOGGER.info("Uploading blob... ");
