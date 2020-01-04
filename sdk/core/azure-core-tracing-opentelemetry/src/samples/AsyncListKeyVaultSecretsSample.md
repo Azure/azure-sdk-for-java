@@ -6,29 +6,36 @@ Following documentation describes instructions to run a sample program for async
 Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package and **[Logging Exporter][logging_exporter]** as exporter.
 ### Adding dependencies to your project:
 ```xml
-<dependencies>
-    <dependency>
-        <groupId>io.opentelemetry</groupId>
-        <artifactId>opentelemetry-sdk</artifactId>
-        <version>0.2.0</version>
-    </dependency>
-    <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-security-keyvault-secrets</artifactId>
-        <version>4.0.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
-    </dependency>
-    <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-tracing-opentelemetry</artifactId>
-        <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
-    </dependency>
-    <dependency>
-        <groupId>io.opentelemetry</groupId>
-        <artifactId>opentelemetry-exporters-logging</artifactId>
-        <version>0.2.0</version>
-    </dependency>
-</dependencies>
+<dependency>
+    <groupId>io.opentelemetry</groupId>
+    <artifactId>opentelemetry-sdk</artifactId>
+    <version>0.2.0</version>
+</dependency>
+<dependency>
+    <groupId>io.opentelemetry</groupId>
+    <artifactId>opentelemetry-exporters-logging</artifactId>
+    <version>0.2.0</version>
+</dependency>
 ```
+
+[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-security-keyvault-secrets</artifactId>
+    <version>4.1.0-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opentelemetry;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-core-tracing-opentelemetry</artifactId>
+    <version>1.0.0-beta.2</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
 #### Sample demonstrates tracing when asynchronously creating and listing secrets from a Key Vault using [azure-security-keyvault-secrets][azure_keyvault_secrets] client library.
 ```java

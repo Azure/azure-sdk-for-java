@@ -214,7 +214,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                       boolean ifUnchanged) {
+        boolean ifUnchanged) {
         try {
             return withContext(context -> setConfigurationSetting(setting, ifUnchanged, context));
         } catch (RuntimeException ex) {
@@ -223,7 +223,7 @@ public final class ConfigurationAsyncClient {
     }
 
     Mono<Response<ConfigurationSetting>> setConfigurationSetting(ConfigurationSetting setting, boolean ifUnchanged,
-                                                    Context context) {
+        Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -324,8 +324,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                       OffsetDateTime acceptDateTime,
-                                                                       boolean ifChanged) {
+        OffsetDateTime acceptDateTime, boolean ifChanged) {
         try {
             return withContext(context -> getConfigurationSetting(setting, acceptDateTime, ifChanged, context));
         } catch (RuntimeException ex) {
@@ -334,9 +333,7 @@ public final class ConfigurationAsyncClient {
     }
 
     Mono<Response<ConfigurationSetting>> getConfigurationSetting(ConfigurationSetting setting,
-                                                                 OffsetDateTime acceptDateTime,
-                                                                 boolean onlyIfChanged,
-                                                                 Context context) {
+        OffsetDateTime acceptDateTime, boolean onlyIfChanged, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -419,7 +416,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                          boolean ifUnchanged) {
+        boolean ifUnchanged) {
         try {
             return withContext(context -> deleteConfigurationSetting(setting, ifUnchanged, context));
         } catch (RuntimeException ex) {
@@ -428,7 +425,7 @@ public final class ConfigurationAsyncClient {
     }
 
     Mono<Response<ConfigurationSetting>> deleteConfigurationSetting(ConfigurationSetting setting, boolean ifUnchanged,
-                                                       Context context) {
+        Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
@@ -498,7 +495,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setReadOnlyWithResponse(ConfigurationSetting setting,
-                                                                        boolean isReadOnly) {
+        boolean isReadOnly) {
         try {
             return withContext(context -> setReadOnly(setting, isReadOnly, context));
         } catch (RuntimeException ex) {
@@ -507,7 +504,7 @@ public final class ConfigurationAsyncClient {
     }
 
     Mono<Response<ConfigurationSetting>> setReadOnly(ConfigurationSetting setting, boolean isReadOnly,
-                                                     Context context) {
+        Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -585,11 +582,11 @@ public final class ConfigurationAsyncClient {
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
             }
 
-            String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-            String keys = CoreUtils.arrayToString(selector.getKeys(), key -> key);
-            String labels = CoreUtils.arrayToString(selector.getLabels(), label -> label);
+            final String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+            final String keyFilter = selector.getKeyFilter();
+            final String labelFilter = selector.getLabelFilter();
 
-            return service.listKeyValues(serviceEndpoint, keys, labels, apiVersion, fields,
+            return service.listKeyValues(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
                 selector.getAcceptDateTime(), context)
                 .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
                 .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
@@ -633,12 +630,12 @@ public final class ConfigurationAsyncClient {
             Mono<PagedResponse<ConfigurationSetting>> result;
 
             if (selector != null) {
-                String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-                String keys = CoreUtils.arrayToString(selector.getKeys(), key -> key);
-                String labels = CoreUtils.arrayToString(selector.getLabels(), label -> label);
+                final String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+                final String keyFilter = selector.getKeyFilter();
+                final String labelFilter = selector.getLabelFilter();
 
-                result = service.listKeyValueRevisions(
-                    serviceEndpoint, keys, labels, apiVersion, fields, selector.getAcceptDateTime(), null, context)
+                result = service.listKeyValueRevisions(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
+                    selector.getAcceptDateTime(), null, context)
                     .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
                     .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
                     .doOnError(error ->

@@ -62,3 +62,7 @@ Thumbs.db
 # reduced pom files should not be included
 dependency-reduced-pom.xml
 package-lock.json
+
+# VS Code
+.vscode/
+.factorypath

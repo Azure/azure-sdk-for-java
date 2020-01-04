@@ -7,22 +7,24 @@ Following documentation describes instructions to run a sample program for publi
 Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and **[Zipkin Exporter][zipkin_exporter]** as exporter.
 
 ### Adding dependencies to your project:
+
 [//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs;current})
 ```xml
 <!-- Adding Azure Event Hubs dependency to your project -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs</artifactId>
-  <version>5.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+  <version>5.0.0-beta.7</version>
 </dependency>
  ```
 [//]: # ({x-version-update-end})
+[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
 ```xml
 <!-- Adding Azure core tracing OpenCensus plugin package to your project -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opencensus</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
+  <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -1,0 +1,28 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-textanalytics-service</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0</version>  <!-- Need not change for every release-->
+  <profiles>
+    <profile>
+      <id>client</id>
+      <activation>
+        <property>
+          <name>env.SDKTYPE</name>
+          <value>!data</value>
+        </property>
+      </activation>
+      <modules>
+        <module>../core/azure-core</module>
+        <module>../core/azure-core-test</module>
+        <module>../core/azure-core-http-netty</module>
+        <module>../identity/azure-identity</module>
+        <module>azure-ai-textanalytics</module>
+      </modules>
+    </profile>
+  </profiles>
+</project>

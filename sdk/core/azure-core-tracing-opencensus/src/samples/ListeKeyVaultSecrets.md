@@ -6,13 +6,14 @@ Following documentation describes instructions to run a sample program for creat
 Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and **[ZipkinExporter][zipkin_exporter]** as exporter.
 
 ### Adding dependencies to your project:
+
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
 ```xml
 <!-- Add Key Vault Secrets dependency  -->
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+    <version>4.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -22,10 +23,11 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opencensus</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
+  <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
 ```xml
 <!-- Add opencensus-impl and opencensus-zipkin-exporter to your project -->
 <dependency>

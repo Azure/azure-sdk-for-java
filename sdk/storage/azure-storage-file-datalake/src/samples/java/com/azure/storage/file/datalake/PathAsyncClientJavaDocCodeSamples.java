@@ -8,7 +8,11 @@ import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.RolePermissions;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
+import com.azure.storage.file.datalake.sas.PathSasPermission;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +26,7 @@ public class PathAsyncClientJavaDocCodeSamples {
     private String fileName = "fileName";
     private DataLakeFileAsyncClient client = JavaDocCodeSnippetsHelpers.getFileAsyncClient(fileName);
     private String leaseId = "leaseId";
+    private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
      * Code snippets for {@link DataLakePathAsyncClient#create()} and
@@ -32,6 +37,12 @@ public class PathAsyncClientJavaDocCodeSamples {
         client.create().subscribe(response ->
             System.out.printf("Last Modified Time:%s", response.getLastModified()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.create
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean
+        boolean overwrite = true;
+        client.create(overwrite).subscribe(response ->
+            System.out.printf("Last Modified Time:%s", response.getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -117,6 +128,24 @@ public class PathAsyncClientJavaDocCodeSamples {
             response -> System.out.printf("Creation Time: %s, Size: %d%n", response.getValue().getCreationTime(),
                 response.getValue().getFileSize()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link DataLakePathAsyncClient#exists()}
+     */
+    public void existsCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.exists
+        client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.exists
+    }
+
+    /**
+     * Code snippet for {@link DataLakePathAsyncClient#existsWithResponse()}
+     */
+    public void existsWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse
+        client.existsWithResponse().subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse
     }
 
     /**
@@ -216,6 +245,32 @@ public class PathAsyncClientJavaDocCodeSamples {
                 PathAccessControlEntry.serializeList(response.getValue().getAccessControlList()),
                 response.getValue().getGroup(), response.getValue().getOwner(), response.getValue().getPermissions()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link DataLakePathAsyncClient#generateUserDelegationSas(DataLakeServiceSasSignatureValues, UserDelegationKey)}
+     * and {@link DataLakePathAsyncClient#generateSas(DataLakeServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        PathSasPermission permission = new PathSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        PathSasPermission myPermission = new PathSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey);
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
     }
 
 }

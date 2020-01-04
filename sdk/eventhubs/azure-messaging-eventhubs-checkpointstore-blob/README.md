@@ -30,7 +30,7 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-    <version>1.0.0-preview.3</version>
+    <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -69,6 +69,7 @@ sequence number and the timestamp of when it was enqueued.
 
 ### Create an instance of Storage container with SAS token
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/ReadmeSamples.java#L25-L29 -->
 ```java
 BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
     .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
@@ -91,32 +92,35 @@ In our example, we will focus on building the [`EventProcessor`][source_eventpro
 [`BlobCheckpointStore`][source_blobcheckpointstore], and a simple callback function to process the events 
 received from the Event Hubs, writes to console and updates the checkpoint in Blob storage after each event.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/ReadmeSamples.java#L37-L63 -->
 ```java
-class Program {
-    public static void main(String[] args) {
-        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
-            .consumerGroup("<< CONSUMER GROUP NAME >>")
-            .connectionString("<< EVENT HUB CONNECTION STRING >>")
-            .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
-            .processEvent(eventContext -> {
-                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
-            })
-            .processError(errorContext -> {
-                System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
-            })
-            .buildEventProcessorClient();
+BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
+    .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
+    .containerName("<CONTAINER_NAME>")
+    .sasToken("<SAS_TOKEN>")
+    .buildAsyncClient();
 
-        // This will start the processor. It will start processing events from all partitions.
-        eventProcessorClient.start();
-        
-        // (for demo purposes only - adding sleep to wait for receiving events)
-        TimeUnit.SECONDS.sleep(2); 
+EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
+    .consumerGroup("<< CONSUMER GROUP NAME >>")
+    .connectionString("<< EVENT HUB CONNECTION STRING >>")
+    .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
+    .processEvent(eventContext -> {
+        System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+            + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+    })
+    .processError(errorContext -> {
+        System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
+    })
+    .buildEventProcessorClient();
 
-        // When the user wishes to stop processing events, they can call `stop()`.
-        eventProcessorClient.stop();
-    }
-}
+// This will start the processor. It will start processing events from all partitions.
+eventProcessorClient.start();
+
+// (for demo purposes only - adding sleep to wait for receiving events)
+TimeUnit.SECONDS.sleep(2);
+
+// When the user wishes to stop processing events, they can call `stop()`.
+eventProcessorClient.stop();
 ```
 
 ## Troubleshooting
@@ -128,10 +132,7 @@ example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and 
 be found here: [log levels][source_loglevels].
 
 ## Next steps
-Get started by exploring the following samples:
-
-1. [Blob Event Processor Store samples][sample_examples]
-1. [Event Hubs and Event Processor samples][sample_event_hubs]
+Get started by exploring the samples [here][samples_readme].
 
 ## Contributing
 
@@ -144,6 +145,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [maven]: https://maven.apache.org/
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[samples_readme]: ./src/samples/README.md
 [sample_container_client]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobCheckpointStoreSample.java
 [sample_event_hubs]: ./src/samples/java/com/azure/messaging/eventhubs
 [sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorBlobCheckpointStoreSample.java

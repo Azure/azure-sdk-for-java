@@ -57,6 +57,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class CertificateClientTestBase extends TestBase {
+    private static final String SDK_NAME = "client_name";
+    private static final String SDK_VERSION = "client_version";
 
     @Override
     protected String getTestName() {
@@ -80,7 +82,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         HttpClient httpClient;
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
+        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,
             Configuration.getGlobalConfiguration().clone(), CertificateServiceVersion.getLatest()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
@@ -288,12 +290,6 @@ public abstract class CertificateClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void createIssuerEmptyName();
-
-    @Test
-    public abstract void createIssuerNullProvider();
-
-    @Test
     public abstract void createIssuerNull();
 
     @Test
@@ -354,7 +350,7 @@ public abstract class CertificateClientTestBase extends TestBase {
 
 
     CertificateContact setupContact() {
-        return new CertificateContact("name", "first.last@gmail.com", "2323-31232");
+        return new CertificateContact().setName("name").setEmail("first.last@gmail.com").setPhone("2323-31232");
     }
 
     Boolean validateContact(CertificateContact expected, CertificateContact actual) {
@@ -412,7 +408,7 @@ public abstract class CertificateClientTestBase extends TestBase {
 
     CertificateIssuer setupIssuer(String issuerName) {
         return new CertificateIssuer(issuerName, "Test")
-            .setAdministratorContacts(Arrays.asList(new AdministratorContact("first", "last", "first.last@hotmail.com", "12345")))
+            .setAdministratorContacts(Arrays.asList(new AdministratorContact().setFirstName("first").setLastName("last").setEmail("first.last@hotmail.com").setPhone("12345")))
             .setAccountId("issuerAccountId")
             .setEnabled(true)
             .setOrganizationId("orgId")
@@ -450,8 +446,8 @@ public abstract class CertificateClientTestBase extends TestBase {
     Boolean validateIssuer(CertificateIssuer expected, CertificateIssuer actual) {
         return expected.getAccountId().equals(actual.getAccountId())
             && expected.isEnabled().equals(actual.isEnabled())
-            && (actual.getCreated() != null)
-            && (actual.getUpdated() != null)
+            && (actual.getCreatedOn() != null)
+            && (actual.getUpdatedOn() != null)
             && (actual.getId() != null)
             && (actual.getId().length() > 0)
             && expected.getName().equals(actual.getName())
