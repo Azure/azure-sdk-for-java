@@ -67,6 +67,8 @@
                 <source>..\..\sdk\storage\azure-storage-blob-batch\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\samples\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-blob-nio\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-blob-nio\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-file-share\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-file-share\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-file-datalake\src\main\java\com</source>
@@ -239,6 +241,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-cryptography</artifactId>
           <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob-nio</artifactId>
+          <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
