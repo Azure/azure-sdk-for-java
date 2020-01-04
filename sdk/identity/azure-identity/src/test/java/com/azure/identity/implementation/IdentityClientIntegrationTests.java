@@ -22,7 +22,7 @@ public class IdentityClientIntegrationTests {
     private static final String AZURE_CLIENT_CERTIFICATE = "AZURE_CLIENT_CERTIFICATE";
     private final TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
 
-    @Test
+    @Ignore("Integration tests")
     public void clientSecretCanGetToken() {
         IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions());
         StepVerifier.create(client.authenticateWithClientSecret(System.getenv(AZURE_CLIENT_SECRET), request))
@@ -37,7 +37,7 @@ public class IdentityClientIntegrationTests {
             .verifyComplete();
     }
 
-    @Test
+    @Ignore("Integration tests")
     public void deviceCodeCanGetToken() {
         IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
         MsalToken token = client.authenticateWithDeviceCode(request, deviceCode -> {
@@ -59,9 +59,9 @@ public class IdentityClientIntegrationTests {
         Assert.assertFalse(token.isExpired());
     }
 
-    @Test
+    @Ignore("Integration tests")
     public void browserCanGetToken() {
-        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions());
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
         MsalToken token = client.authenticateWithBrowserInteraction(request, 8765).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
