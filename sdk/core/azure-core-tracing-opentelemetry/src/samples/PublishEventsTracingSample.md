@@ -23,7 +23,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.0-beta.6</version>
+    <version>5.0.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -32,7 +32,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -60,6 +60,7 @@ public class Sample {
     private static final Logger LOGGER = getLogger("Sample");
     private static  final Tracer TRACER;
     private static final TracerSdkFactory TRACER_SDK_FACTORY;
+    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     static {
         TRACER_SDK_FACTORY = configureOpenTelemetryAndLoggingExporter();
@@ -80,35 +81,66 @@ public class Sample {
     }
 
     private static void doClientWork() {
-        EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString(connectionString)
-            .buildProducerClient();
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+            .connectionString(CONNECTION_STRING)
+            .buildAsyncProducerClient();
         
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
         try (final Scope scope = TRACER.withSpan(span)) {
-            final EventData event1 = new EventData("1".getBytes(UTF_8));
-            event1.addContext(PARENT_SPAN_KEY, span);
-    
-            final EventData event2 = new EventData("2".getBytes(UTF_8));
-            event2.addContext(PARENT_SPAN_KEY, span);
+            String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
+            
+            final byte[] body = "EventData Sample 1".getBytes(UTF_8);
+            final byte[] body2 = "EventData Sample 2".getBytes(UTF_8);
 
-            final List<EventData> telemetryEvents = Arrays.asList(event1, event2);
+            // We will publish three events based on simple sentences.
+            Flux<EventData> data = Flux.just(
+                new EventData(body).addContext(PARENT_SPAN_KEY, TRACER.getCurrentSpan()),
+                new EventData(body2).addContext(PARENT_SPAN_KEY, TRACER.getCurrentSpan()));
+
+            // Create a batch to send the events.
             final CreateBatchOptions options = new CreateBatchOptions()
-                .setPartitionKey("telemetry")
+                .setPartitionId(firstPartition)
                 .setMaximumSizeInBytes(256);
-    
-            EventDataBatch currentBatch = producer.createBatch(options);
-    
-            // For each telemetry event, we try to add it to the current batch.
-            for (EventData event : telemetryEvents) {
-                if (!currentBatch.tryAdd(event)) {
-                    producer.send(currentBatch);
-                    currentBatch = producer.createBatch(options);
+
+            final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
+                producer.createBatch(options).block(OPERATION_TIMEOUT));
+            
+            data.flatMap(event -> {
+                final EventDataBatch batch = currentBatch.get();
+                if (batch.tryAdd(event)) {
+                    return Mono.empty();
                 }
-            }
-        } finally {
-            span.end();
-            producer.close();
+
+                // The batch is full, so we create a new batch and send the batch. Mono.when completes when both operations
+                // have completed.
+                return Mono.when(
+                        producer.send(batch),
+                        producer.createBatch(options).map(newBatch -> {
+                            currentBatch.set(newBatch);
+
+                            // Add that event that we couldn't before.
+                            if (!newBatch.tryAdd(event)) {
+                                throw Exceptions.propagate(new IllegalArgumentException(String.format(
+                                        "Event is too large for an empty batch. Max size: %s. Event: %s",
+                                        newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
+                            }
+
+                            return newBatch;
+                        }));
+            }).then()
+                    .doFinally(signal -> {
+                        final EventDataBatch batch = currentBatch.getAndSet(null);
+                        if (batch != null) {
+                            producer.send(batch).block(OPERATION_TIMEOUT);
+                        }
+                    })
+                    .subscribe(unused -> System.out.println("Complete"),
+                            error -> System.out.println("Error sending events: " + error),
+                            () -> {
+                                span.end();
+                                producer.close();
+                                System.out.println("Completed sending events.");
+                            });
         }
     }
 }

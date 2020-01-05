@@ -12,9 +12,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -23,6 +23,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -104,8 +105,8 @@ public final class BlobBatchAsyncClient {
      * @return A response only containing header and status code information, used to indicate that the batch operation
      * has completed.
      * @throws BlobStorageException If the batch request is malformed.
-     * @throws BlobBatchStorageException If {@code throwOnAnyFailure} is {@code true} and any request in the
-     * {@link BlobBatch} failed.
+     * @throws BlobBatchStorageException If {@code throwOnAnyFailure} is {@code true} and any request in the {@link
+     * BlobBatch} failed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure) {
@@ -117,9 +118,12 @@ public final class BlobBatchAsyncClient {
     }
 
     Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Context context) {
-        return client.services().submitBatchWithRestResponseAsync(
-            batch.getBody(), batch.getContentLength(), batch.getContentType(), context)
-            .flatMap(response -> BlobBatchHelper.mapBatchResponse(batch, response, throwOnAnyFailure, logger));
+        return batch.prepareBlobBatchSubmission()
+            .flatMap(batchOperationInfo -> client.services()
+                .submitBatchWithRestResponseAsync(Flux.fromIterable(batchOperationInfo.getBody()),
+                    batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(), context)
+                .flatMap(response ->
+                    BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger)));
     }
 
     /**

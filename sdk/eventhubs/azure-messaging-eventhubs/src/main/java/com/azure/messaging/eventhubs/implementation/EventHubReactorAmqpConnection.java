@@ -42,10 +42,12 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      * @param messageSerializer Serializes and deserializes proton-j messages.
      */
     public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
-                                     ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                                     TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+        ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+        String product, String clientVersion) {
+
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
-            messageSerializer);
+            messageSerializer, product, clientVersion);
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;

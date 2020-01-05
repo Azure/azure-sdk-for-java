@@ -458,6 +458,10 @@
                 <packages>com.azure.storage.blob.cryptography*</packages>
               </group>
               <group>
+                <title>Azure Storage Blobs - NIO</title>
+                <packages>com.azure.storage.blob.nio*</packages>
+              </group>
+              <group>
                 <title>Azure Storage - Files</title>
                 <packages>com.azure.storage.file*</packages>
               </group>
@@ -473,6 +477,10 @@
                 <title>Azure Telemetry</title>
                 <title>Azure Telemetry - OpenCensus</title>
                 <packages>com.azure.core.tracing*</packages>
+              </group>
+              <group>
+                <title>Azure Text Analytics</title>
+                <packages>com.azure.ai.textanalytics*</packages>
               </group>
             </groups>
             <links>
@@ -647,6 +655,7 @@
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
+                -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
               </additionalOptions>
               <doclint>all</doclint>
             </configuration>
@@ -1063,7 +1072,7 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>        
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -1223,6 +1232,7 @@
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opencensus</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
+    <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>sdk/identity/azure-identity</module>
@@ -1232,9 +1242,11 @@
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
+    <module>sdk/storage/azure-storage-blob-nio</module>
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
+    <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
 </project>

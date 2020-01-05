@@ -22,7 +22,7 @@ definition, such as text or binary data.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.1.0</version>
+    <version>12.2.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,7 +41,7 @@ Netty and include the OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.1.0</version>
+    <version>12.2.0-beta.2</version>
     <exclusions>
         <exclusion>
             <groupId>com.azure</groupId>

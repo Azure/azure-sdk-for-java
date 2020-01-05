@@ -37,13 +37,13 @@ parameters:
   TestName: LiveTest
   TimeoutInMinutes: 60
   TestStepMavenInputs:
-    options: '-Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 $(DefaultOptions)'
+    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions)'
     mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '$(JavaVersion)'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
-    goals: 'test'  
+    goals: 'test'
   TestResultsFiles: ''
 
 jobs:

@@ -17,7 +17,7 @@ com.microsoft.azure:azure-client-runtime;1.6.15
 com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:client-runtime;1.6.15
-com.microsoft.azure:qpid-proton-j-extensions;1.2.1
+com.microsoft.azure:qpid-proton-j-extensions;1.2.2
 com.microsoft.azure:spotbugs-maven-plugin;1.2.1
 com.microsoft.rest:client-runtime;1.6.15
 com.microsoft.rest.v2:client-runtime;2.1.1
@@ -208,7 +208,7 @@ media_org.mockito:mockito-all;1.9.0
 media_com.microsoft.azure:adal4j;1.2.0
 
 # sdk\servicebus\microsoft-azure-servicebus\pom.xml
-servicebus_com.microsoft.azure:azure-client-authentication;1.6.7
+servicebus_com.microsoft.azure:azure-client-authentication;1.7.0
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0

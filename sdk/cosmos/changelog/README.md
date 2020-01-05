@@ -1,4 +1,42 @@
 ## Changelog
+### unreleased
+- Added the ability to select default Direct TCP options
+
+  In priority order we will take default Direct TCP options from:
+  
+  - The string value of system property `"azure.cosmos.directTcp.options"`
+ 
+    Example:
+    ``` 
+    -Dazure.cosmos.directTcp.defaultOptions={\"idleEndpointTimeout\":"PT1M10S",\"maxChannelsPerEndpoint\":10,\"maxRequestsPerChannel\":30}
+    ```
+   - The contents of the file located by the system property "azure.cosmos.directTcp.defaultOptionsFile".
+  
+     Example:
+     ```
+     -Dazure.cosmos.directTcp.defaultOptionsFile=/path/to/default/options/file
+     ```
+  
+   - The contents of the resource file named `"azure.cosmos.directTcp.options.json"`
+  
+   Otherwise, if none of these values are set or an error occurs we create default options based on a set of hard-wired 
+   values defined in the default private parameterless constructor for `RntbdTransportClient.Options` as we did before 
+   this release.
+    
+### 3.5.0
+- Changefeed bug fixes (includes all the bug fixes released in 3.3.3) 
+- Disaster Recovery related bug fixes
+- Exception when Cosmos DB HTTP response header is larger than 8192 bytes: https://github.com/Azure/azure-sdk-for-java/issues/6069
+- Vulnerability through dependency in the SDK: https://github.com/Azure/azure-sdk-for-java/issues/6433
+- CosmosSyncScripts null pointer exception in azure-cosmos: https://github.com/Azure/azure-sdk-for-java/issues/6281
+- Default consistency level parsing for Bounded Staleness and Consistent Prefix: https://github.com/Azure/azure-sdk-for-java/issues/6707
+- Collection cache improvements: https://github.com/Azure/azure-sdk-for-java/issues/6307
+
+### 3.4.0
+- Added QueryPlan
+- Added OffsetLimit support
+- ChangeFeedProcessor; fixes and extra logging related to the creations of the lease documents.
+- Port consistency policy bug fix (see Azure/azure-cosmosdb-java#196)
 
 ### 3.3.3
 - ChangeFeedProcessor; added a "catch all" exception handler that keeps the loop which checks and acquires available leases alive until the user stops the change feed processor.

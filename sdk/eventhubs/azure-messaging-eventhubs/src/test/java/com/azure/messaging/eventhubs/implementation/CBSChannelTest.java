@@ -23,7 +23,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -45,9 +47,18 @@ public class CBSChannelTest extends IntegrationTestBase {
     private AzureTokenManagerProvider azureTokenManagerProvider;
     @Mock
     private MessageSerializer messageSerializer;
+    private static String product;
+    private static String clientVersion;
 
     public CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
+    }
+
+    @BeforeAll
+    public static void init() {
+        Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
+        product = properties.get("name");
+        clientVersion = properties.get("version");
     }
 
     @Override
@@ -69,7 +80,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
-            azureTokenManagerProvider, messageSerializer);
+            azureTokenManagerProvider, messageSerializer, product, clientVersion);
 
         final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
@@ -126,11 +137,13 @@ public class CBSChannelTest extends IntegrationTestBase {
     }
 
     private static final class TestReactorConnection extends ReactorConnection {
+
         private TestReactorConnection(String connectionId, ConnectionOptions connectionOptions,
-                                      ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+            ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+            TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+            String product, String clientVersion) {
             super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
-                messageSerializer);
+                messageSerializer, product, clientVersion);
         }
 
         private Mono<RequestResponseChannel> getCBSChannel() {
