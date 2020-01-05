@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
-import com.azure.search.models.AutocompleteResult;
 import com.azure.search.models.RequestOptions;
 
 import java.util.UUID;
