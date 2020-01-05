@@ -110,7 +110,7 @@ public abstract class KeyClientTestBase extends TestBase {
 
         tags.put("foo", "baz");
 
-        final CreateKeyOptions keyOptions = new CreateKeyOptions(generateresourceId() + "-" + KEY_NAME, RSA_KEY_TYPE)
+        final CreateKeyOptions keyOptions = new CreateKeyOptions(generateResourceId(KEY_NAME), RSA_KEY_TYPE)
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
             .setTags(tags);
@@ -140,7 +140,7 @@ public abstract class KeyClientTestBase extends TestBase {
         final Map<String, String> tags = new HashMap<>();
         tags.put("first tag", "first value");
         tags.put("second tag", "second value");
-        final String keyName = generateresourceId() + "-testKey1";
+        final String keyName = generateResourceId("testKey1");
         final CreateKeyOptions originalKey = new CreateKeyOptions(keyName, RSA_KEY_TYPE)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
                 .setTags(tags);
@@ -159,7 +159,7 @@ public abstract class KeyClientTestBase extends TestBase {
     void updateDisabledKeyRunner(BiConsumer<CreateKeyOptions, CreateKeyOptions> testRunner) {
 
         final Map<String, String> tags = new HashMap<>();
-        final String keyName = generateresourceId() + "-testKey2";
+        final String keyName = generateResourceId("testKey2");
         final CreateKeyOptions originalKey = new CreateKeyOptions(keyName, EC_KEY_TYPE)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
                 .setEnabled(false);
@@ -174,7 +174,7 @@ public abstract class KeyClientTestBase extends TestBase {
     public abstract void getKey();
 
     void getKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final CreateKeyOptions originalKey = new CreateKeyOptions(generateresourceId() + "-testKey4", RSA_KEY_TYPE)
+        final CreateKeyOptions originalKey = new CreateKeyOptions(generateResourceId("testKey4"), RSA_KEY_TYPE)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(originalKey);
@@ -184,7 +184,7 @@ public abstract class KeyClientTestBase extends TestBase {
     public abstract void getKeySpecificVersion();
 
     void getKeySpecificVersionRunner(BiConsumer<CreateKeyOptions, CreateKeyOptions> testRunner) {
-        final String keyName = generateresourceId() + "-testKey3";
+        final String keyName = generateResourceId("testKey3");
         final CreateKeyOptions key = new CreateKeyOptions(keyName, RSA_KEY_TYPE)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
@@ -201,7 +201,7 @@ public abstract class KeyClientTestBase extends TestBase {
     public abstract void deleteKey();
 
     void deleteKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final CreateKeyOptions keyToDelete = new CreateKeyOptions(generateresourceId() + "-testKey5", RSA_KEY_TYPE)
+        final CreateKeyOptions keyToDelete = new CreateKeyOptions(generateResourceId("testKey5"), RSA_KEY_TYPE)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(keyToDelete);
@@ -214,7 +214,7 @@ public abstract class KeyClientTestBase extends TestBase {
     public abstract void getDeletedKey();
 
     void getDeletedKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final CreateKeyOptions keyToDeleteAndGet = new CreateKeyOptions(generateresourceId() + "-testKey6", RSA_KEY_TYPE)
+        final CreateKeyOptions keyToDeleteAndGet = new CreateKeyOptions(generateResourceId("testKey6"), RSA_KEY_TYPE)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
         testRunner.accept(keyToDeleteAndGet);
     }
@@ -226,7 +226,7 @@ public abstract class KeyClientTestBase extends TestBase {
     public abstract void recoverDeletedKey();
 
     void recoverDeletedKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final CreateKeyOptions keyToDeleteAndRecover = new CreateKeyOptions(generateresourceId() + "-testKey7", RSA_KEY_TYPE)
+        final CreateKeyOptions keyToDeleteAndRecover = new CreateKeyOptions(generateResourceId("testKey7"), RSA_KEY_TYPE)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
         testRunner.accept(keyToDeleteAndRecover);
     }
@@ -238,7 +238,7 @@ public abstract class KeyClientTestBase extends TestBase {
     public abstract void backupKey();
 
     void backupKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final CreateKeyOptions keyToBackup = new CreateKeyOptions(generateresourceId() + "-testKey8", RSA_KEY_TYPE)
+        final CreateKeyOptions keyToBackup = new CreateKeyOptions(generateResourceId("testKey8"), RSA_KEY_TYPE)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
         testRunner.accept(keyToBackup);
     }
@@ -250,7 +250,7 @@ public abstract class KeyClientTestBase extends TestBase {
     public abstract void restoreKey();
 
     void restoreKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final CreateKeyOptions keyToBackupAndRestore = new CreateKeyOptions(generateresourceId() + "-testKey9", RSA_KEY_TYPE)
+        final CreateKeyOptions keyToBackupAndRestore = new CreateKeyOptions(generateResourceId("testKey9"), RSA_KEY_TYPE)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
         testRunner.accept(keyToBackupAndRestore);
     }
@@ -265,7 +265,7 @@ public abstract class KeyClientTestBase extends TestBase {
         HashMap<String, CreateKeyOptions> keys = new HashMap<>();
         String keyName;
         for (int i = 0; i < 30; i++) {
-            keyName = generateresourceId() + "-listKey" + i;
+            keyName = generateResourceId("listKey" + i);
             CreateKeyOptions key =  new CreateKeyOptions(keyName, RSA_KEY_TYPE)
                     .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
             keys.put(keyName, key);
@@ -278,7 +278,7 @@ public abstract class KeyClientTestBase extends TestBase {
 
     void listKeyVersionsRunner(Consumer<List<CreateKeyOptions>> testRunner) {
         List<CreateKeyOptions> keys = new ArrayList<>();
-        String keyName = generateresourceId() + "-listKeyVersion";
+        String keyName = generateResourceId("listKeyVersion");
         for (int i = 1; i < 5; i++) {
             keys.add(new CreateKeyOptions(keyName, RSA_KEY_TYPE)
                     .setExpiresOn(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC)));
@@ -294,7 +294,7 @@ public abstract class KeyClientTestBase extends TestBase {
         HashMap<String, CreateKeyOptions> keys = new HashMap<>();
         String keyName;
         for (int i = 0; i < 3; i++) {
-            keyName = generateresourceId() + "-listDeletedKeysTest" + i;
+            keyName = generateResourceId("listDeletedKeysTest" + i);
             keys.put(keyName, new CreateKeyOptions(keyName, RSA_KEY_TYPE)
                     .setExpiresOn(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
@@ -302,8 +302,9 @@ public abstract class KeyClientTestBase extends TestBase {
         testRunner.accept(keys);
     }
 
-    private String generateresourceId() {
-        return UUID.randomUUID().toString();
+    String generateResourceId(String suffix) {
+        String id = UUID.randomUUID().toString();
+        return suffix.length() > 0 ? id + "-" + suffix : id;
     }
 
     /**

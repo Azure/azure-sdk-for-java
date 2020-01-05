@@ -108,7 +108,7 @@ public abstract class SecretClientTestBase extends TestBase {
         final Map<String, String> tags = new HashMap<>();
 
         tags.put("foo", "baz");
-        String resourceId = generateresourceId() + "-" + SECRET_NAME;
+        String resourceId = generateResourceId(SECRET_NAME);
         final KeyVaultSecret secret = new KeyVaultSecret(resourceId, SECRET_VALUE)
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
@@ -119,10 +119,6 @@ public abstract class SecretClientTestBase extends TestBase {
         testRunner.accept(secret);
     }
 
-    private String generateresourceId() {
-        return UUID.randomUUID().toString();
-    }
-
     @Test
     public abstract void setSecretEmptyName();
 
@@ -130,7 +126,7 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void setSecretEmptyValue();
 
     void setSecretEmptyValueRunner(Consumer<KeyVaultSecret> testRunner) {
-        String resourceId = generateresourceId() + "-" + SECRET_NAME;
+        String resourceId = generateResourceId(SECRET_NAME);
         KeyVaultSecret secret = new KeyVaultSecret(resourceId, "");
         testRunner.accept(secret);
     }
@@ -146,7 +142,7 @@ public abstract class SecretClientTestBase extends TestBase {
         final Map<String, String> tags = new HashMap<>();
         tags.put("first tag", "first value");
         tags.put("second tag", "second value");
-        String resourceId = generateresourceId() + "-" + "testSecretUpdate";
+        String resourceId = generateResourceId("testSecretUpdate");
         final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretVal")
                 .setProperties(new SecretProperties()
                     .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
@@ -167,7 +163,7 @@ public abstract class SecretClientTestBase extends TestBase {
     void updateDisabledSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
         final Map<String, String> tags = new HashMap<>();
 
-        String resourceId = generateresourceId() + "-" + "testUpdateOfDisabledSecret";
+        String resourceId = generateResourceId( "testUpdateOfDisabledSecret");
         final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretUpdateDisabledVal")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
@@ -184,7 +180,7 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void getSecret();
 
     void getSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        String resourceId = generateresourceId() + "-" + "testSecretGet";
+        String resourceId = generateResourceId("testSecretGet");
         final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretGetVal")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
@@ -195,7 +191,7 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void getSecretSpecificVersion();
 
     void getSecretSpecificVersionRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
-        String resourceId = generateresourceId() + "-" + "testSecretGetVersion";
+        String resourceId = generateResourceId("testSecretGetVersion");
         final KeyVaultSecret secret = new KeyVaultSecret(resourceId, "testSecretGetVersionVal")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
@@ -213,7 +209,7 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void deleteSecret();
 
     void deleteSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        String resourceId = generateresourceId() + "-" + "testSecretDelete";
+        String resourceId = generateResourceId("testSecretDelete");
         final KeyVaultSecret secretToDelete = new KeyVaultSecret(resourceId, "testSecretDeleteVal")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
@@ -228,7 +224,7 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void getDeletedSecret();
 
     void getDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        String resourceId = generateresourceId() + "-" + "testSecretGetDeleted";
+        String resourceId = generateResourceId("testSecretGetDeleted");
         final KeyVaultSecret secretToDeleteAndGet = new KeyVaultSecret(resourceId, "testSecretGetDeleteVal")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
@@ -242,7 +238,7 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void recoverDeletedSecret();
 
     void recoverDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        String resourceId = generateresourceId() + "-" + "testSecretRecover";
+        String resourceId = generateResourceId( "testSecretRecover");
         final KeyVaultSecret secretToDeleteAndRecover = new KeyVaultSecret(resourceId, "testSecretRecoverVal")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
@@ -256,7 +252,7 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void backupSecret();
 
     void backupSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        final KeyVaultSecret secretToBackup = new KeyVaultSecret(generateresourceId() + "-testSecretBackup", "testSecretBackupVal")
+        final KeyVaultSecret secretToBackup = new KeyVaultSecret(generateResourceId("testSecretBackup"), "testSecretBackupVal")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToBackup);
@@ -269,7 +265,7 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void restoreSecret();
 
     void restoreSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        final KeyVaultSecret secretToBackupAndRestore = new KeyVaultSecret(generateresourceId() + "-testSecretRestore", "testSecretRestoreVal")
+        final KeyVaultSecret secretToBackupAndRestore = new KeyVaultSecret(generateResourceId("testSecretRestore"), "testSecretRestoreVal")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToBackupAndRestore);
@@ -286,7 +282,7 @@ public abstract class SecretClientTestBase extends TestBase {
         String secretName;
         String secretVal;
         for (int i = 0; i < 30; i++) {
-            secretName = generateresourceId() + "-listSecret" + i;
+            secretName = generateResourceId("listSecret" + i);
             secretVal = "listSecretVal" + i;
             KeyVaultSecret secret =  new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
@@ -304,7 +300,7 @@ public abstract class SecretClientTestBase extends TestBase {
         String secretName;
         String secretVal;
         for (int i = 0; i < 3; i++) {
-            secretName = generateresourceId() + "-listDeletedSecretsTest" + i;
+            secretName = generateResourceId("listDeletedSecretsTest" + i);
             secretVal = "listDeletedSecretVal" + i;
             secrets.put(secretName, new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
@@ -320,7 +316,7 @@ public abstract class SecretClientTestBase extends TestBase {
     void listSecretVersionsRunner(Consumer<List<KeyVaultSecret>> testRunner) {
         List<KeyVaultSecret> secrets = new ArrayList<>();
         String secretVal;
-        String secretName = generateresourceId() + "-listSecretVersion";
+        String secretName = generateResourceId("listSecretVersion");
         for (int i = 1; i < 5; i++) {
             secretVal = "listSecretVersionVal" + i;
             secrets.add(new KeyVaultSecret(secretName, secretVal)
@@ -401,6 +397,11 @@ public abstract class SecretClientTestBase extends TestBase {
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
         assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
+    }
+
+    String generateResourceId(String suffix) {
+        String id = UUID.randomUUID().toString();
+        return suffix.length() > 0 ? id + "-" + suffix : id;
     }
 
     /**

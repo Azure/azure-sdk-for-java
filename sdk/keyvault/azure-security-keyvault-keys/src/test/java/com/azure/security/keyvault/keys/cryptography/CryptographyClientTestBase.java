@@ -135,8 +135,9 @@ public abstract class CryptographyClientTestBase extends TestBase {
         return new KeyPair(keyFactory.generatePublic(publicKeySpec), keyFactory.generatePrivate(privateKeySpec));
     }
 
-    String generateresourceId() {
-        return UUID.randomUUID().toString();
+    String generateResourceId(String suffix) {
+        String id = UUID.randomUUID().toString();
+        return suffix.length() > 0 ? id + "-" + suffix : id;
     }
 
     public String getEndpoint() {
