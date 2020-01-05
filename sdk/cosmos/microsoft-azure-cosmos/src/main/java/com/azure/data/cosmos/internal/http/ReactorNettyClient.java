@@ -190,10 +190,6 @@ class ReactorNettyClient implements HttpClient {
             return bodyIntern().aggregate().asString(charset);
         }
 
-        @Override
-        public void close() {
-        }
-
         private ByteBufFlux bodyIntern() {
             return reactorNettyConnection.inbound().receive();
         }
