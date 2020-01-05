@@ -31,22 +31,22 @@ public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>
     public abstract Flux<P> byPage(C continuationToken);
     /**
      * Get a Flux of {@link ContinuablePage} in this Paged Flux, with each page containing
-     * number of elements equal to the preferred page size. Service may or may not honor
-     * the page size preference hence client MUST be prepared to handle pages with different
-     * page size.
+     * number of elements equal to the preferred page size.
      *
-     * @param preferredPageSize the preferred page size
+     * @param preferredPageSize the preferred page size, service may or may not honor the page
+     *                          size preference hence client MUST be prepared to handle pages
+     *                          with different page size.
      * @return a Flux of {@link ContinuablePage}
      */
     public abstract Flux<P> byPage(int preferredPageSize);
     /**
      * Get a Flux of {@link ContinuablePage} identified by the given continuation token, with each
-     * page containing number of elements equal to the preferred page size. Service may or may not
-     * honor the page size preference hence client MUST be prepared to handle pages with different
-     * page size.
+     * page containing number of elements equal to the preferred page size.
      *
      * @param continuationToken the continuation token
-     * @param preferredPageSize the preferred page size
+     * @param preferredPageSize the preferred page size, service may or may not honor the page
+     *                          size preference hence client MUST be prepared to handle pages
+     *                          with different page size.
      * @return a Flux of {@link ContinuablePage}
      */
     public abstract Flux<P> byPage(C continuationToken, int preferredPageSize);

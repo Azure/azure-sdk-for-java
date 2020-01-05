@@ -39,6 +39,4 @@ public final class ConfigurationSettingPage implements Page<ConfigurationSetting
     public IterableStream<ConfigurationSetting> getElements() {
         return new IterableStream<>(items);
     }
-
-
 }

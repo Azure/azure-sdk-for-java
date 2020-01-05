@@ -26,7 +26,7 @@ public class PagedFluxCoreJavaDocCodeSnippets {
             }
 
             void setLastContinuationToken(C token) {
-                this.isDone = token == null ? true : false;
+                this.isDone = token == null;
                 this.lastContinuationToken = token;
             }
 

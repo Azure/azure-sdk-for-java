@@ -16,12 +16,16 @@ import com.azure.core.util.IterableStream;
  */
 public interface ContinuablePage<C, T> {
     /**
-     * @return an iterable stream of elements in the page.
+     * Get an iterable stream of elements in the page.
+     *
+     * @return elements in the page as iterable stream.
      */
     IterableStream<T> getElements();
 
     /**
-     * @return a reference to the next page, or {@code null} if there are no more pages.
+     * Get reference to the next page.
+     *
+     * @return next page reference, or {@code null} if there are no more pages.
      */
     C getContinuationToken();
 }

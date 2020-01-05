@@ -39,7 +39,7 @@ import java.util.function.Supplier;
 public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C, T>>
     extends ContinuablePagedFlux<C, T, P> {
     private final Supplier<PageRetriever<C, P>> pageRetrieverProvider;
-    private final int defaultPageSize;
+    private final Integer defaultPageSize;
 
     /**
      * Creates an instance of {@link ContinuablePagedFluxCore}.
@@ -49,29 +49,29 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
     protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider) {
         this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
             "'pageRetrieverProvider' function cannot be null.");
-        this.defaultPageSize = -1;
+        this.defaultPageSize = null;
     }
 
     /**
      * Creates an instance of {@link ContinuablePagedFluxCore}.
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}.
-     * @param defaultPageSize the default preferred page size
+     * @param pageSize the preferred page size
      * @throws IllegalArgumentException if defaultPageSize is not greater than zero
      */
-    protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider, int defaultPageSize) {
+    protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider, int pageSize) {
         this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
             "'pageRetrieverProvider' function cannot be null.");
-        if (defaultPageSize <= 0) {
-            throw new IllegalArgumentException("defaultPageSize > 0 required but provided: " + defaultPageSize);
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("pageSize > 0 required but provided: " + pageSize);
         }
-        this.defaultPageSize = defaultPageSize;
+        this.defaultPageSize = pageSize;
     }
 
     /**
-     * @return the page size configured for this {@link ContinuablePagedFluxCore}, -1 if unspecified.
+     * @return the page size configured for this {@link ContinuablePagedFluxCore}, {@code null} if unspecified.
      */
-    public int getDefaultPageSize() {
+    public Integer getPageSize() {
         return this.defaultPageSize;
     }
 
@@ -143,7 +143,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      */
     private static <C, T, P extends ContinuablePage<C, T>>
         Flux<P> byPage(Supplier<PageRetriever<C, P>> provider,
-                   C continuationToken, int pageSize) {
+                   C continuationToken, Integer pageSize) {
         return Flux.defer(() -> {
             final PageRetriever<C, P> pageRetriever = provider.get();
             final ContinuationState<C> state = new ContinuationState<>(continuationToken);
@@ -166,11 +166,11 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      * @return a Flux of {@link ContinuablePage}
      */
     private static <C, T, P extends ContinuablePage<C, T>>
-        Flux<P> concatFluxOfPage(ContinuationState<C> state, PageRetriever<C, P> pageRetriever, int pageSize) {
+        Flux<P> concatFluxOfPage(ContinuationState<C> state, PageRetriever<C, P> pageRetriever, Integer pageSize) {
         if (state.isDone()) {
             return Flux.empty();
         } else {
-            return pageRetriever.get(state.getLastContinuationToken(), pageSize == -1 ? null : pageSize)
+            return pageRetriever.get(state.getLastContinuationToken(), pageSize)
                 .switchIfEmpty(Flux.defer(() -> {
                     state.setLastContinuationToken(null);
                     return Mono.empty();
