@@ -17,7 +17,7 @@ This library provides an easy (native) way for a Java developer to interact with
 
 ### Adding the package to your product
 
-[//]: # "{x-version-update-start;com.azure:azure-search;current}"
+[//]: # {x-version-update-start;com.azure:azure-search;current}
 
 ```xml
 <dependency>
@@ -27,7 +27,7 @@ This library provides an easy (native) way for a Java developer to interact with
 </dependency>
 ```
 
-[//]: # "{x-version-update-end}"
+[//]: # {x-version-update-end}
 
 ### Default HTTP Client
 
@@ -38,7 +38,7 @@ All client libraries, by default, use Netty HTTP client. Adding the above depend
 If, instead of Netty it is preferable to use OkHTTP, there is an HTTP client available for that too. Exclude the default
 Netty and include the OkHTTP client in your pom.xml.
 
-[//]: # "{x-version-update-start;com.azure:azure-search;current}"
+[//]: # {x-version-update-start;com.azure:azure-search;current}
 
 ```xml
 <!-- Add the Cognitive Search dependency without the Netty HTTP client -->
@@ -55,8 +55,8 @@ Netty and include the OkHTTP client in your pom.xml.
 </dependency>
 ```
 
-[//]: # "{x-version-update-end}"
-[//]: # "{x-version-update-start;com.azure:azure-core-http-okhttp;current}"
+[//]: # {x-version-update-end}
+[//]: # {x-version-update-start;com.azure:azure-core-http-okhttp;current}
 
 ```xml
 <!-- Add the OkHTTP client to use with Cognitive Search -->
@@ -67,7 +67,7 @@ Netty and include the OkHTTP client in your pom.xml.
 </dependency>
 ```
 
-[//]: # "{x-version-update-end}"
+[//]: # {x-version-update-end}
 
 ### Configuring HTTP Clients
 

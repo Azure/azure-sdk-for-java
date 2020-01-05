@@ -101,7 +101,6 @@ uk.org.lidalia:slf4j-test;1.2.0
 org.unitils:unitils-core;3.4.2
 com.microsoft.azure:azure;1.24.1
 com.microsoft.azure:azure-mgmt-search;1.24.1
-com.azure:azure-storage-blob;12.1.0
 
 ## Maven Tools versions
 com.azure:sdk-build-tools;1.0.0
