@@ -5,16 +5,16 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
-import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * Sample code to demonstrate how a customer might use {@link EventProcessorClient}.
  */
-public class EventProcessorSample {
+public class EventProcessorClientSample {
 
     private static final String EH_CONNECTION_STRING = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
@@ -26,7 +26,7 @@ public class EventProcessorSample {
      */
     public static void main(String[] args) throws Exception {
 
-        Logger logger = LoggerFactory.getLogger(EventProcessorSample.class);
+        Logger logger = LoggerFactory.getLogger(EventProcessorClientSample.class);
         Consumer<EventContext> processEvent = eventContext -> {
             logger.info(
                 "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
@@ -34,6 +34,7 @@ public class EventProcessorSample {
                 eventContext.getPartitionContext().getConsumerGroup(),
                 eventContext.getPartitionContext().getPartitionId(),
                 eventContext.getEventData().getSequenceNumber());
+
             eventContext.updateCheckpoint();
         };
 

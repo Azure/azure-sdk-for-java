@@ -6,7 +6,7 @@ This repository is intended for active development of the Azure SDK for Java. Fo
 
 ### Important
 
-The Azure SDK team is pleased to make available the November 2019 client library General Availability (GA) release. We strongly recommend using the GA libraries in all production environments as these libraries are well tested and officially supported by Microsoft. More details, including installation instructions can be found here [here](https://azure.github.io/azure-sdk/releases/2019-11/java.html).
+The Azure SDK team is pleased to make available the January 2020 client library General Availability (GA) release. We strongly recommend using the GA libraries in all production environments as these libraries are well tested and officially supported by Microsoft. More details, including installation instructions can be found here [here](https://azure.github.io/azure-sdk/releases/2019-11/java.html).
 
 ## Getting started
 
@@ -16,24 +16,28 @@ For tutorials, samples, quick starts and other documentation, visit [Azure for J
 
 ### Prerequisites
 
-Java 8 or later is required to use the November 2019 client libraries, otherwise Java 7 or later is required.
+Java 8 or later is required to use the January 2020 client libraries, otherwise Java 7 or later is required.
 
 ## Latest Release
 
 Each service might have a number of libraries available from each of the following categories:
 
-- [Client: GA Decemeber 2019 Releases](#Client-GA-Decemeber-2019-Releases)
+- [Client: GA January 2020 Releases](#Client-GA-January-2020-Releases)
 - [Client - Previous Versions](#Client-Previous-Versions)
 - [Management](#Management)
 
-### Client: GA December 2019 Releases
+### Client: GA January 2020 Releases
 
-New wave of packages that were released in December 2019 client library as General Availability (GA) and several others that were released in **beta**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](sdk/core/README.md).
+New wave of packages that were released in January 2020 client library as General Availability (GA) and several others that were released in **beta**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](https://github.com/Azure/azure-sdk-for-java/blob/azure-core_1.1.0/sdk/core/azure-core/README.md).
 
 These libraries can be easily identified by sdk/ folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
-The libraries released in the GA December 2019 release:
+The libraries released in the GA January 2020 release:
+- [App Configuration](https://github.com/Azure/azure-sdk-for-java/tree/azure-data-appconfiguration_1.0.0-beta.7/sdk/appconfiguration/azure-data-appconfiguration/README.md)
+- [Event Hubs](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs_5.0.0-beta.6/sdk/eventhubs/azure-messaging-eventhubs/README.md)
+- [Event Hubs Checkpoint Store](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs-checkpointstore-blob_1.0.0-beta.4/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md)
 - [Identity](https://github.com/Azure/azure-sdk-for-java/blob/azure-identity_1.0.1/sdk/identity/azure-identity/README.md)
+- [Key Vault Certificates](https://github.com/Azure/azure-sdk-for-java/blob/azure-security-keyvault-certificates_4.0.0-beta.6/sdk/keyvault/azure-security-keyvault-certificates/README.md)
 - [Key Vault Keys](https://github.com/Azure/azure-sdk-for-java/blob/azure-security-keyvault-keys_4.0.1/sdk/keyvault/azure-security-keyvault-keys/README.md)
 - [Key Vault Secrets](https://github.com/Azure/azure-sdk-for-java/blob/azure-security-keyvault-secrets_4.0.1/sdk/keyvault/azure-security-keyvault-secrets/README.md)
 - [Storage Blobs](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.1.0/sdk/storage/azure-storage-blob/README.md)
@@ -42,13 +46,9 @@ The libraries released in the GA December 2019 release:
 - [Storage Queues](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.1.0/sdk/storage/azure-storage-queue/README.md)
 - [Storage File Share](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.0.0/sdk/storage/azure-storage-file-share/README.md)
 
-The libraries released in the December 2019 beta:
-- [App Configuration](https://github.com/Azure/azure-sdk-for-java/tree/azure-data-appconfiguration_1.0.0-beta.7/sdk/appconfiguration/azure-data-appconfiguration/README.md)
-- [Event Hubs](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs_5.0.0-beta.6/sdk/eventhubs/azure-messaging-eventhubs/README.md)
-- [Event Hubs Checkpoint Store](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs-checkpointstore-blob_1.0.0-beta.4/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md)
-- [Key Vault Certificates](https://github.com/Azure/azure-sdk-for-java/blob/azure-security-keyvault-certificates_4.0.0-beta.6/sdk/keyvault/azure-security-keyvault-certificates/README.md)
-- [OpenCensus Tracing](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-tracing-opencensus_1.0.0-beta.5/sdk/core/azure-core-tracing-opencensus/README.md)
+The libraries released in the January 2020 beta:
 - [OpenTelemetry Tracing](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-tracing-opentelemetry_1.0.0-beta.1/sdk/core/azure-core-tracing-opentelemetry/README.md)
+- [Text Analytics](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/README.md)
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 
@@ -71,7 +71,7 @@ Libraries which enable you to provision specific resources. They are responsible
 ## Navigating the repository
 
 ### Master branch
-The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-GA-November-2019-Releases) for latest **GA** release.<br/>
+The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-GA-January-2020-Releases) for latest **GA** release.<br/>
 
 ### Release branches (Release tagging)
 

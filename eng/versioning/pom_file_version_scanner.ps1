@@ -1,6 +1,11 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+# This script requires Powershell 6 which defaults LocalMachine to Restricted on Windows client machines.
+# From a Powershell 6 prompt run 'Get-ExecutionPolicy -List' and if the LocalMachine is Restricted or Undefined then
+# run the following command from an admin Powershell 6 prompt 'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned'. This
+# will enable running scripts locally in Powershell 6.
+
 # Use case: This script verifies the following:
 # 1. There are no duplicate entries in any of the version_*.txt files
 # 2. There are no duplicate entries in the external_dependencies.txt file
@@ -39,6 +44,11 @@ $DependencyTypeForError = "$($DependencyTypeCurrent)|$($DependencyTypeDependency
 $UpdateTagFormat = "{x-version-update;<groupId>:<artifactId>;$($DependencyTypeForError)}"
 $StartTime = $(get-date)
 
+function Write-Error-With-Color([string]$msg)
+{
+    Write-Host "$($msg)" -ForegroundColor Red
+}
+
 # The expected format for a depenency, as found in the eng\versioning\version_*.txt files, is as follows:
 # groupId:artifactId;dependency-version;current-version
 class Dependency {
@@ -49,7 +59,7 @@ class Dependency {
         [string]$inputString
     ){
         $split = $inputString.Split(";")
-        if ($split.Count -ne 3)
+        if (($split.Count -ne 3) -and ($split.Count -ne 2))
         {
             # throw and let the caller handle the error since it'll have access to the
             # filename of the file with the malformed line for reporting
@@ -57,7 +67,10 @@ class Dependency {
         }
         $this.id = $split[0]
         $this.depVer = $split[1]
-        $this.curVer = $split[2]
+        if ($split.Count -eq 3)
+        {
+            $this.curVer = $split[2]
+        }
     }    
 }
 
@@ -188,6 +201,11 @@ function Test-Dependency-Tag-And-Version {
             }
             elseif ($depType -eq $DependencyTypeCurrent) 
             {
+                # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_'
+                if ($depKey.StartsWith('unreleased_'))
+                {
+                    return "Error: $($versionUpdateString) is using an unreleased_ dependency and trying to set current value. Only dependency versions can be set with an unreleased dependency."
+                }
                 if ($versionString -ne $libHash[$depKey].curVer)
                 {
                     return "Error: $($depKey)'s <version> is '$($versionString)' but the current version is listed as $($libHash[$depKey].curVer)"
@@ -239,11 +257,11 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             return
         }
     }
-    Write-Output "processing pomFile=$($pomFile)"
+    Write-Host "processing pomFile=$($pomFile)"
     $dependencyManagement = $xmlPomFile.GetElementsByTagName("dependencyManagement")[0]
     if ($dependencyManagement)
     {
-        Write-Output "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
+        Write-Error-With-Color "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
     }
 
     # Ensure that the project has a version tag with the exception of projects under the eng directory which
@@ -266,7 +284,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 {
                     $script:FoundError = $true
                     # every project string needs to have an update tag and projects version tags are always 'current'
-                    Write-Output "Error: project/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+                    Write-Error-With-Color "Error: project/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
                 }
                 else
                 {
@@ -275,7 +293,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     if ($retVal)
                     {
                         $script:FoundError = $true
-                        Write-Output "$($retVal)"
+                        Write-Error-With-Color "$($retVal)"
                     }
                 }
             }
@@ -284,7 +302,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 $script:FoundError = $true
                 # <!-- {x-version-update;<groupId>:<artifactId>;current} -->
                 # every project string needs to have an update tag and projects version tags are always 'current'
-                Write-Output "Error: Missing project/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+                Write-Error-With-Color "Error: Missing project/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
             }
             
         }
@@ -292,7 +310,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         {
             # output an error for missing version element
             $script:FoundError = $true
-            Write-Output "Error: Could not find project/version node for $($pomFile)"
+            Write-Error-With-Color "Error: Could not find project/version node for $($pomFile)"
         }
     }
 
@@ -310,7 +328,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 if ($versionNode.NextSibling.Value.Trim() -ne "{x-version-update;$($groupId):$($artifactId);current}")
                 {
                     $script:FoundError = $true
-                    Write-Output "Error: project/parent/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+                    Write-Error-With-Color "Error: project/parent/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
                 }
                 else
                 {
@@ -319,7 +337,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     if ($retVal)
                     {
                         $script:FoundError = $true
-                        Write-Output "$($retVal)"
+                        Write-Error-With-Color "$($retVal)"
                     }
                 }
             }
@@ -327,14 +345,14 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             {   
                 $script:FoundError = $true
                 # every project string needs to have an update tag and projects version tags are always 'current'
-                Write-Output "Error: Missing project/parent/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+                Write-Error-With-Color "Error: Missing project/parent/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
             }
         }
         else 
         {
             # output an error for missing version element
             $script:FoundError = $true
-            Write-Output "Error: Could not find project/parent/version node for $($pomFile)"
+            Write-Error-With-Color "Error: Could not find project/parent/version node for $($pomFile)"
         }    
     }
 
@@ -348,7 +366,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         if (!$versionNode) 
         {
             $script:FoundError = $true
-            Write-Output "Error: dependency is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            Write-Error-With-Color "Error: dependency is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             continue
         }
         if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") 
@@ -358,7 +376,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(\w+)?$($groupId):$($artifactId);\w+}")
             {
                 $script:FoundError = $true
-                Write-Output "Error: dependency version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                Write-Error-With-Color "Error: dependency version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             }
             else
             {
@@ -367,14 +385,14 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 if ($retVal)
                 {
                     $script:FoundError = $true
-                    Write-Output "$($retVal)"
+                    Write-Error-With-Color $retVal
                 }
             }
         }
         else 
         {   
             $script:FoundError = $true
-            Write-Output "Error: Missing dependency version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            Write-Error-With-Color "Error: Missing dependency version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
         }
     }
     # Verify every plugin has a group, artifact and version
@@ -388,14 +406,14 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         if (!$groupId)
         {
             $script:FoundError = $true
-            Write-Output "Error: plugin $($artifactId) is missing its groupId tag"
+            Write-Error-With-Color "Error: plugin $($artifactId) is missing its groupId tag"
             continue
         }
         $versionNode = $pluginNode.GetElementsByTagName("version")[0]
         if (!$versionNode) 
         {
             $script:FoundError = $true
-            Write-Output "Error: plugin is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            Write-Error-With-Color "Error: plugin is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             continue
         }
         if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") 
@@ -405,7 +423,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(\w+)?$($groupId):$($artifactId);\w+}")
             {
                 $script:FoundError = $true
-                Write-Output "Error: plugin version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                Write-Error-With-Color "Error: plugin version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             }
             else
             {
@@ -414,25 +432,25 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 if ($retVal)
                 {
                     $script:FoundError = $true
-                    Write-Output "$($retVal)"
+                    Write-Error-With-Color "$($retVal)"
                 }
             }
         }
         else 
         {   
             $script:FoundError = $true
-            Write-Output "Error: Missing plugin version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            Write-Error-With-Color "Error: Missing plugin version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
         }
     }    
 }
 $ElapsedTime = $(get-date) - $StartTime
 $TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
-Write-Output "Total run time=$($TotalRunTime)"
+Write-Host "Total run time=$($TotalRunTime)"
 
 if ($script:FoundError)
 {
-    Write-Output "There were errors encountered during execution. Please fix any errors and run the script again."
-    Write-Output "This script can be run locally from the root of the repo. .\eng\pom_file_version_scanner.ps1"
+    Write-Error-With-Color "There were errors encountered during execution. Please fix any errors and run the script again."
+    Write-Error-With-Color "This script can be run locally from the root of the repo. .\eng\pom_file_version_scanner.ps1"
     exit(1)
 }
 

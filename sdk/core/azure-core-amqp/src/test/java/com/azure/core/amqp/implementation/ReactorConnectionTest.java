@@ -53,6 +53,8 @@ public class ReactorConnectionTest {
     private static final ConnectionStringProperties CREDENTIAL_INFO = new ConnectionStringProperties("Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;");
     private static final String HOSTNAME = CREDENTIAL_INFO.getEndpoint().getHost();
     private static final Scheduler SCHEDULER = Schedulers.elastic();
+    private static final String PRODUCT = "test";
+    private static final String CLIENT_VERSION = "1.0.0-test";
 
     private ReactorConnection connection;
     private SessionHandler sessionHandler;
@@ -83,7 +85,7 @@ public class ReactorConnectionTest {
 
         when(reactor.selectable()).thenReturn(selectable);
 
-        connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
+        connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -99,7 +101,7 @@ public class ReactorConnectionTest {
             CREDENTIAL_INFO.getEntityPath(), tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
             AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            tokenManager, messageSerializer);
+            tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION);
     }
 
     @AfterEach
@@ -274,7 +276,7 @@ public class ReactorConnectionTest {
     @Test
     public void createCBSNodeTimeoutException() {
         // Arrange
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
         final ReactorHandlerProvider provider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler,
             null, null);
 
@@ -290,7 +292,7 @@ public class ReactorConnectionTest {
 
         // Act and Assert
         try (ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
-            provider, tokenManager, messageSerializer)) {
+            provider, tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION)) {
             StepVerifier.create(connectionBad.getClaimsBasedSecurityNode())
                 .verifyError(TimeoutException.class);
         }

@@ -13,7 +13,7 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.1</version>
+    <version>4.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -23,7 +23,7 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opencensus</artifactId>
-  <version>1.0.0-beta.5</version>
+  <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
