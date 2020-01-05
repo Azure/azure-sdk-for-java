@@ -38,3 +38,4 @@ com.azure:azure-search;1.0.0-beta.2;1.0.0-beta.2
 unreleased_com.azure:azure-core;1.2.0-beta.1
 unreleased_com.azure:azure-core-test;1.1.0-beta.2
 unreleased_com.azure:azure-core-http-netty;1.2.0-beta.1
+unreleased_com.azure:azure-storage-blob;12.2.0-beta.2
