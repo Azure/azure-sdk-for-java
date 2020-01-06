@@ -11,7 +11,8 @@ import java.util.ServiceLoader;
 
 /**
  *  JSON wrapper is a pluggable Java API that abstracts away the underlying JSON implementation library.
- *  This enables libraries that use JSON Wrapper to not have to expose a hard dependency on any particular implementation.
+ *  This enables libraries that use JSON Wrapper to not have to expose a hard dependency
+ *  on any particular implementation.
  */
 @SuppressWarnings("unchecked")
 public class JsonWrapper {

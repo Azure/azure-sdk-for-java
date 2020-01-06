@@ -6,7 +6,7 @@ import java.lang.reflect.ParameterizedType;
 
 /**
  * Abstraction over the java.lang Type object
- * @param <T>
+ * @param <T> The Object class that the type is returned for
  */
 public abstract class Type<T> {
 
