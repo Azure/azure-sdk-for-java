@@ -246,7 +246,7 @@ public final class ConfigurationClientBuilder {
     public ConfigurationClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
-        if (CoreUtils.isNullOrEmpty(connectionString)) {
+        if (connectionString.isEmpty()) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'connectionString' cannot be an empty string."));
         }
