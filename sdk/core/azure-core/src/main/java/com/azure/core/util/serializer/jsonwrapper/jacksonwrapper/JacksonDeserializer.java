@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-
+/**
+ * Implementation of the JsonAPI interface using Jackson https://github.com/FasterXML/jackson as the JSON parser
+ */
 public class JacksonDeserializer implements JsonApi {
 
     private static final Map<Config, DeserializationFeature> CONFIG_MAP;

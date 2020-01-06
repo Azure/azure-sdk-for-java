@@ -4,6 +4,9 @@ package com.azure.core.util.serializer.jsonwrapper.api;
 
 import java.util.List;
 
+/**
+ * Json node
+ */
 public interface Node {
 
     /**

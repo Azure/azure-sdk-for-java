@@ -4,6 +4,10 @@ package com.azure.core.util.serializer.jsonwrapper.api;
 
 import java.lang.reflect.ParameterizedType;
 
+/**
+ * Abstraction over the java.lang Type object
+ * @param <T>
+ */
 public abstract class Type<T> {
 
     private final java.lang.reflect.Type javaType;

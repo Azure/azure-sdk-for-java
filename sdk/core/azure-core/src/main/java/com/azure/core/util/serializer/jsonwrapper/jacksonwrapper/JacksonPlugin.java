@@ -6,6 +6,9 @@ package com.azure.core.util.serializer.jsonwrapper.jacksonwrapper;
 import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.util.serializer.jsonwrapper.spi.JsonPlugin;
 
+/**
+ * JacksonPlugin for jsonwrapper
+ */
 public class JacksonPlugin implements JsonPlugin {
     @Override
     public Class<? extends JsonApi> getType() {

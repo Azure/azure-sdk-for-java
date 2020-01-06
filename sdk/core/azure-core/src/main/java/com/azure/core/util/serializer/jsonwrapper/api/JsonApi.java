@@ -4,6 +4,11 @@ package com.azure.core.util.serializer.jsonwrapper.api;
 
 import java.util.List;
 
+/**
+ * JsonApi Interface
+ * JSON wrapper is a pluggable Java API that abstracts away the underlying JSON implementation library.
+ * This enables libraries that use JSON Wrapper to not have to expose a hard dependency on any particular implementation.
+ */
 public interface JsonApi {
 
     /**
