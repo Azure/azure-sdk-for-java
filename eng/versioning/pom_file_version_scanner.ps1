@@ -314,7 +314,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         }
     }
 
-    if ($xmlPomFile.parent) {
+    if ($xmlPomFile.project.parent) {
         # Verify the parent's version
         $versionNode = $xmlPomFile.SelectSingleNode("/ns:project/ns:parent/ns:version", $xmlNsManager)
         if ($xmlPomFile.project.parent.version -and $versionNode)
