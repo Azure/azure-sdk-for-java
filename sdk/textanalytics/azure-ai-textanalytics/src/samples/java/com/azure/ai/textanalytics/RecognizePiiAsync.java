@@ -33,7 +33,7 @@ public class RecognizePiiAsync {
                     System.out.printf(
                         "Recognized personal identifiable information entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
                         entity.getText(),
-                        entity.getType() ,
+                        entity.getType(),
                         entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
                         entity.getOffset(),
                         entity.getLength(),

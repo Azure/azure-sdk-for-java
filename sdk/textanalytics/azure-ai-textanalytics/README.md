@@ -132,6 +132,7 @@ cognitive services.
     ```az cognitiveservices account keys list --name "resource-name" --resource-group "resource-group-name"```
     
     Use the key as the credential parameter to authenticate the client:
+    <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L26-L31 -->
     ```java
     TextAnalyticsClient client = new TextAnalyticsClientBuilder()
         .subscriptionKey("subscription-key")
@@ -158,6 +159,7 @@ cognitive services.
    AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET
 
    Use the returned token credential to authenticate the client:
+   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L48-L53 -->
     ```java
     TextAnalyticsClient client = new TextAnalyticsClientBuilder()
             .endpoint("https://servicename.cognitiveservices.azure.com/")
@@ -171,6 +173,7 @@ analyze sentiment, recognize entities, detect language, and extract key phrases 
 To create a client object, you will need the cognitive services or text analytics endpoint to 
 your resource and a subscription key that allows you access:
 
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L#L26-L31 -->
 ```java
 // Instantiate a client that will be used to call the service.
 TextAnalyticsClient client = new TextAnalyticsClientBuilder()
@@ -243,35 +246,35 @@ The following sections provide several code snippets covering some of the most c
 Text analytics support both synchronous and asynchronous client creation by using
 `TextAnalyticsClientBuilder`,
 
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L26-L31 -->
 ``` java
 // An example of creating a synchronous client
-TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
     .buildClient();
 ```
-
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L37-L42 -->
 ``` java
 // An example of creating an asynchronous client
-TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
+TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
     .buildAsyncClient();
 ```
 
 ### Detect language
-Detect language in a batch of documents.
-
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L59-L73 -->
 ```java
-TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
+TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
     .buildAsyncClient();
 
 String inputText = "Bonjour tout le monde";
 
-for(DetectedLanguage detectedLanguage : client.detectLanguage(text, "US").getDetectedLanguages()) {
-    System.out.printf("Other detected languages: %s, ISO 6391 Name: %s, Score: %s.%n",
+for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inputText).getDetectedLanguages()) {
+    System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
         detectedLanguage.getName(),
         detectedLanguage.getIso6391Name(),
         detectedLanguage.getScore());
@@ -279,9 +282,9 @@ for(DetectedLanguage detectedLanguage : client.detectLanguage(text, "US").getDet
 ```
 
 ### Recognize entity
-
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L79-L95 -->
 ```java
-TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
     .buildClient();
@@ -301,8 +304,9 @@ for (NamedEntity entity : client.recognizeEntities(text).getNamedEntities()) {
 ```
 
 ### Recognize PII(Personally Identifiable Information) entity
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L101-L118 -->
 ```java
-TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
     .buildClient();
@@ -310,19 +314,21 @@ TextAnalyticsClient client = new TextAnalyticsClientBuilder()
 // The text that need be analysed.
 String text = "My SSN is 555-55-5555";
 
-for (NamedEntity entity : client.recognizePiiEntities(text).getNamedEntities()) {
+for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getNamedEntities()) {
     System.out.printf(
         "Recognized PII Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
         entity.getText(),
         entity.getType(),
         entity.getSubtype(),
-        entity.getScore()));
+        entity.getScore());
 }
 ```
 
 ### Recognize linked entity
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L124-L139 -->
+
 ```java
-TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
     .buildClient();
@@ -330,17 +336,19 @@ TextAnalyticsClient client = new TextAnalyticsClientBuilder()
 // The text that need be analysed.
 String text = "Old Faithful is a geyser at Yellowstone Park.";
 
-for (LinkedEntity linkedEntity : client.recognizeLinkedEntities(text).getLinkedEntities()) {
-    System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.%n",
+for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text).getLinkedEntities()) {
+    System.out.printf("Recognized Linked Entity: %s, Url: %s, Data Source: %s.%n",
         linkedEntity.getName(),
-        linkedEntity.getUri(),
+        linkedEntity.getUrl(),
         linkedEntity.getDataSource());
 }
 ```
 
 ### Analyze sentiment
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L145-L158 -->
+
 ```java
-TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey("subscription-key")
     .endpoint("https://servicename.cognitiveservices.azure.com/")
     .buildClient();
