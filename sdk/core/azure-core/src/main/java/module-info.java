@@ -43,7 +43,7 @@ module com.azure.core {
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.util.serializer.jsonwrapper to com.fasterxml.jackson.databind;
-    opens com.azure.core.util.serializer.jsonwrapper.jacksonwrapper to com.fasterxml.jackson.databind;
+    opens com.azure.core.util.serializer.jsonwrapper.jacksonwrapper to com.fasterxml.jackson.databind.JsonNode;
 
     // service provider interfaces
     uses com.azure.core.util.tracing.Tracer;
