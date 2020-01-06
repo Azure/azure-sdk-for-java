@@ -6,22 +6,20 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 
-import java.util.List;
-
 /**
- * Sample demonstrate how to analyze sentiment of a text input.
+ * Sample demonstrates how to analyze the sentiment of an input text.
  */
 public class AnalyzeSentiment {
     /**
-     * Main method to invoke this demo about how to analyze sentiment of a text input.
+     * Main method to invoke this demo about how to analyze the sentiment of an input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
 
         // The text that need be analysed.
@@ -31,16 +29,15 @@ public class AnalyzeSentiment {
 
         final TextSentiment documentSentiment = sentimentResult.getDocumentSentiment();
         System.out.printf(
-            "Recognized TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.%n",
+            "Recognized sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
             documentSentiment.getTextSentimentClass(),
             documentSentiment.getPositiveScore(),
             documentSentiment.getNeutralScore(),
             documentSentiment.getNegativeScore());
 
-        final List<TextSentiment> sentiments = sentimentResult.getSentenceSentiments();
-        for (TextSentiment textSentiment : sentiments) {
+        for (TextSentiment textSentiment : sentimentResult.getSentenceSentiments()) {
             System.out.printf(
-                "Recognized Sentence TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.%n",
+                "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
                 textSentiment.getTextSentimentClass(),
                 textSentiment.getPositiveScore(),
                 textSentiment.getNeutralScore(),
