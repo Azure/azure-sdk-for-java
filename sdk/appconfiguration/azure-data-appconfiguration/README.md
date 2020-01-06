@@ -23,7 +23,7 @@ Use the client library for App Configuration to create and manage application co
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-appconfiguration</artifactId>
-    <version>1.0.0-beta.8</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,7 +52,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-appconfiguration</artifactId>
-    <version>1.0.0-beta.8</version>
+    <version>1.0.1</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
