@@ -27,8 +27,8 @@ class ChangeFeedQueryImpl<T extends Resource> {
     private final String documentsLink;
     private final ChangeFeedOptions options;
 
-    public ChangeFeedQueryImpl(RxDocumentClientImpl client, 
-            ResourceType resourceType, 
+    public ChangeFeedQueryImpl(RxDocumentClientImpl client,
+            ResourceType resourceType,
             Class<T> klass,
             String collectionLink,
             ChangeFeedOptions changeFeedOptions) {
@@ -38,7 +38,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         this.klass = klass;
         this.documentsLink = Utils.joinPath(collectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         changeFeedOptions = changeFeedOptions != null ? changeFeedOptions: new ChangeFeedOptions();
-        
+
 
         if (resourceType.isPartitioned() && partitionKeyRangeIdInternal(changeFeedOptions) == null && changeFeedOptions.getPartitionKey() == null) {
             throw new IllegalArgumentException(RMResources.PartitionKeyRangeIdOrPartitionKeyMustBeSpecified);
@@ -53,7 +53,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         }
 
         String initialNextIfNoneMatch = null;
-        
+
         boolean canUseStartFromBeginning = true;
         if (changeFeedOptions.getRequestContinuation() != null) {
             initialNextIfNoneMatch = changeFeedOptions.getRequestContinuation();
@@ -86,7 +86,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         headers.put(HttpConstants.HttpHeaders.A_IM, HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
 
         if (options.getPartitionKey() != null) {
-            PartitionKeyInternal partitionKey = options.getPartitionKey().getInternalPartitionKey();
+            PartitionKeyInternal partitionKey = BridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
             headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKey.toJson());
         }
 
@@ -114,7 +114,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         newOps.setRequestContinuation(continuationToken);
         return newOps;
     }
-    
+
     public Flux<FeedResponse<T>> executeAsync() {
 
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = this::createDocumentServiceRequest;

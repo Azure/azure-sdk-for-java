@@ -4,6 +4,9 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.NotFoundException;
@@ -11,6 +14,7 @@ import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.SqlParameter;
 import com.azure.cosmos.SqlParameterList;
 import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.Utils;
@@ -37,6 +41,9 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     private final static String QUERY_FIELD_NAME = "prop";
     private final static String ORDER_BY_FIELD_NAME = "_ts";
     private final static int MAX_TOP_QUERY_COUNT = 2000;
+    private AsyncDocumentClient client;
+    private DocumentCollection collection;
+    private String nameCollectionLink;
 
     private ConcurrentHashMap<Integer, Document> cache;
     private int cacheSize;
@@ -47,6 +54,12 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
 
     @Override
     protected void init() {
+        // TODO: move read my writes to use v4 APIs
+        this.client =  CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
+        Database database = DocDBUtils.getDatabase(client, configuration.getDatabaseId());
+        this.collection = DocDBUtils.getCollection(client, database.getSelfLink(), configuration.getCollectionId());
+        this.nameCollectionLink = String.format("dbs/%s/colls/%s", database.getId(), collection.getId());
+
         this.cacheSize = configuration.getNumberOfPreCreatedDocuments();
         this.cache = new ConcurrentHashMap<>();
         this.populateCache();
@@ -232,7 +245,6 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     private Flux<Document> xPartitionQuery(SqlQuerySpec query) {
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(-1);
-        options.setEnableCrossPartitionQuery(true);
 
         return client.<Document>queryDocuments(getCollectionLink(), query, options)
                 .flatMap(p -> Flux.fromIterable(p.getResults()));
@@ -408,6 +420,22 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
             return whereClause == null ?
                     new SqlQuerySpec(stringBuilder.toString()) :
                     new SqlQuerySpec(stringBuilder.toString(), whereClause.getSqlParameterCollection());
+        }
+    }
+
+    protected String getCollectionLink() {
+        if (configuration.isUseNameLink()) {
+            return this.nameCollectionLink;
+        } else {
+            return collection.getSelfLink();
+        }
+    }
+
+    protected String getDocumentLink(Document doc) {
+        if (configuration.isUseNameLink()) {
+            return this.nameCollectionLink + "/docs/" + doc.getId();
+        } else {
+            return doc.getSelfLink();
         }
     }
 }

@@ -27,6 +27,7 @@ public class FeedResponseDiagnostics {
 
     /**
      * Returns the textual representation of feed response metrics
+     *
      * @return Textual representation of feed response metrics
      */
     @Override
@@ -35,7 +36,10 @@ public class FeedResponseDiagnostics {
             return StringUtils.EMPTY;
         }
         StringBuilder stringBuilder = new StringBuilder();
-        queryMetricsMap.forEach((key, value) -> stringBuilder.append(key).append("=").append(value.toString()).append("\n"));
+        queryMetricsMap.forEach((key, value) -> stringBuilder.append(key)
+                                                    .append("=")
+                                                    .append(value.toString())
+                                                    .append("\n"));
         return stringBuilder.toString();
     }
 }

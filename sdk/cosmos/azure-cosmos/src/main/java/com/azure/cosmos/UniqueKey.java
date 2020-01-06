@@ -9,11 +9,14 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Represents a unique key on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service.
- *
+ * Represents a unique key on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos 
+ * DB service.
+ * <p>
  * 1) For partitioned collections, the value of partition key is implicitly a part of each unique key.
  * 2) Uniqueness constraint is also enforced for missing values.
- * For instance, if unique key policy defines a unique key with single property path, there could be only one document that has missing value for this property.
+ * For instance, if unique key policy defines a unique key with single property path, there could be only one 
+ * document that has missing value for this property.
+ *
  * @see UniqueKeyPolicy
  */
 public class UniqueKey extends JsonSerializable {
@@ -29,7 +32,7 @@ public class UniqueKey extends JsonSerializable {
 
     /**
      * Gets the paths, a set of which must be unique for each document in the Azure Cosmos DB service.
-     *
+     * <p>
      * The paths to enforce uniqueness on. Each path is a rooted path of the unique property in the document,
      * such as "/name/first".
      *
@@ -50,7 +53,7 @@ public class UniqueKey extends JsonSerializable {
 
     /**
      * Sets the paths, a set of which must be unique for each document in the Azure Cosmos DB service.
-     *
+     * <p>
      * The paths to enforce uniqueness on. Each path is a rooted path of the unique property in the document,
      * such as "/name/first".
      *

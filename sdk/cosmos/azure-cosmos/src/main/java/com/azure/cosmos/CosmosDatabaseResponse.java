@@ -11,7 +11,8 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
         super(response.resourceResponseWrapper, response.getProperties());
         this.responseWrapper = response;
         if (responseWrapper.getDatabase() != null) {
-            this.database = new CosmosDatabase(responseWrapper.getDatabase().getId(), client, responseWrapper.getDatabase());
+            this.database = new CosmosDatabase(responseWrapper.getDatabase().getId(), client,
+                responseWrapper.getDatabase());
         } else {
             this.database = null;
         }

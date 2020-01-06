@@ -38,9 +38,10 @@ import java.util.Set;
 
 class ClientSideRequestStatistics {
 
-    private final static int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
+    private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
 
-    private final static DateTimeFormatter responseTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss.SSS").withLocale(Locale.US);
+    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
+        DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US);
     private final static OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -108,8 +109,8 @@ class ClientSideRequestStatistics {
                 this.regionsContacted.add(locationEndPoint);
             }
 
-            if (storeResponseStatistics.requestOperationType == OperationType.Head ||
-                storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
+            if (storeResponseStatistics.requestOperationType == OperationType.Head
+                    || storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
                 this.supplementalResponseStatisticsList.add(storeResponseStatistics);
             } else {
                 this.responseStatisticsList.add(storeResponseStatistics);
@@ -187,9 +188,11 @@ class ClientSideRequestStatistics {
         synchronized (this) {
             requestLatency= getRequestLatency().toMillis();
             //  only take last 10 responses from this list - this has potential of having large number of entries.
-            //  since this is for establishing consistency, we can make do with the last responses to paint a meaningful picture.
+            //  since this is for establishing consistency, we can make do with the last responses to paint a
+            //  meaningful picture.
             int supplementalResponseStatisticsListCount = this.supplementalResponseStatisticsList.size();
-            int initialIndex = Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
+            int initialIndex =
+                Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
             if (initialIndex != 0) {
                 this.supplementalResponseStatisticsList.removeAll(this.supplementalResponseStatisticsList.subList(0, initialIndex));
             }
@@ -248,7 +251,7 @@ class ClientSideRequestStatistics {
         if (dateTime == null) {
             return null;
         }
-        return dateTime.format(responseTimeFormatter);
+        return dateTime.format(RESPONSE_TIME_FORMATTER);
     }
 
     public void recordRetryContext(RxDocumentServiceRequest request) {

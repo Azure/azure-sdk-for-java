@@ -248,7 +248,7 @@ public class AddressResolverTest {
         int collectionCacheRefreshed,
         int routingMapCacheRefreshed,
         int addressCacheRefreshed,
-        boolean nameBased) throws Exception {
+        boolean nameBased) throws Exception{
 
         if (targetServiceIdentity != null && targetPartitionKeyRange != null) {
             targetServiceIdentity.partitionKeyRangeIds.add(new PartitionKeyRangeIdentity(collectionAfterRefresh != null ? collectionAfterRefresh.getResourceId() : collectionBeforeRefresh.getResourceId(), targetPartitionKeyRange.getId()));

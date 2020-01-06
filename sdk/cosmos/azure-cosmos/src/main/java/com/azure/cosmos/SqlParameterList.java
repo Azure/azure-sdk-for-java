@@ -15,7 +15,7 @@ import java.util.ListIterator;
  */
 public final class SqlParameterList implements List<SqlParameter> {
 
-    private List<SqlParameter> parameters;
+    private final List<SqlParameter> parameters;
 
     /**
      * Initializes a new instance of the SqlParameterList class.
@@ -28,6 +28,7 @@ public final class SqlParameterList implements List<SqlParameter> {
      * Initializes a new instance of the SqlParameterList class from an array of parameters.
      *
      * @param parameters the array of parameters.
+     * @throws IllegalArgumentException thrown if an error occurs
      */
     public SqlParameterList(SqlParameter... parameters) {
         if (parameters == null) {
@@ -41,6 +42,7 @@ public final class SqlParameterList implements List<SqlParameter> {
      * Initializes a new instance of the SqlParameterList class from a collection of parameters.
      *
      * @param parameters the collection of parameters.
+     * @throws IllegalArgumentException thrown if an error occurs
      */
     public SqlParameterList(Collection<SqlParameter> parameters) {
         if (parameters == null) {

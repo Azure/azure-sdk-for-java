@@ -70,11 +70,11 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         IncludedPath includedPath = new IncludedPath();
         includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
-        Index stringIndex = Index.Range(DataType.STRING);
+        Index stringIndex = Index.range(DataType.STRING);
         BridgeInternal.setProperty(stringIndex, "getPrecision", -1);
         indexes.add(stringIndex);
 
-        Index numberIndex = Index.Range(DataType.NUMBER);
+        Index numberIndex = Index.range(DataType.NUMBER);
         BridgeInternal.setProperty(numberIndex, "getPrecision", -1);
         indexes.add(numberIndex);
         includedPath.setIndexes(indexes);
@@ -96,7 +96,6 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
     private void warmUp() {
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
         // ensure collection is cached
         createdCollection.queryItems("SELECT * FROM r", options, CosmosItemProperties.class).blockFirst();
     }
@@ -117,7 +116,6 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     @Test(groups = { "long" }, dataProvider = "queryProvider", timeOut = 2 * TIMEOUT)
     public void query(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(maxItemCount);
         options.setMaxDegreeOfParallelism(2);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);

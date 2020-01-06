@@ -145,7 +145,7 @@ public class OfferQueryTest extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = 2*SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(client, databaseId);
         safeClose(client);

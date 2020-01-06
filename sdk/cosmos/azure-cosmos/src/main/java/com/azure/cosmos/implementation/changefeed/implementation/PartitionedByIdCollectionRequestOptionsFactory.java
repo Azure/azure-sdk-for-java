@@ -23,7 +23,6 @@ class PartitionedByIdCollectionRequestOptionsFactory implements RequestOptionsFa
     @Override
     public FeedOptions createFeedOptions() {
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.setEnableCrossPartitionQuery(true);
 
         return feedOptions;
     }

@@ -42,7 +42,7 @@ public class CosmosStoredProcedure {
      */
     public CosmosStoredProcedureResponse read() throws CosmosClientException {
         return container.getScripts()
-                       .mapStoredProcedureResponseAndBlock(storedProcedure.read());
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.read());
     }
 
     /**
@@ -52,9 +52,10 @@ public class CosmosStoredProcedure {
      * @return the cosmos sync stored procedure response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosStoredProcedureResponse read(CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
+    public CosmosStoredProcedureResponse read(CosmosStoredProcedureRequestOptions options) throws
+        CosmosClientException {
         return container.getScripts()
-                       .mapStoredProcedureResponseAndBlock(storedProcedure.read(options));
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.read(options));
     }
 
     /**
@@ -65,7 +66,7 @@ public class CosmosStoredProcedure {
      */
     public CosmosStoredProcedureResponse delete() throws CosmosClientException {
         return container.getScripts()
-                       .mapStoredProcedureResponseAndBlock(storedProcedure.delete());
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.delete());
     }
 
     /**
@@ -77,7 +78,7 @@ public class CosmosStoredProcedure {
      */
     CosmosStoredProcedureResponse delete(CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
         return container.getScripts()
-                       .mapStoredProcedureResponseAndBlock(storedProcedure.delete(options));
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.delete(options));
     }
 
     /**
@@ -88,10 +89,11 @@ public class CosmosStoredProcedure {
      * @return the cosmos sync stored procedure response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosStoredProcedureResponse execute(Object[] procedureParams,
-                                                 CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
+    public CosmosStoredProcedureResponse execute(
+        Object[] procedureParams,
+        CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
         return container.getScripts()
-                       .mapStoredProcedureResponseAndBlock(storedProcedure.execute(procedureParams, options));
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.execute(procedureParams, options));
     }
 
     /**
@@ -101,10 +103,10 @@ public class CosmosStoredProcedure {
      * @return the cosmos sync stored procedure response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosStoredProcedureResponse replace(CosmosStoredProcedureProperties storedProcedureSettings)
-            throws CosmosClientException {
+    public CosmosStoredProcedureResponse replace(CosmosStoredProcedureProperties storedProcedureSettings) throws
+        CosmosClientException {
         return container.getScripts()
-                       .mapStoredProcedureResponseAndBlock(storedProcedure.replace(storedProcedureSettings));
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.replace(storedProcedureSettings));
     }
 
     /**
@@ -115,10 +117,11 @@ public class CosmosStoredProcedure {
      * @return the cosmos sync stored procedure response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosStoredProcedureResponse replace(CosmosStoredProcedureProperties storedProcedureSettings,
-                                                 CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
+    public CosmosStoredProcedureResponse replace(
+        CosmosStoredProcedureProperties storedProcedureSettings,
+        CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
         return container.getScripts()
-                       .mapStoredProcedureResponseAndBlock(storedProcedure.replace(storedProcedureSettings, options));
+                   .mapStoredProcedureResponseAndBlock(storedProcedure.replace(storedProcedureSettings, options));
 
     }
 }

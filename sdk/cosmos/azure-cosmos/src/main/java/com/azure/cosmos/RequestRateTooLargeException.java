@@ -17,7 +17,10 @@ public class RequestRateTooLargeException extends CosmosClientException {
         this(RMResources.TooManyRequests, null);
     }
 
-    public RequestRateTooLargeException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public RequestRateTooLargeException(CosmosError cosmosError,
+                                        long lsn,
+                                        String partitionKeyRangeId,
+                                        Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.TOO_MANY_REQUESTS, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -28,8 +31,8 @@ public class RequestRateTooLargeException extends CosmosClientException {
     }
 
     RequestRateTooLargeException(String message,
-                                        Exception innerException,
-                                        URI requestUri) {
+                                 Exception innerException,
+                                 URI requestUri) {
         this(message, innerException, null, requestUri);
     }
 
@@ -38,7 +41,8 @@ public class RequestRateTooLargeException extends CosmosClientException {
     }
 
     public RequestRateTooLargeException(String message, HttpHeaders headers, URI requestUri) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUri != null ? requestUri.toString() : null);
+        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
+            requestUri != null ? requestUri.toString() : null);
     }
 
     RequestRateTooLargeException(String message, HttpHeaders headers, String requestUriString) {
@@ -46,9 +50,10 @@ public class RequestRateTooLargeException extends CosmosClientException {
     }
 
     RequestRateTooLargeException(String message,
-                                        Exception innerException,
-                                        HttpHeaders headers,
-                                        URI requestUri) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUri != null ? requestUri.toString() : null);
+                                 Exception innerException,
+                                 HttpHeaders headers,
+                                 URI requestUri) {
+        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
+            requestUri != null ? requestUri.toString() : null);
     }
 }

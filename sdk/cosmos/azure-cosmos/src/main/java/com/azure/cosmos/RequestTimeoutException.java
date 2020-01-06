@@ -18,7 +18,8 @@ public class RequestTimeoutException extends CosmosClientException {
         this(RMResources.RequestTimeout, null);
     }
 
-    public RequestTimeoutException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public RequestTimeoutException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
+                                   Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.REQUEST_TIMEOUT, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -29,9 +30,9 @@ public class RequestTimeoutException extends CosmosClientException {
     }
 
     RequestTimeoutException(String message,
-                                   Exception innerException,
-                                   URI requestUri,
-                                   String localIpAddress) {
+                            Exception innerException,
+                            URI requestUri,
+                            String localIpAddress) {
         this(message(localIpAddress, message), innerException, null, requestUri);
     }
 
@@ -40,7 +41,13 @@ public class RequestTimeoutException extends CosmosClientException {
     }
 
     public RequestTimeoutException(String message, HttpHeaders headers, URI requestUrl) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUrl != null ? requestUrl.toString() : null);
+        super(message, 
+            null,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+            requestUrl != null
+                ? requestUrl.toString()
+                : null);
     }
 
     RequestTimeoutException(String message, HttpHeaders headers, String requestUriString) {
@@ -48,10 +55,11 @@ public class RequestTimeoutException extends CosmosClientException {
     }
 
     RequestTimeoutException(String message,
-                                   Exception innerException,
-                                   HttpHeaders headers,
-                                   URI requestUrl) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUrl != null ? requestUrl.toString() : null);
+                            Exception innerException,
+                            HttpHeaders headers,
+                            URI requestUrl) {
+        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+            requestUrl != null ? requestUrl.toString() : null);
     }
 
     private static String message(String localIP, String baseMessage) {

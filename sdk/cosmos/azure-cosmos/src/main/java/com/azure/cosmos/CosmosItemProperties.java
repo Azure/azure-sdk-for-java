@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class CosmosItemProperties extends Resource {
 
-    private static final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+    private static final ObjectMapper MAPPER = Utils.getSimpleObjectMapper();
 
     /**
      * Initialize an empty CosmosItemProperties object.
@@ -42,9 +42,6 @@ public class CosmosItemProperties extends Resource {
 
     /**
      * fromObject returns Document for compatibility with V2 sdk
-     *
-     * @param cosmosItem
-     * @return
      */
     static Document fromObject(Object cosmosItem) {
         Document typedItem;
@@ -52,7 +49,7 @@ public class CosmosItemProperties extends Resource {
             typedItem = new Document(((CosmosItemProperties) cosmosItem).toJson());
         } else {
             try {
-                return new Document(CosmosItemProperties.mapper.writeValueAsString(cosmosItem));
+                return new Document(CosmosItemProperties.MAPPER.writeValueAsString(cosmosItem));
             } catch (IOException e) {
                 throw new IllegalArgumentException("Can't serialize the object into the json string", e);
             }
@@ -62,7 +59,7 @@ public class CosmosItemProperties extends Resource {
 
     static List<CosmosItemProperties> getFromV2Results(List<Document> results) {
         return results.stream().map(document -> new CosmosItemProperties(document.toJson()))
-                .collect(Collectors.toList());
+                   .collect(Collectors.toList());
     }
 
     static <T> List<T> getTypedResultsFromV2Results(List<Document> results, Class<T> klass) {
@@ -70,8 +67,16 @@ public class CosmosItemProperties extends Resource {
                    .collect(Collectors.toList());
     }
     
+    /**
+     * Gets object.
+     *
+     * @param <T> the type parameter
+     * @param klass the klass
+     * @return the object
+     * @throws IOException the io exception
+     */
     public <T> T getObject(Class<?> klass) throws IOException {
-        return (T) mapper.readValue(this.toJson(), klass);
+        return (T) MAPPER.readValue(this.toJson(), klass);
     }
 
 }

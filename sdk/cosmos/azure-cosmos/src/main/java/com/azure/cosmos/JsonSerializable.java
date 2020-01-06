@@ -30,10 +30,10 @@ import java.util.Map;
  * Represents a base resource that can be serialized to JSON in the Azure Cosmos DB database service.
  */
 public class JsonSerializable {
+    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private final static Logger logger = LoggerFactory.getLogger(JsonSerializable.class);
-    private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
-    private ObjectMapper om;
     transient ObjectNode propertyBag = null;
+    private ObjectMapper om;
 
     protected JsonSerializable() {
         this.propertyBag = OBJECT_MAPPER.createObjectNode();
@@ -69,9 +69,46 @@ public class JsonSerializable {
         this.propertyBag = objectNode;
     }
 
+    private static void checkForValidPOJO(Class<?> c) {
+        if (c.isAnonymousClass() || c.isLocalClass()) {
+            throw new IllegalArgumentException(
+                String.format("%s can't be an anonymous or local class.", c.getName()));
+        }
+        if (c.isMemberClass() && !Modifier.isStatic(c.getModifiers())) {
+            throw new IllegalArgumentException(
+                String.format("%s must be static if it's a member class.", c.getName()));
+        }
+    }
+
+    static Object getValue(JsonNode value) {
+        if (value.isValueNode()) {
+            switch (value.getNodeType()) {
+                case BOOLEAN:
+                    return value.asBoolean();
+                case NUMBER:
+                    if (value.isInt()) {
+                        return value.asInt();
+                    } else if (value.isLong()) {
+                        return value.asLong();
+                    } else if (value.isDouble()) {
+                        return value.asDouble();
+                    } else{
+                        return value;
+                    }
+                case STRING:
+                    return value.asText();
+                default:
+                    return value;
+            }
+        }
+        return value;
+    }
+
     private ObjectMapper getMapper() {
         // TODO: Made package private due to #153. #171 adding custom serialization options back.
-        if (this.om != null) { return this.om; }
+        if (this.om != null) {
+            return this.om;
+        }
         return OBJECT_MAPPER;
     }
 
@@ -79,19 +116,8 @@ public class JsonSerializable {
         this.om = om;
     }
 
-    private static void checkForValidPOJO(Class<?> c) {
-        if (c.isAnonymousClass() || c.isLocalClass()) {
-            throw new IllegalArgumentException(
-                    String.format("%s can't be an anonymous or local class.", c.getName()));
-        }
-        if (c.isMemberClass() && !Modifier.isStatic(c.getModifiers())) {
-            throw new IllegalArgumentException(
-                    String.format("%s must be static if it's a member class.", c.getName()));
-        }
-    }
-
     @JsonIgnore
-    public Logger getLogger() {
+    protected Logger getLogger() {
         return logger;
     }
 
@@ -129,9 +155,9 @@ public class JsonSerializable {
     /**
      * Sets the value of a property.
      *
-     * @param <T>          the type of the object.
+     * @param <T> the type of the object.
      * @param propertyName the property to set.
-     * @param value        the value of the property.
+     * @param value the value of the property.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     <T> void set(String propertyName, T value) {
@@ -145,13 +171,15 @@ public class JsonSerializable {
             this.propertyBag.set(propertyName, jsonArray);
         } else if (value instanceof JsonNode) {
             this.propertyBag.set(propertyName, (JsonNode) value);
-        }  else if (value instanceof JsonSerializable) {
+        } else if (value instanceof JsonSerializable) {
             // JsonSerializable
             JsonSerializable castedValue = (JsonSerializable) value;
             if (castedValue != null) {
                 castedValue.populatePropertyBag();
             }
-            this.propertyBag.set(propertyName, castedValue != null ? castedValue.propertyBag : null);
+            this.propertyBag.set(propertyName, castedValue != null
+                                                   ? castedValue.propertyBag
+                                                   : null);
         } else {
             // POJO, ObjectNode, number (includes int, float, double etc), boolean,
             // and string.
@@ -175,7 +203,8 @@ public class JsonSerializable {
                 // JsonSerializable
                 JsonSerializable castedValue = (JsonSerializable) childValue;
                 castedValue.populatePropertyBag();
-                targetArray.add(castedValue.propertyBag != null ? castedValue.propertyBag : this.getMapper().createObjectNode());
+                targetArray.add(castedValue.propertyBag != null ? castedValue.propertyBag
+                                    : this.getMapper().createObjectNode());
             } else {
                 // POJO, JSONObject, NUMBER (includes Int, Float, Double etc),
                 // Boolean, and STRING.
@@ -271,15 +300,17 @@ public class JsonSerializable {
     /**
      * Gets an object value.
      *
-     * @param <T>          the type of the object.
+     * @param <T> the type of the object.
      * @param propertyName the property to get.
-     * @param c            the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
-     *                     and a static one.
-     * @param convertFromCamelCase  boolean indicating if String should be converted from camel case to upper case separated by underscore,
-     *                              before converting to required class.
+     * @param c the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
+     * and a static one.
+     * @param convertFromCamelCase boolean indicating if String should be converted from camel case to upper case
+     * separated by underscore,
+     * before converting to required class.
      * @return the object value.
+     * @throws IllegalStateException thrown if an error occurs
      */
-    public <T> T getObject(String propertyName, Class<T> c, boolean ... convertFromCamelCase) {
+    public <T> T getObject(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             JsonNode jsonObj = propertyBag.get(propertyName);
             if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
@@ -289,22 +320,24 @@ public class JsonSerializable {
             } else if (Enum.class.isAssignableFrom(c)) {
                 try {
                     String value = String.class.cast(getValue(jsonObj));
-                    value = convertFromCamelCase.length > 0 && convertFromCamelCase[0] ? Strings.fromCamelCaseToUpperCase(value) : value;
+                    value = convertFromCamelCase.length > 0 && convertFromCamelCase[0]
+                                ? Strings.fromCamelCaseToUpperCase(value) : value;
                     return c.cast(c.getMethod("valueOf", String.class).invoke(null, value));
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                        | NoSuchMethodException | SecurityException e) {
+                             | NoSuchMethodException | SecurityException e) {
                     throw new IllegalStateException("Failed to create enum.", e);
                 }
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
                 try {
                     Constructor<T> constructor = c.getDeclaredConstructor(String.class);
-                    if(Modifier.isPrivate(constructor.getModifiers())) {
+                    if (Modifier.isPrivate(constructor.getModifiers())) {
                         constructor.setAccessible(true);
                     }
                     return constructor.newInstance(toJson(jsonObj));
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                        | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                    throw new IllegalStateException("Failed to instantiate class object.", e);
+                             | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                    throw new IllegalStateException(
+                        "Failed to instantiate class object.", e);
                 }
             } else {
                 // POJO
@@ -323,15 +356,17 @@ public class JsonSerializable {
     /**
      * Gets an object List.
      *
-     * @param <T>          the type of the objects in the List.
+     * @param <T> the type of the objects in the List.
      * @param propertyName the property to get
-     * @param c            the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
-     *                     and a static one.
-     * @param convertFromCamelCase  boolean indicating if String should be converted from camel case to upper case separated by underscore,
-     *                              before converting to required class.
+     * @param c the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
+     * and a static one.
+     * @param convertFromCamelCase boolean indicating if String should be converted from camel case to upper case
+     * separated by underscore,
+     * before converting to required class.
      * @return the object collection.
+     * @throws IllegalStateException thrown if an error occurs
      */
-    public <T> List<T> getList(String propertyName, Class<T> c, boolean ... convertFromCamelCase) {
+    public <T> List<T> getList(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(propertyName);
             ArrayList<T> result = new ArrayList<T>();
@@ -359,23 +394,25 @@ public class JsonSerializable {
                 } else if (isEnumClass) {
                     try {
                         String value = String.class.cast(getValue(n));
-                        value = convertFromCamelCase.length > 0 && convertFromCamelCase[0] ? Strings.fromCamelCaseToUpperCase(value) : value;
+                        value = convertFromCamelCase.length > 0 && convertFromCamelCase[0]
+                                    ? Strings.fromCamelCaseToUpperCase(value) : value;
                         result.add(c.cast(c.getMethod("valueOf", String.class).invoke(null, value)));
                     } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                            | NoSuchMethodException | SecurityException e) {
+                                 | NoSuchMethodException | SecurityException e) {
                         throw new IllegalStateException("Failed to create enum.", e);
                     }
                 } else if (isJsonSerializable) {
                     // JsonSerializable
                     try {
                         Constructor<T> constructor = c.getDeclaredConstructor(String.class);
-                        if(Modifier.isPrivate(constructor.getModifiers())) {
+                        if (Modifier.isPrivate(constructor.getModifiers())) {
                             constructor.setAccessible(true);
                         }
                         result.add(constructor.newInstance(toJson(n)));
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                            | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                        throw new IllegalStateException("Failed to instantiate class object.", e);
+                                 | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                        throw new IllegalStateException(
+                            "Failed to instantiate class object.", e);
                     }
                 } else {
                     // POJO
@@ -394,15 +431,16 @@ public class JsonSerializable {
     /**
      * Gets an object collection.
      *
-     * @param <T>          the type of the objects in the collection.
+     * @param <T> the type of the objects in the collection.
      * @param propertyName the property to get
-     * @param c            the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
-     *                     and a static one.
-     * @param convertFromCamelCase  boolean indicating if String should be converted from camel case to upper case separated by underscore,
-     *                              before converting to required class.
+     * @param c the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
+     * and a static one.
+     * @param convertFromCamelCase boolean indicating if String should be converted from camel case to upper case
+     * separated by underscore,
+     * before converting to required class.
      * @return the object collection.
      */
-    public <T> Collection<T> getCollection(String propertyName, Class<T> c, boolean ... convertFromCamelCase) {
+    public <T> Collection<T> getCollection(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         return getList(propertyName, c, convertFromCamelCase);
     }
 
@@ -474,35 +512,16 @@ public class JsonSerializable {
         return null;
     }
 
-    static Object getValue(JsonNode value) {
-        if (value.isValueNode()) {
-            switch (value.getNodeType()) {
-                case BOOLEAN:
-                    return value.asBoolean();
-                case NUMBER:
-                    if (value.isInt()) {
-                        return value.asInt();
-                    } else if (value.isLong()) {
-                        return value.asLong();
-                    } else if (value.isDouble()) {
-                        return value.asDouble();
-                    }
-                case STRING :
-                    return value.asText();
-            }
-        }
-        return value;
-    }
-
-    private ObjectNode fromJson(String json){
+    private ObjectNode fromJson(String json) {
         try {
             return (ObjectNode) getMapper().readTree(json);
         } catch (IOException e) {
-            throw new IllegalArgumentException(String.format("Unable to parse JSON %s", json), e);
+            throw new IllegalArgumentException(
+                String.format("Unable to parse JSON %s", json), e);
         }
     }
 
-    private String toJson(Object object){
+    private String toJson(Object object) {
         try {
             return getMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
@@ -510,7 +529,7 @@ public class JsonSerializable {
         }
     }
 
-    private String toPrettyJson(Object object){
+    private String toPrettyJson(Object object) {
         try {
             return getMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
         } catch (JsonProcessingException e) {
@@ -522,22 +541,23 @@ public class JsonSerializable {
      * Converts to an Object (only POJOs and JSONObject are supported).
      *
      * @param <T> the type of the object.
-     * @param c   the class of the object, either a POJO class or JSONObject. If c is a POJO class, it must be a member
-     *            (and not an anonymous or local) and a static one.
+     * @param c the class of the object, either a POJO class or JSONObject. If c is a POJO class, it must be a member
+     * (and not an anonymous or local) and a static one.
      * @return the POJO.
+     * @throws IllegalArgumentException thrown if an error occurs
      */
     public <T> T toObject(Class<T> c) {
         // TODO: We have to remove this if we do not want to support CosmosItemProperties anymore, and change all the
         //  tests accordingly
-        if(CosmosItemProperties.class.isAssignableFrom(c)){
+        if (CosmosItemProperties.class.isAssignableFrom(c)) {
             return (T) new CosmosItemProperties(this.toJson());
         }
-        
+
         if (JsonSerializable.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
                 || Number.class.isAssignableFrom(c) || Boolean.class.isAssignableFrom(c)) {
             return c.cast(this.get(Constants.Properties.VALUE));
         }
-        if (List.class.isAssignableFrom(c)){
+        if (List.class.isAssignableFrom(c)) {
             Object o = this.get(Constants.Properties.VALUE);
             try {
                 return this.getMapper().readValue(o.toString(), c);
@@ -548,7 +568,8 @@ public class JsonSerializable {
         if (ObjectNode.class.isAssignableFrom(c)) {
             // JSONObject
             if (ObjectNode.class != c) {
-                throw new IllegalArgumentException("We support JSONObject but not its sub-classes.");
+                throw new IllegalArgumentException(
+                    "We support JSONObject but not its sub-classes.");
             }
             return c.cast(this.propertyBag);
         } else {
@@ -579,7 +600,7 @@ public class JsonSerializable {
      */
     public String toJson(SerializationFormattingPolicy formattingPolicy) {
         this.populatePropertyBag();
-        if (SerializationFormattingPolicy.INDENTED.equals(formattingPolicy) ) {
+        if (SerializationFormattingPolicy.INDENTED.equals(formattingPolicy)) {
             return toPrettyJson(propertyBag);
         } else {
             return toJson(propertyBag);
@@ -588,7 +609,7 @@ public class JsonSerializable {
 
     /**
      * Gets Simple STRING representation of property bag.
-     *
+     * <p>
      * For proper conversion to json and inclusion of the default values
      * use {@link #toJson()}.
      *

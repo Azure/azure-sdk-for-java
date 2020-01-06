@@ -16,7 +16,8 @@ public class ForbiddenException extends CosmosClientException {
         this(RMResources.Forbidden);
     }
 
-    public ForbiddenException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public ForbiddenException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
+                              Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.FORBIDDEN, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -39,13 +40,13 @@ public class ForbiddenException extends CosmosClientException {
     }
 
     ForbiddenException(String message,
-                              Exception innerException,
-                              HttpHeaders headers,
-                              String requestUrlString) {
+                       Exception innerException,
+                       HttpHeaders headers,
+                       String requestUrlString) {
         super(String.format("%s: %s", RMResources.Forbidden, message),
-                innerException,
-                HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.FORBIDDEN,
-                requestUrlString);
+            innerException,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.FORBIDDEN,
+            requestUrlString);
     }
 }

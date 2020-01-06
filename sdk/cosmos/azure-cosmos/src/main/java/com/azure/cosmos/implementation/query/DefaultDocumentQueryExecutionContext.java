@@ -29,12 +29,14 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.routing.RoutingMapProviderHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -76,7 +78,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     }
 
     protected PartitionKeyInternal getPartitionKeyInternal() {
-        return this.feedOptions.partitionKey() == null ? null : feedOptions.partitionKey().getInternalPartitionKey();
+        return this.feedOptions.partitionKey() == null ? null : BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey());
     }
 
     @Override
@@ -112,11 +114,18 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     			.getPaginatedQueryResultAsObservable(newFeedOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
     }
 
-    public Mono<ValueHolder<List<PartitionKeyRange>>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
-        // TODO: FIXME this needs to be revisited
+    public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
+        return RoutingMapProviderHelper.getOverlappingRanges(client.getPartitionKeyRangeCache(), resourceId, queryRanges);
+    }
 
-        Range<String> r = new Range<>("", "FF", true, false);
-        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(resourceId, r, false, null);
+    public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId,
+                                                                                      String partitionKeyRangeIdInternal) {
+        return client.getPartitionKeyRangeCache()
+                   .tryGetPartitionKeyRangeByIdAsync(resourceId,
+                                                     partitionKeyRangeIdInternal,
+                                                     false,
+                                                     null)
+                   .flatMap(partitionKeyRange -> Mono.just(Collections.singletonList(partitionKeyRange.v)));
     }
 
     protected Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeInternalAsyncFunc() {

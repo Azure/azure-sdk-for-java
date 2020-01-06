@@ -23,9 +23,8 @@ public final class SqlQuerySpec extends JsonSerializable {
     /**
      * Initializes a new instance of the SqlQuerySpec class with the text of the
      * query.
-     * 
-     * @param queryText
-     *            the query text.
+     *
+     * @param queryText the query text.
      */
     public SqlQuerySpec(String queryText) {
         super();
@@ -35,8 +34,8 @@ public final class SqlQuerySpec extends JsonSerializable {
     /**
      * Initializes a new instance of the SqlQuerySpec class with the text of the
      * query and parameters.
-     * 
-     * @param queryText  the query text.
+     *
+     * @param queryText the query text.
      * @param parameters the query parameters.
      */
     public SqlQuerySpec(String queryText, SqlParameterList parameters) {
@@ -47,7 +46,7 @@ public final class SqlQuerySpec extends JsonSerializable {
 
     /**
      * Gets the text of the query.
-     * 
+     *
      * @return the query text.
      */
     public String getQueryText() {
@@ -56,9 +55,8 @@ public final class SqlQuerySpec extends JsonSerializable {
 
     /**
      * Sets the text of the query.
-     * 
-     * @param queryText
-     *            the query text.
+     *
+     * @param queryText the query text.
      * @return the SqlQuerySpec.
      */
     public SqlQuerySpec setQueryText(String queryText) {
@@ -68,7 +66,7 @@ public final class SqlQuerySpec extends JsonSerializable {
 
     /**
      * Gets the collection of query parameters.
-     * 
+     *
      * @return the query parameters.
      */
     public SqlParameterList getParameters() {
@@ -86,9 +84,8 @@ public final class SqlQuerySpec extends JsonSerializable {
 
     /**
      * Sets the collection of query parameters.
-     * 
-     * @param parameters
-     *            the query parameters.
+     *
+     * @param parameters the query parameters.
      * @return the SqlQuerySpec.
      */
     public SqlQuerySpec setParameters(SqlParameterList parameters) {

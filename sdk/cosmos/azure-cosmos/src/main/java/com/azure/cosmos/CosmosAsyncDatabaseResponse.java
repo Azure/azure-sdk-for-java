@@ -5,14 +5,15 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.ResourceResponse;
 
-public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabaseProperties>{
-    private CosmosAsyncDatabase database;
+public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabaseProperties> {
+    private final CosmosAsyncDatabase database;
 
     CosmosAsyncDatabaseResponse(ResourceResponse<Database> response, CosmosAsyncClient client) {
         super(response);
-        if(response.getResource() == null){
+        if (response.getResource() == null) {
             super.setProperties(null);
-        }else{
+            database = null;
+        } else {
             super.setProperties(new CosmosDatabaseProperties(response));
             database = new CosmosAsyncDatabase(this.getProperties().getId(), client);
         }
@@ -41,7 +42,7 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
      *
      * @return the getDatabase quota.
      */
-    public long getDatabaseQuota(){
+    public long getDatabaseQuota() {
         return resourceResponseWrapper.getDatabaseQuota();
     }
 
@@ -50,7 +51,7 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
      *
      * @return the current getDatabase usage.
      */
-    public long getDatabaseUsage(){
+    public long getDatabaseUsage() {
         return resourceResponseWrapper.getDatabaseUsage();
     }
 

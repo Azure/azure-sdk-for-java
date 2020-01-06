@@ -88,7 +88,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
         container.getScripts().createTrigger(trigger);
 
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.setEnableCrossPartitionQuery(true);
+        
         Iterator<FeedResponse<CosmosTriggerProperties>> feedResponseIterator3 =
                 container.getScripts().readAllTriggers(feedOptions);
         assertThat(feedResponseIterator3.hasNext()).isTrue();
@@ -108,7 +108,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
         CosmosTriggerProperties properties = getCosmosTriggerProperties();
         container.getScripts().createTrigger(properties);
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
-        FeedOptions feedOptions = new FeedOptions().setEnableCrossPartitionQuery(true);
+        FeedOptions feedOptions = new FeedOptions();
 
         Iterator<FeedResponse<CosmosTriggerProperties>> feedResponseIterator1 =
                 container.getScripts().queryTriggers(query, feedOptions);

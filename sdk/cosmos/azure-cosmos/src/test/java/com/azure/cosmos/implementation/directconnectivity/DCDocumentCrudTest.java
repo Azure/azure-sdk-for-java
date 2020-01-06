@@ -219,9 +219,9 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
         options.setMaxDegreeOfParallelism(-1);
         options.maxItemCount(100);
+        
         Flux<FeedResponse<Document>> results = client.queryDocuments(getCollectionLink(), "SELECT * FROM r", options);
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
@@ -275,7 +275,8 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
         // validate that all gateway captured requests are non document resources
         for(RxDocumentServiceRequest request: client.getCapturedRequests()) {
-            if (request.getOperationType() == OperationType.Query) {
+            if (request.getOperationType() == OperationType.Query
+                    || request.getOperationType() == OperationType.QueryPlan) {
                 assertThat(request.getPartitionKeyRangeIdentity()).isNull();
             } else {
                 validateResourceTypesSentToGateway.validate(request);

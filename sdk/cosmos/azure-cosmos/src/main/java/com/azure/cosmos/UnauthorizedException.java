@@ -17,7 +17,8 @@ public class UnauthorizedException extends CosmosClientException {
         this(RMResources.Unauthorized);
     }
 
-    public UnauthorizedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public UnauthorizedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
+                                 Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.UNAUTHORIZED, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -40,13 +41,13 @@ public class UnauthorizedException extends CosmosClientException {
     }
 
     UnauthorizedException(String message,
-                                 Exception innerException,
-                                 HttpHeaders headers,
-                                 String requestUri) {
+                          Exception innerException,
+                          HttpHeaders headers,
+                          String requestUri) {
         super(String.format("%s: %s", RMResources.Unauthorized, message),
-                innerException,
-                HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                requestUri);
+            innerException,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.UNAUTHORIZED,
+            requestUri);
     }
 }

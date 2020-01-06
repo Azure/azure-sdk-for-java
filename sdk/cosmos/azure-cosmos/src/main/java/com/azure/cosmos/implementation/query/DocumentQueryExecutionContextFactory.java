@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.CommonsBridgeInternal;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
@@ -15,9 +17,13 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.Range;
+import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,8 +35,10 @@ public class DocumentQueryExecutionContextFactory {
 
     private final static int PageSizeFactorForTop = 5;
 
-    private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(IDocumentQueryClient client, SqlQuerySpec query,
-                                                                                 ResourceType resourceTypeEnum, String resourceLink) {
+    private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(IDocumentQueryClient client,
+                                                                                 SqlQuerySpec query,
+                                                                                 ResourceType resourceTypeEnum,
+                                                                                 String resourceLink) {
 
         RxCollectionCache collectionCache = client.getCollectionCache();
 
@@ -60,29 +68,77 @@ public class DocumentQueryExecutionContextFactory {
             collectionObs = resolveCollection(client, query, resourceTypeEnum, resourceLink).flux();
         }
 
-        // We create a ProxyDocumentQueryExecutionContext that will be initialized with DefaultDocumentQueryExecutionContext
-        // which will be used to send the query to GATEWAY and on getting 400(bad request) with 1004(cross parition query not servable), we initialize it with
-        // PipelinedDocumentQueryExecutionContext by providing the partition query execution info that's needed(which we get from the exception returned from GATEWAY).
+        DefaultDocumentQueryExecutionContext<T> queryExecutionContext = new DefaultDocumentQueryExecutionContext<T>(
+            client,
+            resourceTypeEnum,
+            resourceType,
+            query,
+            feedOptions,
+            resourceLink,
+            correlatedActivityId,
+            isContinuationExpected);
 
-        Flux<ProxyDocumentQueryExecutionContext<T>> proxyQueryExecutionContext =
-                collectionObs.flatMap(collectionValueHolder -> {
+        if (ResourceType.Document != resourceTypeEnum) {
+            return Flux.just(queryExecutionContext);
+        }
 
-                    if (collectionValueHolder.v != null && feedOptions != null && feedOptions.partitionKey() != null && feedOptions.partitionKey().equals(PartitionKey.None)) {
-                        feedOptions.partitionKey(BridgeInternal.getPartitionKey(BridgeInternal.getNonePartitionKey(collectionValueHolder.v.getPartitionKey())));
-                    }
-                    return ProxyDocumentQueryExecutionContext.createAsync(
-                            client,
-                            resourceTypeEnum,
-                            resourceType,
-                            query,
-                            feedOptions,
-                            resourceLink,
-                            collectionValueHolder.v,
-                            isContinuationExpected,
-                            correlatedActivityId);
-                    });
+        Mono<PartitionedQueryExecutionInfo> queryExecutionInfoMono =
+            QueryPlanRetriever
+                .getQueryPlanThroughGatewayAsync(client, query, resourceLink);
 
-        return proxyQueryExecutionContext;
+        return collectionObs.single().flatMap(collectionValueHolder ->
+                      queryExecutionInfoMono.flatMap(partitionedQueryExecutionInfo -> {
+                          QueryInfo queryInfo =
+                              partitionedQueryExecutionInfo.getQueryInfo();
+
+                          Mono<List<PartitionKeyRange>> partitionKeyRanges;
+                          // The partitionKeyRangeIdInternal is no more a public API on 
+                          // FeedOptions, but have the below condition
+                          // for handling ParallelDocumentQueryTest#partitionKeyRangeId
+                          if (feedOptions != null && !StringUtils
+                                                          .isEmpty(CommonsBridgeInternal
+                                                                       .partitionKeyRangeIdInternal(feedOptions))) {
+                              partitionKeyRanges = queryExecutionContext
+                                                       .getTargetPartitionKeyRangesById(collectionValueHolder.v
+                                                                                            .getResourceId(),
+                                                                                        CommonsBridgeInternal
+                                                                                            .partitionKeyRangeIdInternal(feedOptions));
+                          } else {
+                              List<Range<String>> queryRanges =
+                                  partitionedQueryExecutionInfo.getQueryRanges();
+
+                              if (feedOptions != null 
+                                      && feedOptions.partitionKey() != null
+                                      && feedOptions.partitionKey() != PartitionKey.NONE) {
+                                  PartitionKeyInternal internalPartitionKey =
+                                      BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey());
+                                  Range<String> range = Range
+                                                            .getPointRange(internalPartitionKey
+                                                                               .getEffectivePartitionKeyString(internalPartitionKey,
+                                                                                                               collectionValueHolder.v
+                                                                                                                   .getPartitionKey()));
+                                  queryRanges = Collections.singletonList(range);
+                              }
+                              partitionKeyRanges = queryExecutionContext
+                                                       .getTargetPartitionKeyRanges(collectionValueHolder.v
+                                                                                        .getResourceId(), queryRanges);
+                          }
+                          return partitionKeyRanges
+                                     .flatMap(pkranges -> createSpecializedDocumentQueryExecutionContextAsync(client,
+                                                                                                              resourceTypeEnum,
+                                                                                                              resourceType,
+                                                                                                              query,
+                                                                                                              feedOptions,
+                                                                                                              resourceLink,
+                                                                                                              isContinuationExpected,
+                                                                                                              partitionedQueryExecutionInfo,
+                                                                                                              pkranges,
+                                                                                                              collectionValueHolder.v
+                                                                                                                  .getResourceId(),
+                                                                                                              correlatedActivityId)
+                                                              .single());
+
+                      })).flux();
     }
 
 	public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createSpecializedDocumentQueryExecutionContextAsync(

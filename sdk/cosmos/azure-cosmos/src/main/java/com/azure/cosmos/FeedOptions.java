@@ -14,7 +14,6 @@ public final class FeedOptions {
     private String partitionKeyRangeId;
     private Boolean enableScanInQuery;
     private Boolean emitVerboseTracesInQuery;
-    private Boolean enableCrossPartitionQuery;
     private int maxDegreeOfParallelism;
     private int maxBufferedItemCount;
     private int responseContinuationTokenLimitInKb;
@@ -23,6 +22,7 @@ public final class FeedOptions {
     private PartitionKey partitionkey;
     private boolean populateQueryMetrics;
     private Map<String, Object> properties;
+    private boolean allowEmptyPages;
 
     public FeedOptions() {
     }
@@ -32,7 +32,6 @@ public final class FeedOptions {
         this.partitionKeyRangeId = options.partitionKeyRangeId;
         this.enableScanInQuery = options.enableScanInQuery;
         this.emitVerboseTracesInQuery = options.emitVerboseTracesInQuery;
-        this.enableCrossPartitionQuery = options.enableCrossPartitionQuery;
         this.maxDegreeOfParallelism = options.maxDegreeOfParallelism;
         this.maxBufferedItemCount = options.maxBufferedItemCount;
         this.responseContinuationTokenLimitInKb = options.responseContinuationTokenLimitInKb;
@@ -40,6 +39,7 @@ public final class FeedOptions {
         this.requestContinuation = options.requestContinuation;
         this.partitionkey = options.partitionkey;
         this.populateQueryMetrics = options.populateQueryMetrics;
+        this.allowEmptyPages = options.allowEmptyPages;
     }
 
     /**
@@ -127,35 +127,11 @@ public final class FeedOptions {
     }
 
     /**
-     * Gets the option to allow queries to run across all partitions of the
-     * collection.
-     *
-     * @return whether to allow queries to run across all partitions of the
-     *         collection.
-     */
-    public Boolean getEnableCrossPartitionQuery() {
-        return this.enableCrossPartitionQuery;
-    }
-
-    /**
-     * Sets the option to allow queries to run across all partitions of the
-     * collection.
-     *
-     * @param enableCrossPartitionQuery whether to allow queries to run across all
-     *                                  partitions of the collection.
-     * @return the FeedOptions.
-     */
-    public FeedOptions setEnableCrossPartitionQuery(Boolean enableCrossPartitionQuery) {
-        this.enableCrossPartitionQuery = enableCrossPartitionQuery;
-        return this;
-    }
-
-    /**
      * Gets the number of concurrent operations run client side during parallel
      * query execution.
      *
      * @return number of concurrent operations run client side during parallel query
-     *         execution.
+     * execution.
      */
     public int getMaxDegreeOfParallelism() {
         return maxDegreeOfParallelism;
@@ -178,7 +154,7 @@ public final class FeedOptions {
      * parallel query execution.
      *
      * @return maximum number of items that can be buffered client side during
-     *         parallel query execution.
+     * parallel query execution.
      */
     public int getMaxBufferedItemCount() {
         return maxBufferedItemCount;
@@ -199,10 +175,10 @@ public final class FeedOptions {
     /**
      * Sets the ResponseContinuationTokenLimitInKb request option for document query
      * requests in the Azure Cosmos DB service.
-     *
+     * <p>
      * ResponseContinuationTokenLimitInKb is used to limit the length of
      * continuation token in the query response. Valid values are &gt;= 1.
-     *
+     * <p>
      * The continuation token contains both required and optional fields. The
      * required fields are necessary for resuming the execution from where it was
      * stooped. The optional fields may contain serialized index lookup work that
@@ -224,7 +200,7 @@ public final class FeedOptions {
     /**
      * Gets the ResponseContinuationTokenLimitInKb request option for document query
      * requests in the Azure Cosmos DB service. If not already set returns 0.
-     *
+     * <p>
      * ResponseContinuationTokenLimitInKb is used to limit the length of
      * continuation token in the query response. Valid values are &gt;= 1.
      *
@@ -269,8 +245,7 @@ public final class FeedOptions {
     /**
      * Sets the request continuation token.
      *
-     * @param requestContinuation
-     *            the request continuation.
+     * @param requestContinuation the request continuation.
      * @return the FeedOptionsBase.
      */
     public FeedOptions requestContinuation(String requestContinuation) {
@@ -292,8 +267,7 @@ public final class FeedOptions {
      * Sets the partition key used to identify the current request's target
      * partition.
      *
-     * @param partitionkey
-     *            the partition key value.
+     * @param partitionkey the partition key value.
      * @return the FeedOptionsBase.
      */
     public FeedOptions partitionKey(PartitionKey partitionkey) {
@@ -303,6 +277,7 @@ public final class FeedOptions {
 
     /**
      * Gets the option to enable populate query metrics
+     *
      * @return whether to enable populate query metrics
      */
     public boolean populateQueryMetrics() {
@@ -311,6 +286,7 @@ public final class FeedOptions {
 
     /**
      * Sets the option to enable/disable getting metrics relating to query execution on document query requests
+     *
      * @param populateQueryMetrics whether to enable or disable query metrics
      * @return the FeedOptionsBase.
      */
@@ -337,5 +313,20 @@ public final class FeedOptions {
     public FeedOptions properties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Gets the option to allow empty result pages in feed response.
+     */
+    public boolean getAllowEmptyPages() {
+        return allowEmptyPages;
+    }
+
+    /**
+     * Sets the option to allow empty result pages in feed response. Defaults to false
+     * @param allowEmptyPages whether to allow empty pages in feed response
+     */
+    public void setAllowEmptyPages(boolean allowEmptyPages) {
+        this.allowEmptyPages = allowEmptyPages;
     }
 }

@@ -73,7 +73,7 @@ public class AggregateQueryTests extends TestSuiteBase {
     public void queryDocumentsWithAggregates(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         options.populateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
 
@@ -163,9 +163,15 @@ public class AggregateQueryTests extends TestSuiteBase {
             String testName = String.format("%s SinglePartition %s", config.operator, "SELECT VALUE");
             queryConfigs.add(new QueryConfig(testName, query, config.expected));
 
-            query = String.format(aggregateSinglePartitionQueryFormatSelect, config.operator, field, partitionKey, uniquePartitionKey);
+            // Should add support for non value aggregates before enabling these.
+            // https://github.com/Azure/azure-sdk-for-java/issues/6088
+            /*
+            query = String.format(aggregateSinglePartitionQueryFormatSelect, config.operator, field, partitionKey,
+            uniquePartitionKey);
             testName = String.format("%s SinglePartition %s", config.operator, "SELECT");
-            queryConfigs.add(new QueryConfig(testName, query, new Document("{'$1':" + removeTrailingZerosIfInteger(config.expected) + "}")));
+            queryConfigs.add(new QueryConfig(testName, query, new Document("{'$1':" + removeTrailingZerosIfInteger
+            (config.expected) + "}")));
+             */
         }
     }
 

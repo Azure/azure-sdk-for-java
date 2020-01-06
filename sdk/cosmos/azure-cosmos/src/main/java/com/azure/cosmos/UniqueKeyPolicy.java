@@ -44,6 +44,14 @@ public class UniqueKeyPolicy extends JsonSerializable {
         return this.uniqueKeys;
     }
 
+
+    /**
+     * Unique keys unique key policy.
+     *
+     * @param uniqueKeys the unique keys
+     * @return the unique key policy
+     * @throws IllegalArgumentException thrown if an error occurs
+     */
     public UniqueKeyPolicy uniqueKeys(List<UniqueKey> uniqueKeys) {
         if (uniqueKeys == null) {
             throw new IllegalArgumentException("uniqueKeys cannot be null.");
@@ -55,7 +63,7 @@ public class UniqueKeyPolicy extends JsonSerializable {
     @Override
     void populatePropertyBag() {
         if (this.uniqueKeys != null) {
-            for(UniqueKey uniqueKey: uniqueKeys) {
+            for (UniqueKey uniqueKey : uniqueKeys) {
                 uniqueKey.populatePropertyBag();
             }
             super.set(Constants.Properties.UNIQUE_KEYS, uniqueKeys);
