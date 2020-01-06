@@ -70,7 +70,7 @@ public interface IRetryPolicy  {
         }
 
         public static ShouldRetryResult error(Exception e) {
-          //  Utils.checkNotNullOrThrow(e, "exception", "cannot be null");
+            Utils.checkNotNullOrThrow(e, "exception", "cannot be null");
             return new ShouldRetryResult(null, e, false, null);
         }
 
