@@ -40,7 +40,6 @@ public interface IRetryPolicy  {
 
     List<int[]> getStatusAndSubStatusCodes();
 
-
     class ShouldRetryResult {
         /// <summary>
         /// How long to wait before next retry. 0 indicates retry immediately.
