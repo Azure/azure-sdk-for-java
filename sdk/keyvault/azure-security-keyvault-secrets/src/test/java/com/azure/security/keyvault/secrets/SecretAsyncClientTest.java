@@ -382,9 +382,9 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                         .blockLast();
             }
 
-            sleepInRecordMode(35000);
+            sleepInRecordMode(120000);
             client.listDeletedSecrets().subscribe(deletedSecrets::add);
-            sleepInRecordMode(30000);
+            sleepInRecordMode(120000);
 
             for (DeletedSecret actualSecret : deletedSecrets) {
                 if (secrets.containsKey(actualSecret.getName())) {
@@ -445,12 +445,14 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             HashMap<String, KeyVaultSecret> secretsToList = secrets;
             List<SecretProperties> output = new ArrayList<>();
             for (KeyVaultSecret secret : secretsToList.values()) {
-                client.setSecret(secret).subscribe(secretResponse -> assertSecretEquals(secret, secretResponse));
-                sleepInRecordMode(1000);
+                StepVerifier.create(client.setSecret(secret))
+                    .assertNext(secretResponse -> {
+                        assertSecretEquals(secret, secretResponse);
+                    }).verifyComplete();
             }
-            sleepInRecordMode(30000);
+            sleepInRecordMode(120000);
             client.listPropertiesOfSecrets().subscribe(output::add);
-            sleepInRecordMode(30000);
+            sleepInRecordMode(120000);
 
             for (SecretProperties actualSecret : output) {
                 if (secretsToList.containsKey(actualSecret.getName())) {

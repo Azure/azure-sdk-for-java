@@ -376,14 +376,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             for (CreateKeyOptions key : keys.values()) {
                 PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(key.getName());
-
-                AsyncPollResponse<DeletedKey, Void> response = poller.blockLast();
-                assertNotNull(response.getValue());
+                AsyncPollResponse<DeletedKey, Void> pollResponse = poller
+                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                    .blockLast();
+                assertNotNull(pollResponse.getValue());
             }
 
-            sleepInRecordMode(60000);
+            sleepInRecordMode(120000);
             client.listDeletedKeys().subscribe(deletedKeys::add);
-            sleepInRecordMode(30000);
+            sleepInRecordMode(120000);
 
             for (DeletedKey actualKey : deletedKeys) {
                 if (keys.containsKey(actualKey.getName())) {
@@ -415,8 +416,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             String keyName = null;
             for (CreateKeyOptions key : keys) {
                 keyName = key.getName();
-                client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse));
-                sleepInRecordMode(1000);
+                StepVerifier.create(client.createKey(key))
+                    .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
             }
             sleepInRecordMode(30000);
             client.listPropertiesOfKeyVersions(keyName).subscribe(output::add);
@@ -445,12 +446,12 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         listKeysRunner((keys) -> {
             List<KeyProperties> output = new ArrayList<>();
             for (CreateKeyOptions key : keys.values()) {
-                client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse));
-                sleepInRecordMode(1000);
+                StepVerifier.create(client.createKey(key))
+                    .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
             }
-            sleepInRecordMode(30000);
+            sleepInRecordMode(120000);
             client.listPropertiesOfKeys().subscribe(output::add);
-            sleepInRecordMode(30000);
+            sleepInRecordMode(120000);
 
             for (KeyProperties actualKey : output) {
                 if (keys.containsKey(actualKey.getName())) {

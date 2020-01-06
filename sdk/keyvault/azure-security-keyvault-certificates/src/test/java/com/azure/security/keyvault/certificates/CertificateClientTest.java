@@ -364,6 +364,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
                 certPoller.waitForCompletion();
             }
 
+            sleepInRecordMode(120000);
             for (CertificateProperties actualKey : client.listPropertiesOfCertificates()) {
                 if (certificatesToList.contains(actualKey.getName())) {
                     certificatesToList.remove(actualKey.getName());
@@ -516,6 +517,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
                 PollResponse<DeletedCertificate> pollResponse = poller.poll();
                 poller.waitForCompletion();
             }
+
+            sleepInRecordMode(120000);
             Iterable<DeletedCertificate> deletedCertificates =  client.listDeletedCertificates();
             for (DeletedCertificate deletedCertificate : deletedCertificates) {
                 if (certificatesToDelete.contains(deletedCertificate.getName())) {
