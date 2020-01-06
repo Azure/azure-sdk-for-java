@@ -17,7 +17,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.1.0-beta.1</version>
+    <version>4.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -36,7 +36,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.1.0-beta.1</version>
+    <version>4.0.2</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>

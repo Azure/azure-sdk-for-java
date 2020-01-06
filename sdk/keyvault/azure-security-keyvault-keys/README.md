@@ -16,7 +16,7 @@ Maven dependency for Azure Key Client library. Add it to your project's pom file
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.1.0-beta.1</version>
+    <version>4.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -35,7 +35,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.1.0-beta.1</version>
+    <version>4.0.2</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
