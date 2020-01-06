@@ -1,6 +1,12 @@
 # Release History
 
 ## 12.0.0-beta.9 (Unreleased)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.0-beta.9/sdk/storage/azure-storage-file-datalake/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.0-beta.9/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+
+- Upgraded to version 12.2.0 of Azure Storage Blob.
 
 ## 12.0.0-beta.8 (2019-12-18)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas.

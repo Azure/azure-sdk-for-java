@@ -1,6 +1,12 @@
 # Release History
 
-## 12.2.0-beta.1 (Unreleased)
+## 12.1.1 (Unreleased)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-cryptography_12.1.1/sdk/storage/azure-storage-blob-cryptography/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-cryptography_12.1.1/sdk/storage/azure-storage-blob-cryptography/src/samples/java/com/azure/storage/blob/cryptography)
+
+- Upgraded to version 12.2.0 of Azure Storage Blob.
 
 ## 12.1.0 (2019-12-04)
 This package's

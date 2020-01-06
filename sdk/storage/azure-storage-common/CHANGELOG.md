@@ -1,6 +1,7 @@
 # Release History
 
-## 12.2.0-beta.2 (Unreleased)
+## 12.2.0 (Unreleased)
+- Release of 12.2.0-beta.1
 
 ## 12.2.0-beta.1 (2019-12-18)
 - Added generateSas methods on service clients to improve discoverability and convenience of sas. Deprecated setters of required parameters, generateSasQueryParameters methods on AccountSasSignatureValues to direct users to using the methods added on clients.

@@ -1,6 +1,12 @@
 # Release History
 
-## 12.2.0-beta.2 (Unreleased)
+## 12.2.0 (Unreleased)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.2.0/sdk/storage/azure-storage-file-queue/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.2.0/sdk/storage/azure-storage-file-queue/src/samples/java/com/azure/storage/queue)
+
+- Release of 12.1.0-beta.1
 
 ## 12.2.0-beta.1 (2019-12-18)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setQueueName, generateSasQueryParameters methods on QueueServiceSasSignatureValues to direct users to using the methods added on clients.
