@@ -46,7 +46,7 @@ class ClientSideRequestStatistics {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private ConnectionMode connectionMode;
+    public ConnectionMode connectionMode;
 
     public List<StoreResponseStatistics> responseStatisticsList;
     public List<StoreResponseStatistics> supplementalResponseStatisticsList;
@@ -197,11 +197,11 @@ class ClientSideRequestStatistics {
                 this.supplementalResponseStatisticsList.removeAll(this.supplementalResponseStatisticsList.subList(0, initialIndex));
             }
             try {
+                printSystemInformation();
                 return objectMapper.writeValueAsString(this);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            printSystemInformation();
         }
         return StringUtils.EMPTY;
     }

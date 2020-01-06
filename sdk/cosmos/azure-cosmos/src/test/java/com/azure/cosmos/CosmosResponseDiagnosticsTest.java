@@ -54,9 +54,9 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse createResponse = container.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
-        assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.GATEWAY);
-        assertThat(diagnostics).contains("Gateway statistics");
-        assertThat(diagnostics).contains("Operation Type : " + OperationType.Create);
+        assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
+        assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+        assertThat(diagnostics).contains("\"operationType\":\"Create\"");
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
     }
 
@@ -73,10 +73,10 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         } catch (CosmosClientException exception) {
             String diagnostics = exception.getCosmosResponseDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
-            assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.GATEWAY);
-            assertThat(diagnostics).contains("Gateway statistics");
-            assertThat(diagnostics).contains("Status Code : 404");
-            assertThat(diagnostics).contains("Operation Type : " + OperationType.Read);
+            assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
+            assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+            assertThat(diagnostics).contains("\"statusCode\":404");
+            assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
         }
     }
@@ -86,11 +86,11 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse createResponse = this.container.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
-        assertThat(diagnostics).contains("System State Information ------");
-        assertThat(diagnostics).contains("Used Memory :");
-        assertThat(diagnostics).contains("Available Memory :");
-        assertThat(diagnostics).contains("CPU Process Load :");
-        assertThat(diagnostics).contains("CPU System Load :");
+        assertThat(diagnostics).contains("systemInformation");
+        assertThat(diagnostics).contains("usedMemory");
+        assertThat(diagnostics).contains("availableMemory");
+        assertThat(diagnostics).contains("processCpuLoad");
+        assertThat(diagnostics).contains("systemCpuLoad");
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
     }
 
@@ -100,10 +100,10 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse createResponse = cosmosContainer.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
-        assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.DIRECT);
-        assertThat(diagnostics).contains("StoreResponseStatistics");
-        assertThat(diagnostics).doesNotContain("Gateway request URI :");
-        assertThat(diagnostics).contains("AddressResolutionStatistics");
+        assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
+        assertThat(diagnostics).contains("supplementalResponseStatisticsList");
+        assertThat(diagnostics).contains("\"gatewayStatistics\":null");
+        assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
     }
 

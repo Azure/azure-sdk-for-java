@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IDocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RuntimeConstants;
@@ -43,7 +43,7 @@ class QueryPlanRetriever {
         request.UseGatewayMode = true;
         request.setContentBytes(sqlQuerySpec.toJson().getBytes(StandardCharsets.UTF_8));
 
-        final IDocumentClientRetryPolicy retryPolicyInstance =
+        final DocumentClientRetryPolicy retryPolicyInstance =
             queryClient.getResetSessionTokenRetryPolicy().getRequestPolicy();
 
         Function<RxDocumentServiceRequest, Mono<PartitionedQueryExecutionInfo>> executeFunc = req -> {
