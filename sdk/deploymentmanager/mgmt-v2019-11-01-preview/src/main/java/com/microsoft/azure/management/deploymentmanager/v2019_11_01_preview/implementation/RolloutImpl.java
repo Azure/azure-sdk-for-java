@@ -25,17 +25,24 @@ class RolloutImpl extends GroupableResourceCoreImpl<Rollout, RolloutInner, Rollo
         this.createOrUpdateParameter = new RolloutRequestInner();
     }
 
+    private RolloutInner transformRolloutRequestInnerToRolloutInner(RolloutRequestInner resource) {
+        return new RolloutInner().withBuildVersion(resource.buildVersion())
+            .withArtifactSourceId(resource.artifactSourceId())
+            .withTargetServiceTopologyId(resource.targetServiceTopologyId())
+            .withStepGroups(resource.stepGroups());
+    }
+
     @Override
     public Observable<Rollout> createResourceAsync() {
         RolloutsInner client = this.manager().inner().rollouts();
         this.createOrUpdateParameter.withLocation(inner().location());
         this.createOrUpdateParameter.withTags(inner().getTags());
         return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.createOrUpdateParameter)
-            .to(new Func1<Observable<RolloutRequestInner>, Observable<RolloutInner>>() {
+            .map(new Func1<RolloutRequestInner, RolloutInner>() {
                 @Override
-                public Observable<RolloutInner> call(Observable<RolloutRequestInner> rolloutRequestInnerObservable) {
+                public RolloutInner call(RolloutRequestInner resource) {
                     resetCreateUpdateParameters();
-                    return getInnerAsync();
+                    return transformRolloutRequestInnerToRolloutInner(resource);
                 }
             })
             .map(innerToFluentMap(this));
@@ -45,11 +52,11 @@ class RolloutImpl extends GroupableResourceCoreImpl<Rollout, RolloutInner, Rollo
     public Observable<Rollout> updateResourceAsync() {
         RolloutsInner client = this.manager().inner().rollouts();
         return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.createOrUpdateParameter)
-            .to(new Func1<Observable<RolloutRequestInner>, Observable<RolloutInner>>() {
+            .map(new Func1<RolloutRequestInner, RolloutInner>() {
                 @Override
-                public Observable<RolloutInner> call(Observable<RolloutRequestInner> rolloutRequestInnerObservable) {
+                public RolloutInner call(RolloutRequestInner resource) {
                     resetCreateUpdateParameters();
-                    return getInnerAsync();
+                    return transformRolloutRequestInnerToRolloutInner(resource);
                 }
             })
             .map(innerToFluentMap(this));
