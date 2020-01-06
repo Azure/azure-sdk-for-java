@@ -1,6 +1,6 @@
 # Release History
 
-## 12.2.0 (Unreleased)
+## 12.2.0 (2020-01-08)
 - Release of 12.2.0-beta.1
 
 ## 12.2.0-beta.1 (2019-12-18)

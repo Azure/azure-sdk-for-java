@@ -1,6 +1,6 @@
 # Release History
 
-## 12.1.1 (Unreleased)
+## 12.2.0 (2020-01-08)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-batch_12.1.1/sdk/storage/azure-storage-blob-batch/README.md)
 and

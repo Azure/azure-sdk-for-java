@@ -1,6 +1,6 @@
 # Release History
 
-## 12.1.0 (Unreleased)
+## 12.1.0 (2020-01-08)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.1.0/sdk/storage/azure-storage-file-share/README.md)
 and
