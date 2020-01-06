@@ -164,31 +164,22 @@ class ReactorNettyClient implements HttpClient {
 
         @Override
         public Flux<ByteBuf> body() {
-            return bodyIntern().doFinally(s -> this.close());
+            return bodyIntern();
         }
 
         @Override
         public Mono<byte[]> bodyAsByteArray() {
-            return bodyIntern().aggregate().asByteArray().doFinally(s -> this.close());
+            return bodyIntern().aggregate().asByteArray();
         }
 
         @Override
         public Mono<String> bodyAsString() {
-            return bodyIntern().aggregate().asString().doFinally(s -> this.close());
+            return bodyIntern().aggregate().asString();
         }
 
         @Override
         public Mono<String> bodyAsString(Charset charset) {
-            return bodyIntern().aggregate().asString(charset).doFinally(s -> this.close());
-        }
-
-        @Override
-        public void close() {
-            if (reactorNettyConnection.channel().eventLoop().inEventLoop()) {
-                reactorNettyConnection.dispose();
-            } else {
-                reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-            }
+            return bodyIntern().aggregate().asString(charset);
         }
 
         private ByteBufFlux bodyIntern() {
