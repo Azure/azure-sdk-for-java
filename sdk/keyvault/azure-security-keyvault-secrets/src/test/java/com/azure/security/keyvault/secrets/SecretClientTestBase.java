@@ -101,178 +101,178 @@ public abstract class SecretClientTestBase extends TestBase {
         return Objects.requireNonNull(client);
     }
 
-    @Test
-    public abstract void setSecret();
-
-    void setSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        final Map<String, String> tags = new HashMap<>();
-
-        tags.put("foo", "baz");
-        String resourceId = generateResourceId(SECRET_NAME);
-        final KeyVaultSecret secret = new KeyVaultSecret(resourceId, SECRET_VALUE)
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
-                .setTags(tags)
-                .setContentType("text"));
-
-        testRunner.accept(secret);
-    }
-
-    @Test
-    public abstract void setSecretEmptyName();
-
-    @Test
-    public abstract void setSecretEmptyValue();
-
-    void setSecretEmptyValueRunner(Consumer<KeyVaultSecret> testRunner) {
-        String resourceId = generateResourceId(SECRET_NAME);
-        KeyVaultSecret secret = new KeyVaultSecret(resourceId, "");
-        testRunner.accept(secret);
-    }
-
-    @Test public abstract void setSecretNull();
-
-
-    @Test
-    public abstract void updateSecret();
-
-    void updateSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
-
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("first tag", "first value");
-        tags.put("second tag", "second value");
-        String resourceId = generateResourceId("testSecretUpdate");
-        final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretVal")
-                .setProperties(new SecretProperties()
-                    .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                    .setTags(tags));
-
-        final KeyVaultSecret updatedSecret = new KeyVaultSecret(resourceId, "testSecretVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setTags(tags));
-
-        testRunner.accept(originalSecret, updatedSecret);
-    }
-
-
-    @Test
-    public abstract void updateDisabledSecret();
-
-    void updateDisabledSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
-        final Map<String, String> tags = new HashMap<>();
-
-        String resourceId = generateResourceId( "testUpdateOfDisabledSecret");
-        final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretUpdateDisabledVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setEnabled(false));
-
-        final KeyVaultSecret updatedSecret = new KeyVaultSecret(resourceId, "testSecretUpdateDisabledVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setEnabled(false));
-        testRunner.accept(originalSecret, updatedSecret);
-    }
-
-    @Test
-    public abstract void getSecret();
-
-    void getSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        String resourceId = generateResourceId("testSecretGet");
-        final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretGetVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-        testRunner.accept(originalSecret);
-    }
-
-    @Test
-    public abstract void getSecretSpecificVersion();
-
-    void getSecretSpecificVersionRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
-        String resourceId = generateResourceId("testSecretGetVersion");
-        final KeyVaultSecret secret = new KeyVaultSecret(resourceId, "testSecretGetVersionVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-
-        final KeyVaultSecret secretWithNewVal = new KeyVaultSecret(resourceId, "newVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-        testRunner.accept(secret, secretWithNewVal);
-    }
-
-    @Test
-    public abstract void getSecretNotFound();
-
-    @Test
-    public abstract void deleteSecret();
-
-    void deleteSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        String resourceId = generateResourceId("testSecretDelete");
-        final KeyVaultSecret secretToDelete = new KeyVaultSecret(resourceId, "testSecretDeleteVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-        testRunner.accept(secretToDelete);
-    }
-
-
-    @Test
-    public abstract void deleteSecretNotFound();
-
-    @Test
-    public abstract void getDeletedSecret();
-
-    void getDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        String resourceId = generateResourceId("testSecretGetDeleted");
-        final KeyVaultSecret secretToDeleteAndGet = new KeyVaultSecret(resourceId, "testSecretGetDeleteVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-        testRunner.accept(secretToDeleteAndGet);
-    }
-
-    @Test
-    public abstract void getDeletedSecretNotFound();
-
-    @Test
-    public abstract void recoverDeletedSecret();
-
-    void recoverDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        String resourceId = generateResourceId( "testSecretRecover");
-        final KeyVaultSecret secretToDeleteAndRecover = new KeyVaultSecret(resourceId, "testSecretRecoverVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-        testRunner.accept(secretToDeleteAndRecover);
-    }
-
-    @Test
-    public abstract void recoverDeletedSecretNotFound();
-
-    @Test
-    public abstract void backupSecret();
-
-    void backupSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        final KeyVaultSecret secretToBackup = new KeyVaultSecret(generateResourceId("testSecretBackup"), "testSecretBackupVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-        testRunner.accept(secretToBackup);
-    }
-
-    @Test
-    public abstract void backupSecretNotFound();
-
-    @Test
-    public abstract void restoreSecret();
-
-    void restoreSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        final KeyVaultSecret secretToBackupAndRestore = new KeyVaultSecret(generateResourceId("testSecretRestore"), "testSecretRestoreVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-        testRunner.accept(secretToBackupAndRestore);
-    }
-
-    @Test
-    public abstract void restoreSecretFromMalformedBackup();
+//    @Test
+//    public abstract void setSecret();
+//
+//    void setSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+//        final Map<String, String> tags = new HashMap<>();
+//
+//        tags.put("foo", "baz");
+//        String resourceId = generateResourceId(SECRET_NAME);
+//        final KeyVaultSecret secret = new KeyVaultSecret(resourceId, SECRET_VALUE)
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+//                .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+//                .setTags(tags)
+//                .setContentType("text"));
+//
+//        testRunner.accept(secret);
+//    }
+//
+//    @Test
+//    public abstract void setSecretEmptyName();
+//
+//    @Test
+//    public abstract void setSecretEmptyValue();
+//
+//    void setSecretEmptyValueRunner(Consumer<KeyVaultSecret> testRunner) {
+//        String resourceId = generateResourceId(SECRET_NAME);
+//        KeyVaultSecret secret = new KeyVaultSecret(resourceId, "");
+//        testRunner.accept(secret);
+//    }
+//
+//    @Test public abstract void setSecretNull();
+//
+//
+//    @Test
+//    public abstract void updateSecret();
+//
+//    void updateSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
+//
+//        final Map<String, String> tags = new HashMap<>();
+//        tags.put("first tag", "first value");
+//        tags.put("second tag", "second value");
+//        String resourceId = generateResourceId("testSecretUpdate");
+//        final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretVal")
+//                .setProperties(new SecretProperties()
+//                    .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+//                    .setTags(tags));
+//
+//        final KeyVaultSecret updatedSecret = new KeyVaultSecret(resourceId, "testSecretVal")
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+//                .setTags(tags));
+//
+//        testRunner.accept(originalSecret, updatedSecret);
+//    }
+//
+//
+//    @Test
+//    public abstract void updateDisabledSecret();
+//
+//    void updateDisabledSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
+//        final Map<String, String> tags = new HashMap<>();
+//
+//        String resourceId = generateResourceId( "testUpdateOfDisabledSecret");
+//        final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretUpdateDisabledVal")
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+//                .setEnabled(false));
+//
+//        final KeyVaultSecret updatedSecret = new KeyVaultSecret(resourceId, "testSecretUpdateDisabledVal")
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+//                .setEnabled(false));
+//        testRunner.accept(originalSecret, updatedSecret);
+//    }
+//
+//    @Test
+//    public abstract void getSecret();
+//
+//    void getSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+//        String resourceId = generateResourceId("testSecretGet");
+//        final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretGetVal")
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+//        testRunner.accept(originalSecret);
+//    }
+//
+//    @Test
+//    public abstract void getSecretSpecificVersion();
+//
+//    void getSecretSpecificVersionRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
+//        String resourceId = generateResourceId("testSecretGetVersion");
+//        final KeyVaultSecret secret = new KeyVaultSecret(resourceId, "testSecretGetVersionVal")
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+//
+//        final KeyVaultSecret secretWithNewVal = new KeyVaultSecret(resourceId, "newVal")
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+//        testRunner.accept(secret, secretWithNewVal);
+//    }
+//
+//    @Test
+//    public abstract void getSecretNotFound();
+//
+//    @Test
+//    public abstract void deleteSecret();
+//
+//    void deleteSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+//        String resourceId = generateResourceId("testSecretDelete");
+//        final KeyVaultSecret secretToDelete = new KeyVaultSecret(resourceId, "testSecretDeleteVal")
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+//        testRunner.accept(secretToDelete);
+//    }
+//
+//
+//    @Test
+//    public abstract void deleteSecretNotFound();
+//
+//    @Test
+//    public abstract void getDeletedSecret();
+//
+//    void getDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+//        String resourceId = generateResourceId("testSecretGetDeleted");
+//        final KeyVaultSecret secretToDeleteAndGet = new KeyVaultSecret(resourceId, "testSecretGetDeleteVal")
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+//        testRunner.accept(secretToDeleteAndGet);
+//    }
+//
+//    @Test
+//    public abstract void getDeletedSecretNotFound();
+//
+//    @Test
+//    public abstract void recoverDeletedSecret();
+//
+//    void recoverDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+//        String resourceId = generateResourceId( "testSecretRecover");
+//        final KeyVaultSecret secretToDeleteAndRecover = new KeyVaultSecret(resourceId, "testSecretRecoverVal")
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+//        testRunner.accept(secretToDeleteAndRecover);
+//    }
+//
+//    @Test
+//    public abstract void recoverDeletedSecretNotFound();
+//
+//    @Test
+//    public abstract void backupSecret();
+//
+//    void backupSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+//        final KeyVaultSecret secretToBackup = new KeyVaultSecret(generateResourceId("testSecretBackup"), "testSecretBackupVal")
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+//        testRunner.accept(secretToBackup);
+//    }
+//
+//    @Test
+//    public abstract void backupSecretNotFound();
+//
+//    @Test
+//    public abstract void restoreSecret();
+//
+//    void restoreSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+//        final KeyVaultSecret secretToBackupAndRestore = new KeyVaultSecret(generateResourceId("testSecretRestore"), "testSecretRestoreVal")
+//            .setProperties(new SecretProperties()
+//                .setExpiresOn(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+//        testRunner.accept(secretToBackupAndRestore);
+//    }
+//
+//    @Test
+//    public abstract void restoreSecretFromMalformedBackup();
 
     @Test
     public abstract void listSecrets();
@@ -310,21 +310,21 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
 
-    @Test
-    public abstract void listSecretVersions();
-
-    void listSecretVersionsRunner(Consumer<List<KeyVaultSecret>> testRunner) {
-        List<KeyVaultSecret> secrets = new ArrayList<>();
-        String secretVal;
-        String secretName = generateResourceId("listSecretVersion");
-        for (int i = 1; i < 5; i++) {
-            secretVal = "listSecretVersionVal" + i;
-            secrets.add(new KeyVaultSecret(secretName, secretVal)
-                .setProperties(new SecretProperties()
-                    .setExpiresOn(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC))));
-        }
-        testRunner.accept(secrets);
-    }
+//    @Test
+//    public abstract void listSecretVersions();
+//
+//    void listSecretVersionsRunner(Consumer<List<KeyVaultSecret>> testRunner) {
+//        List<KeyVaultSecret> secrets = new ArrayList<>();
+//        String secretVal;
+//        String secretName = generateResourceId("listSecretVersion");
+//        for (int i = 1; i < 5; i++) {
+//            secretVal = "listSecretVersionVal" + i;
+//            secrets.add(new KeyVaultSecret(secretName, secretVal)
+//                .setProperties(new SecretProperties()
+//                    .setExpiresOn(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC))));
+//        }
+//        testRunner.accept(secrets);
+//    }
 
     /**
      * Helper method to verify that the Response matches what was expected. This method assumes a response status of 200.
