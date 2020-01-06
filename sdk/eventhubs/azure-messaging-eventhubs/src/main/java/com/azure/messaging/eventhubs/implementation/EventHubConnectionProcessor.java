@@ -181,7 +181,6 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
         synchronized (lock) {
             if (currentConnection != null) {
-                logger.info("Existing connection exists. Exposing that one.");
                 subscriber.complete(currentConnection);
                 return;
             }
