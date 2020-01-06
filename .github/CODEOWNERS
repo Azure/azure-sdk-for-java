@@ -6,7 +6,7 @@
 ###########
 
 # Catch all
-/sdk/ @joshfree @jonathangiles
+/sdk/                                               @joshfree @jonathangiles
 
 # Service teams
 /sdk/appconfiguration/                            	@mssfang @alzimmermsft @conniey @sima-zhu
@@ -23,8 +23,8 @@
 /sdk/storage/                                       @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
 
 # Management Plane
-/**/resource-manager/                            	@yaohaizh
-/sdk/**/azure-mgmt-*/                            	@yaohaizh
+/**/resource-manager/                               @yaohaizh
+/sdk/**/azure-mgmt-*/                               @yaohaizh
 
 ###########
 # Eng Sys
