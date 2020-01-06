@@ -68,7 +68,7 @@ public class PagedFluxCoreJavaDocCodeSnippets {
         FileShareServiceClient client = null; // Initialize client
 
         Supplier<PageRetriever<FileContinuationToken, FilePage>> pageRetrieverProvider
-            = new Supplier<>() {
+            = new Supplier<PageRetriever<FileContinuationToken, FilePage>>() {
                 @Override
                 public PageRetriever<FileContinuationToken, FilePage> get() {
                     return (continuationToken, pageSize) -> client.getFilePages(continuationToken);
