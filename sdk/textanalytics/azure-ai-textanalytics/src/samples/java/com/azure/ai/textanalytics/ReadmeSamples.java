@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
@@ -46,8 +47,8 @@ public class ReadmeSamples {
      */
     public void useAadAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
             .endpoint(ENDPOINT)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
     }
 

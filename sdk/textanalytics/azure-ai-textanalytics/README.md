@@ -81,7 +81,7 @@ When an HTTP client is included on the classpath, as shown above, it is not nece
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L161 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L159-L162 -->
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder()
     .port(8080)
@@ -162,11 +162,11 @@ cognitive services.
    AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET
 
    Use the returned token credential to authenticate the client:
-   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L40-L43 -->
+   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L49-L52 -->
     ```java
     TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-        .subscriptionKey(SUBSCRIPTION_KEY)
         .endpoint(ENDPOINT)
+        .credential(new DefaultAzureCredentialBuilder().build())
         .buildAsyncClient();
     ```
 
@@ -255,7 +255,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .endpoint(ENDPOINT)
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L40-L43 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L39-L42 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(SUBSCRIPTION_KEY)
@@ -264,7 +264,7 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 ### Detect language
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L62-L74 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L59-L71 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(SUBSCRIPTION_KEY)
@@ -282,7 +282,7 @@ for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inpu
 ```
 
 ### Recognize entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L82-L96 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L78-L92 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(SUBSCRIPTION_KEY)
@@ -302,7 +302,7 @@ for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEn
 ```
 
 ### Recognize PII(Personally Identifiable Information) entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L104-L119 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L99-L114 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(SUBSCRIPTION_KEY)
@@ -323,7 +323,7 @@ for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getName
 ```
 
 ### Recognize linked entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L127-L140 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L121-L134 -->
 
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -343,7 +343,7 @@ for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(tex
 ```
 
 ### Analyze sentiment
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L148-L159 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L141-L152 -->
 
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
