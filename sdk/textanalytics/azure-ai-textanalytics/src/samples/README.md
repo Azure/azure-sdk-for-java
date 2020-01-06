@@ -22,6 +22,7 @@ The following sections provide several code snippets covering some of the most c
 - [Recognize linked entities in text][sample_linked_entities]
 - [Extract key phrases in text][sample_key_phrases]
 - [Analyze sentiment in text.][sample_sentiment]
+- [Async Detect language in text][async_sample_hello_world]
 
 Batch Samples:
 - [Detect language for a batch of documents][sample_language_batch]
@@ -50,7 +51,8 @@ Guidelines](../../CONTRIBUTING.md) for more information.
 [SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [SDK_README_NEXT_STEPS]: ../../README.md#next-steps
 
-[sample_hello_world]: java/com/azure/ai/textanalytics/HelloWorld.java
+[async_sample_hello_world]: java/com/azure/ai/textanalytics/DetectLanguageAsync.java
+[sample_hello_world]: java/com/azure/ai/textanalytics/DetectLanguage.java
 [sample_entities]: java/com/azure/ai/textanalytics/RecognizeEntities.java
 [sample_pii_entities]: java/com/azure/ai/textanalytics/RecognizePii.java
 [sample_linked_entities]: java/com/azure/ai/textanalytics/RecognizeLinkedEntities.java

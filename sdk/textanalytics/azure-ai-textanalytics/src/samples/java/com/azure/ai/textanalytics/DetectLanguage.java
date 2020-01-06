@@ -9,7 +9,7 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 /**
  * Sample demonstrates how to detect the language of an input text.
  */
-public class HelloWorld {
+public class DetectLanguage {
     /**
      * Main method to invoke this demo about how to detect the language of an input text.
      *
