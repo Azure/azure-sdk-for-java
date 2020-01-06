@@ -81,6 +81,7 @@ When an HTTP client is included on the classpath, as shown above, it is not nece
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
 
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L161 -->
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder()
     .port(8080)
@@ -129,14 +130,16 @@ cognitive services.
    provide the key as a string. This can be found in the Azure Portal under the "Quickstart" 
    section or by running the following Azure CLI command:
 
-    ```az cognitiveservices account keys list --name "resource-name" --resource-group "resource-group-name"```
+    ```bash
+    az cognitiveservices account keys list --name "resource-name" --resource-group "resource-group-name"
+    ```
     
     Use the key as the credential parameter to authenticate the client:
-    <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L26-L31 -->
+    <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L29-L32 -->
     ```java
-    TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-        .subscriptionKey("subscription-key")
-        .endpoint("https://servicename.cognitiveservices.azure.com/")
+    TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+        .subscriptionKey(SUBSCRIPTION_KEY)
+        .endpoint(ENDPOINT)
         .buildClient();
     ```
 
@@ -159,12 +162,12 @@ cognitive services.
    AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET
 
    Use the returned token credential to authenticate the client:
-   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L48-L53 -->
+   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L40-L43 -->
     ```java
-    TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+    TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+        .subscriptionKey(SUBSCRIPTION_KEY)
+        .endpoint(ENDPOINT)
+        .buildAsyncClient();
     ```
 
 #### Create a Client
@@ -173,12 +176,11 @@ analyze sentiment, recognize entities, detect language, and extract key phrases 
 To create a client object, you will need the cognitive services or text analytics endpoint to 
 your resource and a subscription key that allows you access:
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L#L26-L31 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L29-L32 -->
 ```java
-// Instantiate a client that will be used to call the service.
-TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-    .subscriptionKey("subscription-key")
-    .endpoint("https://servicename.cognitiveservices.azure.com/")
+TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+    .subscriptionKey(SUBSCRIPTION_KEY)
+    .endpoint(ENDPOINT)
     .buildClient();
 ```
 
@@ -246,30 +248,28 @@ The following sections provide several code snippets covering some of the most c
 Text analytics support both synchronous and asynchronous client creation by using
 `TextAnalyticsClientBuilder`,
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L26-L31 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L29-L32 -->
 ``` java
-// An example of creating a synchronous client
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey("subscription-key")
-    .endpoint("https://servicename.cognitiveservices.azure.com/")
+    .subscriptionKey(SUBSCRIPTION_KEY)
+    .endpoint(ENDPOINT)
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L37-L42 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L40-L43 -->
 ``` java
-// An example of creating an asynchronous client
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey("subscription-key")
-    .endpoint("https://servicename.cognitiveservices.azure.com/")
+    .subscriptionKey(SUBSCRIPTION_KEY)
+    .endpoint(ENDPOINT)
     .buildAsyncClient();
 ```
 
 ### Detect language
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L59-L73 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L62-L74 -->
 ```java
-TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey("subscription-key")
-    .endpoint("https://servicename.cognitiveservices.azure.com/")
-    .buildAsyncClient();
+TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+    .subscriptionKey(SUBSCRIPTION_KEY)
+    .endpoint(ENDPOINT)
+    .buildClient();
 
 String inputText = "Bonjour tout le monde";
 
@@ -282,33 +282,31 @@ for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inpu
 ```
 
 ### Recognize entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L79-L95 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L82-L96 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey("subscription-key")
-    .endpoint("https://servicename.cognitiveservices.azure.com/")
+    .subscriptionKey(SUBSCRIPTION_KEY)
+    .endpoint(ENDPOINT)
     .buildClient();
 
 String text = "Satya Nadella is the CEO of Microsoft";
 
-for (NamedEntity entity : client.recognizeEntities(text).getNamedEntities()) {
+for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEntities()) {
     System.out.printf(
-        "Recognized NamedEntity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+        "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
         entity.getText(),
         entity.getType(),
         entity.getSubtype(),
-        entity.getOffset(),
-        entity.getLength(),
         entity.getScore());
 }
 ```
 
 ### Recognize PII(Personally Identifiable Information) entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L101-L118 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L104-L119 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey("subscription-key")
-    .endpoint("https://servicename.cognitiveservices.azure.com/")
+    .subscriptionKey(SUBSCRIPTION_KEY)
+    .endpoint(ENDPOINT)
     .buildClient();
 
 // The text that need be analysed.
@@ -325,12 +323,12 @@ for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getName
 ```
 
 ### Recognize linked entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L124-L139 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L127-L140 -->
 
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey("subscription-key")
-    .endpoint("https://servicename.cognitiveservices.azure.com/")
+    .subscriptionKey(SUBSCRIPTION_KEY)
+    .endpoint(ENDPOINT)
     .buildClient();
 
 // The text that need be analysed.
@@ -345,19 +343,19 @@ for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(tex
 ```
 
 ### Analyze sentiment
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L145-L158 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L148-L159 -->
 
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey("subscription-key")
-    .endpoint("https://servicename.cognitiveservices.azure.com/")
+    .subscriptionKey(SUBSCRIPTION_KEY)
+    .endpoint(ENDPOINT)
     .buildClient();
 
 String text = "The hotel was dark and unclean.";
 
-for (TextSentiment textSentiment : client.analyzeSentiment(text).getSentenceSentiments()) {
+for (TextSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).getSentenceSentiments()) {
     System.out.printf(
-        "Recognized Sentence TextSentiment: %s.%n",
+        "Analyzed Sentence Sentiment class: %s.%n",
         textSentiment.getTextSentimentClass());
 }
 ```

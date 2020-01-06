@@ -7,6 +7,8 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
@@ -21,7 +23,6 @@ public class ReadmeSamples {
 
     /**
      * Code snippet for  getting sync client using subscription key authentication.
-     *
      */
     public void useSubscriptionKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -32,7 +33,6 @@ public class ReadmeSamples {
 
     /**
      * Code snippet for getting async client using subscription key authentication.
-     *
      */
     public void useSubscriptionKeyAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -43,7 +43,6 @@ public class ReadmeSamples {
 
     /**
      * Code snippet for getting async client using AAD authentication.
-     *
      */
     public void useAadAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -54,7 +53,6 @@ public class ReadmeSamples {
 
     /**
      * Code snippet for detecting language in a text.
-     *
      */
     public void detectLanguages() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -74,7 +72,6 @@ public class ReadmeSamples {
 
     /**
      * Code snippet for recognizing named entity in a text.
-     *
      */
     public void recognizeNamedEntity() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -96,7 +93,6 @@ public class ReadmeSamples {
 
     /**
      * Code snippet for recognizing pii entity in a text.
-     *
      */
     public void recognizePiiEntity() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -119,7 +115,6 @@ public class ReadmeSamples {
 
     /**
      * Code snippet for recognizing linked entity in a text.
-     *
      */
     public void recognizeLinkedEntity() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -140,7 +135,6 @@ public class ReadmeSamples {
 
     /**
      * Code snippet for analyzing sentiment of a text.
-     *
      */
     public void analyzeSentiment() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -155,5 +149,15 @@ public class ReadmeSamples {
                 "Analyzed Sentence Sentiment class: %s.%n",
                 textSentiment.getTextSentimentClass());
         }
+    }
+
+    /**
+     * Code snippet for configuring http client.
+     */
+    public void configureHttpClient() {
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .port(8080)
+            .wiretap(true)
+            .build();
     }
 }
