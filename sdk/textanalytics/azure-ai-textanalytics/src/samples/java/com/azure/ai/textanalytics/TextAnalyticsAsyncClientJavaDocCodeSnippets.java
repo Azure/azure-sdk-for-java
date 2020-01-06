@@ -131,7 +131,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectBatchLanguages#List
         List<DetectLanguageInput> detectLanguageInputs = Arrays.asList(
-            new DetectLanguageInput("1", "This is written in English.", "us"),
+            new DetectLanguageInput("1", "This is written in English.", "US"),
             new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
         );
         textAnalyticsAsyncClient.detectBatchLanguages(detectLanguageInputs).subscribe(detectedBatchResult -> {
@@ -216,7 +216,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#string-string
         String inputText1 = "Satya Nadella is the CEO of Microsoft";
-        textAnalyticsAsyncClient.recognizeEntitiesWithResponse(inputText1, "US")
+        textAnalyticsAsyncClient.recognizeEntitiesWithResponse(inputText1, "en")
             .subscribe(recognizeEntitiesResult -> {
                 for (NamedEntity entity : recognizeEntitiesResult.getValue().getNamedEntities()) {
                     System.out.printf(
@@ -378,7 +378,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#string-string
         String inputText1 = "My SSN is 555-55-5555";
-        textAnalyticsAsyncClient.recognizePiiEntitiesWithResponse(inputText1, "US")
+        textAnalyticsAsyncClient.recognizePiiEntitiesWithResponse(inputText1, "en")
             .subscribe(recognizeEntitiesResult -> {
                 for (NamedEntity entity : recognizeEntitiesResult.getValue().getNamedEntities()) {
                     System.out.printf(
@@ -538,7 +538,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#string-string
         String inputText1 = "Old Faithful is a geyser at Yellowstone Park.";
-        textAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse(inputText1, "US")
+        textAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse(inputText1, "en")
             .subscribe(linkedEntitiesResultResponse -> {
                 for (LinkedEntity linkedEntity : linkedEntitiesResultResponse.getValue().getLinkedEntities()) {
                     System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.%n",
