@@ -12,6 +12,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMappe
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -23,7 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Iterator;
@@ -168,42 +172,88 @@ public final class RntbdTransportClient extends TransportClient {
 
         // region Fields
 
+        @JsonProperty()
         private final int bufferPageSize;
-        private final String certificateHostNameOverride;
+
+        @JsonProperty()
         private final Duration connectionTimeout;
+
+        @JsonProperty()
         private final Duration idleChannelTimeout;
+
+        @JsonProperty()
         private final Duration idleEndpointTimeout;
+
+        @JsonProperty()
         private final int maxBufferCapacity;
+
+        @JsonProperty()
         private final int maxChannelsPerEndpoint;
+
+        @JsonProperty()
         private final int maxRequestsPerChannel;
-        private final int partitionCount;
+
+        @JsonProperty()
         private final Duration receiveHangDetectionTime;
+
+        @JsonProperty()
         private final Duration requestExpiryInterval;
+
+        @JsonProperty()
         private final Duration requestTimeout;
+
+        @JsonProperty()
+        private final Duration requestTimerResolution;
+
+        @JsonProperty()
         private final Duration sendHangDetectionTime;
+
+        @JsonProperty()
         private final Duration shutdownTimeout;
+
+        @JsonIgnore()
         private final UserAgentContainer userAgent;
 
         // endregion
 
         // region Constructors
 
+        private Options() {
+            this.bufferPageSize = 8192;
+            this.connectionTimeout = null;
+            this.idleChannelTimeout = Duration.ZERO;
+            this.idleEndpointTimeout = Duration.ofSeconds(70L);
+            this.maxBufferCapacity = 8192 << 10;
+            this.maxChannelsPerEndpoint = 10;
+            this.maxRequestsPerChannel = 30;
+            this.receiveHangDetectionTime = Duration.ofSeconds(65L);
+            this.requestExpiryInterval = Duration.ofSeconds(5L);
+            this.requestTimeout = null;
+            this.requestTimerResolution = Duration.ofMillis(5L);
+            this.sendHangDetectionTime = Duration.ofSeconds(10L);
+            this.shutdownTimeout = Duration.ofSeconds(15L);
+            this.userAgent = new UserAgentContainer();
+        }
+
         private Options(Builder builder) {
+
             this.bufferPageSize = builder.bufferPageSize;
-            this.certificateHostNameOverride = builder.certificateHostNameOverride;
-            this.connectionTimeout = builder.connectionTimeout == null ? builder.requestTimeout : builder.connectionTimeout;
             this.idleChannelTimeout = builder.idleChannelTimeout;
             this.idleEndpointTimeout = builder.idleEndpointTimeout;
             this.maxBufferCapacity = builder.maxBufferCapacity;
             this.maxChannelsPerEndpoint = builder.maxChannelsPerEndpoint;
             this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
-            this.partitionCount = builder.partitionCount;
             this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
             this.requestExpiryInterval = builder.requestExpiryInterval;
             this.requestTimeout = builder.requestTimeout;
+            this.requestTimerResolution = builder.requestTimerResolution;
             this.sendHangDetectionTime = builder.sendHangDetectionTime;
             this.shutdownTimeout = builder.shutdownTimeout;
             this.userAgent = builder.userAgent;
+
+            this.connectionTimeout = builder.connectionTimeout == null
+                ? builder.requestTimeout
+                : builder.connectionTimeout;
         }
 
         // endregion
@@ -212,10 +262,6 @@ public final class RntbdTransportClient extends TransportClient {
 
         public int bufferPageSize() {
             return this.bufferPageSize;
-        }
-
-        public String certificateHostNameOverride() {
-            return this.certificateHostNameOverride;
         }
 
         public Duration connectionTimeout() {
@@ -242,10 +288,6 @@ public final class RntbdTransportClient extends TransportClient {
             return this.maxRequestsPerChannel;
         }
 
-        public int partitionCount() {
-            return this.partitionCount;
-        }
-
         public Duration receiveHangDetectionTime() {
             return this.receiveHangDetectionTime;
         }
@@ -256,6 +298,10 @@ public final class RntbdTransportClient extends TransportClient {
 
         public Duration requestTimeout() {
             return this.requestTimeout;
+        }
+
+        public Duration requestTimerResolution() {
+            return this.requestTimerResolution;
         }
 
         public Duration sendHangDetectionTime() {
@@ -283,39 +329,142 @@ public final class RntbdTransportClient extends TransportClient {
 
         // region Types
 
+        /**
+         * A builder for constructing {@link Options} instances.
+         *
+         * <h3>Using system properties to set the default {@link Options} used by an {@link Builder}</h3>
+         * <p>
+         * A default options instance is created when the {@link Builder} class is initialized. This instance specifies
+         * the default options used by every {@link Builder} instance. In priority order the default options instance
+         * is created from:
+         * <ol>
+         * <li>The JSON value of system property {@code azure.cosmos.directTcp.defaultOptions}.
+         * <p>Example:
+         * <pre>{@code -Dazure.cosmos.directTcp.defaultOptions={\"maxChannelsPerEndpoint\":5,\"maxRequestsPerChannel\":30}}</pre>
+         * </li>
+         * <li>The contents of the JSON file located by system property {@code azure.cosmos.directTcp
+         * .defaultOptionsFile}.
+         * <p>Example:
+         * <pre>{@code -Dazure.cosmos.directTcp.defaultOptionsFile=/path/to/default/options/file}</pre>
+         * </li>
+         * <li>The contents of JSON resource file {@code azure.cosmos.directTcp.defaultOptions.json}.
+         * <p>Specifically, the resource file is read from this stream:
+         * <pre>{@code RntbdTransportClient.class.getClassLoader().getResourceAsStream("azure.cosmos.directTcp.defaultOptions.json")}</pre>
+         * <p>Example: <pre>{@code {
+         *   "bufferPageSize": 8192,
+         *   "connectionTimeout": "PT1M",
+         *   "idleChannelTimeout": "PT0S",
+         *   "idleEndpointTimeout": "PT1M10S",
+         *   "maxBufferCapacity": 8388608,
+         *   "maxChannelsPerEndpoint": 10,
+         *   "maxRequestsPerChannel": 30,
+         *   "receiveHangDetectionTime": "PT1M5S",
+         *   "requestExpiryInterval": "PT5S",
+         *   "requestTimeout": "PT1M",
+         *   "requestTimerResolution": "PT0.5S",
+         *   "sendHangDetectionTime": "PT10S",
+         *   "shutdownTimeout": "PT15S"
+         * }}</pre>
+         * </li>
+         * </ol>
+         * <p>JSON value errors are logged and then ignored. If none of the above values are available or all available
+         * values are in error, the default options instance is created from the private parameterless constructor for
+         * {@link Options}.
+         */
+        @SuppressWarnings("UnusedReturnValue")
         public static class Builder {
 
             // region Fields
 
-            private static final UserAgentContainer DEFAULT_USER_AGENT_CONTAINER = new UserAgentContainer();
-            private static final Duration FIFTEEN_SECONDS = Duration.ofSeconds(15L);
-            private static final Duration FIVE_SECONDS =Duration.ofSeconds(5L);
-            private static final Duration SEVENTY_SECONDS = Duration.ofSeconds(70L);
-            private static final Duration SIXTY_FIVE_SECONDS = Duration.ofSeconds(65L);
-            private static final Duration TEN_SECONDS = Duration.ofSeconds(10L);
+            private static final String DEFAULT_OPTIONS_PROPERTY_NAME = "azure.cosmos.directTcp.defaultOptions";
+            private static final Options DEFAULT_OPTIONS;
 
-            private int bufferPageSize = 8192;
-            private String certificateHostNameOverride = null;
-            private Duration connectionTimeout = null;
-            private Duration idleChannelTimeout = Duration.ZERO;
-            private Duration idleEndpointTimeout = SEVENTY_SECONDS;
-            private int maxBufferCapacity = 8192 << 10;
-            private int maxChannelsPerEndpoint = 10;
-            private int maxRequestsPerChannel = 30;
-            private int partitionCount = 1;
-            private Duration receiveHangDetectionTime = SIXTY_FIVE_SECONDS;
-            private Duration requestExpiryInterval = FIVE_SECONDS;
+            static {
+
+                Options options = null;
+
+                try {
+                    final String string = System.getProperty(DEFAULT_OPTIONS_PROPERTY_NAME);
+
+                    if (string != null) {
+                        // Attempt to set default options based on the JSON string value of "{propertyName}"
+                        try {
+                            options = RntbdObjectMapper.readValue(string, Options.class);
+                        } catch (IOException error) {
+                            logger.error("failed to parse default Direct TCP options {} due to ", string, error);
+                        }
+                    }
+
+                    if (options == null) {
+
+                        final String path = System.getProperty(DEFAULT_OPTIONS_PROPERTY_NAME + "File");
+
+                        if (path != null) {
+                            // Attempt to load default options from the JSON file on the path specified by
+                            // "{propertyName}File"
+                            try {
+                                options = RntbdObjectMapper.readValue(new File(path), Options.class);
+                            } catch (IOException error) {
+                                logger.error("failed to load default Direct TCP options from {} due to ", path, error);
+                            }
+                        }
+                    }
+
+                    if (options == null) {
+
+                        final ClassLoader loader = RntbdTransportClient.class.getClassLoader();
+                        final String name = DEFAULT_OPTIONS_PROPERTY_NAME + ".json";
+
+                        try (final InputStream stream = loader.getResourceAsStream(name)) {
+                            if (stream != null) {
+                                // Attempt to load default options from the JSON resource file "{propertyName}.json"
+                                options = RntbdObjectMapper.readValue(stream, Options.class);
+                            }
+                        } catch (IOException error) {
+                            logger.error("failed to load Direct TCP options from resource {} due to ", name, error);
+                        }
+                    }
+                } finally {
+                    DEFAULT_OPTIONS = options != null ? options : new Options();
+                }
+            }
+
+            private int bufferPageSize;
+            private Duration connectionTimeout;
+            private Duration idleChannelTimeout;
+            private Duration idleEndpointTimeout;
+            private int maxBufferCapacity;
+            private int maxChannelsPerEndpoint;
+            private int maxRequestsPerChannel;
+            private Duration receiveHangDetectionTime;
+            private Duration requestExpiryInterval;
             private Duration requestTimeout;
-            private Duration sendHangDetectionTime = TEN_SECONDS;
-            private Duration shutdownTimeout = FIFTEEN_SECONDS;
-            private UserAgentContainer userAgent = DEFAULT_USER_AGENT_CONTAINER;
+            private Duration requestTimerResolution;
+            private Duration sendHangDetectionTime;
+            private Duration shutdownTimeout;
+            private UserAgentContainer userAgent;
 
             // endregion
 
             // region Constructors
 
             public Builder(Duration requestTimeout) {
+
                 this.requestTimeout(requestTimeout);
+
+                this.bufferPageSize = DEFAULT_OPTIONS.bufferPageSize;
+                this.connectionTimeout = DEFAULT_OPTIONS.connectionTimeout;
+                this.idleChannelTimeout = DEFAULT_OPTIONS.idleChannelTimeout;
+                this.idleEndpointTimeout = DEFAULT_OPTIONS.idleEndpointTimeout;
+                this.maxBufferCapacity = DEFAULT_OPTIONS.maxBufferCapacity;
+                this.maxChannelsPerEndpoint = DEFAULT_OPTIONS.maxChannelsPerEndpoint;
+                this.maxRequestsPerChannel = DEFAULT_OPTIONS.maxRequestsPerChannel;
+                this.receiveHangDetectionTime = DEFAULT_OPTIONS.receiveHangDetectionTime;
+                this.requestExpiryInterval = DEFAULT_OPTIONS.requestExpiryInterval;
+                this.requestTimerResolution = DEFAULT_OPTIONS.requestTimerResolution;
+                this.sendHangDetectionTime = DEFAULT_OPTIONS.sendHangDetectionTime;
+                this.shutdownTimeout = DEFAULT_OPTIONS.shutdownTimeout;
+                this.userAgent = DEFAULT_OPTIONS.userAgent;
             }
 
             public Builder(int requestTimeoutInSeconds) {
@@ -340,11 +489,6 @@ public final class RntbdTransportClient extends TransportClient {
                     this.bufferPageSize,
                     this.maxBufferCapacity);
                 return new Options(this);
-            }
-
-            public Builder certificateHostNameOverride(final String value) {
-                this.certificateHostNameOverride = value;
-                return this;
             }
 
             public Builder connectionTimeout(final Duration value) {
@@ -389,12 +533,6 @@ public final class RntbdTransportClient extends TransportClient {
                 return this;
             }
 
-            public Builder partitionCount(final int value) {
-                checkArgument(value > 0, "expected positive value, not %s", value);
-                this.partitionCount = value;
-                return this;
-            }
-
             public Builder receiveHangDetectionTime(final Duration value) {
                 checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
                     "expected positive value, not %s",
@@ -416,6 +554,14 @@ public final class RntbdTransportClient extends TransportClient {
                     "expected positive value, not %s",
                     value);
                 this.requestTimeout = value;
+                return this;
+            }
+
+            public Builder requestTimerResolution(final Duration value) {
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
+                this.requestTimerResolution = value;
                 return this;
             }
 
