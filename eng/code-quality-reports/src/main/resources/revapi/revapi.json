@@ -83,6 +83,12 @@
         "new": "missing\\-class ((com\\.azure\\.messaging\\.eventhubs\\.models\\..+)|(com\\.azure\\.storage\\.blob\\.BlobContainerAsyncClient))",
         "exampleUseChainInNewApi": ".*com\\.azure\\.messaging\\.eventhubs\\.checkpointstore\\.blob\\..*",
         "justification": "azure-messaging-eventhubs and azure-storage-blob are used in the Event Hubs checkpoint store."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+        "new": "class com\\.azure\\.core\\.http\\.rest\\.((PagedFlux<T extends java\\.lang\\.Object>)|(PagedFluxBase<T extends java\\.lang\\.Object.*>)).*",
+        "justification": "azure.core 1.2.0 will introduce a new base type for GAed PagedFlux. Since the base type is not in azure.core <= 1.1.0, revapi is reporting it. This entry should be removed after 1.2.0 release."
       }
     ]
   }
