@@ -264,8 +264,8 @@ public abstract class KeyClientTestBase extends TestBase {
     void listKeysRunner(Consumer<HashMap<String, CreateKeyOptions>> testRunner) {
         HashMap<String, CreateKeyOptions> keys = new HashMap<>();
         String keyName;
-        for (int i = 0; i < 30; i++) {
-            keyName = generateResourceId("listKey" + i);
+        for (int i = 0; i < 3; i++) {
+            keyName = generateResourceId("listKeys" + i);
             CreateKeyOptions key =  new CreateKeyOptions(keyName, RSA_KEY_TYPE)
                     .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
             keys.put(keyName, key);
@@ -294,7 +294,7 @@ public abstract class KeyClientTestBase extends TestBase {
         HashMap<String, CreateKeyOptions> keys = new HashMap<>();
         String keyName;
         for (int i = 0; i < 3; i++) {
-            keyName = generateResourceId("listDeletedKeysTest" + i);
+            keyName = generateResourceId("listDeletedKeys" + i);
             keys.put(keyName, new CreateKeyOptions(keyName, RSA_KEY_TYPE)
                     .setExpiresOn(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 

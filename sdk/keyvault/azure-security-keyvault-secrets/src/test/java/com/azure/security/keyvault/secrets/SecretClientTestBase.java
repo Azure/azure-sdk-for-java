@@ -281,8 +281,8 @@ public abstract class SecretClientTestBase extends TestBase {
         HashMap<String, KeyVaultSecret> secrets = new HashMap<>();
         String secretName;
         String secretVal;
-        for (int i = 0; i < 30; i++) {
-            secretName = generateResourceId("listSecret" + i);
+        for (int i = 0; i < 3; i++) {
+            secretName = generateResourceId("listSecrets" + i);
             secretVal = "listSecretVal" + i;
             KeyVaultSecret secret =  new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
@@ -300,7 +300,7 @@ public abstract class SecretClientTestBase extends TestBase {
         String secretName;
         String secretVal;
         for (int i = 0; i < 3; i++) {
-            secretName = generateResourceId("listDeletedSecretsTest" + i);
+            secretName = generateResourceId("listDeletedSecrets" + i);
             secretVal = "listDeletedSecretVal" + i;
             secrets.put(secretName, new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
