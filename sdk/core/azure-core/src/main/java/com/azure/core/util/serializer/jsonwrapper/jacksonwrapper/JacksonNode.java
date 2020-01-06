@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper;
+package com.azure.core.util.serializer.jsonwrapper.jacksonwrapper;
 
-import com.azure.core.implementation.serializer.jsonwrapper.api.Node;
+import com.azure.core.util.serializer.jsonwrapper.api.Node;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.ArrayList;

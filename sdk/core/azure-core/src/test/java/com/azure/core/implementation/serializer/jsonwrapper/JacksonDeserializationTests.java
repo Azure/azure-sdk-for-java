@@ -3,8 +3,9 @@
 
 package com.azure.core.implementation.serializer.jsonwrapper;
 
-import com.azure.core.implementation.serializer.jsonwrapper.api.Config;
-import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
+import com.azure.core.util.serializer.jsonwrapper.JsonWrapper;
+import com.azure.core.util.serializer.jsonwrapper.api.Config;
+import com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

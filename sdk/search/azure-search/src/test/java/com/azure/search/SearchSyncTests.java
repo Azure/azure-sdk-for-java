@@ -5,10 +5,10 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.implementation.serializer.jsonwrapper.JsonWrapper;
-import com.azure.core.implementation.serializer.jsonwrapper.api.Config;
-import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
-import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
+import com.azure.core.util.serializer.jsonwrapper.JsonWrapper;
+import com.azure.core.util.serializer.jsonwrapper.api.Config;
+import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
+import com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.core.util.Context;
 import com.azure.search.models.CoordinateSystem;
 import com.azure.search.models.FacetResult;
