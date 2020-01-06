@@ -3,8 +3,8 @@
 ## 1.0.1 (2020-01-07)
 - Added support for setting `x-ms-client-request-id`, `x-ms-correlation-request-id` and `correlation-context` http header values.
 - Fixed `UserAgent` unknown name and unknown version bug.
-- Fixed `connectionString()`, it throws `IllegalArgumentException` error when `connectionString` is null or an empty string. Or the secret is
-  invalid and cannot instantiate HMAC-SHA256 MAC algorithm.
+- Fixed `connectionString()`, it throws `IllegalArgumentException` error when `connectionString` is an empty string, 
+  the secret contained within the connection string is invalid or the HMAC-SHA256 MAC algorithm cannot be instantiated.
 - No longer set `TokenCredential` to null when `connectionString` is given, or visa versa.
 
 ### Breaking changes
