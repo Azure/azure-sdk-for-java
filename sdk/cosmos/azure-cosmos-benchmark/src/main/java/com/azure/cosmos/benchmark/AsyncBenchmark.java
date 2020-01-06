@@ -5,13 +5,9 @@ package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.Utils;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
@@ -31,10 +27,12 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.Semaphore;
@@ -44,41 +42,38 @@ import java.util.concurrent.atomic.AtomicLong;
 abstract class AsyncBenchmark<T> {
     private final MetricRegistry metricsRegistry = new MetricRegistry();
     private final ScheduledReporter reporter;
-    private final String nameCollectionLink;
 
     private Meter successMeter;
     private Meter failureMeter;
 
     final Logger logger;
-    final CosmosAsyncClient v4Client;
-    final AsyncDocumentClient client;
-    final DocumentCollection collection;
+    final CosmosAsyncClient cosmosClient;
+    final CosmosAsyncContainer cosmosAsyncContainer;
+
     final String partitionKey;
     final Configuration configuration;
-    final List<Document> docsToRead;
+    final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
     Timer latency;
 
     AsyncBenchmark(Configuration cfg) {
-        v4Client = new CosmosClientBuilder()
+        cosmosClient = new CosmosClientBuilder()
             .setEndpoint(cfg.getServiceEndpoint())
             .setKey(cfg.getMasterKey())
             .setConnectionPolicy(cfg.getConnectionPolicy())
             .setConsistencyLevel(cfg.getConsistencyLevel())
             .buildAsyncClient();
 
+        cosmosAsyncContainer = cosmosClient.getDatabase(cfg.getDatabaseId()).getContainer(cfg.getCollectionId()).read().block().getContainer();
+
         logger = LoggerFactory.getLogger(this.getClass());
+        partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
+            .getPaths().iterator().next().split("/")[1];
 
-        client =  CosmosBridgeInternal.getAsyncDocumentClient(v4Client);
-
-        Database database = DocDBUtils.getDatabase(client, cfg.getDatabaseId());
-        collection = DocDBUtils.getCollection(client, database.getSelfLink(), cfg.getCollectionId());
-        nameCollectionLink = String.format("dbs/%s/colls/%s", database.getId(), collection.getId());
-        partitionKey = collection.getPartitionKey().getPaths().iterator().next().split("/")[1];
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
         configuration = cfg;
 
-        ArrayList<Flux<Document>> createDocumentObservables = new ArrayList<>();
+        ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
 
         if (configuration.getOperationType() != Configuration.Operation.WriteLatency
                 && configuration.getOperationType() != Configuration.Operation.WriteThroughput
@@ -86,16 +81,18 @@ abstract class AsyncBenchmark<T> {
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
-                Document newDoc = new Document();
-                newDoc.setId(uuid);
-                BridgeInternal.setProperty(newDoc, partitionKey, uuid);
-                BridgeInternal.setProperty(newDoc, "dataField1", dataFieldValue);
-                BridgeInternal.setProperty(newDoc, "dataField2", dataFieldValue);
-                BridgeInternal.setProperty(newDoc, "dataField3", dataFieldValue);
-                BridgeInternal.setProperty(newDoc, "dataField4", dataFieldValue);
-                BridgeInternal.setProperty(newDoc, "dataField5", dataFieldValue);
-                Flux<Document> obs = client.createDocument(collection.getSelfLink(), newDoc, null, false)
-                                                 .map(ResourceResponse::getResource);
+                PojoizedJson newDoc = generateDocument(uuid, dataFieldValue);
+
+                Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
+                                                                                         try {
+                                                                                            PojoizedJson x = Utils.getSimpleObjectMapper().readValue(
+                                                                                                 resp.getProperties().toJson(), PojoizedJson.class);
+                                                                                            return x;
+                                                                                         } catch (IOException e) {
+                                                                                             throw new IllegalStateException(e);
+                                                                                         }
+                                                                                     }
+                ).flux();
                 createDocumentObservables.add(obs);
             }
         }
@@ -139,29 +136,13 @@ abstract class AsyncBenchmark<T> {
     }
 
     void shutdown() {
-        v4Client.close();
+        cosmosClient.close();
     }
 
     protected void onSuccess() {
     }
 
     protected void onError(Throwable throwable) {
-    }
-
-    protected String getCollectionLink() {
-        if (configuration.isUseNameLink()) {
-            return this.nameCollectionLink;
-        } else {
-            return collection.getSelfLink();
-        }
-    }
-
-    protected String getDocumentLink(Document doc) {
-        if (configuration.isUseNameLink()) {
-            return this.nameCollectionLink + "/docs/" + doc.getId();
-        } else {
-            return doc.getSelfLink();
-        }
     }
 
     protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
@@ -191,10 +172,23 @@ abstract class AsyncBenchmark<T> {
         successMeter = metricsRegistry.meter("#Successful Operations");
         failureMeter = metricsRegistry.meter("#Unsuccessful Operations");
 
-        if (configuration.getOperationType() == Configuration.Operation.ReadLatency
-                || configuration.getOperationType() == Configuration.Operation.WriteLatency
-                || configuration.getOperationType() == Configuration.Operation.QueryInClauseParallel) {
-            latency = metricsRegistry.timer("Latency");
+        switch (configuration.getOperationType()) {
+            case ReadLatency:
+            case WriteLatency:
+            case QueryInClauseParallel:
+            case QueryCross:
+            case QuerySingle:
+            case QuerySingleMany:
+            case QueryParallel:
+            case QueryOrderby:
+            case QueryAggregate:
+            case QueryAggregateTopOrderby:
+            case QueryTopOrderby:
+            case Mixed:
+                latency = metricsRegistry.timer("Latency");
+                break;
+            default:
+                break;
         }
 
         reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
@@ -263,5 +257,18 @@ abstract class AsyncBenchmark<T> {
 
         reporter.report();
         reporter.close();
+    }
+
+    public PojoizedJson generateDocument(String idString, String dataFieldValue) {
+        PojoizedJson instance = new PojoizedJson();
+        Map<String, String> properties = instance.getInstance();
+        properties.put("id", idString);
+        properties.put(partitionKey, idString);
+        properties.put("dataField1", dataFieldValue);
+        properties.put("dataField2", dataFieldValue);
+        properties.put("dataField3", dataFieldValue);
+        properties.put("dataField4", dataFieldValue);
+        properties.put("dataField5", dataFieldValue);
+        return instance;
     }
 }
