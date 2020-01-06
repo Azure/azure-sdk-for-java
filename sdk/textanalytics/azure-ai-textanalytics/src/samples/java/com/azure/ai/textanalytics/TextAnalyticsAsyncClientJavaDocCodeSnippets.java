@@ -87,7 +87,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
             System.out.printf("Batch statistics, document count: %s, erroneous document count: %s,"
                     + " transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
+                batchStatistics.getTransactionCount(),
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -111,16 +111,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                    + "transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getErroneousDocumentCount(),
+            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
             for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
                 for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-                    System.out.printf("Another detected language: %s, ISO 6391 name: %s, score: %s.%n",
+                    System.out.printf("Other detected language: %s, ISO 6391 name: %s, score: %s.%n",
                         detectedLanguage.getName(),
                         detectedLanguage.getIso6391Name(),
                         detectedLanguage.getScore());
@@ -139,16 +136,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                    + "transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getErroneousDocumentCount(),
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
             for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
                 for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-                    System.out.printf("Another detected language: %s, ISO 6391 name: %s, score: %s.%n",
+                    System.out.printf("Other detected language: %s, ISO 6391 name: %s, score: %s.%n",
                         detectedLanguage.getName(),
                         detectedLanguage.getIso6391Name(),
                         detectedLanguage.getScore());
@@ -173,10 +167,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-                System.out.printf("Batch statistics, document count: %s, erroneous document count: %s,"
-                        + " transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -239,9 +230,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                    + "transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -268,10 +257,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                    + "transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getErroneousDocumentCount(),
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -298,10 +284,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                    + "transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getErroneousDocumentCount(),
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -333,10 +316,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-                System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                        + "transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -401,9 +381,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                    + "transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
+            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -430,10 +408,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                    + "transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getErroneousDocumentCount(),
+            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -460,10 +435,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                    + "transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getErroneousDocumentCount(),
+            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -495,10 +467,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-                System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                        + "transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
+                System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -559,9 +528,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s,"
-                    + " transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -586,10 +553,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                    + "transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getErroneousDocumentCount(),
+            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -615,10 +579,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-                System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                        + "transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
+                System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -651,8 +612,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 final TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
                 System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction"
                         + " count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -706,9 +665,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s,"
-                    + " transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                batchStatistics.getTransactionCount(),
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -731,10 +689,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                    + "transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getErroneousDocumentCount(),
+            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -756,10 +711,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count:"
-                    + " %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getErroneousDocumentCount(),
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -786,10 +738,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
-                System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction"
-                        + " count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -803,7 +752,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     // Sentiment
-
     /**
      * Code snippet for recognizing entities
      */
@@ -861,9 +809,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s,"
-                    + " transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                batchStatistics.getTransactionCount(),
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -896,10 +843,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, "
-                    + "transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getErroneousDocumentCount(),
+            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -932,10 +876,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count:"
-                    + " %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getErroneousDocumentCount(),
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -973,10 +914,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
-                System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction"
-                        + " count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
