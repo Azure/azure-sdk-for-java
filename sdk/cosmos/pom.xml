@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos-parent</artifactId>
-  <version>3.6.0-SNAPSHOT</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-parent;current} -->
+  <version>3.6.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-parent;current} -->
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Cosmos DB SQL API</name>
