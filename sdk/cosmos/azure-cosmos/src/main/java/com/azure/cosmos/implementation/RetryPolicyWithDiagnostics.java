@@ -6,13 +6,29 @@ package com.azure.cosmos.implementation;
 import java.time.Duration;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class RetryPolicyWithDiagnostics implements IRetryPolicy{
 
      private volatile int retriesCountForDiagnostics;
-     public ZonedDateTime retryStartTime;
-     public ZonedDateTime retryEndTime;
+     private volatile ZonedDateTime retryStartTime;
+     private volatile ZonedDateTime retryEndTime;
+     private volatile List<int[]> statusAndSubStatusCodes;
 
+    @Override
+    public void addStatusAndSubStatusCode(int statusCode, int subStatusCode) {
+        if(statusAndSubStatusCodes == null) {
+            statusAndSubStatusCodes = new ArrayList<>();
+        }
+        int[] statusAndSubStatusCode = {statusCode, subStatusCode};
+        statusAndSubStatusCodes.add(statusAndSubStatusCode);
+    }
+
+    @Override
+    public List<int[]> getStatusAndSubStatusCodes(){
+        return statusAndSubStatusCodes;
+    }
 
     @Override
     public int getRetryCount() {

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosClientException;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,11 @@ public class RetryUtils {
             policy.captureStartTimeIfNotSet();
             Flux<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = policy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(s -> {
+
+                if(e instanceof CosmosClientException) {
+                    CosmosClientException cosmosClientException = (CosmosClientException) e;
+                    policy.addStatusAndSubStatusCode(cosmosClientException.getStatusCode(), cosmosClientException.getSubStatusCode());
+                }
 
                 if (s.backOffTime != null) {
                     policy.incrementRetry();
@@ -69,6 +75,11 @@ public class RetryUtils {
             retryPolicy.captureStartTimeIfNotSet();
             Flux<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = retryPolicy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(shouldRetryResult -> {
+                if(e instanceof CosmosClientException) {
+                    CosmosClientException cosmosClientException = (CosmosClientException) e;
+                    retryPolicy.addStatusAndSubStatusCode(cosmosClientException.getStatusCode(), cosmosClientException.getSubStatusCode());
+                }
+
                 if (!shouldRetryResult.shouldRetry) {
                     retryPolicy.updateEndTime();
                     if(shouldRetryResult.exception == null) {

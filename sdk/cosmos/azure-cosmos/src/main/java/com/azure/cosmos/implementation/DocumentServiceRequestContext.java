@@ -82,6 +82,7 @@ public class DocumentServiceRequestContext implements Cloneable{
         if(latency != null) {
             this.retryContext.totalTimeInRetry = latency.toMillis();
         }
+        this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();
     }
 
     @Override

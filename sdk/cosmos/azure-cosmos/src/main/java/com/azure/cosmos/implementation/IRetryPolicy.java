@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 
 // TODO update documentation
 /**
@@ -35,6 +36,9 @@ public interface IRetryPolicy  {
 
     Duration getRetryLatency();
 
+    void addStatusAndSubStatusCode(int statusCode, int subStatusCode);
+
+    List<int[]> getStatusAndSubStatusCodes();
 
 
     class ShouldRetryResult {
