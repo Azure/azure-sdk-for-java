@@ -240,8 +240,8 @@ public final class ConfigurationClientBuilder {
      * secret={secret_value}"
      * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
-     * @throws IllegalArgumentException if {@code connectionString} is an empty string. Or the secret is invalid and
-     * cannot instantiate HMAC-SHA256 MAC algorithm.
+     * @throws IllegalArgumentException if {@code connectionString} is an empty string, the {@code connectionString}
+     * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
      */
     public ConfigurationClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
@@ -255,7 +255,8 @@ public final class ConfigurationClientBuilder {
             this.credential = new ConfigurationClientCredentials(connectionString);
         } catch (InvalidKeyException err) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "The secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.", err));
+                "The secret contained within the connection string is invalid and cannot instantiate the HMAC-SHA256"
+                    + " algorithm.", err));
         } catch (NoSuchAlgorithmException err) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
