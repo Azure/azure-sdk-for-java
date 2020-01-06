@@ -136,7 +136,6 @@ jobs:
         inputs:
           versionSpec: '3.6'
 
-      HACK: Disabled readme verification due to it not handling new POM
       - script: |
           pip install setuptools wheel
           pip install doc-warden==$(DocWardenVersion)
