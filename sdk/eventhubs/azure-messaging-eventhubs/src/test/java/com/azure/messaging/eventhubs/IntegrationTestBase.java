@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
@@ -51,6 +52,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private ConnectionStringProperties properties;
     private String testName;
+    private final Scheduler scheduler = Schedulers.newParallel("eh-integration");
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
@@ -73,6 +75,7 @@ public abstract class IntegrationTestBase extends TestBase {
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
         logger.info("[{}]: Performing test clean-up.", testInfo.getDisplayName());
+        scheduler.dispose();
         afterTest();
 
         // Tear down any inline mocks to avoid memory leaks.
@@ -161,7 +164,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retry(RETRY_OPTIONS)
             .transportType(AmqpTransportType.AMQP)
-            .scheduler(Schedulers.newParallel("eh-integration"));
+            .scheduler(scheduler);
 
         if (useCredentials) {
             final String fqdn = getFullyQualifiedDomainName();
