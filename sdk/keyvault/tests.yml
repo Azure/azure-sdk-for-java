@@ -2,6 +2,7 @@ trigger: none
 
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    TimeoutInMinutes: 120
     parameters:
       ServiceDirectory: keyvault
       EnvVars:
