@@ -3,12 +3,11 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.SqlParameter;
-import com.azure.cosmos.SqlQuerySpec;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.SqlParameter;
+import com.azure.cosmos.SqlQuerySpec;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
+class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
 
     private int pageCount = 0;
 
@@ -70,60 +69,53 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<FeedResponse<Document>> baseSubscriber, long i) throws InterruptedException {
-        Flux<FeedResponse<Document>> obs;
+    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws InterruptedException {
+        Flux<FeedResponse<PojoizedJson>> obs;
         Random r = new Random();
         FeedOptions options = new FeedOptions();
 
         if (configuration.getOperationType() == Configuration.Operation.QueryCross) {
 
             int index = r.nextInt(1000);
-            options.setEnableCrossPartitionQuery(true);
-            String sqlQuery = "Select * from c where c._rid = \"" + docsToRead.get(index).getResourceId() + "\"";
-            obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
+            String sqlQuery = "Select * from c where c.id = \"" + docsToRead.get(index).getId() + "\"";
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class);
         } else if (configuration.getOperationType() == Configuration.Operation.QuerySingle) {
 
             int index = r.nextInt(1000);
-            String pk = docsToRead.get(index).getString("pk");
+            String pk = docsToRead.get(index).getProperty(partitionKey);
             options.partitionKey(new PartitionKey(pk));
-            String sqlQuery = "Select * from c where c.pk = \"" + pk + "\"";
-            obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
+            String sqlQuery = "Select * from c where c." + partitionKey + " = \"" + pk + "\"";
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryParallel) {
 
             options.maxItemCount(10);
-            options.setEnableCrossPartitionQuery(true);
             String sqlQuery = "Select * from c";
-            obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryOrderby) {
 
             options.maxItemCount(10);
-            options.setEnableCrossPartitionQuery(true);
             String sqlQuery = "Select * from c order by c._ts";
-            obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregate) {
 
             options.maxItemCount(10);
-            options.setEnableCrossPartitionQuery(true);
             String sqlQuery = "Select value max(c._ts) from c";
-            obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregateTopOrderby) {
 
-            options.setEnableCrossPartitionQuery(true);
             String sqlQuery = "Select top 1 value count(c) from c order by c._ts";
-            obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryTopOrderby) {
 
-            options.setEnableCrossPartitionQuery(true);
             String sqlQuery = "Select top 1000 * from c order by c._ts";
-            obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryInClauseParallel) {
 
             ReadMyWriteWorkflow.QueryBuilder queryBuilder = new ReadMyWriteWorkflow.QueryBuilder();
-            options.setEnableCrossPartitionQuery(true);
             options.setMaxDegreeOfParallelism(200);
             List<SqlParameter> parameters = new ArrayList<>();
             int j = 0;
-            for(Document doc: docsToRead) {
+            for(PojoizedJson doc: docsToRead) {
                 String partitionKeyValue = doc.getId();
                 parameters.add(new SqlParameter("@param" + j, partitionKeyValue));
                 j++;
@@ -133,8 +125,7 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
                                                                                                     parameters));
 
             SqlQuerySpec query = queryBuilder.toSqlQuerySpec();
-            obs = client.queryDocuments(getCollectionLink(), query, options);
-
+            obs = cosmosAsyncContainer.queryItems(query, options, PojoizedJson.class);
         } else {
             throw new IllegalArgumentException("Unsupported Operation: " + configuration.getOperationType());
         }

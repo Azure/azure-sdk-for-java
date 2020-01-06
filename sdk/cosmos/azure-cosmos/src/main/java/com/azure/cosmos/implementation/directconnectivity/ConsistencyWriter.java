@@ -320,9 +320,12 @@ public class ConsistencyWriter {
 
                     //get max global committed lsn from current batch of responses, then update if greater than max of all batches.
                     if (writeBarrierRetryCount.getAndDecrement() == 0) {
-                        logger.debug("ConsistencyWriter: WaitForWriteBarrierAsync - Last barrier multi-region strong. Responses: {}",
-                            responses.stream().map(StoreResult::toString).collect(Collectors.joining("; ")));
-                        logger.debug("ConsistencyWriter: Highest global committed lsn received for write barrier call is {}", maxGlobalCommittedLsnReceived);
+                        if (logger.isDebugEnabled()) {
+
+                            logger.debug("ConsistencyWriter: WaitForWriteBarrierAsync - Last barrier multi-region strong. Responses: {}",
+                                         responses.stream().map(StoreResult::toString).collect(Collectors.joining("; ")));
+                            logger.debug("ConsistencyWriter: Highest global committed lsn received for write barrier call is {}", maxGlobalCommittedLsnReceived);
+                        }
                         return Mono.just(Boolean.FALSE);
                     }
 

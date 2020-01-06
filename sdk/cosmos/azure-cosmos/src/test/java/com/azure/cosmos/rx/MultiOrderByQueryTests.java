@@ -189,7 +189,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDocumentsWithMultiOrder() throws CosmosClientException, InterruptedException {
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.setEnableCrossPartitionQuery(true);
+        
 
         boolean[] booleanValues = new boolean[] {true, false};
         CosmosContainerProperties containerSettings = documentCollection.read().block().getProperties();

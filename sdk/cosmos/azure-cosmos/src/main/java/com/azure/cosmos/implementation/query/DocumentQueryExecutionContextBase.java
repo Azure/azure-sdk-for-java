@@ -153,19 +153,8 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(feedOptions.maxItemCount()));
         }
 
-        if (feedOptions.getEnableCrossPartitionQuery() != null) {
-
-            requestHeaders.put(HttpConstants.HttpHeaders.ENABLE_CROSS_PARTITION_QUERY,
-                    Strings.toString(feedOptions.getEnableCrossPartitionQuery()));
-        }
-
         if (feedOptions.getMaxDegreeOfParallelism() != 0) {
             requestHeaders.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Strings.toString(true));
-        }
-
-        if (this.feedOptions.getEnableCrossPartitionQuery() != null) {
-            requestHeaders.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY,
-                    Strings.toString(this.feedOptions.getEnableCrossPartitionQuery()));
         }
 
         if (this.feedOptions.setResponseContinuationTokenLimitInKb() > 0) {
@@ -207,7 +196,10 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         if (this.resourceTypeEnum.isPartitioned()) {
-            request.routeTo(new PartitionKeyRangeIdentity(collectionRid, range.getId()));
+            boolean hasPartitionKey = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY) != null;
+            if(!hasPartitionKey){
+                request.routeTo(new PartitionKeyRangeIdentity(collectionRid, range.getId()));
+            }
         }
     }
 

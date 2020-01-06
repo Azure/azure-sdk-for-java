@@ -107,7 +107,6 @@ public class BasicDemo {
         log("+ Querying the collection ");
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
         options.setMaxDegreeOfParallelism(2);
         Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class);
 
@@ -128,7 +127,6 @@ public class BasicDemo {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
         options.populateQueryMetrics(true);
         options.maxItemCount(1);
         String continuation = null;

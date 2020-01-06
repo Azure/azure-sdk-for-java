@@ -98,7 +98,7 @@ public class JsonSerializable {
                 case STRING:
                     return value.asText();
                 default:
-                    throw new IllegalStateException("Unexpected JSON value type: " + value.getNodeType());
+                    return value;
             }
         }
         return value;

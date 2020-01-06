@@ -106,7 +106,6 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.setEnableCrossPartitionQuery(true);
 
         Flux<Document> documentsObservable = client
                 .<Document>queryDocuments(getCollectionLink(),
@@ -138,7 +137,6 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.setEnableCrossPartitionQuery(true);
 
         Flux<Document> documentsObservable = client
                 .<Document>queryDocuments(getCollectionLink(),

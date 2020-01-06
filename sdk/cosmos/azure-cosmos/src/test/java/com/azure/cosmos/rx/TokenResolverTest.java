@@ -340,7 +340,7 @@ public class TokenResolverTest extends TestSuiteBase {
             String query = "SELECT * FROM r WHERE r._rid=\"" + rid1 + "\" or r._rid=\"" + rid2 + "\"";
 
             FeedOptions options = new FeedOptions();
-            options.setEnableCrossPartitionQuery(true);
+            
             Flux<FeedResponse<Document>> queryObservable = asyncClientWithTokenResolver.queryDocuments(createdCollection.getSelfLink(), query, options);
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .totalSize(2)

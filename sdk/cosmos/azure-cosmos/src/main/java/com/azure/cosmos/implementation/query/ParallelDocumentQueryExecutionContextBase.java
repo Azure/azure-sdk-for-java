@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.FeedOptions;
@@ -15,6 +16,9 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.routing.Range;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ import java.util.function.Function;
 public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resource>
         extends DocumentQueryExecutionContextBase<T> implements IDocumentQueryExecutionComponent<T> {
 
+    protected final Logger logger;
     protected final List<DocumentProducer<T>> documentProducers;
     protected final List<PartitionKeyRange> partitionKeyRanges;
     protected final SqlQuerySpec querySpec;
@@ -45,6 +50,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         super(client, resourceTypeEnum, resourceType, query, feedOptions, resourceLink, getLazyFeedResponse,
                 correlatedActivityId);
 
+        logger = LoggerFactory.getLogger(this.getClass());
         documentProducers = new ArrayList<>();
 
         this.partitionKeyRanges = partitionKeyRanges;
@@ -68,6 +74,10 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
+                if (feedOptions.partitionKey() != null && feedOptions.partitionKey() != PartitionKey.NONE) {
+                    headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, 
+                                BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey()).toJson());
+                }
                 return this.createDocumentServiceRequest(headers, querySpecForInit, partitionKeyRange, collectionRid);
             };
 

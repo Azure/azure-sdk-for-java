@@ -125,7 +125,7 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemResponse itemResponse = container.createItem(properties);
 
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.setEnableCrossPartitionQuery(true);
+        
         Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
                 container.readAllItems(feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.hasNext()).isTrue();
@@ -138,7 +138,7 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemResponse itemResponse = container.createItem(properties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
-        FeedOptions feedOptions = new FeedOptions().setEnableCrossPartitionQuery(true);
+        FeedOptions feedOptions = new FeedOptions();
 
         Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator1 =
                 container.queryItems(query, feedOptions, CosmosItemProperties.class);

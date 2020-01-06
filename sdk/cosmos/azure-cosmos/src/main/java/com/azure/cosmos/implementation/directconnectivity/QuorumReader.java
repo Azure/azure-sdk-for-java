@@ -541,9 +541,10 @@ public class QuorumReader {
                     barrierRequest.requestContext.forceRefreshAddressCache = false;
 
                     if (readBarrierRetryCount.decrementAndGet() == 0) {
-                        logger.debug("QuorumReader: waitForReadBarrierAsync - Last barrier for single-region requests. Responses: {}",
-                            JavaStreamUtils.toString(responses, "; "));
-
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("QuorumReader: waitForReadBarrierAsync - Last barrier for single-region requests. Responses: {}",
+                                         JavaStreamUtils.toString(responses, "; "));
+                        }
                         // retries exhausted
                             return Flux.just(false);
 
@@ -591,11 +592,13 @@ public class QuorumReader {
 
                                            //trace on last retry.
                                            if (readBarrierRetryCountMultiRegion.getAndDecrement() == 0) {
-                                               logger.debug("QuorumReader: waitForReadBarrierAsync - Last barrier for mult-region strong requests. Responses: {}",
-                                                   JavaStreamUtils.toString(responses, "; "));
-                                                    return Flux.just(false);
+                                               if (logger.isDebugEnabled()) {
+                                                   logger.debug("QuorumReader: waitForReadBarrierAsync - Last barrier for mult-region strong requests. Responses: {}",
+                                                                JavaStreamUtils.toString(responses, "; "));
+                                               }
+                                               return Flux.just(false);
                                            } else {
-                                                    return Flux.empty();
+                                               return Flux.empty();
                                            }
                                        }
                                    );
