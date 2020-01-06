@@ -2,8 +2,8 @@ trigger: none
 
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    TimeoutInMinutes: 120
     parameters:
+      TimeoutInMinutes: 120
       ServiceDirectory: keyvault
       EnvVars:
         AZURE_TEST_MODE: RECORD
