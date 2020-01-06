@@ -21,7 +21,9 @@ public final class KeyEncryptionKeyClient implements KeyEncryptionKey {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the identifier of the key to use for cryptography operations.
+     *
+     * @return The key identifier.
      */
     @Override
     public String getKeyId() {
