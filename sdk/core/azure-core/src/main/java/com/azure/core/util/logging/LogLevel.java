@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 /**
- * Enum which represent logging levels used in Azure SDKs.
+ * Enum which represent logging levels used in Azure SDKs. 
  */
 public enum LogLevel {
     /**
@@ -66,11 +66,13 @@ public enum LogLevel {
      *
      * @param logLevelVal The log level value which needs to convert
      * @return The LogLevel Enum if pass in the valid string. 
-     * Valid strings for each log level are listing as below:
-     * VERBOSE ("verbose", "debug")
-     * INFORMATIONAL ("info", "information", "informational")
-     * WARNING("warn", "warning")
-     * ERROR("err", "error")
+     * The valid strings for {@link LogLevel} are:
+     * <ul>
+     * <li>VERBOSE: "verbose", "debug"</li>
+     * <li>INFO: "info", "information", "informational"</li>
+     * <li>WARNING: "warn", "warning"</li>
+     * <li>ERROR: "err", "error"</li>
+     * </ul>
      * Returns NOT_SET if null is passed in.
      * @throws IllegalArgumentException if the log level value is invalid.
      */
