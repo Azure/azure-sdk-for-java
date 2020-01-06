@@ -65,7 +65,12 @@ public enum LogLevel {
      * Converts the passed log level string to the corresponding {@link LogLevel}.
      *
      * @param logLevelVal The log level value which needs to convert
-     * @return The LogLevel Enum if pass in the valid string listed in {@code allowedLogLevelVariables}.
+     * @return The LogLevel Enum if pass in the valid string. 
+     * Valid strings for each log level are listing as below:
+     * VERBOSE ("verbose", "debug")
+     * INFORMATIONAL ("info", "information", "informational")
+     * WARNING("warn", "warning")
+     * ERROR("err", "error")
      * Returns NOT_SET if null is passed in.
      * @throws IllegalArgumentException if the log level value is invalid.
      */
