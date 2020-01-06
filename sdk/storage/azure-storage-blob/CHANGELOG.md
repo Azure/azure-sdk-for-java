@@ -6,7 +6,6 @@ This package's
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.2.0/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
 
-- Release of 12.2.0-beta.1
 - Added a field to ParallelTransferOptions that allows customers to configure the maximum size to upload in a single PUT. Data sizes larger than this value will be chunked and parallelized.
 - Added overloads to downloadToFile to add the option to overwrite existing files. Default behavior is to not overwrite.
 - Improved performance of BlockBlobOutputStream.
