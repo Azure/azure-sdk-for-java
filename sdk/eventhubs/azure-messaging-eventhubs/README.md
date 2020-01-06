@@ -141,6 +141,10 @@ EventHubProducerClient client = new EventHubClientBuilder()
     .buildProducerClient();
 ```
 
+When using Azure Active Directory, your principal must be assigned a role which allows access to Event Hubs, such
+as the `Azure Event Hubs Data Owner` role. For more information about using Azure Active Directory authorization
+with Event Hubs, please refer to [the associated documentation][aad_authorization].
+
 ## Key concepts
 
 - An **Event Hub producer** is a source of telemetry data, diagnostics information, usage logs, or other log data, as
@@ -429,6 +433,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
+[aad_authorization]: https://docs.microsoft.com/azure/event-hubs/authorize-access-azure-active-directory
 [api_documentation]: https://aka.ms/java-docs
 [app_registration_page]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#get-values-for-signing-in
 [application_client_secret]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret
