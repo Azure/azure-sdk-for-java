@@ -45,7 +45,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     // Languages
-
     /**
      * Code snippet for detecting Language
      */
@@ -184,7 +183,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     // Entity
-
     /**
      * Code snippet for recognizing entities
      */
@@ -219,7 +217,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#string-string
-
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#List
         List<String> inputs = Arrays.asList(
@@ -335,7 +332,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     // Pii Entity
-
     /**
      * Code snippet for recognizing entities
      */
@@ -486,7 +482,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     // Linked Entity
-
     /**
      * Code snippet for recognizing entities
      */
@@ -628,7 +623,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     // Key Phrases
-
     /**
      * Code snippet for recognizing entities
      */
