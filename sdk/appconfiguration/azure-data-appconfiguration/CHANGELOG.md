@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.1 (2020-01-07)
+## 1.0.1 (2020-01-06)
 - Added support for setting `x-ms-client-request-id`, `x-ms-correlation-request-id` and `correlation-context` http header values.
 - Fixed `UserAgent` unknown name and unknown version bug.
 - Fixed `connectionString()`, it throws `IllegalArgumentException` error when `connectionString` is an empty string, 
