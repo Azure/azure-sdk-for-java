@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Generates the correct resource scope to access Azure messaging resources given the authorization type.
@@ -20,6 +21,8 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
     private final CbsAuthorizationType authorizationType;
     private final String fullyQualifiedNamespace;
     private final String activeDirectoryScope;
+
+    private final ConcurrentHashMap<String, TokenManager> tokenManagers = new ConcurrentHashMap<>();
 
     /**
      * Creates an instance that provides {@link TokenManager} for the given {@code hostname} with the
@@ -46,7 +49,12 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
     public TokenManager getTokenManager(Mono<ClaimsBasedSecurityNode> cbsNodeMono, String resource) {
         final String scopes = getResourceString(resource);
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
-        return new ActiveClientTokenManager(cbsNodeMono, tokenAudience, scopes);
+        final String key = tokenAudience + ":" + scopes;
+
+        return tokenManagers.computeIfAbsent(key, unused -> {
+            logger.info("Creating new token manager for: {}", key);
+            return new ActiveClientTokenManager(cbsNodeMono, tokenAudience, scopes);
+        });
     }
 
     /**
