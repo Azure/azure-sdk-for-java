@@ -32,7 +32,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
