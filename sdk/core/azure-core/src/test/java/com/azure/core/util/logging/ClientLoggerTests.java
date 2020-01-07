@@ -78,7 +78,7 @@ public class ClientLoggerTests {
         logMessage(clientLogger, logLevel, logMessage);
 
         sh.flush();
-        String logValues = logCaptureStream.toString(StandardCharsets.UTF_8);
+        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         assertTrue(logValues.contains(logMessage));
     }
 

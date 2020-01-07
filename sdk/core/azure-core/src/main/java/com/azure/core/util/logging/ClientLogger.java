@@ -51,9 +51,12 @@ public class ClientLogger {
      * Retrieves a logger for the passed class name using the {@link LoggerFactory}.
      *
      * @param className Class name creating the logger.
+     * @throws RuntimeException it is an error.
      */
     public ClientLogger(String className) {
         logger = LoggerFactory.getLogger(className);
+        System.setProperty("java.util.logging.config.file",
+            ClientLogger.class.getClassLoader().getResource("logging.properties").getPath());
         defaultLogger = java.util.logging.Logger.getLogger(className);
     }
 
