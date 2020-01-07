@@ -7,11 +7,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.ConnectionPool;
-import okhttp3.Credentials;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import java.net.Proxy;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,59 +152,35 @@ public class OkHttpAsyncHttpClientBuilder {
         OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null
                 ? new OkHttpClient.Builder()
                 : this.okHttpClient.newBuilder();
-        //
+
+        // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {
             httpClientBuilder = httpClientBuilder.addNetworkInterceptor(interceptor);
         }
-        if (this.readTimeout != null) {
-            httpClientBuilder = httpClientBuilder.readTimeout(this.readTimeout);
-        } else {
-            httpClientBuilder = httpClientBuilder.readTimeout(DEFAULT_READ_TIMEOUT);
-        }
-        if (this.connectionTimeout != null) {
-            httpClientBuilder = httpClientBuilder.connectTimeout(this.connectionTimeout);
-        } else {
-            httpClientBuilder = httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
-        }
+
+        // Use the configured read timeout if set, otherwise use the default (120s).
+        httpClientBuilder = (this.readTimeout != null)
+            ? httpClientBuilder.readTimeout(this.readTimeout)
+            : httpClientBuilder.readTimeout(DEFAULT_READ_TIMEOUT);
+
+        // Use the configured connection timeout if set, otherwise use the default (60s).
+        httpClientBuilder = (this.connectionTimeout != null)
+            ? httpClientBuilder.connectTimeout(this.connectionTimeout)
+            : httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
+
+        // If set use the configured connection pool.
         if (this.connectionPool != null) {
             httpClientBuilder = httpClientBuilder.connectionPool(connectionPool);
         }
+
+        // If set use the configured dispatcher.
         if (this.dispatcher != null) {
             httpClientBuilder = httpClientBuilder.dispatcher(dispatcher);
         }
-        if (proxyOptions != null) {
-            Proxy.Type proxyType;
-            switch (proxyOptions.getType()) {
-                case HTTP:
-                    proxyType = Proxy.Type.HTTP;
-                    break;
-                case SOCKS4:
-                case SOCKS5:
-                    // JDK Proxy.Type.SOCKS identifies SOCKS V4 and V5 proxy.
-                    proxyType = Proxy.Type.SOCKS;
-                    break;
-                default:
-                    throw logger.logExceptionAsError(new IllegalStateException(
-                            String.format("Unknown Proxy type '%s' in use. Not configuring OkHttp proxy.",
-                                    proxyOptions.getType())));
-            }
-            Proxy proxy = new Proxy(proxyType, this.proxyOptions.getAddress());
-            httpClientBuilder = httpClientBuilder.proxy(proxy);
-            if (proxyOptions.getUsername() != null) {
-                httpClientBuilder = httpClientBuilder.proxyAuthenticator((route, response) -> {
-                    // By default azure-core supports only Basic authentication at the moment.
-                    // If user need other scheme such as Digest then they can use 'configuration'
-                    // to get access to the underlying builder and can set 'proxyAuthenticator'.
-                    // In future when we ever support Digest in core-level then we can look at
-                    // response.challenges and get the scheme from there.
-                    String credential = Credentials.basic(proxyOptions.getUsername(),
-                            proxyOptions.getPassword());
-                    return response.request().newBuilder()
-                            .header("Proxy-Authorization", credential)
-                            .build();
-                });
-            }
-        }
+
+        // Set the proxy selector.
+        httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(proxyOptions));
+
         return new OkHttpAsyncHttpClient(httpClientBuilder.build());
     }
 }
