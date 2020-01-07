@@ -16,7 +16,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
-import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -93,8 +92,6 @@ class EventHubConsumerAsyncClientTest {
     private AmqpReceiveLink amqpReceiveLink;
     @Mock
     private EventHubAmqpConnection connection;
-    @Mock
-    private EventHubSession session;
     @Mock
     private TokenCredential tokenCredential;
 
