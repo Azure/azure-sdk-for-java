@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
@@ -91,7 +92,10 @@ class EventHubProducerAsyncClientTest {
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
-    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10));
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
+        .setDelay(Duration.ofMillis(500))
+        .setMode(AmqpRetryMode.FIXED)
+        .setTryTimeout(Duration.ofSeconds(10));
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private EventHubProducerAsyncClient producer;
