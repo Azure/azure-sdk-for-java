@@ -18,8 +18,10 @@ public enum Messages {
     private static Properties properties;
     private static final String PATH = "com/azure/messaging/eventhubs/checkpointstore/blob/messages.properties";
     public static final String NO_METADATA_AVAILABLE_FOR_BLOB = "No metadata available for blob {}";
-    public static final String CLAIM_ERROR = "Couldn't claim ownership of partition {}, error {}";
+    public static final String CLAIM_ERROR = "Couldn't claim ownership of partition {}";
     public static final String FOUND_BLOB_FOR_PARTITION = "Found blob for partition {}";
+    public static final String BLOB_OWNER_INFO = "Blob {} is owned by {}";
+    public static final String CHECKPOINT_INFO = "Blob {} has checkpoint with sequence number {} and offset {}";
 
     private static synchronized Properties getProperties() {
         if (properties != null) {

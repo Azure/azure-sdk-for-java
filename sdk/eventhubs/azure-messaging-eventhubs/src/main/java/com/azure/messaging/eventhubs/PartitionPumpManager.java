@@ -148,8 +148,11 @@ class PartitionPumpManager {
                     partitionEvent),
                     /* EventHubConsumer receive() returned an error */
                     ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
-                    () -> partitionProcessor.close(new CloseContext(partitionContext,
-                        CloseReason.EVENT_PROCESSOR_SHUTDOWN)));
+                    () -> {
+                        partitionProcessor.close(new CloseContext(partitionContext,
+                            CloseReason.EVENT_PROCESSOR_SHUTDOWN));
+                        partitionPumps.remove(claimedOwnership.getPartitionId());
+                    });
         } catch (Exception ex) {
             if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
                 cleanup(claimedOwnership, partitionPumps.get(claimedOwnership.getPartitionId()));
