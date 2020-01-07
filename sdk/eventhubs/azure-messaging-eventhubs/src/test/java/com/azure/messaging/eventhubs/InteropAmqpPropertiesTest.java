@@ -72,7 +72,6 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     @Test
     public void interoperableWithDirectProtonAmqpMessage() {
         // Arrange
-        final AtomicReference<EventData> receivedEventData = new AtomicReference<>();
         final String messageTrackingValue = UUID.randomUUID().toString();
 
         final HashMap<String, Object> applicationProperties = new HashMap<>();
@@ -119,21 +118,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
             .filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(PartitionEvent::getData))
             .assertNext(event -> {
                 validateAmqpProperties(message, expectedAnnotations, applicationProperties, event);
-                receivedEventData.set(event);
             })
-            .expectComplete()
-            .verify(TIMEOUT);
-
-        Assertions.assertNotNull(receivedEventData.get());
-
-        System.out.println("Sending another event we received.");
-        final EventPosition enqueuedTime2 = EventPosition.fromEnqueuedTime(Instant.now());
-        producer.send(receivedEventData.get(), sendOptions).block(TIMEOUT);
-
-//        .filter(event -> isMatchingEvent(event, messageTrackingValue))
-        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, enqueuedTime2)
-            .take(1).map(PartitionEvent::getData))
-            .assertNext(event -> validateAmqpProperties(message, expectedAnnotations, applicationProperties, event))
             .expectComplete()
             .verify(TIMEOUT);
     }
