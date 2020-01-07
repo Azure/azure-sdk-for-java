@@ -274,6 +274,11 @@ jobs:
 
       - template: ../steps/cache-maven-repository.yml
 
+      - template: ../steps/install-reporting-tools.yml
+        parameters:
+          Options: --batch-mode
+          MavenOptions: $(MemoryOptions) $(LoggingOptions)
+
       - task: Maven@3
         displayName: 'Start Jetty'
         condition: ne(variables['SdkType'], 'client')
