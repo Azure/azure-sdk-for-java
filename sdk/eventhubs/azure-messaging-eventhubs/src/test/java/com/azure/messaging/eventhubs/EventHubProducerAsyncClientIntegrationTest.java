@@ -3,17 +3,23 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -155,10 +161,12 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
         Assertions.assertNotNull(partitionIds);
 
         for (String partitionId : partitionIds) {
-            final EventDataBatch batch = producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId)).block(TIMEOUT);
+            final EventDataBatch batch =
+                producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId)).block(TIMEOUT);
             Assertions.assertNotNull(batch);
 
-            Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));
+            Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid",
+                Integer.parseInt(partitionId))));
 
             // Act & Assert
             StepVerifier.create(producer.send(batch)).expectComplete().verify(TIMEOUT);
@@ -192,5 +200,37 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
         } finally {
             dispose(client);
         }
+    }
+
+    @Disabled("Testing long running operations and disconnections.")
+    @Test
+    void worksAfterReconnection() throws InterruptedException {
+        Flux.interval(Duration.ofSeconds(5))
+            .flatMap(position -> producer.createBatch().flatMap(batch -> {
+                IntStream.range(0, 3).mapToObj(number -> new EventData("Position" + position + ": " + number))
+                    .forEach(event -> {
+                        if (!batch.tryAdd(event)) {
+                            logger.error("Could not add event. Size: {}. Max: {}. Content: {}",
+                                batch.getSizeInBytes(), batch.getMaxSizeInBytes(), event.getBodyAsString());
+                        }
+                    });
+
+                return producer.send(batch).thenReturn(Instant.now());
+            }))
+            .onErrorContinue(error -> error instanceof AmqpException && ((AmqpException) error).isTransient(),
+                (error, value) -> {
+                    System.out.println("Exception dropped: " + error.getMessage());
+                })
+            .subscribe(instant -> {
+                System.out.println("Sent batch at: " + instant);
+            }, error -> {
+                logger.error("Error sending batch: ", error);
+            }, () -> {
+                logger.info("Complete.");
+            });
+
+        System.out.println("Sleeping while performing work.");
+        TimeUnit.MINUTES.sleep(30);
+        System.out.println("Complete.");
     }
 }
