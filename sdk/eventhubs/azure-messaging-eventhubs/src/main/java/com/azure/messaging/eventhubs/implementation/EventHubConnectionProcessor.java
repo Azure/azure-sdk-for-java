@@ -128,7 +128,12 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
                         retryAttempts.set(0);
                     }
                 },
-                error -> onError(error),
+                error -> {
+                    synchronized (lock) {
+                        currentConnection = null;
+                    }
+                    onError(error);
+                },
                 () -> {
                     if (isDisposed()) {
                         logger.info("Connection is disposed. Not requesting another connection.");
@@ -277,8 +282,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
         @Override
         public void onNext(EventHubAmqpConnection connection) {
             if (!isCancelled()) {
-                super.onNext(connection);
-                actual.onNext(connection);
+                super.complete(connection);
             }
         }
 
