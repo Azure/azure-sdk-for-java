@@ -1239,6 +1239,7 @@
     <module>sdk/keyvault/azure-security-keyvault-certificates</module>
     <module>sdk/keyvault/azure-security-keyvault-keys</module>
     <module>sdk/keyvault/azure-security-keyvault-secrets</module>
+	<module>sdk/search/azure-search</module>
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
@@ -1246,8 +1247,7 @@
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
-    <module>sdk/storage/azure-storage-queue</module>
-    <module>sdk/search/azure-search</module>
+    <module>sdk/storage/azure-storage-queue</module>    
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
 </project>
