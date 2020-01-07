@@ -6,6 +6,9 @@
 # Use case: Update all the versions in README.md and pom.xml files based on
 # the versions in versions_[client|data|management].txt, external_dependencies.txt
 #
+# It's worth noting that there are 3 update types, library, external_dependencies and all. 'All' means update both the libraries
+# for the track selected as well as the external_dependencies.
+#
 #    python eng/versioning/update_versions.py --update-type [library|external_dependency|all] --build-type [client|data|management]
 # For example: To update the library versions for the client track without touching the README files
 #    python eng/versioning/update_versions.py --ut library --bt client --sr
@@ -31,7 +34,9 @@ from datetime import timedelta
 import errno
 import os
 import re
+import sys
 import time
+import traceback
 from utils import BuildType
 from utils import CodeModule
 from utils import external_dependency_version_regex
@@ -41,7 +46,7 @@ from utils import version_update_start_marker
 from utils import version_update_end_marker
 from utils import version_update_marker
 
-def update_versions(version_map, target_file):
+def update_versions(version_map, ext_dep_map, target_file):
 
     newlines = []
     repl_open, repl_thisline, file_changed = False, False, False
@@ -51,7 +56,7 @@ def update_versions(version_map, target_file):
             for line in f:
                 repl_thisline = repl_open
                 match = version_update_marker.search(line)
-                if match:
+                if match and not target_file.endswith('.md'):
                     module_name, version_type = match.group(1), match.group(2)
                     repl_thisline = True
                 else:
@@ -65,28 +70,31 @@ def update_versions(version_map, target_file):
                             repl_open, repl_thisline = False, False
 
                 if repl_thisline:
-                    # If the module isn't found then just continue. This can
-                    # happen if we're going through and replacing only library
-                    # or only external dependency versions
-                    if module_name not in version_map:
+                    # If the module isn't found then just continue. This can happen if we're going through and replacing
+                    # library versions for one track and tag entry is for another track.
+                    if module_name not in version_map and (version_type == 'current' or version_type == 'dependency'):
                         newlines.append(line)
                         continue
-                    module = version_map[module_name]
                     new_version = ''
                     if version_type == 'current':
                         try:
+                            module = version_map[module_name]
                             new_version = module.current
                             newline = re.sub(version_regex_str_no_anchor, new_version, line)
                         except AttributeError:
+                            # This can happen when a dependency is an unreleased_ dependency and the tag is current instead of dependency
                             raise ValueError('Module: {0} does not have a current version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                     elif version_type == 'dependency':
                         try:
+                            module = version_map[module_name]
                             new_version = module.dependency
                             newline = re.sub(version_regex_str_no_anchor, new_version, line)
                         except AttributeError:
+                            # This should never happen unless the version file is malformed
                             raise ValueError('Module: {0} does not have a dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                     elif version_type == 'external_dependency':
                         try:
+                            module = ext_dep_map[module_name]
                             new_version = module.external_dependency
                             newline = re.sub(external_dependency_version_regex, new_version, line)
                         except AttributeError:
@@ -108,6 +116,7 @@ def update_versions(version_map, target_file):
                     f.write(line)
     except Exception as e:
         print("Unexpected exception: " + str(e))
+        traceback.print_exc(file=sys.stderr)
 
 def load_version_map_from_file(the_file, version_map):
     with open(the_file) as f:
@@ -124,6 +133,7 @@ def display_version_info(version_map):
 
 def update_versions_all(update_type, build_type, target_file, skip_readme):
     version_map = {}
+    ext_dep_map = {}
     # Load the version and/or external dependency file for the given UpdateType
     # into the verion_map. If UpdateType.all is selected then versions for both
     # the libraries and external dependencies are being updated.
@@ -135,37 +145,42 @@ def update_versions_all(update_type, build_type, target_file, skip_readme):
     if update_type == UpdateType.external_dependency or update_type == UpdateType.all:
         dependency_file = os.path.normpath('eng/versioning/external_dependencies.txt')
         print('external_dependency_file=' + dependency_file)
-        load_version_map_from_file(dependency_file, version_map)
+        load_version_map_from_file(dependency_file, ext_dep_map)
 
     display_version_info(version_map)
+    display_version_info(ext_dep_map)
 
     if target_file:
-        update_versions(version_map, target_file)
+        update_versions(version_map, ext_dep_map, target_file)
     else:
         for root, _, files in os.walk("."):
             for file_name in files:
                 file_path = root + os.sep + file_name
                 if (file_name.endswith('.md') and not skip_readme) or (file_name.startswith('pom.') and file_name.endswith('.xml')):
-                    update_versions(version_map, file_path)
+                    update_versions(version_map, ext_dep_map, file_path)
 
     # This is a temporary stop gap to deal with versions hard coded in java files.
     # Everything within the begin/end tags below can be deleted once
-    # https://github.com/Azure/azure-sdk-for-java/issues/3141 has been fixed.
+    # https://github.com/Azure/azure-sdk-for-java/issues/7106 has been fixed.
     # version_*_java_files.txt
     # BEGIN:Versions_in_java_files
     if not target_file and BuildType.none != build_type:
         # the good thing here is that the java files only contain library versions, not
         # external versions
         version_java_file = os.path.normpath('eng/versioning/version_' + build_type.name + '_java_files.txt')
-        with open(version_java_file) as f:
-            for raw_line in f:
-                java_file_to_update = raw_line.strip()
-                if not java_file_to_update or java_file_to_update.startswith('#'):
-                    continue
-                if os.path.isfile(java_file_to_update):
-                    update_versions(version_map, java_file_to_update)
-                else:
-                    raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), java_file_to_update)
+
+        if os.path.exists(version_java_file):
+            with open(version_java_file) as f:
+                for raw_line in f:
+                    java_file_to_update = raw_line.strip()
+                    if not java_file_to_update or java_file_to_update.startswith('#'):
+                        continue
+                    if os.path.isfile(java_file_to_update):
+                        update_versions(version_map, ext_dep_map, java_file_to_update)
+                    else:
+                        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), java_file_to_update)
+        else:
+            print(version_java_file + ' does not exist. Skipping.')
     # END:Versions_in_java_files
 
 def main():

@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.TextSentiment;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**

@@ -3,8 +3,8 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
@@ -21,9 +21,13 @@ public class AadAuthentication {
         // and navigating to "Overview" page. Looking for the "Endpoint" keyword.
         String endpoint = "{endpoint_value}";
 
-        // Token Credential could be an AAD token which you can get from Identity
-        // or other service authentication service.
-        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        // Default token credential could be obtained from Identity service.
+        // It tries to create a valid credential in the following order:
+        //      EnvironmentCredential
+        //      ManagedIdentityCredential
+        //      SharedTokenCacheCredential
+        //      Fails if none of the credentials above could be created.
+        DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         final ConfigurationClient client = new ConfigurationClientBuilder()
             .credential(tokenCredential) // AAD authentication

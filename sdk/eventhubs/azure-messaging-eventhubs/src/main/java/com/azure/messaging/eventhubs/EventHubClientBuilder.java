@@ -28,7 +28,6 @@ import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
-import java.util.Map;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -36,6 +35,7 @@ import reactor.core.scheduler.Schedulers;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
@@ -459,7 +459,7 @@ public class EventHubClientBuilder {
         }
 
         if (scheduler == null) {
-            scheduler = Schedulers.newElastic("event-hubs");
+            scheduler = Schedulers.elastic();
         }
 
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
