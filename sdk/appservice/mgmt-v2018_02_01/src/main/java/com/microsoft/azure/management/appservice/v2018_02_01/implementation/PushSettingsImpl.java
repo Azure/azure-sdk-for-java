@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.PushSettings;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class PushSettingsImpl extends WrapperImpl<PushSettingsInner> implements PushSettings {
-    private final AppServiceManager manager;
-    PushSettingsImpl(PushSettingsInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    PushSettingsImpl(PushSettingsInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

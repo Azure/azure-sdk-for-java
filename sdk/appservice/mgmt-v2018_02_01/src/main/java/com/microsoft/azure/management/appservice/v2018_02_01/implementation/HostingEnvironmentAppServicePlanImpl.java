@@ -19,15 +19,15 @@ import com.microsoft.azure.management.appservice.v2018_02_01.StatusOptions;
 import java.util.Map;
 
 class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInner> implements HostingEnvironmentAppServicePlan {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    HostingEnvironmentAppServicePlanImpl(AppServicePlanInner inner,  AppServiceManager manager) {
+    HostingEnvironmentAppServicePlanImpl(AppServicePlanInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

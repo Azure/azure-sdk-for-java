@@ -13,13 +13,13 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Proc
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import org.joda.time.DateTime;
 
 /**
  * Type representing ProcessThreadInfo.
  */
-public interface ProcessThreadInfo extends HasInner<ProcessThreadInfoInner>, Indexable, Refreshable<ProcessThreadInfo>, HasManager<AppServiceManager> {
+public interface ProcessThreadInfo extends HasInner<ProcessThreadInfoInner>, Indexable, Refreshable<ProcessThreadInfo>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the basePriority value.
      */

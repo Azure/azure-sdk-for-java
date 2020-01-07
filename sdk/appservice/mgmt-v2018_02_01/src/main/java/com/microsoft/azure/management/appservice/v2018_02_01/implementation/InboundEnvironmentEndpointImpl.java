@@ -14,15 +14,15 @@ import rx.Observable;
 import java.util.List;
 
 class InboundEnvironmentEndpointImpl extends WrapperImpl<InboundEnvironmentEndpointInner> implements InboundEnvironmentEndpoint {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    InboundEnvironmentEndpointImpl(InboundEnvironmentEndpointInner inner,  AppServiceManager manager) {
+    InboundEnvironmentEndpointImpl(InboundEnvironmentEndpointInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
