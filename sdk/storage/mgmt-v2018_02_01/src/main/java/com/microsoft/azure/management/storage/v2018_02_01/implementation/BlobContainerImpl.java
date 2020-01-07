@@ -11,20 +11,24 @@ package com.microsoft.azure.management.storage.v2018_02_01.implementation;
 import com.microsoft.azure.management.storage.v2018_02_01.BlobContainer;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import com.microsoft.azure.management.storage.v2018_02_01.PublicAccess;
+import java.util.Map;
 import com.microsoft.azure.management.storage.v2018_02_01.ImmutabilityPolicyProperties;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.storage.v2018_02_01.LeaseDuration;
 import com.microsoft.azure.management.storage.v2018_02_01.LeaseState;
 import com.microsoft.azure.management.storage.v2018_02_01.LeaseStatus;
 import com.microsoft.azure.management.storage.v2018_02_01.LegalHoldProperties;
-import java.util.Map;
-import com.microsoft.azure.management.storage.v2018_02_01.PublicAccess;
 
 class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContainerInner, BlobContainerImpl> implements BlobContainer, BlobContainer.Definition, BlobContainer.Update {
     private final StorageManager manager;
     private String resourceGroupName;
     private String accountName;
     private String containerName;
+    private PublicAccess cpublicAccess;
+    private Map<String, String> cmetadata;
+    private PublicAccess upublicAccess;
+    private Map<String, String> umetadata;
 
     BlobContainerImpl(String name, StorageManager manager) {
         super(name, new BlobContainerInner());
@@ -39,7 +43,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
         this.manager = manager;
         // Set resource name
         this.containerName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "storageAccounts");
         this.containerName = IdParsingUtils.getValueFromIdByName(inner.id(), "containers");
@@ -54,14 +58,14 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     @Override
     public Observable<BlobContainer> createResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createAsync(this.resourceGroupName, this.accountName, this.containerName)
+        return client.createAsync(this.resourceGroupName, this.accountName, this.containerName, this.cpublicAccess, this.cmetadata)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<BlobContainer> updateResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.updateAsync(this.resourceGroupName, this.accountName, this.containerName)
+        return client.updateAsync(this.resourceGroupName, this.accountName, this.containerName, this.upublicAccess, this.umetadata)
             .map(innerToFluentMap(this));
     }
 
@@ -151,6 +155,26 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     public BlobContainerImpl withExistingBlobService(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
+        return this;
+    }
+
+    @Override
+    public BlobContainerImpl withPublicAccess(PublicAccess publicAccess) {
+        if (isInCreateMode()) {
+            this.cpublicAccess = publicAccess;
+        } else {
+            this.upublicAccess = publicAccess;
+        }
+        return this;
+    }
+
+    @Override
+    public BlobContainerImpl withMetadata(Map<String, String> metadata) {
+        if (isInCreateMode()) {
+            this.cmetadata = metadata;
+        } else {
+            this.umetadata = metadata;
+        }
         return this;
     }
 
