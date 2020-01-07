@@ -70,7 +70,7 @@ import static org.mockito.Mockito.when;
 /**
  * Unit tests to verify functionality of {@link EventHubConsumerAsyncClient}.
  */
-public class EventHubConsumerAsyncClientTest {
+class EventHubConsumerAsyncClientTest {
     static final String PARTITION_ID_HEADER = "partition-id-sent";
 
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
@@ -106,7 +106,7 @@ public class EventHubConsumerAsyncClientTest {
     private EventHubConnectionProcessor connectionProcessor;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
@@ -130,7 +130,7 @@ public class EventHubConsumerAsyncClientTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         Mockito.framework().clearInlineMocks();
         consumer.close();
     }
@@ -140,7 +140,7 @@ public class EventHubConsumerAsyncClientTest {
      * is not set.
      */
     @Test
-    public void lastEnqueuedEventInformationIsNull() {
+    void lastEnqueuedEventInformationIsNull() {
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
         final int numberOfEvents = 10;
@@ -160,7 +160,7 @@ public class EventHubConsumerAsyncClientTest {
      * Verify that the default information is set and is null because no information has been received.
      */
     @Test
-    public void lastEnqueuedEventInformationCreated() {
+    void lastEnqueuedEventInformationCreated() {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
@@ -188,7 +188,7 @@ public class EventHubConsumerAsyncClientTest {
      * prefetch value.
      */
     @Test
-    public void receivesNumberOfEvents() {
+    void receivesNumberOfEvents() {
         // Arrange
         final int numberOfEvents = 10;
 
@@ -206,23 +206,24 @@ public class EventHubConsumerAsyncClientTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void returnsNewListener() {
+    void returnsNewListener() {
         // Arrange
         final int numberOfEvents = 10;
 
         EventHubAmqpConnection connection1 = mock(EventHubAmqpConnection.class);
-        EventHubConnectionProcessor eventHubConnection = Mono.fromCallable(() -> connection1)
+        EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
             .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, retryOptions));
+
+        when(connection1.getEndpointStates()).thenReturn(endpointProcessor);
+        endpointSink.next(AmqpEndpointState.ACTIVE);
 
         EmitterProcessor<Message> processor2 = EmitterProcessor.create();
         FluxSink<Message> processor2sink = processor2.sink();
         AmqpReceiveLink link2 = mock(AmqpReceiveLink.class);
-        EventHubSession session2 = mock(EventHubSession.class);
 
         EmitterProcessor<Message> processor3 = EmitterProcessor.create();
         FluxSink<Message> processor3sink = processor3.sink();
         AmqpReceiveLink link3 = mock(AmqpReceiveLink.class);
-        EventHubSession session3 = mock(EventHubSession.class);
 
         when(link2.receive()).thenReturn(processor2);
         when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
@@ -232,11 +233,8 @@ public class EventHubConsumerAsyncClientTest {
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
-        when(connection1.createSession(any())).thenReturn(Mono.just(session2), Mono.just(session3));
-        when(session2.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
-            .thenReturn(Mono.just(link2));
-        when(session3.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
-            .thenReturn(Mono.just(link3));
+        when(connection1.createReceiveLink(any(), argThat(arg -> arg.endsWith(PARTITION_ID)), any(EventPosition.class),
+            any(ReceiveOptions.class))).thenReturn(Mono.just(link2), Mono.just(link3));
 
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
@@ -262,7 +260,7 @@ public class EventHubConsumerAsyncClientTest {
      * Verify that receive can have multiple subscribers.
      */
     @Test
-    public void canHaveMultipleSubscribers() throws InterruptedException {
+    void canHaveMultipleSubscribers() throws InterruptedException {
         // Arrange
         final int numberOfEvents = 7;
         final CountDownLatch firstConsumerCountDown = new CountDownLatch(numberOfEvents);
@@ -300,7 +298,7 @@ public class EventHubConsumerAsyncClientTest {
      * Verifies that we can limit the number of deliveries added on the link at a given time.
      */
     @Test
-    public void canLimitRequestsBackpressure() throws InterruptedException {
+    void canLimitRequestsBackpressure() throws InterruptedException {
         // Arrange
         final int numberOfEvents = 20;
         final int backpressureRequest = 2;
@@ -342,7 +340,7 @@ public class EventHubConsumerAsyncClientTest {
      * Verifies that if we have limited the request, the number of credits added is the same as that limit.
      */
     @Test
-    public void returnsCorrectCreditRequest() throws InterruptedException {
+    void returnsCorrectCreditRequest() throws InterruptedException {
         // Arrange
         final int numberOfEvents = 20;
         final int backpressureRequest = 2;
@@ -384,7 +382,7 @@ public class EventHubConsumerAsyncClientTest {
      * Verify that the correct number of credits are returned when the link is empty, and there are subscribers.
      */
     @Test
-    public void suppliesCreditsWhenSubscribers() {
+    void suppliesCreditsWhenSubscribers() {
         // Arrange
         final int backPressure = 8;
 
@@ -415,7 +413,7 @@ public class EventHubConsumerAsyncClientTest {
      * Verify that 0 credits are returned when there are no subscribers for this link anymore.
      */
     @Test
-    public void suppliesNoCreditsWhenNoSubscribers() {
+    void suppliesNoCreditsWhenNoSubscribers() {
         // Arrange
         final int backPressure = 8;
 
@@ -445,7 +443,7 @@ public class EventHubConsumerAsyncClientTest {
      * Verifies that the consumer closes and completes any listeners on a shutdown signal.
      */
     @Test
-    public void listensToShutdownSignals() throws InterruptedException {
+    void listensToShutdownSignals() throws InterruptedException {
         // Arrange
         final int numberOfEvents = 7;
         final CountDownLatch shutdownReceived = new CountDownLatch(3);
@@ -495,7 +493,7 @@ public class EventHubConsumerAsyncClientTest {
     }
 
     @Test
-    public void setsCorrectProperties() {
+    void setsCorrectProperties() {
         // Act
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=dummy-event-hub")
@@ -508,17 +506,23 @@ public class EventHubConsumerAsyncClientTest {
     }
 
     @Test
-    public void receivesMultiplePartitions() {
+    void receivesMultiplePartitions() {
+        // Arrange
         int numberOfEvents = 10;
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
         EventHubAmqpConnection connection1 = mock(EventHubAmqpConnection.class);
-        EventHubConnectionProcessor eventHubConnection = Mono.fromCallable(() -> connection1)
+        EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
             .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, retryOptions));
+
+        when(connection1.getEndpointStates()).thenReturn(endpointProcessor);
+        endpointSink.next(AmqpEndpointState.ACTIVE);
 
         String id2 = "partition-2";
         String id3 = "partition-3";
         String[] partitions = new String[]{PARTITION_ID, id2, id3};
+
+        // Set-up management node returns.
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
         when(connection1.getManagementNode()).thenReturn(Mono.just(managementNode));
         when(managementNode.getEventHubProperties())
@@ -530,12 +534,10 @@ public class EventHubConsumerAsyncClientTest {
         EmitterProcessor<Message> processor2 = EmitterProcessor.create();
         FluxSink<Message> processor2sink = processor2.sink();
         AmqpReceiveLink link2 = mock(AmqpReceiveLink.class);
-        EventHubSession session2 = mock(EventHubSession.class);
 
         EmitterProcessor<Message> processor3 = EmitterProcessor.create();
         FluxSink<Message> processor3sink = processor3.sink();
         AmqpReceiveLink link3 = mock(AmqpReceiveLink.class);
-        EventHubSession session3 = mock(EventHubSession.class);
 
         when(link2.receive()).thenReturn(processor2);
         when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
@@ -545,24 +547,19 @@ public class EventHubConsumerAsyncClientTest {
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
-        when(connection1.createSession(any())).thenAnswer(invocation -> {
-            String name = invocation.getArgument(0);
-
-            if (name.endsWith(PARTITION_ID)) {
-                return Mono.just(session);
-            } else if (name.endsWith(id2)) {
-                return Mono.just(session2);
-            } else if (name.endsWith(id3)) {
-                return Mono.just(session3);
-            } else {
-                return Mono.error(new IllegalArgumentException("Unknown session: " + name));
-            }
-        });
-        when(session2.createConsumer(any(), argThat(name -> name.endsWith(id2)), any(), any(), any(), any()))
-            .thenReturn(Mono.just(link2));
-
-        when(session3.createConsumer(any(), argThat(name -> name.endsWith(id3)), any(), any(), any(), any()))
-            .thenReturn(Mono.just(link3));
+        when(connection1.createReceiveLink(any(), anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenAnswer(mock -> {
+                String name = mock.getArgument(1);
+                if (name.endsWith(PARTITION_ID)) {
+                    return Mono.just(amqpReceiveLink);
+                } else if (name.endsWith(id2)) {
+                    return Mono.just(link2);
+                } else if (name.endsWith(id3)) {
+                    return Mono.just(link3);
+                } else {
+                    return Mono.error(new IllegalArgumentException("Unknown entityPath: " + name));
+                }
+            });
 
         // Act & Assert
         StepVerifier.create(asyncClient.receive(true).filter(e -> isMatchingEvent(e, messageTrackingUUID)))
@@ -581,18 +578,24 @@ public class EventHubConsumerAsyncClientTest {
      * Verifies that even if one link closes, it still continues to receive.
      */
     @Test
-    public void receivesMultiplePartitionsWhenOneCloses() {
+    void receivesMultiplePartitionsWhenOneCloses() {
+        // Arrange
         int numberOfEvents = 10;
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
         final FluxSink<Message> processor1sink = messageProcessor.sink();
 
         EventHubAmqpConnection connection1 = mock(EventHubAmqpConnection.class);
-        EventHubConnectionProcessor eventHubConnection = Mono.fromCallable(() -> connection1)
+        EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
             .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, retryOptions));
+
+        when(connection1.getEndpointStates()).thenReturn(endpointProcessor);
+        endpointSink.next(AmqpEndpointState.ACTIVE);
 
         String id2 = "partition-2";
         String id3 = "partition-3";
         String[] partitions = new String[]{PARTITION_ID, id2, id3};
+
+        // Set-up management node returns.
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
         when(connection1.getManagementNode()).thenReturn(Mono.just(managementNode));
         when(managementNode.getEventHubProperties())
@@ -604,43 +607,32 @@ public class EventHubConsumerAsyncClientTest {
         EmitterProcessor<Message> processor2 = EmitterProcessor.create();
         FluxSink<Message> processor2sink = processor2.sink();
         AmqpReceiveLink link2 = mock(AmqpReceiveLink.class);
-        EventHubSession session2 = mock(EventHubSession.class);
 
         EmitterProcessor<Message> processor3 = EmitterProcessor.create();
         FluxSink<Message> processor3sink = processor3.sink();
         AmqpReceiveLink link3 = mock(AmqpReceiveLink.class);
-        EventHubSession session3 = mock(EventHubSession.class);
 
         when(link2.receive()).thenReturn(processor2);
-        when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> {
-            sink.next(AmqpEndpointState.ACTIVE);
-        }));
+        when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link2.getCredits()).thenReturn(numberOfEvents);
 
         when(link3.receive()).thenReturn(processor3);
-        when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> {
-            sink.next(AmqpEndpointState.ACTIVE);
-        }));
+        when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
-        when(connection1.createSession(any())).thenAnswer(invocation -> {
-            String name = invocation.getArgument(0);
-
-            if (name.endsWith(PARTITION_ID)) {
-                return Mono.just(session);
-            } else if (name.endsWith(id2)) {
-                return Mono.just(session2);
-            } else if (name.endsWith(id3)) {
-                return Mono.just(session3);
-            } else {
-                return Mono.error(new IllegalArgumentException("Unknown session: " + name));
-            }
-        });
-        when(session2.createConsumer(any(), argThat(name -> name.endsWith(id2)), any(), any(), any(), any()))
-            .thenReturn(Mono.just(link2));
-
-        when(session3.createConsumer(any(), argThat(name -> name.endsWith(id3)), any(), any(), any(), any()))
-            .thenReturn(Mono.just(link3));
+        when(connection1.createReceiveLink(any(), anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenAnswer(mock -> {
+                String name = mock.getArgument(1);
+                if (name.endsWith(PARTITION_ID)) {
+                    return Mono.just(amqpReceiveLink);
+                } else if (name.endsWith(id2)) {
+                    return Mono.just(link2);
+                } else if (name.endsWith(id3)) {
+                    return Mono.just(link3);
+                } else {
+                    return Mono.error(new IllegalArgumentException("Unknown session: " + name));
+                }
+            });
 
         // Act & Assert
         StepVerifier.create(asyncClient.receive(true).filter(e -> isMatchingEvent(e, messageTrackingUUID)))
@@ -662,10 +654,10 @@ public class EventHubConsumerAsyncClientTest {
      * Verifies that when we have a shared connection, the consumer does not close that connection.
      */
     @Test
-    public void doesNotCloseSharedConnection() {
+    void doesNotCloseSharedConnection() {
         // Arrange
         EventHubAmqpConnection connection1 = mock(EventHubAmqpConnection.class);
-        EventHubConnectionProcessor eventHubConnection = Mono.fromCallable(() -> connection1)
+        EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
             .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, retryOptions));
         EventHubConsumerAsyncClient sharedConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, true);
@@ -674,14 +666,15 @@ public class EventHubConsumerAsyncClientTest {
         sharedConsumer.close();
 
         // Verify
-        verify(eventHubConnection, never()).dispose();
+        Assertions.assertFalse(eventHubConnection.isDisposed());
+        verify(connection1, never()).close();
     }
 
     /**
      * Verifies that when we have a non-shared connection, the consumer closes that connection.
      */
     @Test
-    public void closesDedicatedConnection() {
+    void closesDedicatedConnection() {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubConsumerAsyncClient dedicatedConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
