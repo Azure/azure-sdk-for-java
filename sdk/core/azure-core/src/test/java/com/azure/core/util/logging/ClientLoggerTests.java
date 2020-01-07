@@ -219,8 +219,17 @@ public class ClientLoggerTests {
         assertThrows(IllegalArgumentException.class, () -> LogLevel.fromString("5"));
     }
 
-    private void setupLogLevel(int logLevelToSet) {
+    @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
+    @ValueSource(strings = {"5", "invalid"})
+    public void canLogAtLevelInvalid(String logLevelToValidate) {
+        setupLogLevel(2);
+        assertThrows(IllegalArgumentException.class, () -> LogLevel.fromString(logLevelToValidate));
+    }
+
+    private String setupLogLevel(int logLevelToSet) {
+        String originalLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLOUD);
         System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, Integer.toString(logLevelToSet));
+        return originalLogLevel;
     }
 
     private void logMessage(ClientLogger logger, int logLevelToLog, String logFormat, Object... arguments) {
@@ -250,5 +259,4 @@ public class ClientLoggerTests {
 
         return runtimeException;
     }
-
 }
