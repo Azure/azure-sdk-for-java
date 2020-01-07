@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
