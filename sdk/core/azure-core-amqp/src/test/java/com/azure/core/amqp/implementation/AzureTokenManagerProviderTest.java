@@ -141,35 +141,12 @@ class AzureTokenManagerProviderTest {
      * returned.
      */
     @Test
-    void sameInstanceReturned() {
-        // Arrange
-        final String aadScope = "some-active-directory-scope";
-        final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST_NAME, aadScope);
-        final String entityPath = "event-hub-test-2/partition/2";
-        final AccessToken token = new AccessToken("a-new-access-token", OffsetDateTime.now().plusMinutes(10));
-        final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, HOST_NAME, entityPath);
-
-        when(cbsNode.authorize(argThat(audience -> audience.equals(tokenAudience)), argThat(scope -> scope.equals(tokenAudience))))
-            .thenReturn(Mono.just(token.getExpiresAt()));
-
-        // Act
-        final TokenManager tokenManager = provider.getTokenManager(Mono.just(cbsNode), entityPath);
-        final TokenManager tokenManager2 = provider.getTokenManager(Mono.just(cbsNode), entityPath);
-
-        Assertions.assertSame(tokenManager, tokenManager2);
-    }
-
-    /**
-     * Verify that if the same tokenAudience and scopes are passed in, the same {@link TokenManager} instance is
-     * returned.
-     */
-    @Test
     void differentInstanceReturned() {
         // Arrange
         final String aadScope = "some-active-directory-scope";
         final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST_NAME, aadScope);
         final String entityPath = "event-hub-test-2/partition/2";
-        final String entityPath2 = "event-hub-test-2/partition/3";
+        final String entityPath2 = "event-hub-test-2/partition/2";
         final AccessToken token = new AccessToken("a-new-access-token", OffsetDateTime.now().plusMinutes(10));
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, HOST_NAME, entityPath);
 
