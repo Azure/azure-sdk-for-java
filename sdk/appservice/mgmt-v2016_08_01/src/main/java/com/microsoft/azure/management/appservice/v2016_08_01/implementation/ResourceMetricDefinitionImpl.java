@@ -17,15 +17,15 @@ import java.util.Map;
 import com.microsoft.azure.management.appservice.v2016_08_01.ResourceMetricName;
 
 class ResourceMetricDefinitionImpl extends WrapperImpl<ResourceMetricDefinitionInner> implements ResourceMetricDefinition {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    ResourceMetricDefinitionImpl(ResourceMetricDefinitionInner inner,  AppServiceManager manager) {
+    ResourceMetricDefinitionImpl(ResourceMetricDefinitionInner inner,  WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

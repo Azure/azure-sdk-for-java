@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import java.util.Map;
 
 /**
  * Type representing FunctionEnvelope.
  */
-public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Indexable, Refreshable<FunctionEnvelope>, Updatable<FunctionEnvelope.Update>, HasManager<AppServiceManager> {
+public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Indexable, Refreshable<FunctionEnvelope>, Updatable<FunctionEnvelope.Update>, HasManager<WebManager> {
     /**
      * @return the config value.
      */

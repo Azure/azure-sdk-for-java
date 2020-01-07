@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.v2016_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import com.microsoft.azure.management.appservice.v2016_08_01.implementation.StringDictionaryInner;
 import java.util.Map;
 
 /**
  * Type representing StringDictionary.
  */
-public interface StringDictionary extends HasInner<StringDictionaryInner>, HasManager<AppServiceManager> {
+public interface StringDictionary extends HasInner<StringDictionaryInner>, HasManager<WebManager> {
     /**
      * @return the id value.
      */
