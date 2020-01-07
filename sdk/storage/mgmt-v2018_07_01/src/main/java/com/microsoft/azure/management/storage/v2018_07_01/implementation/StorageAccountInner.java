@@ -18,6 +18,7 @@ import com.microsoft.azure.management.storage.v2018_07_01.CustomDomain;
 import com.microsoft.azure.management.storage.v2018_07_01.Encryption;
 import com.microsoft.azure.management.storage.v2018_07_01.AccessTier;
 import com.microsoft.azure.management.storage.v2018_07_01.NetworkRuleSet;
+import com.microsoft.azure.management.storage.v2018_07_01.GeoReplicationStats;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -159,6 +160,19 @@ public class StorageAccountInner extends Resource {
      */
     @JsonProperty(value = "properties.isHnsEnabled")
     private Boolean isHnsEnabled;
+
+    /**
+     * Geo Replication Stats.
+     */
+    @JsonProperty(value = "properties.geoReplicationStats", access = JsonProperty.Access.WRITE_ONLY)
+    private GeoReplicationStats geoReplicationStats;
+
+    /**
+     * If the failover is in progress, the value will be true, otherwise, it
+     * will be null.
+     */
+    @JsonProperty(value = "properties.failoverInProgress", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean failoverInProgress;
 
     /**
      * Get gets the SKU.
@@ -373,6 +387,24 @@ public class StorageAccountInner extends Resource {
     public StorageAccountInner withIsHnsEnabled(Boolean isHnsEnabled) {
         this.isHnsEnabled = isHnsEnabled;
         return this;
+    }
+
+    /**
+     * Get geo Replication Stats.
+     *
+     * @return the geoReplicationStats value
+     */
+    public GeoReplicationStats geoReplicationStats() {
+        return this.geoReplicationStats;
+    }
+
+    /**
+     * Get if the failover is in progress, the value will be true, otherwise, it will be null.
+     *
+     * @return the failoverInProgress value
+     */
+    public Boolean failoverInProgress() {
+        return this.failoverInProgress;
     }
 
 }

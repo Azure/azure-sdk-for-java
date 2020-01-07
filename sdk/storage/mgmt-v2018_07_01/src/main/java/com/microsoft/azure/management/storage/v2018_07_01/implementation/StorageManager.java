@@ -20,7 +20,9 @@ import com.microsoft.azure.management.storage.v2018_07_01.Operations;
 import com.microsoft.azure.management.storage.v2018_07_01.Skus;
 import com.microsoft.azure.management.storage.v2018_07_01.StorageAccounts;
 import com.microsoft.azure.management.storage.v2018_07_01.Usages;
+import com.microsoft.azure.management.storage.v2018_07_01.BlobServices;
 import com.microsoft.azure.management.storage.v2018_07_01.BlobContainers;
+import com.microsoft.azure.management.storage.v2018_07_01.ManagementPolicies;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -32,7 +34,9 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
     private Skus skus;
     private StorageAccounts storageAccounts;
     private Usages usages;
+    private BlobServices blobServices;
     private BlobContainers blobContainers;
+    private ManagementPolicies managementPolicies;
     /**
     * Get a Configurable instance that can be used to create StorageManager with optional configuration.
     *
@@ -121,6 +125,16 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
     }
 
     /**
+     * @return Entry point to manage BlobServices.
+     */
+    public BlobServices blobServices() {
+        if (this.blobServices == null) {
+            this.blobServices = new BlobServicesImpl(this);
+        }
+        return this.blobServices;
+    }
+
+    /**
      * @return Entry point to manage BlobContainers.
      */
     public BlobContainers blobContainers() {
@@ -128,6 +142,16 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
             this.blobContainers = new BlobContainersImpl(this);
         }
         return this.blobContainers;
+    }
+
+    /**
+     * @return Entry point to manage ManagementPolicies.
+     */
+    public ManagementPolicies managementPolicies() {
+        if (this.managementPolicies == null) {
+            this.managementPolicies = new ManagementPoliciesImpl(this);
+        }
+        return this.managementPolicies;
     }
 
     /**
