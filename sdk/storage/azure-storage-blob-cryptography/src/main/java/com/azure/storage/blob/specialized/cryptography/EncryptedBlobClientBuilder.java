@@ -24,12 +24,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
-import com.azure.storage.blob.specialized.BlobAsyncClientBase;
-import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -47,7 +44,6 @@ import com.azure.storage.common.policy.ScrubEtagPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -509,6 +505,12 @@ public final class EncryptedBlobClientBuilder {
      * Configures the builder based on the passed {@link BlobClient}. This will set the {@link HttpPipeline},
      * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
      *
+     * <p>Use this method after setting the key in {@link #key(AsyncKeyEncryptionKey, String) key} and keyResolver in
+     * {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}.</p>
+     *
+     * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
+     * {@link #serviceVersion(BlobServiceVersion) serviceVersion}.</p>
+     *
      * @param blobClient BlobClient used to configure the builder.
      * @return the updated EncryptedBlobClientBuilder object
      * @throws NullPointerException If {@code containerClient} is {@code null}.
@@ -521,6 +523,12 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Configures the builder based on the passed {@link BlobAsyncClient}. This will set the {@link HttpPipeline},
      * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
+     *
+     * <p>Use this method after setting the key in {@link #key(AsyncKeyEncryptionKey, String) key} and keyResolver in
+     * {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}.</p>
+     *
+     * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
+     * {@link #serviceVersion(BlobServiceVersion) serviceVersion}.</p>
      *
      * @param blobAsyncClient BlobAsyncClient used to configure the builder.
      * @return the updated EncryptedBlobClientBuilder object
