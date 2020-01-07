@@ -57,7 +57,6 @@ class ActiveClientTokenManagerTest {
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
 
         // Act & Assert
-//        tokenManager.authorize().subscribe();
         StepVerifier.create(tokenManager.getAuthorizationResults())
             .then(() -> tokenManager.authorize().block(TIMEOUT))
             .expectNext(AmqpResponseCode.ACCEPTED)
