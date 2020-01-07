@@ -20,13 +20,14 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 public class ProxySendTest extends IntegrationTestBase {
-    private static final int PROXY_PORT = 8899;
+    private static final int PROXY_PORT = 8999;
     private static final String PARTITION_ID = "1";
     private static final int NUMBER_OF_EVENTS = 25;
 
@@ -97,13 +98,15 @@ public class ProxySendTest extends IntegrationTestBase {
         try {
             // Act
             StepVerifier.create(producer.send(events, options))
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
 
             // Assert
             StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(sendTime))
                 .filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
         } finally {
             dispose(producer, consumer);
         }
