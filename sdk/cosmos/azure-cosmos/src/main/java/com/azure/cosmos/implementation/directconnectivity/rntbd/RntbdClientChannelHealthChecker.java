@@ -59,19 +59,18 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         checkNotNull(config, "expected non-null config");
 
-        this.idleConnectionTimeoutInNanos = config.idleConnectionTimeoutInNanos();
-
-        this.readDelayLimitInNanos = config.receiveHangDetectionTimeInNanos();
-
-        checkArgument(this.readDelayLimitInNanos > readHangGracePeriodInNanos,
+        checkArgument(config.receiveHangDetectionTimeInNanos() > readHangGracePeriodInNanos,
             "config.receiveHangDetectionTimeInNanos: %s",
-            this.readDelayLimitInNanos);
+            config.receiveHangDetectionTimeInNanos());
 
+        checkArgument(config.sendHangDetectionTimeInNanos() > writeHangGracePeriodInNanos,
+            "config.sendHangDetectionTimeInNanos: %s",
+            config.sendHangDetectionTimeInNanos());
+
+        this.idleConnectionTimeoutInNanos = config.idleConnectionTimeoutInNanos();
+        this.readDelayLimitInNanos = config.receiveHangDetectionTimeInNanos();
         this.writeDelayLimitInNanos = config.sendHangDetectionTimeInNanos();
 
-        checkArgument(this.writeDelayLimitInNanos > writeHangGracePeriodInNanos,
-            "config.sendHangDetectionTimeInNanos: %s",
-            this.writeDelayLimitInNanos);
     }
 
     // endregion

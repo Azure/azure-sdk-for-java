@@ -146,7 +146,27 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
     }
 
     public RequestTimeline takeTimelineSnapshot() {
-        return RequestTimeline.from(this);
+
+        OffsetDateTime now = OffsetDateTime.now();
+
+        OffsetDateTime timeCreated = this.timeCreated();
+        OffsetDateTime timeQueued = this.timeQueued();
+        OffsetDateTime timePipelined = this.timePipelined();
+        OffsetDateTime timeSent = this.timeSent();
+        OffsetDateTime timeCompleted = this.timeCompleted();
+        OffsetDateTime timeCompletedOrNow = timeCompleted == null ? now : timeCompleted;
+
+        return RequestTimeline.of(
+            new RequestTimeline.Event("created",
+                timeCreated, timeQueued == null ? timeCompletedOrNow : timeQueued),
+            new RequestTimeline.Event("queued",
+                timeQueued, timePipelined == null ? timeCompletedOrNow : timePipelined),
+            new RequestTimeline.Event("pipelined",
+                timePipelined, timeSent == null ? timeCompletedOrNow : timeSent),
+            new RequestTimeline.Event("sent",
+                timeSent, timeCompletedOrNow),
+            new RequestTimeline.Event("completed",
+                timeCompleted, now));
     }
 
     public long stop(Timer requests, Timer responses) {
