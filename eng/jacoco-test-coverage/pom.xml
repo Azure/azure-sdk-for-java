@@ -74,8 +74,8 @@
     <!-- </dependency> -->
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-tracing-opencensus</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
+      <artifactId>azure-core-tracing-opentelemetry</artifactId>
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
