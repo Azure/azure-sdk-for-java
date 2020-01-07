@@ -161,18 +161,18 @@ class ActiveClientTokenManagerTest {
             getNextExpiration(45));
 
         // Act & Assert
-        try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES)) {
-            StepVerifier.create(tokenManager.getAuthorizationResults())
-                .then(() -> tokenManager.authorize().block(TIMEOUT))
-                .expectNext(AmqpResponseCode.ACCEPTED)
-                .expectNext(AmqpResponseCode.ACCEPTED)
-                .then(() -> {
-                    System.out.println("Closing");
-                    tokenManager.close();
-                })
-                .expectComplete()
-                .verify(Duration.ofSeconds(30));
-        }
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
+
+        StepVerifier.create(tokenManager.getAuthorizationResults())
+            .then(() -> tokenManager.authorize().block(TIMEOUT))
+            .expectNext(AmqpResponseCode.ACCEPTED)
+            .expectNext(AmqpResponseCode.ACCEPTED)
+            .then(() -> {
+                System.out.println("Closing");
+                tokenManager.close();
+            })
+            .expectComplete()
+            .verify(Duration.ofSeconds(30));
     }
 
 
