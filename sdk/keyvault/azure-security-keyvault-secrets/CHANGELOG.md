@@ -1,6 +1,8 @@
 # Release History
 
-## 4.1.0-beta.1 (Unreleased)
+## 4.1.0 (2020-01-07)
+- Update azure-core dependency to latest version
+- Drop commons-codec dependency
 
 ## 4.0.1 (2019-12-04)
 
