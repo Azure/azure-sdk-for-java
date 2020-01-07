@@ -3,19 +3,26 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
+import reactor.core.publisher.EmitterProcessor;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Subscribes to an upstream Mono that creates {@link EventHubAmqpConnection} then publishes the created connection
@@ -28,17 +35,22 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     private final ClientLogger logger = new ClientLogger(EventHubConnectionProcessor.class);
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicBoolean isRequested = new AtomicBoolean();
+    private final EmitterProcessor<Duration> durationSource = EmitterProcessor.create();
+    private final FluxSink<Duration> durationSourceSink = durationSource.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final AtomicInteger retryAttempts = new AtomicInteger();
     private final Object lock = new Object();
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final AmqpRetryOptions retryOptions;
+    private final AmqpRetryPolicy retryPolicy;
+    private final Disposable retrySubscription;
 
     private Subscription upstream;
     private EventHubAmqpConnection currentConnection;
-    private Disposable connectionSubscription;
 
     private volatile ConcurrentLinkedDeque<ConnectionSubscriber> subscribers = new ConcurrentLinkedDeque<>();
     private volatile Throwable lastError;
+    private volatile Disposable connectionSubscription;
 
     public EventHubConnectionProcessor(String fullyQualifiedNamespace, String eventHubName,
         AmqpRetryOptions retryOptions) {
@@ -46,6 +58,16 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+
+        this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+        this.retrySubscription = Flux.switchOnNext(durationSource.map(duration -> Mono.delay(duration)))
+            .subscribe(unused -> {
+                if (upstream != null) {
+                    upstream.request(1);
+                } else {
+                    logger.info("No subscription to request.");
+                }
+            });
     }
 
     /**
@@ -101,6 +123,10 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
             connectionSubscription = eventHubAmqpConnection.getEndpointStates().subscribe(
                 state -> {
+                    // Connection was successfully opened, we can reset the retry interval.
+                    if (state == AmqpEndpointState.ACTIVE) {
+                        retryAttempts.set(0);
+                    }
                 },
                 error -> onError(error),
                 () -> {
@@ -128,9 +154,14 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     public void onError(Throwable throwable) {
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
-        if (throwable instanceof AmqpException && ((AmqpException) throwable).isTransient()) {
-            logger.warning("Transient occurred in connection. Retrying.", throwable);
-            upstream.request(1);
+        final int attempt = retryAttempts.incrementAndGet();
+        final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
+
+        if (retryInterval != null) {
+            logger.warning("Transient error occurred. Attempt: {}. Retrying after {} seconds.",
+                attempt, retryInterval.toSeconds(), throwable);
+
+            durationSourceSink.next(retryInterval);
             return;
         }
 
@@ -196,6 +227,11 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
     @Override
     public void dispose() {
+        if (isTerminated.getAndSet(true)) {
+            return;
+        }
+
+        retrySubscription.dispose();
         onComplete();
 
         synchronized (lock) {
