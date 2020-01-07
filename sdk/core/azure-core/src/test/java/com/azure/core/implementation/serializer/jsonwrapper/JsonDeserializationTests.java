@@ -3,11 +3,11 @@
 
 package com.azure.core.implementation.serializer.jsonwrapper;
 
-import com.azure.core.implementation.serializer.jsonwrapper.api.Config;
-import com.azure.core.implementation.serializer.jsonwrapper.api.Deserializer;
-import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
-import com.azure.core.implementation.serializer.jsonwrapper.api.Node;
-import com.azure.core.implementation.serializer.jsonwrapper.api.Type;
+import com.azure.core.util.serializer.jsonwrapper.api.Config;
+import com.azure.core.util.serializer.jsonwrapper.api.Deserializer;
+import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
+import com.azure.core.util.serializer.jsonwrapper.api.Node;
+import com.azure.core.util.serializer.jsonwrapper.api.Type;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
