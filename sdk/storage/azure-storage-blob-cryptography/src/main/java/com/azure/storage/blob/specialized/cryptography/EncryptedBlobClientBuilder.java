@@ -506,34 +506,6 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Configures the builder based on the passed {@link BlobContainerClient}. This will set the {@link HttpPipeline},
-     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
-     *
-     * @param blobContainerClient ContainerClient used to configure the builder.
-     * @return the updated EncryptedBlobClientBuilder object
-     * @throws NullPointerException If {@code containerClient} is {@code null}.
-     */
-    public EncryptedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient) {
-        Objects.requireNonNull(blobContainerClient);
-        return client(blobContainerClient.getHttpPipeline(), blobContainerClient.getBlobContainerUrl(),
-            blobContainerClient.getServiceVersion());
-    }
-
-    /**
-     * Configures the builder based on the passed {@link BlobContainerAsyncClient}. This will set the {@link HttpPipeline},
-     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
-     *
-     * @param blobContainerAsyncClient ContainerAsyncClient used to configure the builder.
-     * @return the updated EncryptedBlobClientBuilder object
-     * @throws NullPointerException If {@code containerClient} is {@code null}.
-     */
-    public EncryptedBlobClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient) {
-        Objects.requireNonNull(blobContainerAsyncClient);
-        return client(blobContainerAsyncClient.getHttpPipeline(), blobContainerAsyncClient.getBlobContainerUrl(),
-            blobContainerAsyncClient.getServiceVersion());
-    }
-
-    /**
      * Configures the builder based on the passed {@link BlobClient}. This will set the {@link HttpPipeline},
      * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
      *
