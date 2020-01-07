@@ -1,7 +1,7 @@
 # Release History
 
 ## 4.0.0 (2020-01-07)
-- Update azure-core dependency to latest version.
+- Update azure-core dependency to version 1.2.0.
 
 ## 4.0.0-beta.7 (2019-12-17)
 - `beginDeleteCertificate` and `beginRecoverDeletedCertificate` methods now return a poll response with a status of SUCCESSFULLY_COMPLETED when service returns 403 status.

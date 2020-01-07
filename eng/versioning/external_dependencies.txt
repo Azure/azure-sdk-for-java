@@ -22,7 +22,6 @@ com.microsoft.azure:spotbugs-maven-plugin;1.2.1
 com.microsoft.rest:client-runtime;1.6.15
 com.microsoft.rest.v2:client-runtime;2.1.1
 com.squareup.okhttp3:okhttp;4.2.2
-commons-codec:commons-codec;1.13
 io.micrometer:micrometer-core;1.2.0
 io.micrometer:micrometer-registry-azure-monitor;1.2.0
 io.micrometer:micrometer-registry-graphite;1.2.0
