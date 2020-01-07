@@ -21,10 +21,14 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.specialized.BlobAsyncClientBase;
+import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -42,6 +46,7 @@ import com.azure.storage.common.policy.ScrubEtagPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -497,5 +502,54 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
         return this;
+    }
+
+    public EncryptedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient) {
+        return client(blobContainerClient.getHttpPipeline(), blobContainerClient.getBlobContainerUrl(),
+            blobContainerClient.getServiceVersion());
+    }
+
+    public EncryptedBlobClientBuilder containerAsyncClient(BlobContainerClient blobContainerAsyncClient) {
+        return client(blobContainerAsyncClient.getHttpPipeline(), blobContainerAsyncClient.getBlobContainerUrl(),
+            blobContainerAsyncClient.getServiceVersion());
+    }
+
+    public EncryptedBlobClientBuilder blobClient(BlobClientBase blobClient) {
+        return client(blobClient.getHttpPipeline(), blobClient.getBlobUrl(), blobClient.getServiceVersion());
+    }
+
+    public EncryptedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
+        return client(blobAsyncClient.getHttpPipeline(), blobAsyncClient.getBlobUrl(),
+            blobAsyncClient.getServiceVersion());
+    }
+
+    /**
+     * Helper method to transform a regular client into an encrypted client
+     * @param httpPipeline {@link HttpPipeline}
+     * @param endpoint The endpoint.
+     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    private EncryptedBlobClientBuilder client(HttpPipeline httpPipeline, String endpoint, BlobServiceVersion version) {
+        this.endpoint(endpoint);
+        this.serviceVersion(version);
+
+        checkValidEncryptionParameters();
+
+        HttpPipeline pipeline = null;
+        if (httpPipeline != null) {
+            List<HttpPipelinePolicy> policies = new ArrayList<>();
+            policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
+            for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
+                HttpPipelinePolicy currPolicy = httpPipeline.getPolicy(i);
+                policies.add(currPolicy);
+
+            }
+            pipeline = new HttpPipelineBuilder()
+                .httpClient(httpPipeline.getHttpClient())
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
+        }
+        return this.pipeline(pipeline);
     }
 }
