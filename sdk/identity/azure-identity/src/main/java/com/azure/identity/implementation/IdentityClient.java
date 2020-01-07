@@ -6,10 +6,10 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -17,6 +17,8 @@ import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IClientApplicationBase;
+import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
@@ -62,6 +64,7 @@ public class IdentityClient {
 
     private final IdentityClientOptions options;
     private final PublicClientApplication publicClientApplication;
+    private final ConfidentialClientApplication confidentialClientApplication;
     private final String tenantId;
     private final String clientId;
 
@@ -70,22 +73,28 @@ public class IdentityClient {
      *
      * @param tenantId the tenant ID of the application.
      * @param clientId the client ID of the application.
+     * @param clientSecret the client secret of the application.
+     * @param certificatePath the path to the PKCS12 or PEM certificate of the application.
+     * @param certificatePassword the password protecting the PFX certificate.
      * @param options the options configuring the client.
      */
-    IdentityClient(String tenantId, String clientId, IdentityClientOptions options) {
+    IdentityClient(String tenantId, String clientId, String clientSecret,
+                   String certificatePath, String certificatePassword,
+                   IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "common";
         }
         if (options == null) {
             options = new IdentityClientOptions();
         }
+        if (clientId == null) {
+            throw new IllegalArgumentException("clientId == null");
+        }
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.options = options;
-        if (clientId == null) {
-            this.publicClientApplication = null;
-        } else {
-            String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
+        if (clientSecret == null && certificatePath == null && certificatePassword == null) {
+            String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
@@ -96,98 +105,81 @@ public class IdentityClient {
                 publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
             this.publicClientApplication = publicClientApplicationBuilder.build();
+            this.confidentialClientApplication = null;
+        } else {
+            String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
+            IClientCredential credential;
+            if (clientSecret != null) {
+                credential = ClientCredentialFactory.create(clientSecret);
+            } else if (certificatePath != null) {
+                try {
+                    if (certificatePassword == null) {
+                        byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(certificatePath));
+                        credential = ClientCredentialFactory.create(CertificateUtil.privateKeyFromPem(pemCertificateBytes),
+                                CertificateUtil.publicKeyFromPem(pemCertificateBytes));
+                    } else {
+                        credential = ClientCredentialFactory.create(new FileInputStream(certificatePath), certificatePassword);
+                    }
+                } catch (CertificateException
+                        | UnrecoverableKeyException
+                        | NoSuchAlgorithmException
+                        | KeyStoreException
+                        | NoSuchProviderException
+                        | IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                throw new IllegalArgumentException("Must provide client secret or client certificate path");
+            }
+            ConfidentialClientApplication.Builder applicationBuilder =
+                    ConfidentialClientApplication.builder(clientId, credential);
+            try {
+                applicationBuilder = applicationBuilder.authority(authorityUrl);
+            } catch (MalformedURLException e) {
+                throw logger.logExceptionAsWarning(new IllegalStateException(e));
+            }
+            if (options.getProxyOptions() != null) {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+            }
+            this.confidentialClientApplication = applicationBuilder.build();
+            this.publicClientApplication = null;
+        }
+    }
+
+    private IClientApplicationBase getClient() {
+        if (publicClientApplication != null) {
+            return publicClientApplication;
+        } else {
+            return confidentialClientApplication;
         }
     }
 
     /**
      * Asynchronously acquire a token from Active Directory with a client secret.
      *
-     * @param clientSecret the client secret of the application
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithClientSecret(String clientSecret, TokenRequestContext request) {
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        try {
-            ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(clientSecret))
-                    .authority(authorityUrl);
-            if (options.getProxyOptions() != null) {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-            }
-            ConfidentialClientApplication application = applicationBuilder.build();
-            return Mono.fromFuture(application.acquireToken(
-                ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                    .build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                    ZoneOffset.UTC)));
-        } catch (MalformedURLException e) {
-            return Mono.error(e);
-        }
+    public Mono<AccessToken> authenticateWithClientSecret(TokenRequestContext request) {
+        return Mono.fromFuture(confidentialClientApplication.acquireToken(
+            ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
+                .build()))
+            .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
+                ZoneOffset.UTC)));
     }
 
     /**
-     * Asynchronously acquire a token from Active Directory with a PKCS12 certificate.
+     * Asynchronously acquire a token from Active Directory with a PKCS12/PEM certificate.
      *
-     * @param pfxCertificatePath the path to the PKCS12 certificate of the application
-     * @param pfxCertificatePassword the password protecting the PFX certificate
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithPfxCertificate(String pfxCertificatePath, String pfxCertificatePassword,
-                                                            TokenRequestContext request) {
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        try {
-            ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId,
-                    ClientCredentialFactory.create(new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
-                    .authority(authorityUrl);
-            if (options.getProxyOptions() != null) {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-            }
-            ConfidentialClientApplication application = applicationBuilder.build();
-            return Mono.fromFuture(application.acquireToken(
-                ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                    .build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                    ZoneOffset.UTC)));
-        } catch (CertificateException
-            | UnrecoverableKeyException
-            | NoSuchAlgorithmException
-            | KeyStoreException
-            | NoSuchProviderException
-            | IOException e) {
-            return Mono.error(e);
-        }
-    }
-
-    /**
-     * Asynchronously acquire a token from Active Directory with a PEM certificate.
-     *
-     * @param pemCertificatePath the path to the PEM certificate of the application
-     * @param request the details of the token request
-     * @return a Publisher that emits an AccessToken
-     */
-    public Mono<AccessToken> authenticateWithPemCertificate(String pemCertificatePath, TokenRequestContext request) {
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        try {
-            byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemCertificatePath));
-            ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId,
-                    ClientCredentialFactory.create(CertificateUtil.privateKeyFromPem(pemCertificateBytes),
-                        CertificateUtil.publicKeyFromPem(pemCertificateBytes))).authority(authorityUrl);
-            if (options.getProxyOptions() != null) {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-            }
-            ConfidentialClientApplication application = applicationBuilder.build();
-            return Mono.fromFuture(application.acquireToken(
-                ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                    .build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                    ZoneOffset.UTC)));
-        } catch (IOException e) {
-            return Mono.error(e);
-        }
+    public Mono<AccessToken> authenticateWithClientCertificate(TokenRequestContext request) {
+        return Mono.fromFuture(confidentialClientApplication.acquireToken(
+            ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
+                .build()))
+            .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
+                ZoneOffset.UTC)));
     }
 
     /**
@@ -210,6 +202,7 @@ public class IdentityClient {
      * Asynchronously acquire a token from the currently logged in client.
      *
      * @param request the details of the token request
+     * @param msalToken a previously obtained msal token
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithUserRefreshToken(TokenRequestContext request, MsalToken msalToken) {
@@ -221,7 +214,7 @@ public class IdentityClient {
         }
         return Mono.defer(() -> {
             try {
-                return Mono.fromFuture(publicClientApplication.acquireTokenSilently(parameters)).map(MsalToken::new);
+                return Mono.fromFuture(getClient().acquireTokenSilently(parameters)).map(MsalToken::new);
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }
@@ -258,7 +251,7 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequestContext request, String authorizationCode,
                                                              URI redirectUrl) {
-        return Mono.fromFuture(() -> publicClientApplication.acquireToken(
+        return Mono.fromFuture(() -> getClient().acquireToken(
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
                 .scopes(new HashSet<>(request.getScopes()))
                 .build()))

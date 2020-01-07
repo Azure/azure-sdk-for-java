@@ -20,6 +20,9 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
 
     private String authCode;
     private String redirectUrl;
+    private String clientSecret;
+    private String clientCertificate;
+    private String clientCertificatePassword;
 
     /**
      * Sets the authorization code on the builder.
@@ -48,6 +51,40 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
+     * Sets the client secret for the authentication.
+     * @param clientSecret the secret value of the AAD application.
+     * @return the AuthorizationCodeCredentialBuilder itself
+     */
+    public AuthorizationCodeCredentialBuilder clientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+        return this;
+    }
+
+    /**
+     * Sets the client certificate for authenticating to AAD.
+     *
+     * @param certificatePath the PEM file containing the certificate
+     * @return the AuthorizationCodeCredentialBuilder itself
+     */
+    public AuthorizationCodeCredentialBuilder pemCertificate(String certificatePath) {
+        this.clientCertificate = certificatePath;
+        return this;
+    }
+
+    /**
+     * Sets the client certificate for authenticating to AAD.
+     *
+     * @param certificatePath the password protected PFX file containing the certificate
+     * @param clientCertificatePassword the password protecting the PFX file
+     * @return the AuthorizationCodeCredentialBuilder itself
+     */
+    public AuthorizationCodeCredentialBuilder pfxCertificate(String certificatePath, String clientCertificatePassword) {
+        this.clientCertificate = certificatePath;
+        this.clientCertificatePassword = clientCertificatePassword;
+        return this;
+    }
+
+    /**
      * Creates a new {@link AuthorizationCodeCredential} with the current configurations.
      *
      * @return a {@link AuthorizationCodeCredential} with the current configurations.
@@ -59,8 +96,8 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
                 put("redirectUrl", redirectUrl);
             }});
         try {
-            return new AuthorizationCodeCredential(clientId, tenantId, authCode,
-                new URI(redirectUrl), identityClientOptions);
+            return new AuthorizationCodeCredential(clientId, clientSecret, clientCertificate,
+                    clientCertificatePassword, tenantId, authCode, new URI(redirectUrl), identityClientOptions);
         } catch (URISyntaxException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }

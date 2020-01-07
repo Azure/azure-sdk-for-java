@@ -54,8 +54,8 @@ public class IdentityClientTests {
         mockForClientSecret(secret, request, accessToken, expiresOn);
 
         // test
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
-        AccessToken token = client.authenticateWithClientSecret(secret, request).block();
+        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
+        AccessToken token = client.authenticateWithClientSecret(request).block();
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
@@ -73,8 +73,8 @@ public class IdentityClientTests {
 
         // test
         try {
-            IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
-            client.authenticateWithClientSecret("bad secret", request).block();
+            IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).clientSecret("bad secret").build();
+            client.authenticateWithClientSecret(request).block();
             fail();
         } catch (MsalServiceException e) {
             Assert.assertEquals("Invalid clientSecret", e.getMessage());
@@ -93,8 +93,8 @@ public class IdentityClientTests {
         mockForClientCertificate(request, accessToken, expiresOn);
 
         // test
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
-        AccessToken token = client.authenticateWithPfxCertificate(pfxPath, "StrongPass!123", request).block();
+        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).certificatePath(pfxPath).certificatePassword("StrongPass!123").build();
+        AccessToken token = client.authenticateWithClientCertificate(request).block();
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
@@ -112,8 +112,8 @@ public class IdentityClientTests {
 
         // test
         try {
-            IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
-            client.authenticateWithPfxCertificate(pfxPath, "BadPassword", request).block();
+            IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).certificatePath(pfxPath).certificatePassword("BadPassword").build();
+            client.authenticateWithClientCertificate(request).block();
             fail();
         } catch (Exception e) {
             Assert.assertTrue(e.getMessage().contains("password was incorrect"));

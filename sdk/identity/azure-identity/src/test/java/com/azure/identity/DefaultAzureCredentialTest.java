@@ -46,7 +46,7 @@ public class DefaultAzureCredentialTest {
 
             // mock
             IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-            when(identityClient.authenticateWithClientSecret(secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+            when(identityClient.authenticateWithClientSecret(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
             PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
             // test

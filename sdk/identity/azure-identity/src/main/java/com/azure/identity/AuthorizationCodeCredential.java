@@ -31,19 +31,26 @@ public class AuthorizationCodeCredential implements TokenCredential {
      * Creates an AuthorizationCodeCredential with the given identity client options.
      *
      * @param clientId the client ID of the application
+     * @param clientSecret the client secret of the application
+     * @param certificatePath the path to the PKCS12 or PEM certificate of the application
+     * @param certificatePassword the password protecting the PFX certificate
      * @param tenantId the tenant ID of the application
      * @param authCode the Oauth 2.0 authorization code grant
      * @param redirectUri the redirect URI used to authenticate to Azure Active Directory
      * @param identityClientOptions the options for configuring the identity client
      */
-    AuthorizationCodeCredential(String clientId, String tenantId, String authCode, URI redirectUri,
-                                IdentityClientOptions identityClientOptions) {
+    AuthorizationCodeCredential(String clientId, String clientSecret, String certificatePath,
+                                String certificatePassword, String tenantId, String authCode,
+                                URI redirectUri, IdentityClientOptions identityClientOptions) {
         if (tenantId == null) {
             tenantId = "common";
         }
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
+            .clientSecret(clientSecret)
+            .certificatePath(certificatePath)
+            .certificatePassword(certificatePassword)
             .identityClientOptions(identityClientOptions)
             .build();
         this.cachedToken = new AtomicReference<>();

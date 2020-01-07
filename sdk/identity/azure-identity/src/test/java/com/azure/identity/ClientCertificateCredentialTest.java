@@ -45,10 +45,12 @@ public class ClientCertificateCredentialTest {
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithPemCertificate(pemPath, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
-        when(identityClient.authenticateWithPfxCertificate(pfxPath, pfxPassword, request2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+        IdentityClient identityClient1 = PowerMockito.mock(IdentityClient.class);
+        IdentityClient identityClient2 = PowerMockito.mock(IdentityClient.class);
+        when(identityClient1.authenticateWithClientCertificate(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        when(identityClient2.authenticateWithClientCertificate(request2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
+
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient1);
 
         // test
         ClientCertificateCredential credential =
@@ -57,6 +59,9 @@ public class ClientCertificateCredentialTest {
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
+
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient2);
+
         credential =
             new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
         StepVerifier.create(credential.getToken(request2))
@@ -76,10 +81,12 @@ public class ClientCertificateCredentialTest {
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithPemCertificate(pemPath, request1)).thenReturn(Mono.error(new MsalServiceException("bad pem", "BadPem")));
-        when(identityClient.authenticateWithPfxCertificate(pfxPath, pfxPassword, request2)).thenReturn(Mono.error(new MsalServiceException("bad pfx", "BadPfx")));
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+        IdentityClient identityClient1 = PowerMockito.mock(IdentityClient.class);
+        IdentityClient identityClient2 = PowerMockito.mock(IdentityClient.class);
+        when(identityClient1.authenticateWithClientCertificate(request1)).thenReturn(Mono.error(new MsalServiceException("bad pem", "BadPem")));
+        when(identityClient2.authenticateWithClientCertificate(request2)).thenReturn(Mono.error(new MsalServiceException("bad pfx", "BadPfx")));
+
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient1);
 
         // test
         ClientCertificateCredential credential =
@@ -87,6 +94,8 @@ public class ClientCertificateCredentialTest {
         StepVerifier.create(credential.getToken(request1))
             .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pem".equals(e.getMessage()))
             .verify();
+
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient2);
 
         credential =
             new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
@@ -105,7 +114,7 @@ public class ClientCertificateCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithPemCertificate(pemPath, request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+        when(identityClient.authenticateWithClientCertificate(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
