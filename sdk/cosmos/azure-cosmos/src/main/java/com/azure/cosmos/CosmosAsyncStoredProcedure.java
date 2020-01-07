@@ -127,7 +127,7 @@ public class CosmosAsyncStoredProcedure {
         return cosmosContainer.getDatabase()
                    .getDocClientWrapper()
                    .executeStoredProcedure(getLink(), options.toRequestOptions(), procedureParams)
-                   .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer))
+                   .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer, this.id))
                    .single();
     }
 
