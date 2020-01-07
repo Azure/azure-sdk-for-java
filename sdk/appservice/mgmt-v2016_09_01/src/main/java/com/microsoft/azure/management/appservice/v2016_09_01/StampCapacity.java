@@ -10,13 +10,13 @@ package com.microsoft.azure.management.appservice.v2016_09_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 import com.microsoft.azure.management.appservice.v2016_09_01.implementation.StampCapacityInner;
 
 /**
  * Type representing StampCapacity.
  */
-public interface StampCapacity extends HasInner<StampCapacityInner>, HasManager<AppServiceManager> {
+public interface StampCapacity extends HasInner<StampCapacityInner>, HasManager<WebManager> {
     /**
      * @return the availableCapacity value.
      */

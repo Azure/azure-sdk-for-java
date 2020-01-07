@@ -13,12 +13,12 @@ import com.microsoft.azure.management.appservice.v2016_09_01.implementation.Hybr
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 
 /**
  * Type representing HybridConnection.
  */
-public interface HybridConnection extends HasInner<HybridConnectionInner>, Indexable, Refreshable<HybridConnection>, HasManager<AppServiceManager> {
+public interface HybridConnection extends HasInner<HybridConnectionInner>, Indexable, Refreshable<HybridConnection>, HasManager<WebManager> {
     /**
      * @return the hostname value.
      */

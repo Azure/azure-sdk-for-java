@@ -25,15 +25,15 @@ import java.util.Map;
 import com.microsoft.azure.management.appservice.v2016_09_01.UsageState;
 
 class ServerfarmSiteImpl extends WrapperImpl<SiteInner> implements ServerfarmSite {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    ServerfarmSiteImpl(SiteInner inner,  AppServiceManager manager) {
+    ServerfarmSiteImpl(SiteInner inner,  WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

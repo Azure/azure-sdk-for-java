@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.v2016_09_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 import com.microsoft.azure.management.appservice.v2016_09_01.implementation.MetricDefinitionInner;
 import java.util.List;
 
 /**
  * Type representing MetricDefinition.
  */
-public interface MetricDefinition extends HasInner<MetricDefinitionInner>, HasManager<AppServiceManager> {
+public interface MetricDefinition extends HasInner<MetricDefinitionInner>, HasManager<WebManager> {
     /**
      * @return the displayName value.
      */

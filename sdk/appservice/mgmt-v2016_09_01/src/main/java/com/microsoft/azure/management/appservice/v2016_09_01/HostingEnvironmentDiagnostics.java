@@ -11,12 +11,12 @@ package com.microsoft.azure.management.appservice.v2016_09_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2016_09_01.implementation.HostingEnvironmentDiagnosticsInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 
 /**
  * Type representing HostingEnvironmentDiagnostics.
  */
-public interface HostingEnvironmentDiagnostics extends HasInner<HostingEnvironmentDiagnosticsInner>, HasManager<AppServiceManager> {
+public interface HostingEnvironmentDiagnostics extends HasInner<HostingEnvironmentDiagnosticsInner>, HasManager<WebManager> {
     /**
      * @return the diagnosicsOutput value.
      */
