@@ -35,6 +35,7 @@ import reactor.core.scheduler.Schedulers;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
@@ -104,6 +105,10 @@ public class EventHubClientBuilder {
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
+    private static final String EVENTHUBS_PROPERTIES_FILE = "azure-messaging-eventhubs.properties";
+    private static final String NAME_KEY = "name";
+    private static final String VERSION_KEY = "version";
+    private static final String UNKNOWN = "UNKNOWN";
 
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
@@ -454,7 +459,7 @@ public class EventHubClientBuilder {
         }
 
         if (scheduler == null) {
-            scheduler = Schedulers.newElastic("event-hubs");
+            scheduler = Schedulers.elastic();
         }
 
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
@@ -511,11 +516,14 @@ public class EventHubClientBuilder {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
+        Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
+        String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+
         final Mono<EventHubAmqpConnection> connectionMono = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
-
             return new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
-                tokenManagerProvider, messageSerializer);
+                tokenManagerProvider, messageSerializer, product, clientVersion);
         });
 
         return new EventHubConnection(connectionMono, connectionOptions);

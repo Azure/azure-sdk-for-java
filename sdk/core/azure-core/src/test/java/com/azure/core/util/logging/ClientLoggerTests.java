@@ -4,18 +4,28 @@
 package com.azure.core.util.logging;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.StreamHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -25,39 +35,34 @@ public class ClientLoggerTests {
     private static final String PARAMETERIZED_TEST_NAME_TEMPLATE = "[" + ParameterizedTest.INDEX_PLACEHOLDER
         + "] " + ParameterizedTest.DISPLAY_NAME_PLACEHOLDER;
 
-    private PrintStream originalSystemErr;
     private ByteArrayOutputStream logCaptureStream;
+    private StreamHandler sh;
+
+    private Logger mockLogger;
+    private ClientLogger clientLogger;
 
     @BeforeEach
-    public void setupLoggingConfiguration() {
-        /*
-         * Indicate to SLF4J to enable trace level logging for a logger named
-         * com.azure.core.util.logging.ClientLoggerTests. Trace is the maximum level of logging supported by the
-         * ClientLogger.
-         */
-        System.setProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.ClientLoggerTests", "trace");
-
-        /*
-         * The default configuration for SLF4J's SimpleLogger uses System.err to log. Inject a custom PrintStream to
-         * log into for the duration of the test to capture the log messages.
-         */
-        originalSystemErr = System.err;
+    public void setupLoggingConfiguration() throws Exception {
+        InputStream stream = ClientLoggerTests.class.getClassLoader().
+            getResourceAsStream("logging.properties");
+        LogManager.getLogManager().readConfiguration(stream);
+        new ClientLogger("test").verbose("I am talking");
         logCaptureStream = new ByteArrayOutputStream();
-        System.setErr(new PrintStream(logCaptureStream));
+        PrintStream ps = new PrintStream(logCaptureStream);
+        sh = new StreamHandler(ps, new SimpleFormatter());
+        sh.setLevel(Level.FINEST);
+        clientLogger = new ClientLogger(ClientLoggerTests.class);
+        mockLogger = Logger.getLogger("test");
+        mockLogger.addHandler(sh);
+        Field f = ClientLogger.class.getDeclaredField("defaultLogger");
+        f.setAccessible(true);
+        f.set(clientLogger, mockLogger);
     }
 
     @AfterEach
-    public void revertLoggingConfiguration() {
-        System.clearProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.ClientLoggerTests");
-        System.setErr(originalSystemErr);
-    }
-
-    private void setPropertyToOriginalOrClear(String propertyName, String originalValue) {
-        if (CoreUtils.isNullOrEmpty(originalValue)) {
-            System.clearProperty(propertyName);
-        } else {
-            System.setProperty(propertyName, originalValue);
-        }
+    public void revertLoggingConfiguration() throws Exception {
+        sh.close();
+        logCaptureStream.close();
     }
 
     /**
@@ -67,14 +72,13 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
     @ValueSource(ints = { 1, 2, 3, 4 })
-    public void logAtSupportedLevel(int logLevel) {
+    public void logAtSupportedLevelAtBinding(int logLevel) {
+        setupLogLevel(logLevel);
         String logMessage = "This is a test";
+        logMessage(clientLogger, logLevel, logMessage);
 
-        String originalLogLevel = setupLogLevel(logLevel);
-        logMessage(new ClientLogger(ClientLoggerTests.class), logLevel, logMessage);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
-
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        sh.flush();
+        String logValues = logCaptureStream.toString(StandardCharsets.UTF_8);
         assertTrue(logValues.contains(logMessage));
     }
 
@@ -84,34 +88,24 @@ public class ClientLoggerTests {
      * @param logLevel Logging level to log a message
      */
     @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3 })
     public void logAtUnsupportedLevel(int logLevel) {
         String logMessage = "This is a test";
 
-        String originalLogLevel = setupLogLevel(logLevel + 1);
-        logMessage(new ClientLogger(ClientLoggerTests.class), logLevel, logMessage);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+        setupLogLevel(logLevel + 1);
+        logMessage(clientLogger, logLevel, logMessage);
 
+        sh.flush();
         String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        assertFalse(logValues.contains(logMessage));
+        assertTrue(logValues.isEmpty());
     }
 
     /**
      * Tests that logging when the environment log level is disabled nothing is logged.
-     *
-     * @param logLevel Logging level to log a message
      */
-    @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
-    @ValueSource(ints = { 1, 2, 3, 4 })
-    public void logWhenLoggingDisabled(int logLevel) {
-        String logMessage = "This is a test";
-
-        String originalLogLevel = setupLogLevel(5);
-        logMessage(new ClientLogger(ClientLoggerTests.class), logLevel, logMessage);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
-
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        assertFalse(logValues.contains(logMessage));
+    @Test
+    public void logWhenLoggingNotSet() {
+        assertEquals(LogLevel.NOT_SET, LogLevel.fromString(null));
     }
 
     /**
@@ -123,51 +117,12 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createRuntimeException(exceptionMessage);
 
-        String originalLogLevel = setupLogLevel(2);
-        logMessage(new ClientLogger(ClientLoggerTests.class), 3, logMessage, runtimeException);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
-
+        setupLogLevel(2);
+        logMessage(clientLogger, 3, logMessage, runtimeException);
+        sh.flush();
         String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         assertTrue(logValues.contains(logMessage + System.lineSeparator() + runtimeException.getMessage()));
-        assertFalse(logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
-
-    /**
-     * Tests that logging an exception when the log level is VERBOSE the stack trace is logged.
-     */
-    @Test
-    public void logExceptionStackTrace() {
-        String logMessage = "This is an exception";
-        String exceptionMessage = "An exception message";
-        RuntimeException runtimeException = createRuntimeException(exceptionMessage);
-
-        String originalLogLevel = setupLogLevel(1);
-        logMessage(new ClientLogger(ClientLoggerTests.class), 3, logMessage, runtimeException);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
-
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        assertTrue(logValues.contains(logMessage + System.lineSeparator() + runtimeException.getMessage()));
-        assertTrue(logValues.contains(runtimeException.getStackTrace()[0].toString()));
-    }
-
-    /**
-     * Tests that logging an exception when the log level is ERROR the stack trace is logged.
-     */
-    @Test
-    public void logExceptionStackTraceWithErrorLevel() {
-        String logMessage = "This is an exception";
-        String exceptionMessage = "An exception message";
-        RuntimeException runtimeException = createRuntimeException(exceptionMessage);
-
-        String originalLogLevel = setupLogLevel(1);
-        logMessage(new ClientLogger(ClientLoggerTests.class), 4, logMessage, runtimeException);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
-
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        assertTrue(logValues.contains(logMessage + System.lineSeparator() + runtimeException.getMessage()));
-        assertTrue(logValues.contains(runtimeException.getStackTrace()[0].toString()));
-    }
-
 
     /**
      * Tests that logging an exception when the log level is ERROR the stack trace is logged.
@@ -178,9 +133,8 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createRuntimeException(exceptionMessage);
 
-        String originalLogLevel = setupLogLevel(1);
-        logMessage(new ClientLogger(ClientLoggerTests.class), 5, logMessage, runtimeException);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+        setupLogLevel(1);
+        logMessage(clientLogger, 5, logMessage, runtimeException);
 
         String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         assertTrue(logValues.isEmpty());
@@ -194,13 +148,25 @@ public class ClientLoggerTests {
         String logMessage = "This is an exception";
         Object runtimeException = new Object();
 
-        String originalLogLevel = setupLogLevel(1);
-        logMessage(new ClientLogger(ClientLoggerTests.class), 3, logMessage, runtimeException);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+        setupLogLevel(1);
+        logMessage(clientLogger, 3, logMessage, runtimeException);
+        sh.flush();
 
         String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         assertTrue(logValues.contains(logMessage));
     }
+
+//    @Test
+//    public void testNoBindingNoEnv() {
+//        String logMessage = "This is an exception";
+//
+//        System.clearProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+//        logMessage(clientLogger, 4, logMessage);
+//        sh.flush();
+//
+//        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+//        assertTrue(logValues.isEmpty());
+//    }
 
     /**
      * Tests that logging an exception as warning won't include the stack trace when the environment log level isn't
@@ -212,31 +178,12 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createRuntimeException(exceptionMessage);
 
-        String originalLogLevel = setupLogLevel(2);
-        new ClientLogger(ClientLoggerTests.class).logExceptionAsWarning(runtimeException);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+        setupLogLevel(1);
+        clientLogger.logExceptionAsWarning(runtimeException);
+        sh.flush();
 
         String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         assertTrue(logValues.contains(exceptionMessage + System.lineSeparator()));
-        assertFalse(logValues.contains(runtimeException.getStackTrace()[0].toString()));
-    }
-
-    /**
-     * Tests that logging an exception as warning will include the stack trace when the environment log level is set to
-     * VERBOSE.
-     */
-    @Test
-    public void logExceptionAsWarningStackTrace() {
-        String exceptionMessage = "An exception message";
-        RuntimeException runtimeException = createRuntimeException(exceptionMessage);
-
-        String originalLogLevel = setupLogLevel(1);
-        new ClientLogger(ClientLoggerTests.class).logExceptionAsWarning(runtimeException);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
-
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        assertTrue(logValues.contains(exceptionMessage + System.lineSeparator()));
-        assertTrue(logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
 
     /**
@@ -249,38 +196,31 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createRuntimeException(exceptionMessage);
 
-        String originalLogLevel = setupLogLevel(2);
-        new ClientLogger(ClientLoggerTests.class).logExceptionAsError(runtimeException);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+        setupLogLevel(2);
+        clientLogger.logExceptionAsError(runtimeException);
+        sh.flush();
 
         String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         assertTrue(logValues.contains(exceptionMessage + System.lineSeparator()));
         assertFalse(logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
 
-    /**
-     * Tests that logging an exception as error will include the stack trace when the environment log level is set to
-     * VERBOSE.
-     */
-    @Test
-    public void logExceptionAsErrorStackTrace() {
-        String exceptionMessage = "An exception message";
-        RuntimeException runtimeException = createRuntimeException(exceptionMessage);
+    @ParameterizedTest(name = "{index} from logLevelToConfigure = {0}, logLevelToValidate = {1}, expected = {2}")
+    @CsvSource({"1, 1, true", "1, 2, true", "1, 3, true", "1, 4, true", "2, 1, false", "1, VERBOSE, true", "1, info, true", "1, warning, true", "1, error, true", "2, verbose, false"})
+    public void canLogAtLevel(int logLevelToConfigure, String logLevelToValidate, boolean expected) {
+        setupLogLevel(logLevelToConfigure);
 
-        String originalLogLevel = setupLogLevel(1);
-        new ClientLogger(ClientLoggerTests.class).logExceptionAsError(runtimeException);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
-
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        assertTrue(logValues.contains(exceptionMessage + System.lineSeparator()));
-        assertTrue(logValues.contains(runtimeException.getStackTrace()[0].toString()));
+        LogLevel logLevel = LogLevel.fromString(logLevelToValidate);
+        assertEquals(new ClientLogger(UUID.randomUUID().toString()).canLogAtLevel(logLevel), expected);
     }
 
-    private String setupLogLevel(int logLevelToSet) {
-        String originalLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLOUD);
-        System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, Integer.toString(logLevelToSet));
+    @Test
+    public void canLogAtLevelInvalid() {
+        assertThrows(IllegalArgumentException.class, () -> LogLevel.fromString("5"));
+    }
 
-        return originalLogLevel;
+    private void setupLogLevel(int logLevelToSet) {
+        System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, Integer.toString(logLevelToSet));
     }
 
     private void logMessage(ClientLogger logger, int logLevelToLog, String logFormat, Object... arguments) {
@@ -310,4 +250,5 @@ public class ClientLoggerTests {
 
         return runtimeException;
     }
+
 }

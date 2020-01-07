@@ -15,6 +15,13 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.StreamHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +45,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class contains tests for {@link HttpLoggingPolicy}.
@@ -47,8 +55,9 @@ public class HttpLoggingPolicyTests {
     private static final Context CONTEXT = new Context("caller-method", "HttpLoggingPolicyTests");
 
     private String originalLogLevel;
-    private PrintStream originalErr;
     private ByteArrayOutputStream logCaptureStream;
+    private Logger mockLogger;
+    private StreamHandler sh;
 
     @BeforeEach
     public void prepareForTest() {
@@ -56,21 +65,15 @@ public class HttpLoggingPolicyTests {
         originalLogLevel = System.getProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
         System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, "2");
 
-        /*
-         * Indicate to SLF4J to enable trace level logging for a logger named
-         * com.azure.core.util.logging.ClientLoggerTests. Trace is the maximum level of logging supported by the
-         * ClientLogger.
-         */
-        System.setProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.HttpLoggingPolicyTests", "trace");
-
-        // Override System.err as that is where SLF4J will log by default.
-        originalErr = System.err;
+        mockLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
         logCaptureStream = new ByteArrayOutputStream();
-        System.setErr(new PrintStream(logCaptureStream));
+        sh = new StreamHandler(new PrintStream(logCaptureStream), new SimpleFormatter());
+        sh.setLevel(Level.FINEST);
+        mockLogger.addHandler(sh);
     }
 
     @AfterEach
-    public void cleanupAfterTest() {
+    public void cleanupAfterTest() throws Exception {
         // Reset or clear the log level after the test completes.
         if (CoreUtils.isNullOrEmpty(originalLogLevel)) {
             System.clearProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
@@ -78,10 +81,8 @@ public class HttpLoggingPolicyTests {
             System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
         }
 
-        System.clearProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.HttpLoggingPolicyTests");
-
-        // Reset System.err to the original PrintStream.
-        System.setErr(originalErr);
+        sh.close();
+        logCaptureStream.close();
     }
 
     /**
@@ -91,18 +92,111 @@ public class HttpLoggingPolicyTests {
     @MethodSource("redactQueryParametersSupplier")
     public void redactQueryParameters(String requestUrl, String expectedQueryString,
         Set<String> allowedQueryParameters) {
+        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(new HttpLogOptions()
+            .setLogLevel(HttpLogDetailLevel.BASIC)
+            .setAllowedQueryParamNames(allowedQueryParameters));
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, requestUrl);
+        mockLoggerForLoggingPolicyRequest(loggingPolicy, httpRequest);
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new HttpLoggingPolicy(new HttpLogOptions()
-                .setLogLevel(HttpLogDetailLevel.BASIC)
-                .setAllowedQueryParamNames(allowedQueryParameters)))
+            .policies(loggingPolicy)
             .httpClient(new NoOpHttpClient())
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl), CONTEXT))
+        StepVerifier.create(pipeline.send(httpRequest, CONTEXT))
             .verifyComplete();
-
+        sh.flush();
         String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         Assertions.assertTrue(logString.contains(expectedQueryString));
+    }
+
+    /**
+     * Tests that logging the request body doesn't consume the stream before it is sent over the network.
+     */
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("validateLoggingDoesNotConsumeSupplier")
+    public void validateLoggingDoesNotConsumeRequest(Flux<ByteBuffer> stream, byte[] data, int contentLength)
+        throws MalformedURLException {
+        URL requestUrl = new URL("https://test.com");
+        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(new HttpLogOptions()
+            .setLogLevel(HttpLogDetailLevel.BODY));
+
+        HttpHeaders requestHeaders = new HttpHeaders()
+            .put("Content-Type", ContentType.APPLICATION_JSON)
+            .put("Content-Length", Integer.toString(contentLength));
+
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, requestUrl, requestHeaders, stream);
+        mockLoggerForLoggingPolicyRequest(loggingPolicy, httpRequest);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(loggingPolicy)
+            .httpClient(request -> FluxUtil.collectBytesInByteBufferStream(request.getBody())
+                .doOnSuccess(bytes -> assertArrayEquals(data, bytes))
+                .then(Mono.empty()))
+            .build();
+
+        StepVerifier.create(pipeline.send(httpRequest))
+            .verifyComplete();
+        sh.flush();
+        String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        System.out.println(logString);
+        Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
+    }
+
+    /**
+     * Tests that logging the response body doesn't consume the stream before it is returned from the service call.
+     */
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("validateLoggingDoesNotConsumeSupplier")
+    public void validateLoggingDoesNotConsumeResponse(Flux<ByteBuffer> stream, byte[] data, int contentLength) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
+        HttpHeaders responseHeaders = new HttpHeaders()
+            .put("Content-Type", ContentType.APPLICATION_JSON)
+            .put("Content-Length", Integer.toString(contentLength));
+        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(new HttpLogOptions()
+            .setLogLevel(HttpLogDetailLevel.BODY));
+        HttpResponse httpResponse = new MockHttpResponse(request, responseHeaders, stream);
+        Mono<HttpResponse> responseMono = mockLoggerForLoggingPolicyResponse(loggingPolicy, httpResponse);
+
+        StepVerifier.create(responseMono)
+            .assertNext(response -> StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
+                .assertNext(bytes -> assertArrayEquals(data, bytes))
+                .verifyComplete())
+            .verifyComplete();
+        sh.flush();
+        String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        System.out.println(logString);
+        Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
+    }
+
+
+    private void mockLoggerForLoggingPolicyRequest(HttpLoggingPolicy loggingPolicy, HttpRequest request) {
+        try {
+            ClientLogger logger = new ClientLogger("testRequest");
+            Field f = ClientLogger.class.getDeclaredField("defaultLogger");
+            f.setAccessible(true);
+            f.set(logger, mockLogger);
+            Method method = HttpLoggingPolicy.class.getDeclaredMethod("logRequest", ClientLogger.class, HttpRequest.class);
+            method.setAccessible(true);
+            method.invoke(loggingPolicy, logger, request);
+        } catch (Exception e) {
+            fail("The tests encounter some reflection issues.");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Mono<HttpResponse> mockLoggerForLoggingPolicyResponse(HttpLoggingPolicy loggingPolicy, HttpResponse response) {
+        try {
+            ClientLogger logger = new ClientLogger("testResponse");
+            Field f = ClientLogger.class.getDeclaredField("defaultLogger");
+            f.setAccessible(true);
+            f.set(logger, mockLogger);
+            Method method = HttpLoggingPolicy.class.getDeclaredMethod("logResponse", ClientLogger.class, HttpResponse.class, long.class);
+            method.setAccessible(true);
+            return (Mono<HttpResponse>) method.invoke(loggingPolicy, logger, response, 0L);
+        } catch (Exception e) {
+            Mono.error(new RuntimeException("The tests encounter some reflection issues."));
+        }
+        return Mono.justOrEmpty(response);
     }
 
     private static Stream<Arguments> redactQueryParametersSupplier() {
@@ -127,61 +221,6 @@ public class HttpLoggingPolicyTests {
             // No query parameters are redacted.
             Arguments.of(requestUrl, fullyAllowedQueryString, allQueryParameters)
         );
-    }
-
-    /**
-     * Tests that logging the request body doesn't consume the stream before it is sent over the network.
-     */
-    @ParameterizedTest(name = "[{index}] {displayName}")
-    @MethodSource("validateLoggingDoesNotConsumeSupplier")
-    public void validateLoggingDoesNotConsumeRequest(Flux<ByteBuffer> stream, byte[] data, int contentLength)
-        throws MalformedURLException {
-        URL requestUrl = new URL("https://test.com");
-        HttpHeaders requestHeaders = new HttpHeaders()
-            .put("Content-Type", ContentType.APPLICATION_JSON)
-            .put("Content-Length", Integer.toString(contentLength));
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
-            .httpClient(request -> FluxUtil.collectBytesInByteBufferStream(request.getBody())
-                .doOnSuccess(bytes -> assertArrayEquals(data, bytes))
-                .then(Mono.empty()))
-            .build();
-
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl, requestHeaders, stream),
-            CONTEXT))
-            .verifyComplete();
-
-        String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        System.out.println(logString);
-        Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
-    }
-
-    /**
-     * Tests that logging the response body doesn't consume the stream before it is returned from the service call.
-     */
-    @ParameterizedTest(name = "[{index}] {displayName}")
-    @MethodSource("validateLoggingDoesNotConsumeSupplier")
-    public void validateLoggingDoesNotConsumeResponse(Flux<ByteBuffer> stream, byte[] data, int contentLength) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
-        HttpHeaders responseHeaders = new HttpHeaders()
-            .put("Content-Type", ContentType.APPLICATION_JSON)
-            .put("Content-Length", Integer.toString(contentLength));
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
-            .httpClient(ignored -> Mono.just(new MockHttpResponse(ignored, responseHeaders, stream)))
-            .build();
-
-        StepVerifier.create(pipeline.send(request, CONTEXT))
-            .assertNext(response -> StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
-                .assertNext(bytes -> assertArrayEquals(data, bytes))
-                .verifyComplete())
-            .verifyComplete();
-
-        String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        System.out.println(logString);
-        Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
     }
 
     private static Stream<Arguments> validateLoggingDoesNotConsumeSupplier() {

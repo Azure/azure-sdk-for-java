@@ -1,4 +1,7 @@
 # Release History
+
+## 1.0.1 (2020-01-07)
+
 ## 1.0.0-beta.4 (2019-12-02)
 - Artifact name changed from `preview` to `beta`.
 - `BlobCheckpointStore` implementation updated to match changes in `CheckpointStore` interface.
@@ -20,7 +23,7 @@ our efforts can be found in the [Azure SDK Design Guidelines for Java](https://a
 
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 - Receive messages from all partitions of an Azure Event Hub using `EventProcessor`.
-- Provide an instance of `BlobCheckpointStore` to your Event Processor. `BlobCheckpointStore` uses Azure Blob Storage to 
+- Provide an instance of `BlobCheckpointStore` to your Event Processor. `BlobCheckpointStore` uses Azure Blob Storage to
 store checkpoints and balance partition load among all instances of Event Processors.
 - Store checkpoint and partition ownership details in [Azure Storage Blobs](https://azure.microsoft.com/en-us/services/storage/blobs/).
 

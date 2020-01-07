@@ -37,7 +37,7 @@ public final class ImportCertificateOptions {
     /**
      * The policy which governs the lifecycle of the imported certificate and it's properties when it is rotated.
      */
-    private CertificatePolicy certificatePolicy;
+    private CertificatePolicy policy;
 
     /**
      * Application specific metadata in the form of key-value pairs.
@@ -78,17 +78,17 @@ public final class ImportCertificateOptions {
      * Get the management policy for the certificate.
      * @return the management policy
      */
-    public CertificatePolicy getCertificatePolicy() {
-        return this.certificatePolicy;
+    public CertificatePolicy getPolicy() {
+        return this.policy;
     }
 
     /**
      * Set the management policy for the certificate.
-     * @param certificatePolicy the management policy for the certificate
+     * @param policy the management policy for the certificate
      * @return the updated CertificateImportOptions itself
      */
-    public ImportCertificateOptions setCertificatePolicy(CertificatePolicy certificatePolicy) {
-        this.certificatePolicy = certificatePolicy;
+    public ImportCertificateOptions setPolicy(CertificatePolicy policy) {
+        this.policy = policy;
         return this;
     }
 

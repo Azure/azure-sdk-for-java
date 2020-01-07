@@ -150,22 +150,26 @@ def update_versions_all(update_type, build_type, target_file, skip_readme):
 
     # This is a temporary stop gap to deal with versions hard coded in java files.
     # Everything within the begin/end tags below can be deleted once
-    # https://github.com/Azure/azure-sdk-for-java/issues/3141 has been fixed.
+    # https://github.com/Azure/azure-sdk-for-java/issues/7106 has been fixed.
     # version_*_java_files.txt
     # BEGIN:Versions_in_java_files
     if not target_file and BuildType.none != build_type:
         # the good thing here is that the java files only contain library versions, not
         # external versions
         version_java_file = os.path.normpath('eng/versioning/version_' + build_type.name + '_java_files.txt')
-        with open(version_java_file) as f:
-            for raw_line in f:
-                java_file_to_update = raw_line.strip()
-                if not java_file_to_update or java_file_to_update.startswith('#'):
-                    continue
-                if os.path.isfile(java_file_to_update):
-                    update_versions(version_map, java_file_to_update)
-                else:
-                    raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), java_file_to_update)
+
+        if os.path.exists(version_java_file):
+            with open(version_java_file) as f:
+                for raw_line in f:
+                    java_file_to_update = raw_line.strip()
+                    if not java_file_to_update or java_file_to_update.startswith('#'):
+                        continue
+                    if os.path.isfile(java_file_to_update):
+                        update_versions(version_map, java_file_to_update)
+                    else:
+                        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), java_file_to_update)
+        else:
+            print(version_java_file + ' does not exist. Skipping.')
     # END:Versions_in_java_files
 
 def main():
