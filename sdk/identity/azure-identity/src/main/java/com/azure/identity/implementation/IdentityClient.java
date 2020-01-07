@@ -45,6 +45,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.UUID;
@@ -494,7 +495,7 @@ public class IdentityClient {
     private void openUrl(String url) throws IOException {
         Runtime rt = Runtime.getRuntime();
 
-        String os = System.getProperty("os.name").toLowerCase();
+        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         if (os.contains("win")) {
             rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
         } else if (os.contains("mac")) {
