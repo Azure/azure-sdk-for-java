@@ -115,10 +115,12 @@ public class IdentityClient {
                 try {
                     if (certificatePassword == null) {
                         byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(certificatePath));
-                        credential = ClientCredentialFactory.create(CertificateUtil.privateKeyFromPem(pemCertificateBytes),
+                        credential = ClientCredentialFactory.create(
+                                CertificateUtil.privateKeyFromPem(pemCertificateBytes),
                                 CertificateUtil.publicKeyFromPem(pemCertificateBytes));
                     } else {
-                        credential = ClientCredentialFactory.create(new FileInputStream(certificatePath), certificatePassword);
+                        credential = ClientCredentialFactory.create(
+                                new FileInputStream(certificatePath), certificatePassword);
                     }
                 } catch (CertificateException
                         | UnrecoverableKeyException

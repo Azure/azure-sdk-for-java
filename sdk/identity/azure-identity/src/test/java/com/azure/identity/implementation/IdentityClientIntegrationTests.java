@@ -37,7 +37,7 @@ public class IdentityClientIntegrationTests {
             .verifyComplete();
     }
 
-    @Test
+    @Ignore("Integration test")
     public void deviceCodeCanGetToken() {
         IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), null, null, null, new IdentityClientOptions());
         MsalToken token = client.authenticateWithDeviceCode(request, deviceCode -> {
@@ -59,7 +59,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertFalse(token.isExpired());
     }
 
-    @Test
+    @Ignore("Integration test")
     public void browserCanGetToken() {
         IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), System.getenv(AZURE_CLIENT_SECRET), null, null, new IdentityClientOptions());
         MsalToken token = client.authenticateWithBrowserInteraction(request, 8765).block();
@@ -74,7 +74,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertFalse(token.isExpired());
     }
 
-    @Test
+    @Ignore("Integration test")
     public void usernamePasswordCanGetToken() {
         IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), null, null, null, new IdentityClientOptions());
         MsalToken token = client.authenticateWithUsernamePassword(request, System.getenv("username"), System.getenv("password")).block();
