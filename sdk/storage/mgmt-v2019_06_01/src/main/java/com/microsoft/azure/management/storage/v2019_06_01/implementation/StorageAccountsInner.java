@@ -17,6 +17,7 @@ import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.storage.v2019_06_01.AccountSasParameters;
+import com.microsoft.azure.management.storage.v2019_06_01.ErrorResponseException;
 import com.microsoft.azure.management.storage.v2019_06_01.ListKeyExpand;
 import com.microsoft.azure.management.storage.v2019_06_01.ServiceSasParameters;
 import com.microsoft.azure.management.storage.v2019_06_01.StorageAccountCheckNameAvailabilityParameters;
@@ -230,7 +231,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The parameters to provide for the created account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StorageAccountInner object if successful.
      */
@@ -307,7 +308,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The parameters to provide for the created account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StorageAccountInner object if successful.
      */
@@ -387,11 +388,11 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
             });
     }
 
-    private ServiceResponse<StorageAccountInner> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<StorageAccountInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<StorageAccountInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<StorageAccountInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StorageAccountInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -487,7 +488,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StorageAccountInner object if successful.
      */
@@ -568,7 +569,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param expand May be used to expand the properties within account's properties. By default, data is not included when fetching properties. Currently we only support geoReplicationStats. Possible values include: 'geoReplicationStats'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StorageAccountInner object if successful.
      */
@@ -644,10 +645,10 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
             });
     }
 
-    private ServiceResponse<StorageAccountInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<StorageAccountInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<StorageAccountInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<StorageAccountInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StorageAccountInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -658,7 +659,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The parameters to provide for the updated account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StorageAccountInner object if successful.
      */
@@ -738,10 +739,10 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
             });
     }
 
-    private ServiceResponse<StorageAccountInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<StorageAccountInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<StorageAccountInner> updateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<StorageAccountInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StorageAccountInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1117,7 +1118,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StorageAccountListKeysResultInner object if successful.
      */
@@ -1198,10 +1199,10 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
             });
     }
 
-    private ServiceResponse<StorageAccountListKeysResultInner> regenerateKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<StorageAccountListKeysResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<StorageAccountListKeysResultInner> regenerateKeyDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<StorageAccountListKeysResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StorageAccountListKeysResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
