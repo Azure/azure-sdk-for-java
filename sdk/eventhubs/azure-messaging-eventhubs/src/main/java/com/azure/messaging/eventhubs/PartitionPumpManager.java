@@ -151,7 +151,7 @@ class PartitionPumpManager {
                     () -> {
                         partitionProcessor.close(new CloseContext(partitionContext,
                             CloseReason.EVENT_PROCESSOR_SHUTDOWN));
-                        partitionPumps.remove(claimedOwnership.getPartitionId());
+                        cleanup(claimedOwnership, eventHubConsumer);
                     });
         } catch (Exception ex) {
             if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
