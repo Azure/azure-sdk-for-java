@@ -104,7 +104,7 @@ public class ActiveClientTokenManager implements TokenManager {
 
         if (subscription != null) {
             subscription.dispose();
-    }
+        }
     }
 
     private Disposable scheduleRefreshTokenTask(Duration initialRefresh) {
@@ -133,13 +133,13 @@ public class ActiveClientTokenManager implements TokenManager {
                 lastRefreshInterval.set(nextRefresh);
                 durationSourceSink.next(Duration.ofMillis(interval));
             }, error -> {
-                logger.error("Error occurred while refreshing token that is not retriable. Not scheduling"
-                    + " refresh task. Use ActiveClientTokenManager.authorize() to schedule task again.", error);
-                hasScheduled.set(false);
-                durationSourceSink.complete();
-                authorizationResultsSink.error(error);
-            }, () -> {
-                logger.info("Completed refresh token task.");
-            });
+                    logger.error("Error occurred while refreshing token that is not retriable. Not scheduling"
+                        + " refresh task. Use ActiveClientTokenManager.authorize() to schedule task again.", error);
+                    hasScheduled.set(false);
+                    durationSourceSink.complete();
+                    authorizationResultsSink.error(error);
+                }, () -> {
+                    logger.info("Completed refresh token task.");
+                });
     }
 }
