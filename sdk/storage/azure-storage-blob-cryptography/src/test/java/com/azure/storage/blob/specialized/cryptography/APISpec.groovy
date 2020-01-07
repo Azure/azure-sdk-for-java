@@ -366,4 +366,21 @@ class APISpec extends Specification {
             .leaseId(leaseId)
             .buildClient()
     }
+
+    def compareDataToFile(Flux<ByteBuffer> data, File file) {
+        FileInputStream fis = new FileInputStream(file)
+
+        for (ByteBuffer received : data.toIterable()) {
+            byte[] readBuffer = new byte[received.remaining()]
+            fis.read(readBuffer)
+            for (int i = 0; i < received.remaining(); i++) {
+                if (readBuffer[i] != received.get(i)) {
+                    return false
+                }
+            }
+        }
+
+        fis.close()
+        return true
+    }
 }

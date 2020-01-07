@@ -22,6 +22,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -504,21 +505,57 @@ public final class EncryptedBlobClientBuilder {
         return this;
     }
 
+    /**
+     * Configures the builder based on the passed {@link BlobContainerClient}. This will set the {@link HttpPipeline},
+     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
+     *
+     * @param blobContainerClient ContainerClient used to configure the builder.
+     * @return the updated EncryptedBlobClientBuilder object
+     * @throws NullPointerException If {@code containerClient} is {@code null}.
+     */
     public EncryptedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient) {
+        Objects.requireNonNull(blobContainerClient);
         return client(blobContainerClient.getHttpPipeline(), blobContainerClient.getBlobContainerUrl(),
             blobContainerClient.getServiceVersion());
     }
 
-    public EncryptedBlobClientBuilder containerAsyncClient(BlobContainerClient blobContainerAsyncClient) {
+    /**
+     * Configures the builder based on the passed {@link BlobContainerAsyncClient}. This will set the {@link HttpPipeline},
+     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
+     *
+     * @param blobContainerAsyncClient ContainerAsyncClient used to configure the builder.
+     * @return the updated EncryptedBlobClientBuilder object
+     * @throws NullPointerException If {@code containerClient} is {@code null}.
+     */
+    public EncryptedBlobClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient) {
+        Objects.requireNonNull(blobContainerAsyncClient);
         return client(blobContainerAsyncClient.getHttpPipeline(), blobContainerAsyncClient.getBlobContainerUrl(),
             blobContainerAsyncClient.getServiceVersion());
     }
 
-    public EncryptedBlobClientBuilder blobClient(BlobClientBase blobClient) {
+    /**
+     * Configures the builder based on the passed {@link BlobClient}. This will set the {@link HttpPipeline},
+     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
+     *
+     * @param blobClient BlobClient used to configure the builder.
+     * @return the updated EncryptedBlobClientBuilder object
+     * @throws NullPointerException If {@code containerClient} is {@code null}.
+     */
+    public EncryptedBlobClientBuilder blobClient(BlobClient blobClient) {
+        Objects.requireNonNull(blobClient);
         return client(blobClient.getHttpPipeline(), blobClient.getBlobUrl(), blobClient.getServiceVersion());
     }
 
-    public EncryptedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
+    /**
+     * Configures the builder based on the passed {@link BlobAsyncClient}. This will set the {@link HttpPipeline},
+     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
+     *
+     * @param blobAsyncClient BlobAsyncClient used to configure the builder.
+     * @return the updated EncryptedBlobClientBuilder object
+     * @throws NullPointerException If {@code containerClient} is {@code null}.
+     */
+    public EncryptedBlobClientBuilder blobAsyncClient(BlobAsyncClient blobAsyncClient) {
+        Objects.requireNonNull(blobAsyncClient);
         return client(blobAsyncClient.getHttpPipeline(), blobAsyncClient.getBlobUrl(),
             blobAsyncClient.getServiceVersion());
     }
