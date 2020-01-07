@@ -386,7 +386,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         } finally {
             isActive.set(false);
             producerEvents.dispose();
-            consumer.close();
+            dispose(producer, consumer);
         }
     }
 
