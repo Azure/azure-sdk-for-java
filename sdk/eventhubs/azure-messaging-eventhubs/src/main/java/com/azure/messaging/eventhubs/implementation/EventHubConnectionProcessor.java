@@ -158,8 +158,8 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
         final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
 
         if (retryInterval != null) {
-            logger.warning("Transient error occurred. Attempt: {}. Retrying after {} seconds.",
-                attempt, retryInterval.toSeconds(), throwable);
+            logger.warning("Transient error occurred. Attempt: {}. Retrying after {} ms.",
+                attempt, retryInterval.toMillis(), throwable);
 
             durationSourceSink.next(retryInterval);
             return;
