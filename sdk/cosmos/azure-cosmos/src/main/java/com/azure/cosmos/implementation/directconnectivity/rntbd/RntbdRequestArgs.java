@@ -126,8 +126,8 @@ public final class RntbdRequestArgs {
 
         checkNotNull(logger, "expected non-null logger");
 
-        if (logger.isTraceEnabled()) {
-            logger.trace("{},{},\"{}({})\",\"{}\",\"{}\"", this.timeCreated, this.lifetime.elapsed(), operationName,
+        if (logger.isDebugEnabled()) {
+            logger.debug("{},{},\"{}({})\",\"{}\",\"{}\"", this.timeCreated, this.lifetime.elapsed(), operationName,
                 Stream.of(args)
                     .map(arg -> arg == null ? "null" : arg.toString())
                     .collect(Collectors.joining(",")),

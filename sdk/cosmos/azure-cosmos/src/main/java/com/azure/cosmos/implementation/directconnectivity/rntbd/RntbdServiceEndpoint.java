@@ -315,10 +315,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             final int threadCount = Runtime.getRuntime().availableProcessors();
             final LogLevel wireLogLevel;
 
-            if (logger.isTraceEnabled()) {
+            if (logger.isDebugEnabled()) {
                 wireLogLevel = LogLevel.TRACE;
-            } else if (logger.isDebugEnabled()) {
-                wireLogLevel = LogLevel.DEBUG;
             } else {
                 wireLogLevel = null;
             }
