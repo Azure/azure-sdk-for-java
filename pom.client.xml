@@ -333,6 +333,35 @@
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
             </configuration>
           </execution>
+          <execution>
+            <id>check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.18</minimum>
+                    </limit>
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.09</minimum>
+                    </limit>
+                  </limits>
+                  <excludes>
+                    <!-- exclusions go here -->
+                    <!-- <exclude>com.xyz.ClassToExclude</exclude> -->
+                  </excludes>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 

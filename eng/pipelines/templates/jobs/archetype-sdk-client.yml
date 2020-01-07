@@ -2,7 +2,7 @@ parameters:
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
   TestOptions: '$(DefaultOptions)'
-  TestGoals: test
+  TestGoals: verify
   TestMatrix:
     Linux - Java 8:
       OSName: 'Linux'
@@ -329,7 +329,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: ${{ parameters.TestGoals }}
-        # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set) 
+        # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set)
         # OR when ShouldRunSourceTests is true
         condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
@@ -338,3 +338,37 @@ jobs:
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
+
+          # Generate JaCoCo code coverage report on Java 11, Linux builds if the build reason is not PR.
+      - task: Maven@3
+        displayName: 'Generate aggregate code coverage report'
+        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
+        inputs:
+            # Aggregate reports for non-PR builds will use pom.client.xml and include non-shipping modules
+            mavenPomFile: pom.client.xml
+            options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+            mavenOptions: '-Xmx3072m $(LoggingOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: $(JavaVersion)
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+            goals: 'verify'
+
+        # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
+        # Code coverage reporting is setup only for Track 2 modules.
+      - task: PublishCodeCoverageResults@1
+        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
+        inputs:
+            codeCoverageTool: JaCoCo
+            summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
+            reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
+            failIfCoverageEmpty: true
+
+        # Publish code coverage to an artifact so it can be uploaded to the Maven site.
+        # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
+      - task: PublishPipelineArtifact@0
+        displayName: 'Publish coverage artifact'
+        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
+        inputs:
+            artifactName: coverage
+            targetPath: eng/jacoco-test-coverage/target/site/
