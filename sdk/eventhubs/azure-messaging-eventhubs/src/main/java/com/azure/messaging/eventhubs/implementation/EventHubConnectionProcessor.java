@@ -12,9 +12,6 @@ import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
-import reactor.core.publisher.EmitterProcessor;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
@@ -35,15 +32,12 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     private final ClientLogger logger = new ClientLogger(EventHubConnectionProcessor.class);
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicBoolean isRequested = new AtomicBoolean();
-    private final EmitterProcessor<Duration> durationSource = EmitterProcessor.create();
-    private final FluxSink<Duration> durationSourceSink = durationSource.sink(FluxSink.OverflowStrategy.BUFFER);
     private final AtomicInteger retryAttempts = new AtomicInteger();
     private final Object lock = new Object();
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final AmqpRetryOptions retryOptions;
     private final AmqpRetryPolicy retryPolicy;
-    private final Disposable retrySubscription;
 
     private Subscription upstream;
     private EventHubAmqpConnection currentConnection;
@@ -51,6 +45,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     private volatile ConcurrentLinkedDeque<ConnectionSubscriber> subscribers = new ConcurrentLinkedDeque<>();
     private volatile Throwable lastError;
     private volatile Disposable connectionSubscription;
+    private volatile Disposable retrySubscription;
 
     public EventHubConnectionProcessor(String fullyQualifiedNamespace, String eventHubName,
         AmqpRetryOptions retryOptions) {
@@ -60,14 +55,6 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
 
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-        this.retrySubscription = Flux.switchOnNext(durationSource.map(duration -> Mono.delay(duration)))
-            .subscribe(unused -> {
-                if (upstream != null) {
-                    upstream.request(1);
-                } else {
-                    logger.info("No subscription to request.");
-                }
-            });
     }
 
     /**
@@ -139,7 +126,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
                         logger.info("Connection is disposed. Not requesting another connection.");
                     } else {
                         logger.info("Connection closed. Requesting another.");
-                        upstream.request(1);
+//                        upstream.request(1);
                     }
                 });
         }
@@ -166,7 +153,10 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
             logger.warning("Transient error occurred. Attempt: {}. Retrying after {} ms.",
                 attempt, retryInterval.toMillis(), throwable);
 
-            durationSourceSink.next(retryInterval);
+            retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
+                requestUpstream();
+            });
+
             return;
         }
 
@@ -220,14 +210,10 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
                 subscriber.complete(currentConnection);
                 return;
             }
-
-            subscribers.add(subscriber);
-
-            if (!isRequested.getAndSet(true)) {
-                logger.info("Connection not obtained yet. Requesting one.");
-                upstream.request(1);
-            }
         }
+
+        subscribers.add(subscriber);
+        requestUpstream();
     }
 
     @Override
@@ -236,7 +222,10 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
             return;
         }
 
-        retrySubscription.dispose();
+        if (retrySubscription != null && !retrySubscription.isDisposed()) {
+            retrySubscription.dispose();
+        }
+
         onComplete();
 
         synchronized (lock) {
@@ -251,6 +240,26 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     @Override
     public boolean isDisposed() {
         return isTerminated.get();
+    }
+
+    private void requestUpstream() {
+        synchronized (lock) {
+            if (currentConnection != null) {
+                logger.info("Connection exists, not requesting another.");
+                return;
+            } else if (isTerminated.get() || upstream == null) {
+                logger.verbose("Terminated. Not requesting another.");
+                return;
+            }
+        }
+
+        // subscribe(CoreSubscriber) may have requested a subscriber already.
+        if (!isRequested.getAndSet(true)) {
+            logger.info("Connection not requested, yet. Requesting one.");
+            upstream.request(1);
+        } else {
+            logger.info("Retried connection already requested.");
+        }
     }
 
     /**
