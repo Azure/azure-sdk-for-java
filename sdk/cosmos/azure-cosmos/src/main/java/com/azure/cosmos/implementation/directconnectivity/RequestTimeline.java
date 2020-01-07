@@ -48,39 +48,87 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         this.events = events;
     }
 
+    /**
+     * Returns an empty {@link RequestTimeline}.
+     *
+     * The empty time line returned is static.
+     *
+     * @return an empty {@link RequestTimeline}.
+     */
     public static RequestTimeline empty() {
         return EMPTY;
     }
 
+    /**
+     * Returns an iterator for enumerating the {@link Event} instances in this {@link RequestTimeline}.
+     * @return
+     */
     @Override
     public Iterator<Event> iterator() {
         return this.events.iterator();
     }
 
+    /**
+     * Returns an empty {@link RequestTimeline}.
+     *
+     * The empty time line returned is static and equivalent to calling {@link RequestTimeline#empty}.
+     *
+     * @return an empty request timeline.
+     */
     public static RequestTimeline of() {
         return EMPTY;
     }
 
+    /**
+     * Returns a new {@link RequestTimeline} with a single event.
+     *
+     * @return a new {@link RequestTimeline} with a single event.
+     */
     public static RequestTimeline of(final Event event) {
         return new RequestTimeline(ImmutableList.of(event));
     }
 
+    /**
+     * Returns a new {@link RequestTimeline} with a pair of events.
+     *
+     * @return a new {@link RequestTimeline} with a pair of events.
+     */
     public static RequestTimeline of(final Event e1, final Event e2) {
         return new RequestTimeline(ImmutableList.of(e1, e2));
     }
 
+    /**
+     * Returns a new {@link RequestTimeline} with three events.
+     *
+     * @return a new {@link RequestTimeline} with three events.
+     */
     public static RequestTimeline of(final Event e1, final Event e2, final Event e3) {
         return new RequestTimeline(ImmutableList.of(e1, e2, e3));
     }
 
+    /**
+     * Returns a new {@link RequestTimeline} with four events.
+     *
+     * @return a new {@link RequestTimeline} with four events.
+     */
     public static RequestTimeline of(final Event e1, final Event e2, final Event e3, final Event e4) {
         return new RequestTimeline(ImmutableList.of(e1, e2, e3, e4));
     }
 
+    /**
+     * Returns a new {@link RequestTimeline} with five events.
+     *
+     * @return a new {@link RequestTimeline} with five events.
+     */
     public static RequestTimeline of(final Event e1, final Event e2, final Event e3, final Event e4, final Event e5) {
         return new RequestTimeline(ImmutableList.of(e1, e2, e3, e4, e5));
     }
 
+    /**
+     * Returns a new {@link RequestTimeline} with an arbitrary number of events.
+     *
+     * @return a new {@link RequestTimeline} with an arbitrary number of events.
+     */
     public static RequestTimeline of(final Event... events) {
         return new RequestTimeline(ImmutableList.copyOf(events));
     }
