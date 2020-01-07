@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.common.collect.ImmutableList;
@@ -147,8 +148,12 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
     @JsonPropertyOrder({ "name", "time", "duration" })
     public static final class Event {
 
+        @JsonSerialize(using = ToStringSerializer.class)
         private final Duration duration;
+
         private final String name;
+
+        @JsonSerialize(using = ToStringSerializer.class)
         private final OffsetDateTime time;
 
         public Event(final String name, final OffsetDateTime from, final OffsetDateTime to) {
@@ -161,7 +166,6 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
             this.duration = from == null ? null : to == null ? Duration.ZERO : Duration.between(from, to);
         }
 
-        @JsonSerialize(using = ToStringSerializer.class)
         public Duration getDuration() {
             return this.duration;
         }
@@ -170,7 +174,6 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
             return name;
         }
 
-        @JsonSerialize(using = ToStringSerializer.class)
         public OffsetDateTime getTime() {
             return time;
         }
