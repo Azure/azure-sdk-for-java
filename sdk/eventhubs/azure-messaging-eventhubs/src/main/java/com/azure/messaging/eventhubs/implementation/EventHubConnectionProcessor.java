@@ -265,7 +265,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     /**
      * Represents a subscriber, waiting for an AMQP connection.
      */
-    private static class ConnectionSubscriber
+    private static final class ConnectionSubscriber
         extends Operators.MonoSubscriber<EventHubAmqpConnection, EventHubAmqpConnection> {
         private final EventHubConnectionProcessor processor;
 

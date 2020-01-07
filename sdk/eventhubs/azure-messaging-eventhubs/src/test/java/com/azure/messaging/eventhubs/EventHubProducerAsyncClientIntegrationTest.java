@@ -224,10 +224,10 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             .subscribe(instant -> {
                 System.out.println("Sent batch at: " + instant);
             }, error -> {
-                logger.error("Error sending batch: ", error);
-            }, () -> {
-                logger.info("Complete.");
-            });
+                    logger.error("Error sending batch: ", error);
+                }, () -> {
+                    logger.info("Complete.");
+                });
 
         System.out.println("Sleeping while performing work.");
         TimeUnit.MINUTES.sleep(30);
