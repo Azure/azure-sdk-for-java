@@ -354,10 +354,6 @@
                       <minimum>0.09</minimum>
                     </limit>
                   </limits>
-                  <excludes>
-                    <!-- exclusions go here -->
-                    <!-- <exclude>com.xyz.ClassToExclude</exclude> -->
-                  </excludes>
                 </rule>
               </rules>
             </configuration>
