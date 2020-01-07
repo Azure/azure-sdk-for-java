@@ -19,20 +19,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Represents the time and duration of important events in the lifetime of a request.
  *
  * A {@link RequestTimeline} represents a timeline as a sequence of {@link Event} instances with name, time, and
- * duration properties. One might use this class to represent any timeline. Today we use it to represent
- * {@link RntbdTransportClient} request timelines. In the future it might also be used to represent
+ * duration properties. Hence, one might use this class to represent any timeline. Today we use it to represent
+ * {@link RntbdTransportClient} request timelines. In the future we might also use it to represent
  * {@link HttpTransportClient} request timelines.
  *
  * A {@link RequestTimeline} serializes to JSON as an array of {@link Event} instances. This is the default
  * serialization for any class that implements {@link Iterable}.
  * <p>
  * <b>Example:</b>
- * <p>
  * <pre>{@code OffsetDateTime startTime = OffsetDateTime.parse("2020-01-07T11:24:12.842749-08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
  * sys.out.println(RequestTimeline.of(
  *     new RequestTimeline.Event("foo", startTime, startTime.plusSeconds(1)),
  *     new RequestTimeline.Event("bar", startTime.plusSeconds(1), startTime.plusSeconds(2))));}</pre>
- * JSON serialization:<pre>{@code [{"name":"foo","time":"2020-01-07T11:24:12.842749-08:00","duration":"PT1S"},{"name":"bar","time":"2020-01-07T11:24:13.842749-08:00","duration":"PT1S"}])}</pre>
+ * JSON serialization:
+ * <pre>{@code [{"name":"foo","time":"2020-01-07T11:24:12.842749-08:00","duration":"PT1S"},{"name":"bar","time":"2020-01-07T11:24:13.842749-08:00","duration":"PT1S"}])}</pre>
  */
 public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
 
