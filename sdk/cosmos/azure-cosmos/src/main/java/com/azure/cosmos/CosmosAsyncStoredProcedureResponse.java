@@ -24,10 +24,10 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
 
     }
 
-    CosmosAsyncStoredProcedureResponse(StoredProcedureResponse response, CosmosAsyncContainer cosmosContainer) {
+    CosmosAsyncStoredProcedureResponse(StoredProcedureResponse response, CosmosAsyncContainer cosmosContainer, String storedProcedureId) {
         super(response);
         this.storedProcedureResponse = response;
-        this.storedProcedure = null;
+        this.storedProcedure = new CosmosAsyncStoredProcedure(storedProcedureId, cosmosContainer);
 
     }
 
@@ -43,7 +43,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
     /**
      * Gets the stored procedure object
      *
-     * @return the stored procedure object or null
+     * @return the stored procedure object or null in case of delete request
      */
     public CosmosAsyncStoredProcedure getStoredProcedure() {
         return this.storedProcedure;
