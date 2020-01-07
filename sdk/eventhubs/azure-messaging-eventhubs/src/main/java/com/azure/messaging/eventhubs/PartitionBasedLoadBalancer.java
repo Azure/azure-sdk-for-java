@@ -205,7 +205,8 @@ final class PartitionBasedLoadBalancer {
             if (isLoadBalanced(minPartitionsPerEventProcessor, numberOfEventProcessorsWithAdditionalPartition,
                 ownerPartitionMap)) {
                 // If the partitions are evenly distributed among all active event processors, no change required.
-                logger.info("Load is balanced");
+                logger.info("Load is balanced with this event processor owning {} partitions",
+                    ownerPartitionMap.get(ownerId).size());
                 // renew ownership of already owned partitions
                 checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
                     .stream()
@@ -231,7 +232,8 @@ final class PartitionBasedLoadBalancer {
             // If we have reached this stage, this event processor has to claim/steal ownership of at least 1
             // more partition
             logger.info(
-                "Load is unbalanced and this event processor should own more partitions");
+                "Load is unbalanced and this event processor owns {} partitions and should own more partitions",
+                ownerPartitionMap.get(ownerId).size());
             /*
              * If some partitions are unclaimed, this could be because an event processor is down and
              * it's partitions are now available for others to own or because event processors are just
