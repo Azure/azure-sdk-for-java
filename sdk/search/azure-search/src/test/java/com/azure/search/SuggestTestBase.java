@@ -3,9 +3,9 @@
 package com.azure.search;
 
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.util.serializer.jsonwrapper.JsonWrapper;
-import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
-import com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
+import com.azure.core.implementation.serializer.jsonwrapper.JsonWrapper;
+import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
+import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Hotel;
 import org.junit.Assert;

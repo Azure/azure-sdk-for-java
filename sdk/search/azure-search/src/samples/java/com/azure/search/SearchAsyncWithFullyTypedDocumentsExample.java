@@ -4,9 +4,9 @@
 package com.azure.search;
 
 import com.azure.core.http.rest.PagedFluxBase;
-import com.azure.core.util.serializer.jsonwrapper.JsonWrapper;
-import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
-import com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
+import com.azure.core.implementation.serializer.jsonwrapper.JsonWrapper;
+import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
+import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.core.util.Configuration;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.Hotel;
@@ -14,7 +14,7 @@ import com.azure.search.models.Hotel;
 /**
  * This example shows how to convert a search result into a fully typed object.
  * In case that the searched document schema is known, the user can convert the result of the search query from a property bag into a fully typed object
- * Conversion to a well known type is done using azure-core jsonwrapper {@link JacksonDeserializer} utility with a Jackson implementation
+ * Conversion to a well known type is done using azure-core jsonwrapper {@link com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer} utility with a Jackson implementation
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
  * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal

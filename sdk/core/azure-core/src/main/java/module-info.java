@@ -1,9 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonPlugin;
-import com.azure.core.util.serializer.jsonwrapper.spi.JsonPlugin;
-
 module com.azure.core {
     requires java.xml;
 
@@ -31,9 +28,10 @@ module com.azure.core {
     exports com.azure.core.util.serializer;
     exports com.azure.core.util.tracing;
     exports com.azure.core.cryptography;
-    exports com.azure.core.util.serializer.jsonwrapper;
-    exports com.azure.core.util.serializer.jsonwrapper.jacksonwrapper;
-    exports com.azure.core.util.serializer.jsonwrapper.api;
+    exports com.azure.core.implementation.serializer;
+    exports com.azure.core.implementation.serializer.jsonwrapper;
+    exports com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper;
+    exports com.azure.core.implementation.serializer.jsonwrapper.api;
 
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.fasterxml.jackson.databind;
@@ -42,17 +40,16 @@ module com.azure.core {
     opens com.azure.core.util.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
-    opens com.azure.core.util.serializer.jsonwrapper to com.fasterxml.jackson.databind;
-    opens com.azure.core.util.serializer.jsonwrapper.jacksonwrapper to com.fasterxml.jackson.databind.JsonNode;
+    opens com.azure.core.implementation.serializer.jsonwrapper to com.fasterxml.jackson.databind;
 
     // service provider interfaces
     uses com.azure.core.util.tracing.Tracer;
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;
     uses com.azure.core.http.policy.AfterRetryPolicyProvider;
-    uses JsonPlugin;
+    uses com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin;
 
     // indicate JacksonPlugin provides a service implementation for JsonPlugin
-    provides JsonPlugin
-        with JacksonPlugin;
+    provides com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin
+        with com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonPlugin;
 }
