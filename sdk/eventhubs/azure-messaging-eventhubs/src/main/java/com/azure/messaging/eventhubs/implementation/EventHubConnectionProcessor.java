@@ -123,10 +123,10 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
                 },
                 () -> {
                     if (isDisposed()) {
-                        logger.info("Connection is disposed. Not requesting another connection.");
+                        logger.info("Connection is disposed.");
                     } else {
-                        logger.info("Connection closed. Requesting another.");
-//                        upstream.request(1);
+                        logger.info("Connection closed.");
+                        currentConnection = null;
                     }
                 });
         }
