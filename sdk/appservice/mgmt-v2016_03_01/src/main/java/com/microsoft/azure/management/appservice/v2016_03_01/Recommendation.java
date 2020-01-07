@@ -11,7 +11,7 @@ package com.microsoft.azure.management.appservice.v2016_03_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2016_03_01.implementation.RecommendationInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_03_01.implementation.WebManager;
 import org.joda.time.DateTime;
 import java.util.UUID;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Type representing Recommendation.
  */
-public interface Recommendation extends HasInner<RecommendationInner>, HasManager<AppServiceManager> {
+public interface Recommendation extends HasInner<RecommendationInner>, HasManager<WebManager> {
     /**
      * @return the actionName value.
      */

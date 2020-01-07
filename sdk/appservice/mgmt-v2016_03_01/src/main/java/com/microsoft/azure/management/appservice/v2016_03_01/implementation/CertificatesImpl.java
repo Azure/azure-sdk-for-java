@@ -23,8 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 
-class CertificatesImpl extends GroupableResourcesCoreImpl<Certificate, CertificateImpl, CertificateInner, CertificatesInner, AppServiceManager>  implements Certificates {
-    protected CertificatesImpl(AppServiceManager manager) {
+class CertificatesImpl extends GroupableResourcesCoreImpl<Certificate, CertificateImpl, CertificateInner, CertificatesInner, WebManager>  implements Certificates {
+    protected CertificatesImpl(WebManager manager) {
         super(manager.inner().certificates(), manager);
     }
 
