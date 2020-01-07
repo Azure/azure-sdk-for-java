@@ -264,11 +264,11 @@ abstract class AsyncBenchmark<T> {
         Map<String, String> properties = instance.getInstance();
         properties.put("id", idString);
         properties.put(partitionKey, idString);
-        properties.put("dataField1", dataFieldValue);
-        properties.put("dataField2", dataFieldValue);
-        properties.put("dataField3", dataFieldValue);
-        properties.put("dataField4", dataFieldValue);
-        properties.put("dataField5", dataFieldValue);
+
+        for (int i = 0; i < configuration.getDocumentDataFieldCount(); i++) {
+            properties.put("dataField" + i, dataFieldValue);
+        }
+
         return instance;
     }
 }
