@@ -45,6 +45,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     // Languages
+
     /**
      * Code snippet for detecting Language
      */
@@ -77,22 +78,20 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#string-string
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguages#List
-        final List<String> inputs = Arrays.asList(
+        final List<String> textInputs = Arrays.asList(
             "This is written in English", "Este es un document escrito en Español.");
-        textAnalyticsAsyncClient.detectLanguages(inputs).subscribe(detectedBatchResult -> {
+        textAnalyticsAsyncClient.detectLanguages(textInputs).subscribe(detectedBatchResult -> {
             System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s,"
-                    + " transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getTransactionCount(),
+            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
             for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
                 for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-                    System.out.printf("Another detected language: %s, ISO 6391 name: %s, score: %s.%n",
+                    System.out.printf("Detected language: %s, ISO 6391 name: %s, score: %s.%n",
                         detectedLanguage.getName(),
                         detectedLanguage.getIso6391Name(),
                         detectedLanguage.getScore());
@@ -102,9 +101,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguages#List
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguagesWithResponse#List-String
-        final List<String> listInputs = Arrays.asList(
+        final List<String> textInputs1 = Arrays.asList(
             "This is written in English", "Este es un document escrito en Español.");
-        textAnalyticsAsyncClient.detectLanguagesWithResponse(listInputs, "US").subscribe(response -> {
+        textAnalyticsAsyncClient.detectLanguagesWithResponse(textInputs1, "US").subscribe(response -> {
             DocumentResultCollection<DetectLanguageResult> detectedBatchResult = response.getValue();
             System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
@@ -116,7 +115,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
                 for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-                    System.out.printf("Other detected language: %s, ISO 6391 name: %s, score: %s.%n",
+                    System.out.printf("Detected language: %s, ISO 6391 name: %s, score: %s.%n",
                         detectedLanguage.getName(),
                         detectedLanguage.getIso6391Name(),
                         detectedLanguage.getScore());
@@ -128,7 +127,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectBatchLanguages#List
         List<DetectLanguageInput> detectLanguageInputs = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "US"),
-            new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
+            new DetectLanguageInput("2", "Este es un document escrito en Español.", "ES")
         );
         textAnalyticsAsyncClient.detectBatchLanguages(detectLanguageInputs).subscribe(detectedBatchResult -> {
             System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
@@ -141,7 +140,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
                 for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-                    System.out.printf("Other detected language: %s, ISO 6391 name: %s, score: %s.%n",
+                    System.out.printf("Detected language: %s, ISO 6391 name: %s, score: %s.%n",
                         detectedLanguage.getName(),
                         detectedLanguage.getIso6391Name(),
                         detectedLanguage.getScore());
@@ -172,7 +171,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
                     for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-                        System.out.printf("Other detected language: %s, ISO 6391 name: %s, score: %s.%n",
+                        System.out.printf("Detected language: %s, ISO 6391 name: %s, score: %s.%n",
                             detectedLanguage.getName(),
                             detectedLanguage.getIso6391Name(),
                             detectedLanguage.getScore());
@@ -194,10 +193,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.recognizeEntities(inputText).subscribe(recognizeEntitiesResult -> {
             for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                 System.out.printf(
-                    "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                    "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                     entity.getText(),
                     entity.getType(),
-                    entity.getSubtype(),
                     entity.getScore());
             }
         });
@@ -209,20 +207,19 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(recognizeEntitiesResult -> {
                 for (NamedEntity entity : recognizeEntitiesResult.getValue().getNamedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                        "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getType(),
-                        entity.getSubtype(),
                         entity.getScore());
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#string-string
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#List
-        List<String> inputs = Arrays.asList(
+        List<String> textInputs = Arrays.asList(
             "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
-        textAnalyticsAsyncClient.recognizeEntities(inputs).subscribe(recognizeEntitiesResults -> {
+        textAnalyticsAsyncClient.recognizeEntities(textInputs).subscribe(recognizeEntitiesResults -> {
             System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
 
             // Batch statistics
@@ -234,10 +231,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                        "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getType(),
-                        entity.getSubtype(),
                         entity.getScore());
                 }
             }
@@ -245,10 +241,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#List
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#List-String
-        List<String> inputs1 = Arrays.asList(
+        List<String> textInputs1 = Arrays.asList(
             "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
-        textAnalyticsAsyncClient.recognizeEntitiesWithResponse(inputs1, "en").subscribe(response -> {
+        textAnalyticsAsyncClient.recognizeEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults = response.getValue();
             System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
 
@@ -261,10 +257,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                        "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getType(),
-                        entity.getSubtype(),
                         entity.getScore());
                 }
             }
@@ -288,10 +283,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                        "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getType(),
-                        entity.getSubtype(),
                         entity.getScore());
                 }
             }
@@ -320,10 +314,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                     for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                         System.out.printf(
-                            "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                            "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                             entity.getText(),
                             entity.getType(),
-                            entity.getSubtype(),
                             entity.getScore());
                     }
                 }
@@ -333,7 +326,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Pii Entity
     /**
-     * Code snippet for recognizing entities
+     * Code snippet for recognizing pii entities
      */
     public void recognizePiiEntitiesCodeSnippets() {
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = createTextAnalyticsAsyncClient();
@@ -343,10 +336,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.recognizePiiEntities(inputText).subscribe(recognizeEntitiesResult -> {
             for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                 System.out.printf(
-                    "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                    "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                     entity.getText(),
                     entity.getType(),
-                    entity.getSubtype(),
                     entity.getScore());
             }
         });
@@ -358,10 +350,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(recognizeEntitiesResult -> {
                 for (NamedEntity entity : recognizeEntitiesResult.getValue().getNamedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                        "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getType(),
-                        entity.getSubtype(),
                         entity.getScore());
                 }
             });
@@ -369,10 +360,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list-string
-        List<String> inputs = Arrays.asList(
-            "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
+        List<String> textInputs = Arrays.asList(
+            "My SSN is 555-55-5555.", "Visa card 0111 1111 1111 1111.");
 
-        textAnalyticsAsyncClient.recognizePiiEntities(inputs).subscribe(recognizeEntitiesResults -> {
+        textAnalyticsAsyncClient.recognizePiiEntities(textInputs).subscribe(recognizeEntitiesResults -> {
             System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
 
             // Batch statistics
@@ -384,10 +375,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                        "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getType(),
-                        entity.getSubtype(),
                         entity.getScore());
                 }
             }
@@ -395,10 +385,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list-string
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#List-String
-        List<String> inputs1 = Arrays.asList(
-            "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
+        List<String> textInputs1 = Arrays.asList(
+            "My SSN is 555-55-5555.", "Visa card 0111 1111 1111 1111.");
 
-        textAnalyticsAsyncClient.recognizePiiEntitiesWithResponse(inputs1, "en").subscribe(response -> {
+        textAnalyticsAsyncClient.recognizePiiEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<RecognizePiiEntitiesResult> recognizeEntitiesResults = response.getValue();
             System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
 
@@ -411,10 +401,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                        "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getType(),
-                        entity.getSubtype(),
                         entity.getScore());
                 }
             }
@@ -423,8 +412,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchPiiEntities#List
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
-            new TextDocumentInput("1", "I work at Microsoft."));
+            new TextDocumentInput("0", "My SSN is 555-55-5555."),
+            new TextDocumentInput("1", "Visa card 0111 1111 1111 1111."));
 
         textAnalyticsAsyncClient.recognizeBatchPiiEntities(textDocumentInputs).subscribe(recognizeEntitiesResults -> {
             System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
@@ -438,10 +427,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                        "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getType(),
-                        entity.getSubtype(),
                         entity.getScore());
                 }
             }
@@ -450,8 +438,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchPiiEntitiesWithResponse#List-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
-            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
-            new TextDocumentInput("1", "I work at Microsoft."));
+            new TextDocumentInput("0", "My SSN is 555-55-5555."),
+            new TextDocumentInput("1", "Visa card 0111 1111 1111 1111."));
 
         // Request options: show statistics and model version
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
@@ -470,10 +458,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                     for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
                         System.out.printf(
-                            "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                            "Recognized Named Entity: %s, Type: %s, Score: %s.%n",
                             entity.getText(),
                             entity.getType(),
-                            entity.getSubtype(),
                             entity.getScore());
                     }
                 }
@@ -515,10 +502,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#list-string
-        List<String> inputs = Arrays.asList(
-            "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
+        List<String> textInputs = Arrays.asList(
+            "Old Faithful is a geyser at Yellowstone Park.", "Mount Shasta has lenticular clouds.");
 
-        textAnalyticsAsyncClient.recognizeLinkedEntities(inputs).subscribe(recognizeLinkedEntitiesResults -> {
+        textAnalyticsAsyncClient.recognizeLinkedEntities(textInputs).subscribe(recognizeLinkedEntitiesResults -> {
             System.out.printf("Model version: %s%n", recognizeLinkedEntitiesResults.getModelVersion());
 
             // Batch statistics
@@ -539,10 +526,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#list-string
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#List-String
-        List<String> inputs1 = Arrays.asList(
-            "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
+        List<String> textInputs1 = Arrays.asList(
+            "Old Faithful is a geyser at Yellowstone Park.", "Mount Shasta has lenticular clouds.");
 
-        textAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse(inputs1, "en").subscribe(response -> {
+        textAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults = response.getValue();
             System.out.printf("Model version: %s%n", recognizeLinkedEntitiesResults.getModelVersion());
 
@@ -565,8 +552,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchLinkedEntities#List
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
-            new TextDocumentInput("1", "I work at Microsoft."));
+            new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park."),
+            new TextDocumentInput("1", "Mount Shasta has lenticular clouds."));
 
         textAnalyticsAsyncClient.recognizeBatchLinkedEntities(textDocumentInputs)
             .subscribe(recognizeLinkedEntitiesResults -> {
@@ -591,8 +578,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchLinkedEntitiesWithResponse#List-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
-            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
-            new TextDocumentInput("1", "I work at Microsoft."));
+            new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park."),
+            new TextDocumentInput("1", "Mount Shasta has lenticular clouds."));
 
         // Request options: show statistics and model version
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
@@ -605,8 +592,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-                System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction"
-                        + " count: %s, valid document count: %s.%n",
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -650,17 +636,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#list-string
-        List<String> inputs = Arrays.asList(
+        List<String> textInputs = Arrays.asList(
             "Hello world. This is some input text that I love.",
             "Bonjour tout le monde");
 
-        textAnalyticsAsyncClient.extractKeyPhrases(inputs).subscribe(extractKeyPhraseResults -> {
+        textAnalyticsAsyncClient.extractKeyPhrases(textInputs).subscribe(extractKeyPhraseResults -> {
             System.out.printf("Model version: %s%n", extractKeyPhraseResults.getModelVersion());
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getTransactionCount(),
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -673,11 +658,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#list-string
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesWithResponse#List-String
-        List<String> inputs1 = Arrays.asList(
+        List<String> textInputs1 = Arrays.asList(
             "Hello world. This is some input text that I love.",
             "Bonjour tout le monde");
 
-        textAnalyticsAsyncClient.extractKeyPhrasesWithResponse(inputs1, "en").subscribe(response -> {
+        textAnalyticsAsyncClient.extractKeyPhrasesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhraseResults = response.getValue();
             System.out.printf("Model version: %s%n", extractKeyPhraseResults.getModelVersion());
 
@@ -795,16 +780,15 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#list-string
-        List<String> inputs = Arrays.asList(
+        List<String> textInputs = Arrays.asList(
             "The hotel was dark and unclean.", "The restaurant had amazing gnocchi.");
 
-        textAnalyticsAsyncClient.analyzeSentiment(inputs).subscribe(analyzeSentimentResults -> {
+        textAnalyticsAsyncClient.analyzeSentiment(textInputs).subscribe(analyzeSentimentResults -> {
             System.out.printf("Model version: %s%n", analyzeSentimentResults.getModelVersion());
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getTransactionCount(),
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -815,23 +799,21 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     documentSentiment.getTextSentimentClass());
                 for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
-                            + "negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
+                            + "negative score: %s.%n",
                         sentenceSentiment.getTextSentimentClass(),
                         sentenceSentiment.getPositiveScore(),
                         sentenceSentiment.getNeutralScore(),
-                        sentenceSentiment.getNegativeScore(),
-                        sentenceSentiment.getLength(),
-                        sentenceSentiment.getOffset());
+                        sentenceSentiment.getNegativeScore());
                 }
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#list-string
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#List-String
-        List<String> inputs1 = Arrays.asList(
+        List<String> textInputs1 = Arrays.asList(
             "The hotel was dark and unclean.", "The restaurant had amazing gnocchi.");
 
-        textAnalyticsAsyncClient.analyzeSentimentWithResponse(inputs1, "en").subscribe(response -> {
+        textAnalyticsAsyncClient.analyzeSentimentWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<AnalyzeSentimentResult> analyzeSentimentResults = response.getValue();
             System.out.printf("Model version: %s%n", analyzeSentimentResults.getModelVersion());
 
@@ -848,13 +830,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     documentSentiment.getTextSentimentClass());
                 for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
-                            + "negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
+                            + "negative score: %s.%n",
                         sentenceSentiment.getTextSentimentClass(),
                         sentenceSentiment.getPositiveScore(),
                         sentenceSentiment.getNeutralScore(),
-                        sentenceSentiment.getNegativeScore(),
-                        sentenceSentiment.getLength(),
-                        sentenceSentiment.getOffset());
+                        sentenceSentiment.getNegativeScore());
                 }
             }
         });
@@ -881,13 +861,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     documentSentiment.getTextSentimentClass());
                 for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
-                            + "negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
+                            + "negative score: %s.%n",
                         sentenceSentiment.getTextSentimentClass(),
                         sentenceSentiment.getPositiveScore(),
                         sentenceSentiment.getNeutralScore(),
-                        sentenceSentiment.getNegativeScore(),
-                        sentenceSentiment.getLength(),
-                        sentenceSentiment.getOffset());
+                        sentenceSentiment.getNegativeScore());
                 }
             }
         });
@@ -919,13 +897,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         documentSentiment.getTextSentimentClass());
                     for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
                         System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
-                                + "negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
+                                + "negative score: %s.%n",
                             sentenceSentiment.getTextSentimentClass(),
                             sentenceSentiment.getPositiveScore(),
                             sentenceSentiment.getNeutralScore(),
-                            sentenceSentiment.getNegativeScore(),
-                            sentenceSentiment.getLength(),
-                            sentenceSentiment.getOffset());
+                            sentenceSentiment.getNegativeScore());
                     }
                 }
             });
