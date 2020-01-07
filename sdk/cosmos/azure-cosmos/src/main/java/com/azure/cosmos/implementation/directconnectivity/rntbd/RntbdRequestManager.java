@@ -696,6 +696,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             return;
         }
 
+        requestRecord.stage(RntbdRequestRecord.Stage.RECEIVED);
+
         final HttpResponseStatus status = response.getStatus();
         final UUID activityId = response.getActivityId();
 
