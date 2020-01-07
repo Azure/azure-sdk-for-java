@@ -32,13 +32,23 @@ New wave of packages that were released in January 2020 client library as Genera
 
 These libraries can be easily identified by sdk/ folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
-The libraries released in the GA January 2020 release are listed [here](https://azure.github.io/azure-sdk/releases/2020-01/java.html).
+The libraries released in the GA January 2020 release is listed below.
+- [January 2020](https://azure.github.io/azure-sdk/releases/2020-01/java.html)
+
+#### Client: Earlier GA Releases
+
+- [December 2019](https://azure.github.io/azure-sdk/releases/2019-12/java.html)
+- [November 2019](https://azure.github.io/azure-sdk/releases/2019-11/java.html)
+- [October 2019](https://azure.github.io/azure-sdk/releases/2019-10-11/java.html)
+- [September 2019](https://azure.github.io/azure-sdk/releases/2019-09-17/index.html)
+- [August 2019](https://azure.github.io/azure-sdk/releases/2019-08-06/index.html)
+- [July 2010](https://azure.github.io/azure-sdk/releases/2019-07-10/index.html)
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 
 ### Client: Previous Versions
 
-Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the preview libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Stable library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the Novemeber releases. They do however offer wider coverage of services.
+Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the preview libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Stable library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the GA releases. They do however offer wider coverage of services.
 
 ### Management
 
