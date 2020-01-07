@@ -46,7 +46,7 @@ from utils import version_update_start_marker
 from utils import version_update_end_marker
 from utils import version_update_marker
 
-def update_versions(version_map, ext_dep_map, target_file):
+def update_versions(update_type, version_map, ext_dep_map, target_file):
 
     newlines = []
     repl_open, repl_thisline, file_changed = False, False, False
@@ -70,8 +70,9 @@ def update_versions(version_map, ext_dep_map, target_file):
                             repl_open, repl_thisline = False, False
 
                 if repl_thisline:
-                    # If the module isn't found then just continue. This can happen if we're going through and replacing
-                    # library versions for one track and tag entry is for another track.
+                    # If the module isn't found then just continue. This can happen if we're going through and updating
+                    # library versions for one track and tag entry is for another track or if we're only updating 
+                    # external_dependency versions.
                     if module_name not in version_map and (version_type == 'current' or version_type == 'dependency'):
                         newlines.append(line)
                         continue
@@ -93,6 +94,10 @@ def update_versions(version_map, ext_dep_map, target_file):
                             # This should never happen unless the version file is malformed
                             raise ValueError('Module: {0} does not have a dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                     elif version_type == 'external_dependency':
+                        # The external dependency map will be empty if the update type is library
+                        if update_type == UpdateType.library:
+                            newlines.append(line)
+                            continue
                         try:
                             module = ext_dep_map[module_name]
                             new_version = module.external_dependency
@@ -151,13 +156,13 @@ def update_versions_all(update_type, build_type, target_file, skip_readme):
     display_version_info(ext_dep_map)
 
     if target_file:
-        update_versions(version_map, ext_dep_map, target_file)
+        update_versions(update_type, version_map, ext_dep_map, target_file)
     else:
         for root, _, files in os.walk("."):
             for file_name in files:
                 file_path = root + os.sep + file_name
                 if (file_name.endswith('.md') and not skip_readme) or (file_name.startswith('pom.') and file_name.endswith('.xml')):
-                    update_versions(version_map, ext_dep_map, file_path)
+                    update_versions(update_type, version_map, ext_dep_map, file_path)
 
     # This is a temporary stop gap to deal with versions hard coded in java files.
     # Everything within the begin/end tags below can be deleted once
@@ -176,7 +181,7 @@ def update_versions_all(update_type, build_type, target_file, skip_readme):
                     if not java_file_to_update or java_file_to_update.startswith('#'):
                         continue
                     if os.path.isfile(java_file_to_update):
-                        update_versions(version_map, ext_dep_map, java_file_to_update)
+                        update_versions(update_type, version_map, ext_dep_map, java_file_to_update)
                     else:
                         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), java_file_to_update)
         else:
