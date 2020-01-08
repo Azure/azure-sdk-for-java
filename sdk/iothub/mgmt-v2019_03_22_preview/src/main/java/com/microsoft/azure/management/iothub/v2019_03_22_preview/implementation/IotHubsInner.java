@@ -10,7 +10,7 @@ package com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.management.iothub.v2019_03_22_preview.ErrorDetailsException;
+import com.microsoft.azure.management.iothub.v2019_03_22_preview.ErrorDetailsInnerException;
 import com.microsoft.azure.management.iothub.v2019_03_22_preview.FailoverInput;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -71,7 +71,7 @@ public class IotHubsInner {
      * @param resourceGroupName resource group which Iot Hub belongs to
      * @param failoverRegion Region the hub will be failed over to
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void manualFailover(String iotHubName, String resourceGroupName, String failoverRegion) {
@@ -152,7 +152,7 @@ public class IotHubsInner {
      * @param resourceGroupName resource group which Iot Hub belongs to
      * @param failoverRegion Region the hub will be failed over to
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginManualFailover(String iotHubName, String resourceGroupName, String failoverRegion) {
@@ -235,11 +235,11 @@ public class IotHubsInner {
             });
     }
 
-    private ServiceResponse<Void> beginManualFailoverDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginManualFailoverDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
