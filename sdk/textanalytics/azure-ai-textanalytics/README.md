@@ -81,7 +81,7 @@ When an HTTP client is included on the classpath, as shown above, it is not nece
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L30-L33 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L35-L38 -->
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder()
     .port(8080)
@@ -135,7 +135,7 @@ cognitive services.
     ```
     
     Use the key as the credential parameter to authenticate the client:
-    <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L40-L43 -->
+    <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L45-L48 -->
     ```java
     TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
         .subscriptionKey(SUBSCRIPTION_KEY)
@@ -162,7 +162,7 @@ cognitive services.
    AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET
 
    Use the returned token credential to authenticate the client:
-   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L60-L63 -->
+   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L65-L68 -->
     ```java
     TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
         .endpoint(ENDPOINT)
@@ -176,7 +176,7 @@ analyze sentiment, recognize entities, detect language, and extract key phrases 
 To create a client object, you will need the cognitive services or text analytics endpoint to 
 your resource and a subscription key that allows you access:
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L40-L43 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L45-L48 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(SUBSCRIPTION_KEY)
@@ -248,14 +248,14 @@ The following sections provide several code snippets covering some of the most c
 Text analytics support both synchronous and asynchronous client creation by using
 `TextAnalyticsClientBuilder`,
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L40-L43 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L45-L48 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(SUBSCRIPTION_KEY)
     .endpoint(ENDPOINT)
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L50-L53 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L55-L58 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(SUBSCRIPTION_KEY)
@@ -264,7 +264,7 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 ### Detect language
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L70-L77 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L75-L82 -->
 ```java
 String inputText = "Bonjour tout le monde";
 
@@ -277,7 +277,7 @@ for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inpu
 ```
 
 ### Recognize entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L84-L93 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L89-L98 -->
 ```java
 String text = "Satya Nadella is the CEO of Microsoft";
 
@@ -292,7 +292,7 @@ for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEn
 ```
 
 ### Recognize PII(Personally Identifiable Information) entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L100-L109 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L105-L114 -->
 ```java
 String text = "My SSN is 555-55-5555";
 
@@ -307,7 +307,7 @@ for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getName
 ```
 
 ### Recognize linked entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L116-L123 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L121-L128 -->
 
 ```java
 String text = "Old Faithful is a geyser at Yellowstone Park.";
@@ -320,7 +320,7 @@ for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(tex
 }
 ```
 ### Extract key phrases
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L130-L134 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L135-L139 -->
 ```java
 String text = "My cat might need to see a veterinarian.";
 
@@ -330,8 +330,7 @@ for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text).getKeyPhrase
 ```
 
 ### Analyze sentiment
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L141-L147 -->
-
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L146-L152 -->
 ```java
 String text = "The hotel was dark and unclean.";
 
@@ -343,6 +342,21 @@ for (TextSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).ge
 ```
 
 ## Troubleshooting
+### General
+Text Analytics clients raise exceptions. For example, if you try to detect the languages of a batch of text with same 
+document IDs, 400 error is return that indicating bad request. In the following code snippet, the error is handled 
+gracefully by catching the exception and display the additional information about the error.
+
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L164-L169 -->
+```java
+    try {
+        textAnalyticsClient.detectBatchLanguages(inputs);
+    } catch (HttpResponseException e) {
+        System.out.println(e.getMessage());
+    }
+}
+```
+
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
 example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
@@ -371,6 +385,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples_readme]: src/samples/README.md
 [source_code]: src
 [LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
-
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

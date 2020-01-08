@@ -130,7 +130,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that a Bad request exception is returned for input documents with same ids.
+     * Verifies that a bad request exception is returned for input documents with same IDs.
      */
     @Test
     public void detectLanguageDuplicateIdInput() {

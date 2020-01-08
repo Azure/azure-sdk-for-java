@@ -3,13 +3,18 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
@@ -144,6 +149,22 @@ public class ReadmeSamples {
             System.out.printf(
                 "Analyzed Sentence Sentiment class: %s.%n",
                 textSentiment.getTextSentimentClass());
+        }
+    }
+
+    /**
+     * Code snippet for handling exception
+     */
+    public void handlingException() {
+        List<DetectLanguageInput> inputs = Arrays.asList(
+            new DetectLanguageInput("1", "This is written in English.", "us"),
+            new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
+        );
+
+        try {
+            textAnalyticsClient.detectBatchLanguages(inputs);
+        } catch (HttpResponseException e) {
+            System.out.println(e.getMessage());
         }
     }
 }
