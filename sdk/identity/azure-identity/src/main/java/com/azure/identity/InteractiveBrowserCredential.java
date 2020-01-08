@@ -35,11 +35,15 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
      *
      * @param clientId the client ID of the application
+     * @param clientSecret the client secret of the application
+     * @param certificatePath the path to the PKCS12 or PEM certificate of the application
+     * @param certificatePassword the password protecting the PFX certificate
      * @param tenantId the tenant ID of the application
      * @param port the port on which the credential will listen for the browser authentication result
      * @param identityClientOptions the options for configuring the identity client
      */
-    InteractiveBrowserCredential(String clientId, String tenantId, int port,
+    InteractiveBrowserCredential(String clientId, String clientSecret, String certificatePath,
+                                 String certificatePassword, String tenantId, int port,
                                  IdentityClientOptions identityClientOptions) {
         this.port = port;
         if (tenantId == null) {
@@ -48,6 +52,9 @@ public class InteractiveBrowserCredential implements TokenCredential {
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
+            .clientSecret(clientSecret)
+            .certificatePath(certificatePath)
+            .certificatePassword(certificatePassword)
             .identityClientOptions(identityClientOptions)
             .build();
         cachedToken = new AtomicReference<>();

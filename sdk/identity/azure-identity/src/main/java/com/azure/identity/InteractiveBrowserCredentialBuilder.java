@@ -14,6 +14,9 @@ import java.util.HashMap;
  */
 public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
     private int port;
+    private String clientSecret;
+    private String clientCertificate;
+    private String clientCertificatePassword;
 
     /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
@@ -28,6 +31,41 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
+     * Sets the client secret for the authentication.
+     * @param clientSecret the secret value of the AAD application.
+     * @return the InteractiveBrowserCredentialBuilder itself
+     */
+    public InteractiveBrowserCredentialBuilder clientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+        return this;
+    }
+
+    /**
+     * Sets the client certificate for authenticating to AAD.
+     *
+     * @param certificatePath the PEM file containing the certificate
+     * @return the InteractiveBrowserCredentialBuilder itself
+     */
+    public InteractiveBrowserCredentialBuilder pemCertificate(String certificatePath) {
+        this.clientCertificate = certificatePath;
+        return this;
+    }
+
+    /**
+     * Sets the client certificate for authenticating to AAD.
+     *
+     * @param certificatePath the password protected PFX file containing the certificate
+     * @param clientCertificatePassword the password protecting the PFX file
+     * @return the InteractiveBrowserCredentialBuilder itself
+     */
+    public InteractiveBrowserCredentialBuilder pfxCertificate(
+            String certificatePath, String clientCertificatePassword) {
+        this.clientCertificate = certificatePath;
+        this.clientCertificatePassword = clientCertificatePassword;
+        return this;
+    }
+
+    /**
      * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
      *
      * @return a {@link InteractiveBrowserCredential} with the current configurations.
@@ -37,6 +75,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
                 put("clientId", clientId);
                 put("port", port);
             }});
-        return new InteractiveBrowserCredential(clientId, tenantId, port, identityClientOptions);
+        return new InteractiveBrowserCredential(clientId, clientSecret, clientCertificate,
+                clientCertificatePassword, tenantId, port, identityClientOptions);
     }
 }
