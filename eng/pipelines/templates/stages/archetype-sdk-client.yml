@@ -15,5 +15,6 @@ stages:
     - template: pipelines/stages/archetype-java-release.yml@azure-sdk-build-tools
       parameters:
         DependsOn: Build
+        SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages

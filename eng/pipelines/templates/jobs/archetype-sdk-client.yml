@@ -274,8 +274,8 @@ jobs:
       - template: ../steps/cache-maven-repository.yml
 
       - task: Maven@3
-        displayName: 'Start Jetty ${{parameters.SDKType}}'
-        condition: ne(parameters['SDKType'], 'client')
+        displayName: 'Start Jetty'
+        condition: ne('${{ parameters.SDKType }}', 'client')
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions)'
@@ -292,7 +292,7 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
-        condition: and(eq(parameters['SDKType'], 'client'), eq(variables['TestFromSource'],'true'))
+        condition: and(eq('${{ parameters.SDKType }}', 'client'), eq(variables['TestFromSource'],'true'))
 
       - pwsh: |
           python --version
@@ -309,7 +309,7 @@ jobs:
             exit 1
           }
         displayName: 'Set versions for source build'
-        condition: and(eq(parameters['SDKType'], 'client'), eq(variables['TestFromSource'],'true'))
+        condition: and(eq('${{ parameters.SDKType }}', 'client'), eq(variables['TestFromSource'],'true'))
 
       - script: |
           python --version
