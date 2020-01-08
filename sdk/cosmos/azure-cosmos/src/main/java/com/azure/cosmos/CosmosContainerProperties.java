@@ -201,7 +201,7 @@ public class CosmosContainerProperties extends Resource {
      *
      * @return the default time-to-live value in seconds.
      */
-    public Integer getDefaultTimeToLive() {
+    public Integer getDefaultTimeToLiveInSeconds() {
         if (super.has(Constants.Properties.DEFAULT_TTL)) {
             return super.getInt(Constants.Properties.DEFAULT_TTL);
         }
@@ -226,7 +226,7 @@ public class CosmosContainerProperties extends Resource {
      *
      * @param timeToLive the default time-to-live value in seconds.
      */
-    public void setDefaultTimeToLive(Integer timeToLive) {
+    public void setDefaultTimeToLiveInSeconds(Integer timeToLive) {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {

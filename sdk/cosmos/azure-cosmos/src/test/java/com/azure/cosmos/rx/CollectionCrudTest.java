@@ -100,7 +100,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
         Integer defaultTimeToLive = 300;
-        collectionDefinition.setDefaultTimeToLive(defaultTimeToLive);
+        collectionDefinition.setDefaultTimeToLiveInSeconds(defaultTimeToLive);
 
         Mono<CosmosAsyncContainerResponse> createObservable = database
             .createContainer(collectionDefinition);
@@ -210,7 +210,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
         Integer defaultTimeToLive = 200;
-        collectionDefinition.setDefaultTimeToLive(defaultTimeToLive);
+        collectionDefinition.setDefaultTimeToLiveInSeconds(defaultTimeToLive);
 
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosAsyncContainer collection = createObservable.block().getContainer();
@@ -275,19 +275,19 @@ public class CollectionCrudTest extends TestSuiteBase {
         // create a collection
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
         Integer defaultTimeToLive = 120;
-        collectionDefinition.setDefaultTimeToLive(defaultTimeToLive);
+        collectionDefinition.setDefaultTimeToLiveInSeconds(defaultTimeToLive);
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosAsyncContainer collection = createObservable.block().getContainer();
         CosmosContainerProperties collectionSettings = collection.read().block().getProperties();
         // sanity check
         assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
-        assertThat(collectionSettings.getDefaultTimeToLive()).isEqualTo(defaultTimeToLive);
+        assertThat(collectionSettings.getDefaultTimeToLiveInSeconds()).isEqualTo(defaultTimeToLive);
 
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
         indexingMode.setIndexingMode(IndexingMode.LAZY);
         collectionSettings.setIndexingPolicy(indexingMode);
-        collectionSettings.setDefaultTimeToLive(defaultTimeToLive * 2);
+        collectionSettings.setDefaultTimeToLiveInSeconds(defaultTimeToLive * 2);
         Mono<CosmosAsyncContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate

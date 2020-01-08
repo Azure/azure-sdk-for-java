@@ -94,8 +94,8 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 @Override
                 public void validate(CosmosAsyncContainerResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties()).isNotNull();
-                    assertThat(resourceResponse.getProperties().getDefaultTimeToLive()).isNotNull();
-                    assertThat(resourceResponse.getProperties().getDefaultTimeToLive()).isEqualTo(timeToLive);
+                    assertThat(resourceResponse.getProperties().getDefaultTimeToLiveInSeconds()).isNotNull();
+                    assertThat(resourceResponse.getProperties().getDefaultTimeToLiveInSeconds()).isEqualTo(timeToLive);
                 }
             });
             return this;
