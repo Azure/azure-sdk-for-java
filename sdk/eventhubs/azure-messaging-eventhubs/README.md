@@ -25,10 +25,9 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Adding the package to your product](#adding-the-package-to-your-product)
-  - [Default SSL library](#default-ssl-library)
-  - [Methods to authorize with Event Hubs](#methods-to-authorize-with-event-hubs)
-  - [Create an Event Hub producer using a connection string](#create-an-event-hub-producer-using-a-connection-string)
-  - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
+  - [Authenticate the client](#authenticate-the-client)
+    - [Create an Event Hub producer using a connection string](#create-an-event-hub-producer-using-a-connection-string)
+    - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
 - [Key concepts](#key-concepts)
 - [Examples](#examples)
   - [Publish events to an Event Hub](#publish-events-to-an-event-hub)
@@ -40,6 +39,8 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
   - [Common exceptions](#common-exceptions)
   - [Other exceptions](#other-exceptions)
 - [Next steps](#next-steps)
+  - [Samples](#samples)
+  - [Default SSL library](#default-ssl-library)
 - [Contributing](#contributing)
 
 ## Getting started
@@ -65,19 +66,12 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 ```
 [//]: # ({x-version-update-end})
 
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level
-performance for SSL operations. The Boring SSL library is an uber jar containing native libraries
-for Linux/macOS/Windows, and provides better performance compared to the default SSL
-implementation within the JDK. For more information, including how to reduce the dependency size,
-refer to the [performance tuning][performance_tuning] section of the wiki.
-
-### Methods to authorize with Event Hubs
+### Authenticate the client
 
 For the Event Hubs client library to interact with an Event Hub, it will need to understand how to connect and authorize
 with it.
 
-### Create an Event Hub producer using a connection string
+#### Create an Event Hub producer using a connection string
 
 The easiest means for doing so is to use a connection string, which is created automatically when creating an Event Hubs
 namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to
@@ -99,7 +93,7 @@ EventHubProducerClient producer = new EventHubClientBuilder()
     .buildProducerClient();
 ```
 
-### Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)
+#### Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)
 
 Azure SDK for Java supports an Azure Identity package, making it simple get credentials from Microsoft identity
 platform. First, add the package:
@@ -109,7 +103,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.1.0-beta.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -422,9 +416,18 @@ Exceptions][event_hubs_messaging_exceptions].
 
 ## Next steps
 
+### Samples
+
 Beyond those discussed, the Azure Event Hubs client library offers support for many additional scenarios to help take
 advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios,
 the following set of sample is available [here][samples_readme].
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level
+performance for SSL operations. The Boring SSL library is an uber jar containing native libraries
+for Linux/macOS/Windows, and provides better performance compared to the default SSL
+implementation within the JDK. For more information, including how to reduce the dependency size,
+refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Contributing
 
