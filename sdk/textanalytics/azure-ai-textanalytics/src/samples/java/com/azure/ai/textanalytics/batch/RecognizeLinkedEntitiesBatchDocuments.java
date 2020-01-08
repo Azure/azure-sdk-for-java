@@ -17,19 +17,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrate how to recognize linked entities of a batch of text inputs.
+ * Sample demonstrates how to recognize the linked entities of a batch input text.
  */
 public class RecognizeLinkedEntitiesBatchDocuments {
     /**
-     * Main method to invoke this demo about how to recognize linked entities of a batch of text inputs.
+     * Main method to invoke this demo about how to recognize the linked entities of a batch input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
 
         // The texts that need be analysed.
@@ -38,22 +38,35 @@ public class RecognizeLinkedEntitiesBatchDocuments {
             new TextDocumentInput("2", "Mount Shasta has lenticular clouds.", "en")
         );
 
+        // Request options: show statistics and model version
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
-        final DocumentResultCollection<RecognizeLinkedEntitiesResult> detectedBatchResult = client.recognizeBatchLinkedEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
-        final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
+        // Recognizing batch entities
+        final DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizedBatchResult = client.recognizeBatchLinkedEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+        System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
+
+        // Batch statistics
+        final TextDocumentBatchStatistics batchStatistics = recognizedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
-        // Detecting linked entities from a batch of documents
-        for (RecognizeLinkedEntitiesResult linkedEntityDocumentResult : detectedBatchResult) {
+        // Recognized linked entities from a batch of documents
+        for (RecognizeLinkedEntitiesResult linkedEntityDocumentResult : recognizedBatchResult) {
+            System.out.printf("Document ID: %s%n", linkedEntityDocumentResult.getId());
+            // Erroneous document
+            if (linkedEntityDocumentResult.isError()) {
+                System.out.printf("Cannot recognize linked entities. Error: %s%n", linkedEntityDocumentResult.getError().getMessage());
+                continue;
+            }
+            // Valid document
             for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getLinkedEntities()) {
-                System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s%n",
-                    linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s%n",
+                    linkedEntity.getName(),
+                    linkedEntity.getUrl(),
+                    linkedEntity.getDataSource());
             }
         }
     }

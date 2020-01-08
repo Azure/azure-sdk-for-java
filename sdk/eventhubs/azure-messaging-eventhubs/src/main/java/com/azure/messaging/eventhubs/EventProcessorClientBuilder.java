@@ -19,6 +19,8 @@ import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.function.Consumer;
@@ -73,6 +75,7 @@ public class EventProcessorClientBuilder {
     private Consumer<InitializationContext> processPartitionInitialization;
     private Consumer<CloseContext> processPartitionClose;
     private boolean trackLastEnqueuedEventProperties;
+    private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
 
     /**
      * Creates a new instance of {@link EventProcessorClientBuilder}.
@@ -289,11 +292,27 @@ public class EventProcessorClientBuilder {
      *
      * @param trackLastEnqueuedEventProperties {@code true} if the resulting events will keep track of the last
      *     enqueued information for that partition; {@code false} otherwise.
-     *
      * @return The updated {@link EventProcessorClientBuilder} instance.
      */
     public EventProcessorClientBuilder trackLastEnqueuedEventProperties(boolean trackLastEnqueuedEventProperties) {
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
+        return this;
+    }
+
+    /**
+     * Sets the map containing the event position to use for each partition if a checkpoint for the partition does not
+     * exist in {@link CheckpointStore}. This map is keyed off of the partition id. If there is no checkpoint in
+     * {@link CheckpointStore} and there is no entry in this map, the processing of the partition will start from
+     * {@link EventPosition#latest() latest} position.
+     *
+     * @param initialPartitionEventPosition Map of initial event positions for partition ids.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     */
+    public EventProcessorClientBuilder initialPartitionEventPosition(
+        Map<String, EventPosition> initialPartitionEventPosition) {
+
+        this.initialPartitionEventPosition = Objects.requireNonNull(initialPartitionEventPosition,
+            "'initialPartitionEventPosition' cannot be null.");
         return this;
     }
 
@@ -322,7 +341,7 @@ public class EventProcessorClientBuilder {
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         return new EventProcessorClient(eventHubClientBuilder, this.consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties, tracerProvider,
-            processError);
+            processError, initialPartitionEventPosition);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

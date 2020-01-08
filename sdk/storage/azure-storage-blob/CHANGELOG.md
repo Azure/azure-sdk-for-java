@@ -1,11 +1,21 @@
 # Release History
 
-## 12.2.0-beta.2 (Unreleased)
-- Added a field to ParallelTransferOptions that allows customers to configure the maximum size to upload in a single PUT. Data sizes larger than this value will be chunked and parallelized.
+## 12.3.0-beta.1 (Unreleased)
 - Added support for the 2019-07-07 service version.
 - Added support for encryption scopes service, container and blob builders now accept an encryption scope parameter and
 service and container builders accept a BlobContainerEncryptionScope parameter.
 - Added support for managed disk page range diff for managed disk accounts
+
+## 12.2.0 (2020-01-08)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.2.0/sdk/storage/azure-storage-blob/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.2.0/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+
+- Added a field to ParallelTransferOptions that allows customers to configure the maximum size to upload in a single PUT. Data sizes larger than this value will be chunked and parallelized.
+- Added overloads to downloadToFile to add the option to overwrite existing files. Default behavior is to not overwrite.
+- Improved performance of BlockBlobOutputStream.
+- Added overloads to BlockBlobClient.getBlobOutputStream to allow users to provide parallel transfer options, http headers, metadata, access tier, and request conditions.
 
 ## 12.2.0-beta.1 (2019-12-17)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setContainerName, setBlobName, setSnapshotId, generateSasQueryParameters methods on BlobServiceSasSignatureValues to direct users to using the methods added on clients.

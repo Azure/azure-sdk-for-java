@@ -10,6 +10,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -60,7 +61,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final EventHubConnection connection;
+    private final EventHubConnectionProcessor connectionProcessor;
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
     private final int prefetchCount;
@@ -72,11 +73,12 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final ConcurrentHashMap<String, EventHubPartitionAsyncConsumer> openPartitionConsumers =
         new ConcurrentHashMap<>();
 
-    EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
-        MessageSerializer messageSerializer, String consumerGroup, int prefetchCount, boolean isSharedConnection) {
+    EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
+        EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
+        int prefetchCount, boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
-        this.connection = connection;
+        this.connectionProcessor = connectionProcessor;
         this.messageSerializer = messageSerializer;
         this.consumerGroup = consumerGroup;
         this.prefetchCount = prefetchCount;
@@ -118,7 +120,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
+        return connectionProcessor.flatMap(connection -> connection.getManagementNode())
+            .flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
     /**
@@ -148,7 +151,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
             return monoError(logger, new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
-        return connection.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
+        return connectionProcessor.flatMap(connection -> connection.getManagementNode())
+            .flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
     /**
@@ -304,7 +308,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         openPartitionConsumers.clear();
 
         if (!isSharedConnection) {
-            connection.close();
+            connectionProcessor.dispose();
         }
     }
 
@@ -333,7 +337,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
             getEventHubName(), consumerGroup, partitionId);
 
         final Mono<AmqpReceiveLink> receiveLinkMono =
-            connection.createReceiveLink(linkName, entityPath, startingPosition, receiveOptions)
+            connectionProcessor.flatMap(connection ->
+                connection.createReceiveLink(linkName, entityPath, startingPosition, receiveOptions))
                 .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
 
         return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer, getFullyQualifiedNamespace(),

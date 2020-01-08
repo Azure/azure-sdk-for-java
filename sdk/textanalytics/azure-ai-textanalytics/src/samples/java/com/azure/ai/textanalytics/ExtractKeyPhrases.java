@@ -4,26 +4,26 @@
 package com.azure.ai.textanalytics;
 
 /**
- * Sample demonstrate how to analyze key phrases of a text input.
+ * Sample demonstrates how to extract the key phrases of an input text.
  */
 public class ExtractKeyPhrases {
     /**
-     * Main method to invoke this demo about how to extract key phrases of a text input.
+     * Main method to invoke this demo about how to extract the key phrases of an input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
 
         // The text that need be analysed.
         String text = "My cat might need to see a veterinarian.";
 
         for (String keyPhrase : client.extractKeyPhrases(text).getKeyPhrases()) {
-            System.out.printf("Recognized Phrases: %s.%n", keyPhrase);
+            System.out.printf("Recognized phrases: %s.%n", keyPhrase);
         }
     }
 }

@@ -68,15 +68,6 @@ public class ShareClient {
     }
 
     /**
-     * Gets the {@link HttpPipeline} powering this client.
-     *
-     * @return The pipeline.
-     */
-    public HttpPipeline getHttpPipeline() {
-        return client.getHttpPipeline();
-    }
-
-    /**
      * Constructs a {@link ShareDirectoryClient} that interacts with the root directory in the share.
      *
      * <p>If the directory doesn't exist in the share {@link ShareDirectoryClient#create() create} in the client will
@@ -891,6 +882,15 @@ public class ShareClient {
      */
     public String getAccountName() {
         return this.client.getAccountName();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.client.getHttpPipeline();
     }
 
     /**

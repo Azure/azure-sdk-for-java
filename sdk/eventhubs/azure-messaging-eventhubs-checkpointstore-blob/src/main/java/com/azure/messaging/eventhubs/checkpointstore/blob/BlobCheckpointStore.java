@@ -41,9 +41,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class BlobCheckpointStore implements CheckpointStore {
 
-    private static final String SEQUENCE_NUMBER = "SequenceNumber";
-    private static final String OFFSET = "Offset";
-    private static final String OWNER_ID = "OwnerId";
+    private static final String SEQUENCE_NUMBER = "sequencenumber";
+    private static final String OFFSET = "offset";
+    private static final String OWNER_ID = "ownerid";
     private static final String ETAG = "eTag";
 
     private static final String BLOB_PATH_SEPARATOR = "/";
@@ -109,14 +109,27 @@ public class BlobCheckpointStore implements CheckpointStore {
             }
 
             Map<String, String> metadata = blobItem.getMetadata();
+            logger.info(Messages.CHECKPOINT_INFO, blobItem.getName(), metadata.get(SEQUENCE_NUMBER),
+                metadata.get(OFFSET));
+
+            Long sequenceNumber = null;
+            Long offset = null;
+            if (!CoreUtils.isNullOrEmpty(metadata.get(SEQUENCE_NUMBER))) {
+                sequenceNumber = Long.parseLong(metadata.get(SEQUENCE_NUMBER));
+            }
+
+            if (!CoreUtils.isNullOrEmpty(metadata.get(OFFSET))) {
+                offset = Long.parseLong(metadata.get(OFFSET));
+            }
+
             Checkpoint checkpoint = new Checkpoint()
                 .setFullyQualifiedNamespace(names[0])
                 .setEventHubName(names[1])
                 .setConsumerGroup(names[2])
                 // names[3] is "checkpoint"
                 .setPartitionId(names[4])
-                .setSequenceNumber(Long.parseLong(metadata.get(SEQUENCE_NUMBER)))
-                .setOffset(Long.parseLong(metadata.get(OFFSET)));
+                .setSequenceNumber(sequenceNumber)
+                .setOffset(offset);
 
             return Mono.just(checkpoint);
         }
@@ -134,38 +147,44 @@ public class BlobCheckpointStore implements CheckpointStore {
     public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
 
         return Flux.fromIterable(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
-            String partitionId = partitionOwnership.getPartitionId();
-            String blobName = getBlobName(partitionOwnership.getFullyQualifiedNamespace(),
-                partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId,
-                OWNERSHIP_PATH);
+            try {
+                String partitionId = partitionOwnership.getPartitionId();
+                String blobName = getBlobName(partitionOwnership.getFullyQualifiedNamespace(),
+                    partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId,
+                    OWNERSHIP_PATH);
 
-            if (!blobClients.containsKey(blobName)) {
-                blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
-            }
+                if (!blobClients.containsKey(blobName)) {
+                    blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
+                }
 
-            BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
+                BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
-            Map<String, String> metadata = new HashMap<>();
-            metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
+                Map<String, String> metadata = new HashMap<>();
+                metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
 
-            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
-            if (CoreUtils.isNullOrEmpty(partitionOwnership.getETag())) {
-                // New blob should be created
-                blobRequestConditions.setIfNoneMatch("*");
-                return blobAsyncClient.getBlockBlobAsyncClient()
-                    .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null, blobRequestConditions)
-                    .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
-                        logger.info(Messages.CLAIM_ERROR, partitionId, error.getMessage());
-                        return Mono.empty();
-                    }, Mono::empty);
-            } else {
-                // update existing blob
-                blobRequestConditions.setIfMatch(partitionOwnership.getETag());
-                return blobAsyncClient.setMetadataWithResponse(metadata, blobRequestConditions)
-                    .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
-                        logger.info(Messages.CLAIM_ERROR, partitionId, error.getMessage());
-                        return Mono.empty();
-                    }, Mono::empty);
+                BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+                if (CoreUtils.isNullOrEmpty(partitionOwnership.getETag())) {
+                    // New blob should be created
+                    blobRequestConditions.setIfNoneMatch("*");
+                    return blobAsyncClient.getBlockBlobAsyncClient()
+                        .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null,
+                            blobRequestConditions)
+                        .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
+                            logger.info(Messages.CLAIM_ERROR, partitionId, error.getMessage());
+                            return Mono.empty();
+                        }, Mono::empty);
+                } else {
+                    // update existing blob
+                    blobRequestConditions.setIfMatch(partitionOwnership.getETag());
+                    return blobAsyncClient.setMetadataWithResponse(metadata, blobRequestConditions)
+                        .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
+                            logger.info(Messages.CLAIM_ERROR, partitionId, error);
+                            return Mono.empty();
+                        }, Mono::empty);
+                }
+            } catch (Exception ex) {
+                logger.warning(Messages.CLAIM_ERROR, partitionOwnership.getPartitionId(), ex);
+                return Mono.empty();
             }
         });
     }
@@ -237,6 +256,8 @@ public class BlobCheckpointStore implements CheckpointStore {
                 logger.warning(Messages.NO_METADATA_AVAILABLE_FOR_BLOB, blobItem.getName());
                 return Mono.empty();
             }
+            logger
+                .info(Messages.BLOB_OWNER_INFO, blobItem.getName(), blobItem.getMetadata().getOrDefault(OWNER_ID, ""));
 
             BlobItemProperties blobProperties = blobItem.getProperties();
             PartitionOwnership partitionOwnership = new PartitionOwnership()
@@ -245,7 +266,7 @@ public class BlobCheckpointStore implements CheckpointStore {
                 .setConsumerGroup(names[2])
                 // names[3] is "ownership"
                 .setPartitionId(names[4])
-                .setOwnerId(blobItem.getMetadata().get(OWNER_ID))
+                .setOwnerId(blobItem.getMetadata().getOrDefault(OWNER_ID, ""))
                 .setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli())
                 .setETag(blobProperties.getETag());
             return Mono.just(partitionOwnership);

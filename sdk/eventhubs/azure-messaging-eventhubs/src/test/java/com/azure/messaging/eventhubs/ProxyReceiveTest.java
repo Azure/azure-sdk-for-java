@@ -101,6 +101,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
             .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 }

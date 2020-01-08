@@ -39,7 +39,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
 
     /**
      * The rental and lease key type. Possible values include: 'Unknown',
-     * 'Undefined', 'PersistentUnlimited', 'PersistentLimited'.
+     * 'Undefined', 'DualExpiry', 'PersistentUnlimited', 'PersistentLimited'.
      */
     @JsonProperty(value = "rentalAndLeaseKeyType", required = true)
     private ContentKeyPolicyFairPlayRentalAndLeaseKeyType rentalAndLeaseKeyType;
@@ -49,6 +49,12 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
      */
     @JsonProperty(value = "rentalDuration", required = true)
     private long rentalDuration;
+
+    /**
+     * Offline rental policy.
+     */
+    @JsonProperty(value = "offlineRentalConfiguration")
+    private ContentKeyPolicyFairPlayOfflineRentalConfiguration offlineRentalConfiguration;
 
     /**
      * Get the key that must be used as FairPlay Application Secret key.
@@ -111,7 +117,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Get the rental and lease key type. Possible values include: 'Unknown', 'Undefined', 'PersistentUnlimited', 'PersistentLimited'.
+     * Get the rental and lease key type. Possible values include: 'Unknown', 'Undefined', 'DualExpiry', 'PersistentUnlimited', 'PersistentLimited'.
      *
      * @return the rentalAndLeaseKeyType value
      */
@@ -120,7 +126,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Set the rental and lease key type. Possible values include: 'Unknown', 'Undefined', 'PersistentUnlimited', 'PersistentLimited'.
+     * Set the rental and lease key type. Possible values include: 'Unknown', 'Undefined', 'DualExpiry', 'PersistentUnlimited', 'PersistentLimited'.
      *
      * @param rentalAndLeaseKeyType the rentalAndLeaseKeyType value to set
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
@@ -147,6 +153,26 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
      */
     public ContentKeyPolicyFairPlayConfiguration withRentalDuration(long rentalDuration) {
         this.rentalDuration = rentalDuration;
+        return this;
+    }
+
+    /**
+     * Get offline rental policy.
+     *
+     * @return the offlineRentalConfiguration value
+     */
+    public ContentKeyPolicyFairPlayOfflineRentalConfiguration offlineRentalConfiguration() {
+        return this.offlineRentalConfiguration;
+    }
+
+    /**
+     * Set offline rental policy.
+     *
+     * @param offlineRentalConfiguration the offlineRentalConfiguration value to set
+     * @return the ContentKeyPolicyFairPlayConfiguration object itself.
+     */
+    public ContentKeyPolicyFairPlayConfiguration withOfflineRentalConfiguration(ContentKeyPolicyFairPlayOfflineRentalConfiguration offlineRentalConfiguration) {
+        this.offlineRentalConfiguration = offlineRentalConfiguration;
         return this;
     }
 

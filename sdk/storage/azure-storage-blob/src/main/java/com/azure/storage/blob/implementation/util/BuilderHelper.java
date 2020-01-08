@@ -32,6 +32,7 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class provides helper methods for common builder patterns.
