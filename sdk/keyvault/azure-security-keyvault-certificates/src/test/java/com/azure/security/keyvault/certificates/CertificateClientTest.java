@@ -509,7 +509,11 @@ public class CertificateClientTest extends CertificateClientTestBase {
             for (String certName :  certificatesToDelete) {
                 SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = client.beginCreateCertificate(certName,
                     CertificatePolicy.getDefault());
-                certPoller.waitForCompletion();
+                PollResponse<CertificateOperation> pollResponse = certPoller.poll();
+                while (!pollResponse.getStatus().isComplete()) {
+                    sleepInRecordMode(1000);
+                    pollResponse = certPoller.poll();
+                }
             }
 
             for (String certName : certificates) {
@@ -524,22 +528,15 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             sleepInRecordMode(90000);
 
-            Iterable<DeletedCertificate> deletedCertificates =  client.listDeletedCertificates();
-            for (DeletedCertificate deletedCertificate : deletedCertificates) {
+            client.listDeletedCertificates().stream().forEach(deletedCertificate ->  {
                 if (certificatesToDelete.contains(deletedCertificate.getName())) {
                     assertNotNull(deletedCertificate.getDeletedOn());
                     assertNotNull(deletedCertificate.getRecoveryId());
                     certificatesToDelete.remove(deletedCertificate.getName());
                 }
-            }
-
-            assertEquals(0, certificatesToDelete.size());
-
-            for (DeletedCertificate deletedCertificate : deletedCertificates) {
                 client.purgeDeletedCertificate(deletedCertificate.getName());
-                pollOnCertificatePurge(deletedCertificate.getName());
-            }
-            sleepInRecordMode(10000);
+            });
+            assertEquals(0, certificatesToDelete.size());
         });
     }
 //
