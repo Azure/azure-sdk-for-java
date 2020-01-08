@@ -104,6 +104,8 @@
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
     <build.context>azure-client-sdk-parent</build.context>
+    <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
   </properties>
 
   <build>
@@ -346,12 +348,12 @@
                     <limit>
                       <counter>LINE</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.18</minimum>
+                      <minimum>${jacoco.min.linecoverage}</minimum>
                     </limit>
                     <limit>
                       <counter>BRANCH</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.09</minimum>
+                      <minimum>${jacoco.min.branchcoverage}</minimum>
                     </limit>
                   </limits>
                 </rule>
