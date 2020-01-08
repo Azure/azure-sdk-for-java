@@ -32,16 +32,6 @@ Use the client library for App Configuration to create and manage application co
 All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
 AppConfiguration to use Netty HTTP client. 
 
-[//]: # ({x-version-update-start;com.azure:azure-core-http-netty;current})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-http-netty</artifactId>
-    <version>1.2.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
 ### Alternate HTTP Client
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
@@ -106,7 +96,9 @@ az appconfig create --name <config-store-name> --resource-group <resource-group-
 
 ### Authenticate the client
 
-In order to interact with the App Configuration service you'll need to create an instance of the Configuration Client class. To make this possible you'll need the connection string of the Configuration Store.
+In order to interact with the App Configuration service you'll need to create an instance of the Configuration Client 
+class. To make this possible you'll need the connection string of the Configuration Store. Alternatively, use AAD token
+to connect to the service.
 
 #### Use connection string
 
