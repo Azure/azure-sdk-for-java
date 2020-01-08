@@ -86,7 +86,7 @@ public class ManagingDeletedCertificates {
         deletedCertificatePoller = certificateClient.beginDeleteCertificate("certificateName");
         // Deleted Certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> deletePollResponse = deletedCertificatePoller.poll();
-        System.out.printf("Deleted certitifcate with name %s and recovery id %s", deletePollResponse.getValue().getName(),
+        System.out.printf("Deleted certificate with name %s and recovery id %s", deletePollResponse.getValue().getName(),
             deletePollResponse.getValue().getRecoveryId());
         deletedCertificatePoller.waitForCompletion();
         //To ensure certificate is deleted on server side.

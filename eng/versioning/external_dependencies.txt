@@ -208,7 +208,7 @@ media_org.mockito:mockito-all;1.9.0
 media_com.microsoft.azure:adal4j;1.2.0
 
 # sdk\servicebus\microsoft-azure-servicebus\pom.xml
-servicebus_com.microsoft.azure:azure-client-authentication;1.6.7
+servicebus_com.microsoft.azure:azure-client-authentication;1.7.0
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0

@@ -20,7 +20,7 @@ import java.time.ZoneOffset;
  * @see CertificateAsyncClient
  * @see CertificateClient
  */
-public final class DeletedCertificate extends KeyVaultCertificate {
+public final class DeletedCertificate extends KeyVaultCertificateWithPolicy {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted

@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/keyPhrases",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "47189e17-8ea9-48d4-a991-2bdc3a4ce8a2",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "6",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=0",
+      "apim-request-id" : "b4f085bb-9cfa-4c4e-be6a-6e9e99419fb0",
+      "x-aml-ta-request-id" : "f3b8109f-1cca-44bd-ac1c-9d2d1bd66220",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"innerError\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"},\"message\":\"Invalid document in request.\"}}],\"modelVersion\":\"2019-10-01\"}",
+      "Date" : "Tue, 17 Dec 2019 22:32:49 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

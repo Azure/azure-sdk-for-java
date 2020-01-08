@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -21,6 +21,7 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
@@ -68,9 +69,9 @@ public class EventHubProducerClientTest {
     @Mock
     private AmqpSendLink sendLink;
     @Mock
-    private AmqpSession session;
-    @Mock
     private EventHubAmqpConnection connection;
+    @Mock
+    private TokenCredential tokenCredential;
     @Captor
     private ArgumentCaptor<Message> singleMessageCaptor;
     @Captor
@@ -79,9 +80,7 @@ public class EventHubProducerClientTest {
     private EventHubProducerAsyncClient asyncProducer;
     private AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30));
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
-    private EventHubConnection linkProvider;
-    @Mock
-    private TokenCredential tokenCredential;
+    private EventHubConnectionProcessor connectionProcessor;
 
     @BeforeEach
     public void setup() {
@@ -96,9 +95,13 @@ public class EventHubProducerClientTest {
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
-        linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
-        asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions,
+        connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection))
+            .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+        asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer, false);
+
+        when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
     }
 
     @AfterEach
@@ -118,11 +121,8 @@ public class EventHubProducerClientTest {
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
-        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
-
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
-            eq(retryOptions.getTryTimeout()), any()))
+        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), any()))
             .thenReturn(Mono.just(sendLink));
 
         // Act
@@ -146,15 +146,12 @@ public class EventHubProducerClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
-        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
-
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
-            eq(retryOptions.getTryTimeout()), any()))
+        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), any()))
             .thenReturn(Mono.just(sendLink));
 
         when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
@@ -197,15 +194,12 @@ public class EventHubProducerClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
 
-        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
-
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
-            eq(retryOptions.getTryTimeout()), any()))
+        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), any()))
             .thenReturn(Mono.just(sendLink));
 
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8))
             .addContext(SPAN_CONTEXT_KEY, Context.NONE);
@@ -250,11 +244,9 @@ public class EventHubProducerClientTest {
         final SendOptions options = new SendOptions().setPartitionId(partitionId);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
-        when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
-            .thenReturn(Mono.just(session));
-
-        when(session.createProducer(argThat(name -> name.startsWith("PS")), argThat(name -> name.endsWith(partitionId)),
-            eq(retryOptions.getTryTimeout()), any()))
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(connection.createSendLink(argThat(name -> name.startsWith("PS")),
+            argThat(name -> name.endsWith(partitionId)), any()))
             .thenReturn(Mono.just(sendLink));
 
         // Act
@@ -284,11 +276,9 @@ public class EventHubProducerClientTest {
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
-        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
-            eq(retryOptions.getTryTimeout()), any()))
+        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), any()))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -320,17 +310,15 @@ public class EventHubProducerClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
-        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
-            eq(retryOptions.getTryTimeout()), any()))
-            .thenReturn(Mono.just(link));
+        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), any()))
+            .thenReturn(Mono.just(sendLink));
 
         when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
             invocation -> {
@@ -361,11 +349,8 @@ public class EventHubProducerClientTest {
         int eventOverhead = 98;
         int maxEventPayload = maxBatchSize - eventOverhead;
 
-        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
-
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
-            eq(retryOptions.getTryTimeout()), any()))
+        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), any()))
             .thenReturn(Mono.just(sendLink));
 
         // This event is 1024 bytes when serialized.
@@ -398,11 +383,10 @@ public class EventHubProducerClientTest {
         int maxEventPayload = maxBatchSize - eventOverhead;
 
         String partitionId = "my-partition-id";
-        when(connection.createSession(argThat(name -> name.endsWith(partitionId)))).thenReturn(Mono.just(session));
 
         // PS is the prefix when a partition sender link is created.
-        when(session.createProducer(argThat(name -> name.startsWith("PS")), argThat(name -> name.endsWith(partitionId)),
-            eq(retryOptions.getTryTimeout()), any()))
+        when(connection.createSendLink(argThat(name -> name.startsWith("PS")),
+            argThat(name -> name.endsWith(partitionId)), any()))
             .thenReturn(Mono.just(sendLink));
 
         // This event is 1024 bytes when serialized.
@@ -434,12 +418,10 @@ public class EventHubProducerClientTest {
         int eventOverhead = 24;
         int maxEventPayload = maxBatchSize - eventOverhead;
 
-        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
-
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
-            eq(retryOptions.getTryTimeout()), any()))
+        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), any()))
             .thenReturn(Mono.just(sendLink));
+
 
         // This event is 1025 bytes when serialized.
         final EventData event = new EventData(new byte[maxEventPayload + 1]);
