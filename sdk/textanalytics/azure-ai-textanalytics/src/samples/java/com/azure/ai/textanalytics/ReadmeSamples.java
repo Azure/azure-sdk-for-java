@@ -21,6 +21,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class ReadmeSamples {
     private static final String SUBSCRIPTION_KEY = null;
     private static final String ENDPOINT = null;
+    private TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder().buildClient();
+
+    /**
+     * Code snippet for configuring http client.
+     */
+    public void configureHttpClient() {
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .port(8080)
+            .wiretap(true)
+            .build();
+    }
 
     /**
      * Code snippet for  getting sync client using subscription key authentication.
@@ -56,11 +67,6 @@ public class ReadmeSamples {
      * Code snippet for detecting language in a text.
      */
     public void detectLanguages() {
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildClient();
-
         String inputText = "Bonjour tout le monde";
 
         for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inputText).getDetectedLanguages()) {
@@ -75,11 +81,6 @@ public class ReadmeSamples {
      * Code snippet for recognizing named entity in a text.
      */
     public void recognizeNamedEntity() {
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildClient();
-
         String text = "Satya Nadella is the CEO of Microsoft";
 
         for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEntities()) {
@@ -96,12 +97,6 @@ public class ReadmeSamples {
      * Code snippet for recognizing pii entity in a text.
      */
     public void recognizePiiEntity() {
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildClient();
-
-        // The text that need be analysed.
         String text = "My SSN is 555-55-5555";
 
         for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getNamedEntities()) {
@@ -118,12 +113,6 @@ public class ReadmeSamples {
      * Code snippet for recognizing linked entity in a text.
      */
     public void recognizeLinkedEntity() {
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildClient();
-
-        // The text that need be analysed.
         String text = "Old Faithful is a geyser at Yellowstone Park.";
 
         for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text).getLinkedEntities()) {
@@ -135,14 +124,20 @@ public class ReadmeSamples {
     }
 
     /**
+     * Code snippet for extracting key phrases in a text.
+     */
+    public void extractKeyPhrases() {
+        String text = "My cat might need to see a veterinarian.";
+
+        for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text).getKeyPhrases()) {
+            System.out.printf("Recognized phrases: %s.%n", keyPhrase);
+        }
+    }
+
+    /**
      * Code snippet for analyzing sentiment of a text.
      */
     public void analyzeSentiment() {
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildClient();
-
         String text = "The hotel was dark and unclean.";
 
         for (TextSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).getSentenceSentiments()) {
@@ -150,15 +145,5 @@ public class ReadmeSamples {
                 "Analyzed Sentence Sentiment class: %s.%n",
                 textSentiment.getTextSentimentClass());
         }
-    }
-
-    /**
-     * Code snippet for configuring http client.
-     */
-    public void configureHttpClient() {
-        HttpClient client = new NettyAsyncHttpClientBuilder()
-            .port(8080)
-            .wiretap(true)
-            .build();
     }
 }
