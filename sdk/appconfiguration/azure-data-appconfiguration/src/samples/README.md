@@ -54,12 +54,6 @@ The following sections provide several code snippets covering some of the most c
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
-## Next steps
-Start using KeyVault Java SDK in your solutions. Our SDK documentation could be found at [SDK Documentation][azconfig_docs]. 
-
-###  Additional Documentation
-For more extensive documentation , see the [API reference documentation][azkeyvault_rest].
-
 ## Contributing
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
