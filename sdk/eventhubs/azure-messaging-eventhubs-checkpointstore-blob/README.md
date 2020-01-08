@@ -9,9 +9,6 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 
 ## Getting started
 
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
-
 ### Prerequisites
 
 - Java Development Kit (JDK) with version 8 or above
@@ -134,6 +131,9 @@ be found here: [log levels][source_loglevels].
 ## Next steps
 Get started by exploring the samples [here][samples_readme].
 
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ## Contributing
 
 If you would like to become an active contributor to this project please refer to our [Contribution
@@ -141,6 +141,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
 [api_documentation]: http://azure.github.io/azure-sdk-for-java
+[event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
 [event_hubs_product_docs]: https://docs.microsoft.com/azure/event-hubs/
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [maven]: https://maven.apache.org/
