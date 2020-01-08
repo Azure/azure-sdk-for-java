@@ -12,7 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.iothub.v2018_12_01_preview.ErrorDetailsException;
+import com.microsoft.azure.management.iothub.v2018_12_01_preview.ErrorDetailsInnerException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceFuture;
@@ -69,7 +69,7 @@ public class OperationsInner {
      * Lists all of the available IoT Hub REST API operations.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;OperationInner&gt; object if successful.
      */
@@ -162,10 +162,10 @@ public class OperationsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<OperationInner>> listDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<OperationInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<OperationInner>> listDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<OperationInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<OperationInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -174,7 +174,7 @@ public class OperationsInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;OperationInner&gt; object if successful.
      */
@@ -273,10 +273,10 @@ public class OperationsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<OperationInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<OperationInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<OperationInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<OperationInner>, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<OperationInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
