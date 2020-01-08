@@ -1,5 +1,14 @@
+---
+page_type: sample
+languages:
+  - java
+products:
+  - azure
+  - azure-data-appconfiguration
+urlFragment: appconfiguration-samples
+---
 
-## Azure App Configuration Samples client library for Java
+# Azure App Configuration Samples client library for Java
 This document explains samples and how to use them.
 
 ## Key concepts
