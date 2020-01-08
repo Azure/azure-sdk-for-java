@@ -3,12 +3,6 @@ trigger: none
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-      Matrix:
-        Windows - Java 8:
-            OSName: 'Windows'
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
-            DisplayName: 'Windows - Java 8'
       ServiceDirectory: storage
       EnvVars:
         AZURE_TEST_MODE: LIVE

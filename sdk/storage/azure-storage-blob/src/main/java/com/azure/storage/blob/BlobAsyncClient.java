@@ -430,11 +430,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 }
             /*
              * Use cutBefore = true as we want to window all data under 4MB into one window.
-             * Set the prefetch to the maxSingleUploadSize in the case that there are numerous tiny buffers,
-             * windowUntil uses a default limit of 256 and once that is hit it will trigger onComplete which causes
-             * downstream issues.
+             * Set the prefetch to 'Integer.MAX_VALUE' to leverage an unbounded fetch limit in case there are numerous
+             * tiny buffers, windowUntil uses a default limit of 256 and once that is hit it will trigger onComplete 
+             * which causes downstream issues.
              */
-            }, true, parallelTransferOptions.getMaxSingleUploadSize())
+            }, true, Integer.MAX_VALUE)
             .buffer(2)
             .next()
             .flatMap(fluxes -> {
