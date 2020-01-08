@@ -428,6 +428,25 @@ public class CosmosContainer {
     }
 
     /**
+     * Gets the min throughput to which this container can be scaled down to
+     * 
+     * @return a {@link Mono} containing min throughput or an error.
+     */
+    public Mono<Integer> readMinThroughput() {
+        return this.read().flatMap(cosmosContainerResponse -> database.getDocClientWrapper()
+            .queryOffers("select * from c where c.offerResourceId = '"
+                    + cosmosContainerResponse.resourceSettings().resourceId() + "'", new FeedOptions())
+            .single()).flatMap(offerFeedResponse -> {
+                if (offerFeedResponse.results().isEmpty()) {
+                    return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                            "No offers found for the resource"));
+                }
+                return database.getDocClientWrapper().readOffer(offerFeedResponse.results().get(0).selfLink())
+                        .single();
+            }).map(cosmosOfferResponse -> Integer.parseInt(cosmosOfferResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OFFER_MIN_THROUGHPUT)));
+    }
+
+    /**
      * Sets throughput provisioned for a container in measurement of
      * Requests-per-Unit in the Azure Cosmos service.
      *
