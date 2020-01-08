@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.util.tracing.TracerSpanAttributes;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -54,6 +55,8 @@ public final class ConfigurationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
 
     private static final String ETAG_ANY = "*";
+    private static final TracerSpanAttributes APP_CONFIG_TRACING_PROPERTIES =
+        new ConfigurationTracerProperties().getTracerSpanAttributes();
 
     private final String serviceEndpoint;
     private final ConfigurationService service;
@@ -62,13 +65,12 @@ public final class ConfigurationAsyncClient {
     /**
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
      * Each service call goes through the {@code pipeline}.
-     *
      * @param serviceEndpoint The URL string for the App Configuration service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      * @param version {@link ConfigurationServiceVersion} of the service to be used when making requests.
      */
     ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ConfigurationServiceVersion version) {
-        this.service = RestProxy.create(ConfigurationService.class, pipeline);
+        this.service = RestProxy.create(ConfigurationService.class, pipeline, APP_CONFIG_TRACING_PROPERTIES);
         this.serviceEndpoint = serviceEndpoint;
     }
 

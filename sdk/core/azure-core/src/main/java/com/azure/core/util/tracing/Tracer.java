@@ -60,7 +60,7 @@ public interface Tracer {
     /**
      * Key for {@link Context} which indicates that the context contains the Azure resource provider namespace.
      */
-    String AZ_NAMESPACE_KEY = "az.namespace";
+    String AZ_TRACING_NAMESPACE_KEY = "az.tracing.namespace";
 
     /**
      * Creates a new tracing span.

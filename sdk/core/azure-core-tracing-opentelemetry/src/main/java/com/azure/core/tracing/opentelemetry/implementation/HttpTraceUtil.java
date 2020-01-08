@@ -32,18 +32,18 @@ public final class HttpTraceUtil {
     }
 
     /**
-     * Parse OpenCensus Status from HTTP response status code.
+     * Parse OpenTelemetry Status from HTTP response status code.
      *
      * <p>This method serves a default routine to map HTTP status code to Open Census Status. The
      * mapping is defined in <a
      * href="https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto">Google API
      * canonical error code</a>, and the behavior is defined in <a
-     * href="https://github.com/census-instrumentation/opencensus-specs/blob/master/trace/HTTP.md">OpenCensus
+     * href="https://github.com/census-instrumentation/opencensus-specs/blob/master/trace/HTTP.md">OpenTelemetry
      * Specs</a>.
      *
      * @param statusCode the HTTP response status code. {@code 0} means invalid response.
      * @param error the error occurred during response transmission (optional).
-     * @return the corresponding OpenCensus {@code Status}.
+     * @return the corresponding OpenTelemetry {@code Status}.
      */
     public static Status parseResponseStatus(int statusCode, Throwable error) {
         String message = null;
@@ -124,29 +124,6 @@ public final class HttpTraceUtil {
             default:
                 return Status.UNKNOWN.withDescription(message);
         }
-    }
-
-    /**
-     * Parse the resource provider name from the user span name.
-     *
-     * @param userSpanName the span name populated in the RestProxy layer.
-     *
-     * @return the resource provider group name.
-     */
-    public static String parseNamespaceProvider(String userSpanName) {
-        if (userSpanName.contains("KeyVault")) {
-            return "Microsoft.KeyVault";
-        }
-        if (userSpanName.contains("AppConfig")) {
-            return "Microsoft.AppConfiguration";
-        }
-        if (userSpanName.contains("Storage")) {
-            return "Microsoft.Storage";
-        }
-        if (userSpanName.contains("TextAnalytics")) {
-            return "Microsoft.CognitiveServices";
-        }
-        return "";
     }
 }
 
