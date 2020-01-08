@@ -13,15 +13,15 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 
 class IotHubQuotaMetricInfoImpl extends WrapperImpl<IotHubQuotaMetricInfoInner> implements IotHubQuotaMetricInfo {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
 
-    IotHubQuotaMetricInfoImpl(IotHubQuotaMetricInfoInner inner,  IoTHubManager manager) {
+    IotHubQuotaMetricInfoImpl(IotHubQuotaMetricInfoInner inner,  DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
