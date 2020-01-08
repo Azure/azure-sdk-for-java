@@ -47,9 +47,9 @@ public class EventHubs {
 
     private static String getPartitionID() {
         LOGGER.info("Getting partition id... ");
+        //In ths sample, the events are going to be send and consume from the first partition.
         String partitionId = producer.getPartitionIds().blockFirst();
         LOGGER.info("\tDONE.");
-        //In ths sample, the events are going to be send and consume from the first partition.
         return partitionId;
     }
 

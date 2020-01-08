@@ -23,6 +23,12 @@
 
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
       <version>4.0.0-preview.1</version>
     </dependency>
@@ -52,23 +58,19 @@
     </dependency>
 
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>1.1.0</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.28</version>
     </dependency>
 
+
+
     <!-- TODO: Do we need this? -->
-    <dependency>
+    <!-- <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
       <version>2.10.0</version>
-    </dependency>
+    </dependency> -->
 
   </dependencies>
   <build>
