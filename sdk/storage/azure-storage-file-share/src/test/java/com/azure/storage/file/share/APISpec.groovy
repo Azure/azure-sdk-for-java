@@ -16,7 +16,6 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
-import org.junit.jupiter.api.Test
 import spock.lang.Specification
 
 import java.time.Duration
@@ -64,6 +63,9 @@ class APISpec extends Specification {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
                 "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
         }
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, testName)
     }
 
     /**

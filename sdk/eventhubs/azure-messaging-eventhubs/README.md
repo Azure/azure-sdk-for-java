@@ -60,7 +60,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.0-beta.7</version>
+    <version>5.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -140,6 +140,10 @@ EventHubProducerClient client = new EventHubClientBuilder()
     .credential(fullyQualifiedNamespace, eventHubName, credential)
     .buildProducerClient();
 ```
+
+When using Azure Active Directory, your principal must be assigned a role which allows access to Event Hubs, such
+as the `Azure Event Hubs Data Owner` role. For more information about using Azure Active Directory authorization
+with Event Hubs, please refer to [the associated documentation][aad_authorization].
 
 ## Key concepts
 
@@ -429,6 +433,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
+[aad_authorization]: https://docs.microsoft.com/azure/event-hubs/authorize-access-azure-active-directory
 [api_documentation]: https://aka.ms/java-docs
 [app_registration_page]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#get-values-for-signing-in
 [application_client_secret]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret
