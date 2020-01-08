@@ -122,7 +122,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageInvalidCountryHint() {
         TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid Country Hint.", null, null);
-        validateErrorDocument(client.detectLanguage("Este es un document escrito en Español.", "en")
+        validateErrorDocument(client.detectLanguageWithResponse("Este es un document escrito en Español.", "en", Context.NONE).getValue()
                                   .getError(), expectedError);
     }
 
