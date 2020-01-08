@@ -59,7 +59,7 @@ abstract class SyncBenchmark<T> {
     final Semaphore concurrencyControlSemaphore;
     Timer latency;
 
-    abstract class ResultHandler<T, Throwable> implements BiFunction<T, Throwable, T> {
+    static abstract class ResultHandler<T, Throwable> implements BiFunction<T, Throwable, T> {
         ResultHandler() {
         }
 
@@ -70,16 +70,18 @@ abstract class SyncBenchmark<T> {
         abstract public T apply(T o, Throwable throwable);
     }
 
-    class LatencyListener<T> extends ResultHandler<T, Throwable> {
+    static class LatencyListener<T> extends ResultHandler<T, Throwable> {
         private final ResultHandler<T, Throwable> baseFunction;
+        private final Timer latencyTimer;
         Timer.Context context;
-        LatencyListener(ResultHandler<T, Throwable> baseFunction, Timer latency) {
+        LatencyListener(ResultHandler<T, Throwable> baseFunction, Timer latencyTimer) {
             this.baseFunction = baseFunction;
+            this.latencyTimer = latencyTimer;
         }
 
         protected void init() {
             super.init();
-            context = latency.time();
+            context = latencyTimer.time();
         }
 
         @Override
@@ -118,7 +120,7 @@ abstract class SyncBenchmark<T> {
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
                 PojoizedJson newDoc = generateDocument(uuid, dataFieldValue);
-                CompletableFuture futureResult = CompletableFuture.supplyAsync(() -> {
+                CompletableFuture<PojoizedJson> futureResult = CompletableFuture.supplyAsync(() -> {
 
                     try {
                         CosmosItemResponse itemResponse = cosmosContainer.createItem(newDoc);
@@ -286,7 +288,7 @@ abstract class SyncBenchmark<T> {
 //                case QueryAggregateTopOrderby:
 //                case QueryTopOrderby:
 //                case Mixed:
-                    LatencyListener latencyListener = new LatencyListener(resultHandler, latency);
+                    LatencyListener<T> latencyListener = new LatencyListener(resultHandler, latency);
                     latencyListener.context = latency.time();
                     resultHandler = latencyListener;
                     break;
@@ -296,7 +298,7 @@ abstract class SyncBenchmark<T> {
 
             final ResultHandler<T, Throwable> finalResultHandler = resultHandler;
 
-            CompletableFuture futureResult = CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<T> futureResult = CompletableFuture.supplyAsync(() -> {
                 try {
                     finalResultHandler.init();
                     return performWorkload(cnt);
