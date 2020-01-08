@@ -344,7 +344,7 @@ for (TextSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).ge
 ## Troubleshooting
 ### General
 Text Analytics clients raise exceptions. For example, if you try to detect the languages of a batch of text with same 
-document IDs, 400 error is return that indicating bad request. In the following code snippet, the error is handled 
+document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L164-L168 -->
