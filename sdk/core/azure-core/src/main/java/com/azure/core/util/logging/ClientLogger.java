@@ -5,11 +5,14 @@ package com.azure.core.util.logging;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.Objects;
+import org.slf4j.helpers.NOPLogger;
 
 import static com.azure.core.implementation.LoggingUtil.getEnvironmentLoggingLevel;
 
@@ -36,6 +39,13 @@ import static com.azure.core.implementation.LoggingUtil.getEnvironmentLoggingLev
  */
 public class ClientLogger {
     private final Logger logger;
+    private final String className;
+
+    private static final String LOG_MESSAGE_FORMAT = "%s: %s %s%n%s";
+    private static final String LOG_LEVEL_VERBOSE = "VERBOSE";
+    private static final String LOG_LEVEL_INFO = "INFO";
+    private static final String LOG_LEVEL_WARN = "WARN";
+    private static final String LOG_LEVEL_ERROR = "ERROR";
 
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
@@ -50,9 +60,11 @@ public class ClientLogger {
      * Retrieves a logger for the passed class name using the {@link LoggerFactory}.
      *
      * @param className Class name creating the logger.
+     * @throws RuntimeException it is an error.
      */
     public ClientLogger(String className) {
         logger = LoggerFactory.getLogger(className);
+        this.className = className;
     }
 
     /**
@@ -131,10 +143,9 @@ public class ClientLogger {
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void log(LogLevel logLevel, String format, Object... args) {
-        LogLevel environmentLoggingLevel = getEnvironmentLoggingLevel();
-
-        if (canLogAtLevel(logLevel, environmentLoggingLevel)) {
-            performLogging(logLevel, environmentLoggingLevel, false, format, args);
+        LogLevel rootLogLevel = loadSystemLogLevel();
+        if (canLogAtLevel(logLevel, rootLogLevel)) {
+            performLogging(logLevel, rootLogLevel, false, format, args);
         }
     }
 
@@ -162,24 +173,13 @@ public class ClientLogger {
 
     private RuntimeException logException(RuntimeException runtimeException, LogLevel logLevel) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
+        LogLevel rootLogLevel = loadSystemLogLevel();
 
-        LogLevel environmentLoggingLevel = getEnvironmentLoggingLevel();
-
-        if (canLogAtLevel(logLevel, environmentLoggingLevel)) {
-            performLogging(logLevel, environmentLoggingLevel, true, runtimeException.getMessage(), runtimeException);
+        if (canLogAtLevel(logLevel, rootLogLevel)) {
+            performLogging(logLevel, rootLogLevel, true, runtimeException.getMessage(), runtimeException);
         }
 
         return runtimeException;
-    }
-
-    /**
-     * Determines if the environment and logger support logging at the given log level.
-     *
-     * @param logLevel The {@link LogLevel} being validated as supported.
-     * @return Flag indicating if the environment and logger support logging at the given log level.
-     */
-    public boolean canLogAtLevel(LogLevel logLevel) {
-        return canLogAtLevel(logLevel, getEnvironmentLoggingLevel());
     }
 
     /*
@@ -188,8 +188,8 @@ public class ClientLogger {
      * @param format formattable message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    private void performLogging(LogLevel logLevel, LogLevel environmentLogLevel, boolean isExceptionLogging,
-        String format, Object... args) {
+    private void performLogging(LogLevel logLevel, LogLevel rootLogLevel,
+        boolean isExceptionLogging, String format, Object... args) {
         // If the logging level is less granular than verbose remove the potential throwable from the args.
         String throwableMessage = "";
         if (doesArgsHaveThrowable(args)) {
@@ -207,11 +207,68 @@ public class ClientLogger {
              * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
              * stack trace which is only expected when logging at a verbose level.
              */
-            if (environmentLogLevel.getLogLevel() > LogLevel.VERBOSE.getLogLevel()) {
+            if (rootLogLevel.getLogLevel() > LogLevel.VERBOSE.getLogLevel()) {
                 args = removeThrowable(args);
             }
         }
+        boolean isFromEnv = isLogFromEnv();
+        printInPlace(isFromEnv, throwableMessage, logLevel, format, args);
 
+    }
+
+    private void printInPlace(boolean isFromEnv, String throwableMessage, LogLevel logLevel, String format,
+        Object... args) {
+        if (isFromEnv) {
+            printFromDefaultLogger(throwableMessage, logLevel, format, args);
+        } else {
+            printFromLogger(throwableMessage, logLevel, format, args);
+        }
+    }
+
+    private void printFromDefaultLogger(String throwableMessage, LogLevel logLevel, String format, Object... args) {
+        final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        String dateTime = dateFormat.format(date);
+        String classPath = className.getClass().getCanonicalName();
+
+        String message = String.format(format, args);
+
+        switch (logLevel) {
+            case VERBOSE:
+                String verboseMessage = String.format(LOG_MESSAGE_FORMAT, LOG_LEVEL_VERBOSE, dateTime, classPath,
+                    message);
+                System.out.println(verboseMessage);
+                break;
+            case INFORMATIONAL:
+                String infoMessage = String.format(LOG_MESSAGE_FORMAT, LOG_LEVEL_INFO, dateTime, classPath, message);
+                System.out.println(infoMessage);
+                break;
+            case WARNING:
+                if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
+                    message += System.lineSeparator() + throwableMessage;
+                }
+
+                String warnMessage = String.format(LOG_MESSAGE_FORMAT, LOG_LEVEL_WARN, dateTime, classPath, message);
+                System.out.println(warnMessage);
+                break;
+            case ERROR:
+                if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
+                    message += System.lineSeparator() + throwableMessage;
+                }
+                String errorMessage = String.format(LOG_MESSAGE_FORMAT, LOG_LEVEL_ERROR, dateTime, classPath, message);
+                System.err.println(errorMessage);
+                break;
+            default:
+                // Don't do anything, this state shouldn't be possible.
+                break;
+        }
+    }
+
+    private boolean isLogFromEnv() {
+        return logger instanceof NOPLogger;
+    }
+
+    private void printFromLogger(String throwableMessage, LogLevel logLevel, String format, Object... args) {
         switch (logLevel) {
             case VERBOSE:
                 logger.debug(format, args);
@@ -237,37 +294,44 @@ public class ClientLogger {
         }
     }
 
-    /*
-     * Determines if the environment and logger support logging at the given log level.
+    /**
+     * Determines if the app or environment logger support logging at the given log level.
      *
      * @param logLevel Logging level for the log message.
-     * @param environmentLoggingLevel Logging level the environment is set to support.
      * @return Flag indicating if the environment and logger are configured to support logging at the given log level.
      */
-    private boolean canLogAtLevel(LogLevel logLevel, LogLevel environmentLoggingLevel) {
-        // Do not log if logLevel is null is not set.
-        if (logLevel == null) {
-            return false;
-        }
+    public boolean canLogAtLevel(LogLevel logLevel) {
+        LogLevel rootLogLevel = loadSystemLogLevel();
+        return canLogAtLevel(logLevel, rootLogLevel);
+    }
 
-        // Attempting to log at a level not supported by the environment.
-        if (logLevel.getLogLevel() < environmentLoggingLevel.getLogLevel()) {
-            return false;
-        }
+    private boolean canLogAtLevel(LogLevel logLevel, LogLevel allowedLogLevel) {
+        // Attempting to log at a level not supported by the SLF4J configuration or env variable.
+        return logLevel.getLogLevel() >= allowedLogLevel.getLogLevel();
+    }
 
-        // Determine if the logger configuration supports logging at the level.
-        switch (logLevel) {
-            case VERBOSE:
-                return logger.isDebugEnabled();
-            case INFORMATIONAL:
-                return logger.isInfoEnabled();
-            case WARNING:
-                return logger.isWarnEnabled();
-            case ERROR:
-                return logger.isErrorEnabled();
-            default:
-                return false;
+    /**
+     * Checking the system log with the preference order of slf4j and environment variable.
+     *
+     * @return The log level.
+     */
+    private LogLevel loadSystemLogLevel() {
+        if (isLogFromEnv()) {
+            return getEnvironmentLoggingLevel();
         }
+        if (logger.isDebugEnabled()) {
+            return LogLevel.VERBOSE;
+        }
+        if (logger.isInfoEnabled()) {
+            return LogLevel.INFORMATIONAL;
+        }
+        if (logger.isWarnEnabled()) {
+            return LogLevel.WARNING;
+        }
+        if (logger.isErrorEnabled()) {
+            return LogLevel.ERROR;
+        }
+        return LogLevel.NOT_SET;
     }
 
     /*

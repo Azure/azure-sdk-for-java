@@ -64,9 +64,9 @@ public class HttpLoggingPolicyTests {
         System.setProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.HttpLoggingPolicyTests", "trace");
 
         // Override System.err as that is where SLF4J will log by default.
-        originalErr = System.err;
+        originalErr = System.out;
         logCaptureStream = new ByteArrayOutputStream();
-        System.setErr(new PrintStream(logCaptureStream));
+        System.setOut(new PrintStream(logCaptureStream));
     }
 
     @AfterEach
@@ -100,7 +100,7 @@ public class HttpLoggingPolicyTests {
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl), CONTEXT))
             .verifyComplete();
-
+        System.out.flush();
         String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         Assertions.assertTrue(logString.contains(expectedQueryString));
     }
@@ -151,7 +151,7 @@ public class HttpLoggingPolicyTests {
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl, requestHeaders, stream),
             CONTEXT))
             .verifyComplete();
-
+        System.out.flush();
         String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         System.out.println(logString);
         Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
@@ -178,7 +178,7 @@ public class HttpLoggingPolicyTests {
                 .assertNext(bytes -> assertArrayEquals(data, bytes))
                 .verifyComplete())
             .verifyComplete();
-
+        System.out.flush();
         String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         System.out.println(logString);
         Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));

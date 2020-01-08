@@ -14,7 +14,7 @@ module com.azure.core {
     requires transitive org.reactivestreams;
 
     requires transitive org.slf4j;
-
+    requires transitive java.logging;
     // public API surface area
     exports com.azure.core.annotation;
     exports com.azure.core.credential;

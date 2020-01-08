@@ -105,7 +105,6 @@
           </execution>
         </executions>
       </plugin>
-      
       <!-- Configure the jar plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
