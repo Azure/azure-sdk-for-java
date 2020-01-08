@@ -89,8 +89,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         final List<String> textInputs = Arrays.asList(
             "This is written in English", "Este es un document escrito en Español.");
         textAnalyticsAsyncClient.detectLanguages(textInputs).subscribe(detectedBatchResult -> {
-            System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
-
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
             System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
@@ -118,7 +116,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "This is written in English", "Este es un document escrito en Español.");
         textAnalyticsAsyncClient.detectLanguagesWithResponse(textInputs1, "US").subscribe(response -> {
             DocumentResultCollection<DetectLanguageResult> detectedBatchResult = response.getValue();
-            System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
@@ -148,7 +145,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new DetectLanguageInput("2", "Este es un document escrito en Español.", "ES")
         );
         textAnalyticsAsyncClient.detectBatchLanguages(detectLanguageInputs).subscribe(detectedBatchResult -> {
-            System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
@@ -184,11 +180,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.detectBatchLanguagesWithResponse(detectLanguageInputs1, requestOptions)
             .subscribe(response -> {
-                final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = response.getValue();
-                System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
+                DocumentResultCollection<DetectLanguageResult> detectedBatchResult = response.getValue();
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
@@ -252,10 +247,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
         textAnalyticsAsyncClient.recognizeEntities(textInputs).subscribe(recognizeEntitiesResults -> {
-            System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
-
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -283,10 +276,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.recognizeEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults = response.getValue();
-            System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -314,10 +306,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "I work at Microsoft."));
 
         textAnalyticsAsyncClient.recognizeBatchEntities(textDocumentInputs).subscribe(recognizeEntitiesResults -> {
-            System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -350,11 +341,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.recognizeBatchEntitiesWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
-                final DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults = response.getValue();
-                System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
+                DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults = response.getValue();
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
@@ -421,10 +411,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "My SSN is 555-55-5555.", "Visa card 0111 1111 1111 1111.");
 
         textAnalyticsAsyncClient.recognizePiiEntities(textInputs).subscribe(recognizeEntitiesResults -> {
-            System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
             System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -452,10 +441,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.recognizePiiEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<RecognizePiiEntitiesResult> recognizeEntitiesResults = response.getValue();
-            System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
             System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -483,10 +471,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "Visa card 0111 1111 1111 1111."));
 
         textAnalyticsAsyncClient.recognizeBatchPiiEntities(textDocumentInputs).subscribe(recognizeEntitiesResults -> {
-            System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
             System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -520,10 +507,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.recognizeBatchPiiEntitiesWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
                 DocumentResultCollection<RecognizePiiEntitiesResult> recognizeEntitiesResults = response.getValue();
-                System.out.printf("Model version: %s%n", recognizeEntitiesResults.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
                 System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
@@ -589,7 +575,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Old Faithful is a geyser at Yellowstone Park.", "Mount Shasta has lenticular clouds.");
 
         textAnalyticsAsyncClient.recognizeLinkedEntities(textInputs).subscribe(recognizeLinkedEntitiesResults -> {
-            System.out.printf("Model version: %s%n", recognizeLinkedEntitiesResults.getModelVersion());
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
@@ -620,7 +605,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults = response.getValue();
-            System.out.printf("Model version: %s%n", recognizeLinkedEntitiesResults.getModelVersion());
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
@@ -652,10 +636,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.recognizeBatchLinkedEntities(textDocumentInputs)
             .subscribe(recognizeLinkedEntitiesResults -> {
-                System.out.printf("Model version: %s%n", recognizeLinkedEntitiesResults.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
                 System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
@@ -689,10 +672,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> {
                 DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults =
                     response.getValue();
-                System.out.printf("Model version: %s%n", recognizeLinkedEntitiesResults.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
@@ -749,10 +731,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Bonjour tout le monde");
 
         textAnalyticsAsyncClient.extractKeyPhrases(textInputs).subscribe(extractKeyPhraseResults -> {
-            System.out.printf("Model version: %s%n", extractKeyPhraseResults.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -777,10 +758,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.extractKeyPhrasesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhraseResults = response.getValue();
-            System.out.printf("Model version: %s%n", extractKeyPhraseResults.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
             System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -804,10 +784,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "I work at Microsoft."));
 
         textAnalyticsAsyncClient.extractBatchKeyPhrases(textDocumentInputs).subscribe(extractKeyPhraseResults -> {
-            System.out.printf("Model version: %s%n", extractKeyPhraseResults.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -837,10 +816,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.extractBatchKeyPhrasesWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
                 final DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhraseResults = response.getValue();
-                System.out.printf("Model version: %s%n", extractKeyPhraseResults.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
@@ -915,10 +893,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "The hotel was dark and unclean.", "The restaurant had amazing gnocchi.");
 
         textAnalyticsAsyncClient.analyzeSentiment(textInputs).subscribe(analyzeSentimentResults -> {
-            System.out.printf("Model version: %s%n", analyzeSentimentResults.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -951,10 +928,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.analyzeSentimentWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<AnalyzeSentimentResult> analyzeSentimentResults = response.getValue();
-            System.out.printf("Model version: %s%n", analyzeSentimentResults.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
             System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -987,10 +963,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "The restaurant had amazing gnocchi."));
 
         textAnalyticsAsyncClient.analyzeBatchSentiment(textDocumentInputs).subscribe(analyzeSentimentResults -> {
-            System.out.printf("Model version: %s%n", analyzeSentimentResults.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
+            TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
@@ -1029,7 +1004,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.analyzeBatchSentimentWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
                 DocumentResultCollection<AnalyzeSentimentResult> analyzeSentimentResults = response.getValue();
-                System.out.printf("Model version: %s%n", analyzeSentimentResults.getModelVersion());
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
