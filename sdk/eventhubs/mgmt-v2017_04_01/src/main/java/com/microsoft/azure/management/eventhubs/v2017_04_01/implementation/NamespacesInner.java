@@ -141,6 +141,10 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkRuleSets/default")
         Observable<Response<ResponseBody>> getNetworkRuleSet(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhubs.v2017_04_01.Namespaces listNetworkRuleSets" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkRuleSets")
+        Observable<Response<ResponseBody>> listNetworkRuleSets(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhubs.v2017_04_01.Namespaces listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -152,6 +156,10 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhubs.v2017_04_01.Namespaces listAuthorizationRulesNext" })
         @GET
         Observable<Response<ResponseBody>> listAuthorizationRulesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhubs.v2017_04_01.Namespaces listNetworkRuleSetsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNetworkRuleSetsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -1842,6 +1850,129 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
     }
 
     /**
+     * Gets list of NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;NetworkRuleSetInner&gt; object if successful.
+     */
+    public PagedList<NetworkRuleSetInner> listNetworkRuleSets(final String resourceGroupName, final String namespaceName) {
+        ServiceResponse<Page<NetworkRuleSetInner>> response = listNetworkRuleSetsSinglePageAsync(resourceGroupName, namespaceName).toBlocking().single();
+        return new PagedList<NetworkRuleSetInner>(response.body()) {
+            @Override
+            public Page<NetworkRuleSetInner> nextPage(String nextPageLink) {
+                return listNetworkRuleSetsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets list of NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<NetworkRuleSetInner>> listNetworkRuleSetsAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<NetworkRuleSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNetworkRuleSetsSinglePageAsync(resourceGroupName, namespaceName),
+            new Func1<String, Observable<ServiceResponse<Page<NetworkRuleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NetworkRuleSetInner>>> call(String nextPageLink) {
+                    return listNetworkRuleSetsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets list of NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NetworkRuleSetInner&gt; object
+     */
+    public Observable<Page<NetworkRuleSetInner>> listNetworkRuleSetsAsync(final String resourceGroupName, final String namespaceName) {
+        return listNetworkRuleSetsWithServiceResponseAsync(resourceGroupName, namespaceName)
+            .map(new Func1<ServiceResponse<Page<NetworkRuleSetInner>>, Page<NetworkRuleSetInner>>() {
+                @Override
+                public Page<NetworkRuleSetInner> call(ServiceResponse<Page<NetworkRuleSetInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets list of NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NetworkRuleSetInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NetworkRuleSetInner>>> listNetworkRuleSetsWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
+        return listNetworkRuleSetsSinglePageAsync(resourceGroupName, namespaceName)
+            .concatMap(new Func1<ServiceResponse<Page<NetworkRuleSetInner>>, Observable<ServiceResponse<Page<NetworkRuleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NetworkRuleSetInner>>> call(ServiceResponse<Page<NetworkRuleSetInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNetworkRuleSetsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets list of NetworkRuleSet for a Namespace.
+     *
+    ServiceResponse<PageImpl<NetworkRuleSetInner>> * @param resourceGroupName Name of the resource group within the azure subscription.
+    ServiceResponse<PageImpl<NetworkRuleSetInner>> * @param namespaceName The Namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;NetworkRuleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<NetworkRuleSetInner>>> listNetworkRuleSetsSinglePageAsync(final String resourceGroupName, final String namespaceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listNetworkRuleSets(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NetworkRuleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NetworkRuleSetInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<NetworkRuleSetInner>> result = listNetworkRuleSetsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<NetworkRuleSetInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<NetworkRuleSetInner>> listNetworkRuleSetsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<NetworkRuleSetInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<NetworkRuleSetInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Lists all the available Namespaces within a subscription, irrespective of the resource groups.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -2170,6 +2301,117 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
     private ServiceResponse<PageImpl<AuthorizationRuleInner>> listAuthorizationRulesNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<AuthorizationRuleInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AuthorizationRuleInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets list of NetworkRuleSet for a Namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;NetworkRuleSetInner&gt; object if successful.
+     */
+    public PagedList<NetworkRuleSetInner> listNetworkRuleSetsNext(final String nextPageLink) {
+        ServiceResponse<Page<NetworkRuleSetInner>> response = listNetworkRuleSetsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<NetworkRuleSetInner>(response.body()) {
+            @Override
+            public Page<NetworkRuleSetInner> nextPage(String nextPageLink) {
+                return listNetworkRuleSetsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets list of NetworkRuleSet for a Namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<NetworkRuleSetInner>> listNetworkRuleSetsNextAsync(final String nextPageLink, final ServiceFuture<List<NetworkRuleSetInner>> serviceFuture, final ListOperationCallback<NetworkRuleSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNetworkRuleSetsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<NetworkRuleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NetworkRuleSetInner>>> call(String nextPageLink) {
+                    return listNetworkRuleSetsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets list of NetworkRuleSet for a Namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NetworkRuleSetInner&gt; object
+     */
+    public Observable<Page<NetworkRuleSetInner>> listNetworkRuleSetsNextAsync(final String nextPageLink) {
+        return listNetworkRuleSetsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<NetworkRuleSetInner>>, Page<NetworkRuleSetInner>>() {
+                @Override
+                public Page<NetworkRuleSetInner> call(ServiceResponse<Page<NetworkRuleSetInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets list of NetworkRuleSet for a Namespace.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NetworkRuleSetInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NetworkRuleSetInner>>> listNetworkRuleSetsNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNetworkRuleSetsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<NetworkRuleSetInner>>, Observable<ServiceResponse<Page<NetworkRuleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NetworkRuleSetInner>>> call(ServiceResponse<Page<NetworkRuleSetInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNetworkRuleSetsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets list of NetworkRuleSet for a Namespace.
+     *
+    ServiceResponse<PageImpl<NetworkRuleSetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;NetworkRuleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<NetworkRuleSetInner>>> listNetworkRuleSetsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNetworkRuleSetsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NetworkRuleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NetworkRuleSetInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<NetworkRuleSetInner>> result = listNetworkRuleSetsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<NetworkRuleSetInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<NetworkRuleSetInner>> listNetworkRuleSetsNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<NetworkRuleSetInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<NetworkRuleSetInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
