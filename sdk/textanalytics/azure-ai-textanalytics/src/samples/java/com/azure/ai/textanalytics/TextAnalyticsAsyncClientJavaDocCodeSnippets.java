@@ -28,6 +28,7 @@ import java.util.List;
 public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     private static final String SUBSCRIPTION_KEY = null;
     private static final String ENDPOINT = null;
+    TextAnalyticsAsyncClient textAnalyticsAsyncClient = createTextAnalyticsAsyncClient();
 
     /**
      * Code snippet for creating a {@link TextAnalyticsAsyncClient}
@@ -45,13 +46,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     // Languages
-
     /**
-     * Code snippet for detecting Language
+     * Code snippet for {@link TextAnalyticsAsyncClient#detectLanguage(String)}
      */
-    public void detectLanguageCodeSnippets() {
-        TextAnalyticsAsyncClient textAnalyticsAsyncClient = createTextAnalyticsAsyncClient();
-
+    public void detectLanguages() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string
         String inputText = "Bonjour tout le monde";
         textAnalyticsAsyncClient.detectLanguage(inputText).subscribe(detectLanguageResult -> {
@@ -63,7 +61,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#detectLanguageWithResponse(String, String)}
+     */
+    public void detectLanguageWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#string-string
         String input = "This text is in English";
         String countryHint = "US";
@@ -76,7 +79,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#string-string
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#detectLanguages(List)}
+     */
+    public void detectLanguagesStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguages#List
         final List<String> textInputs = Arrays.asList(
             "This is written in English", "Este es un document escrito en Español.");
@@ -99,7 +107,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguages#List
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#detectLanguagesWithResponse(List, String)}
+     */
+    public void detectLanguagesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguagesWithResponse#List-String
         final List<String> textInputs1 = Arrays.asList(
             "This is written in English", "Este es un document escrito en Español.");
@@ -123,7 +136,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguagesWithResponse#List-String
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#detectBatchLanguages(List)} )}
+     */
+    public void detectLanguagesBatch() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectBatchLanguages#List
         List<DetectLanguageInput> detectLanguageInputs = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "US"),
@@ -148,7 +166,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectBatchLanguages#List
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#detectBatchLanguagesWithResponse(List,
+     * TextAnalyticsRequestOptions)}
+     */
+    public void detectBatchLanguagesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectBatchLanguagesWithResponse#List-TextAnalyticsRequestOptions
         List<DetectLanguageInput> detectLanguageInputs1 = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "US"),
@@ -183,11 +207,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Entity
     /**
-     * Code snippet for recognizing entities
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntities(String)}
      */
-    public void recognizeEntitiesCodeSnippets() {
-        TextAnalyticsAsyncClient textAnalyticsAsyncClient = createTextAnalyticsAsyncClient();
-
+    public void recognizeEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
         String inputText = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntities(inputText).subscribe(recognizeEntitiesResult -> {
@@ -200,7 +222,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesWithResponse(String, String)}
+     */
+    public void recognizeEntitiesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#string-string
         String inputText1 = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntitiesWithResponse(inputText1, "en")
@@ -214,7 +241,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#string-string
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntities(List)}
+     */
+    public void recognizeEntitiesStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#List
         List<String> textInputs = Arrays.asList(
             "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
@@ -239,7 +271,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#List
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesWithResponse(List, String)}
+     */
+    public void recognizeEntitiesWithResponseStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#List-String
         List<String> textInputs1 = Arrays.asList(
             "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
@@ -265,7 +302,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#List-String
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeBatchEntities(List)}
+     */
+    public void recognizeBatchEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchEntities#List
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
@@ -291,7 +333,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchEntities#List
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeBatchEntitiesWithResponse(List,
+     * TextAnalyticsRequestOptions)}
+     */
+    public void recognizeBatchEntitiesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchEntitiesWithResponse#List-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
@@ -326,10 +374,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Pii Entity
     /**
-     * Code snippet for recognizing pii entities
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(String)}
      */
-    public void recognizePiiEntitiesCodeSnippets() {
-        TextAnalyticsAsyncClient textAnalyticsAsyncClient = createTextAnalyticsAsyncClient();
+    public void recognizePiiEntities() {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
         String inputText = "My SSN is 555-55-5555";
@@ -343,6 +390,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntitiesWithResponse(String, String)}
+     */
+    public void recognizePiiEntitiesWithResponse() {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#string-string
         String inputText1 = "My SSN is 555-55-5555";
@@ -357,8 +410,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#string-string
+    }
 
-
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(List)}
+     */
+    public void recognizePiiEntitiesStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list-string
         List<String> textInputs = Arrays.asList(
             "My SSN is 555-55-5555.", "Visa card 0111 1111 1111 1111.");
@@ -383,7 +440,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list-string
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntitiesWithResponse(List, String)}
+     */
+    public void recognizePiiEntitiesWithResponseStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#List-String
         List<String> textInputs1 = Arrays.asList(
             "My SSN is 555-55-5555.", "Visa card 0111 1111 1111 1111.");
@@ -409,7 +471,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#List-String
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeBatchPiiEntities(List)}
+     */
+    public void recognizeBatchPiiEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchPiiEntities#List
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
             new TextDocumentInput("0", "My SSN is 555-55-5555."),
@@ -435,7 +502,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchPiiEntities#List
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeBatchPiiEntitiesWithResponse(List,
+     * TextAnalyticsRequestOptions)}
+     */
+    public void recognizeBatchPiiEntitiesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchPiiEntitiesWithResponse#List-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
             new TextDocumentInput("0", "My SSN is 555-55-5555."),
@@ -470,10 +543,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Linked Entity
     /**
-     * Code snippet for recognizing entities
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntities(String)}
      */
-    public void recognizeLinkedEntitiesCodeSnippets() {
-        TextAnalyticsAsyncClient textAnalyticsAsyncClient = createTextAnalyticsAsyncClient();
+    public void recognizeLinkedEntities() {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
         String inputText = "Old Faithful is a geyser at Yellowstone Park.";
@@ -486,6 +558,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesWithResponse(String, String)}
+     */
+    public void recognizeLinkedEntitiesWithResponse() {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#string-string
         String inputText1 = "Old Faithful is a geyser at Yellowstone Park.";
@@ -499,7 +577,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#string-string
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntities(List)}
+     */
+    public void recognizeLinkedEntitiesStringList() {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#list-string
         List<String> textInputs = Arrays.asList(
@@ -524,6 +607,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#list-string
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesWithResponse(List, String)}
+     */
+    public void recognizeLinkedEntitiesWithResponseStringList() {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#List-String
         List<String> textInputs1 = Arrays.asList(
@@ -550,6 +639,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#List-String
 
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeBatchLinkedEntities(List)}
+     */
+    public void recognizeBatchLinkedEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchLinkedEntities#List
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
             new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park."),
@@ -575,7 +670,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchLinkedEntities#List
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeBatchLinkedEntitiesWithResponse(List,
+     * TextAnalyticsRequestOptions)}
+     */
+    public void recognizeBatchLinkedEntitiesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchLinkedEntitiesWithResponse#List-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
             new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park."),
@@ -610,11 +711,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Key Phrases
     /**
-     * Code snippet for recognizing entities
+     * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrases(String)}
      */
-    public void extractKeyPhrasesCodeSnippets() {
-        TextAnalyticsAsyncClient textAnalyticsAsyncClient = createTextAnalyticsAsyncClient();
-
+    public void extractKeyPhrases() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string
         String inputText = "Bonjour tout le monde";
         textAnalyticsAsyncClient.extractKeyPhrases(inputText).subscribe(extractKeyPhraseResult -> {
@@ -623,7 +722,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrasesWithResponse(String, String)}
+     */
+    public void extractKeyPhrasesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesWithResponse#string-string
         String inputText1 = "Bonjour tout le monde";
         textAnalyticsAsyncClient.extractKeyPhrasesWithResponse(inputText1, "fr")
@@ -633,8 +737,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesWithResponse#string-string
+    }
 
-
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrases(List)}
+     */
+    public void extractKeyPhrasesStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#list-string
         List<String> textInputs = Arrays.asList(
             "Hello world. This is some input text that I love.",
@@ -656,7 +764,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#list-string
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrasesWithResponse(List, String)}
+     */
+    public void extractKeyPhrasesWithResponseStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesWithResponse#List-String
         List<String> textInputs1 = Arrays.asList(
             "Hello world. This is some input text that I love.",
@@ -679,7 +792,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesWithResponse#List-String
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#extractBatchKeyPhrases(List)}
+     */
+    public void extractBatchKeyPhrases() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractBatchKeyPhrases#List
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
             new TextDocumentInput("0", "Hello world. This is some input text that I love."),
@@ -701,7 +819,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractBatchKeyPhrases#List
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#extractBatchKeyPhrasesWithResponse(List,
+     * TextAnalyticsRequestOptions)}
+     */
+    public void extractBatchKeyPhrasesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractBatchKeyPhrasesWithResponse#List-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
@@ -732,11 +856,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Sentiment
     /**
-     * Code snippet for recognizing entities
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentiment(String)}
      */
-    public void analyzeSentimentCodeSnippets() {
-        TextAnalyticsAsyncClient textAnalyticsAsyncClient = createTextAnalyticsAsyncClient();
-
+    public void analyzeSentiment() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string
         String inputText = "The hotel was dark and unclean.";
         textAnalyticsAsyncClient.analyzeSentiment(inputText).subscribe(analyzeSentimentResult -> {
@@ -755,7 +877,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentimentWithResponse(String, String)}
+     */
+    public void analyzeSentimentWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#string-string
         String inputText1 = "The hotel was dark and unclean.";
         textAnalyticsAsyncClient.analyzeSentimentWithResponse(inputText1, "en")
@@ -777,8 +904,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#string-string
+    }
 
-
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentiment(List)}
+     */
+    public void analyzeSentimentStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#list-string
         List<String> textInputs = Arrays.asList(
             "The hotel was dark and unclean.", "The restaurant had amazing gnocchi.");
@@ -808,7 +939,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#list-string
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentimentWithResponse(List, String)}
+     */
+    public void analyzeSentimentWithResponseStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#List-String
         List<String> textInputs1 = Arrays.asList(
             "The hotel was dark and unclean.", "The restaurant had amazing gnocchi.");
@@ -839,7 +975,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#List-String
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeBatchSentiment(List)}
+     */
+    public void analyzeBatchSentiment() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeBatchSentiment#List
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
             new TextDocumentInput("0", "The hotel was dark and unclean."),
@@ -870,7 +1011,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeBatchSentiment#List
+    }
 
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeBatchSentimentWithResponse(List,
+     * TextAnalyticsRequestOptions)}
+     */
+    public void analyzeBatchSentimentWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeBatchSentimentWithResponse#List-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
             new TextDocumentInput("0", "The hotel was dark and unclean."),
