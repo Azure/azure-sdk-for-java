@@ -1,6 +1,11 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+# This script requires Powershell 6 which defaults LocalMachine to Restricted on Windows client machines.
+# From a Powershell 6 prompt run 'Get-ExecutionPolicy -List' and if the LocalMachine is Restricted or Undefined then
+# run the following command from an admin Powershell 6 prompt 'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned'. This
+# will enable running scripts locally in Powershell 6.
+
 # Use case: This script verifies the following:
 # 1. There are no duplicate entries in any of the version_*.txt files
 # 2. There are no duplicate entries in the external_dependencies.txt file
@@ -288,7 +293,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     if ($retVal)
                     {
                         $script:FoundError = $true
-                        Write-Host "$($retVal)"
+                        Write-Error-With-Color "$($retVal)"
                     }
                 }
             }
@@ -309,7 +314,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         }
     }
 
-    if ($xmlPomFile.parent) {
+    if ($xmlPomFile.project.parent) {
         # Verify the parent's version
         $versionNode = $xmlPomFile.SelectSingleNode("/ns:project/ns:parent/ns:version", $xmlNsManager)
         if ($xmlPomFile.project.parent.version -and $versionNode)
@@ -332,7 +337,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     if ($retVal)
                     {
                         $script:FoundError = $true
-                        Write-Host "$($retVal)"
+                        Write-Error-With-Color "$($retVal)"
                     }
                 }
             }
@@ -427,7 +432,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 if ($retVal)
                 {
                     $script:FoundError = $true
-                    Write-Host "$($retVal)"
+                    Write-Error-With-Color "$($retVal)"
                 }
             }
         }
@@ -444,8 +449,8 @@ Write-Host "Total run time=$($TotalRunTime)"
 
 if ($script:FoundError)
 {
-    Write-Host "There were errors encountered during execution. Please fix any errors and run the script again."
-    Write-Host "This script can be run locally from the root of the repo. .\eng\pom_file_version_scanner.ps1"
+    Write-Error-With-Color "There were errors encountered during execution. Please fix any errors and run the script again."
+    Write-Error-With-Color "This script can be run locally from the root of the repo. .\eng\pom_file_version_scanner.ps1"
     exit(1)
 }
 

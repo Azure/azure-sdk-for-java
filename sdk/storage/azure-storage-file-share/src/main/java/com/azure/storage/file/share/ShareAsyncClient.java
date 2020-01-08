@@ -104,15 +104,6 @@ public class ShareAsyncClient {
     }
 
     /**
-     * Gets the {@link HttpPipeline} powering this client.
-     *
-     * @return The pipeline.
-     */
-    public HttpPipeline getHttpPipeline() {
-        return azureFileStorageClient.getHttpPipeline();
-    }
-
-    /**
      * Gets the service version the client is using.
      *
      * @return the service version the client is using.
@@ -1099,6 +1090,15 @@ public class ShareAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return azureFileStorageClient.getHttpPipeline();
     }
 
     /**

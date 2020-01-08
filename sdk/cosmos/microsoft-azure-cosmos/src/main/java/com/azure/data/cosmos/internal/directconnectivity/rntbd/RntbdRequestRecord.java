@@ -159,5 +159,6 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
             generator.writeEndObject();
         }
     }
+
     // endregion
 }

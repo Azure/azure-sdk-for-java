@@ -159,15 +159,6 @@ public class ShareFileAsyncClient {
     }
 
     /**
-     * Gets the {@link HttpPipeline} powering this client.
-     *
-     * @return The pipeline.
-     */
-    public HttpPipeline getHttpPipeline() {
-        return azureFileStorageClient.getHttpPipeline();
-    }
-
-    /**
      * Creates a file in the storage account and returns a response of {@link ShareFileInfo} to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1769,6 +1760,15 @@ public class ShareFileAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return azureFileStorageClient.getHttpPipeline();
     }
 
     /**

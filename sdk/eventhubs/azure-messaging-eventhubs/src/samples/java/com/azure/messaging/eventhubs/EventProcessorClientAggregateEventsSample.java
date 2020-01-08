@@ -98,7 +98,7 @@ public class EventProcessorClientAggregateEventsSample {
      */
     private static Mono<Void> generateEvents(AtomicBoolean isRunning) {
         final Logger logger = LoggerFactory.getLogger("Producer");
-        final Scheduler scheduler = Schedulers.newElastic("produce");
+        final Scheduler scheduler = Schedulers.elastic();
         final Duration operationTimeout = Duration.ofSeconds(5);
         final String[] machineIds = new String[]{"2A", "9B", "6C"};
         final Random random = new Random();
@@ -129,10 +129,11 @@ public class EventProcessorClientAggregateEventsSample {
                     return client.send(batch);
                 }).block(operationTimeout);
             }
-        }).doFinally(signal -> {
-            logger.info("Disposing of producer.");
-            client.close();
-        }).subscribeOn(scheduler);
+        }).subscribeOn(scheduler)
+            .doFinally(signal -> {
+                logger.info("Disposing of producer.");
+                client.close();
+            });
     }
 }
 

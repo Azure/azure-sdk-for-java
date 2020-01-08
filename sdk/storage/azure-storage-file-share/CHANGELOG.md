@@ -1,11 +1,17 @@
 # Release History
 
-## 12.1.0-beta.2 (Unreleased)
+## 12.2.0-beta.1 (Unreleased)
 - Added support for the 2019-07-07 service version.
 - Added support for file leases. Includes adding the ShareLeaseClientBuilder, ShareLeaseClient, and ShareLeaseAsync client and overloads accepting leaseIds for operations that support leases.
 - Added failedClosedHandles property to CloseHandlesInfo to allow users to access number of failed handles in forceCloseAllHandles and closeHandle.
 - Added support for obtaining premium file properties in ShareServiceClient.listShares and ShareClient.getProperties.
 - Added support for additional start copy parameters - FileSmbProperties, file permission, file permission copy mode, set archive and ignore read only.
+
+## 12.1.0 (2020-01-08)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.1.0/sdk/storage/azure-storage-file-share/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.1.0/sdk/storage/azure-storage-file-share/src/samples/java/com/azure/storage/file/share)
 
 ## 12.1.0-beta.1 (2019-12-18)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setFilePath, setShareName generateSasQueryParameters methods on ShareServiceSasSignatureValues to direct users to using the methods added on clients.
