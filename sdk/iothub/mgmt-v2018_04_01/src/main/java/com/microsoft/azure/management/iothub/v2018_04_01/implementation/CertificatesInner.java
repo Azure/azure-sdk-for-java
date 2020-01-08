@@ -12,7 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.iothub.v2018_04_01.CertificateBodyDescription;
 import com.microsoft.azure.management.iothub.v2018_04_01.CertificateVerificationDescription;
-import com.microsoft.azure.management.iothub.v2018_04_01.ErrorDetailsException;
+import com.microsoft.azure.management.iothub.v2018_04_01.ErrorDetailsInnerException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -90,7 +90,7 @@ public class CertificatesInner {
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CertificateListDescriptionInner object if successful.
      */
@@ -166,10 +166,10 @@ public class CertificatesInner {
             });
     }
 
-    private ServiceResponse<CertificateListDescriptionInner> listByIotHubDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CertificateListDescriptionInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<CertificateListDescriptionInner> listByIotHubDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CertificateListDescriptionInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CertificateListDescriptionInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -181,7 +181,7 @@ public class CertificatesInner {
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CertificateDescriptionInner object if successful.
      */
@@ -263,10 +263,10 @@ public class CertificatesInner {
             });
     }
 
-    private ServiceResponse<CertificateDescriptionInner> getDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CertificateDescriptionInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<CertificateDescriptionInner> getDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CertificateDescriptionInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CertificateDescriptionInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -278,7 +278,7 @@ public class CertificatesInner {
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CertificateDescriptionInner object if successful.
      */
@@ -374,7 +374,7 @@ public class CertificatesInner {
      * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update an existing certificate.
      * @param certificate base-64 representation of the X509 leaf certificate .cer file or just .pem file content.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CertificateDescriptionInner object if successful.
      */
@@ -464,11 +464,11 @@ public class CertificatesInner {
             });
     }
 
-    private ServiceResponse<CertificateDescriptionInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CertificateDescriptionInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<CertificateDescriptionInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CertificateDescriptionInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CertificateDescriptionInner>() { }.getType())
                 .register(201, new TypeToken<CertificateDescriptionInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -481,7 +481,7 @@ public class CertificatesInner {
      * @param certificateName The name of the certificate
      * @param ifMatch ETag of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
@@ -568,11 +568,11 @@ public class CertificatesInner {
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -585,7 +585,7 @@ public class CertificatesInner {
      * @param certificateName The name of the certificate
      * @param ifMatch ETag of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CertificateWithNonceDescriptionInner object if successful.
      */
@@ -673,10 +673,10 @@ public class CertificatesInner {
             });
     }
 
-    private ServiceResponse<CertificateWithNonceDescriptionInner> generateVerificationCodeDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CertificateWithNonceDescriptionInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<CertificateWithNonceDescriptionInner> generateVerificationCodeDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CertificateWithNonceDescriptionInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CertificateWithNonceDescriptionInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
@@ -689,7 +689,7 @@ public class CertificatesInner {
      * @param certificateName The name of the certificate
      * @param ifMatch ETag of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CertificateDescriptionInner object if successful.
      */
@@ -790,7 +790,7 @@ public class CertificatesInner {
      * @param ifMatch ETag of the Certificate.
      * @param certificate base-64 representation of X509 certificate .cer file or just .pem file content.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CertificateDescriptionInner object if successful.
      */
@@ -883,10 +883,10 @@ public class CertificatesInner {
             });
     }
 
-    private ServiceResponse<CertificateDescriptionInner> verifyDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CertificateDescriptionInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<CertificateDescriptionInner> verifyDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CertificateDescriptionInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CertificateDescriptionInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }
 
