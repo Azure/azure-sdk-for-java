@@ -441,7 +441,7 @@ public final class TextAnalyticsAsyncClient {
      * supported entity types, check <a href="https://aka.ms/tanerpii"></a>. See <a href="https://aka.ms/talangs"></a>
      * for the list of enabled languages.
      *
-     * <p>Recognize pii entities in a text. Subscribes to the call asynchronously and prints out the
+     * <p>Recognize PII entities in a text. Subscribes to the call asynchronously and prints out the
      * entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string}
@@ -466,7 +466,7 @@ public final class TextAnalyticsAsyncClient {
      * supported entity types, check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>.
      *
-     * <p>Recognize pii entities in a text with provided language hint. Subscribes to the call asynchronously and
+     * <p>Recognize PII entities in a text with provided language hint. Subscribes to the call asynchronously and
      * prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#string-string}
@@ -495,7 +495,7 @@ public final class TextAnalyticsAsyncClient {
      * of supported entity types, check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p>Recognize pii entities in a list of string inputs. Subscribes to the call asynchronously and prints out the
+     * <p>Recognize PII entities in a list of string inputs. Subscribes to the call asynchronously and prints out the
      * entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list-string}
@@ -522,7 +522,7 @@ public final class TextAnalyticsAsyncClient {
      * of supported entity types, check <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>.
      *
-     * <p>Recognize pii entities in a list of string inputs with provided language hint. Subscribes to the call
+     * <p>Recognize PII entities in a list of string inputs with provided language hint. Subscribes to the call
      * asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#List-String}
@@ -552,7 +552,7 @@ public final class TextAnalyticsAsyncClient {
      * the list of supported entity types, check: <a href="https://aka.ms/taner"></a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
      *
-     * <p>Recognize pii entities in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out
+     * <p>Recognize PII entities in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out
      * the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchPiiEntities#List}
@@ -579,7 +579,7 @@ public final class TextAnalyticsAsyncClient {
      * the list of supported entity types,check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>.
      *
-     * <p>Recognize pii entities in a list of TextDocumentInput with provided statistics options. Subscribes to the
+     * <p>Recognize PII entities in a list of TextDocumentInput with provided statistics options. Subscribes to the
      * call asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchPiiEntitiesWithResponse#List-TextAnalyticsRequestOptions}
