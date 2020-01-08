@@ -434,7 +434,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
              * windowUntil uses a default limit of 256 and once that is hit it will trigger onComplete which causes
              * downstream issues.
              */
-            }, true, parallelTransferOptions.getMaxSingleUploadSize())
+            }, true, Integer.MAX_VALUE)
             .buffer(2)
             .next()
             .flatMap(fluxes -> {
