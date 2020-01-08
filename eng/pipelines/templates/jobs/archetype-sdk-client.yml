@@ -72,15 +72,13 @@ jobs:
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
             python3 --version
-            python3 eng/versioning/set_versions.py --update-type all --build-type client --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
-            python3 eng/versioning/set_versions.py --update-type all --build-type data --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
+            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}} --group-id ${{artifact.groupId}}
           condition: eq(variables['SetDevVersion'],'true')
           displayName: Append dev package version suffix for ${{artifact.name}}
 
       - script: |
           python3 --version
-          python3 eng/versioning/update_versions.py --update-type all --build-type client
-          python3 eng/versioning/update_versions.py --update-type all --build-type data
+          python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}}
         condition: eq(variables['SetDevVersion'],'true')
         displayName: Apply version settings to repository
 
@@ -276,7 +274,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Start Jetty'
-        condition: ne(variables['SdkType'], 'client')
+        condition: ne('${{ parameters.SDKType }}', 'client')
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions)'
@@ -293,7 +291,7 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
-        condition: and(ne(variables['SdkType'], 'data'), eq(variables['TestFromSource'],'true'))
+        condition: and(eq('${{ parameters.SDKType }}', 'client'), eq(variables['TestFromSource'],'true'))
 
       - pwsh: |
           python --version
@@ -310,7 +308,7 @@ jobs:
             exit 1
           }
         displayName: 'Set versions for source build'
-        condition: and(ne(variables['SdkType'], 'data'), eq(variables['TestFromSource'],'true'))
+        condition: and(eq('${{ parameters.SDKType }}', 'client'), eq(variables['TestFromSource'],'true'))
 
       - script: |
           python --version
