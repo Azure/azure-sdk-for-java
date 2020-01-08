@@ -51,7 +51,7 @@ public final class TextAnalyticsClient {
      * Returns the detected language and a numeric score between zero and one. Scores close to one indicate 100%
      * certainty that the identified language is true.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Detects the languages of single input text</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String}
      *
@@ -68,7 +68,7 @@ public final class TextAnalyticsClient {
      * Returns a {@link Response} containing the detected language and a numeric score between zero and one.
      * Scores close to one indicate 100% certainty that the identified language is true.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Detects the languages with http response in a text with a provided country hint.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageWithResponse#String-String-Context}
      *
@@ -88,7 +88,7 @@ public final class TextAnalyticsClient {
     /**
      * Detects Language for a batch of input.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Detects the languages in a list of text.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguages#List}
      *
@@ -106,7 +106,7 @@ public final class TextAnalyticsClient {
     /**
      * Detects Language for a batch of input with the provided country hint.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Detects the languages with http response in a list of text with a provided country hint.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguagesWithResponse#List-String-Context}
      *
@@ -128,7 +128,7 @@ public final class TextAnalyticsClient {
     /**
      * Detects Language for a batch of input.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Detects the languages in a list of {@link DetectLanguageInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectBatchLanguages#List}
      *
@@ -145,7 +145,7 @@ public final class TextAnalyticsClient {
     /**
      * Detects Language for a batch of input with the provided {@link TextAnalyticsRequestOptions}.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Detects the languages with http response in a list of {@link DetectLanguageInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectBatchLanguagesWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
@@ -169,7 +169,7 @@ public final class TextAnalyticsClient {
      * Returns a list of general named entities in the provided text.
      * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognize the entities of single input text</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#String}
      *
@@ -188,7 +188,7 @@ public final class TextAnalyticsClient {
      * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities with http response in a text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesWithResponse#String-String-Context}
      *
@@ -208,7 +208,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of general named entities for the provided list of texts.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities in a list of text.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#List}
      *
@@ -226,7 +226,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of general named entities for the provided list of texts.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities with http response in a list of text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesWithResponse#List-String-Context}
      *
@@ -247,7 +247,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of general named entities for the provided list of text inputs.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities in a list of {@link TextDocumentInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchEntities#List}
      *
@@ -265,7 +265,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of general named entities for the provided list of text inputs.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities with http response in a list of {@link TextDocumentInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchEntitiesWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
@@ -291,7 +291,7 @@ public final class TextAnalyticsClient {
      * For the list of supported entity types, check <a href="https://aka.ms/taner"></a> pii.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognize the PII entities of single input text</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String}
      *
@@ -310,7 +310,7 @@ public final class TextAnalyticsClient {
      * For the list of supported entity types, check https://aka.ms/tanerpii.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the PII entities with http response in a text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#String-String-Context}
      *
@@ -334,7 +334,7 @@ public final class TextAnalyticsClient {
      * For the list of supported entity types, check https://aka.ms/tanerpii.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the PII entities in a list of text.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#List}
      *
@@ -354,7 +354,7 @@ public final class TextAnalyticsClient {
      * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the PII entities with http response in a list of text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#List-String-Context}
      *
@@ -379,7 +379,7 @@ public final class TextAnalyticsClient {
      * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the PII entities in a list of {@link TextDocumentInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchPiiEntities#List}
      *
@@ -399,7 +399,7 @@ public final class TextAnalyticsClient {
      * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the PII entities with http response in a list of {@link TextDocumentInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchPiiEntitiesWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
@@ -424,7 +424,7 @@ public final class TextAnalyticsClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognize the linked entities of single input text</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String}
      *
@@ -442,7 +442,7 @@ public final class TextAnalyticsClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the linked entities with http response in a text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesWithResponse#String-String-Context}
      *
@@ -466,7 +466,7 @@ public final class TextAnalyticsClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the linked entities in a list of text.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#List}
      *
@@ -485,8 +485,9 @@ public final class TextAnalyticsClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Recognizes the linked entities with http response in a list of text with a provided language representation.</p>
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the linked entities with http response in a list of text with a provided language representation.
+     * </p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesWithResponse#List-String-Context}
      *
      * @param textInputs A list of text to recognize linked entities for.
@@ -509,7 +510,7 @@ public final class TextAnalyticsClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the linked entities in a list of {@link TextDocumentInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchLinkedEntities#List}
      *
@@ -528,7 +529,7 @@ public final class TextAnalyticsClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the linked entities with http response in a list of {@link TextDocumentInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchLinkedEntitiesWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
@@ -552,7 +553,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Extracts key phrases of single input text</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String}
      *
@@ -570,7 +571,7 @@ public final class TextAnalyticsClient {
      * Returns a list of strings denoting the key phrases in the input text.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Extracts key phrases with http response in a text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesWithResponse#String-String-Context}
      *
@@ -592,7 +593,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Extracts key phrases in a list of text.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#List}
      *
@@ -610,7 +611,7 @@ public final class TextAnalyticsClient {
      * Returns a list of strings denoting the key phrases in the input text.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Extracts key phrases with http response in a list of text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesWithResponse#List-String-Context}
      *
@@ -632,7 +633,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Extracts key phrases in a list of {@link TextDocumentInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractBatchKeyPhrases#List}
      *
@@ -650,7 +651,7 @@ public final class TextAnalyticsClient {
      * Returns a list of strings denoting the key phrases in the input text.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Extracts key phrases with http response in a list of {@link TextDocumentInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractBatchKeyPhrasesWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
@@ -675,7 +676,7 @@ public final class TextAnalyticsClient {
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within i
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments of single input text</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String}
      *
@@ -693,7 +694,7 @@ public final class TextAnalyticsClient {
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within i
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments with http response in a text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentWithResponse#String-String-Context}
      *
@@ -715,7 +716,7 @@ public final class TextAnalyticsClient {
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments in a list of text.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#List}
      *
@@ -734,7 +735,7 @@ public final class TextAnalyticsClient {
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments with http response in a list of text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentWithResponse#List-String-Context}
      *
@@ -757,7 +758,7 @@ public final class TextAnalyticsClient {
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments in a list of {@link TextDocumentInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeBatchSentiment#List}
      *
@@ -775,7 +776,7 @@ public final class TextAnalyticsClient {
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments with http response in a list of {@link TextDocumentInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeBatchSentimentWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
