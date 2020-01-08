@@ -43,7 +43,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
-import static com.azure.core.util.tracing.Tracer.AZ_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
@@ -160,14 +160,14 @@ public class EventHubProducerClientTest {
         when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                assertEquals(passed.getData(AZ_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
                 return passed.addData(PARENT_SPAN_KEY, "value");
             }
         );
         when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                assertEquals(passed.getData(AZ_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
                 return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
             }
         );
@@ -212,7 +212,7 @@ public class EventHubProducerClientTest {
         when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                assertEquals(passed.getData(AZ_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
                 return passed.addData(PARENT_SPAN_KEY, "value");
             }
         );

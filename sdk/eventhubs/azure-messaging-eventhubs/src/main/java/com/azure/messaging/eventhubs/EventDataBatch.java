@@ -29,7 +29,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.azure.core.util.tracing.Tracer.AZ_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
@@ -144,7 +144,7 @@ public final class EventDataBatch {
             return eventData;
         } else {
             // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context eventContext = eventData.getContext().addData(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+            Context eventContext = eventData.getContext().addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
             Context eventSpanContext = tracerProvider.startSpan(eventContext, ProcessKind.MESSAGE);
             Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
             if (eventDiagnosticIdOptional.isPresent()) {

@@ -30,7 +30,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-import static com.azure.core.util.tracing.Tracer.AZ_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
@@ -237,7 +237,7 @@ class PartitionPumpManager {
         Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE)
             .addData(ENTITY_PATH_KEY, eventHubName)
             .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
-            .addData(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
         return tracerProvider.startSpan(spanContext, ProcessKind.PROCESS);
     }
 

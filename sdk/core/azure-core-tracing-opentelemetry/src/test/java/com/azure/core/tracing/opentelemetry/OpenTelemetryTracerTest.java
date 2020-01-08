@@ -28,6 +28,7 @@ import java.util.Optional;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESPACE_KEY;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_BUS_DESTINATION;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.PEER_ENDPOINT;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
@@ -132,7 +133,7 @@ public class OpenTelemetryTracerTest {
         // Add additional metadata to spans for SEND
         final Context traceContext = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
             .addData(HOST_NAME_KEY, HOSTNAME_VALUE).addData(SPAN_BUILDER_KEY, spanBuilder)
-            .addData(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
 
         // Act
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, traceContext, ProcessKind.SEND);
@@ -176,7 +177,7 @@ public class OpenTelemetryTracerTest {
         // Add additional metadata to spans for SEND
         final Context traceContext = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
                                          .addData(HOST_NAME_KEY, HOSTNAME_VALUE)
-                                         .addData(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+                                         .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
         // Act
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, traceContext, ProcessKind.PROCESS);
 
