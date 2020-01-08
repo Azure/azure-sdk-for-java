@@ -94,9 +94,9 @@ public class EventHubsInner {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}")
         Observable<Response<ResponseBody>> getAuthorizationRule(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("eventHubName") String eventHubName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhubs.v2015_08_01.EventHubs posttAuthorizationRule" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhubs.v2015_08_01.EventHubs postAuthorizationRule" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}")
-        Observable<Response<ResponseBody>> posttAuthorizationRule(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("eventHubName") String eventHubName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> postAuthorizationRule(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("eventHubName") String eventHubName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhubs.v2015_08_01.EventHubs deleteAuthorizationRule" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}", method = "DELETE", hasBody = true)
@@ -881,8 +881,8 @@ public class EventHubsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SharedAccessAuthorizationRuleResourceInner object if successful.
      */
-    public SharedAccessAuthorizationRuleResourceInner posttAuthorizationRule(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
-        return posttAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName).toBlocking().single().body();
+    public SharedAccessAuthorizationRuleResourceInner postAuthorizationRule(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
+        return postAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName).toBlocking().single().body();
     }
 
     /**
@@ -896,8 +896,8 @@ public class EventHubsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SharedAccessAuthorizationRuleResourceInner> posttAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName, final ServiceCallback<SharedAccessAuthorizationRuleResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(posttAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName), serviceCallback);
+    public ServiceFuture<SharedAccessAuthorizationRuleResourceInner> postAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName, final ServiceCallback<SharedAccessAuthorizationRuleResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(postAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName), serviceCallback);
     }
 
     /**
@@ -910,8 +910,8 @@ public class EventHubsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
      */
-    public Observable<SharedAccessAuthorizationRuleResourceInner> posttAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
-        return posttAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName).map(new Func1<ServiceResponse<SharedAccessAuthorizationRuleResourceInner>, SharedAccessAuthorizationRuleResourceInner>() {
+    public Observable<SharedAccessAuthorizationRuleResourceInner> postAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
+        return postAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName).map(new Func1<ServiceResponse<SharedAccessAuthorizationRuleResourceInner>, SharedAccessAuthorizationRuleResourceInner>() {
             @Override
             public SharedAccessAuthorizationRuleResourceInner call(ServiceResponse<SharedAccessAuthorizationRuleResourceInner> response) {
                 return response.body();
@@ -929,7 +929,7 @@ public class EventHubsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
      */
-    public Observable<ServiceResponse<SharedAccessAuthorizationRuleResourceInner>> posttAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
+    public Observable<ServiceResponse<SharedAccessAuthorizationRuleResourceInner>> postAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -948,12 +948,12 @@ public class EventHubsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.posttAuthorizationRule(resourceGroupName, namespaceName, eventHubName, authorizationRuleName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.postAuthorizationRule(resourceGroupName, namespaceName, eventHubName, authorizationRuleName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SharedAccessAuthorizationRuleResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SharedAccessAuthorizationRuleResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SharedAccessAuthorizationRuleResourceInner> clientResponse = posttAuthorizationRuleDelegate(response);
+                        ServiceResponse<SharedAccessAuthorizationRuleResourceInner> clientResponse = postAuthorizationRuleDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -962,7 +962,7 @@ public class EventHubsInner {
             });
     }
 
-    private ServiceResponse<SharedAccessAuthorizationRuleResourceInner> posttAuthorizationRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SharedAccessAuthorizationRuleResourceInner> postAuthorizationRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SharedAccessAuthorizationRuleResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SharedAccessAuthorizationRuleResourceInner>() { }.getType())
                 .registerError(CloudException.class)
