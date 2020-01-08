@@ -72,10 +72,13 @@ public class ReactorConnection implements AmqpConnection {
      * @param reactorProvider Provides proton-j Reactor instances.
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      * @param tokenManagerProvider Provides the appropriate token manager to authorize with CBS node.
+     * @param messageSerializer Serializer to translate objects to and from proton-j {@link Message messages}.
+     * @param product The name of the product this connection is created for.
+     * @param clientVersion The version of the client library creating the connection.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
                              ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
-                             MessageSerializer messageSerializer) {
+                             MessageSerializer messageSerializer, String product, String clientVersion) {
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
@@ -86,7 +89,7 @@ public class ReactorConnection implements AmqpConnection {
         this.messageSerializer = messageSerializer;
         this.handler = handlerProvider.createConnectionHandler(connectionId,
             connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getTransportType(),
-            connectionOptions.getProxyOptions());
+            connectionOptions.getProxyOptions(), product, clientVersion);
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
 
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)

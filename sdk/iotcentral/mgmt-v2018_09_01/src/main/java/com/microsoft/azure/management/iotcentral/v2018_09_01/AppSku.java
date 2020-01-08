@@ -22,6 +22,15 @@ public final class AppSku extends ExpandableStringEnum<AppSku> {
     /** Static value S1 for AppSku. */
     public static final AppSku S1 = fromString("S1");
 
+    /** Static value ST0 for AppSku. */
+    public static final AppSku ST0 = fromString("ST0");
+
+    /** Static value ST1 for AppSku. */
+    public static final AppSku ST1 = fromString("ST1");
+
+    /** Static value ST2 for AppSku. */
+    public static final AppSku ST2 = fromString("ST2");
+
     /**
      * Creates or finds a AppSku from its string representation.
      * @param name a name to look for

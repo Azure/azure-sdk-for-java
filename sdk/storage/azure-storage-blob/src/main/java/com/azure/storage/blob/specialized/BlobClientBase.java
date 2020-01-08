@@ -41,9 +41,13 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -454,7 +458,42 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public BlobProperties downloadToFile(String filePath) {
-        return downloadToFileWithResponse(filePath, null, null, null, null, false, null, Context.NONE).getValue();
+        return downloadToFile(filePath, false);
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown.</p>
+     *
+     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
+     * AppendBlobClient}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param overwrite Whether or not to overwrite the file, should the file exist.
+     * @return The blob properties and metadata.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public BlobProperties downloadToFile(String filePath, boolean overwrite) {
+        Set<OpenOption> openOptions = null;
+        if (overwrite) {
+            openOptions = new HashSet<>();
+            openOptions.add(StandardOpenOption.CREATE);
+            openOptions.add(StandardOpenOption.TRUNCATE_EXISTING); // If the file already exists and it is opened
+            // for WRITE access, then its length is truncated to 0.
+            openOptions.add(StandardOpenOption.READ);
+            openOptions.add(StandardOpenOption.WRITE);
+        }
+        return downloadToFileWithResponse(filePath, null, null, null, null, false, openOptions, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -491,8 +530,49 @@ public class BlobClientBase {
     public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Duration timeout, Context context) {
+        return downloadToFileWithResponse(filePath, range, parallelTransferOptions, downloadRetryOptions,
+            requestConditions, rangeGetContentMd5, null, timeout, context);
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
+     *
+     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
+     * AppendBlobClient}.</p>
+     *
+     * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
+     * call, provide the {@link BlobRange} parameter.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param range {@link BlobRange}
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
+     *        transfers parameter is ignored.
+     * @param downloadRetryOptions {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param openOptions {@link OpenOption OpenOptions} to use to configure how to open or create the file.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the blob properties and metadata.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
+        Duration timeout, Context context) {
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
-            parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, context);
+            parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, openOptions, context);
         return blockWithOptionalTimeout(download, timeout);
     }
 

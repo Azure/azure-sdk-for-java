@@ -4,7 +4,6 @@
 package com.azure.storage.file.datalake
 
 import com.azure.storage.blob.BlobServiceVersion
-import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.*
@@ -17,7 +16,6 @@ import com.azure.storage.file.datalake.models.UserDelegationKey
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission
 import com.azure.storage.file.datalake.sas.PathSasPermission
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.LocalDateTime

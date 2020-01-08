@@ -38,7 +38,6 @@ class APISpec extends Specification {
     URL testFolder = getClass().getClassLoader().getResource("testfiles")
     InterceptorManager interceptorManager
     TestResourceNamer testResourceName
-
     // Prefixes for paths and shares
     String sharePrefix = "jts" // java test share
 
@@ -100,6 +99,9 @@ class APISpec extends Specification {
         }
         premiumFileServiceClient = setClient(premiumCredential)
         premiumFileServiceAsyncClient = setAsyncClient(premiumCredential)
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, testName)
     }
 
     /**
@@ -221,28 +223,6 @@ class APISpec extends Specification {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
     }
 
-    ShareServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
-                                                     HttpPipelinePolicy... policies) {
-        ShareServiceClientBuilder builder = new ShareServiceClientBuilder()
-            .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-
-        for (HttpPipelinePolicy policy : policies) {
-            builder.addPolicy(policy)
-        }
-
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
-
-        if (credential != null) {
-            builder.credential(credential)
-        }
-
-        return builder
-    }
-
     def fileServiceBuilderHelper(final InterceptorManager interceptorManager) {
         ShareServiceClientBuilder shareServiceClientBuilder = new ShareServiceClientBuilder();
         if (testMode != TestMode.PLAYBACK) {
@@ -258,6 +238,28 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
+    }
+
+    ShareServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
+                                                     HttpPipelinePolicy... policies) {
+        ShareServiceClientBuilder builder = new ShareServiceClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (!liveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        return builder
     }
 
     ShareClientBuilder getShareClientBuilder(String endpoint) {
@@ -363,7 +365,7 @@ class APISpec extends Specification {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
+        if (testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {

@@ -89,15 +89,6 @@ public class ShareFileClient {
     }
 
     /**
-     * Gets the {@link HttpPipeline} powering this client.
-     *
-     * @return The pipeline.
-     */
-    public HttpPipeline getHttpPipeline() {
-        return this.shareFileAsyncClient.getHttpPipeline();
-    }
-
-    /**
      * Opens a file input stream to download the file.
      * <p>
      *
@@ -1382,6 +1373,15 @@ public class ShareFileClient {
      */
     public String getAccountName() {
         return this.shareFileAsyncClient.getAccountName();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.shareFileAsyncClient.getHttpPipeline();
     }
 
     /**

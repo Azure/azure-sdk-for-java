@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -16,19 +17,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrate how to recognize PII(Personally Identifiable Information) entities of a text input.
+ * Sample demonstrates how to recognize the PII(Personally Identifiable Information) entities of a batch input text.
  */
 public class RecognizePiiBatchDocuments {
     /**
-     * Main method to invoke this demo about how to recognize PII entities of a batch of text inputs.
+     * Main method to invoke this demo about how to recognize the PII entities of a batch input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
 
         // The texts that need be analysed.
@@ -37,26 +38,40 @@ public class RecognizePiiBatchDocuments {
             new TextDocumentInput("2", "Visa card 4111 1111 1111 1111", "en")
         );
 
+        // Request options: show statistics and model version
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
-        final DocumentResultCollection<RecognizePiiEntitiesResult> detectedBatchResult = client.recognizeBatchPiiEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
-        final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
+        // Recognizing batch entities
+        final DocumentResultCollection<RecognizePiiEntitiesResult> recognizedBatchResult =
+            client.recognizeBatchPiiEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+        System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
+
+        // Batch statistics
+        final TextDocumentBatchStatistics batchStatistics = recognizedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
-        // Detecting pii entities from a batch of documents
-        detectedBatchResult.forEach(piiEntityDocumentResult ->
-            piiEntityDocumentResult.getNamedEntities().forEach(entity ->
-                System.out.printf("Recognized Personal Identifiable Info NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
+        // Recognized PII entities for each of document from a batch of documents
+        for (RecognizePiiEntitiesResult piiEntityDocumentResult : recognizedBatchResult) {
+            System.out.printf("Document ID: %s%n", piiEntityDocumentResult.getId());
+            // Erroneous document
+            if (piiEntityDocumentResult.isError()) {
+                System.out.printf("Cannot recognize PII entities. Error: %s%n", piiEntityDocumentResult.getError().getMessage());
+                continue;
+            }
+            // Valid document
+            for (NamedEntity entity : piiEntityDocumentResult.getNamedEntities()) {
+                System.out.printf("Recognized personal identifiable information entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
                     entity.getText(),
                     entity.getType(),
-                    entity.getSubtype(),
+                    entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
                     entity.getOffset(),
                     entity.getLength(),
-                    entity.getScore())));
+                    entity.getScore());
+            }
+        }
     }
 }

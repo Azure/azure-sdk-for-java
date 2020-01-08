@@ -1,6 +1,8 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2020-01-07)
+- Shorten tracing span names
+- Add eventhub properties to processing spans
 
 ## 1.0.0-beta.5 (2019-11-26)
 For details on the Azure SDK for Java (December 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview6-java).

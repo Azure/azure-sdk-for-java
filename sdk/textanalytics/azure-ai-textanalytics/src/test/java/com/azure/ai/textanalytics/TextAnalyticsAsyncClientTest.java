@@ -14,7 +14,6 @@ import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -36,7 +35,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     // Detected Languages
-
     /**
      * Verify that we can get statistics on the collection result when given a batch input with options.
      */
@@ -137,7 +135,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageDuplicateIdInput() {
         detectLanguageDuplicateIdRunner((inputs, options) -> {
-            StepVerifier.create(client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE))
+            StepVerifier.create(client.detectBatchLanguagesWithResponse(inputs, options))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 400));
         });
     }
@@ -161,7 +159,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void recognizeEntitiesForFaultyText() {
         // TODO: (savaity) confirm with service team this returns no error-ed document, no exception but empty documents and error list.
         StepVerifier.create(client.recognizeEntities("!@#%%"))
@@ -287,7 +285,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void recognizePiiEntitiesForFaultyText() {
         // TODO: (savaity) confirm with service team this returns no error-ed document, no exception but empty documents and error list.
         StepVerifier.create(client.recognizePiiEntities("!@#%%"))
