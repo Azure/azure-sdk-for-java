@@ -10,6 +10,8 @@ package com.microsoft.azure.management.eventhubs.v2018_01_01_preview.implementat
 
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Sku;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Identity;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Encryption;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.rest.SkipParentValidation;
@@ -52,6 +54,12 @@ public class EHNamespaceInner extends Resource {
     private String serviceBusEndpoint;
 
     /**
+     * Cluster ARM ID of the Namespace.
+     */
+    @JsonProperty(value = "properties.clusterArmId")
+    private String clusterArmId;
+
+    /**
      * Identifier for Azure Insights metrics.
      */
     @JsonProperty(value = "properties.metricId", access = JsonProperty.Access.WRITE_ONLY)
@@ -84,6 +92,18 @@ public class EHNamespaceInner extends Resource {
      */
     @JsonProperty(value = "properties.zoneRedundant")
     private Boolean zoneRedundant;
+
+    /**
+     * Properties of BYOK Identity description.
+     */
+    @JsonProperty(value = "properties.identity")
+    private Identity identity;
+
+    /**
+     * Properties of BYOK Encryption description.
+     */
+    @JsonProperty(value = "properties.encryption")
+    private Encryption encryption;
 
     /**
      * Get properties of sku resource.
@@ -139,6 +159,26 @@ public class EHNamespaceInner extends Resource {
      */
     public String serviceBusEndpoint() {
         return this.serviceBusEndpoint;
+    }
+
+    /**
+     * Get cluster ARM ID of the Namespace.
+     *
+     * @return the clusterArmId value
+     */
+    public String clusterArmId() {
+        return this.clusterArmId;
+    }
+
+    /**
+     * Set cluster ARM ID of the Namespace.
+     *
+     * @param clusterArmId the clusterArmId value to set
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withClusterArmId(String clusterArmId) {
+        this.clusterArmId = clusterArmId;
+        return this;
     }
 
     /**
@@ -227,6 +267,46 @@ public class EHNamespaceInner extends Resource {
      */
     public EHNamespaceInner withZoneRedundant(Boolean zoneRedundant) {
         this.zoneRedundant = zoneRedundant;
+        return this;
+    }
+
+    /**
+     * Get properties of BYOK Identity description.
+     *
+     * @return the identity value
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set properties of BYOK Identity description.
+     *
+     * @param identity the identity value to set
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get properties of BYOK Encryption description.
+     *
+     * @return the encryption value
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set properties of BYOK Encryption description.
+     *
+     * @param encryption the encryption value to set
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withEncryption(Encryption encryption) {
+        this.encryption = encryption;
         return this;
     }
 

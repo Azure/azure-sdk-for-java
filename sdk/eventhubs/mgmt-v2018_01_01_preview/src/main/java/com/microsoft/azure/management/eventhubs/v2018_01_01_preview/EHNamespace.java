@@ -26,9 +26,24 @@ import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.implementati
  */
 public interface EHNamespace extends HasInner<EHNamespaceInner>, Resource, GroupableResourceCore<EventHubsManager, EHNamespaceInner>, HasResourceGroup, Refreshable<EHNamespace>, Updatable<EHNamespace.Update>, HasManager<EventHubsManager> {
     /**
+     * @return the clusterArmId value.
+     */
+    String clusterArmId();
+
+    /**
      * @return the createdAt value.
      */
     DateTime createdAt();
+
+    /**
+     * @return the encryption value.
+     */
+    Encryption encryption();
+
+    /**
+     * @return the identity value.
+     */
+    Identity identity();
 
     /**
      * @return the isAutoInflateEnabled value.
@@ -98,6 +113,42 @@ public interface EHNamespace extends HasInner<EHNamespaceInner>, Resource, Group
         }
 
         /**
+         * The stage of the ehnamespace definition allowing to specify ClusterArmId.
+         */
+        interface WithClusterArmId {
+            /**
+             * Specifies clusterArmId.
+             * @param clusterArmId Cluster ARM ID of the Namespace
+             * @return the next definition stage
+             */
+            WithCreate withClusterArmId(String clusterArmId);
+        }
+
+        /**
+         * The stage of the ehnamespace definition allowing to specify Encryption.
+         */
+        interface WithEncryption {
+            /**
+             * Specifies encryption.
+             * @param encryption Properties of BYOK Encryption description
+             * @return the next definition stage
+             */
+            WithCreate withEncryption(Encryption encryption);
+        }
+
+        /**
+         * The stage of the ehnamespace definition allowing to specify Identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies identity.
+             * @param identity Properties of BYOK Identity description
+             * @return the next definition stage
+             */
+            WithCreate withIdentity(Identity identity);
+        }
+
+        /**
          * The stage of the ehnamespace definition allowing to specify IsAutoInflateEnabled.
          */
         interface WithIsAutoInflateEnabled {
@@ -162,19 +213,55 @@ public interface EHNamespace extends HasInner<EHNamespaceInner>, Resource, Group
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<EHNamespace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithIsAutoInflateEnabled, DefinitionStages.WithKafkaEnabled, DefinitionStages.WithMaximumThroughputUnits, DefinitionStages.WithSku, DefinitionStages.WithZoneRedundant {
+        interface WithCreate extends Creatable<EHNamespace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithClusterArmId, DefinitionStages.WithEncryption, DefinitionStages.WithIdentity, DefinitionStages.WithIsAutoInflateEnabled, DefinitionStages.WithKafkaEnabled, DefinitionStages.WithMaximumThroughputUnits, DefinitionStages.WithSku, DefinitionStages.WithZoneRedundant {
         }
     }
     /**
      * The template for a EHNamespace update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<EHNamespace>, Resource.UpdateWithTags<Update>, UpdateStages.WithIsAutoInflateEnabled, UpdateStages.WithKafkaEnabled, UpdateStages.WithMaximumThroughputUnits, UpdateStages.WithSku, UpdateStages.WithZoneRedundant {
+    interface Update extends Appliable<EHNamespace>, Resource.UpdateWithTags<Update>, UpdateStages.WithClusterArmId, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithIsAutoInflateEnabled, UpdateStages.WithKafkaEnabled, UpdateStages.WithMaximumThroughputUnits, UpdateStages.WithSku, UpdateStages.WithZoneRedundant {
     }
 
     /**
      * Grouping of EHNamespace update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the ehnamespace update allowing to specify ClusterArmId.
+         */
+        interface WithClusterArmId {
+            /**
+             * Specifies clusterArmId.
+             * @param clusterArmId Cluster ARM ID of the Namespace
+             * @return the next update stage
+             */
+            Update withClusterArmId(String clusterArmId);
+        }
+
+        /**
+         * The stage of the ehnamespace update allowing to specify Encryption.
+         */
+        interface WithEncryption {
+            /**
+             * Specifies encryption.
+             * @param encryption Properties of BYOK Encryption description
+             * @return the next update stage
+             */
+            Update withEncryption(Encryption encryption);
+        }
+
+        /**
+         * The stage of the ehnamespace update allowing to specify Identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies identity.
+             * @param identity Properties of BYOK Identity description
+             * @return the next update stage
+             */
+            Update withIdentity(Identity identity);
+        }
+
         /**
          * The stage of the ehnamespace update allowing to specify IsAutoInflateEnabled.
          */
