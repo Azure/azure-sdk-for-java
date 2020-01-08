@@ -382,17 +382,16 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 assertNotNull(pollResponse.getValue());
             }
 
-            sleepInRecordMode(300000);
-            client.listDeletedKeys().subscribe(deletedKeys::add);
-            sleepInRecordMode(300000);
-
-            for (DeletedKey actualKey : deletedKeys) {
+            sleepInRecordMode(150000);
+            client.listDeletedKeys().map(actualKey -> {
                 if (keys.containsKey(actualKey.getName())) {
+                    deletedKeys.add(actualKey);
                     assertNotNull(actualKey.getDeletedOn());
                     assertNotNull(actualKey.getRecoveryId());
                     keys.remove(actualKey.getName());
                 }
-            }
+                return actualKey;
+            }).blockLast();
 
             assertEquals(0, keys.size());
 
@@ -444,23 +443,20 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @Test
     public void listKeys() {
         listKeysRunner((keys) -> {
-            List<KeyProperties> output = new ArrayList<>();
             for (CreateKeyOptions key : keys.values()) {
                 StepVerifier.create(client.createKey(key))
                     .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
                 sleepInRecordMode(5000);
             }
-            client.listPropertiesOfKeys().subscribe(output::add);
-            sleepInRecordMode(300000);
-
-            for (KeyProperties actualKey : output) {
+            client.listPropertiesOfKeys().map(actualKey -> {
                 if (keys.containsKey(actualKey.getName())) {
                     CreateKeyOptions expectedKey = keys.get(actualKey.getName());
                     assertEquals(expectedKey.getExpiresOn(), actualKey.getExpiresOn());
                     assertEquals(expectedKey.getNotBefore(), actualKey.getNotBefore());
                     keys.remove(actualKey.getName());
                 }
-            }
+                return actualKey;
+            }).blockLast();
             assertEquals(0, keys.size());
         });
     }

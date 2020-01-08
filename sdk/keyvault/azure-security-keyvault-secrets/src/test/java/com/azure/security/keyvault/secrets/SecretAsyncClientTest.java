@@ -383,17 +383,16 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                 assertNotNull(deletedSecret);
             }
 
-            sleepInRecordMode(300000);
-            client.listDeletedSecrets().subscribe(deletedSecrets::add);
-            sleepInRecordMode(300000);
-
-            for (DeletedSecret actualSecret : deletedSecrets) {
-                if (secrets.containsKey(actualSecret.getName())) {
-                    assertNotNull(actualSecret.getDeletedOn());
-                    assertNotNull(actualSecret.getRecoveryId());
-                    secrets.remove(actualSecret.getName());
-                }
-            }
+            sleepInRecordMode(150000);
+            client.listDeletedSecrets().map(deletedSecret -> {
+                    deletedSecrets.add(deletedSecret);
+                    if (secrets.containsKey(deletedSecret.getName())) {
+                        assertNotNull(deletedSecret.getDeletedOn());
+                        assertNotNull(deletedSecret.getRecoveryId());
+                        secrets.remove(deletedSecret.getName());
+                    }
+                    return deletedSecret;
+                }).blockLast();
 
             assertEquals(0, secrets.size());
 
@@ -451,18 +450,17 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                         assertSecretEquals(secret, secretResponse);
                     }).verifyComplete();
             }
-            sleepInRecordMode(300000);
-            client.listPropertiesOfSecrets().subscribe(output::add);
-            sleepInRecordMode(300000);
-
-            for (SecretProperties actualSecret : output) {
-                if (secretsToList.containsKey(actualSecret.getName())) {
-                    KeyVaultSecret expectedSecret = secrets.get(actualSecret.getName());
-                    assertEquals(expectedSecret.getProperties().getExpiresOn(), actualSecret.getExpiresOn());
-                    assertEquals(expectedSecret.getProperties().getNotBefore(), actualSecret.getNotBefore());
-                    secrets.remove(actualSecret.getName());
+            sleepInRecordMode(150000);
+            client.listPropertiesOfSecrets().map(secret -> {
+                if (secretsToList.containsKey(secret.getName())) {
+                    output.add(secret);
+                    KeyVaultSecret expectedSecret = secrets.get(secret.getName());
+                    assertEquals(expectedSecret.getProperties().getExpiresOn(), secret.getExpiresOn());
+                    assertEquals(expectedSecret.getProperties().getNotBefore(), secret.getNotBefore());
+                    secrets.remove(secret.getName());
                 }
-            }
+                return secret;
+            }).blockLast();
             assertEquals(0, secrets.size());
         });
     }

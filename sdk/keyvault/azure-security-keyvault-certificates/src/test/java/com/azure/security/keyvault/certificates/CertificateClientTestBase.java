@@ -272,8 +272,8 @@ public abstract class CertificateClientTestBase extends TestBase {
     void listCertificatesRunner(Consumer<List<String>> testRunner) {
         List<String> certificates = new ArrayList<>();
         String certificateName;
-        for (int i = 0; i < 3; i++) {
-            certificateName = generateResourceId("listCertKey" + i);
+        for (int i = 0; i < 2; i++) {
+            certificateName = generateResourceId("lstCert" + i);
             certificates.add(certificateName);
         }
         testRunner.accept(certificates);
@@ -377,8 +377,8 @@ public abstract class CertificateClientTestBase extends TestBase {
     void listDeletedCertificatesRunner(Consumer<List<String>> testRunner) {
         List<String> certificates = new ArrayList<>();
         String certificateName;
-        for (int i = 0; i < 3; i++) {
-            certificateName = generateResourceId("listDeletedCertificate" + i);
+        for (int i = 0; i < 2; i++) {
+            certificateName = generateResourceId("delCert" + i);
             certificates.add(certificateName);
         }
         testRunner.accept(certificates);
