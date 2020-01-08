@@ -89,10 +89,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withDefaultTimeToLive(Integer timeToLive) {
-            validators.add(new CosmosResponseValidator<CosmosContainerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosAsyncContainerResponse>() {
 
                 @Override
-                public void validate(CosmosContainerResponse resourceResponse) {
+                public void validate(CosmosAsyncContainerResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties()).isNotNull();
                     assertThat(resourceResponse.getProperties().getDefaultTimeToLive()).isNotNull();
                     assertThat(resourceResponse.getProperties().getDefaultTimeToLive()).isEqualTo(timeToLive);
