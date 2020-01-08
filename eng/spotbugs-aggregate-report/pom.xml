@@ -208,7 +208,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-batch</artifactId>
-          <version>12.0.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+          <version>12.0.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>

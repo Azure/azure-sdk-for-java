@@ -31,14 +31,14 @@ import reactor.util.context.Context;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -80,7 +80,7 @@ public final class BlobBatch {
     private final BlobAsyncClient blobAsyncClient;
 
     private final Deque<Mono<? extends Response<?>>> batchOperationQueue;
-    private final List<ByteBuffer> batchRequest;
+    private final Queue<ByteBuffer> batchRequest;
     private final Map<Integer, BlobBatchOperationResponse<?>> batchMapping;
 
     private final AtomicInteger contentId;
@@ -119,7 +119,7 @@ public final class BlobBatch {
             .buildAsyncClient();
 
         this.batchOperationQueue = new ConcurrentLinkedDeque<>();
-        this.batchRequest = new ArrayList<>();
+        this.batchRequest = new ConcurrentLinkedQueue<>();
         this.batchMapping = new ConcurrentHashMap<>();
     }
 

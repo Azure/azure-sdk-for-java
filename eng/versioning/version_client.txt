@@ -18,7 +18,7 @@ com.azure:azure-messaging-eventhubs;5.0.0-preview.5;5.0.0-preview.5
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.0.0-preview.3;1.0.0-preview.3
 com.azure:azure-sdk-template;1.0.3;1.0.3
 com.azure:azure-storage-blob;12.0.1;12.0.1
-com.azure:azure-storage-blob-batch;12.0.1;12.0.1
+com.azure:azure-storage-blob-batch;12.0.2;12.0.2
 com.azure:azure-storage-blob-cryptography;12.0.1;12.0.1
 com.azure:azure-storage-common;12.0.1;12.0.1
 com.azure:azure-storage-file-share;12.0.0-preview.5;12.0.0-preview.5
