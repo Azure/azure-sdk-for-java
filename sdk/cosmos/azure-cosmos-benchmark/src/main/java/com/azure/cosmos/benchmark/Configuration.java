@@ -118,6 +118,9 @@ class Configuration {
     @Parameter(names = "-numberOfPreCreatedDocuments", description = "Total NUMBER Of Documents To pre create for a read workload to use")
     private int numberOfPreCreatedDocuments = 1000;
 
+    @Parameter(names = "-useSync", description = "Uses Sync API")
+    private boolean useSync = false;
+
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
 
@@ -193,6 +196,11 @@ class Configuration {
             }
             return ret;
         }
+    }
+
+
+    boolean isSync() {
+        return useSync;
     }
 
     Duration getMaxRunningTimeDuration() {

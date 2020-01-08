@@ -14,7 +14,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         org.apache.log4j.Logger.getLogger("io.netty").setLevel(org.apache.log4j.Level.OFF);
-        AsyncBenchmark benchmark = null;
         try {
             LOGGER.debug("Parsing the arguments ...");
             Configuration cfg = new Configuration();
@@ -27,52 +26,86 @@ public class Main {
                 return;
             }
 
-            switch (cfg.getOperationType()) {
-            case WriteThroughput:
-            case WriteLatency:
-                benchmark = new AsyncWriteBenchmark(cfg);
-                break;
-
-            case ReadThroughput:
-            case ReadLatency:
-                benchmark = new AsyncReadBenchmark(cfg);
-                break;
-
-            case QueryCross:
-            case QuerySingle:
-            case QueryParallel:
-            case QueryOrderby:
-            case QueryAggregate:
-            case QueryTopOrderby:
-            case QueryAggregateTopOrderby:
-            case QueryInClauseParallel:
-                benchmark = new AsyncQueryBenchmark(cfg);
-                break;
-
-            case Mixed:
-                benchmark = new AsyncMixedBenchmark(cfg);
-                break;
-
-            case QuerySingleMany:
-                benchmark = new AsyncQuerySinglePartitionMultiple(cfg);
-                break;
-
-            case ReadMyWrites:
-                benchmark = new ReadMyWriteWorkflow(cfg);
-                break;
-
-            default:
-                throw new RuntimeException(cfg.getOperationType() + " is not supported");
+            if (cfg.isSync()) {
+                syncBenchmark(cfg);
+            } else {
+                asyncBenchmark(cfg);
             }
-
-            LOGGER.info("Starting {}", cfg.getOperationType());
-            benchmark.run();
-
         } catch (ParameterException e) {
             // if any error in parsing the cmd-line options print out the usage help
             System.err.println("INVALID Usage: " + e.getMessage());
             System.err.println("Try '-help' for more information.");
             throw e;
+        }
+    }
+
+    private static void syncBenchmark(Configuration cfg) throws Exception {
+        LOGGER.info("Sync benchmark ...");
+        SyncBenchmark benchmark = null;
+        try {
+            switch (cfg.getOperationType()) {
+                case ReadThroughput:
+                case ReadLatency:
+                    benchmark = new SyncReadBenchmark(cfg);
+                    break;
+
+                default:
+                    throw new RuntimeException(cfg.getOperationType() + " is not supported");
+            }
+
+            LOGGER.info("Starting {}", cfg.getOperationType());
+            benchmark.run();
+        } finally {
+            if (benchmark != null) {
+                benchmark.shutdown();
+            }
+        }
+    }
+
+    private static void asyncBenchmark(Configuration cfg) throws Exception {
+        LOGGER.info("Async benchmark ...");
+        AsyncBenchmark benchmark = null;
+        try {
+            switch (cfg.getOperationType()) {
+                case WriteThroughput:
+                case WriteLatency:
+                    benchmark = new AsyncWriteBenchmark(cfg);
+                    break;
+
+                case ReadThroughput:
+                case ReadLatency:
+                    benchmark = new AsyncReadBenchmark(cfg);
+                    break;
+
+                case QueryCross:
+                case QuerySingle:
+                case QueryParallel:
+                case QueryOrderby:
+                case QueryAggregate:
+                case QueryTopOrderby:
+                case QueryAggregateTopOrderby:
+                case QueryInClauseParallel:
+                    benchmark = new AsyncQueryBenchmark(cfg);
+                    break;
+
+                case Mixed:
+                    benchmark = new AsyncMixedBenchmark(cfg);
+                    break;
+
+                case QuerySingleMany:
+                    benchmark = new AsyncQuerySinglePartitionMultiple(cfg);
+                    break;
+
+                case ReadMyWrites:
+                    benchmark = new ReadMyWriteWorkflow(cfg);
+                    break;
+
+                default:
+                    throw new RuntimeException(cfg.getOperationType() + " is not supported");
+            }
+
+            LOGGER.info("Starting {}", cfg.getOperationType());
+            benchmark.run();
         } finally {
             if (benchmark != null) {
                 benchmark.shutdown();
