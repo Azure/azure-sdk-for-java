@@ -515,11 +515,14 @@ public class CertificateClientTest extends CertificateClientTestBase {
             for (String certName : certificates) {
                 SyncPoller<DeletedCertificate, Void> poller = client.beginDeleteCertificate(certName);
                 PollResponse<DeletedCertificate> pollResponse = poller.poll();
-                poller.waitForCompletion();
+                while (!pollResponse.getStatus().isComplete()) {
+                    sleepInRecordMode(1000);
+                    pollResponse = poller.poll();
+                }
                 assertNotNull(pollResponse.getValue());
             }
 
-            sleepInRecordMode(60000);
+            sleepInRecordMode(90000);
 
             Iterable<DeletedCertificate> deletedCertificates =  client.listDeletedCertificates();
             for (DeletedCertificate deletedCertificate : deletedCertificates) {
