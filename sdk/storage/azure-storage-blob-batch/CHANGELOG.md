@@ -1,7 +1,7 @@
 # Change Log azure-storage-blob-batch
 ## Version 12.0.2 (2020-01-08)
 
-- Changed BlobBatch batch queuing to use a thread collection
+- Changed BlobBatch batch queuing to use a thread-safe collection
 
 ## Version 12.0.1 (2019-11-21)
 
