@@ -273,7 +273,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         List<String> certificates = new ArrayList<>();
         String certificateName;
         for (int i = 0; i < 2; i++) {
-            certificateName = generateResourceId("lstCert" + i);
+            certificateName = generateResourceId("");
             certificates.add(certificateName);
         }
         testRunner.accept(certificates);
@@ -378,7 +378,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         List<String> certificates = new ArrayList<>();
         String certificateName;
         for (int i = 0; i < 2; i++) {
-            certificateName = generateResourceId("delCert" + i);
+            certificateName = generateResourceId("");
             certificates.add(certificateName);
         }
         testRunner.accept(certificates);

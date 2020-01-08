@@ -517,8 +517,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
                 PollResponse<DeletedCertificate> pollResponse = poller.poll();
                 poller.waitForCompletion();
                 assertNotNull(pollResponse.getValue());
-                sleepInRecordMode(20000);
             }
+
+            sleepInRecordMode(60000);
 
             Iterable<DeletedCertificate> deletedCertificates =  client.listDeletedCertificates();
             for (DeletedCertificate deletedCertificate : deletedCertificates) {

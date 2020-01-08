@@ -9,9 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.*;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -369,20 +367,21 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             List<DeletedKey> deletedKeys = new ArrayList<>();
             for (CreateKeyOptions key : keys.values()) {
-                StepVerifier.create(client.createKey(key))
-                    .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
+                assertKeyEquals(key, client.createKey(key).block());
             }
             sleepInRecordMode(10000);
 
             for (CreateKeyOptions key : keys.values()) {
-                PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(key.getName());
-                AsyncPollResponse<DeletedKey, Void> pollResponse = poller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .blockLast();
+                SyncPoller<DeletedKey, Void> poller = client.beginDeleteKey(key.getName()).getSyncPoller();
+                PollResponse<DeletedKey> pollResponse = poller.poll();
+                while (!pollResponse.getStatus().isComplete()) {
+                    sleepInRecordMode(1000);
+                    pollResponse = poller.poll();
+                }
                 assertNotNull(pollResponse.getValue());
             }
 
-            sleepInRecordMode(150000);
+            sleepInRecordMode(60000);
             client.listDeletedKeys().map(actualKey -> {
                 if (keys.containsKey(actualKey.getName())) {
                     deletedKeys.add(actualKey);
@@ -396,10 +395,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             assertEquals(0, keys.size());
 
             for (DeletedKey deletedKey : deletedKeys) {
-                StepVerifier.create(client.purgeDeletedKeyWithResponse(deletedKey.getName()))
-                        .assertNext(voidResponse -> {
-                            assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                        }).verifyComplete();
+                client.purgeDeletedKeyWithResponse(deletedKey.getName()).block();
                 pollOnKeyPurge(deletedKey.getName());
             }
         });
@@ -444,10 +440,10 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void listKeys() {
         listKeysRunner((keys) -> {
             for (CreateKeyOptions key : keys.values()) {
-                StepVerifier.create(client.createKey(key))
-                    .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
-                sleepInRecordMode(5000);
+                assertKeyEquals(key, client.createKey(key).block());
             }
+            sleepInRecordMode(10000);
+
             client.listPropertiesOfKeys().map(actualKey -> {
                 if (keys.containsKey(actualKey.getName())) {
                     CreateKeyOptions expectedKey = keys.get(actualKey.getName());
