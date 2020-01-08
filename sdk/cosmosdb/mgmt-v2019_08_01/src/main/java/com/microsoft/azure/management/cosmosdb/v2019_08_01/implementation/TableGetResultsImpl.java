@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.TableCreateUpdateParameters;
 import java.util.Map;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.TableGetPropertiesResource;
 import rx.functions.Func1;
 
 class TableGetResultsImpl extends CreatableUpdatableImpl<TableGetResults, TableGetResultsInner, TableGetResultsImpl> implements TableGetResults, TableGetResults.Definition, TableGetResults.Update {
@@ -93,21 +94,6 @@ class TableGetResultsImpl extends CreatableUpdatableImpl<TableGetResults, TableG
     }
 
     @Override
-    public String _etag() {
-        return this.inner()._etag();
-    }
-
-    @Override
-    public String _rid() {
-        return this.inner()._rid();
-    }
-
-    @Override
-    public Object _ts() {
-        return this.inner()._ts();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
     }
@@ -123,8 +109,8 @@ class TableGetResultsImpl extends CreatableUpdatableImpl<TableGetResults, TableG
     }
 
     @Override
-    public String tableGetResultsId() {
-        return this.inner().tableGetResultsId();
+    public TableGetPropertiesResource resource() {
+        return this.inner().resource();
     }
 
     @Override

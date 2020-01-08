@@ -41,7 +41,7 @@ public class CassandraResourcesInner {
     /** The Retrofit service to perform REST calls. */
     private CassandraResourcesService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of CassandraResourcesInner.
@@ -49,7 +49,7 @@ public class CassandraResourcesInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public CassandraResourcesInner(Retrofit retrofit, CosmosDBImpl client) {
+    public CassandraResourcesInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(CassandraResourcesService.class);
         this.client = client;
     }
