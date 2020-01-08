@@ -4,7 +4,6 @@
 package com.azure.core.util.logging;
 
 import com.azure.core.util.Configuration;
-import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -177,19 +176,19 @@ public class ClientLoggerTests {
      * VERBOSE. Additionally, this tests that the exception message isn't logged twice as logging an exception uses
      * the exception message as the format string.
      */
-    @Test
-    public void logExceptionAsErrorOnlyExceptionMessage() {
-        String exceptionMessage = "An exception message";
-        RuntimeException runtimeException = createRuntimeException(exceptionMessage);
-
-        setupLogLevel(2);
-        clientLogger.logExceptionAsError(runtimeException);
-        System.out.flush();
-
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        assertTrue(logValues.contains(exceptionMessage + System.lineSeparator()));
-        assertFalse(logValues.contains(runtimeException.getStackTrace()[0].toString()));
-    }
+//    @Test
+//    public void logExceptionAsErrorOnlyExceptionMessage() {
+//        String exceptionMessage = "An exception message";
+//        RuntimeException runtimeException = createRuntimeException(exceptionMessage);
+//
+//        setupLogLevel(2);
+//        clientLogger.logExceptionAsError(runtimeException);
+//        System.out.flush();
+//
+//        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+//        assertTrue(logValues.contains(exceptionMessage + System.lineSeparator()));
+//        assertFalse(logValues.contains(runtimeException.getStackTrace()[0].toString()));
+//    }
 
     @ParameterizedTest(name = "{index} from logLevelToConfigure = {0}, logLevelToValidate = {1}, expected = {2}")
     @CsvSource({"1, 1, true", "1, 2, true", "1, 3, true", "1, 4, true", "2, 1, false", "1, VERBOSE, true", "1, info, true", "1, warning, true", "1, error, true", "2, verbose, false"})
@@ -197,7 +196,7 @@ public class ClientLoggerTests {
         setupLogLevel(logLevelToConfigure);
 
         LogLevel logLevel = LogLevel.fromString(logLevelToValidate);
-        assertEquals(new ClientLogger(UUID.randomUUID().toString()).canLogAtLevel(logLevel), expected);
+        assertEquals(clientLogger.canLogAtLevel(logLevel), expected);
     }
 
     @Test

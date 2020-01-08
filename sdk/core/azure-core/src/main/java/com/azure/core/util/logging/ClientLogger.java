@@ -256,7 +256,7 @@ public class ClientLogger {
                     message += System.lineSeparator() + throwableMessage;
                 }
                 String errorMessage = String.format(LOG_MESSAGE_FORMAT, LOG_LEVEL_ERROR, dateTime, classPath, message);
-                System.err.println(errorMessage);
+                System.out.println(errorMessage);
                 break;
             default:
                 // Don't do anything, this state shouldn't be possible.
