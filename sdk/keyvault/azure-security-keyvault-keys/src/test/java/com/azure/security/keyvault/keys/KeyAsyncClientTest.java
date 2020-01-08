@@ -381,7 +381,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 assertNotNull(pollResponse.getValue());
             }
 
-            sleepInRecordMode(60000);
+            sleepInRecordMode(90000);
             client.listDeletedKeys().map(actualKey -> {
                 if (keys.containsKey(actualKey.getName())) {
                     deletedKeys.add(actualKey);
