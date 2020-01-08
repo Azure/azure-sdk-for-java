@@ -37,7 +37,6 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
 
     private EventHubClient client;
     private EventHubConsumerClient consumer;
-    private EventHubConnection connection;
     private EventPosition startingPosition;
 
     // We use these values to keep track of the events we've pushed to the service and ensure the events we receive are
@@ -71,7 +70,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        dispose(consumer, connection, client);
+        dispose(consumer, client);
     }
 
     /**
