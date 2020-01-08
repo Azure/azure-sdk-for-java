@@ -54,6 +54,9 @@ class Configuration {
     @Parameter(names = "-documentDataFieldSize", description = "Length of a document data field in characters (16-bit)")
     private int documentDataFieldSize = 20;
 
+    @Parameter(names = "-documentDataFieldCount", description = "Number of data fields in document")
+    private int documentDataFieldCount = 5;
+
     @Parameter(names = "-maxConnectionPoolSize", description = "Max Connection Pool Size")
     private Integer maxConnectionPoolSize = 1000;
 
@@ -218,6 +221,10 @@ class Configuration {
 
     int getDocumentDataFieldSize() {
         return documentDataFieldSize;
+    }
+
+    int getDocumentDataFieldCount() {
+        return documentDataFieldCount;
     }
 
     ConnectionPolicy getConnectionPolicy() {
