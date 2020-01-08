@@ -347,13 +347,12 @@ Text Analytics clients raise exceptions. For example, if you try to detect the l
 document IDs, 400 error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L164-L169 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L164-L168 -->
 ```java
-    try {
-        textAnalyticsClient.detectBatchLanguages(inputs);
-    } catch (HttpResponseException e) {
-        System.out.println(e.getMessage());
-    }
+try {
+    textAnalyticsClient.detectBatchLanguages(inputs);
+} catch (HttpResponseException e) {
+    System.out.println(e.getMessage());
 }
 ```
 
