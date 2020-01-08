@@ -346,7 +346,7 @@ public class KeyClientTest extends KeyClientTestBase {
                     pollResponse = poller.poll();
                 }
             }
-            sleepInRecordMode(90000);
+            sleepInRecordMode(120000);
             client.listDeletedKeys().stream().forEach(actualKey -> {
                 if (keysToDelete.containsKey(actualKey.getName())) {
                     assertNotNull(actualKey.getDeletedOn());
@@ -356,7 +356,6 @@ public class KeyClientTest extends KeyClientTestBase {
                 client.purgeDeletedKey(actualKey.getName());
             });
             assertEquals(0, keysToDelete.size());
-
         });
     }
 

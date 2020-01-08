@@ -381,7 +381,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                 assertNotNull(pollResponse.getValue());
             }
 
-            sleepInRecordMode(80000);
+            sleepInRecordMode(120000);
             client.listDeletedSecrets().map(deletedSecret -> {
                     deletedSecrets.add(deletedSecret);
                     if (secrets.containsKey(deletedSecret.getName())) {
@@ -389,15 +389,11 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                         assertNotNull(deletedSecret.getRecoveryId());
                         secrets.remove(deletedSecret.getName());
                     }
-                    return deletedSecret;
+                client.purgeDeletedSecret(deletedSecret.getName()).block();
+                return deletedSecret;
                 }).blockLast();
 
             assertEquals(0, secrets.size());
-
-            for (DeletedSecret deletedSecret : deletedSecrets) {
-                client.purgeDeletedSecret(deletedSecret.getName()).block();
-                pollOnSecretPurge(deletedSecret.getName());
-            }
         });
     }
 
@@ -442,7 +438,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             for (KeyVaultSecret secret : secretsToList.values()) {
                 assertSecretEquals(secret, client.setSecret(secret).block());
             }
-            sleepInRecordMode(80000);
+            sleepInRecordMode(10000);
             client.listPropertiesOfSecrets().map(secret -> {
                 if (secretsToList.containsKey(secret.getName())) {
                     output.add(secret);

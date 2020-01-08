@@ -327,7 +327,7 @@ public class SecretClientTest extends SecretClientTestBase {
                 }
             }
 
-            sleepInRecordMode(90000);
+            sleepInRecordMode(120000);
             client.listDeletedSecrets().stream().forEach(actualSecret -> {
                 if (secrets.containsKey(actualSecret.getName())) {
                     assertNotNull(actualSecret.getDeletedOn());
