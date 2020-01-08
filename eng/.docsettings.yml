@@ -108,6 +108,7 @@ known_content_issues:
   - ['sdk/cosmos/faq/README.md', '#3113']
   - ['sdk/cosmos/microsoft-azure-cosmos-benchmark/README.md', '#3113']
   - ['sdk/cosmos/README.md', '#3113']
+  - ['sdk/e2e/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/Readme.md', '#3113']
   - ['sdk/eventhubs/README.md', '#3113']
