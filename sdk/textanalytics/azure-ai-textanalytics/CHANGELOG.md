@@ -11,17 +11,16 @@ our efforts can be found in the [Azure SDK Design Guidelines for Java](https://a
     `com.microsoft.azure.cognitiveservices.language.textanalytics` to `com.azure.ai.textanalytics`
 - Added support for:
   - Subscription key and AAD authentication for both synchronous and asynchronous clients.
-  - Detect Language.
-  - Separation of Entity Recognition and Entity Linking.
-  - Identification of Personally Identifiable Information.
-  - Analyze Sentiment APIs including analysis for mixed sentiment.
+  - Language detection.
+  - Entity recognition.
+  - Entity linking recognition.
+  - Personally identifiable information entities recognition.
+  - Key phrases extraction.
+  - Analyze sentiment APIs including analysis for mixed sentiment.
+- Reactive streams support using [Project Reactor](https://projectreactor.io/).
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-textanalytics_1.0.0-beta.1/sdk/textanalytics/azure-ai-textanalytics/README.md) 
 and 
 [samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-textanalytics_1.0.0-beta.1/sdk/textanalytics/azure-ai-textanalytics/src/samples) 
 demonstrate the new API.
-
-### Features
-
-- Reactive streams support using [Project Reactor](https://projectreactor.io/).
