@@ -23,7 +23,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.0-beta.6</version>
+    <version>5.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -32,7 +32,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

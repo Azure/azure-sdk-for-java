@@ -25,10 +25,9 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Adding the package to your product](#adding-the-package-to-your-product)
-  - [Default SSL library](#default-ssl-library)
-  - [Methods to authorize with Event Hubs](#methods-to-authorize-with-event-hubs)
-  - [Create an Event Hub producer using a connection string](#create-an-event-hub-producer-using-a-connection-string)
-  - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
+  - [Authenticate the client](#authenticate-the-client)
+    - [Create an Event Hub producer using a connection string](#create-an-event-hub-producer-using-a-connection-string)
+    - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
 - [Key concepts](#key-concepts)
 - [Examples](#examples)
   - [Publish events to an Event Hub](#publish-events-to-an-event-hub)
@@ -39,6 +38,8 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
   - [Enable AMQP transport logging](#enable-amqp-transport-logging)
   - [Common exceptions](#common-exceptions)
   - [Other exceptions](#other-exceptions)
+  - [Handling transient AMQP exceptions](#handling-transient-amqp-exceptions)
+  - [Default SSL library](#default-ssl-library)
 - [Next steps](#next-steps)
 - [Contributing](#contributing)
 
@@ -60,24 +61,17 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.0-beta.6</version>
+    <version>5.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level
-performance for SSL operations. The Boring SSL library is an uber jar containing native libraries
-for Linux/macOS/Windows, and provides better performance compared to the default SSL
-implementation within the JDK. For more information, including how to reduce the dependency size,
-refer to the [performance tuning][performance_tuning] section of the wiki.
-
-### Methods to authorize with Event Hubs
+### Authenticate the client
 
 For the Event Hubs client library to interact with an Event Hub, it will need to understand how to connect and authorize
 with it.
 
-### Create an Event Hub producer using a connection string
+#### Create an Event Hub producer using a connection string
 
 The easiest means for doing so is to use a connection string, which is created automatically when creating an Event Hubs
 namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to
@@ -90,6 +84,7 @@ consumers.
 
 The snippet below creates a synchronous Event Hub producer.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L30-L34 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
@@ -98,7 +93,7 @@ EventHubProducerClient producer = new EventHubClientBuilder()
     .buildProducerClient();
 ```
 
-### Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)
+#### Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)
 
 Azure SDK for Java supports an Azure Identity package, making it simple get credentials from Microsoft identity
 platform. First, add the package:
@@ -108,7 +103,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -123,6 +118,7 @@ Follow the instructions in [Creating a service principal using Azure Portal][app
 service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
 obtained from the [App registration page][app_registration_page].
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L41-L53 -->
 ```java
 ClientSecretCredential credential = new ClientSecretCredentialBuilder()
     .clientId("<< APPLICATION (CLIENT) ID >>")
@@ -138,6 +134,10 @@ EventHubProducerClient client = new EventHubClientBuilder()
     .credential(fullyQualifiedNamespace, eventHubName, credential)
     .buildProducerClient();
 ```
+
+When using Azure Active Directory, your principal must be assigned a role which allows access to Event Hubs, such
+as the `Azure Event Hubs Data Owner` role. For more information about using Azure Active Directory authorization
+with Event Hubs, please refer to [the associated documentation][aad_authorization].
 
 ## Key concepts
 
@@ -188,6 +188,7 @@ Event Hubs service to hash the events and send them to the same partition.
 The snippet below creates a synchronous producer and sends events to any partition, allowing Event Hubs service to route
 the event to an available partition.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L61-L83 -->
 ```java
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -208,7 +209,6 @@ for (EventData eventData : allEvents) {
         }
     }
 }
-
 // send the last batch of remaining events
 if (eventDataBatch.getCount() > 0) {
     producer.send(eventDataBatch);
@@ -226,6 +226,7 @@ Hub, their names are assigned at the time of creation. To understand what partit
 using `EventHubsClientBuilder` can query for metadata about the Event Hub using `getPartitionIds()` or
 `getEventHubProperties()`.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L90-L98 -->
 ```java
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -244,7 +245,12 @@ When an Event Hub producer is not associated with any specific partition, it may
 Hubs service keep different events or batches of events together on the same partition. This can be accomplished by
 setting a `partition key` when publishing the events.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L105-L113 -->
 ```java
+EventHubProducerClient producer = new EventHubClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
+    .buildProducerClient();
+
 CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey("grouping-key");
 EventDataBatch eventDataBatch = producer.createBatch(batchOptions);
 
@@ -266,6 +272,7 @@ to newest events that get pushed to the partition by invoking `receiveFromPartit
 can begin receiving events from multiple partitions using the same EventHubConsumerAsyncClient by calling
 `receiveFromPartition(String, EventPosition)` with another partition id, and subscribing to that Flux.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L120-L128 -->
 ```java
 EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -283,6 +290,7 @@ consumer.receiveFromPartition("0", EventPosition.latest()).subscribe(event -> {
 Developers can create a synchronous consumer that returns events in batches using an `EventHubConsumerClient`. In the
 snippet below, a consumer is created that starts reading events from the beginning of the partition's event stream.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L135-L147 -->
 ```java
 EventHubConsumerClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -313,32 +321,30 @@ In our example, we will focus on building the [`EventProcessorClient`][EventProc
 [`InMemoryCheckpointStore`][InMemoryCheckpointStore] available in samples, and a callback function that processes events
 received from the Event Hub and writes to console.
 
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L155-L176 -->
 ```java
-class Program {
-    public static void main(String[] args) {
-        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
-            .consumerGroup("<< CONSUMER GROUP NAME >>")
-            .connectionString("<< EVENT HUB CONNECTION STRING >>")
-            .checkpointStore(new InMemoryCheckpointStore())
-            .processEvent(eventContext -> {
-                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
-            })
-            .processError(errorContext -> {
-                System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
-            })
-            .buildEventProcessorClient();
+EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
+    .consumerGroup("<< CONSUMER GROUP NAME >>")
+    .connectionString("<< EVENT HUB CONNECTION STRING >>")
+    .checkpointStore(new InMemoryCheckpointStore())
+    .processEvent(eventContext -> {
+        System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+            + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+    })
+    .processError(errorContext -> {
+        System.out
+            .println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
+    })
+    .buildEventProcessorClient();
 
-        // This will start the processor. It will start processing events from all partitions.
-        eventProcessorClient.start();
+// This will start the processor. It will start processing events from all partitions.
+eventProcessorClient.start();
 
-        // (for demo purposes only - adding sleep to wait for receiving events)
-        TimeUnit.SECONDS.sleep(2);
+// (for demo purposes only - adding sleep to wait for receiving events)
+TimeUnit.SECONDS.sleep(2);
 
-        // When the user wishes to stop processing events, they can call `stop()`.
-        eventProcessorClient.stop();
-    }
-}
+// This will stop processing events.
+eventProcessorClient.stop();
 ```
 
 ## Troubleshooting
@@ -375,9 +381,9 @@ java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 
 #### AMQP exception
 
-This is a general exception for AMQP related failures, which includes the AMQP errors as ErrorCondition and the context
-that caused this exception as ErrorContext. 'isTransient' is a boolean indicating if the exception is a transient error
-or not. If true, then the request can be retried; otherwise not.
+This is a general exception for AMQP related failures, which includes the AMQP errors as `ErrorCondition` and the
+context that caused this exception as `AmqpErrorContext`. `isTransient` is a boolean indicating if the exception is a
+transient error or not. If true, then the request can be retried; otherwise not.
 
 [`AmqpErrorCondition`][AmqpErrorCondition] contains error conditions common to the AMQP protocol and used by Azure
 services. When an AMQP exception is thrown, examining the error condition field can inform developers as to why the AMQP
@@ -408,12 +414,23 @@ please refer to [Azure Event Hubs quotas and limits][event_hubs_quotas] for spec
 For detailed information about these and other exceptions that may occur, please refer to [Event Hubs Messaging
 Exceptions][event_hubs_messaging_exceptions].
 
+### Handling transient AMQP exceptions
+
+If a transient AMQP exception occurs, the client library retries the operation as many times as the 
+[AmqpRetryOptions][AmqpRetryOptions] allows. Afterwards, the operation fails and an exception is propagated back to the
+user.
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ## Next steps
 
 Beyond those discussed, the Azure Event Hubs client library offers support for many additional scenarios to help take
 advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios,
 the following set of sample is available [here][samples_readme].
-
 
 ## Contributing
 
@@ -422,6 +439,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
+[aad_authorization]: https://docs.microsoft.com/azure/event-hubs/authorize-access-azure-active-directory
 [api_documentation]: https://aka.ms/java-docs
 [app_registration_page]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#get-values-for-signing-in
 [application_client_secret]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret
@@ -439,15 +457,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
 [samples_readme]: ./src/samples/README.md
 [sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/
-[sample_consume_event]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEvents.java
-[sample_consume_sequence_number]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEventsFromKnownSequenceNumberPosition.java
-[sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/EventProcessorSample.java
-[sample_get_event_hubs_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
-[sample_publish_custom_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
-[sample_publish_identity]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithAzureIdentity.java
-[sample_publish_partitionId]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsToSpecificPartition.java
-[sample_publish_partitionKey]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithPartitionKey.java
-[sample_publish_size_limited]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithSizeLimitedBatches.java
 [source_code]: ./
 [AmqpException]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
 [AmqpErrorCondition]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorCondition.java
@@ -460,5 +469,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [CreateBatchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/CreateBatchOptions.java
 [InMemoryCheckpointStore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryCheckpointStore.java
 [LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)
