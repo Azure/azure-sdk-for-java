@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.common.collect.ImmutableList;
