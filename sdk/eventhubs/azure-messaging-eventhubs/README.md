@@ -39,9 +39,8 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
   - [Common exceptions](#common-exceptions)
   - [Other exceptions](#other-exceptions)
   - [Handling transient AMQP exceptions](#handling-transient-amqp-exceptions)
-- [Next steps](#next-steps)
-  - [Samples](#samples)
   - [Default SSL library](#default-ssl-library)
+- [Next steps](#next-steps)
 - [Contributing](#contributing)
 
 ## Getting started
@@ -421,20 +420,17 @@ If a transient AMQP exception occurs, the client library retries the operation a
 [AmqpRetryOptions][AmqpRetryOptions] allows. Afterwards, the operation fails and an exception is propagated back to the
 user.
 
-## Next steps
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
-### Samples
+## Next steps
 
 Beyond those discussed, the Azure Event Hubs client library offers support for many additional scenarios to help take
 advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios,
 the following set of sample is available [here][samples_readme].
-
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level
-performance for SSL operations. The Boring SSL library is an uber jar containing native libraries
-for Linux/macOS/Windows, and provides better performance compared to the default SSL
-implementation within the JDK. For more information, including how to reduce the dependency size,
-refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Contributing
 
