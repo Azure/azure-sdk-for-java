@@ -6,7 +6,6 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.TokenRequestContext;
 import org.junit.Assert;
 import org.junit.Ignore;
-import org.junit.Test;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
