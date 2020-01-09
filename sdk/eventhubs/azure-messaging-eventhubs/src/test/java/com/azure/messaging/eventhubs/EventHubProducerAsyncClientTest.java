@@ -923,7 +923,7 @@ class EventHubProducerAsyncClientTest {
      * Verifies that we can resend a message when a transient error occurs.
      */
     @Test
-    void resendMessageOnTransientFailure() {
+    void resendMessageOnTransientLinkFailure() {
         // Arrange
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
