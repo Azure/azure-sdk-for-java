@@ -383,12 +383,15 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             sleepInRecordMode(120000);
             DeletedSecret delSecret = client.listDeletedSecrets().map(deletedSecret -> {
-                    assertNotNull(deletedSecret.getDeletedOn());
-                    assertNotNull(deletedSecret.getRecoveryId());
-                    client.purgeDeletedSecret(deletedSecret.getName()).block();
-                    return deletedSecret;
-                }).blockLast();
+                deletedSecrets.add(deletedSecret);
+                assertNotNull(deletedSecret.getDeletedOn());
+                assertNotNull(deletedSecret.getRecoveryId());
+                return deletedSecret;
+            }).blockLast();
             assertNotNull(delSecret);
+            for (DeletedSecret deletedSecret : deletedSecrets) {
+                client.purgeDeletedSecret(deletedSecret.getName());
+            }
         });
     }
 

@@ -386,10 +386,12 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     deletedKeys.add(actualKey);
                     assertNotNull(actualKey.getDeletedOn());
                     assertNotNull(actualKey.getRecoveryId());
-                    client.purgeDeletedKeyWithResponse(actualKey.getName()).block();
                     return actualKey;
             }).blockLast();
             assertNotNull(deletedKey);
+            for (DeletedKey delKey : deletedKeys) {
+                client.purgeDeletedKey(delKey.getName());
+            }
         });
     }
 
