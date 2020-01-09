@@ -3,6 +3,12 @@ trigger: none
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
+      Matrix:
+        Linux - Java 8:
+          OSName: 'Linux'
+          OSVmImage: 'ubuntu-16.04'
+          JavaVersion: '1.8'
+          DisplayName: 'Linux - Java 8'
       ServiceDirectory: storage
       EnvVars:
         AZURE_TEST_MODE: LIVE
