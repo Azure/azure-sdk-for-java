@@ -327,7 +327,7 @@ public class SecretClientTest extends SecretClientTestBase {
                 }
             }
 
-            sleepInRecordMode(12000);
+            sleepInRecordMode(120000);
             Iterable<DeletedSecret> deletedSecrets = client.listDeletedSecrets();
             assertTrue(deletedSecrets.iterator().hasNext());
             for (DeletedSecret deletedSecret : deletedSecrets) {

@@ -377,7 +377,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     void listDeletedCertificatesRunner(Consumer<List<String>> testRunner) {
         List<String> certificates = new ArrayList<>();
         String certificateName;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             certificateName = generateResourceId("");
             certificates.add(certificateName);
         }

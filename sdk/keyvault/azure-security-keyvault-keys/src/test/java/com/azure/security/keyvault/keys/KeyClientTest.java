@@ -346,7 +346,7 @@ public class KeyClientTest extends KeyClientTestBase {
                     pollResponse = poller.poll();
                 }
             }
-            sleepInRecordMode(9000);
+            sleepInRecordMode(90000);
 
             Iterable<DeletedKey> deletedKeys = client.listDeletedKeys();
             assertTrue(deletedKeys.iterator().hasNext());
