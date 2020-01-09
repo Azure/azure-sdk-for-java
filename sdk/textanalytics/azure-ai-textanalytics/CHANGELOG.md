@@ -2,7 +2,8 @@
 
 ## 1.0.0-beta.1 (2020-01-09)
 
-- Initial release of this module.
+- This is the first preview of the Text Analytics client library. 
+- It uses the Text Analytics Service `v3.0-preview.1` API.
 - New namespace/package name:
     - The namespace/package name for Azure Text Analytics client library has changed from 
     `com.microsoft.azure.cognitiveservices.language.textanalytics` to `com.azure.ai.textanalytics`
