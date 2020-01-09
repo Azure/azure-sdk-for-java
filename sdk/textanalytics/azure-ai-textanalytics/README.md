@@ -282,7 +282,7 @@ for (TextSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).ge
 ## Troubleshooting
 ### General
 Text Analytics clients raise exceptions. For example, if you try to detect the languages of a batch of text with same 
-document IDs, 400 error is return that indicating bad request. In the following code snippet, the error is handled 
+document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L164-L168 -->
@@ -322,7 +322,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[api_reference_doc]: https://azure.github.io/azure-sdk-for-java/textanalytics.html
+[api_reference_doc]: https://aka.ms/azsdk-java-textanalytics-ref-docs
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
