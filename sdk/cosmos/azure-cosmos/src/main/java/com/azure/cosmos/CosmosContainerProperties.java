@@ -50,8 +50,8 @@ public class CosmosContainerProperties extends Resource {
         setPartitionKeyDefinition(partitionKeyDefinition);
     }
 
-    CosmosContainerProperties(ResourceResponse<DocumentCollection> response) {
-        super(response.getResource().toJson());
+    CosmosContainerProperties(String json) {
+        super(json);
     }
 
     // Converting document collection to CosmosContainerProperties

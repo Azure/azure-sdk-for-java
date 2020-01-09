@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.UserDefinedFunction;
+import org.apache.commons.lang3.StringUtils;
 
 public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<CosmosUserDefinedFunctionProperties> {
 
@@ -13,14 +14,14 @@ public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<Cosmo
     CosmosAsyncUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response,
                                            CosmosAsyncContainer container) {
         super(response);
-        if (response.getResource() != null) {
-            super.setProperties(new CosmosUserDefinedFunctionProperties(response));
-            cosmosUserDefinedFunctionProperties = new CosmosUserDefinedFunctionProperties(response);
-            cosmosUserDefinedFunction =
-                new CosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId(), container);
-        } else {
+        String bodyAsString = response.getBodyAsString();
+        if (StringUtils.isEmpty(bodyAsString)) {
             cosmosUserDefinedFunctionProperties = null;
             cosmosUserDefinedFunction = null;
+        } else {
+            cosmosUserDefinedFunctionProperties = new CosmosUserDefinedFunctionProperties(bodyAsString);
+            super.setProperties(cosmosUserDefinedFunctionProperties);
+            cosmosUserDefinedFunction = new CosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId(), container);
         }
     }
 

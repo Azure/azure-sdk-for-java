@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
+import org.apache.commons.lang3.StringUtils;
 
 public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosStoredProcedureProperties> {
 
@@ -14,14 +15,15 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
     CosmosAsyncStoredProcedureResponse(ResourceResponse<StoredProcedure> response,
                                        CosmosAsyncContainer cosmosContainer) {
         super(response);
-        if (response.getResource() != null) {
-            super.setProperties(new CosmosStoredProcedureProperties(response));
-            storedProcedure = new CosmosAsyncStoredProcedure(this.getProperties().getId(), cosmosContainer);
-        } else {
+        String bodyAsString = response.getBodyAsString();
+        if (StringUtils.isEmpty(bodyAsString)) {
             storedProcedure = null;
+
+        } else {
+            super.setProperties(new CosmosStoredProcedureProperties(bodyAsString));
+            storedProcedure = new CosmosAsyncStoredProcedure(this.getProperties().getId(), cosmosContainer);
         }
         storedProcedureResponse = null;
-
     }
 
     CosmosAsyncStoredProcedureResponse(StoredProcedureResponse response, CosmosAsyncContainer cosmosContainer, String storedProcedureId) {
