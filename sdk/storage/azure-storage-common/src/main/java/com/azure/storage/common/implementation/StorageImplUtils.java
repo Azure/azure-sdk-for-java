@@ -3,6 +3,8 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -250,5 +252,22 @@ public class StorageImplUtils {
             }
         }
         return accountName;
+    }
+
+    /**
+     * Throws an IllegalArgumentException if a new header is present for an old service version.
+     *
+     * @param headers The {@link HttpHeaders headers} to check.
+     * @param header The header to check for.
+     * @param operationName The operation name.
+     * @param serviceVersion The service version.
+     * @throws IllegalArgumentException If the request is invalid.
+     */
+    public static void throwIfContainsHeader(HttpHeaders headers, String header, String operationName,
+        String serviceVersion) {
+        if (headers.get(header) != null) {
+            throw new IllegalArgumentException(header + " is not supported for " + operationName + " in service "
+                + "version " + serviceVersion);
+        }
     }
 }

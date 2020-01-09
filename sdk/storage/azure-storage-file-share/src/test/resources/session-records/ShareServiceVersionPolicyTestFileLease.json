@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.file.core.windows.net/jtsshareserviceversionpolicytestfilelease0143083c0d8804?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4ac1ba81-f433-48e8-ba06-713d8fc0ad9b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7952D9FE8C689",
+      "Last-Modified" : "Thu, 09 Jan 2020 17:59:08 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "35e9269d-901a-003b-5816-c7d79f000000",
+      "Date" : "Thu, 09 Jan 2020 17:59:08 GMT",
+      "x-ms-client-request-id" : "4ac1ba81-f433-48e8-ba06-713d8fc0ad9b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.file.core.windows.net/jtsshareserviceversionpolicytestfilelease0143083c0d8804/javapathshareserviceversionpolicytestfilelease1334484ded1",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9d38f9a3-b904-4685-ba61-7d7181da787a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "15729343842853002337*8280205063999649007",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2020-01-09T17:59:08.7164474Z",
+      "Last-Modified" : "Thu, 09 Jan 2020 17:59:08 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 09 Jan 2020 17:59:08 GMT",
+      "ETag" : "0x8D7952DA008103A",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2020-01-09T17:59:08.7164474Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "35e926a0-901a-003b-5916-c7d79f000000",
+      "x-ms-client-request-id" : "9d38f9a3-b904-4685-ba61-7d7181da787a",
+      "x-ms-file-last-write-time" : "2020-01-09T17:59:08.7164474Z"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtsshareserviceversionpolicytestfilelease0143083c0d8804", "javapathshareserviceversionpolicytestfilelease1334484ded1" ]
+}
