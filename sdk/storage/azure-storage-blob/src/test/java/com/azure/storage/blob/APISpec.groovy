@@ -187,8 +187,8 @@ class APISpec extends Specification {
             }
 
             containerClient.delete()
-        }        
-        
+        }
+
         interceptorManager.close()
     }
 
