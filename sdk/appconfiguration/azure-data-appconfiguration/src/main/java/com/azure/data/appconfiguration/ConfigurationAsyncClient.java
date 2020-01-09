@@ -28,6 +28,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -58,7 +59,7 @@ public final class ConfigurationAsyncClient {
 
     private static final String ETAG_ANY = "*";
     private static final Supplier<Map<String, String>> APP_CONFIG_TRACING_PROPERTIES = () ->
-        Map.of(AZ_TRACING_NAMESPACE_KEY, "Microsoft.AppConfiguration");
+        new HashMap<String, String>() {{ put(AZ_TRACING_NAMESPACE_KEY, "Microsoft.AppConfiguration"); }};
 
     private final String serviceEndpoint;
     private final ConfigurationService service;

@@ -3,7 +3,6 @@
 
 package com.azure.core.tracing.opentelemetry.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
 import io.opentelemetry.trace.Status;
 
 public final class HttpTraceUtil {
@@ -26,10 +25,7 @@ public final class HttpTraceUtil {
     private static final Status STATUS_502 = Status.UNKNOWN.withDescription("Bad Gateway");
     private static final Status STATUS_505 = Status.UNKNOWN.withDescription("HTTP Version not supported");
 
-    private final ClientLogger logger = new ClientLogger(HttpTraceUtil.class);
-
-    private HttpTraceUtil() {
-    }
+    private HttpTraceUtil() { }
 
     /**
      * Parse OpenTelemetry Status from HTTP response status code.
