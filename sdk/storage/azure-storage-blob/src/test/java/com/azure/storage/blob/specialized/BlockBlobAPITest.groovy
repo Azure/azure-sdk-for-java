@@ -828,7 +828,7 @@ class BlockBlobAPITest extends APISpec {
         where:
         dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
         BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES - 1 | null             | null      || 0 // Test that the default for singleUploadSize is the maximum
-        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
         100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
     }

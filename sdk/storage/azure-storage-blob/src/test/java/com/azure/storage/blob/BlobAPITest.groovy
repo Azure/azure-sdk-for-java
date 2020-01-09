@@ -590,7 +590,7 @@ class BlobAPITest extends APISpec {
                  * will be returned unmodified by 'Exceptions.unwrap'.
                  */
                 assert Exceptions.unwrapMultiple(it).stream().anyMatch({ it2 ->
-                    def exception = Exceptions.unwrap(it)
+                    def exception = Exceptions.unwrap(it2)
                     if (exception instanceof BlobStorageException) {
                         assert ((BlobStorageException) exception).getStatusCode() == 412
                     }
