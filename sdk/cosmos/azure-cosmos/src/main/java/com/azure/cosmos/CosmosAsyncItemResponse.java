@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
+import org.apache.commons.lang3.StringUtils;
 
 public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties> {
     private final CosmosAsyncItem itemClient;
@@ -12,7 +13,7 @@ public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties
                             CosmosAsyncContainer container) {
         super(response);
         String bodyAsString = response.getBodyAsString();
-        if (bodyAsString == null) {
+        if (StringUtils.isEmpty(bodyAsString)) {
             super.setProperties(null);
             itemClient = null;
         } else {
@@ -30,7 +31,7 @@ public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties
     public CosmosItemProperties getProperties() {
         return super.getProperties();
     }
-    
+
     /**
      * Gets the CosmosAsyncItem
      *
