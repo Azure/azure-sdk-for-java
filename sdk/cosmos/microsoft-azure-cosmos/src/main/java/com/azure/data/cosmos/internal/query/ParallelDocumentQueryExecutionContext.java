@@ -8,6 +8,7 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IDocumentClientRetryPolicy;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
@@ -18,6 +19,7 @@ import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
+import reactor.util.concurrent.Queues;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -341,5 +343,27 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 initialPageSize,
                 initialContinuationToken,
                 top);
+    }
+
+    private int fluxSequentialMergeConcurrency(FeedOptions options, int numberOfPartitions) {
+        int parallelism = options.maxDegreeOfParallelism();
+        if (parallelism < 0) {
+            parallelism = Configs.getCPUCnt();
+        } else if (parallelism == 0) {
+            parallelism = 1;
+        }
+
+        return Math.min(numberOfPartitions, parallelism);
+    }
+
+    private int fluxSequentialMergePrefetch(FeedOptions options, int numberOfPartitions, int pageSize, int fluxConcurrency) {
+        int maxBufferedItemCount = options.maxBufferedItemCount();
+
+        if (maxBufferedItemCount <= 0) {
+            maxBufferedItemCount = Math.min(Configs.getCPUCnt() * numberOfPartitions * pageSize, 100_000);
+        }
+
+        int fluxPrefetch = Math.max(maxBufferedItemCount / (Math.max(fluxConcurrency * pageSize, 1)), 1);
+        return Math.min(fluxPrefetch, Queues.XS_BUFFER_SIZE);
     }
 }
