@@ -17,6 +17,7 @@ import rx.Observable;
 import com.microsoft.azure.management.storage.v2018_07_01.ListContainerItems;
 import com.microsoft.azure.management.storage.v2018_07_01.BlobContainer;
 import com.microsoft.azure.management.storage.v2018_07_01.LegalHold;
+import com.microsoft.azure.management.storage.v2018_07_01.LeaseContainerResponse;
 import java.util.List;
 import com.microsoft.azure.management.storage.v2018_07_01.ImmutabilityPolicy;
 
@@ -121,13 +122,29 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
     }
 
     @Override
+    public Observable<LeaseContainerResponse> leaseAsync(String resourceGroupName, String accountName, String containerName) {
+        BlobContainersInner client = this.inner();
+        return client.leaseAsync(resourceGroupName, accountName, containerName)
+        .map(new Func1<LeaseContainerResponseInner, LeaseContainerResponse>() {
+            @Override
+            public LeaseContainerResponse call(LeaseContainerResponseInner inner) {
+                return new LeaseContainerResponseImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<ImmutabilityPolicy> getImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName) {
         BlobContainersInner client = this.inner();
         return client.getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName)
-        .map(new Func1<ImmutabilityPolicyInner, ImmutabilityPolicy>() {
+        .flatMap(new Func1<ImmutabilityPolicyInner, Observable<ImmutabilityPolicy>>() {
             @Override
-            public ImmutabilityPolicy call(ImmutabilityPolicyInner inner) {
-                return wrapImmutabilityPolicyModel(inner);
+            public Observable<ImmutabilityPolicy> call(ImmutabilityPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ImmutabilityPolicy)wrapImmutabilityPolicyModel(inner));
+                }
             }
        });
     }

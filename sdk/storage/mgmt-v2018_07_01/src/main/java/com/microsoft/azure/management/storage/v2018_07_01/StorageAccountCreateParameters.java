@@ -19,7 +19,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class StorageAccountCreateParameters {
     /**
-     * Required. Gets or sets the sku name.
+     * Required. Gets or sets the SKU name.
      */
     @JsonProperty(value = "sku", required = true)
     private SkuInner sku;
@@ -107,7 +107,7 @@ public class StorageAccountCreateParameters {
     private Boolean isHnsEnabled;
 
     /**
-     * Get required. Gets or sets the sku name.
+     * Get required. Gets or sets the SKU name.
      *
      * @return the sku value
      */
@@ -116,7 +116,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set required. Gets or sets the sku name.
+     * Set required. Gets or sets the SKU name.
      *
      * @param sku the sku value to set
      * @return the StorageAccountCreateParameters object itself.
