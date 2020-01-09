@@ -62,7 +62,8 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
 
     /**
      * Returns an iterator for enumerating the {@link Event} instances in this {@link RequestTimeline}.
-     * @return
+     * 
+     * @return an iterator for enumerating the {@link Event} instances in this {@link RequestTimeline}.
      */
     @Override
     public Iterator<Event> iterator() {

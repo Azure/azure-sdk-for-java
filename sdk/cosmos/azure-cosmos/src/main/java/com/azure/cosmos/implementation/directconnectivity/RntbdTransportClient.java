@@ -425,7 +425,14 @@ public final class RntbdTransportClient extends TransportClient {
                         }
                     }
                 } finally {
-                    DEFAULT_OPTIONS = options != null ? options : new Options();
+                    if (options == null) {
+                        DEFAULT_OPTIONS = new Options();
+                    } else {
+                        logger.info("Updated default Direct TCP options from system property {}: {}",
+                            DEFAULT_OPTIONS_PROPERTY_NAME,
+                            options);
+                        DEFAULT_OPTIONS = options;
+                    }
                 }
             }
 

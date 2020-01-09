@@ -200,7 +200,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     /**
-     * The {@link Channel} of the {@link ChannelHandlerContext} has fully consumed the most-recent message read
+     * The {@link Channel} of the {@link ChannelHandlerContext} has fully consumed the most-recent message read.
      * <p>
      * If {@link ChannelOption#AUTO_READ} is off, no further attempt to read inbound data from the current
      * {@link Channel} will be made until {@link ChannelHandlerContext#read} is called. This leaves time
