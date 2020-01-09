@@ -120,10 +120,10 @@ In the past, cloud-based analytics had to compromise in areas of performance, ma
 
 Data Lake Storage Gen2 offers two types of resources:
 
-- The _filesystem used via 'DataLakeFileSystemClient'
-- The _path used via 'DataLakeFileClient' or 'DataLakeDirectoryClient'
+- The `_filesystem` used via 'DataLakeFileSystemClient'
+- The `_path` used via 'DataLakeFileClient' or 'DataLakeDirectoryClient'
 
-|ADLS Gen2                     | Blob       |
+|ADLS Gen2                  | Blob       |
 | --------------------------| ---------- |
 |Filesystem                 | Container  | 
 |Path (File or Directory)   | Blob       |
