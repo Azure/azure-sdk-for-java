@@ -21,7 +21,7 @@ import java.util.concurrent.TimeoutException;
  * Helper class to help with retry policies.
  */
 public class RetryUtil {
-    private final static ClientLogger LOGGER = new ClientLogger(RetryUtil.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RetryUtil.class);
 
     // So this class can't be instantiated.
     private RetryUtil() {
