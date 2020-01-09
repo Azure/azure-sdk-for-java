@@ -1,16 +1,16 @@
 # Release History
 
-## 1.0.0-beta.1 (Unreleased)
+## 1.0.0-beta.1 (2020-01-09)
 
-For details on the Azure SDK for Java (January 2020 Preview) release refer to the [release announcement]().
-
-### Added
 - Initial release of this module.
-- Support for subscription key and AAD authentication for both synchronous and asynchronous clients.
+- New namespace/package name:
+    - The namespace/package name for Azure Text Analytics client library has changed from 
+    `com.microsoft.azure.cognitiveservices.language.textanalytics` to `com.azure.ai.textanalytics`
+- Added support for subscription key and AAD authentication for both synchronous and asynchronous clients.
 - Added Detect Language, Recognize Entity, Recognize PII entity, Recognize Linking Entity, Analyze Sentiment APIs.
 
 This package's 
-[documentation]() 
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-textanalytics_1.0.0-beta.1/sdk/textanalytics/azure-ai-textanalytics/README.md) 
 and 
-[samples]() 
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-textanalytics_1.0.0-beta.1/sdk/textanalytics/azure-ai-textanalytics/src/samples) 
 demonstrate the new API.

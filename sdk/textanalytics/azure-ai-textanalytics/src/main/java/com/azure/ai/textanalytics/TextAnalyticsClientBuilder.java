@@ -46,6 +46,14 @@ import java.util.Objects;
  * {@link #credential(TokenCredential) credential(TokenCredential)} give the builder access credential.
  * </p>
  *
+ * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Text Analytics Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.instantiation}
+ *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and
@@ -53,6 +61,8 @@ import java.util.Objects;
  * pipeline requires additional setup but allows for finer control on how the {@link TextAnalyticsClient} and
  * {@link TextAnalyticsAsyncClient} is built.
  * </p>
+ *
+ * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.pipeline.instantiation}
  *
  * @see TextAnalyticsAsyncClient
  * @see TextAnalyticsClient

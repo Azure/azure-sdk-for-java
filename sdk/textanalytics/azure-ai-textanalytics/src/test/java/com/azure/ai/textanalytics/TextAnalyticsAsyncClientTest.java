@@ -420,8 +420,22 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             .assertNext(response -> validateErrorDocument(expectedError, response.getError())).verifyComplete();
     }
 
+    /**
+     * Test analyzing sentiment for a faulty input text.
+     */
+    @Test
     public void analyseSentimentForFaultyText() {
-        // TODO (shawn): add this case later
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 5, 0);
+        final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 1, 0),
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 4, 1));
+
+        StepVerifier
+            .create(client.analyzeSentiment("!@#%%"))
+            .assertNext(response -> {
+                validateAnalysedSentiment(expectedDocumentSentiment, response.getDocumentSentiment());
+                validateAnalysedSentenceSentiment(expectedSentenceSentiments, response.getSentenceSentiments());
+            }).verifyComplete();
     }
 
     /**

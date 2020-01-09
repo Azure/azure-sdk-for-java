@@ -1,6 +1,7 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.0.2 (2020-01-07)
+- Fix MSI_ENDPOINT and MSI_SECRET environment variable lookup issue in `ManagedIdentityCredential` when running on App Service
 
 ## 1.0.0 (2019-10-25) - November 2019 SDK Release
 **Breaking changes**

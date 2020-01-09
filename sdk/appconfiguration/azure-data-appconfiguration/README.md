@@ -23,7 +23,7 @@ Use the client library for App Configuration to create and manage application co
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-appconfiguration</artifactId>
-    <version>1.0.0-beta.8</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -31,16 +31,6 @@ Use the client library for App Configuration to create and manage application co
 ### Default HTTP Client
 All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
 AppConfiguration to use Netty HTTP client. 
-
-[//]: # ({x-version-update-start;com.azure:azure-core-http-netty;current})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-http-netty</artifactId>
-    <version>1.2.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
 
 ### Alternate HTTP Client
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
@@ -52,7 +42,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-appconfiguration</artifactId>
-    <version>1.0.0-beta.8</version>
+    <version>1.0.1</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -106,7 +96,9 @@ az appconfig create --name <config-store-name> --resource-group <resource-group-
 
 ### Authenticate the client
 
-In order to interact with the App Configuration service you'll need to create an instance of the Configuration Client class. To make this possible you'll need the connection string of the Configuration Store.
+In order to interact with the App Configuration service you'll need to create an instance of the Configuration Client 
+class. To make this possible you'll need the connection string of the Configuration Store. Alternatively, use AAD token
+to connect to the service.
 
 #### Use connection string
 

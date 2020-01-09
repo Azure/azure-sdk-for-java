@@ -1,5 +1,5 @@
 ## Changelog
-### unreleased
+### 3.6.0-beta.1
 - Added the ability to select default Direct TCP options
 
   In priority order we will take default Direct TCP options from:
@@ -22,6 +22,8 @@
    Otherwise, if none of these values are set or an error occurs we create default options based on a set of hard-wired 
    values defined in the default private parameterless constructor for `RntbdTransportClient.Options` as we did before 
    this release.
+   
+- Fixed Reactor Netty connection re-use issue: https://github.com/Azure/azure-sdk-for-java/issues/6973 
     
 ### 3.5.0
 - Changefeed bug fixes (includes all the bug fixes released in 3.3.3) 
