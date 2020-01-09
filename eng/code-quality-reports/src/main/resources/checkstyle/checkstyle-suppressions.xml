@@ -186,6 +186,7 @@
 
   <!-- ClientLogger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
+
   <!-- Use the logger in Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.Utility.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.implementation.StorageImplUtils.java"/>
@@ -196,6 +197,9 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="CertificateUtil.java"/>
   <!-- Requires static access to logger to report errors while loading i18n messages (from within a static initializer )-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="Messages.java"/>
+
+  <!-- Report AMQP retry attempts in static withRetry method. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.amqp.implementation.RetryUtil.java"/>
 
   <!-- Event Hubs uses AMQP, which does not contain an HTTP response. Returning PagedResponse and Response does not apply. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubClient.java"/>
