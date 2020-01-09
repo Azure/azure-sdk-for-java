@@ -97,8 +97,6 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
         if (tracingNamespace.isPresent()) {
             putAttributeIfNotEmptyOrNull(span, AZ_NAMESPACE_KEY, tracingNamespace.get().toString());
-        } else {
-            putAttributeIfNotEmptyOrNull(span, AZ_NAMESPACE_KEY, "");
         }
     }
 
