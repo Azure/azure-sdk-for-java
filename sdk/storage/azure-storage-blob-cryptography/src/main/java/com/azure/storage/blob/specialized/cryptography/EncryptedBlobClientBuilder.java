@@ -24,7 +24,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.util.BlobServiceVersionPolicy;
+import com.azure.storage.blob.BlobServiceVersionPolicy;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;

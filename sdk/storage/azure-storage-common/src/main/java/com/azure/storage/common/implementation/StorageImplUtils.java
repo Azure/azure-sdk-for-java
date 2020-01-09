@@ -282,8 +282,8 @@ public class StorageImplUtils {
     public static void throwIfContainsQuery(URL url, String query, String operationName,
         String serviceVersion) {
         if (url.getQuery() != null && url.getQuery().contains(query)) {
-            throw new IllegalArgumentException("The query " + query + " is not supported for " + operationName +
-                " in service version " + serviceVersion);
+            throw new IllegalArgumentException("The query " + query + " is not supported for " + operationName
+                + " in service version " + serviceVersion);
         }
     }
 }

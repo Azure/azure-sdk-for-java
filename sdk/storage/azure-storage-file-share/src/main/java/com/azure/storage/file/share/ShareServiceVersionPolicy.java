@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.share.implementation.util;
+package com.azure.storage.file.share;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.file.share.ShareServiceVersion;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -76,7 +75,7 @@ public class ShareServiceVersionPolicy implements HttpPipelinePolicy {
         } else if (ShareServiceVersion.V2019_07_07.getVersion().equals(version)) {
             return ShareServiceVersion.V2019_07_07;
         } else {
-            throw new IllegalStateException (Constants.HeaderConstants.SERVICE_VERSION + " must be set.");
+            throw new IllegalStateException(Constants.HeaderConstants.SERVICE_VERSION + " must be set.");
         }
     }
 }
