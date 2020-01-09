@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.share.implementation.util;
 
 import com.azure.core.http.HttpHeaders;
@@ -12,8 +15,17 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.throwIfContainsHeader;
+import static com.azure.storage.common.implementation.StorageImplUtils.throwIfContainsQuery;
 
+/**
+ * This policy prevents headers and query parameters introduced in new service versions are not accidentally sent when
+ * the intended service version is older.
+ */
 public class ShareServiceVersionPolicy implements HttpPipelinePolicy {
+
+    private static final String ANY_FILE_API = "any file API";
+
+    private static final String START_COPY = "copy file";
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -21,7 +33,6 @@ public class ShareServiceVersionPolicy implements HttpPipelinePolicy {
         URL requestUrl = context.getHttpRequest().getUrl();
         ShareServiceVersion serviceVersion = toServiceVersion(
             requestHeaders.getValue(Constants.HeaderConstants.SERVICE_VERSION));
-        String ANY_FILE_API = "any file API";
 
         if (serviceVersion.ordinal() == ShareServiceVersion.getLatest().ordinal()) {
             return next.process();
@@ -34,13 +45,9 @@ public class ShareServiceVersionPolicy implements HttpPipelinePolicy {
             throwIfContainsHeader(requestHeaders, "x-ms-lease-duration", ANY_FILE_API, serviceVersion.getVersion());
             throwIfContainsHeader(requestHeaders, "x-ms-proposed-lease-id", ANY_FILE_API, serviceVersion.getVersion());
 
-            if (requestUrl.getQuery() != null && requestUrl.getQuery().contains("comp=lease")) {
-                throw new IllegalArgumentException("File lease operations are not supported for any file API in "
-                    + "service version " + serviceVersion.getVersion());
-            }
+            throwIfContainsQuery(requestUrl, "comp=lease", ANY_FILE_API, serviceVersion.getVersion());
 
             // File copy - new SMB headers
-            String START_COPY = "copy file";
             if (requestHeaders.get("x-ms-copy-source") != null) {
                 throwIfContainsHeader(requestHeaders, "x-ms-file-permission", START_COPY, serviceVersion.getVersion());
                 throwIfContainsHeader(requestHeaders, "x-ms-file-permission-key", START_COPY,
@@ -64,12 +71,12 @@ public class ShareServiceVersionPolicy implements HttpPipelinePolicy {
     }
 
     private static ShareServiceVersion toServiceVersion(String version) {
-        if (version.equals(ShareServiceVersion.V2019_02_02.getVersion())) {
+        if (ShareServiceVersion.V2019_02_02.getVersion().equals(version)) {
             return ShareServiceVersion.V2019_02_02;
-        } else if (version.equals(ShareServiceVersion.V2019_07_07.getVersion())) {
+        } else if (ShareServiceVersion.V2019_07_07.getVersion().equals(version)) {
             return ShareServiceVersion.V2019_07_07;
         } else {
-            throw new NullPointerException(Constants.HeaderConstants.SERVICE_VERSION + " must be set.");
+            throw new IllegalStateException (Constants.HeaderConstants.SERVICE_VERSION + " must be set.");
         }
     }
 }

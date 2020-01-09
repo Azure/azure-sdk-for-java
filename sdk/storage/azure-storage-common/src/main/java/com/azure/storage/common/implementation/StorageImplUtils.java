@@ -4,7 +4,6 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -268,6 +267,23 @@ public class StorageImplUtils {
         if (headers.get(header) != null) {
             throw new IllegalArgumentException(header + " is not supported for " + operationName + " in service "
                 + "version " + serviceVersion);
+        }
+    }
+
+    /**
+     * Throws an IllegalArgumentException if a new query is present for an old service version.
+     *
+     * @param url The {@link URL url} to check.
+     * @param query The query to check for.
+     * @param operationName The operation name.
+     * @param serviceVersion The service version.
+     * @throws IllegalArgumentException If the request is invalid.
+     */
+    public static void throwIfContainsQuery(URL url, String query, String operationName,
+        String serviceVersion) {
+        if (url.getQuery() != null && url.getQuery().contains(query)) {
+            throw new IllegalArgumentException("The query " + query + " is not supported for " + operationName +
+                " in service version " + serviceVersion);
         }
     }
 }
