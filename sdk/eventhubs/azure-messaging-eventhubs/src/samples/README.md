@@ -1,7 +1,17 @@
-# Azure Event Hubs client library for Java - Samples
+---
+page_type: sample
+languages:
+  - java
+products:
+  - azure
+  - azure-event-hubs
+urlFragment: event-hubs-java
+---
+
+# Azure Event Hubs client library samples for Java
 
 Azure Event Hubs samples are a set of self-contained Java programs that demonstrate interacting with Azure Event Hubs
-using the client library. Each sample focuses on a specific scenario and can be executed independently. 
+using the client library. Each sample focuses on a specific scenario and can be executed independently.
 
 ## Key concepts
 Key concepts are explained in detail [here][sdk_readme_key_concepts].

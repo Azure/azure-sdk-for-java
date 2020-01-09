@@ -1,4 +1,15 @@
-# Azure Event Hubs Checkpoint Store client library for Java - Samples
+---
+page_type: sample
+languages:
+  - java
+products:
+  - azure
+  - azure-event-hubs
+  - azure-storage
+urlFragment: event-hubs-java
+---
+
+# Azure Event Hubs Checkpoint Store client library samples for Java
 
 Azure Event Hubs Checkpoint Store samples are a set of self-contained Java programs that demonstrate interacting 
 with Azure Event Hubs Checkpoint Store using the client library. 

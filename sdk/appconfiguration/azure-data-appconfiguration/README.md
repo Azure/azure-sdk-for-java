@@ -28,56 +28,6 @@ Use the client library for App Configuration to create and manage application co
 ```
 [//]: # ({x-version-update-end})
 
-### Default HTTP Client
-All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
-AppConfiguration to use Netty HTTP client. 
-
-### Alternate HTTP Client
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
-Netty and include OkHTTP client in your pom.xml.
-
-[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;current})
-```xml
-<!-- Add AppConfiguration dependency without Netty HTTP client -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-data-appconfiguration</artifactId>
-    <version>1.0.1</version>
-    <exclusions>
-      <exclusion>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-http-netty</artifactId>
-      </exclusion>
-    </exclusions>
-</dependency>
-```
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
-```xml
-<!-- Add OkHTTP client to use with AppConfiguration -->
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.1.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-### Configuring HTTP Clients
-When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-client), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
-
-For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
-
-<!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L37-L40 -->
-```java
-HttpClient client = new NettyAsyncHttpClientBuilder()
-    .port(8080)
-    .wiretap(true)
-    .build();
-```
-
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
-
 ### Create an App Configuration Store
 
 To create a Configuration Store you can use the Azure Portal or [Azure CLI][azure_cli].
@@ -405,6 +355,17 @@ configurationClient.addConfigurationSettingWithResponse(
 // Above three HttpHeader will be added in outgoing HttpRequest.
 ```
 For more detail information, check out the [AddHeadersFromContextPolicy][add_headers_from_context_policy]
+
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
+better performance compared to the default SSL implementation within the JDK. For more information, including how to 
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 
