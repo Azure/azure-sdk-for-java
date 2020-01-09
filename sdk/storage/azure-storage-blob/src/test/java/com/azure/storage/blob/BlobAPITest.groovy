@@ -593,6 +593,7 @@ class BlobAPITest extends APISpec {
                     def exception = Exceptions.unwrap(it2)
                     if (exception instanceof BlobStorageException) {
                         assert ((BlobStorageException) exception).getStatusCode() == 412
+                        return true
                     }
                 })
             })
