@@ -3,14 +3,8 @@ trigger: none
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-      Matrix:
-        Windows - Java 8:
-            OSName: 'Windows'
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
-            DisplayName: 'Windows - Java 8'
       ServiceDirectory: storage
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 120
       EnvVars:
         AZURE_TEST_MODE: LIVE
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
@@ -35,4 +29,3 @@ jobs:
         AZURE_STORAGE_FILE_ACCOUNT_KEY: $(AZURE_STORAGE_FILE_ACCOUNT_KEY)
         AZURE_STORAGE_QUEUE_ACCOUNT_NAME: $(AZURE_STORAGE_FILE_ACCOUNT_NAME)
         AZURE_STORAGE_QUEUE_ACCOUNT_KEY: $(AZURE_STORAGE_QUEUE_ACCOUNT_KEY)
-        TimeoutInMinutes: 120
