@@ -27,8 +27,10 @@ import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -102,6 +104,16 @@ class EventHubProducerAsyncClientTest {
     private EventHubConnectionProcessor connectionProcessor;
     private TracerProvider tracerProvider;
     private ConnectionOptions connectionOptions;
+
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
 
     @BeforeEach
     void setup() {
@@ -904,6 +916,81 @@ class EventHubProducerAsyncClientTest {
         Assertions.assertEquals(count, messagesSent.size());
 
         verifyZeroInteractions(sendLink2);
+        verifyZeroInteractions(sendLink3);
+    }
+
+    /**
+     * Verifies that we can resend a message when a transient error occurs.
+     */
+    @Test
+    void resendMessageOnTransientFailure() {
+        // Arrange
+        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
+        endpointSink.next(AmqpEndpointState.ACTIVE);
+
+        EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{connection, connection2 };
+        connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> {
+            final AtomicInteger count = new AtomicInteger();
+            sink.onRequest(request -> {
+                for (int i = 0; i < request; i++) {
+                    final int current = count.getAndIncrement();
+                    final int index = current % connections.length;
+                    sink.next(connections[index]);
+                }
+            });
+        }).subscribeWith(
+            new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            tracerProvider, messageSerializer, false);
+
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
+            final EventData data = new EventData(contents);
+            return Flux.just(data);
+        });
+
+        final String failureKey = "fail";
+        final EventData testData2 = new EventData("test");
+        testData2.getProperties().put(failureKey, "true");
+
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+
+        // Send a transient error, and close the original link, if we get a message that contains the "failureKey".
+        // This simulates when a link is closed.
+        when(sendLink.send(argThat((Message message) -> {
+            return message.getApplicationProperties().getValue().containsKey(failureKey);
+        }))).thenAnswer(mock -> {
+            final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
+                new AmqpErrorContext("test-namespace"));
+
+            endpointSink.error(error);
+            return Mono.error(error);
+        });
+
+        final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
+        when(connection2.getEndpointStates()).thenReturn(connectionState2);
+        when(connection2.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+            .thenReturn(Mono.just(sendLink2));
+        when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
+
+        // Act
+        StepVerifier.create(producer.send(testData))
+            .verifyComplete();
+
+        StepVerifier.create(producer.send(testData2))
+            .verifyComplete();
+
+        // Assert
+        verify(sendLink).send(messagesCaptor.capture());
+        final List<Message> messagesSent = messagesCaptor.getValue();
+        Assertions.assertEquals(count, messagesSent.size());
+
+        verify(sendLink2, times(1)).send(any(Message.class));
         verifyZeroInteractions(sendLink3);
     }
 
