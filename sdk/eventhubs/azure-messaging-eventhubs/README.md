@@ -38,6 +38,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
   - [Enable AMQP transport logging](#enable-amqp-transport-logging)
   - [Common exceptions](#common-exceptions)
   - [Other exceptions](#other-exceptions)
+  - [Handling transient AMQP exceptions](#handling-transient-amqp-exceptions)
 - [Next steps](#next-steps)
   - [Samples](#samples)
   - [Default SSL library](#default-ssl-library)
@@ -381,9 +382,9 @@ java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 
 #### AMQP exception
 
-This is a general exception for AMQP related failures, which includes the AMQP errors as ErrorCondition and the context
-that caused this exception as ErrorContext. 'isTransient' is a boolean indicating if the exception is a transient error
-or not. If true, then the request can be retried; otherwise not.
+This is a general exception for AMQP related failures, which includes the AMQP errors as `ErrorCondition` and the
+context that caused this exception as `AmqpErrorContext`. `isTransient` is a boolean indicating if the exception is a
+transient error or not. If true, then the request can be retried; otherwise not.
 
 [`AmqpErrorCondition`][AmqpErrorCondition] contains error conditions common to the AMQP protocol and used by Azure
 services. When an AMQP exception is thrown, examining the error condition field can inform developers as to why the AMQP
@@ -413,6 +414,12 @@ please refer to [Azure Event Hubs quotas and limits][event_hubs_quotas] for spec
 
 For detailed information about these and other exceptions that may occur, please refer to [Event Hubs Messaging
 Exceptions][event_hubs_messaging_exceptions].
+
+### Handling transient AMQP exceptions
+
+If a transient AMQP exception occurs, the client library retries the operation as many times as the 
+[AmqpRetryOptions][AmqpRetryOptions] allows. Afterwards, the operation fails and an exception is propagated back to the
+user.
 
 ## Next steps
 
@@ -466,5 +473,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [CreateBatchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/CreateBatchOptions.java
 [InMemoryCheckpointStore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryCheckpointStore.java
 [LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)
