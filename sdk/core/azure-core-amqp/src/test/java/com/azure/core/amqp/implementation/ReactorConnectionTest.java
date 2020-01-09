@@ -96,7 +96,7 @@ public class ReactorConnectionTest {
 
         final ReactorHandlerProvider reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, connectionHandler, sessionHandler, null, null);
 
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(TEST_DURATION);
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             CREDENTIAL_INFO.getEntityPath(), tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
             AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
@@ -282,7 +282,7 @@ public class ReactorConnectionTest {
 
         Duration timeout = Duration.ofSeconds(2);
         AmqpRetryOptions retryOptions = new AmqpRetryOptions()
-            .setMaxRetries(2)
+            .setMaxRetries(1)
             .setDelay(Duration.ofMillis(200))
             .setMode(AmqpRetryMode.FIXED)
             .setTryTimeout(timeout);
@@ -325,7 +325,7 @@ public class ReactorConnectionTest {
                 AmqpException amqpException = (AmqpException) e;
                 Assertions.assertEquals(condition, amqpException.getErrorCondition());
             })
-            .verify(Duration.ofSeconds(10));
+            .verify(Duration.ofSeconds(30));
 
         verify(transport, times(1)).unbind();
     }
