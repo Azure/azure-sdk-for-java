@@ -363,6 +363,9 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
      */
     @Test
     public void listDeletedSecrets() {
+        if (!interceptorManager.isPlaybackMode()) {
+            return;
+        }
         listDeletedSecretsRunner((secrets) -> {
             List<DeletedSecret> deletedSecrets = new ArrayList<>();
 

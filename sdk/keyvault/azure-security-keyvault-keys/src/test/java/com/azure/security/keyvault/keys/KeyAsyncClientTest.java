@@ -363,6 +363,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     @Test
     public void listDeletedKeys() {
+        if (!interceptorManager.isPlaybackMode()) {
+            return;
+        }
         listDeletedKeysRunner((keys) -> {
 
             List<DeletedKey> deletedKeys = new ArrayList<>();
