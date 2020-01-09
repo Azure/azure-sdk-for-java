@@ -6,6 +6,7 @@ omitted_paths:
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
   - eng/*
+  - sdk/storage/azure-storage-queue-cryptography/*
 language: java
 root_check_enabled: True
 required_readme_sections:
@@ -80,7 +81,6 @@ known_content_issues:
   - ['sdk/storage/azure-storage-file-datalake/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-queue/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-file-share/swagger/README.md', '#3113']
-  - ['/sdk/storage/azure-storage-queue-cryptography/README.md', '#3113']
 package_indexing_exclusion_list:
   - azure-loganalytics-sample
   - azure-applicationinsights-query-sample
