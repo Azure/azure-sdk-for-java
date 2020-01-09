@@ -178,7 +178,17 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        cc.delete()
+        def options = new ListBlobContainersOptions().setPrefix(containerName)
+        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
+            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+
+            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
+            }
+
+            containerClient.delete()
+        }        
+        
         interceptorManager.close()
     }
 
