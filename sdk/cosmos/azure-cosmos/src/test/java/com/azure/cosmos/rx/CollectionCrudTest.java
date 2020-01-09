@@ -95,6 +95,23 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void createCollectionWithTTL(String collectionName) throws InterruptedException {
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
+
+        Integer defaultTimeToLive = 300;
+        collectionDefinition.setDefaultTimeToLiveInSeconds(defaultTimeToLive);
+
+        Mono<CosmosAsyncContainerResponse> createObservable = database
+            .createContainer(collectionDefinition);
+
+        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+            .withId(collectionDefinition.getId()).withDefaultTimeToLive(defaultTimeToLive).build();
+
+        validateSuccess(createObservable, validator);
+        safeDeleteAllCollections(database);
+    }
+
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createCollectionWithCompositeIndexAndSpatialSpec() throws InterruptedException {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
@@ -189,6 +206,24 @@ public class CollectionCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void readCollectionWithTTL(String collectionName) throws InterruptedException {
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
+
+        Integer defaultTimeToLive = 200;
+        collectionDefinition.setDefaultTimeToLiveInSeconds(defaultTimeToLive);
+
+        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
+        CosmosAsyncContainer collection = createObservable.block().getContainer();
+
+        Mono<CosmosAsyncContainerResponse> readObservable = collection.read();
+
+        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+            .withId(collection.getId()).withDefaultTimeToLive(defaultTimeToLive).build();
+        validateSuccess(readObservable, validator);
+        safeDeleteAllCollections(database);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection_DoesntExist(String collectionName) throws Exception {
 
         Mono<CosmosAsyncContainerResponse> readObservable = database
@@ -234,6 +269,34 @@ public class CollectionCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
         safeDeleteAllCollections(database);
     }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void replaceCollectionWithTTL(String collectionName) throws InterruptedException {
+        // create a collection
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
+        Integer defaultTimeToLive = 120;
+        collectionDefinition.setDefaultTimeToLiveInSeconds(defaultTimeToLive);
+        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
+        CosmosAsyncContainer collection = createObservable.block().getContainer();
+        CosmosContainerProperties collectionSettings = collection.read().block().getProperties();
+        // sanity check
+        assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
+        assertThat(collectionSettings.getDefaultTimeToLiveInSeconds()).isEqualTo(defaultTimeToLive);
+
+        // replace indexing mode
+        IndexingPolicy indexingMode = new IndexingPolicy();
+        indexingMode.setIndexingMode(IndexingMode.LAZY);
+        collectionSettings.setIndexingPolicy(indexingMode);
+        collectionSettings.setDefaultTimeToLiveInSeconds(defaultTimeToLive * 2);
+        Mono<CosmosAsyncContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
+
+        // validate
+        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
+            .indexingMode(IndexingMode.LAZY).withDefaultTimeToLive(defaultTimeToLive * 2).build();
+        validateSuccess(readObservable, validator);
+        safeDeleteAllCollections(database);
+    }
+
 
     @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void sessionTokenConsistencyCollectionDeleteCreateSameName() {
