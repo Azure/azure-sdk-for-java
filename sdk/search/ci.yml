@@ -45,4 +45,3 @@ stages:
         - name: azure-search
           groupId: com.azure
           safeName: azuresearch
-          stagingProfileId: 88192f04117501
