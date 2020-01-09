@@ -16,7 +16,7 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
             super.setProperties(null);
             database = null;
         } else {
-            CosmosDatabaseProperties props = new CosmosDatabaseProperties(bodyAsString);
+            CosmosDatabaseProperties props = new CosmosDatabaseProperties(bodyAsString, null);
             super.setProperties(props);
             database = new CosmosAsyncDatabase(props.getId(), client);
         }

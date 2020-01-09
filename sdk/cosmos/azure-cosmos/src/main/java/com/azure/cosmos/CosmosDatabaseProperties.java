@@ -29,6 +29,10 @@ public class CosmosDatabaseProperties extends Resource {
         super.setId(id);
     }
 
+    CosmosDatabaseProperties(String jsonString, String dummy) {
+        super(jsonString);
+    }
+
     // Converting document collection to CosmosContainerProperties
     CosmosDatabaseProperties(Database database) {
         super(database.toJson());
