@@ -760,22 +760,41 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
+    /*
+     * Reports the number of bytes sent when uploading a file. This is different than other reporters which track the
+     * number of reportings as upload from file hooks into the loading data from disk data stream which is a hard-coded
+     * read size.
+     */
+    class FileUploadReporter implements ProgressReceiver {
+        private long reportedByteCount
+
+        @Override
+        void reportProgress(long bytesTransferred) {
+            this.reportedByteCount += bytesTransferred
+        }
+
+        long getReportedByteCount() {
+            return this.reportedByteCount
+        }
+    }
+
     @Unroll
     @Requires({ liveMode() })
     def "Upload from file reporter"() {
         when:
-        def uploadReporter = new Reporter(blockSize)
+        def uploadReporter = new FileUploadReporter()
         def file = getRandomFile(size)
 
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, bufferCount,
-            uploadReporter)
+            uploadReporter, blockSize - 1)
 
         then:
         StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
             null, null, null, null))
-            .assertNext({
-            assert uploadReporter.getReportingCount() == (long) (size / blockSize)
-        }).verifyComplete()
+            .verifyComplete()
+
+        // Check if the reported size is equal to or grater than the file size in case there are retries.
+        uploadReporter.getReportedByteCount() >= size
 
         cleanup:
         file.delete()
@@ -809,7 +828,7 @@ class BlockBlobAPITest extends APISpec {
         where:
         dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
         BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES - 1 | null             | null      || 0 // Test that the default for singleUploadSize is the maximum
-        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
         100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
     }
@@ -1056,7 +1075,7 @@ class BlockBlobAPITest extends APISpec {
     def "Async buffered upload"() {
         when:
         def data = getRandomData(dataSize)
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize, numBuffs, null)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize, numBuffs, null, 4 * Constants.MB)
         blobAsyncClient.upload(Flux.just(data), parallelTransferOptions, true).block()
         data.position(0)
 
@@ -1127,7 +1146,7 @@ class BlockBlobAPITest extends APISpec {
         def uploadReporter = new Reporter(blockSize)
 
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, bufferCount,
-            uploadReporter)
+            uploadReporter, 4 * Constants.MB)
 
         then:
         StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
@@ -1159,8 +1178,8 @@ class BlockBlobAPITest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize * Constants.MB, numBuffers, null)
-        def dataList = [] as List
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize * Constants.MB, numBuffers, null, 4 * Constants.MB)
+        def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
         def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
 
@@ -1188,7 +1207,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), null, true)
+        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
@@ -1213,7 +1232,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList).publish().autoConnect(), null, true)
+        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList).publish().autoConnect(), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
@@ -1260,7 +1279,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         def data = getRandomByteArray(dataSize)
         def contentMD5 = validateContentMD5 ? MessageDigest.getInstance("MD5").digest(data) : null
-        def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), null, new BlobHttpHeaders()
+        def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), new BlobHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)

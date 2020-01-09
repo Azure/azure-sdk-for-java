@@ -148,11 +148,8 @@ class QueueServiceAPITests extends APISpec {
     }
 
     def "List empty queues"() {
-        when:
-        System.out.println(methodName);
-        primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
-
-        then:
+        expect:
+        // Queue was never made with the prefix, should expect no queues to be listed.
         !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName), null, null).iterator().hasNext()
     }
 

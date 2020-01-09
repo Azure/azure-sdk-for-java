@@ -1,5 +1,14 @@
+---
+page_type: sample
+languages:
+  - java
+products:
+  - azure
+  - azure-data-appconfiguration
+urlFragment: appconfiguration-samples
+---
 
-## Azure App Configuration Samples client library for Java
+# Azure App Configuration Samples client library for Java
 This document explains samples and how to use them.
 
 ## Key concepts
@@ -46,10 +55,7 @@ The following sections provide several code snippets covering some of the most c
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
 ## Next steps
-Start using KeyVault Java SDK in your solutions. Our SDK documentation could be found at [SDK Documentation][azconfig_docs]. 
-
-###  Additional Documentation
-For more extensive documentation , see the [API reference documentation][azkeyvault_rest].
+Start using App Configuration Java SDK in your solutions. Our SDK documentation could be found at [SDK Documentation][azconfig_docs]. 
 
 ## Contributing
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.

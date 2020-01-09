@@ -30,68 +30,6 @@ and includes six main functions:
 ```
 [//]: # ({x-version-update-end})
 
-### Default HTTP Client
-All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
-Text Analytics to use Netty HTTP client. 
-
-[//]: # ({x-version-update-start;com.azure:azure-core-http-netty;dependency})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-http-netty</artifactId>
-    <version>1.1.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-### Alternate HTTP Client
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
-Netty and include OkHTTP client in your pom.xml.
-
-[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
-```xml
-<!-- Add Text Analytics dependency without Netty HTTP client -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-ai-textanalytics</artifactId>
-    <version>1.0.0-beta.1</version>
-    <exclusions>
-      <exclusion>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-http-netty</artifactId>
-      </exclusion>
-    </exclusions>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;dependency})
-```xml
-<!-- Add OkHTTP client to use with Text Analytics -->
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-### Configuring HTTP Clients
-When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-a-client), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
-
-For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
-
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L159-L162 -->
-```java
-HttpClient client = new NettyAsyncHttpClientBuilder()
-    .port(8080)
-    .wiretap(true)
-    .build();
-```
-
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
-
 ### Create a Text Analytics resource
 Text Analytics supports both [multi-service and single-service access](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows). Create a Cognitive Services resource if you plan
 to access multiple cognitive services under a single endpoint/key. For Text Analytics access only, create a Text Analytics resource.
@@ -135,7 +73,7 @@ cognitive services.
     ```
     
     Use the key as the credential parameter to authenticate the client:
-    <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L29-L32 -->
+    <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L45-L48 -->
     ```java
     TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
         .subscriptionKey(SUBSCRIPTION_KEY)
@@ -162,7 +100,7 @@ cognitive services.
    AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET
 
    Use the returned token credential to authenticate the client:
-   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L49-L52 -->
+   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L65-L68 -->
     ```java
     TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
         .endpoint(ENDPOINT)
@@ -176,7 +114,7 @@ analyze sentiment, recognize entities, detect language, and extract key phrases 
 To create a client object, you will need the cognitive services or text analytics endpoint to 
 your resource and a subscription key that allows you access:
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L29-L32 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L45-L48 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(SUBSCRIPTION_KEY)
@@ -248,14 +186,14 @@ The following sections provide several code snippets covering some of the most c
 Text analytics support both synchronous and asynchronous client creation by using
 `TextAnalyticsClientBuilder`,
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L29-L32 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L45-L48 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(SUBSCRIPTION_KEY)
     .endpoint(ENDPOINT)
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L39-L42 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L55-L58 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(SUBSCRIPTION_KEY)
@@ -264,13 +202,8 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 ### Detect language
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L59-L71 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L75-L82 -->
 ```java
-TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(SUBSCRIPTION_KEY)
-    .endpoint(ENDPOINT)
-    .buildClient();
-
 String inputText = "Bonjour tout le monde";
 
 for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inputText).getDetectedLanguages()) {
@@ -282,13 +215,8 @@ for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inpu
 ```
 
 ### Recognize entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L78-L92 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L89-L98 -->
 ```java
-TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(SUBSCRIPTION_KEY)
-    .endpoint(ENDPOINT)
-    .buildClient();
-
 String text = "Satya Nadella is the CEO of Microsoft";
 
 for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEntities()) {
@@ -302,14 +230,8 @@ for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEn
 ```
 
 ### Recognize PII(Personally Identifiable Information) entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L99-L114 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L105-L114 -->
 ```java
-TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(SUBSCRIPTION_KEY)
-    .endpoint(ENDPOINT)
-    .buildClient();
-
-// The text that need be analysed.
 String text = "My SSN is 555-55-5555";
 
 for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getNamedEntities()) {
@@ -323,15 +245,9 @@ for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getName
 ```
 
 ### Recognize linked entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L121-L134 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L121-L128 -->
 
 ```java
-TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(SUBSCRIPTION_KEY)
-    .endpoint(ENDPOINT)
-    .buildClient();
-
-// The text that need be analysed.
 String text = "Old Faithful is a geyser at Yellowstone Park.";
 
 for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text).getLinkedEntities()) {
@@ -341,16 +257,19 @@ for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(tex
         linkedEntity.getDataSource());
 }
 ```
+### Extract key phrases
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L135-L139 -->
+```java
+String text = "My cat might need to see a veterinarian.";
+
+for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text).getKeyPhrases()) {
+    System.out.printf("Recognized phrases: %s.%n", keyPhrase);
+}
+```
 
 ### Analyze sentiment
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L141-L152 -->
-
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L146-L152 -->
 ```java
-TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(SUBSCRIPTION_KEY)
-    .endpoint(ENDPOINT)
-    .buildClient();
-
 String text = "The hotel was dark and unclean.";
 
 for (TextSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).getSentenceSentiments()) {
@@ -361,7 +280,35 @@ for (TextSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).ge
 ```
 
 ## Troubleshooting
-## General
+### General
+Text Analytics clients raise exceptions. For example, if you try to detect the languages of a batch of text with same 
+document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
+gracefully by catching the exception and display the additional information about the error.
+
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L164-L168 -->
+```java
+try {
+    textAnalyticsClient.detectBatchLanguages(inputs);
+} catch (HttpResponseException e) {
+    System.out.println(e.getMessage());
+}
+```
+
+### Enable client logging
+You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
+example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
+be found here: [log levels][LogLevels].
+
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
+better performance compared to the default SSL implementation within the JDK. For more information, including how to 
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 - Samples are explained in detail [here][samples_readme].
@@ -375,8 +322,8 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
+[api_reference_doc]: https://aka.ms/azsdk-java-textanalytics-ref-docs
 [azure_subscription]: https://azure.microsoft.com/free
-[api_reference_doc]: https://azure.github.io/azure-sdk-for-java/textanalytics.html
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
@@ -385,5 +332,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview
 [samples_readme]: src/samples/README.md
 [source_code]: src
+[LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)
