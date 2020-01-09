@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.util.tracing.TracerSpanAttributes;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -29,11 +28,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -55,8 +57,8 @@ public final class ConfigurationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
 
     private static final String ETAG_ANY = "*";
-    private static final TracerSpanAttributes APP_CONFIG_TRACING_PROPERTIES =
-        new ConfigurationTracerProperties().getTracerSpanAttributes();
+    private static final Supplier<Map<String, String>> APP_CONFIG_TRACING_PROPERTIES = () ->
+        Map.of(AZ_TRACING_NAMESPACE_KEY, "Microsoft.AppConfiguration");
 
     private final String serviceEndpoint;
     private final ConfigurationService service;

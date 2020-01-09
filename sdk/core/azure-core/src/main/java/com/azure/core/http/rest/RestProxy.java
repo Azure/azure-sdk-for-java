@@ -31,7 +31,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.tracing.TracerProxy;
-import com.azure.core.util.tracing.TracerSpanAttributes;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -47,6 +46,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -66,7 +66,7 @@ public final class RestProxy implements InvocationHandler {
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
     private final HttpResponseDecoder decoder;
-    private final TracerSpanAttributes tracerSpanAttributes;
+    private final Map<String, String> tracerSpanAttributes;
 
     private final ResponseConstructorsCache responseConstructorsCache;
 
@@ -78,28 +78,10 @@ public final class RestProxy implements InvocationHandler {
      * @param serializer the serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser the parser that contains information about the interface describing REST API methods
      *     that this RestProxy "implements".
-     */
-    private RestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer, SwaggerInterfaceParser interfaceParser) {
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
-        this.interfaceParser = interfaceParser;
-        this.decoder = new HttpResponseDecoder(this.serializer);
-        this.responseConstructorsCache = new ResponseConstructorsCache();
-        this.tracerSpanAttributes = null;
-    }
-
-    /**
-     * Create a RestProxy.
-     *
-     * @param httpPipeline the HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP
-     *     requests.
-     * @param serializer the serializer that will be used to convert response bodies to POJOs.
-     * @param interfaceParser the parser that contains information about the interface describing REST API methods
-     *     that this RestProxy "implements".
-     * @param tracerSpanAttributes the attributes to be set on the tracer spans.
+     * @param tracerSpanAttributes the map of attributes to be set on the tracer spans.
      */
     private RestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer, SwaggerInterfaceParser interfaceParser,
-        TracerSpanAttributes tracerSpanAttributes) {
+        Map<String, String> tracerSpanAttributes) {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
@@ -159,7 +141,8 @@ public final class RestProxy implements InvocationHandler {
                         .addData("caller-method", methodParser.getFullyQualifiedMethodName());
 
                 if (tracerSpanAttributes != null) {
-                    context = context.addData(AZ_TRACING_NAMESPACE_KEY, tracerSpanAttributes.getResourceProviderName());
+                    context = context.addData(AZ_TRACING_NAMESPACE_KEY,
+                        tracerSpanAttributes.get(AZ_TRACING_NAMESPACE_KEY));
                 }
                 context = startTracingSpan(method, context);
 
@@ -703,12 +686,12 @@ public final class RestProxy implements InvocationHandler {
      * @param swaggerInterface the Swagger interface to provide a proxy implementation for
      * @param httpPipeline the HttpPipelinePolicy and HttpClient pipeline that will be used to send Http requests
      * @param <A> the type of the Swagger interface
-     * @param tracerSpanAttributes the attributes to be set on the tracer spans.
+     * @param tracerAttributeSupplier the supplier to get attributes to be set on the tracer spans.
      * @return a proxy implementation of the provided Swagger interface
      */
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline,
-        TracerSpanAttributes tracerSpanAttributes) {
-        return create(swaggerInterface, httpPipeline, createDefaultSerializer(), tracerSpanAttributes);
+        Supplier<Map<String, String>> tracerAttributeSupplier) {
+        return create(swaggerInterface, httpPipeline, createDefaultSerializer(), tracerAttributeSupplier);
     }
 
     /**
@@ -724,10 +707,7 @@ public final class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer) {
-        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, serializer);
-        final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser);
-        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface},
-            restProxy);
+        return create(swaggerInterface, httpPipeline, serializer, null);
     }
 
     /**
@@ -739,14 +719,15 @@ public final class RestProxy implements InvocationHandler {
      * @param serializer the serializer that will be used to convert POJOs to and from request and
      *     response bodies
      * @param <A> the type of the Swagger interface.
-     * @param tracerSpanAttributes the attributes to be set on the tracer spans.
+     * @param tracerAttributeSupplier the supplier to get attributes to be set on the tracer spans.
      * @return a proxy implementation of the provided Swagger interface
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer,
-        TracerSpanAttributes tracerSpanAttributes) {
+        Supplier<Map<String, String>> tracerAttributeSupplier) {
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, serializer);
-        final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser, tracerSpanAttributes);
+        final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser,
+            tracerAttributeSupplier == null ? null : tracerAttributeSupplier.get());
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface},
             restProxy);
     }
