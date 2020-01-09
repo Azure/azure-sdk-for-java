@@ -116,10 +116,10 @@ final class PartitionBasedLoadBalancer {
 
         Mono.zip(partitionOwnershipMono, partitionsMono)
             .flatMap(this::loadBalance)
-            // if there was an error, log warning and TODO: call user provided error handler
+            // if there was an error, log warning
             .subscribe(ignored -> { },
                 ex -> {
-                    logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage());
+                    logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage(), ex);
                     ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
                     processError.accept(errorContext);
                 }, () -> logger.info("Load balancing completed successfully"));
@@ -131,7 +131,7 @@ final class PartitionBasedLoadBalancer {
      */
     private Mono<Void> loadBalance(final Tuple2<Map<String, PartitionOwnership>, List<String>> tuple) {
         return Mono.fromRunnable(() -> {
-            logger.info("Starting load balancer");
+            logger.info("Starting load balancer for {}", this.ownerId);
             Map<String, PartitionOwnership> partitionOwnershipMap = tuple.getT1();
 
             List<String> partitionIds = tuple.getT2();
@@ -143,8 +143,8 @@ final class PartitionBasedLoadBalancer {
             }
 
             int numberOfPartitions = partitionIds.size();
-            logger.info("Partition manager returned {} ownership records", partitionOwnershipMap.size());
-            logger.info("EventHubAsyncClient returned {} partitions", numberOfPartitions);
+            logger.info("CheckpointStore returned {} ownership records", partitionOwnershipMap.size());
+            logger.info("Event Hubs service returned {} partitions", numberOfPartitions);
             if (!isValid(partitionOwnershipMap)) {
                 // User data is corrupt.
                 throw logger.logExceptionAsError(Exceptions.propagate(
