@@ -669,9 +669,6 @@ public class BlobAsyncClientBase {
      * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
      * will be thrown.</p>
      *
-     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.</p>
-     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String}
@@ -679,7 +676,7 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @return A reactive response containing the blob properties and metadata.
      */
     public Mono<BlobProperties> downloadToFile(String filePath) {
@@ -692,9 +689,6 @@ public class BlobAsyncClientBase {
      * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
      * {@link FileAlreadyExistsException} will be thrown.</p>
      *
-     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.</p>
-     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-boolean}
@@ -702,7 +696,7 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param overwrite Whether or not to overwrite the file, should the file exist.
      * @return A reactive response containing the blob properties and metadata.
      */
@@ -730,9 +724,6 @@ public class BlobAsyncClientBase {
      * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
      * will be thrown.</p>
      *
-     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.</p>
-     *
      * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
      * call, provide the {@link BlobRange} parameter.</p>
      *
@@ -743,7 +734,7 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param range {@link BlobRange}
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
      * transfers parameter is ignored.
@@ -768,9 +759,6 @@ public class BlobAsyncClientBase {
      * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
      * {@link OpenOption OpenOptions} </p>
      *
-     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.</p>
-     *
      * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
      * call, provide the {@link BlobRange} parameter.</p>
      *
@@ -781,7 +769,7 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param range {@link BlobRange}
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
      * transfers parameter is ignored.
