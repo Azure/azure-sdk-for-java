@@ -299,7 +299,7 @@ public abstract class SecretClientTestBase extends TestBase {
         HashMap<String, KeyVaultSecret> secrets = new HashMap<>();
         String secretName;
         String secretVal;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 4; i++) {
             secretName = generateResourceId("");
             secretVal = "listDeletedSecretVal" + i;
             secrets.put(secretName, new KeyVaultSecret(secretName, secretVal)

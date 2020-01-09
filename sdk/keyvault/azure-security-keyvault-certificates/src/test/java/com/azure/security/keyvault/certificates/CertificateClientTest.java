@@ -364,7 +364,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
                 certPoller.waitForCompletion();
             }
 
-            sleepInRecordMode(120000);
+            sleepInRecordMode(90000);
             for (CertificateProperties actualKey : client.listPropertiesOfCertificates()) {
                 if (certificatesToList.contains(actualKey.getName())) {
                     certificatesToList.remove(actualKey.getName());
@@ -528,15 +528,13 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             sleepInRecordMode(90000);
 
-            client.listDeletedCertificates().stream().forEach(deletedCertificate ->  {
-                if (certificatesToDelete.contains(deletedCertificate.getName())) {
-                    assertNotNull(deletedCertificate.getDeletedOn());
-                    assertNotNull(deletedCertificate.getRecoveryId());
-                    certificatesToDelete.remove(deletedCertificate.getName());
-                }
-                client.purgeDeletedCertificate(deletedCertificate.getName());
-            });
-            assertEquals(0, certificatesToDelete.size());
+            Iterable<DeletedCertificate> deletedCertificates = client.listDeletedCertificates();
+            assertTrue(deletedCertificates.iterator().hasNext());
+            for (DeletedCertificate deletedCertificate : deletedCertificates) {
+                assertNotNull(deletedCertificate.getDeletedOn());
+                assertNotNull(deletedCertificate.getRecoveryId());
+                certificatesToDelete.remove(deletedCertificate.getName());
+            }
         });
     }
 //

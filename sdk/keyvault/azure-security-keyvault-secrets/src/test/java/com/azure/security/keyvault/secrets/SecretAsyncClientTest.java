@@ -382,18 +382,13 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             }
 
             sleepInRecordMode(120000);
-            client.listDeletedSecrets().map(deletedSecret -> {
-                    deletedSecrets.add(deletedSecret);
-                    if (secrets.containsKey(deletedSecret.getName())) {
-                        assertNotNull(deletedSecret.getDeletedOn());
-                        assertNotNull(deletedSecret.getRecoveryId());
-                        secrets.remove(deletedSecret.getName());
-                    }
-                client.purgeDeletedSecret(deletedSecret.getName()).block();
-                return deletedSecret;
+            DeletedSecret delSecret = client.listDeletedSecrets().map(deletedSecret -> {
+                    assertNotNull(deletedSecret.getDeletedOn());
+                    assertNotNull(deletedSecret.getRecoveryId());
+                    client.purgeDeletedSecret(deletedSecret.getName()).block();
+                    return deletedSecret;
                 }).blockLast();
-
-            assertEquals(0, secrets.size());
+            assertNotNull(delSecret);
         });
     }
 

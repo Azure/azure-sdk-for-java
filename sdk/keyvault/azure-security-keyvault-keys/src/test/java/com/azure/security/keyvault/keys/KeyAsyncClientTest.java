@@ -381,23 +381,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 assertNotNull(pollResponse.getValue());
             }
 
-            sleepInRecordMode(120000);
-            client.listDeletedKeys().map(actualKey -> {
-                if (keys.containsKey(actualKey.getName())) {
+            sleepInRecordMode(9000);
+            DeletedKey deletedKey = client.listDeletedKeys().map(actualKey -> {
                     deletedKeys.add(actualKey);
                     assertNotNull(actualKey.getDeletedOn());
                     assertNotNull(actualKey.getRecoveryId());
-                    keys.remove(actualKey.getName());
-                }
-                return actualKey;
+                    client.purgeDeletedKeyWithResponse(actualKey.getName()).block();
+                    return actualKey;
             }).blockLast();
-
-            assertEquals(0, keys.size());
-
-            for (DeletedKey deletedKey : deletedKeys) {
-                client.purgeDeletedKeyWithResponse(deletedKey.getName()).block();
-                pollOnKeyPurge(deletedKey.getName());
-            }
+            assertNotNull(deletedKey);
         });
     }
 
