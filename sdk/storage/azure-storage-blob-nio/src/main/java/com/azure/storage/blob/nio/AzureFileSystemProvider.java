@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * {@inheritDoc}
  */
-public class AzureFileSystemProvider extends FileSystemProvider {
+public final class AzureFileSystemProvider extends FileSystemProvider {
     // TODO: Add logger
     private static final String ACCOUNT_QUERY_KEY = "account";
 

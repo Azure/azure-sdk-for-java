@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.CoreUtils;
@@ -21,27 +22,29 @@ import java.nio.file.WatchService;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * {@inheritDoc}
  */
-public class AzureFileSystem extends FileSystem {
-    public static final String AZURE_STORAGE_NIO_ACCOUNT_KEY = "AzureStorageNioAccountKey";
-    public static final String AZURE_STORAGE_NIO_SAS_TOKEN = "AzureStorageNioSasToken";
-    public static final String AZURE_STORAGE_NIO_AAD_TOKEN = "AzureStorageNioAadToken";
-    public static final String AZURE_STORAGE_NIO_HTTP_LOG_DETAIL_LEVEL = "AzureStorageNioHttpLogDetailLevel";
-    public static final String AZURE_STORAGE_NIO_MAX_TRIES = "AzureStorageNioMaxTries";
-    public static final String AZURE_STORAGE_NIO_TRY_TIMEOUT = "AzureStorageNioTryTimeout";
-    public static final String AZURE_STORAGE_NIO_RETRY_DELAY_IN_MS = "AzureStorageNioRetryDelayInMs";
-    public static final String AZURE_STORAGE_NIO_MAX_RETRY_DELAY_IN_MS = "AzureStorageNioMaxRetryDelayInMs";
-    public static final String AZURE_STORAGE_NIO_RETRY_POLICY_TYPE = "AzureStorageNioRetryPolicyType";
-    public static final String AZURE_STORAGE_NIO_SECONDARY_HOST = "AzureStorageNioSecondaryHost";
-    public static final String AZURE_STORAGE_NIO_BLOCK_SIZE = "AzureStorageNioBlockSize";
-    public static final String AZURE_STORAGE_NIO_DOWNLOAD_RESUME_RETRIES = "AzureStorageNioDownloadResumeRetries";
-    public static final String AZURE_STORAGE_NIO_USE_HTTP = "AzureStorageNioUseHttp";
-    public static final String AZURE_STORAGE_NIO_FILE_STORES = "AzureStorageNioFileStores";
+public final class AzureFileSystem extends FileSystem {
+    public static final String AZURE_STORAGE_ACCOUNT_KEY = "AzureStorageAccountKey";
+    public static final String AZURE_STORAGE_SAS_TOKEN = "AzureStorageSasToken";
+    public static final String AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL = "AzureStorageHttpLogDetailLevel";
+    public static final String AZURE_STORAGE_MAX_TRIES = "AzureStorageMaxTries";
+    public static final String AZURE_STORAGE_TRY_TIMEOUT = "AzureStorageTryTimeout";
+    public static final String AZURE_STORAGE_RETRY_DELAY_IN_MS = "AzureStorageRetryDelayInMs";
+    public static final String AZURE_STORAGE_MAX_RETRY_DELAY_IN_MS = "AzureStorageMaxRetryDelayInMs";
+    public static final String AZURE_STORAGE_RETRY_POLICY_TYPE = "AzureStorageRetryPolicyType";
+    public static final String AZURE_STORAGE_SECONDARY_HOST = "AzureStorageSecondaryHost";
+    public static final String AZURE_STORAGE_BLOCK_SIZE = "AzureStorageBlockSize";
+    public static final String AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES = "AzureStorageDownloadResumeRetries";
+    public static final String AZURE_STORAGE_USE_HTTP = "AzureStorageUseHttp";
+    public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
+    public static final String AZURE_STORAGE_HTTP_CLIENT = "AzureStorageHttpClient"; // undocumented; for test.
 
     private static final String AZURE_STORAGE_ENDPOINT_TEMPLATE = "%s://%s.blob.core.windows.net";
 
@@ -49,23 +52,25 @@ public class AzureFileSystem extends FileSystem {
     private final BlobServiceClient blobServiceClient;
     private final Integer blockSize;
     private final Integer downloadResumeRetries;
-    private final Map<String, AzureFileStore> fileStores;
+    private final Map<String, FileStore> fileStores;
     private boolean closed;
 
     AzureFileSystem(AzureFileSystemProvider parentFileSystemProvider, String accountName, Map<String, ?> config)
             throws IOException {
+        if (Objects.isNull(parentFileSystemProvider)) {
+            throw new IllegalStateException("AzureFileSystem cannot be instantiated without a parent " +
+                "FileSystemProvider");
+        }
         this.parentFileSystemProvider = parentFileSystemProvider;
         this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
-        this.blockSize = Integer.valueOf((String)config.get(AZURE_STORAGE_NIO_BLOCK_SIZE));
-        this.downloadResumeRetries = Integer.valueOf((String)config.get(AZURE_STORAGE_NIO_DOWNLOAD_RESUME_RETRIES));
-        this.fileStores = this.initializeFileStores(config);
-        this.closed = false;
-
+        this.blockSize = (Integer) config.get(AZURE_STORAGE_BLOCK_SIZE);
+        this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
         try {
-            this.blobServiceClient.getProperties();
-        } catch (Exception e) {
-            throw new IOException("Could not instantiate FileSystem. Initial connection failed", e);
+            this.fileStores = this.initializeFileStores(config);
+        } catch (IOException e) {
+            throw new IOException("Initializing FileStores failed. FileSystem could not be opened.", e);
         }
+        this.closed = false;
     }
 
     /**
@@ -122,7 +127,8 @@ public class AzureFileSystem extends FileSystem {
      */
     @Override
     public Iterable<FileStore> getFileStores() {
-        return null;
+        return
+            this.fileStores.values();
     }
 
     /**
@@ -170,56 +176,53 @@ public class AzureFileSystem extends FileSystem {
     }
 
     BlobServiceClient getBlobServiceClient() {
-        return this.getBlobServiceClient();
+        return this.blobServiceClient;
     }
 
     private BlobServiceClient buildBlobServiceClient(String accountName, Map<String,?> config) {
-        String scheme = config.containsKey(AZURE_STORAGE_NIO_USE_HTTP)
-                && config.get(AZURE_STORAGE_NIO_USE_HTTP).equals("true")
+        String scheme = config.containsKey(AZURE_STORAGE_USE_HTTP)
+                && (Boolean) config.get(AZURE_STORAGE_USE_HTTP)
                 ? "http" : "https";
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
                 .endpoint(String.format(AZURE_STORAGE_ENDPOINT_TEMPLATE, scheme, accountName));
 
-        if (config.containsKey(AZURE_STORAGE_NIO_ACCOUNT_KEY)) {
+        if (config.containsKey(AZURE_STORAGE_ACCOUNT_KEY)) {
             builder.credential(new StorageSharedKeyCredential(accountName,
-                    (String)config.get(AZURE_STORAGE_NIO_ACCOUNT_KEY)));
+                    (String)config.get(AZURE_STORAGE_ACCOUNT_KEY)));
         }
-        else if (config.containsKey(AZURE_STORAGE_NIO_SAS_TOKEN)) {
-            builder.sasToken((String) config.get(AZURE_STORAGE_NIO_SAS_TOKEN));
+        else if (config.containsKey(AZURE_STORAGE_SAS_TOKEN)) {
+            builder.sasToken((String) config.get(AZURE_STORAGE_SAS_TOKEN));
         }
-        //TODO: Expiry time?
-        /*else if (config.containsKey(AZURE_STORAGE_NIO_AAD_TOKEN)) {
-            builder.credential(context ->  Mono.just(new AccessToken((String)config.get(AZURE_STORAGE_NIO_AAD_TOKEN),
-                    expireTime));
-        }*/
         else {
             throw new IllegalArgumentException(String.format("No credentials were provided. Please specify one of the" +
-                    " following when constructing an AzureFileSystem: %s, %s, %s.", AZURE_STORAGE_NIO_ACCOUNT_KEY,
-                    AZURE_STORAGE_NIO_SAS_TOKEN, AZURE_STORAGE_NIO_AAD_TOKEN));
+                    " following when constructing an AzureFileSystem: %s, %s.", AZURE_STORAGE_ACCOUNT_KEY,
+                    AZURE_STORAGE_SAS_TOKEN));
         }
 
         builder.httpLogOptions(new HttpLogOptions()
-                .setLogLevel(HttpLogDetailLevel.valueOf((String)config.get(AZURE_STORAGE_NIO_HTTP_LOG_DETAIL_LEVEL))));
+            .setLogLevel((HttpLogDetailLevel)config.get(AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL)));
 
         RequestRetryOptions retryOptions = new RequestRetryOptions(
-                RetryPolicyType.valueOf((String)config.get(AZURE_STORAGE_NIO_RETRY_POLICY_TYPE)),
-                Integer.valueOf((String)config.get(AZURE_STORAGE_NIO_MAX_TRIES)),
-                Integer.valueOf((String)config.get(AZURE_STORAGE_NIO_TRY_TIMEOUT)),
-                Long.valueOf((String)config.get(AZURE_STORAGE_NIO_RETRY_DELAY_IN_MS)),
-                Long.valueOf((String)config.get(AZURE_STORAGE_NIO_MAX_RETRY_DELAY_IN_MS)),
-                (String)config.get(AZURE_STORAGE_NIO_SECONDARY_HOST));
+            (RetryPolicyType)config.get(AZURE_STORAGE_RETRY_POLICY_TYPE),
+            (Integer)config.get(AZURE_STORAGE_MAX_TRIES),
+            (Integer)config.get(AZURE_STORAGE_TRY_TIMEOUT),
+            (Long)config.get(AZURE_STORAGE_RETRY_DELAY_IN_MS),
+            (Long)config.get(AZURE_STORAGE_MAX_RETRY_DELAY_IN_MS),
+            (String)config.get(AZURE_STORAGE_SECONDARY_HOST));
         builder.retryOptions(retryOptions);
+
+        builder.httpClient((HttpClient)config.get(AZURE_STORAGE_HTTP_CLIENT));
 
         return builder.buildClient();
     }
 
-    private Map<String, AzureFileStore> initializeFileStores(Map<String, ?> config) throws IOException {
-        String fileStoreNames = (String)config.get(AZURE_STORAGE_NIO_FILE_STORES);
+    private Map<String, FileStore> initializeFileStores(Map<String, ?> config) throws IOException {
+        String fileStoreNames = (String)config.get(AZURE_STORAGE_FILE_STORES);
         if (CoreUtils.isNullOrEmpty(fileStoreNames)) {
             throw new IllegalArgumentException("The list of FileStores cannot be null.");
         }
 
-        Map<String, AzureFileStore> fileStores = Collections.emptySortedMap();
+        Map<String, FileStore> fileStores = new HashMap<>();
         for (String fileStoreName : fileStoreNames.split(",")) {
             fileStores.put(fileStoreName, new AzureFileStore(this, fileStoreName));
         }

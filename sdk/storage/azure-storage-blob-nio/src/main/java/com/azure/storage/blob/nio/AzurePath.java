@@ -19,7 +19,7 @@ import java.util.Iterator;
 /**
  * {@inheritDoc}
  */
-public class AzurePath implements Path {
+public final class AzurePath implements Path {
     private final AzureFileSystem parentFileSystem;
     private final String pathString;
 

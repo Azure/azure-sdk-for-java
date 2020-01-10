@@ -9,15 +9,19 @@ import java.io.IOException;
 import java.nio.file.FileStore;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.attribute.FileStoreAttributeView;
+import java.util.Objects;
 
 /**
  * {@inheritDoc}
  */
-public class AzureFileStore extends FileStore {
+public final class AzureFileStore extends FileStore {
     private final AzureFileSystem parentFileSystem;
     private final BlobContainerClient containerClient;
 
     AzureFileStore(AzureFileSystem parentFileSystem, String containerName) throws IOException {
+        if (Objects.isNull(parentFileSystem)) {
+            throw new IllegalStateException("AzureFileStore cannot be instantiated without a parent FileSystem");
+        }
         this.parentFileSystem = parentFileSystem;
         this.containerClient = this.parentFileSystem.getBlobServiceClient().getBlobContainerClient(containerName);
 

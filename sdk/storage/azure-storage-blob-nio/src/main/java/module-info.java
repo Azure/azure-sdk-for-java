@@ -6,7 +6,6 @@ module com.azure.storage.blob.nio {
     requires transitive com.azure.storage.common;
     requires com.azure.storage.blob;
     requires com.fasterxml.jackson.dataformat.xml;
-    requires azure.core;
 
     exports com.azure.storage.blob.nio;
 

@@ -121,7 +121,7 @@ class APISpec extends Specification {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
@@ -222,17 +222,25 @@ class APISpec extends Specification {
         return setupTestMode() == TestMode.LIVE
     }
 
-    private StorageSharedKeyCredential getCredential(String accountType) {
-        String accountName
-        String accountKey
-
+    String getAccountKey(String accountType) {
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
-            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
+            return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
-            accountName = "azstoragesdkaccount"
             accountKey = "astorageaccountkey"
         }
+    }
+
+    String getAccountName(String accountType) {
+        if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
+            return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
+        } else {
+            accountName = "azstoragesdkaccount"
+        }
+    }
+
+    private StorageSharedKeyCredential getCredential(String accountType) {
+        String accountName = getAccountName(accountType)
+        String accountKey = getAccountKey(accountType)
 
         if (accountName == null || accountKey == null) {
             logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)

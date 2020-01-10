@@ -16,9 +16,34 @@
 package com.azure.storage.blob.nio
 
 class AzureFileSystemProviderSpec extends APISpec {
+
+//    def "Create file system single account"() {
+//
+//        where:
+//        sharedKey | sasToken
+//        true | false |
+//        false | true |
+//        true | true |
+//    }
+//
+//    def "Create file system single account containers"() {
+//
+//        where:
+//        containerCount | createContainers
+//        1 | true
+//        1 | false
+//        4 | true
+//        4 |false
+//    }
+//
+//    def "Create file system multiple accounts"() {
+//
+//        where:
+//    }
+
     // TODO: Be sure to test directories
     // TODO: Be sure to test operating on containers that already have data
-    // TODO: Test configurations
+    // TODO: Test FileSystem configurations
 
     // Create a file system success
     // Check container existence (already existing and new)
@@ -29,7 +54,7 @@ class AzureFileSystemProviderSpec extends APISpec {
     // invalid account
     // no account in uri
     // Already open FileSystem
-    // Fail initial connection check (insufficient sas)
+    // Fail initial connection check (insufficient sas). This should pass with only service sas now.
     // No containers listed, etc.
 
     // Illegal arguments for option
