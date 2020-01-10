@@ -18,7 +18,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
  * be used to map properties from a custom input JSON schema to the Event Grid
  * event schema.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "inputSchemaMappingType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "inputSchemaMappingType", defaultImpl = JsonInputSchemaMapping.class)
 @JsonTypeName("Json")
 @JsonFlatten
 public class JsonInputSchemaMapping extends InputSchemaMapping {
