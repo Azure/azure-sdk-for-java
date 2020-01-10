@@ -4,7 +4,9 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -21,6 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * context of a specific consumer group.
  */
 class EventHubPartitionAsyncConsumer implements AutoCloseable {
+    private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
     private final AmqpReceiveLinkProcessor amqpReceiveLinkProcessor;
@@ -34,7 +37,8 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
 
     EventHubPartitionAsyncConsumer(AmqpReceiveLinkProcessor amqpReceiveLinkProcessor,
         MessageSerializer messageSerializer, String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
-        String partitionId, boolean trackLastEnqueuedEventProperties) {
+        String partitionId, AtomicReference<EventPosition> currentEventPosition,
+        boolean trackLastEnqueuedEventProperties) {
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
@@ -43,6 +47,18 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         this.partitionId = partitionId;
         this.emitterProcessor = amqpReceiveLinkProcessor
             .map(message -> onMessageReceived(message))
+            .doOnNext(event -> {
+                // Keep track of the last position so if the link goes down, we don't start from the original location.
+                final Long offset = event.getData().getOffset();
+                if (offset != null) {
+                    currentEventPosition.set(EventPosition.fromOffset(offset));
+                } else {
+                    logger.warning(
+                        "Offset for received event should not be null. Partition Id: {}. Consumer group: {}. Data: {}",
+                        event.getPartitionContext().getPartitionId(), event.getPartitionContext().getConsumerGroup(),
+                        event.getData().getBodyAsString());
+                }
+            })
             .subscribeWith(EmitterProcessor.create(false));
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
 

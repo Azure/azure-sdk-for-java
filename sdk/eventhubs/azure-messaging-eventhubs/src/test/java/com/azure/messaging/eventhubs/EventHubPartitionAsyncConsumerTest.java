@@ -4,10 +4,13 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.util.Context;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import org.apache.qpid.proton.message.Message;
@@ -30,7 +33,11 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -44,6 +51,7 @@ class EventHubPartitionAsyncConsumerTest {
     private static final String EVENT_HUB_NAME = "event-hub-name";
     private static final String CONSUMER_GROUP = "consumer-group-test";
     private static final String PARTITION_ID = "a-partition-id";
+    private static final Date TEST_DATE = Date.from(Instant.ofEpochSecond(1578643343));
 
     @Mock
     private AmqpReceiveLink link1;
@@ -60,6 +68,8 @@ class EventHubPartitionAsyncConsumerTest {
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplierCaptor;
 
+    private final EventPosition originalPosition = EventPosition.latest();
+    private final AtomicReference<EventPosition> currentPosition = new AtomicReference<>(originalPosition);
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
 
@@ -104,7 +114,7 @@ class EventHubPartitionAsyncConsumerTest {
         // Arrange
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID, trackLastEnqueuedProperties);
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties);
 
         final EventData event1 = new EventData("Foo");
         final EventData event2 = new EventData("Bar");
@@ -144,6 +154,7 @@ class EventHubPartitionAsyncConsumerTest {
 
         // The emitter processor is not closed until the partition consumer is.
         Assertions.assertFalse(linkProcessor.isTerminated());
+        Assertions.assertSame(originalPosition, currentPosition.get());
     }
 
     @Test
@@ -151,12 +162,14 @@ class EventHubPartitionAsyncConsumerTest {
         // Arrange
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID, false);
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
-        final EventData event1 = new EventData("Foo");
-        final EventData event2 = new EventData("Bar");
-        final EventData event3 = new EventData("Baz");
+        final long expectedSequenceNumber = 53;
+        final String expectedOffset = "65";
+        final EventData event1 = new EventData("Foo".getBytes(), getSystemProperties("25", 14), Context.NONE);
+        final EventData event2 = new EventData("Bar".getBytes(), getSystemProperties("54", 21), Context.NONE);
+        final EventData event3 = new EventData("Baz".getBytes(), getSystemProperties(expectedOffset, expectedSequenceNumber), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -194,6 +207,12 @@ class EventHubPartitionAsyncConsumerTest {
 
         // We terminated the processor. This should be terminated as well.
         Assertions.assertTrue(linkProcessor.isTerminated());
+
+        EventPosition actual = currentPosition.get();
+
+        Assertions.assertNotNull(actual);
+        Assertions.assertEquals(expectedOffset, actual.getOffset());
+        Assertions.assertFalse(actual.isInclusive());
     }
 
     private void verifyLastEnqueuedInformation(boolean trackLastEnqueued,
@@ -237,5 +256,14 @@ class EventHubPartitionAsyncConsumerTest {
                 }
             });
         }, FluxSink.OverflowStrategy.BUFFER);
+    }
+
+    private static EventData.SystemProperties getSystemProperties(String offset, long sequenceNumber) {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
+        properties.put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        properties.put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), TEST_DATE);
+
+        return new EventData.SystemProperties(properties);
     }
 }

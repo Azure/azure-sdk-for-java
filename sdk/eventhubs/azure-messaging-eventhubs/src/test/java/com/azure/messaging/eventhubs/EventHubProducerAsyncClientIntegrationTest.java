@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -27,6 +27,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
     private static final String PARTITION_ID = "1";
 
     private EventHubProducerAsyncClient producer;
+    private EventHubConsumerAsyncClient consumer;
 
     public EventHubProducerAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubProducerAsyncClientIntegrationTest.class));
@@ -42,7 +43,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
 
     @Override
     protected void afterTest() {
-        dispose(producer);
+        dispose(producer, consumer);
     }
 
     /**
@@ -205,8 +206,24 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
     @Disabled("Testing long running operations and disconnections.")
     @Test
     void worksAfterReconnection() throws InterruptedException {
-        Flux.interval(Duration.ofSeconds(5))
-            .flatMap(position -> producer.createBatch().flatMap(batch -> {
+        final String partitionId = "0";
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionId(partitionId);
+
+        consumer = new EventHubClientBuilder()
+            .connectionString(getConnectionString())
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .retry(RETRY_OPTIONS)
+            .buildAsyncConsumerClient();
+
+        consumer.receiveFromPartition(partitionId, EventPosition.latest())
+            .subscribe(event -> {
+                logger.info("[{}]: {}", event.getData().getEnqueuedTime(), event.getData().getSequenceNumber());
+            }, error -> {
+                logger.error("Exception occurred in receive.", error);
+            }, () -> logger.info("Completed receiving."));
+
+        Flux.interval(Duration.ofSeconds(3))
+            .flatMap(position -> producer.createBatch(options).flatMap(batch -> {
                 IntStream.range(0, 3).mapToObj(number -> new EventData("Position" + position + ": " + number))
                     .forEach(event -> {
                         if (!batch.tryAdd(event)) {
@@ -217,17 +234,17 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
 
                 return producer.send(batch).thenReturn(Instant.now());
             }))
-            .onErrorContinue(error -> error instanceof AmqpException && ((AmqpException) error).isTransient(),
-                (error, value) -> {
-                    System.out.println("Retries were exhausted. No logger retrying operation. " + error.getMessage());
-                })
+//            .onErrorContinue(error -> error instanceof AmqpException && ((AmqpException) error).isTransient(),
+//                (error, value) -> {
+//                    System.out.println("Retries were exhausted. No logger retrying operation. " + error.getMessage());
+//                })
             .subscribe(instant -> {
                 System.out.println("Sent batch at: " + instant);
             }, error -> {
-                    logger.error("Error sending batch: ", error);
-                }, () -> {
-                    logger.info("Complete.");
-                });
+                logger.error("Error sending batch: ", error);
+            }, () -> {
+                logger.info("Complete.");
+            });
 
         System.out.println("Sleeping while performing work.");
         TimeUnit.MINUTES.sleep(30);

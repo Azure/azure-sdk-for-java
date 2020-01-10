@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -339,9 +340,10 @@ public class EventHubConsumerAsyncClient implements Closeable {
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT,
             getEventHubName(), consumerGroup, partitionId);
 
+        final AtomicReference<EventPosition> initialPosition = new AtomicReference<>(startingPosition);
         final Flux<AmqpReceiveLink> receiveLinkMono =
             connectionProcessor.flatMap(connection ->
-                connection.createReceiveLink(linkName, entityPath, startingPosition, receiveOptions))
+                connection.createReceiveLink(linkName, entityPath, initialPosition.get(), receiveOptions))
                 .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()))
             .repeat();
 
@@ -350,6 +352,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
             new AmqpReceiveLinkProcessor(prefetchCount, retryPolicy));
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
-            getEventHubName(), consumerGroup, partitionId, receiveOptions.getTrackLastEnqueuedEventProperties());
+            getEventHubName(), consumerGroup, partitionId, initialPosition,
+            receiveOptions.getTrackLastEnqueuedEventProperties());
     }
 }
