@@ -12,6 +12,7 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -257,10 +258,12 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             .filter(event -> TestUtils.isMatchingEvent(event, MESSAGE_TRACKING_ID))
             .subscribe(
                 event -> logger.info("C1:\tReceived event sequence: {}", event.getData().getSequenceNumber()),
-                ex -> logger.error("C1:\tERROR", ex),
-                () -> {
-                    logger.info("C1:\tCompleted.");
+                ex -> {
+                    logger.error("C1:\tERROR", ex);
                     semaphore.release();
+                }, () -> {
+                    logger.info("C1:\tCompleted.");
+                    Assertions.fail("Should not be hitting this. An error should occur instead.");
                 }));
 
         Thread.sleep(2000);
@@ -276,7 +279,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
         // Assert
         try {
-            Assertions.assertTrue(semaphore.tryAcquire(60, TimeUnit.SECONDS), "The EventHubConsumer was not closed after one with a higher epoch number started.");
+            Assertions.assertTrue(semaphore.tryAcquire(20, TimeUnit.SECONDS), "The EventHubConsumer was not closed after one with a higher epoch number started.");
         } finally {
             subscriptions.dispose();
             isActive.set(false);
