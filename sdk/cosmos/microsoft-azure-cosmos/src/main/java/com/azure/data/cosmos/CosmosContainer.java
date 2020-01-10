@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.DatabaseForTest;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.Offer;
 import com.azure.data.cosmos.internal.Paths;
@@ -434,8 +435,9 @@ public class CosmosContainer {
      */
     public Mono<Integer> readMinThroughput() {
         return this.read().flatMap(cosmosContainerResponse -> database.getDocClientWrapper()
-            .queryOffers("select * from c where c.offerResourceId = '"
-                    + cosmosContainerResponse.resourceSettings().resourceId() + "'", new FeedOptions())
+            .queryOffers(
+                new SqlQuerySpec("select * from c where c.offerResourceId = @OFFER_RESOURCE_ID",
+                new SqlParameterList(new SqlParameter("@OFFER_RESOURCE_ID", cosmosContainerResponse.resourceSettings().resourceId()))), new FeedOptions())
             .single()).flatMap(offerFeedResponse -> {
                 if (offerFeedResponse.results().isEmpty()) {
                     return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
