@@ -206,6 +206,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
     @Disabled("Testing long running operations and disconnections.")
     @Test
     void worksAfterReconnection() throws InterruptedException {
+        final EventPosition firstPosition = EventPosition.fromEnqueuedTime(Instant.now());
         final String partitionId = "0";
         final CreateBatchOptions options = new CreateBatchOptions().setPartitionId(partitionId);
 
@@ -215,7 +216,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             .retry(RETRY_OPTIONS)
             .buildAsyncConsumerClient();
 
-        consumer.receiveFromPartition(partitionId, EventPosition.latest())
+        consumer.receiveFromPartition(partitionId, firstPosition)
             .subscribe(event -> {
                 logger.info("[{}]: {}", event.getData().getEnqueuedTime(), event.getData().getSequenceNumber());
             }, error -> {
@@ -234,10 +235,6 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
 
                 return producer.send(batch).thenReturn(Instant.now());
             }))
-//            .onErrorContinue(error -> error instanceof AmqpException && ((AmqpException) error).isTransient(),
-//                (error, value) -> {
-//                    System.out.println("Retries were exhausted. No logger retrying operation. " + error.getMessage());
-//                })
             .subscribe(instant -> {
                 System.out.println("Sent batch at: " + instant);
             }, error -> {
