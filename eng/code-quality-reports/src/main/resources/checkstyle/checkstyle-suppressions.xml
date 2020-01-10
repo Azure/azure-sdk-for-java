@@ -137,8 +137,8 @@
   <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
 
-  <!-- Identity and OpenCensus tracing are plugin packages and shouldn't be referenced -->
-  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opencensus[/\\]*"/>
+  <!-- Identity and opentelemetry tracing are plugin packages and shouldn't be referenced -->
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opentelemetry[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved: https://github.com/Azure/azure-sdk/issues/321 -->
