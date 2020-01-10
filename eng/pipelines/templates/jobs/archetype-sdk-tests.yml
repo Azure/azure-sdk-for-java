@@ -75,21 +75,16 @@ jobs:
             eng/New-TestResources.ps1
             -BaseName $(BaseName)
             -ServiceDirectory ${{ parameters.ServiceDirectory }}
-            -TestApplicationId $env:TEST_APPLICATION_ID
-            -TestApplicationSecret $env:TEST_APPLICATION_SECRET
-            -TenantId $env:TENANT_ID
-            -ProvisionerApplicationId $env:PROVISIONER_APPLICATION_ID
-            -ProvisionerApplicationSecret $env:PROVISIONER_APPLICATION_SECRET
+            -TestApplicationId '$(aad-azure-sdk-test-client-id)'
+            -TestApplicationSecret '$(aad-azure-sdk-test-client-secret)'
+            -TestApplicationOid '$(aad-azure-sdk-test-client-oid)'
+            -TenantId '$(aad-azure-sdk-test-tenant-id)'
+            -ProvisionerApplicationId '$(provisioner-aad-id)'
+            -ProvisionerApplicationSecret '$(provisioner-aad-secret)'
             -DeleteAfterHours 24
             -Location westus2
             -Force
             -Verbose
-          env:
-            TEST_APPLICATION_ID: $(aad-azure-sdk-test-client-id)
-            TEST_APPLICATION_SECRET: $(aad-azure-sdk-test-client-secret)
-            TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-            PROVISIONER_APPLICATION_ID: $(provisioner-aad-id)
-            PROVISIONER_APPLICATION_SECRET: $(provisioner-aad-secret)
           displayName: Provision Test Resources
 
       - ${{ parameters.PreRunSteps }}
@@ -107,15 +102,11 @@ jobs:
         - pwsh: >-
             eng/Remove-TestResources.ps1
             -ResourceGroupName "${env:AZURE_RESOURCEGROUP_NAME}"
-            -TenantId $env:TENANT_ID
-            -ProvisionerApplicationId $env:PROVISIONER_APPLICATION_ID
-            -ProvisionerApplicationSecret $env:PROVISIONER_APPLICATION_SECRET
+            -TenantId '$(aad-azure-sdk-test-tenant-id)'
+            -ProvisionerApplicationId '$(provisioner-aad-id)'
+            -ProvisionerApplicationSecret '$(provisioner-aad-secret)'
             -Force
             -Verbose
-          env:
-            TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-            PROVISIONER_APPLICATION_ID: $(provisioner-aad-id)
-            PROVISIONER_APPLICATION_SECRET: $(provisioner-aad-secret)
           condition: ne(variables['AZURE_RESOURCEGROUP_NAME'], '')
           continueOnError: true
           displayName: Remove Test Resources
