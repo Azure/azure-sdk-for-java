@@ -14,7 +14,6 @@ import reactor.netty.tcp.ProxyProvider;
 import reactor.netty.tcp.TcpClient;
 
 import java.net.InetSocketAddress;
-import java.net.URI;
 import java.util.Objects;
 
 /**
@@ -89,16 +88,50 @@ public class NettyAsyncHttpClientBuilder {
                     tcpConfig = tcpConfig.runOn(nioEventLoopGroup);
                 }
 
-                return setupProxy(tcpConfig, proxyOptions, logger);
+                return setupProxy(tcpConfig, proxyOptions, buildConfiguration, logger);
             });
-        return new NettyAsyncHttpClient(nettyHttpClient);
+        return new NettyAsyncHttpClient(nettyHttpClient, nioEventLoopGroup, );
+    }
+
+    private static ProxyOptions setProxyOptions(ProxyOptions proxyOptions, Configuration configuration,
+        ClientLogger clientLogger) {
+        if (proxyOptions != null) {
+            ProxyOptions buildProxyOptions = new ProxyOptions(proxyOptions.getType(), proxyOptions.getAddress());
+
+            if (proxyOptions.getUsername() != null) {
+                buildProxyOptions.setCredentials(proxyOptions.getUsername(), proxyOptions.getPassword())
+                    .setNonProxyHosts(proxyOptions.getNonProxyHosts());
+            }
+
+            return buildProxyOptions;
+        }
+
+        for (NettyProxyConfiguration proxyConfiguration : NettyProxyConfiguration.PROXY_CONFIGURATIONS_LOAD_ORDER) {
+            // Proxy configuration doesn't meet the pre-requisites to be used.
+            if (!proxyConfiguration.canProxyConfigurationBeApplied(configuration)) {
+                continue;
+            }
+
+            String host = proxyConfiguration.getHost(configuration);
+
+            // No host listed for this proxy choice, check the next one.
+            if (CoreUtils.isNullOrEmpty(host)) {
+                continue;
+            }
+
+            return applyProxy(tcpClient, proxyConfiguration.getType(),
+                new InetSocketAddress(host, proxyConfiguration.getPort(configuration)),
+                proxyConfiguration.getUsername(configuration), proxyConfiguration.getPassword(configuration),
+                proxyConfiguration.getNonProxyHosts(configuration));
+        }
     }
 
     /*
      * Configures a proxy to the passed 'TcpClient' if the passed 'ProxyOptions' isn't null or a configuration is
      * loadable from the environment, otherwise no proxy will be applied.
      */
-    private static TcpClient setupProxy(TcpClient tcpClient, ProxyOptions proxyOptions, ClientLogger logger) {
+    private static TcpClient setupProxy(TcpClient tcpClient, ProxyOptions proxyOptions, Configuration configuration,
+        ClientLogger logger) {
         // ProxyOptions is set, use it.
         if (proxyOptions != null) {
             return applyProxy(tcpClient, mapProxyType(proxyOptions.getType(), logger), proxyOptions.getAddress(),
@@ -107,11 +140,11 @@ public class NettyAsyncHttpClientBuilder {
 
         for (NettyProxyConfiguration proxyConfiguration : NettyProxyConfiguration.PROXY_CONFIGURATIONS_LOAD_ORDER) {
             // Proxy configuration doesn't meet the pre-requisites to be used.
-            if (!proxyConfiguration.canProxyConfigurationBeApplied()) {
+            if (!proxyConfiguration.canProxyConfigurationBeApplied(configuration)) {
                 continue;
             }
 
-            String host = proxyConfiguration.getHost();
+            String host = proxyConfiguration.getHost(configuration);
 
             // No host listed for this proxy choice, check the next one.
             if (CoreUtils.isNullOrEmpty(host)) {
@@ -119,8 +152,9 @@ public class NettyAsyncHttpClientBuilder {
             }
 
             return applyProxy(tcpClient, proxyConfiguration.getType(),
-                new InetSocketAddress(host, proxyConfiguration.getPort()), proxyConfiguration.getUsername(),
-                proxyConfiguration.getPassword(), proxyConfiguration.getNonProxyHosts());
+                new InetSocketAddress(host, proxyConfiguration.getPort(configuration)),
+                proxyConfiguration.getUsername(configuration), proxyConfiguration.getPassword(configuration),
+                proxyConfiguration.getNonProxyHosts(configuration));
         }
 
         return tcpClient;

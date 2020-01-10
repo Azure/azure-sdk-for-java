@@ -14,7 +14,7 @@ public class ProxyOptions {
     private final Type type;
     private String username;
     private String password;
-
+    private String nonProxyHosts;
 
     /**
      * Creates ProxyOptions.
@@ -37,6 +37,16 @@ public class ProxyOptions {
     public ProxyOptions setCredentials(String username, String password) {
         this.username = Objects.requireNonNull(username, "'username' cannot be null.");
         this.password = Objects.requireNonNull(password, "'password' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the hosts which bypass the proxy.
+     *
+     * @param nonProxyHosts Hosts that bypass the proxy.
+     */
+    public ProxyOptions setNonProxyHosts(String nonProxyHosts) {
+        this.nonProxyHosts = nonProxyHosts;
         return this;
     }
 
@@ -66,6 +76,13 @@ public class ProxyOptions {
      */
     public String getPassword() {
         return this.password;
+    }
+
+    /**
+     * @return the hosts that bypass the proxy.
+     */
+    public String getNonProxyHosts() {
+        return this.nonProxyHosts;
     }
 
     /**
