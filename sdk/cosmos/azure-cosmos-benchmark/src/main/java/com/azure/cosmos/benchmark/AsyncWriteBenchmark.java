@@ -61,12 +61,12 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
     protected void performWorkload(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber, long i) throws InterruptedException {
         String partitionKey = uuid + i;
         Mono<CosmosAsyncItemResponse> obs;
-        if (configuration.isPassPartitionKeyOnWrite()) {
-            // more optimized for write as partition ke is already passed as config
-            obs = cosmosAsyncContainer.createItem(generateDocument(partitionKey, dataFieldValue), new CosmosItemRequestOptions(partitionKey));
-        } else {
+        if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
             obs = cosmosAsyncContainer.createItem(generateDocument(partitionKey, dataFieldValue));
+        } else {
+            // more optimized for write as partition ke is already passed as config
+            obs = cosmosAsyncContainer.createItem(generateDocument(partitionKey, dataFieldValue), new CosmosItemRequestOptions(partitionKey));
         }
 
         concurrencyControlSemaphore.acquire();
