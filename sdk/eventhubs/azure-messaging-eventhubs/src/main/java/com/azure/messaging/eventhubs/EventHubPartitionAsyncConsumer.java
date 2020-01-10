@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.messaging.eventhubs.implementation.AmqpLinkMessageProcessor;
+import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
-    private final AmqpLinkMessageProcessor amqpLinkMessageProcessor;
+    private final AmqpReceiveLinkProcessor amqpReceiveLinkProcessor;
     private final MessageSerializer messageSerializer;
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
@@ -32,18 +32,18 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private final boolean trackLastEnqueuedEventProperties;
     private final EmitterProcessor<PartitionEvent> emitterProcessor;
 
-    EventHubPartitionAsyncConsumer(AmqpLinkMessageProcessor amqpLinkMessageProcessor,
+    EventHubPartitionAsyncConsumer(AmqpReceiveLinkProcessor amqpReceiveLinkProcessor,
         MessageSerializer messageSerializer, String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
-        String partitionId, int prefetchCount, boolean trackLastEnqueuedEventProperties) {
-        this.amqpLinkMessageProcessor = amqpLinkMessageProcessor;
+        String partitionId, boolean trackLastEnqueuedEventProperties) {
+        this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
-        this.emitterProcessor = amqpLinkMessageProcessor
+        this.emitterProcessor = amqpReceiveLinkProcessor
             .map(message -> onMessageReceived(message))
-            .subscribeWith(EmitterProcessor.create(prefetchCount, false));;
+            .subscribeWith(EmitterProcessor.create(false));
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
 
         if (trackLastEnqueuedEventProperties) {
@@ -58,7 +58,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     public void close() {
         if (!isDisposed.getAndSet(true)) {
             emitterProcessor.onComplete();
-            amqpLinkMessageProcessor.cancel();
+            amqpReceiveLinkProcessor.cancel();
         }
     }
 

@@ -3,13 +3,16 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -336,13 +339,17 @@ public class EventHubConsumerAsyncClient implements Closeable {
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT,
             getEventHubName(), consumerGroup, partitionId);
 
-        final Mono<AmqpReceiveLink> receiveLinkMono =
+        final Flux<AmqpReceiveLink> receiveLinkMono =
             connectionProcessor.flatMap(connection ->
                 connection.createReceiveLink(linkName, entityPath, startingPosition, receiveOptions))
-                .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
+                .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()))
+            .repeat();
 
-        return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer, getFullyQualifiedNamespace(),
-            getEventHubName(), consumerGroup, partitionId, prefetchCount,
-            receiveOptions.getTrackLastEnqueuedEventProperties());
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
+        final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
+            new AmqpReceiveLinkProcessor(prefetchCount, retryPolicy));
+
+        return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
+            getEventHubName(), consumerGroup, partitionId, receiveOptions.getTrackLastEnqueuedEventProperties());
     }
 }

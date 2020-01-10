@@ -164,7 +164,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         }
                     }),
                 next.receive().subscribe(message -> {
-                    logger.info("Pushing next message downstream.");
+                    logger.verbose("Pushing next message downstream.");
                     downstream.onNext(message);
                 }));
         }
