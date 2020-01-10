@@ -52,6 +52,10 @@ public class BridgeInternal {
         return Document.FromObject(document, mapper);
     }
 
+    public static String toJsonString(Object document, ObjectMapper mapper) {
+        return CosmosItemProperties.toJsonString(document, mapper);
+    }
+
     public static void monitorTelemetry(MeterRegistry registry) {
         CosmosAsyncClient.setMonitorTelemetry(registry);
     }

@@ -61,6 +61,7 @@ import static com.azure.cosmos.BridgeInternal.documentFromObject;
 import static com.azure.cosmos.BridgeInternal.getAltLink;
 import static com.azure.cosmos.BridgeInternal.toDatabaseAccount;
 import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
+import static com.azure.cosmos.BridgeInternal.toJsonString;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 
@@ -942,23 +943,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("document");
         }
 
-        Document typedDocument = documentFromObject(document, mapper);
-
-        RxDocumentClientImpl.validateResource(typedDocument);
-
-        if (typedDocument.getId() == null && !disableAutomaticIdGeneration) {
-            // We are supposed to use GUID. Basically UUID is the same as GUID
-            // when represented as a string.
-            typedDocument.setId(UUID.randomUUID().toString());
+        Document documentForPartitionKeyExtraction = null;
+        if (options == null || options.getPartitionKey() == null) {
+            // deserialize to document for partition key extraction only if partition key is not specified
+            documentForPartitionKeyExtraction = documentFromObject(document, mapper);
         }
+
+        String content = toJsonString(document, mapper);
+
         String path = Utils.joinPath(documentCollectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         Map<String, String> requestHeaders = this.getRequestHeaders(options);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, path,
-                typedDocument, requestHeaders, options);
+                                                                           requestHeaders, options, content);
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
-        return addPartitionKeyInformation(request, typedDocument, options, collectionObs);
+        return addPartitionKeyInformation(request, documentForPartitionKeyExtraction, options, collectionObs);
     }
 
     private void populateHeaders(RxDocumentServiceRequest request, String httpMethod) {

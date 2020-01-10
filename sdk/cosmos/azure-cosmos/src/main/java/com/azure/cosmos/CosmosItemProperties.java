@@ -7,6 +7,8 @@ import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,6 +59,21 @@ public class CosmosItemProperties extends Resource {
         return typedItem;
     }
 
+    static String toJsonString(Object cosmosItem, ObjectMapper objectMapper) {
+        if (cosmosItem instanceof CosmosItemProperties) {
+            return ((CosmosItemProperties) cosmosItem).toJson();
+        } else {
+            if (cosmosItem instanceof Document) {
+                return ((Document) cosmosItem).toJson();
+            }
+            try {
+                return objectMapper.writeValueAsString(cosmosItem);
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Can't serialize the object into the json string", e);
+            }
+        }
+    }
+
     static List<CosmosItemProperties> getFromV2Results(List<Document> results) {
         return results.stream().map(document -> new CosmosItemProperties(document.toJson()))
                    .collect(Collectors.toList());
@@ -66,7 +83,7 @@ public class CosmosItemProperties extends Resource {
         return results.stream().map(document -> document.toObject(klass))
                    .collect(Collectors.toList());
     }
-    
+
     /**
      * Gets object.
      *

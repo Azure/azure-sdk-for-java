@@ -379,6 +379,19 @@ public class RxDocumentServiceRequest {
         return request;
     }
 
+    public static RxDocumentServiceRequest create(OperationType operation,
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  Map<String, String> headers,
+                                                  Object options,
+                                                  String content) {
+
+        RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
+                                                                        content.getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
+        request.properties = getProperties(options);
+        return request;
+    }
+
     /**
      * Creates a DocumentServiceRequest with a query.
      *
