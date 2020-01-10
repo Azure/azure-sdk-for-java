@@ -25,12 +25,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Processes AMQP receive links into a stream of AMQP messages.
  */
-public class AmqpLinkMessageProcessor extends FluxProcessor<AmqpReceiveLink, Message> implements Subscription {
+public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Message> implements Subscription {
     // We don't want to dump too many credits on the link at once. It's easy enough to ask for more.
     private static final int MINIMUM_REQUEST = 0;
     private static final int MAXIMUM_REQUEST = 100;
 
-    private final ClientLogger logger = new ClientLogger(AmqpLinkMessageProcessor.class);
+    private final ClientLogger logger = new ClientLogger(AmqpReceiveLinkProcessor.class);
     private final Object lock = new Object();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicBoolean hasDownstream = new AtomicBoolean();
@@ -49,7 +49,7 @@ public class AmqpLinkMessageProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private volatile Disposable retrySubscription;
 
     /**
-     * Creates an instance of {@link AmqpLinkMessageProcessor}.
+     * Creates an instance of {@link AmqpReceiveLinkProcessor}.
      *
      * @param prefetch The number if messages to initially fetch.
      * @param retryPolicy Retry policy to apply when fetching a new AMQP channel.
@@ -57,7 +57,7 @@ public class AmqpLinkMessageProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public AmqpLinkMessageProcessor(int prefetch, AmqpRetryPolicy retryPolicy) {
+    public AmqpReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         if (prefetch < 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'prefetch' cannot be less than 0."));
@@ -156,10 +156,11 @@ public class AmqpLinkMessageProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     },
                     () -> {
                         if (isTerminated()) {
-                            logger.info("Connection is disposed.");
+                            logger.info("Processor is disposed.");
                         } else {
-                            logger.info("Connection closed.");
+                            logger.info("Receive link endpoint states are closed. Requesting another.");
                             currentLink = null;
+                            requestUpstream();
                         }
                     }),
                 next.receive().subscribe(message -> {
@@ -204,6 +205,7 @@ public class AmqpLinkMessageProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
         if (!hasDownstream.getAndSet(true)) {
             this.downstream = actual;
+            actual.onSubscribe(this);
             requestUpstream();
         } else {
             Operators.error(actual, logger.logExceptionAsError(new IllegalStateException(
@@ -239,8 +241,9 @@ public class AmqpLinkMessageProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        logger.warning("Non-retryable error occurred in connection.", throwable);
+        logger.warning("Non-retryable error occurred in AMQP receive link.", throwable);
         lastError = throwable;
+
         isTerminated.set(true);
 
         synchronized (lock) {
@@ -248,6 +251,8 @@ public class AmqpLinkMessageProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 downstream.onError(throwable);
             }
         }
+
+        terminate();
     }
 
     /**
@@ -255,9 +260,15 @@ public class AmqpLinkMessageProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      */
     @Override
     public void onComplete() {
-        if (!isTerminated.getAndSet(true)) {
-            terminate();
+        if (isTerminated.getAndSet(true)) {
+            return;
         }
+
+        if (hasDownstream.get()) {
+            downstream.onComplete();
+        }
+
+        terminate();
     }
 
     /**
@@ -294,11 +305,16 @@ public class AmqpLinkMessageProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
+        if (hasDownstream.get()) {
+            downstream.onComplete();
+        }
+
         terminate();
     }
 
     private void requestUpstream() {
         if (isTerminated()) {
+            logger.verbose("Terminated. Not requesting another.");
             return;
         }
 
@@ -306,25 +322,17 @@ public class AmqpLinkMessageProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             if (currentLink != null) {
                 logger.info("AmqpReceiveLink exists, not requesting another.");
                 return;
-            } else if (isTerminated.get() || upstream == null) {
-                logger.verbose("Terminated. Not requesting another.");
+            } else if (upstream == null) {
+                logger.verbose("There is no upstream. Not requesting");
                 return;
             }
         }
 
-        logger.info("Connection not requested, yet. Requesting one.");
+        logger.info("AmqpReceiveLink not requested, yet. Requesting one.");
         upstream.request(1);
     }
 
     private void terminate() {
-        if (isTerminated.getAndSet(true)) {
-            return;
-        }
-
-        if (hasDownstream.get()) {
-            downstream.onComplete();
-        }
-
         if (retrySubscription != null && !retrySubscription.isDisposed()) {
             retrySubscription.dispose();
         }
