@@ -215,9 +215,25 @@
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
+        "AZURE_STORAGE_FILE_ACCOUNT_NAME": {
+            "type": "string",
+            "value": "[variables('primaryAccountName')]"
+        },
+        "AZURE_STORAGE_FILE_ACCOUNT_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+        },
         "AZURE_STORAGE_FILE_ENDPOINT": {
             "type": "string",
             "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.file]"
+        },
+        "AZURE_STORAGE_QUEUE_ACCOUNT_NAME": {
+            "type": "string",
+            "value": "[variables('primaryAccountName')]"
+        },
+        "AZURE_STORAGE_QUEUE_ACCOUNT_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
         "AZURE_STORAGE_QUEUE_ENDPOINT": {
             "type": "string",
