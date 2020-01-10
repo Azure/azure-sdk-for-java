@@ -220,8 +220,8 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
             .subscribe(event -> {
                 logger.info("[{}]: {}", event.getData().getEnqueuedTime(), event.getData().getSequenceNumber());
             }, error -> {
-                logger.error("Exception occurred in receive.", error);
-            }, () -> logger.info("Completed receiving."));
+                    logger.error("Exception occurred in receive.", error);
+                }, () -> logger.info("Completed receiving."));
 
         Flux.interval(Duration.ofSeconds(3))
             .flatMap(position -> producer.createBatch(options).flatMap(batch -> {
@@ -238,10 +238,10 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
             .subscribe(instant -> {
                 System.out.println("Sent batch at: " + instant);
             }, error -> {
-                logger.error("Error sending batch: ", error);
-            }, () -> {
-                logger.info("Complete.");
-            });
+                    logger.error("Error sending batch: ", error);
+                }, () -> {
+                    logger.info("Complete.");
+                });
 
         System.out.println("Sleeping while performing work.");
         TimeUnit.MINUTES.sleep(30);
