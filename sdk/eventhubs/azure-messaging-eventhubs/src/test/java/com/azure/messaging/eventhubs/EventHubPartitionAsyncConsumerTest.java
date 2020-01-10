@@ -165,11 +165,11 @@ class EventHubPartitionAsyncConsumerTest {
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
-        final long expectedSequenceNumber = 53;
-        final String expectedOffset = "65";
+        final String secondOffset = "54";
+        final String lastOffset = "65";
         final EventData event1 = new EventData("Foo".getBytes(), getSystemProperties("25", 14), Context.NONE);
-        final EventData event2 = new EventData("Bar".getBytes(), getSystemProperties("54", 21), Context.NONE);
-        final EventData event3 = new EventData("Baz".getBytes(), getSystemProperties(expectedOffset, expectedSequenceNumber), Context.NONE);
+        final EventData event2 = new EventData("Bar".getBytes(), getSystemProperties(secondOffset, 21), Context.NONE);
+        final EventData event3 = new EventData("Baz".getBytes(), getSystemProperties(lastOffset, 53), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -194,6 +194,12 @@ class EventHubPartitionAsyncConsumerTest {
             .thenCancel()
             .verify();
 
+        // Assert that we have the current offset.
+        final EventPosition firstPosition = currentPosition.get();
+        Assertions.assertNotNull(firstPosition);
+        Assertions.assertEquals(secondOffset, firstPosition.getOffset());
+        Assertions.assertFalse(firstPosition.isInclusive());
+
         StepVerifier.create(consumer.receive())
             .then(() -> messageProcessorSink.next(message3))
             .assertNext(partitionEvent -> {
@@ -208,10 +214,10 @@ class EventHubPartitionAsyncConsumerTest {
         // We terminated the processor. This should be terminated as well.
         Assertions.assertTrue(linkProcessor.isTerminated());
 
-        EventPosition actual = currentPosition.get();
-
+        // Assert that we have that last position.
+        final EventPosition actual = currentPosition.get();
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expectedOffset, actual.getOffset());
+        Assertions.assertEquals(lastOffset, actual.getOffset());
         Assertions.assertFalse(actual.isInclusive());
     }
 
