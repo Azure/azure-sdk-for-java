@@ -60,9 +60,9 @@ class Configuration {
     @Parameter(names = "-maxConnectionPoolSize", description = "Max Connection Pool Size")
     private Integer maxConnectionPoolSize = 1000;
 
-    @Parameter(names = "-passPartitionKeyOnWrite", description = "Configures if in write operation " +
-        "partition key is passed as the request config or otherwise extracted from json CosmosItem")
-    private boolean passPartitionKeyOnWrite = true;
+    @Parameter(names = "-disablePassingPartitionKeyAsOptionOnWrite", description = "Disables passing partition in request options for write operation;" +
+        " in this case, json will be parsed and partition key will be extracted (this requires more computational overhead).")
+    private boolean disablePassingPartitionKeyAsOptionOnWrite = false;
 
     @Parameter(names = "-consistencyLevel", description = "Consistency Level", converter = ConsistencyLevelConverter.class)
     private ConsistencyLevel consistencyLevel = ConsistencyLevel.SESSION;
@@ -203,8 +203,8 @@ class Configuration {
     }
 
 
-    boolean isPassPartitionKeyOnWrite() {
-        return passPartitionKeyOnWrite;
+    boolean isDisablePassingPartitionKeyAsOptionOnWrite() {
+        return disablePassingPartitionKeyAsOptionOnWrite;
     }
 
     boolean isSync() {
