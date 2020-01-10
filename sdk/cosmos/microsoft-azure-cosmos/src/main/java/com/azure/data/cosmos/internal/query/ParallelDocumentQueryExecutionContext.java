@@ -311,7 +311,14 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 .map(DocumentProducer::produceAsync)
                 // Merge results from all partitions.
                 .collect(Collectors.toList());
-        return Flux.concat(obs).compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), this.feedOptions));
+
+        int fluxConcurrency = fluxSequentialMergeConcurrency(feedOptions, obs.size());
+        int fluxPrefetch = fluxSequentialMergePrefetch(feedOptions, obs.size(), maxPageSize, fluxConcurrency);
+
+        logger.debug("ParallelQuery: flux mergeSequential" +
+                         " concurrency {}, prefetch {}", fluxConcurrency, fluxPrefetch);
+        return Flux.mergeSequential(obs, fluxConcurrency, fluxPrefetch)
+            .compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), feedOptions));
     }
 
     @Override
