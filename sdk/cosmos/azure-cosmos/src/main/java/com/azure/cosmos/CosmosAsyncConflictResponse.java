@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ResourceResponse;
+import org.apache.commons.lang3.StringUtils;
 
 public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictProperties> {
     private final CosmosAsyncContainer container;
@@ -12,12 +13,14 @@ public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictPr
     CosmosAsyncConflictResponse(ResourceResponse<Conflict> response, CosmosAsyncContainer container) {
         super(response);
         this.container = container;
-        if (response.getResource() == null) {
+        String bodyAsString = response.getBodyAsString();
+        if (StringUtils.isEmpty(bodyAsString)) {
             super.setProperties(null);
             conflictClient = null;
         } else {
-            super.setProperties(new CosmosConflictProperties(response.getResource().toJson()));
-            conflictClient = new CosmosAsyncConflict(response.getResource().getId(), container);
+            CosmosConflictProperties props = new CosmosConflictProperties(bodyAsString);
+            super.setProperties(props);
+            conflictClient = new CosmosAsyncConflict(props.getId(), container);
         }
     }
 

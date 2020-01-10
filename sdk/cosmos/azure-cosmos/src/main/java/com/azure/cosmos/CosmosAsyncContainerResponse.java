@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
+import org.apache.commons.lang3.StringUtils;
 
 @SuppressWarnings("enforcefinalfields")
 public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainerProperties> {
@@ -12,11 +13,13 @@ public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainer
 
     CosmosAsyncContainerResponse(ResourceResponse<DocumentCollection> response, CosmosAsyncDatabase database) {
         super(response);
-        if (response.getResource() == null) {
+        String bodyAsString = response.getBodyAsString();
+        if (StringUtils.isEmpty(bodyAsString)) {
             super.setProperties(null);
             container = null;
         } else {
-            super.setProperties(new CosmosContainerProperties(response));
+            CosmosContainerProperties props = new CosmosContainerProperties(bodyAsString);
+            super.setProperties(props);
             container = new CosmosAsyncContainer(this.getProperties().getId(), database);
         }
     }
