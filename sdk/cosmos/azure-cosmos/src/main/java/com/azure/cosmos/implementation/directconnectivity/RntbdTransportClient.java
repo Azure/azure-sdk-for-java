@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -137,7 +138,7 @@ public final class RntbdTransportClient extends TransportClient {
                     throwable.getClass(),
                     throwable);
                 CosmosClientException error = (CosmosClientException) throwable;
-                error.setRequestTimeline(record.takeTimelineSnapshot());
+                BridgeInternal.setRequestTimeline(error, record.takeTimelineSnapshot());
             }
 
         }));

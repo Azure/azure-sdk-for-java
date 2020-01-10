@@ -254,7 +254,7 @@ public class CosmosClientException extends Exception {
         return this.requestTimeline;
     }
 
-    public CosmosClientException setRequestTimeline(RequestTimeline requestTimeline) {
+    CosmosClientException setRequestTimeline(RequestTimeline requestTimeline) {
         this.requestTimeline = requestTimeline;
         return this;
     }
