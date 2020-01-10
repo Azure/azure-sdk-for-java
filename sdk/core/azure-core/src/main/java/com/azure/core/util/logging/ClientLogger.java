@@ -12,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLogger;
 
-import static com.azure.core.implementation.LoggingUtil.getEnvironmentLoggingLevel;
-
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
  *
@@ -75,7 +73,9 @@ public class ClientLogger {
      *     {@link Throwable}.
      */
     public void verbose(String format, Object... args) {
-        log(LogLevel.VERBOSE, format, args);
+        if (logger.isDebugEnabled()) {
+            log(LogLevel.VERBOSE, format, args);
+        }
     }
 
     /**
@@ -92,7 +92,9 @@ public class ClientLogger {
      *     {@link Throwable}.
      */
     public void info(String format, Object... args) {
-        log(LogLevel.INFORMATIONAL, format, args);
+        if (logger.isInfoEnabled()) {
+            log(LogLevel.INFORMATIONAL, format, args);
+        }
     }
 
     /**
@@ -109,7 +111,9 @@ public class ClientLogger {
      *     {@link Throwable}.
      */
     public void warning(String format, Object... args) {
-        log(LogLevel.WARNING, format, args);
+        if (logger.isWarnEnabled()) {
+            log(LogLevel.WARNING, format, args);
+        }
     }
 
     /**
@@ -126,7 +130,9 @@ public class ClientLogger {
      *     {@link Throwable}.
      */
     public void error(String format, Object... args) {
-        log(LogLevel.ERROR, format, args);
+        if (logger.isErrorEnabled()) {
+            log(LogLevel.ERROR, format, args);
+        }
     }
 
     /*
@@ -137,10 +143,7 @@ public class ClientLogger {
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void log(LogLevel logLevel, String format, Object... args) {
-        LogLevel rootLogLevel = getConfiguredLogLevel();
-        if (canLogAtLevel(logLevel, rootLogLevel)) {
-            performLogging(logLevel, rootLogLevel, false, format, args);
-        }
+        performLogging(logLevel, false, format, args);
     }
 
     /**
@@ -151,6 +154,10 @@ public class ClientLogger {
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
+        if (!logger.isWarnEnabled()) {
+            return null;
+        }
+
         return logException(runtimeException, LogLevel.WARNING);
     }
 
@@ -162,16 +169,17 @@ public class ClientLogger {
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
+        if (!logger.isErrorEnabled()) {
+            return null;
+        }
+
         return logException(runtimeException, LogLevel.ERROR);
     }
 
     private RuntimeException logException(RuntimeException runtimeException, LogLevel logLevel) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
-        LogLevel rootLogLevel = getConfiguredLogLevel();
 
-        if (canLogAtLevel(logLevel, rootLogLevel)) {
-            performLogging(logLevel, rootLogLevel, true, runtimeException.getMessage(), runtimeException);
-        }
+        performLogging(logLevel, true, runtimeException.getMessage(), runtimeException);
 
         return runtimeException;
     }
@@ -182,8 +190,7 @@ public class ClientLogger {
      * @param format formattable message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    private void performLogging(LogLevel logLevel, LogLevel rootLogLevel,
-        boolean isExceptionLogging, String format, Object... args) {
+    private void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
         // If the logging level is less granular than verbose remove the potential throwable from the args.
         String throwableMessage = "";
         if (doesArgsHaveThrowable(args)) {
@@ -201,7 +208,7 @@ public class ClientLogger {
              * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
              * stack trace which is only expected when logging at a verbose level.
              */
-            if (rootLogLevel.getLogLevel() > LogLevel.VERBOSE.getLogLevel()) {
+            if (!logger.isDebugEnabled()) {
                 args = removeThrowable(args);
             }
         }
@@ -239,37 +246,18 @@ public class ClientLogger {
      * @return Flag indicating if the environment and logger are configured to support logging at the given log level.
      */
     public boolean canLogAtLevel(LogLevel logLevel) {
-        LogLevel rootLogLevel = getConfiguredLogLevel();
-        return canLogAtLevel(logLevel, rootLogLevel);
-    }
-
-    private boolean canLogAtLevel(LogLevel logLevel, LogLevel allowedLogLevel) {
-        // Attempting to log at a level not supported by the SLF4J configuration or env variable.
-        return logLevel.getLogLevel() >= allowedLogLevel.getLogLevel();
-    }
-
-    /**
-     * Checking the system log with the preference order of slf4j and environment variable.
-     *
-     * @return The log level.
-     */
-    private LogLevel getConfiguredLogLevel() {
-        if (isFromEnv) {
-            return getEnvironmentLoggingLevel();
+        switch (logLevel) {
+            case VERBOSE:
+                return logger.isDebugEnabled();
+            case INFORMATIONAL:
+                return logger.isInfoEnabled();
+            case WARNING:
+                return logger.isWarnEnabled();
+            case ERROR:
+                return logger.isErrorEnabled();
+            default:
+                return false;
         }
-        if (logger.isDebugEnabled()) {
-            return LogLevel.VERBOSE;
-        }
-        if (logger.isInfoEnabled()) {
-            return LogLevel.INFORMATIONAL;
-        }
-        if (logger.isWarnEnabled()) {
-            return LogLevel.WARNING;
-        }
-        if (logger.isErrorEnabled()) {
-            return LogLevel.ERROR;
-        }
-        return LogLevel.NOT_SET;
     }
 
     /*

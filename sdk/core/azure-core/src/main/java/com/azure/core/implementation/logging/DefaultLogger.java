@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.logging;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -18,13 +19,15 @@ import org.slf4j.helpers.MessageFormatter;
 public final class DefaultLogger extends MarkerIgnoringBase {
     private static final long serialVersionUID = -144261058636441630L;
 
-    private String classPath;
+    private static final String AZURE_LOG_LEVEL = "AZURE_LOG_LEVEL";
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     // The template forms the log message in a format:
     // YYYY-MM-DD HH:MM [thread] [level] classpath - message
     // E.g: 2020-01-09 12:35 [main] [WARNING] com.azure.core.DefaultLogger - This is my log message.
     private static final String MESSAGE_TEMPLATE = "%s [%s] [%s] %s - %s";
+
+    private String classPath;
 
     /**
      * Construct DefaultLogger for the given class.
@@ -51,9 +54,24 @@ public final class DefaultLogger extends MarkerIgnoringBase {
 
     /**
      * {@inheritDoc}
-     * @param format The formattable message to log.
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
-     *     {@link Throwable}.
+     */
+    @Override
+    public boolean isDebugEnabled() {
+        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
+        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
+        return LogLevel.VERBOSE.getLogLevel() >= currentLogLevel.getLogLevel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void debug(String format, Object arg) {
+        logFromFormat(LogLevel.VERBOSE, format, arg);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void debug(String format, Object... args) {
@@ -62,13 +80,47 @@ public final class DefaultLogger extends MarkerIgnoringBase {
 
     /**
      * {@inheritDoc}
-     * @param format The formattable message to log.
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
-     *     {@link Throwable}.
+     */
+    @Override
+    public boolean isInfoEnabled() {
+        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
+        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
+        return LogLevel.INFORMATIONAL.getLogLevel() >= currentLogLevel.getLogLevel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void info(String format, Object arg) {
+        logFromFormat(LogLevel.INFORMATIONAL, format, arg);
+    }
+
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void info(String format, Object... args) {
         logFromFormat(LogLevel.INFORMATIONAL, format, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isWarnEnabled() {
+        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
+        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
+        return LogLevel.WARNING.getLogLevel() >= currentLogLevel.getLogLevel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void warn(String format, Object arg) {
+        logFromFormat(LogLevel.WARNING, format, arg);
     }
 
     /**
@@ -80,6 +132,24 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     @Override
     public void warn(String format, Object... args) {
         logFromFormat(LogLevel.WARNING, format, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isErrorEnabled() {
+        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
+        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
+        return LogLevel.ERROR.getLogLevel() >= currentLogLevel.getLogLevel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(String format, Object arg) {
+        logFromFormat(LogLevel.ERROR, format, arg);
     }
 
     /**
@@ -176,9 +246,10 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * {@inheritDoc}
      */
     @Override
-    public void trace(final String format, final Object arg) {
+    public void trace(final String format, final Object arg1) {
         throw new UnsupportedOperationException();
     }
+
 
     /**
      * {@inheritDoc}
@@ -208,25 +279,10 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * {@inheritDoc}
      */
     @Override
-    public boolean isDebugEnabled() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void debug(final String msg) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void debug(final String format, final Object arg) {
-        throw new UnsupportedOperationException();
-    }
 
     /**
      * {@inheritDoc}
@@ -248,23 +304,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * {@inheritDoc}
      */
     @Override
-    public boolean isInfoEnabled() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void info(final String msg) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void info(final String format, final Object arg) {
         throw new UnsupportedOperationException();
     }
 
@@ -284,27 +324,13 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isWarnEnabled() {
-        throw new UnsupportedOperationException();
-    }
+
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void warn(final String msg) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void warn(final String format, final Object arg) {
         throw new UnsupportedOperationException();
     }
 
@@ -328,23 +354,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * {@inheritDoc}
      */
     @Override
-    public boolean isErrorEnabled() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void error(final String msg) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void error(final String format, final Object arg) {
         throw new UnsupportedOperationException();
     }
 
