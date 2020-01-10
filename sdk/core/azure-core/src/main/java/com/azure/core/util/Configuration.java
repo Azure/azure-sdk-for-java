@@ -76,6 +76,11 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TENANT_ID = "AZURE_TENANT_ID";
 
     /**
+     * Path of a PEM certificate file to use when performing service principal authentication with Azure.
+     */
+    public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH = "AZURE_CLIENT_CERTIFICATE_PATH";
+
+    /**
      * Name of the Azure resource group.
      */
     public static final String PROPERTY_AZURE_RESOURCE_GROUP = "AZURE_RESOURCE_GROUP";

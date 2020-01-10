@@ -50,6 +50,22 @@ public class EnvironmentCredential implements TokenCredential {
                     configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID),
                     configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET),
                     identityClientOptions);
+            } else if (configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
+                && configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
+                && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH)) {
+                return new ClientCertificateCredential(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
+                    configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID),
+                    configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH),
+                    null,
+                    identityClientOptions);
+            } else if (configuration.contains(Configuration.PROPERTY_AZURE_USERNAME)
+                && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
+                && configuration.contains(Configuration.PROPERTY_AZURE_PASSWORD)) {
+                return new UsernamePasswordCredential(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID),
+                    configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
+                    configuration.get(Configuration.PROPERTY_AZURE_USERNAME),
+                    configuration.get(Configuration.PROPERTY_AZURE_PASSWORD),
+                    identityClientOptions);
             }
 
             // Other environment variables
