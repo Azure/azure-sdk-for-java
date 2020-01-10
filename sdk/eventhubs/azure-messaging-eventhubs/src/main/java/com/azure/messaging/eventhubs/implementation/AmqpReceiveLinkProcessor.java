@@ -158,9 +158,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         if (isTerminated()) {
                             logger.info("Processor is disposed.");
                         } else {
-                            logger.info("Receive link endpoint states are closed. Requesting another.");
+                            logger.info("Receive link endpoint states are closed.");
                             currentLink = null;
-                            requestUpstream();
                         }
                     }),
                 next.receive().subscribe(message -> {

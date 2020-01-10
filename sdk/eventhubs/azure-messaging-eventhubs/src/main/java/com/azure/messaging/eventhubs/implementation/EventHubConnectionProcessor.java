@@ -190,20 +190,19 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     public void subscribe(CoreSubscriber<? super EventHubAmqpConnection> actual) {
         logger.verbose("Subscription received.");
 
-        final ConnectionSubscriber subscriber = new ConnectionSubscriber(actual, this);
-        actual.onSubscribe(subscriber);
-
-        if (isTerminated.get()) {
+        if (isDisposed()) {
+            logger.info("Processor is already terminated.");
             if (lastError != null) {
-                logger.info("Processor is already terminated. Propagating error.");
-                subscriber.onError(lastError);
+                actual.onError(lastError);
             } else {
-                logger.info("Processor is already terminated. Propagating complete.");
-                subscriber.onComplete();
+                actual.onComplete();
             }
 
             return;
         }
+
+        final ConnectionSubscriber subscriber = new ConnectionSubscriber(actual, this);
+        actual.onSubscribe(subscriber);
 
         synchronized (lock) {
             if (currentConnection != null) {
