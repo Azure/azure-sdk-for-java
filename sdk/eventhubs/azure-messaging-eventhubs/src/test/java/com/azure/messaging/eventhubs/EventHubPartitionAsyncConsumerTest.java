@@ -69,7 +69,7 @@ class EventHubPartitionAsyncConsumerTest {
     private ArgumentCaptor<Supplier<Integer>> creditSupplierCaptor;
 
     private final EventPosition originalPosition = EventPosition.latest();
-    private final AtomicReference<EventPosition> currentPosition = new AtomicReference<>(originalPosition);
+    private final AtomicReference<Supplier<EventPosition>> currentPosition = new AtomicReference<>(() -> originalPosition);
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
 
@@ -154,7 +154,7 @@ class EventHubPartitionAsyncConsumerTest {
 
         // The emitter processor is not closed until the partition consumer is.
         Assertions.assertFalse(linkProcessor.isTerminated());
-        Assertions.assertSame(originalPosition, currentPosition.get());
+        Assertions.assertSame(originalPosition, currentPosition.get().get());
     }
 
     @Test
@@ -195,7 +195,7 @@ class EventHubPartitionAsyncConsumerTest {
             .verify();
 
         // Assert that we have the current offset.
-        final EventPosition firstPosition = currentPosition.get();
+        final EventPosition firstPosition = currentPosition.get().get();
         Assertions.assertNotNull(firstPosition);
         Assertions.assertEquals(secondOffset, firstPosition.getOffset());
         Assertions.assertFalse(firstPosition.isInclusive());
@@ -215,7 +215,7 @@ class EventHubPartitionAsyncConsumerTest {
         Assertions.assertTrue(linkProcessor.isTerminated());
 
         // Assert that we have that last position.
-        final EventPosition actual = currentPosition.get();
+        final EventPosition actual = currentPosition.get().get();
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(lastOffset, actual.getOffset());
         Assertions.assertFalse(actual.isInclusive());

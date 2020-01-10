@@ -15,8 +15,10 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * A package-private consumer responsible for reading {@link EventData} from a specific Event Hub partition in the
@@ -34,24 +36,36 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private final String partitionId;
     private final boolean trackLastEnqueuedEventProperties;
     private final EmitterProcessor<PartitionEvent> emitterProcessor;
+    private final EventPosition initialPosition;
+
+    private volatile Long currentOffset;
 
     EventHubPartitionAsyncConsumer(AmqpReceiveLinkProcessor amqpReceiveLinkProcessor,
         MessageSerializer messageSerializer, String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
-        String partitionId, AtomicReference<EventPosition> currentEventPosition,
+        String partitionId, AtomicReference<Supplier<EventPosition>> currentEventPosition,
         boolean trackLastEnqueuedEventProperties) {
+        this.initialPosition = Objects.requireNonNull(currentEventPosition.get().get(), "'currentEventPosition.get().get()' cannot be null.");
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
+
+        currentEventPosition.set(() -> {
+            final Long offset = currentOffset;
+            return offset == null
+                ? initialPosition
+                : EventPosition.fromOffset(offset);
+        });
+
         this.emitterProcessor = amqpReceiveLinkProcessor
             .map(message -> onMessageReceived(message))
             .doOnNext(event -> {
                 // Keep track of the last position so if the link goes down, we don't start from the original location.
                 final Long offset = event.getData().getOffset();
                 if (offset != null) {
-                    currentEventPosition.set(EventPosition.fromOffset(offset));
+                    currentOffset = offset;
                 } else {
                     logger.warning(
                         "Offset for received event should not be null. Partition Id: {}. Consumer group: {}. Data: {}",
