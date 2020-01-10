@@ -155,7 +155,7 @@ public class ClientLogger {
      */
     public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
         if (!logger.isWarnEnabled()) {
-            return null;
+            return runtimeException;
         }
 
         return logException(runtimeException, LogLevel.WARNING);
@@ -170,7 +170,7 @@ public class ClientLogger {
      */
     public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
         if (!logger.isErrorEnabled()) {
-            return null;
+            return runtimeException;
         }
 
         return logException(runtimeException, LogLevel.ERROR);

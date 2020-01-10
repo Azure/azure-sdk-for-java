@@ -100,9 +100,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A Mono which will emit the string to log.
      */
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
-       // int numericLogLevel = LoggingUtil.getEnvironmentLoggingLevel().getLogLevel();
 
-        if (logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+        if (!logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
             return Mono.empty();
         }
 
@@ -181,8 +180,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A Mono containing the HTTP response.
      */
     private Mono<HttpResponse> logResponse(final ClientLogger logger, final HttpResponse response, long startNs) {
-    //    int numericLogLevel = LoggingUtil.getEnvironmentLoggingLevel().getLogLevel();
-        if (logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+        if (!logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
             return Mono.just(response);
         }
 
