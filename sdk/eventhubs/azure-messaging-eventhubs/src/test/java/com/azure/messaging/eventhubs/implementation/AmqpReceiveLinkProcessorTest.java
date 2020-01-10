@@ -424,7 +424,7 @@ class AmqpReceiveLinkProcessorTest {
             () -> linkProcessor.onError(null));
     }
 
-    private static Flux<AmqpReceiveLink> createSink(AmqpReceiveLink[] connections) {
+    private static Flux<AmqpReceiveLink> createSink(AmqpReceiveLink[] links) {
         return Flux.create(emitter -> {
             final AtomicInteger counter = new AtomicInteger();
 
@@ -432,14 +432,14 @@ class AmqpReceiveLinkProcessorTest {
                 for (int i = 0; i < request; i++) {
                     final int index = counter.getAndIncrement();
 
-                    if (index == connections.length) {
+                    if (index == links.length) {
                         emitter.error(new RuntimeException(String.format(
                             "Cannot emit more. Index: %s. # of Connections: %s",
-                            index, connections.length)));
+                            index, links.length)));
                         break;
                     }
 
-                    emitter.next(connections[index]);
+                    emitter.next(links[index]);
                 }
             });
         }, FluxSink.OverflowStrategy.BUFFER);
