@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
@@ -44,6 +45,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
+import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
@@ -101,6 +104,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final String eventHubName;
     private final EventHubConnectionProcessor connectionProcessor;
     private final AmqpRetryOptions retryOptions;
+    private final AmqpRetryPolicy retryPolicy;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
     private final boolean isSharedConnection;
@@ -121,6 +125,8 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
+
+        this.retryPolicy = getRetryPolicy(retryOptions);
         this.isSharedConnection = isSharedConnection;
     }
 
@@ -386,7 +392,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             : null;
 
         Context sharedContext = null;
-        List<Message> messages = new ArrayList<>();
+        final List<Message> messages = new ArrayList<>();
 
         for (int i = 0; i < batch.getEvents().size(); i++) {
             final EventData event = batch.getEvents().get(i);
@@ -409,12 +415,13 @@ public class EventHubProducerAsyncClient implements Closeable {
             messages.add(message);
         }
 
-        Context finalSharedContext = sharedContext;
-        return getSendLink(batch.getPartitionId())
-            .flatMap(link -> {
+        final Context finalSharedContext = sharedContext != null ? sharedContext : Context.NONE;
+
+        return withRetry(
+            getSendLink(batch.getPartitionId()).flatMap(link -> {
                 if (isTracingEnabled) {
                     Context entityContext = finalSharedContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
-                    // start send span and store updated context
+                    // Start send span and store updated context
                     parentContext.set(tracerProvider.startSpan(
                         entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
                 }
@@ -422,11 +429,12 @@ public class EventHubProducerAsyncClient implements Closeable {
                     ? link.send(messages.get(0))
                     : link.send(messages);
 
-            }).doOnEach(signal -> {
+            })
+            .doOnEach(signal -> {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);
                 }
-            });
+            }), retryOptions.getTryTimeout(), retryPolicy);
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
