@@ -42,7 +42,7 @@ public class RollingUpgradeRunningStatus {
     private DateTime lastActionTime;
 
     /**
-     * Get the code value.
+     * Get code indicating the current status of the upgrade. Possible values include: 'RollingForward', 'Cancelled', 'Completed', 'Faulted'.
      *
      * @return the code value
      */
@@ -51,7 +51,7 @@ public class RollingUpgradeRunningStatus {
     }
 
     /**
-     * Get the startTime value.
+     * Get start time of the upgrade.
      *
      * @return the startTime value
      */
@@ -60,7 +60,7 @@ public class RollingUpgradeRunningStatus {
     }
 
     /**
-     * Get the lastAction value.
+     * Get the last action performed on the rolling upgrade. Possible values include: 'Start', 'Cancel'.
      *
      * @return the lastAction value
      */
@@ -69,7 +69,7 @@ public class RollingUpgradeRunningStatus {
     }
 
     /**
-     * Get the lastActionTime value.
+     * Get last action time of the upgrade.
      *
      * @return the lastActionTime value
      */
