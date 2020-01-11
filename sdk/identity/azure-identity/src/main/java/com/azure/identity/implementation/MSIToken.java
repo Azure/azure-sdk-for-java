@@ -37,7 +37,7 @@ public final class MSIToken extends AccessToken {
      * @param expiresOn the expiration time.
      */
     @JsonCreator
-    private MSIToken(
+    public MSIToken(
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn) {
         super(token, EPOCH.plusSeconds(parseDateToEpochSeconds(expiresOn)));
