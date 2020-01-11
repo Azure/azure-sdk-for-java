@@ -333,7 +333,6 @@ public class SecretClientTest extends SecretClientTestBase {
             for (DeletedSecret deletedSecret : deletedSecrets) {
                 assertNotNull(deletedSecret.getDeletedOn());
                 assertNotNull(deletedSecret.getRecoveryId());
-                client.purgeDeletedSecret(deletedSecret.getName());
             }
         });
     }

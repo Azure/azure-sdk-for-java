@@ -353,7 +353,6 @@ public class KeyClientTest extends KeyClientTestBase {
             for (DeletedKey deletedKey : deletedKeys) {
                 assertNotNull(deletedKey.getDeletedOn());
                 assertNotNull(deletedKey.getRecoveryId());
-                client.purgeDeletedKey(deletedKey.getName());
             }
         });
     }
