@@ -37,7 +37,7 @@ public final class MSIToken extends AccessToken {
      * @param expiresOn the expiration time.
      */
     @JsonCreator
-    private MSIToken(
+    public MSIToken(
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn) {
         super(token, EPOCH.plusSeconds(parseDateToEpochSeconds(expiresOn)));
@@ -56,7 +56,7 @@ public final class MSIToken extends AccessToken {
         // This is the format for app service on Windows as of API version 2017-09-01.
         // The format is changed to Unix timestamp in 2019-08-01 but this API version
         // has not been deployed to Linux app services.
-        DateTimeFormatter dtf_windows = DateTimeFormatter.ofPattern("M/d/yyyy K:mm:ss a XXX", Locale.US);
+        DateTimeFormatter dtfWindows = DateTimeFormatter.ofPattern("M/d/yyyy K:mm:ss a XXX", Locale.US);
         try {
             return Long.parseLong(dateTime);
         } catch (NumberFormatException e) {
@@ -70,7 +70,7 @@ public final class MSIToken extends AccessToken {
         }
 
         try {
-            return Instant.from(dtf_windows.parse(dateTime)).getEpochSecond();
+            return Instant.from(dtfWindows.parse(dateTime)).getEpochSecond();
         } catch (DateTimeParseException e) {
             logger.error(e.getMessage());
         }
