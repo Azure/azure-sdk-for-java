@@ -69,10 +69,14 @@ class VirtualMachineImagesImpl extends WrapperImpl<VirtualMachineImagesInner> im
     public Observable<VirtualMachineImage> getAsync(String location, String publisherName, String offer, String skus, String version) {
         VirtualMachineImagesInner client = this.inner();
         return client.getAsync(location, publisherName, offer, skus, version)
-        .map(new Func1<VirtualMachineImageInner, VirtualMachineImage>() {
+        .flatMap(new Func1<VirtualMachineImageInner, Observable<VirtualMachineImage>>() {
             @Override
-            public VirtualMachineImage call(VirtualMachineImageInner inner) {
-                return wrapVirtualMachineImageModel(inner);
+            public Observable<VirtualMachineImage> call(VirtualMachineImageInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((VirtualMachineImage)wrapVirtualMachineImageModel(inner));
+                }
             }
        });
     }
@@ -110,7 +114,8 @@ class VirtualMachineImagesImpl extends WrapperImpl<VirtualMachineImagesInner> im
             public Observable<VirtualMachineImageResourceInner> call(List<VirtualMachineImageResourceInner> innerList) {
                 return Observable.from(innerList);
             }
-        })    .map(new Func1<VirtualMachineImageResourceInner, VirtualMachineImageResource>() {
+        })
+        .map(new Func1<VirtualMachineImageResourceInner, VirtualMachineImageResource>() {
             @Override
             public VirtualMachineImageResource call(VirtualMachineImageResourceInner inner) {
                 return new VirtualMachineImageResourceImpl(inner, manager());
