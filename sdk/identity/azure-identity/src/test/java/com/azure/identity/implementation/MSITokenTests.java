@@ -4,6 +4,7 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,7 +13,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 public class MSITokenTests {
-    private JacksonAdapter serializer = new JacksonAdapter();
+    private SerializerAdapter serializer = JacksonAdapter.createDefaultSerializerAdapter();
     private OffsetDateTime expected = OffsetDateTime.of(2020, 1, 10, 15, 1, 28, 0, ZoneOffset.UTC);
 
     @Test
