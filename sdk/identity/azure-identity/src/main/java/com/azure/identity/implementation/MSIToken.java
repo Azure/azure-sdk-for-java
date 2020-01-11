@@ -52,11 +52,11 @@ public final class MSIToken extends AccessToken {
 
     private static Long parseDateToEpochSeconds(String dateTime) {
         ClientLogger logger = new ClientLogger(MSIToken.class);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX", Locale.US);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
         // This is the format for app service on Windows as of API version 2017-09-01.
         // The format is changed to Unix timestamp in 2019-08-01 but this API version
         // has not been deployed to Linux app services.
-        DateTimeFormatter dtfWindows = DateTimeFormatter.ofPattern("M/d/yyyy K:mm:ss a XXX", Locale.US);
+        DateTimeFormatter dtfWindows = DateTimeFormatter.ofPattern("M/d/yyyy K:mm:ss a XXX");
         try {
             return Long.parseLong(dateTime);
         } catch (NumberFormatException e) {
