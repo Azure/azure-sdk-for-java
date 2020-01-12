@@ -120,7 +120,7 @@ jobs:
             PROVISIONER_APPLICATION_ID: $(provisioner-aad-id)
             PROVISIONER_APPLICATION_SECRET: $(provisioner-aad-secret)
           displayName: Remove Test Resources
-          condition: true
+          condition: false
 
 
       - task: PublishTestResults@2

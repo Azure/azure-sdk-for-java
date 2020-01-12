@@ -94,7 +94,7 @@ public final class ExceptionUtil {
     }
 
     static Exception distinguishNotFound(final String message) {
-        Pattern p = Pattern.compile("The messaging entity .* could not be found");
+        Pattern p = Pattern.compile("The messaging entity .* could not be found AZURE_EVENTHUBS_CONNECTION_STRING="+System.getenv("AZURE_EVENTHUBS_CONNECTION_STRING"));
         Matcher m = p.matcher(message);
         if (m.find()) {
             return new IllegalEntityException(message);

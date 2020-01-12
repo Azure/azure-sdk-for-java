@@ -108,17 +108,6 @@
             }
         },
         {
-            "apiVersion": "2017-04-01",
-            "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
-            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
-            "dependsOn": [
-                "[concat('Microsoft.EventHub/namespaces/', variables('eventHubNameSpaceName'))]"
-            ],
-            "properties": {
-                "rights": ["Send", "Listen", "Manage"]
-            }
-        },
-        {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "[variables('authorizationApiVersion')]",
             "name": "[guid(concat('dataContributorRoleId', variables('primaryAccountName')))]",
@@ -140,6 +129,17 @@
             "properties": {
                 "roleDefinitionId": "[variables('contributorRoleId')]",
                 "principalId": "[parameters('testApplicationOid')]"
+            }
+        },
+        {
+            "apiVersion": "2017-04-01",
+            "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
+            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+            "dependsOn": [
+                "[concat('Microsoft.EventHub/namespaces/', variables('eventHubNameSpaceName'))]"
+            ],
+            "properties": {
+                "rights": ["Send", "Listen", "Manage"]
             }
         },
         {
