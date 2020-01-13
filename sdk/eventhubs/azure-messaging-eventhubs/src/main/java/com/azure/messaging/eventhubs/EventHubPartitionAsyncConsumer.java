@@ -44,7 +44,8 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         MessageSerializer messageSerializer, String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
         String partitionId, AtomicReference<Supplier<EventPosition>> currentEventPosition,
         boolean trackLastEnqueuedEventProperties) {
-        this.initialPosition = Objects.requireNonNull(currentEventPosition.get().get(), "'currentEventPosition.get().get()' cannot be null.");
+        this.initialPosition = Objects.requireNonNull(currentEventPosition.get().get(),
+            "'currentEventPosition.get().get()' cannot be null.");
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;

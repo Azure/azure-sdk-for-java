@@ -71,7 +71,6 @@ class EventHubPartitionAsyncConsumerTest {
     private final EventPosition originalPosition = EventPosition.latest();
     private final AtomicReference<Supplier<EventPosition>> currentPosition = new AtomicReference<>(() -> originalPosition);
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
-    private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
 
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink();
@@ -106,6 +105,9 @@ class EventHubPartitionAsyncConsumerTest {
         if (linkProcessor != null) {
             linkProcessor.dispose();
         }
+
+        messageProcessor.dispose();
+        endpointProcessor.dispose();
     }
 
     @ParameterizedTest
