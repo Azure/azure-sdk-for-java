@@ -4,6 +4,7 @@ languages:
   - java
 products:
   - azure
+  - azure-file
   - azure-storage
 urlFragment: storage-file-share-samples
 ---

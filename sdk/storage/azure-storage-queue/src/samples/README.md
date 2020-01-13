@@ -4,6 +4,7 @@ languages:
   - java
 products:
   - azure
+  - azure-storage
   - azure-queue-storage
 urlFragment: storage-queue-samples
 ---

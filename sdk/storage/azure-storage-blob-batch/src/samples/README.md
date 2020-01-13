@@ -5,6 +5,7 @@ languages:
 products:
   - azure
   - azure-blob-storage
+  - azure-storage
 urlFragment: storage-blob-samples
 ---
 

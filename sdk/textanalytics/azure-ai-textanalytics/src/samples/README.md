@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-ai-textanalytics
+  - azure-cognitive-service
 ---
 
 # Azure Text Analytics client library for Java Samples

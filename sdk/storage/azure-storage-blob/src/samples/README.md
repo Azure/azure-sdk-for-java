@@ -4,6 +4,7 @@ languages:
   - java
 products:
   - azure
+  - azure-storage
   - azure-blob-storage
 urlFragment: storage-blob-samples
 ---
@@ -49,7 +50,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 <!-- LINKS -->
 [BLOB_SDK_README]: ../../README.md
 [SDK_README_CONTRIBUTING]:../../README.md#contributing
-[SDK_README_GETTING_STARTDED]: ../../README.md#getting-started
+[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
 [SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
 [samples_basic]: java/com/azure/storage/blob/BasicExample.java
 [samples_file_transfer]: java/com/azure/storage/blob/FileTransferExample.java

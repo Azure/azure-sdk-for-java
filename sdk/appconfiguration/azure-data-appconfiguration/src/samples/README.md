@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-data-appconfiguration
+  - azure-app-configuration
 urlFragment: appconfiguration-samples
 ---
 
