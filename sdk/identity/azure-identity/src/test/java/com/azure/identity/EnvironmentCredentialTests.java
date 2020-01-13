@@ -17,11 +17,53 @@ import static org.junit.Assert.fail;
 
 public class EnvironmentCredentialTests {
     @Test
-    public void testCreateEnvironmentCredential() {
+    public void testCreateEnvironmentClientSecretCredential() {
         Configuration configuration = Configuration.getGlobalConfiguration();
         configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo");
         configuration.put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar");
         configuration.put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
+
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
+
+        // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
+        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default"))
+            .doOnSuccess(s -> fail())
+            .onErrorResume(t -> {
+                String message = t.getMessage();
+                Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
+                return Mono.just(new AccessToken("token", OffsetDateTime.MAX));
+            }))
+            .expectNextMatches(token -> "token".equals(token.getToken()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void testCreateEnvironmentClientCertificateCredential() {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo");
+        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "bar");
+        configuration.put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
+
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
+
+        // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
+        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default"))
+            .doOnSuccess(s -> fail())
+            .onErrorResume(t -> {
+                String message = t.getMessage();
+                Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
+                return Mono.just(new AccessToken("token", OffsetDateTime.MAX));
+            }))
+            .expectNextMatches(token -> "token".equals(token.getToken()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void testCreateEnvironmentUserPasswordCredential() {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo");
+        configuration.put(Configuration.PROPERTY_AZURE_USERNAME, "bar");
+        configuration.put(Configuration.PROPERTY_AZURE_PASSWORD, "baz");
 
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
