@@ -132,16 +132,14 @@ public final class RntbdTransportClient extends TransportClient {
 
             if (throwable == null) {
                 response.setRequestTimeline(record.takeTimelineSnapshot());
-            } else {
-                checkArgument(throwable instanceof CosmosClientException, "expected %s, not %s: %s",
-                    CosmosClientException.class,
-                    throwable.getClass(),
-                    throwable);
+            } else if (throwable instanceof CosmosClientException) {
                 CosmosClientException error = (CosmosClientException) throwable;
                 BridgeInternal.setRequestTimeline(error, record.takeTimelineSnapshot());
             }
 
-        }));
+        })).doOnCancel(() -> {
+            record.cancel(true);
+        });
     }
 
     public Tag tag() {
@@ -416,7 +414,7 @@ public final class RntbdTransportClient extends TransportClient {
                         final ClassLoader loader = RntbdTransportClient.class.getClassLoader();
                         final String name = DEFAULT_OPTIONS_PROPERTY_NAME + ".json";
 
-                        try (final InputStream stream = loader.getResourceAsStream(name)) {
+                        try (InputStream stream = loader.getResourceAsStream(name)) {
                             if (stream != null) {
                                 // Attempt to load default options from the JSON resource file "{propertyName}.json"
                                 options = RntbdObjectMapper.readValue(stream, Options.class);
@@ -603,7 +601,9 @@ public final class RntbdTransportClient extends TransportClient {
 
     static final class JsonSerializer extends StdSerializer<RntbdTransportClient> {
 
-        public JsonSerializer() {
+        private static final long serialVersionUID = 1007663695768825670L;
+
+        JsonSerializer() {
             super(RntbdTransportClient.class);
         }
 
