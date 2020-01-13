@@ -176,6 +176,11 @@ def increment_library_version(build_type, artifact_id, group_id):
                         minor = int(vmatch.group('minor'))
                         minor += 1
                         new_version = '{}.{}.{}-beta.1'.format(vmatch.group('major'), minor, 0)
+                    # The dependency version only needs to be updated it if is different from the current version. 
+                    # This would be the case where a library hasn't been released yet and has been released (either GA or preview)
+                    if (module.dependency != module.current):
+                        print('library_to_update {}, previous dependency version={}, new dependency version={}'.format(library_to_update, module.dependency, new_version))
+                        module.dependency = module.current
                     print('library_to_update {}, previous version={}, new current version={}'.format(library_to_update, module.current, new_version))
                     module.current = new_version
                 newlines.append(module.string_for_version_file())
