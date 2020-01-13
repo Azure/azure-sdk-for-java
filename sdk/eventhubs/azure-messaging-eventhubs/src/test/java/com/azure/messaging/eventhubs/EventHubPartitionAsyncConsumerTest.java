@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
@@ -26,6 +27,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -36,6 +39,8 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -43,6 +48,7 @@ import java.util.function.Supplier;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class EventHubPartitionAsyncConsumerTest {
@@ -72,6 +78,7 @@ class EventHubPartitionAsyncConsumerTest {
     private final AtomicReference<Supplier<EventPosition>> currentPosition = new AtomicReference<>(() -> originalPosition);
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
 
+    private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink();
 
@@ -105,9 +112,6 @@ class EventHubPartitionAsyncConsumerTest {
         if (linkProcessor != null) {
             linkProcessor.dispose();
         }
-
-        messageProcessor.dispose();
-        endpointProcessor.dispose();
     }
 
     @ParameterizedTest
@@ -221,6 +225,76 @@ class EventHubPartitionAsyncConsumerTest {
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(lastOffset, actual.getOffset());
         Assertions.assertFalse(actual.isInclusive());
+    }
+
+
+    /**
+     * Verifies that the consumer closes and completes any listeners on a shutdown signal.
+     */
+    @Test
+    void listensToShutdownSignals() throws InterruptedException {
+        // Arrange
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy));
+        consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
+
+        final Message message3 = mock(Message.class);
+        final String secondOffset = "54";
+        final String lastOffset = "65";
+        final EventData event1 = new EventData("Foo".getBytes(), getSystemProperties("25", 14), Context.NONE);
+        final EventData event2 = new EventData("Bar".getBytes(), getSystemProperties(secondOffset, 21), Context.NONE);
+        final EventData event3 = new EventData("Baz".getBytes(), getSystemProperties(lastOffset, 53), Context.NONE);
+
+        when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
+        when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
+        when(messageSerializer.deserialize(same(message3), eq(EventData.class))).thenReturn(event3);
+
+        final CountDownLatch shutdownReceived = new CountDownLatch(3);
+
+        final Disposable.Composite subscriptions = Disposables.composite(
+            consumer.receive()
+                .subscribe(
+                    event -> logger.info("1. Received: {}", event.getData().getSequenceNumber()),
+                    error -> Assertions.fail(error.toString()),
+                    () -> {
+                        logger.info("1. Shutdown received");
+                        shutdownReceived.countDown();
+                    }),
+
+            consumer.receive()
+                .subscribe(
+                    event -> logger.info("2. Received: {}", event.getData().getSequenceNumber()),
+                    error -> Assertions.fail(error.toString()),
+                    () -> {
+                        logger.info("2. Shutdown received");
+                        shutdownReceived.countDown();
+                    }),
+            consumer.receive()
+                .subscribe(
+                    event -> logger.info("3. Received: {}", event.getData().getSequenceNumber()),
+                    error -> Assertions.fail(error.toString()),
+                    () -> {
+                        logger.info("3. Shutdown received");
+                        shutdownReceived.countDown();
+                    }));
+
+        // Act
+        messageProcessorSink.next(message1);
+        messageProcessorSink.next(message2);
+        messageProcessorSink.next(message3);
+
+        linkProcessor.cancel();
+
+        // Assert
+        try {
+            boolean successful = shutdownReceived.await(5, TimeUnit.SECONDS);
+            Assertions.assertTrue(successful);
+            Assertions.assertEquals(0, shutdownReceived.getCount());
+
+            verify(link1).close();
+        } finally {
+            subscriptions.dispose();
+        }
     }
 
     private void verifyLastEnqueuedInformation(boolean trackLastEnqueued,

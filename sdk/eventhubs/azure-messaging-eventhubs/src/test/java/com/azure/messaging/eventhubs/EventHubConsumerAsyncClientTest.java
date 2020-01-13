@@ -436,59 +436,6 @@ class EventHubConsumerAsyncClientTest {
         Assertions.assertEquals(0, actualCredits);
     }
 
-    /**
-     * Verifies that the consumer closes and completes any listeners on a shutdown signal.
-     */
-    @Test
-    void listensToShutdownSignals() throws InterruptedException {
-        // Arrange
-        final int numberOfEvents = 7;
-        final CountDownLatch shutdownReceived = new CountDownLatch(3);
-
-        when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
-
-        final Disposable.Composite subscriptions = Disposables.composite(
-            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
-                .subscribe(
-                    event -> logger.verbose("1. Received: {}", event.getData().getSequenceNumber()),
-                    error -> Assertions.fail(error.toString()),
-                    () -> {
-                        logger.info("1. Shutdown received");
-                        shutdownReceived.countDown();
-                    }),
-            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
-                .subscribe(
-                    event -> logger.verbose("2. Received: {}", event.getData().getSequenceNumber()),
-                    error -> Assertions.fail(error.toString()),
-                    () -> {
-                        logger.info("2. Shutdown received");
-                        shutdownReceived.countDown();
-                    }),
-            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
-                .subscribe(
-                    event -> logger.verbose("3. Received: {}", event.getData().getSequenceNumber()),
-                    error -> Assertions.fail(error.toString()),
-                    () -> {
-                        logger.info("3. Shutdown received");
-                        shutdownReceived.countDown();
-                    }));
-
-        // Act
-        sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID);
-        endpointProcessor.onNext(AmqpEndpointState.CLOSED);
-        endpointProcessor.onComplete();
-
-        // Assert
-        try {
-            boolean successful = shutdownReceived.await(5, TimeUnit.SECONDS);
-            Assertions.assertTrue(successful);
-            Assertions.assertEquals(0, shutdownReceived.getCount());
-            verify(amqpReceiveLink, times(3)).close();
-        } finally {
-            subscriptions.dispose();
-        }
-    }
-
     @Test
     void setsCorrectProperties() {
         // Act

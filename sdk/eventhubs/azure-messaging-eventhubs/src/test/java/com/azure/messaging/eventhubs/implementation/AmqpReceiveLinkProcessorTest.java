@@ -63,7 +63,7 @@ class AmqpReceiveLinkProcessorTest {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
     }
 
     @AfterAll
@@ -217,9 +217,11 @@ class AmqpReceiveLinkProcessorTest {
         final DirectProcessor<AmqpEndpointState> connection2EndpointProcessor = DirectProcessor.create();
         final FluxSink<AmqpEndpointState> connection2Endpoint =
             connection2EndpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+        final DirectProcessor<Message> link2Receive = DirectProcessor.create();
+        final FluxSink<Message> link2ReceiveSink = link2Receive.sink();
 
         when(link2.getEndpointStates()).thenReturn(connection2EndpointProcessor);
-        when(link2.receive()).thenReturn(Flux.just(message2));
+        when(link2.receive()).thenReturn(Flux.create(sink -> sink.next(message2)));
 
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.receive()).thenReturn(Flux.create(sink -> {
@@ -242,7 +244,9 @@ class AmqpReceiveLinkProcessorTest {
             })
             .expectNext(message3)
             .expectNext(message4)
-            .then(() -> processor.cancel())
+            .then(() -> {
+                processor.cancel();
+            })
             .verifyComplete();
 
         Assertions.assertTrue(processor.isTerminated());
@@ -280,8 +284,8 @@ class AmqpReceiveLinkProcessorTest {
                 endpointSink.error(amqpException);
             })
             .expectNext(message2)
-            .then(() -> processor.cancel())
-            .verifyComplete();
+            .thenCancel()
+            .verify();
 
         Assertions.assertTrue(processor.isTerminated());
         Assertions.assertFalse(processor.hasError());
