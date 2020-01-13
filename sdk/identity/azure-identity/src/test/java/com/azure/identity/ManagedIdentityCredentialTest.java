@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = "com.azure.identity.*")
-@PowerMockIgnore({ "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*" })
+@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
 public class ManagedIdentityCredentialTest {
 
     private final String tenantId = "contoso.com";
@@ -52,15 +52,15 @@ public class ManagedIdentityCredentialTest {
 
             // mock
             IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, request1))
-                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
             // test
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
             StepVerifier.create(credential.getToken(request1))
-                    .expectNextMatches(token -> token1.equals(token.getToken()) && expiresAt.getSecond() == token.getExpiresAt().getSecond())
-                    .verifyComplete();
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                    && expiresAt.getSecond() == token.getExpiresAt().getSecond())
+                .verifyComplete();
         } finally {
             // clean up
             configuration.remove("MSI_ENDPOINT");
@@ -77,15 +77,15 @@ public class ManagedIdentityCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateToIMDSEndpoint(request))
-                .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+        when(identityClient.authenticateToIMDSEndpoint(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
         StepVerifier.create(credential.getToken(request))
-        .expectNextMatches(token -> token1.equals(token.getToken()) && expiresOn.getSecond() == token.getExpiresAt().getSecond())
-                .verifyComplete();
+            .expectNextMatches(token -> token1.equals(token.getToken())
+                && expiresOn.getSecond() == token.getExpiresAt().getSecond())
+            .verifyComplete();
     }
 
     @Test
@@ -104,14 +104,14 @@ public class ManagedIdentityCredentialTest {
 
             // mock
             IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, request1))
-                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAtDate));
+            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAtDate));
             PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
             // test
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
             StepVerifier.create(credential.getToken(request1))
-                    .expectNextMatches(token -> token1.equals(token.getToken()) && 51 == token.getExpiresAt().getSecond())
+                    .expectNextMatches(token -> token1.equals(token.getToken())
+                        && 51 == token.getExpiresAt().getSecond())
                     .verifyComplete();
         } finally {
             // clean up

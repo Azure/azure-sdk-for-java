@@ -10,11 +10,7 @@ import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -25,13 +21,11 @@ import java.util.concurrent.CompletableFuture;
 public final class TestUtils {
     /**
      * Creates a mock {@link IAuthenticationResult} instance.
-     * 
      * @param accessToken the access token to return
-     * @param expiresOn   the expiration time
+     * @param expiresOn the expiration time
      * @return a completable future of the result
      */
-    public static CompletableFuture<IAuthenticationResult> getMockAuthenticationResult(String accessToken,
-            OffsetDateTime expiresOn) {
+    public static CompletableFuture<IAuthenticationResult> getMockAuthenticationResult(String accessToken, OffsetDateTime expiresOn) {
         return CompletableFuture.completedFuture(new IAuthenticationResult() {
             @Override
             public String accessToken() {
@@ -68,20 +62,19 @@ public final class TestUtils {
 
     /**
      * Creates a mock {@link MsalToken} instance.
-     * 
      * @param accessToken the access token to return
-     * @param expiresOn   the expiration time
+     * @param expiresOn the expiration time
      * @return a Mono publisher of the result
      */
     public static Mono<MsalToken> getMockMsalToken(String accessToken, OffsetDateTime expiresOn) {
-        return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn)).map(MsalToken::new);
+        return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn))
+            .map(MsalToken::new);
     }
 
     /**
      * Creates a mock {@link AccessToken} instance.
-     * 
      * @param accessToken the access token to return
-     * @param expiresOn   the expiration time
+     * @param expiresOn the expiration time
      * @return a Mono publisher of the result
      */
     public static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
@@ -103,6 +96,7 @@ public final class TestUtils {
         return Mono.just(new AccessToken(accessToken, EPOCH.plusSeconds(seconds)));
     }
 
+
     private TestUtils() {
     }
-}
+} 
