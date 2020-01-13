@@ -35,6 +35,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicBoolean hasDownstream = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
+    private final AtomicBoolean isRequested = new AtomicBoolean();
     private final AtomicInteger linkCreditRequest = new AtomicInteger(1);
 
     private final int prefetch;
@@ -159,7 +160,14 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                             logger.info("Processor is disposed.");
                         } else {
                             logger.info("Receive link endpoint states are closed.");
+                            final AmqpReceiveLink existing = currentLink;
                             currentLink = null;
+
+                            if (existing != null) {
+                                existing.close();
+                            }
+
+                            requestUpstream();
                         }
                     }),
                 next.receive().subscribe(message -> {
@@ -179,12 +187,15 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         if (oldSubscription != null) {
             oldSubscription.dispose();
         }
+
+        isRequested.set(false);
     }
 
     /**
      * Sets up the downstream subscriber.
      *
      * @param actual The downstream subscriber.
+     *
      * @throws IllegalStateException if there is already a downstream subscriber.
      */
     @Override
@@ -327,8 +338,13 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             }
         }
 
-        logger.info("AmqpReceiveLink not requested, yet. Requesting one.");
-        upstream.request(1);
+        // subscribe(CoreSubscriber) may have requested a subscriber already.
+        if (!isRequested.getAndSet(true)) {
+            logger.info("AmqpReceiveLink not requested, yet. Requesting one.");
+            upstream.request(1);
+        } else {
+            logger.info("AmqpRecieveLink already requested.");
+        }
     }
 
     private void terminate() {
