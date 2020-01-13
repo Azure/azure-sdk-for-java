@@ -1,5 +1,8 @@
 # Release History
 
+## 12.3.0-beta.1 (Unreleased)
+- Added an overload to listBlobs to include a continuation marker.
+
 ## 12.2.0 (2020-01-08)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.2.0/sdk/storage/azure-storage-blob/README.md)
