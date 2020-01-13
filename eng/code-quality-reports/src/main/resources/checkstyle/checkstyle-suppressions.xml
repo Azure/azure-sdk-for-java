@@ -188,7 +188,6 @@
   <!-- Logger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="DefaultLogger.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="DefaultLoggerBase.java"/>
 
   <!-- Use the logger in Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.Utility.java"/>
