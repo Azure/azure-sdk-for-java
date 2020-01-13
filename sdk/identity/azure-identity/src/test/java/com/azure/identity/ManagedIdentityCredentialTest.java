@@ -59,8 +59,7 @@ public class ManagedIdentityCredentialTest {
             // test
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
             StepVerifier.create(credential.getToken(request1))
-                    .expectNextMatches(token -> token1.equals(token.getToken())
-                            && expiresAt.getSecond() == token.getExpiresAt().getSecond())
+                    .expectNextMatches(token -> token1.equals(token.getToken()) && expiresAt.getSecond() == token.getExpiresAt().getSecond())
                     .verifyComplete();
         } finally {
             // clean up
@@ -84,8 +83,8 @@ public class ManagedIdentityCredentialTest {
 
         // test
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
-        StepVerifier.create(credential.getToken(request)).expectNextMatches(
-                token -> token1.equals(token.getToken()) && expiresOn.getSecond() == token.getExpiresAt().getSecond())
+        StepVerifier.create(credential.getToken(request))
+        .expectNextMatches(token -> token1.equals(token.getToken()) && expiresOn.getSecond() == token.getExpiresAt().getSecond())
                 .verifyComplete();
     }
 
@@ -112,8 +111,7 @@ public class ManagedIdentityCredentialTest {
             // test
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
             StepVerifier.create(credential.getToken(request1))
-                    .expectNextMatches(
-                            token -> token1.equals(token.getToken()) && 51 == token.getExpiresAt().getSecond())
+                    .expectNextMatches(token -> token1.equals(token.getToken()) && 51 == token.getExpiresAt().getSecond())
                     .verifyComplete();
         } finally {
             // clean up
