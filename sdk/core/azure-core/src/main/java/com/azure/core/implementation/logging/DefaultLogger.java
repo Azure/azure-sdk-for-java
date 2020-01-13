@@ -25,7 +25,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     // The template forms the log message in a format:
     // YYYY-MM-DD HH:MM [thread] [level] classpath - message
     // E.g: 2020-01-09 12:35 [main] [WARNING] com.azure.core.DefaultLogger - This is my log message.
-    private static final String MESSAGE_TEMPLATE = "%s [%s] [%s] %s - %s";
+    private static final String MESSAGE_TEMPLATE = "%s [%s] [%s] %s - %s%n";
 
     private String classPath;
 
@@ -57,9 +57,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public boolean isDebugEnabled() {
-        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
-        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
-        return LogLevel.VERBOSE.getLogLevel() >= currentLogLevel.getLogLevel();
+        return isLogLevelEnabledFromEnv(LogLevel.VERBOSE);
     }
 
     /**
@@ -83,9 +81,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public boolean isInfoEnabled() {
-        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
-        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
-        return LogLevel.INFORMATIONAL.getLogLevel() >= currentLogLevel.getLogLevel();
+        return isLogLevelEnabledFromEnv(LogLevel.INFORMATIONAL);
     }
 
     /**
@@ -110,9 +106,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public boolean isWarnEnabled() {
-        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
-        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
-        return LogLevel.WARNING.getLogLevel() >= currentLogLevel.getLogLevel();
+        return isLogLevelEnabledFromEnv(LogLevel.WARNING);
     }
 
     /**
@@ -125,9 +119,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
 
     /**
      * {@inheritDoc}
-     * @param format The formattable message to log.
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
-     *     {@link Throwable}.
      */
     @Override
     public void warn(String format, Object... args) {
@@ -139,9 +130,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public boolean isErrorEnabled() {
-        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
-        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
-        return LogLevel.ERROR.getLogLevel() >= currentLogLevel.getLogLevel();
+        return isLogLevelEnabledFromEnv(LogLevel.ERROR);
     }
 
     /**
@@ -154,13 +143,16 @@ public final class DefaultLogger extends MarkerIgnoringBase {
 
     /**
      * {@inheritDoc}
-     * @param format The formattable message to log.
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
-     *     {@link Throwable}.
      */
     @Override
     public void error(String format, Object... args) {
         logFromFormat(LogLevel.ERROR, format, args);
+    }
+
+    private boolean isLogLevelEnabledFromEnv(LogLevel logLevel) {
+        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
+        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
+        return logLevel.getLogLevel() >= currentLogLevel.getLogLevel();
     }
 
     /**

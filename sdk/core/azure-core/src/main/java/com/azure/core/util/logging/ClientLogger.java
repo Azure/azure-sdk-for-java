@@ -35,7 +35,6 @@ import org.slf4j.helpers.NOPLogger;
  */
 public class ClientLogger {
     private final Logger logger;
-    private final boolean isFromEnv;
 
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
@@ -54,9 +53,7 @@ public class ClientLogger {
      */
     public ClientLogger(String className) {
         Logger initLogger = LoggerFactory.getLogger(className);
-
-        isFromEnv = initLogger instanceof NOPLogger;
-        logger = isFromEnv ? new DefaultLogger(className) : initLogger;
+        logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
     }
 
     /**
@@ -154,11 +151,13 @@ public class ClientLogger {
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
+        Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
         if (!logger.isWarnEnabled()) {
             return runtimeException;
         }
 
-        return logException(runtimeException, LogLevel.WARNING);
+        performLogging(LogLevel.WARNING, true, runtimeException.getMessage(), runtimeException);
+        return runtimeException;
     }
 
     /**
@@ -169,17 +168,12 @@ public class ClientLogger {
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
+        Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
         if (!logger.isErrorEnabled()) {
             return runtimeException;
         }
 
-        return logException(runtimeException, LogLevel.ERROR);
-    }
-
-    private RuntimeException logException(RuntimeException runtimeException, LogLevel logLevel) {
-        Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
-
-        performLogging(logLevel, true, runtimeException.getMessage(), runtimeException);
+        performLogging(LogLevel.VERBOSE, true, runtimeException.getMessage(), runtimeException);
 
         return runtimeException;
     }
@@ -246,6 +240,9 @@ public class ClientLogger {
      * @return Flag indicating if the environment and logger are configured to support logging at the given log level.
      */
     public boolean canLogAtLevel(LogLevel logLevel) {
+        if (logLevel == null) {
+            return false;
+        }
         switch (logLevel) {
             case VERBOSE:
                 return logger.isDebugEnabled();

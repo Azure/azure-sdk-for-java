@@ -133,7 +133,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logExceptionStackTrace() {
-        String logMessage = "This is an exception";
+        String logMessage = "This is an exception fdsafdafdomcklamfd fdsafdafmlkdfmalsf fdsafdcacdalmd";
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createRuntimeException(exceptionMessage);
 
