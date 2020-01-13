@@ -71,12 +71,6 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.error(e));
         }
 
-        // Received Connection error (HttpException), initiate the endpoint rediscovery
-        if (WebExceptionUtility.isNetworkFailure(e)) {
-            logger.warn("Endpoint not reachable. Will refresh cache and retry. " , e);
-            return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, false, e);
-        }
-
         this.retryContext = null;
         // Received 403.3 on write region, initiate the endpoint re-discovery
         CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
@@ -87,8 +81,8 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN))
         {
-            logger.warn("Endpoint not writable. Will refresh cache and retry. ", e);
-            return this.shouldRetryOnEndpointFailureAsync(false, true, e);
+            logger.warn("Endpoint not writable. Will refresh cache and retry ", e);
+            return this.shouldRetryOnEndpointFailureAsync(false, true);
         }
 
         // Regional endpoint is not available yet for reads (e.g. add/ online of region is in progress)
@@ -98,7 +92,17 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
                 this.isReadRequest)
         {
             logger.warn("Endpoint not available for reads. Will refresh cache and retry. ", e);
-            return this.shouldRetryOnEndpointFailureAsync(true, false, e);
+            return this.shouldRetryOnEndpointFailureAsync(true, false);
+        }
+
+        // Received Connection error (HttpException), initiate the endpoint rediscovery
+        if (WebExceptionUtility.isNetworkFailure(e)) {
+            if (this.isReadRequest || WebExceptionUtility.isWebExceptionRetriable(e)) {
+                logger.warn("Endpoint not reachable. Will refresh cache and retry. ", e);
+                return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, false);
+            } else {
+                return this.shouldNotRetryOnEndpointFailureAsync(this.isReadRequest, false);
+            }
         }
 
         if (clientException != null &&
@@ -141,22 +145,13 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         }
     }
 
-    private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh, Exception e) {
+    private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh) {
         if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
             logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        this.failoverRetryCount++;
-
-        // Mark the current read endpoint as unavailable
-        if (this.isReadRequest) {
-            logger.warn("marking the endpoint {} as unavailable for read",this.locationEndpoint);
-            this.globalEndpointManager.markEndpointUnavailableForRead(this.locationEndpoint);
-        } else {
-            logger.warn("marking the endpoint {} as unavailable for write",this.locationEndpoint);
-            this.globalEndpointManager.markEndpointUnavailableForWrite(this.locationEndpoint);
-        }
+        Mono<Void> refreshLocationCompletable = this.refreshLocation(isReadRequest, forceRefresh);
 
         // Some requests may be in progress when the endpoint manager and client are closed.
         // In that case, the request won't succeed since the http client is closed.
@@ -172,18 +167,32 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         } else {
             retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
         }
-        this.retryContext = new RetryContext(this.failoverRetryCount, false);
-        Mono<Void> completable = this.globalEndpointManager.refreshLocationAsync(null, forceRefresh);
-        if (isReadRequest || WebExceptionUtility.isWebExceptionRetriable(e)) {
-            // refresh cache and
-            // if it is a read request or if it is a write but we are sure the write
-            // hasn't reached the service retry
-            return completable.then(Mono.just(ShouldRetryResult.retryAfter(retryDelay)));
-        } else {
-            // refresh cache and
-            // no retry for writes which we are not sure if have reached to the service or not
-            return completable.then(Mono.just(ShouldRetryResult.noRetry()));
+        return refreshLocationCompletable.then(Mono.just(ShouldRetryResult.retryAfter(retryDelay)));
+    }
+
+    private Mono<ShouldRetryResult> shouldNotRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh) {
+        if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
+            logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
+            return Mono.just(ShouldRetryResult.noRetry());
         }
+        Mono<Void> refreshLocationCompletable = this.refreshLocation(isReadRequest, forceRefresh);
+        return refreshLocationCompletable.then(Mono.just(ShouldRetryResult.noRetry()));
+    }
+
+    private Mono<Void> refreshLocation(boolean isReadRequest, boolean forceRefresh) {
+        this.failoverRetryCount++;
+
+        // Mark the current read endpoint as unavailable
+        if (this.isReadRequest) {
+            logger.warn("marking the endpoint {} as unavailable for read",this.locationEndpoint);
+            this.globalEndpointManager.markEndpointUnavailableForRead(this.locationEndpoint);
+        } else {
+            logger.warn("marking the endpoint {} as unavailable for write",this.locationEndpoint);
+            this.globalEndpointManager.markEndpointUnavailableForWrite(this.locationEndpoint);
+        }
+
+        this.retryContext = new RetryContext(this.failoverRetryCount, false);
+        return this.globalEndpointManager.refreshLocationAsync(null, forceRefresh);
     }
 
     @Override
