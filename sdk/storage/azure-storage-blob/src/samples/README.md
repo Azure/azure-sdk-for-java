@@ -1,3 +1,12 @@
+---
+page_type: sample
+languages:
+  - java
+products:
+  - azure
+  - azure-blob-storage
+urlFragment: storage-blob-samples
+---
 
 # Azure Storage Blob Samples client library for Java
 This document explains samples and how to use them.
@@ -24,7 +33,6 @@ For details on including this dependency in other build tools (Gradle, SBT, etc)
 6. [Azure Identity Examples][samples_identity]: Use `DefaultAzureCredential` to do the authentication.
 
 ## Troubleshooting
-### General
 When interacting with blobs using this Java client library, errors returned by the service correspond to the same HTTP
 status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a container or blob that
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`

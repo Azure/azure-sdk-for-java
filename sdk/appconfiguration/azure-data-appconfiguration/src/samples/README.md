@@ -14,9 +14,6 @@ This document explains samples and how to use them.
 ## Key concepts
 Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 
-# Samples Azure App Configuration APIs
-This document describes how to use samples and what is done in each sample.
-
 ## Getting started
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
  
@@ -33,9 +30,6 @@ Maven dependency for Azure app configuration Client library. Add it to your proj
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-## How to run
-These sample can be run in your IDE with default JDK.
 
 ## Examples
 The following sections provide several code snippets covering some of the most common configuration service tasks, including:
