@@ -295,4 +295,12 @@ class APISpec extends Specification {
     InputStream getInputStream(byte[] data) {
         return new ByteArrayInputStream(data)
     }
+
+    void sleepIfLive(long milliseconds) {
+        if (testMode == TestMode.PLAYBACK) {
+            return
+        }
+
+        sleep(milliseconds)
+    }
 }

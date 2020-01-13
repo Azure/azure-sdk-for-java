@@ -122,7 +122,7 @@ public interface Tracer {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <p>Completes the tracing span present in the context, with the corresponding OpenCensus status for the given
+     * <p>Completes the tracing span present in the context, with the corresponding OpenTelemetry status for the given
      * response status code</p>
      * {@codesnippet com.azure.core.util.tracing.end#int-throwable-context}
      *
@@ -138,7 +138,7 @@ public interface Tracer {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <p>Completes the tracing span with the corresponding OpenCensus status for the given status message</p>
+     * <p>Completes the tracing span with the corresponding OpenTelemetry status for the given status message</p>
      * {@codesnippet com.azure.core.util.tracing.end#string-throwable-context}
      *
      * @param statusMessage The error or success message that occurred during the call, or {@code null} if no error
