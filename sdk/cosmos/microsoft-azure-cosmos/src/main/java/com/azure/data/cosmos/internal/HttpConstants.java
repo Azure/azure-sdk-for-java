@@ -167,6 +167,7 @@ public class HttpConstants {
         // Offer header
         public static final String OFFER_TYPE = "x-ms-offer-type";
         public static final String OFFER_THROUGHPUT = "x-ms-offer-throughput";
+        public static final String OFFER_MIN_THROUGHPUT = "x-ms-cosmos-min-throughput";
         public static final String OFFER_IS_RU_PER_MINUTE_THROUGHPUT_ENABLED = "x-ms-offer-is-ru-per-minute-throughput-enabled";
 
         // Upsert header
