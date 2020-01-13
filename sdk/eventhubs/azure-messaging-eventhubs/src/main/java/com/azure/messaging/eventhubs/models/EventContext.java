@@ -3,9 +3,6 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import static com.azure.core.util.FluxUtil.monoError;
-
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
