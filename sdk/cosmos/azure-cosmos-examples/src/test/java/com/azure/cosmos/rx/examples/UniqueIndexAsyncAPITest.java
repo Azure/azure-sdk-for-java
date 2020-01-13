@@ -58,6 +58,10 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
         Document doc2 = new Document("{ 'name':'Al-Khwarizmi', 'field': 'Mathematics' , 'other' : 'Algebra '}");
         Document doc3 = new Document("{ 'name':'Alan Turning', 'field': 'Mathematics', 'other' : 'CS' }");
 
+        doc1.setId(UUID.randomUUID().toString());
+        doc2.setId(UUID.randomUUID().toString());
+        doc3.setId(UUID.randomUUID().toString());
+
         client.createDocument(getCollectionLink(collection), doc1, null, false).single().block().getResource();
         client.createDocument(getCollectionLink(collection), doc2, null, false).single().block().getResource();
 
