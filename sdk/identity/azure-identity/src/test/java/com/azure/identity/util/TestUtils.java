@@ -10,7 +10,11 @@ import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -79,6 +83,21 @@ public final class TestUtils {
      */
     public static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
         return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2)));
+    }
+
+    public static Mono<AccessToken> getMockAccessToken(String accessToken, String expiresOn) {
+        OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm:ss a XXX");
+        Long seconds=null;
+        try {
+            seconds = Long.parseLong(expiresOn);
+        } catch (NumberFormatException e) {     
+        }
+        try {
+            seconds=Instant.from(dtf.parse(expiresOn)).toEpochMilli() / 1000L;
+        } catch (DateTimeParseException e) {
+        }
+        return Mono.just(new AccessToken(accessToken, EPOCH.plusSeconds(seconds)));
     }
 
     private TestUtils() {
