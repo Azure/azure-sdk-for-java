@@ -1,5 +1,5 @@
 
-## Azure Azure Storage Blob Samples client library for Java
+# Azure Storage Blob Samples client library for Java
 This document explains samples and how to use them.
 
 ## Key concepts
@@ -12,9 +12,6 @@ This document describes how to use samples and what is done in each sample.
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
-
-## How to run
-These sample can be run in your IDE with default JDK.
 
 ## Examples
    Following section document various examples.
