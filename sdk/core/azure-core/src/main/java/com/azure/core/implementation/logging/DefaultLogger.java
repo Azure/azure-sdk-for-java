@@ -178,7 +178,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         String dateTime = getFormattedDate();
         String threadName = Thread.currentThread().getName();
         String levelName = level.name();
-        StringBuilder buf = new StringBuilder(32);
+        StringBuilder buf = new StringBuilder(64);
         buf.append(String.format(MESSAGE_TEMPLATE, dateTime, threadName, levelName, classPath, message));
         writeWithThrowable(buf, t);
     }
