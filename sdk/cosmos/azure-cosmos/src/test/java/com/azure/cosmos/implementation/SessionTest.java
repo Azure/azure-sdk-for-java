@@ -101,12 +101,12 @@ public class SessionTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionConsistency_ReadYourWrites(boolean isNameBased) {
         spyClient.readCollection(getCollectionLink(isNameBased), null).blockFirst();
-        spyClient.createDocument(getCollectionLink(isNameBased), new Document(), null, false).blockFirst();
+        spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false).blockFirst();
 
         spyClient.clearCapturedRequests();
 
         for (int i = 0; i < 10; i++) {
-            Document documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), new Document(), null, false)
+            Document documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false)
                     .blockFirst().getResource();
 
             spyClient.clearCapturedRequests();
@@ -184,5 +184,12 @@ public class SessionTest extends TestSuiteBase {
     private String getDocumentLink(Document doc, boolean isNameBased) {
         return isNameBased ? "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/docs/" + doc.getId() :
             "dbs/" + createdDatabase.getResourceId() + "/colls/" + createdCollection.getResourceId() + "/docs/" + doc.getResourceId() + "/";
+    }
+
+    private Document newDocument() {
+        Document doc = new Document();
+        doc.setId(UUID.randomUUID().toString());
+
+        return doc;
     }
 }
