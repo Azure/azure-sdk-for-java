@@ -219,7 +219,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             }))
             .onErrorContinue(error -> error instanceof AmqpException && ((AmqpException) error).isTransient(),
                 (error, value) -> {
-                    System.out.println("Exception dropped: " + error.getMessage());
+                    System.out.println("Retries were exhausted. No logger retrying operation. " + error.getMessage());
                 })
             .subscribe(instant -> {
                 System.out.println("Sent batch at: " + instant);

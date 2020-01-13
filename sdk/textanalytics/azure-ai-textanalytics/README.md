@@ -30,68 +30,6 @@ and includes six main functions:
 ```
 [//]: # ({x-version-update-end})
 
-### Default HTTP Client
-All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
-Text Analytics to use Netty HTTP client. 
-
-[//]: # ({x-version-update-start;com.azure:azure-core-http-netty;dependency})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-http-netty</artifactId>
-    <version>1.2.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-### Alternate HTTP Client
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
-Netty and include OkHTTP client in your pom.xml.
-
-[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
-```xml
-<!-- Add Text Analytics dependency without Netty HTTP client -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-ai-textanalytics</artifactId>
-    <version>1.0.0-beta.1</version>
-    <exclusions>
-      <exclusion>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-http-netty</artifactId>
-      </exclusion>
-    </exclusions>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;dependency})
-```xml
-<!-- Add OkHTTP client to use with Text Analytics -->
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.1.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-### Configuring HTTP Clients
-When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-a-client), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
-
-For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
-
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L35-L38 -->
-```java
-HttpClient client = new NettyAsyncHttpClientBuilder()
-    .port(8080)
-    .wiretap(true)
-    .build();
-```
-
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
-
 ### Create a Text Analytics resource
 Text Analytics supports both [multi-service and single-service access](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows). Create a Cognitive Services resource if you plan
 to access multiple cognitive services under a single endpoint/key. For Text Analytics access only, create a Text Analytics resource.
@@ -344,7 +282,7 @@ for (TextSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).ge
 ## Troubleshooting
 ### General
 Text Analytics clients raise exceptions. For example, if you try to detect the languages of a batch of text with same 
-document IDs, 400 error is return that indicating bad request. In the following code snippet, the error is handled 
+document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L164-L168 -->
@@ -361,6 +299,17 @@ You can set the `AZURE_LOG_LEVEL` environment variable to view logging statement
 example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
 be found here: [log levels][LogLevels].
 
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
+better performance compared to the default SSL implementation within the JDK. For more information, including how to 
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ## Next steps
 - Samples are explained in detail [here][samples_readme].
 
@@ -373,7 +322,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[api_reference_doc]: https://azure.github.io/azure-sdk-for-java/textanalytics.html
+[api_reference_doc]: https://aka.ms/azsdk-java-textanalytics-ref-docs
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/

@@ -155,10 +155,9 @@ class QueueServiceAsyncAPITests extends APISpec {
     }
 
     def "List empty queues"() {
-        when:
-        def listQueueVerifier = StepVerifier.create((primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions())))
-        then:
-        listQueueVerifier
+        expect:
+        // Queue was never made with the prefix, should expect no queues to be listed.
+        StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName)))
             .expectNextCount(0)
             .verifyComplete()
     }

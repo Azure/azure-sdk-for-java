@@ -134,7 +134,8 @@ class PartitionPumpManager {
             } else {
                 startFromEventPosition = EventPosition.latest();
             }
-
+            logger.info("Starting event processing from {} for partition {}", startFromEventPosition,
+                claimedOwnership.getPartitionId());
             ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
                 .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 

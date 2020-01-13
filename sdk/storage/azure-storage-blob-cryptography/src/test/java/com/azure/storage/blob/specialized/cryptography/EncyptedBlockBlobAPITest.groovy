@@ -363,7 +363,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Encrypted upload file"() {
         setup:
-        def file = getRandomFile(KB)
+        def file = getRandomFile(Constants.MB)
 
         when:
         beac.uploadFromFile(file.toPath().toString()).block()
