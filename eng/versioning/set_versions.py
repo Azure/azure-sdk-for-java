@@ -108,7 +108,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                 newlines.append(module.string_for_version_file())
 
     if not artifact_found:
-       raise ValueError('library_to_update ({}) was not found in version file {}'.format(library_to_update, version_file)) 
+       raise ValueError('library_to_update ({}) was not found in version file {}'.format(library_to_update, version_file))
 
     with open(version_file, 'w', encoding='utf-8') as f:
         for line in newlines:
@@ -181,7 +181,7 @@ def increment_library_version(build_type, artifact_id, group_id):
                 newlines.append(module.string_for_version_file())
 
     if not artifact_found:
-       raise ValueError('library_to_update ({}) was not found in version file {}'.format(library_to_update, version_file)) 
+       raise ValueError('library_to_update ({}) was not found in version file {}'.format(library_to_update, version_file))
 
     with open(version_file, 'w', encoding='utf-8') as f:
         for line in newlines:
@@ -214,7 +214,7 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                     temp_ver = '{}.{}.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'))
                     # we should never have buildmetadata in our versioning scheme
                     if vmatch.group('buildmetadata') is not None:
-                        raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. buildmetadata is set and should never be {}'.format(library_to_update, module.current, version_file, vmatch.group('buildmetadata'))) 
+                        raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. buildmetadata is set and should never be {}'.format(library_to_update, module.current, version_file, vmatch.group('buildmetadata')))
 
                     # reconstruct the version from the semver pieces and it should match exactly the current
                     # version in the module
@@ -232,7 +232,7 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                     # last but not least, for sanity verify that the version constructed from the
                     # semver pieces matches module's current version
                     if module.current != temp_ver:
-                        raise ValueError('library ({}) version ({}) in version file ({}) does not match the version constructed from the semver pieces ({})'.format(library_to_update, module.current, version_file, temp_ver)) 
+                        raise ValueError('library ({}) version ({}) in version file ({}) does not match the version constructed from the semver pieces ({})'.format(library_to_update, module.current, version_file, temp_ver))
 
                     print('The version {} for {} looks good!'.format(module.current, module.name))
                     
