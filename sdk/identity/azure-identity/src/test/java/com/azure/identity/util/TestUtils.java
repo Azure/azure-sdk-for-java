@@ -80,27 +80,6 @@ public final class TestUtils {
     public static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
         return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2)));
     }
-    
-    /**
-     * Creates a mock {@link AccessToken} instance.
-     * @param accessToken the access token to return
-     * @param expiresOn the expiration time
-     * @return a Mono publisher of the result
-     */
-     public static Mono<AccessToken> getMockAccessToken(String accessToken, String expiresOn) {
-        OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm:ss a XXX");
-        Long seconds=null;
-        try {
-            seconds = Long.parseLong(expiresOn);
-        } catch (NumberFormatException e) {     
-        }
-        try {
-            seconds=Instant.from(dtf.parse(expiresOn)).toEpochMilli() / 1000L;
-        } catch (DateTimeParseException e) {
-        }
-        return Mono.just(new AccessToken(accessToken, EPOCH.plusSeconds(seconds)));
-    }
 
     private TestUtils() {
     }
