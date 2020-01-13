@@ -35,9 +35,6 @@ public class ClearingSessionContainerClientRetryPolicy extends DocumentClientRet
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
         this.request = request;
         this.retryPolicy.onBeforeSendRequest(request);
-        if(request.requestContext!= null && request.requestContext.retryContext != null) {
-            request.requestContext.retryContext.retryCount = this.getRetryCount();
-        }
     }
 
     @Override

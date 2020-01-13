@@ -28,10 +28,9 @@ public class RetryUtils {
             policy.captureStartTimeIfNotSet();
             Flux<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = policy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(s -> {
-
-                if(e instanceof CosmosClientException) {
-                    CosmosClientException cosmosClientException = (CosmosClientException) e;
-                    policy.addStatusAndSubStatusCode(cosmosClientException.getStatusCode(), cosmosClientException.getSubStatusCode());
+                CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
+                if(clientException != null) {
+                    policy.addStatusAndSubStatusCode(clientException.getStatusCode(), clientException.getSubStatusCode());
                 }
 
                 if (s.backOffTime != null) {
@@ -68,6 +67,7 @@ public class RetryUtils {
                 retryPolicy.updateEndTime();
                 rxDocumentServiceRequest.requestContext.updateRetryContext(retryPolicy);
             }
+
             Exception e = Utils.as(throwable, Exception.class);
             if (e == null) {
                 return Mono.error(throwable);
@@ -75,9 +75,9 @@ public class RetryUtils {
             retryPolicy.captureStartTimeIfNotSet();
             Flux<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = retryPolicy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(shouldRetryResult -> {
-                if(e instanceof CosmosClientException) {
-                    CosmosClientException cosmosClientException = (CosmosClientException) e;
-                    retryPolicy.addStatusAndSubStatusCode(cosmosClientException.getStatusCode(), cosmosClientException.getSubStatusCode());
+                CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
+                if(clientException != null) {
+                    retryPolicy.addStatusAndSubStatusCode(clientException.getStatusCode(), clientException.getSubStatusCode());
                 }
 
                 if (!shouldRetryResult.shouldRetry) {
@@ -89,6 +89,11 @@ public class RetryUtils {
                     }
                 }
                 retryPolicy.incrementRetry();
+                if(rxDocumentServiceRequest.requestContext != null && retryPolicy.getRetryCount() > 0) {
+                    retryPolicy.updateEndTime();
+                    rxDocumentServiceRequest.requestContext.updateRetryContext(retryPolicy);
+                }
+
                 if (inBackoffAlternateCallbackMethod != null
                         && shouldRetryResult.backOffTime.compareTo(minBackoffForInBackoffCallback) > 0) {
                     StopWatch stopwatch = new StopWatch();

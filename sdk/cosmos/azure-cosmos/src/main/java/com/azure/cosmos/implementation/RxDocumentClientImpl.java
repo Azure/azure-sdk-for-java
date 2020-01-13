@@ -675,7 +675,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Flux<RxDocumentServiceResponse> read(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         populateHeaders(request, HttpConstants.HttpMethods.GET);
-        if(request.requestContext != null) {
+        if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
             documentClientRetryPolicy.updateEndTime();
             request.requestContext.updateRetryContext(documentClientRetryPolicy);
         }
