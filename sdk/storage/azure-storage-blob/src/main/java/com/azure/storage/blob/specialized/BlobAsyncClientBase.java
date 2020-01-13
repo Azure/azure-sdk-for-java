@@ -975,14 +975,13 @@ public class BlobAsyncClientBase {
         data = ProgressReporter.addParallelProgressReporting(data,
             finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
 
+        // Write to the file.
         return FluxUtil.collectBytesInByteBufferStream(data)
             .flatMap(bytes -> {
                 file.write(ByteBuffer.wrap(bytes), chunkNum * finalParallelTransferOptions.getBlockSize());
                 return Mono.empty();
             })
             .then();
-        // Write to the file.
-        // return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSize());
     }
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {

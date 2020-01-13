@@ -512,30 +512,29 @@ class APISpec extends Specification {
         def pos = 0L
         def readBuffer = 8 * Constants.KB
         def stream1 = new FileInputStream(file1)
-        stream1.skip(offset) // Fast-forward based on the offset
+        stream1.skip(offset)
         def stream2 = new FileInputStream(file2)
 
-        while (pos < count) {
-            def bufferSize = (int) Math.min(readBuffer, count - pos)
-            def buffer1 = new byte[bufferSize]
-            def buffer2 = new byte[bufferSize]
+        try {
+            while (pos < count) {
+                def bufferSize = (int) Math.min(readBuffer, count - pos)
+                def buffer1 = new byte[bufferSize]
+                def buffer2 = new byte[bufferSize]
 
-            def readCount1 = stream1.read(buffer1)
-            def readCount2 = stream2.read(buffer2)
+                def readCount1 = stream1.read(buffer1)
+                def readCount2 = stream2.read(buffer2)
 
-            if (readCount1 != readCount2 || !Arrays.compare(buffer1, buffer2)) {
-                return false
+                assert readCount1 == readCount2 && buffer1 == buffer2
+
+                pos += bufferSize
             }
 
-            pos += bufferSize
+            def verificationRead = stream2.read()
+            return pos == count && verificationRead == -1
+        } finally {
+            stream1.close()
+            stream2.close()
         }
-
-        def verificationRead = stream2.read()
-
-        stream1.close()
-        stream2.close()
-
-        return pos == count && verificationRead == -1
     }
 
     /**
