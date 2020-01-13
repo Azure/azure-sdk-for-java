@@ -25,11 +25,13 @@ import java.util.concurrent.CompletableFuture;
 public final class TestUtils {
     /**
      * Creates a mock {@link IAuthenticationResult} instance.
+     * 
      * @param accessToken the access token to return
-     * @param expiresOn the expiration time
+     * @param expiresOn   the expiration time
      * @return a completable future of the result
      */
-    public static CompletableFuture<IAuthenticationResult> getMockAuthenticationResult(String accessToken, OffsetDateTime expiresOn) {
+    public static CompletableFuture<IAuthenticationResult> getMockAuthenticationResult(String accessToken,
+            OffsetDateTime expiresOn) {
         return CompletableFuture.completedFuture(new IAuthenticationResult() {
             @Override
             public String accessToken() {
@@ -66,19 +68,20 @@ public final class TestUtils {
 
     /**
      * Creates a mock {@link MsalToken} instance.
+     * 
      * @param accessToken the access token to return
-     * @param expiresOn the expiration time
+     * @param expiresOn   the expiration time
      * @return a Mono publisher of the result
      */
     public static Mono<MsalToken> getMockMsalToken(String accessToken, OffsetDateTime expiresOn) {
-        return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn))
-            .map(MsalToken::new);
+        return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn)).map(MsalToken::new);
     }
 
     /**
      * Creates a mock {@link AccessToken} instance.
+     * 
      * @param accessToken the access token to return
-     * @param expiresOn the expiration time
+     * @param expiresOn   the expiration time
      * @return a Mono publisher of the result
      */
     public static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
@@ -88,13 +91,13 @@ public final class TestUtils {
     public static Mono<AccessToken> getMockAccessToken(String accessToken, String expiresOn) {
         OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm:ss a XXX");
-        Long seconds=null;
+        Long seconds = null;
         try {
             seconds = Long.parseLong(expiresOn);
-        } catch (NumberFormatException e) {     
+        } catch (NumberFormatException e) {
         }
         try {
-            seconds=Instant.from(dtf.parse(expiresOn)).toEpochMilli() / 1000L;
+            seconds = Instant.from(dtf.parse(expiresOn)).toEpochMilli() / 1000L;
         } catch (DateTimeParseException e) {
         }
         return Mono.just(new AccessToken(accessToken, EPOCH.plusSeconds(seconds)));
