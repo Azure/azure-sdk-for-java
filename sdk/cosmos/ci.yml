@@ -21,6 +21,8 @@ trigger:
   paths:
     include:
       - sdk/cosmos/
+    exclude:
+      - sdk/cosmos/mgmt
 
 pr:
   branches:
@@ -32,7 +34,9 @@ pr:
   paths:
     include:
       - sdk/cosmos/
-
+    exclude:
+      - sdk/cosmos/mgmt
+  
 stages:
   - template: ../../eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
     parameters:
