@@ -376,17 +376,22 @@ class EventHubConsumerAsyncClientTest {
     }
 
     /**
-     * Verify that the correct number of credits are returned when the link is empty, and there are subscribers.
+     * Verify that backpressure is respected.
      */
     @Test
     void suppliesCreditsWhenSubscribers() {
         // Arrange
         final int backPressure = 8;
+        final AtomicInteger counter = new AtomicInteger();
+        final FluxSink<Message> messageSink = messageProcessor.sink();
 
         when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
 
         final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).subscribe(
-            e -> logger.info("Event received"),
+            e -> {
+                logger.info("Event received");
+                counter.getAndIncrement();
+            },
             error -> Assertions.fail(error.toString()),
             () -> logger.info("Complete"), sub -> {
                 sub.request(backPressure);
@@ -394,46 +399,20 @@ class EventHubConsumerAsyncClientTest {
 
         try {
             // Act
+
             // Capturing the credit supplier that we set when the link was received.
+            sendMessages(messageSink, 11, PARTITION_ID);
+
             verify(amqpReceiveLink).setEmptyCreditListener(creditSupplier.capture());
             final Supplier<Integer> supplier = creditSupplier.getValue();
             final int actualCredits = supplier.get();
 
             // Assert
-            Assertions.assertEquals(backPressure, actualCredits);
+            Assertions.assertEquals(1, actualCredits);
+            Assertions.assertEquals(backPressure, counter.get());
         } finally {
             subscription.dispose();
         }
-    }
-
-    /**
-     * Verify that 0 credits are returned when there are no subscribers for this link anymore.
-     */
-    @Test
-    void suppliesNoCreditsWhenNoSubscribers() {
-        // Arrange
-        final int backPressure = 8;
-
-        when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
-
-        final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).subscribe(
-            e -> logger.info("Event received"),
-            error -> Assertions.fail(error.toString()),
-            () -> logger.info("Complete"),
-            sub -> sub.request(backPressure));
-
-        // Capturing the credit supplier that we set when the link was received.
-        verify(amqpReceiveLink).setEmptyCreditListener(creditSupplier.capture());
-        final Supplier<Integer> supplier = creditSupplier.getValue();
-
-        // Disposing of the downstream listener we had.
-        subscription.dispose();
-
-        // Act
-        final int actualCredits = supplier.get();
-
-        // Assert
-        Assertions.assertEquals(0, actualCredits);
     }
 
     @Test
