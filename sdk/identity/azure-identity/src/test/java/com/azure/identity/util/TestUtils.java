@@ -86,7 +86,7 @@ public final class TestUtils {
     }
 
     public static Mono<AccessToken> getMockAccessToken(String accessToken, String expiresOn) {
-        OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime epoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm:ss a XXX");
         Long seconds = null;
         try {
@@ -97,9 +97,8 @@ public final class TestUtils {
             seconds = Instant.from(dtf.parse(expiresOn)).toEpochMilli() / 1000L;
         } catch (DateTimeParseException e) {
         }
-        return Mono.just(new AccessToken(accessToken, EPOCH.plusSeconds(seconds)));
+        return Mono.just(new AccessToken(accessToken, epoch.plusSeconds(seconds)));
     }
-
 
     private TestUtils() {
     }
