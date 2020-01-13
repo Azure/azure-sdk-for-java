@@ -71,7 +71,7 @@ public class ClientLogger {
      */
     public void verbose(String format, Object... args) {
         if (logger.isDebugEnabled()) {
-            log(LogLevel.VERBOSE, format, args);
+            performLogging(LogLevel.VERBOSE, false, format, args);
         }
     }
 
@@ -90,7 +90,7 @@ public class ClientLogger {
      */
     public void info(String format, Object... args) {
         if (logger.isInfoEnabled()) {
-            log(LogLevel.INFORMATIONAL, format, args);
+            performLogging(LogLevel.INFORMATIONAL, false, format, args);
         }
     }
 
@@ -109,7 +109,7 @@ public class ClientLogger {
      */
     public void warning(String format, Object... args) {
         if (logger.isWarnEnabled()) {
-            log(LogLevel.WARNING, format, args);
+            performLogging(LogLevel.WARNING, false, format, args);
         }
     }
 
@@ -128,19 +128,8 @@ public class ClientLogger {
      */
     public void error(String format, Object... args) {
         if (logger.isErrorEnabled()) {
-            log(LogLevel.ERROR, format, args);
+            performLogging(LogLevel.ERROR, false, format, args);
         }
-    }
-
-    /*
-     * This method logs the formattable message if the {@code logLevel} is enabled
-     *
-     * @param logLevel The log level at which this message should be logged
-     * @param format The formattable message to log
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
-     */
-    private void log(LogLevel logLevel, String format, Object... args) {
-        performLogging(logLevel, false, format, args);
     }
 
     /**
