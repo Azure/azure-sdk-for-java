@@ -169,6 +169,10 @@ def increment_library_version(build_type, artifact_id, group_id):
                     vmatch = version_regex_named.match(module.current)
                     if (vmatch.group('prerelease') is not None):
                         prever = prerelease_regex_named.match(vmatch.group('prerelease'))
+                        # This is the case where, somehow, the versioning verification has failed and
+                        # the prerelease verification doesn't match "beta.X"
+                        if prever is None:
+                            raise ValueError('library_to_update ({}:{}) has an invalid prerelease version ({}) which should be of the format beta.X'.format(library_to_update, module.current, vmatch.group('prerelease')))
                         rev = int(prever.group('revision'))
                         rev += 1
                         new_version = '{}.{}.{}-beta.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'), str(rev))
