@@ -19,7 +19,10 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
+import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobCorsRule;
+import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
@@ -38,6 +41,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -391,8 +396,75 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties, Context context) {
-        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(properties, null, null, context)
+        BlobServiceProperties finalProperties = null;
+        if (properties != null) {
+            finalProperties = new BlobServiceProperties();
+
+            // Logging
+            finalProperties.setLogging(properties.getLogging());
+            if (finalProperties.getLogging() != null) {
+                validateRetentionPolicy(finalProperties.getLogging().getRetentionPolicy(), "Logging Retention Policy");
+            }
+
+            // Hour Metrics
+            finalProperties.setHourMetrics(properties.getHourMetrics());
+            if (finalProperties.getHourMetrics() != null) {
+                validateRetentionPolicy(finalProperties.getHourMetrics().getRetentionPolicy(), "HourMetrics Retention "
+                    + "Policy");
+            }
+
+            // Minute Metrics
+            finalProperties.setMinuteMetrics(properties.getMinuteMetrics());
+            if (finalProperties.getMinuteMetrics() != null) {
+                validateRetentionPolicy(finalProperties.getMinuteMetrics().getRetentionPolicy(), "MinuteMetrics "
+                    + "Retention Policy");
+            }
+
+            // CORS
+            if (properties.getCors() != null) {
+                List<BlobCorsRule> corsRules = new ArrayList<>();
+                for (BlobCorsRule rule : properties.getCors()) {
+                    corsRules.add(validatedCorsRule(rule));
+                }
+                properties.setCors(corsRules);
+            }
+
+            // Default Service Version
+            finalProperties.setDefaultServiceVersion(properties.getDefaultServiceVersion());
+
+            // Delete Retention Policy
+            finalProperties.setDeleteRetentionPolicy(properties.getDeleteRetentionPolicy());
+            validateRetentionPolicy(properties.getDeleteRetentionPolicy(), "DeleteRetentionPolicy Days");
+
+            // Static Website
+            finalProperties.setStaticWebsite(properties.getStaticWebsite());
+
+        }
+
+        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(finalProperties, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    private BlobCorsRule validatedCorsRule(BlobCorsRule originalRule) {
+        if (originalRule == null) {
+            return null;
+        }
+        BlobCorsRule validRule = new BlobCorsRule();
+        validRule.setAllowedHeaders(StorageImplUtils.emptyIfNull(originalRule.getAllowedHeaders()));
+        validRule.setAllowedMethods(StorageImplUtils.emptyIfNull(originalRule.getAllowedMethods()));
+        validRule.setAllowedOrigins(StorageImplUtils.emptyIfNull(originalRule.getAllowedOrigins()));
+        validRule.setExposedHeaders(StorageImplUtils.emptyIfNull(originalRule.getExposedHeaders()));
+        validRule.setMaxAgeInSeconds(originalRule.getMaxAgeInSeconds());
+        return validRule;
+    }
+
+    private void validateRetentionPolicy(BlobRetentionPolicy retentionPolicy, String policyName) {
+        if (retentionPolicy == null) {
+            return;
+        }
+        if (retentionPolicy.isEnabled()) {
+            StorageImplUtils.assertInBounds(policyName,retentionPolicy.getDays(), 1, 365);
+        }
     }
 
     /**
