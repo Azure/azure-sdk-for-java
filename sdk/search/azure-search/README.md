@@ -29,63 +29,6 @@ This library provides an easy (native) way for a Java developer to interact with
 
 [//]: # {x-version-update-end}
 
-### Default HTTP Client
-
-All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure the Cognitive Search Service client to use Netty HTTP client.
-
-### Alternate HTTP client
-
-If, instead of Netty it is preferable to use OkHTTP, there is an HTTP client available for that too. Exclude the default
-Netty and include the OkHTTP client in your pom.xml.
-
-[//]: # {x-version-update-start;com.azure:azure-search;current}
-
-```xml
-<!-- Add the Cognitive Search dependency without the Netty HTTP client -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-search</artifactId>
-    <version>1.0.0-preview.2</version>
-    <exclusions>
-        <exclusion>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-core-http-netty</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-```
-
-[//]: # {x-version-update-end}
-[//]: # {x-version-update-start;com.azure:azure-core-http-okhttp;current}
-
-```xml
-<!-- Add the OkHTTP client to use with Cognitive Search -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.1.0</version>
-</dependency>
-```
-
-[//]: # {x-version-update-end}
-
-### Configuring HTTP Clients
-
-When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-a-searchserviceclient) unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this by allowing users to provide custom (or customized) `com.azure.core.http.HttpClient` instances.
-
-For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
-
-```java
-HttpClient client = new NettyAsyncHttpClientBuilder()
-        .port(8080)
-        .wiretap(true)
-        .build();
-```
-
-### Default SSL library
-
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
-
 ## Using the library
 
 The APIs documented in this section provide access to operations on search data, such as index creation and population, document upload, and queries. When calling APIs, keep the following points in mind:
@@ -112,7 +55,7 @@ A separate REST API is provided for service administration, including provisioni
 
 ### Authenticate the client
 
-In order to interact with the Cognitive Search service you'll need to create an instance of the Search Client class. To make this possible you'll need an [api-key of the Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
+In order to interact with the Cognitive Search service you'll need to create an instance of the Search Client class. To make this possible you will need an [api-key of the Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
 
 The SDK provides two types of clients - SearchIndexClient for all document operations, and SearchServiceClient for all CRUD operations on the service resources.
 
@@ -193,50 +136,52 @@ Represents an HTTP response from the autocomplete API request that contains a li
 
 [Search queries options with async client](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchOptionsAsyncExample.java)
 
-## Examples
-
--   [Using autocomplete to expand a query from index contents](/sdk/search/azure-search/src/samples/java/com/azure/search/AutoCompleteExample.java)
--   [Creating a new index](/sdk/search/azure-search/src/samples/java/com/azure/search/CreateIndexExample.java)
--   [Create a new indexer](/sdk/search/azure-search/src/samples/java/com/azure/search/CreateIndexerExample.java)
--   [Creating, listing and deleting data sources](/sdk/search/azure-search/src/samples/java/com/azure/search/DataSourceExample.java)
--   [Retrieving a document by key](/sdk/search/azure-search/src/samples/java/com/azure/search/GetSingleDocumentExample.java)
--   [How to handle HttpREsponseException errors](/sdk/search/azure-search/src/samples/java/com/azure/search/HttpResponseExceptionExample.java)
--   [Using IndexClient configuration options](/sdk/search/azure-search/src/samples/java/com/azure/search/IndexClientConfigurationExample.java)
--   [Uploading, merging, and deleting documents in indexes](/sdk/search/azure-search/src/samples/java/com/azure/search/IndexContentManagementExample.java)
--   [Search for documents of unknown type](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchForDynamicDocumentsExample.java)
--   [Using count, coverage, and facets](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchOptionsExample.java)
--   [Using suggestions](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchSuggestionExample.java)
--   [Searching for documents of known type](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchWithFullyTypedDocumentsExample.java)
--   [Creating a synonym map for an index](/sdk/search/azure-search/src/samples/java/com/azure/search/SynonymMapsCreateExample.java)
--   [Creating skillsets](/sdk/search/azure-search/src/samples/java/com/azure/search/CreateSkillsetExample.java)
--   [Creating and managing indexers](/sdk/search/azure-search/src/samples/java/com/azure/search/IndexerManagementExample.java)
--   [Search queries options with async client](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchOptionsAsyncExample.java)
--   [Search queries options with sync client](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchOptionsExample.java)
--   [Retrieving Index and Service statistics](/sdk/search/azure-search/src/samples/java/com/azure/search/IndexAndServiceStatisticsExample.java)
--   [Setup datasource, indexer, index and skillset](/sdk/search/azure-search/src/samples/java/com/azure/search/LifecycleSetupExample.java)
--   [List indexers](/sdk/search/azure-search/src/samples/java/com/azure/search/ListIndexersExample.java)
--   [Add Synonym and custom skillset](/sdk/search/azure-search/src/samples/java/com/azure/search/RefineSearchCapabilitiesExample.java)
--   [Execute a search solution - run indexer and issue search queries](/sdk/search/azure-search/src/samples/java/com/azure/search/RunningSearchSolutionExample.java)
-
 ## Troubleshooting
 
 ### General
 
 When you interact with Azure Cognitive Search using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a document that doesn't exist in your index, a `404` error is returned, indicating `Not Found`.
 
+App Configuration provides a way to define customized headers through `Context` object in the public API. 
+
+<!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L160-L169 -->
+```java
+// Add your headers
+HttpHeaders headers = new HttpHeaders();
+headers.put("my-header1", "my-header1-value");
+headers.put("my-header2", "my-header2-value");
+headers.put("my-header3", "my-header3-value");
+// Call API by passing headers in Context.
+searchClient.createIndexWithResponse(
+    index,
+    requestOptions,
+    new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
+// Above three HttpHeader will be added in outgoing HttpRequest.
+```
+For more detail information, check out the [AddHeadersFromContextPolicy][add_headers_from_context_policy]
+
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
+better performance compared to the default SSL implementation within the JDK. For more information, including how to 
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ## Next steps
 
-TODO: Add a java quickstart
+- Samples are explained in detail [here][samples_readme].
 
 ## Contributing
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
 
@@ -247,6 +192,14 @@ If you would like to become an active contributor to this project please follow 
 [maven]: https://maven.apache.org/
 [package]: https://search.maven.org/artifact/com.azure/azure-search
 [samples]: src/samples/java/com/azure/search
+[samples_readme]: src/samples/README.md
 [source_code]: src
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
+[rest_api]: https://docs.microsoft.com/en-us/rest/api/searchservice/http-status-codes
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/search/azure-search/README.png)
