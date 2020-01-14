@@ -14,4 +14,6 @@ module com.azure.identity {
     requires org.reactivestreams;
 
     exports com.azure.identity;
+
+    opens com.azure.identity.implementation to com.fasterxml.jackson.databind;
 }

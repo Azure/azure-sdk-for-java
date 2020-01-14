@@ -9,13 +9,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -103,15 +106,19 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
     @ValueSource(ints = { 1, 2, 3, 4 })
-    public void logWhenLoggingDisabled(int logLevel) {
+    public void logWhenLoggingInvalidNumeric(int logLevel) {
         String logMessage = "This is a test";
+        setupLogLevel(5);
+        assertThrows(IllegalArgumentException.class, () ->
+            logMessage(new ClientLogger(ClientLoggerTests.class), logLevel, logMessage));
+    }
 
-        String originalLogLevel = setupLogLevel(5);
-        logMessage(new ClientLogger(ClientLoggerTests.class), logLevel, logMessage);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
-
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        assertFalse(logValues.contains(logMessage));
+    /**
+     * Tests that logging when the environment log level is disabled nothing is logged.
+     */
+    @Test
+    public void logWhenLoggingNotSet() {
+        assertEquals(LogLevel.NOT_SET, LogLevel.fromString(null));
     }
 
     /**
@@ -276,10 +283,24 @@ public class ClientLoggerTests {
         assertTrue(logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
 
+    @ParameterizedTest(name = "{index} from logLevelToConfigure = {0}, logLevelToValidate = {1}, expected = {2}")
+    @CsvSource({"1, 1, true", "1, 2, true", "1, 3, true", "1, 4, true", "2, 1, false", "1, VERBOSE, true", "1, info, true", "1, warning, true", "1, error, true", "2, verbose, false"})
+    public void canLogAtLevel(int logLevelToConfigure, String logLevelToValidate, boolean expected) {
+        setupLogLevel(logLevelToConfigure);
+        LogLevel logLevel = LogLevel.fromString(logLevelToValidate);
+        assertEquals(new ClientLogger(ClientLoggerTests.class).canLogAtLevel(logLevel), expected);
+    }
+
+    @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
+    @ValueSource(strings = {"5", "invalid"})
+    public void canLogAtLevelInvalid(String logLevelToValidate) {
+        setupLogLevel(2);
+        assertThrows(IllegalArgumentException.class, () -> LogLevel.fromString(logLevelToValidate));
+    }
+
     private String setupLogLevel(int logLevelToSet) {
         String originalLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLOUD);
         System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, Integer.toString(logLevelToSet));
-
         return originalLogLevel;
     }
 

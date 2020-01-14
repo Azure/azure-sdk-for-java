@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.ErrorCodeValue;
@@ -12,6 +13,8 @@ import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
@@ -122,12 +125,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageInvalidCountryHint() {
         TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid Country Hint.", null, null);
-        validateErrorDocument(client.detectLanguage("Este es un document escrito en Español.", "en")
+        validateErrorDocument(client.detectLanguageWithResponse("Este es un document escrito en Español.", "en", Context.NONE).getValue()
                                   .getError(), expectedError);
     }
 
     /**
-     * Verifies that a Bad request exception is returned for input documents with same ids.
+     * Verifies that a bad request exception is returned for input documents with same IDs.
      */
     @Test
     public void detectLanguageDuplicateIdInput() {
@@ -333,8 +336,16 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForTextInput() {
-        analyseBatchSentimentRunner(inputs -> validateBatchResult(client.analyzeBatchSentiment(inputs),
-            getExpectedBatchTextSentiment(), TestEndpoint.SENTIMENT));
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED, 0.1, 0.5, 0.4, 66, 0);
+        final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
+            new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.005, 0.005, 31, 0),
+            new TextSentiment(TextSentimentClass.POSITIVE, 0.005, 0.005, 0.99, 35, 32));
+
+        AnalyzeSentimentResult analyzeSentimentResult =
+            client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
+
+        validateAnalysedSentiment(expectedDocumentSentiment, analyzeSentimentResult.getDocumentSentiment());
+        validateAnalysedSentenceSentiment(expectedSentenceSentiments, analyzeSentimentResult.getSentenceSentiments());
     }
 
     /**
@@ -346,9 +357,20 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         validateErrorDocument(expectedError, client.analyzeSentiment("").getError());
     }
 
+    /**
+     * Test analyzing sentiment for a faulty input text.
+     */
     @Test
     public void analyseSentimentForFaultyText() {
-        // TODO (shawn): add this case later
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 5, 0);
+        final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 1, 0),
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 4, 1));
+
+        AnalyzeSentimentResult analyzeSentimentResult = client.analyzeSentiment("!@#%%");
+
+        validateAnalysedSentiment(expectedDocumentSentiment, analyzeSentimentResult.getDocumentSentiment());
+        validateAnalysedSentenceSentiment(expectedSentenceSentiments, analyzeSentimentResult.getSentenceSentiments());
     }
 
     /**

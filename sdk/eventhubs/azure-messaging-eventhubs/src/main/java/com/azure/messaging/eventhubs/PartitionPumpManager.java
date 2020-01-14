@@ -134,7 +134,8 @@ class PartitionPumpManager {
             } else {
                 startFromEventPosition = EventPosition.latest();
             }
-
+            logger.info("Starting event processing from {} for partition {}", startFromEventPosition,
+                claimedOwnership.getPartitionId());
             ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
                 .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
@@ -148,8 +149,11 @@ class PartitionPumpManager {
                     partitionEvent),
                     /* EventHubConsumer receive() returned an error */
                     ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
-                    () -> partitionProcessor.close(new CloseContext(partitionContext,
-                        CloseReason.EVENT_PROCESSOR_SHUTDOWN)));
+                    () -> {
+                        partitionProcessor.close(new CloseContext(partitionContext,
+                            CloseReason.EVENT_PROCESSOR_SHUTDOWN));
+                        cleanup(claimedOwnership, eventHubConsumer);
+                    });
         } catch (Exception ex) {
             if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
                 cleanup(claimedOwnership, partitionPumps.get(claimedOwnership.getPartitionId()));

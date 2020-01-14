@@ -15,13 +15,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AppSkuInfo {
     /**
-     * The name of the SKU. Possible values include: 'F1', 'S1'.
+     * The name of the SKU. Possible values include: 'F1', 'S1', 'ST0', 'ST1',
+     * 'ST2'.
      */
     @JsonProperty(value = "name", required = true)
     private AppSku name;
 
     /**
-     * Get the name of the SKU. Possible values include: 'F1', 'S1'.
+     * Get the name of the SKU. Possible values include: 'F1', 'S1', 'ST0', 'ST1', 'ST2'.
      *
      * @return the name value
      */
@@ -30,7 +31,7 @@ public class AppSkuInfo {
     }
 
     /**
-     * Set the name of the SKU. Possible values include: 'F1', 'S1'.
+     * Set the name of the SKU. Possible values include: 'F1', 'S1', 'ST0', 'ST1', 'ST2'.
      *
      * @param name the name value to set
      * @return the AppSkuInfo object itself.
