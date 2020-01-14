@@ -387,10 +387,10 @@ class AmqpReceiveLinkProcessorTest {
         final FluxSink<AmqpEndpointState> link2StateSink = link2StateProcessor.sink();
 
         when(link2.getEndpointStates()).thenReturn(link2StateProcessor);
-        when(link2.receive()).thenReturn(Flux.just(message2));
+        when(link2.receive()).thenReturn(Flux.never());
 
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
-        when(link3.receive()).thenReturn(Flux.just(message3));
+        when(link3.receive()).thenReturn(Flux.never());
 
         // Simulates two busy signals, but our retry policy says to try only once.
         final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
