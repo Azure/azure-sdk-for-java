@@ -7,9 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -148,8 +146,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.createOrUpdateDataSourceWithResponse(dataSource, null, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -157,11 +154,11 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource The definition of the data source to create or update.
+     * @param dataSource      The definition of the data source to create or update.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                        doesn't match specified values
+     * @param requestOptions  additional parameters for the operation.
+     *                        Contains the tracking ID sent with the request to help with debugging
      * @return a data source response.
      */
     public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
@@ -170,8 +167,7 @@ public class SearchServiceAsyncClient {
         try {
             return withContext(context -> this.createOrUpdateDataSourceWithResponse(dataSource,
                 accessCondition, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -186,8 +182,7 @@ public class SearchServiceAsyncClient {
                 .createOrUpdateWithRestResponseAsync(dataSource.getName(),
                     dataSource, requestOptions, accessCondition, context)
                 .map(Function.identity());
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -201,8 +196,7 @@ public class SearchServiceAsyncClient {
     public Mono<DataSource> createDataSource(DataSource dataSource) {
         try {
             return this.createDataSourceWithResponse(dataSource, null).map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -210,17 +204,16 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source
      *
-     * @param dataSource The definition of the data source to create.
+     * @param dataSource     The definition of the data source to create.
      * @param requestOptions Additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging.
+     *                       Contains the tracking ID sent with the request to help with debugging.
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<Response<DataSource>> createDataSourceWithResponse(DataSource dataSource,
                                                                    RequestOptions requestOptions) {
         try {
             return withContext(context -> this.createDataSourceWithResponse(dataSource, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -244,8 +237,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.getDataSourceWithResponse(dataSourceName, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -255,15 +247,14 @@ public class SearchServiceAsyncClient {
      *
      * @param dataSourceName the name of the data source to retrieve
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging.
+     *                       Contains the tracking ID sent with the request to help with debugging.
      * @return a response containing the DataSource.
      */
     public Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName,
                                                                 RequestOptions requestOptions) {
         try {
             return withContext(context -> this.getDataSourceWithResponse(dataSourceName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -285,8 +276,7 @@ public class SearchServiceAsyncClient {
     public PagedFlux<DataSource> listDataSources() {
         try {
             return this.listDataSources(null, null);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -294,11 +284,11 @@ public class SearchServiceAsyncClient {
     /**
      * List all DataSources from an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of DataSource definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
+     * @param select         Selects which top-level properties of DataSource definitions to retrieve.
+     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *                       The default is all properties.
      * @param requestOptions Additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging.
+     *                       Contains the tracking ID sent with the request to help with debugging.
      * @return a list of DataSources
      */
     public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions) {
@@ -306,8 +296,7 @@ public class SearchServiceAsyncClient {
             return new PagedFlux<>(
                 () -> withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)),
                 nextLink -> Mono.empty());
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -343,8 +332,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.deleteDataSourceWithResponse(dataSourceName, null, null)
                 .flatMap(FluxUtil::toMono);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -352,11 +340,11 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search data source.
      *
-     * @param dataSourceName The name of the data source to delete.
+     * @param dataSourceName  The name of the data source to delete.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                        doesn't match specified values
+     * @param requestOptions  additional parameters for the operation.
+     *                        Contains the tracking ID sent with the request to help with debugging
      * @return a mono response
      */
     public Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
@@ -365,8 +353,7 @@ public class SearchServiceAsyncClient {
         try {
             return withContext(context -> this.deleteDataSourceWithResponse(dataSourceName,
                 accessCondition, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -393,8 +380,7 @@ public class SearchServiceAsyncClient {
     public Mono<Boolean> dataSourceExists(String dataSourceName) {
         try {
             return this.dataSourceExistsWithResponse(dataSourceName, null).map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -404,14 +390,13 @@ public class SearchServiceAsyncClient {
      *
      * @param dataSourceName the name of the data source
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the data source exists; false otherwise.
      */
     public Mono<Response<Boolean>> dataSourceExistsWithResponse(String dataSourceName, RequestOptions requestOptions) {
         try {
             return withContext(context -> this.dataSourceExistsWithResponse(dataSourceName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -433,8 +418,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.createIndexerWithResponse(indexer, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -442,16 +426,15 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search indexer.
      *
-     * @param indexer definition of the indexer to create
+     * @param indexer        definition of the indexer to create
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Indexer.
      */
     public Mono<Response<Indexer>> createIndexerWithResponse(Indexer indexer, RequestOptions requestOptions) {
         try {
             return withContext(context -> this.createIndexerWithResponse(indexer, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -473,8 +456,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.createOrUpdateIndexerWithResponse(indexer, null, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -482,11 +464,11 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
-     * @param indexer the definition of the indexer to create or update
+     * @param indexer         the definition of the indexer to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation
-     * Contains the tracking ID sent with the request to help with debugging
+     *                        doesn't match specified values
+     * @param requestOptions  additional parameters for the operation
+     *                        Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Indexer.
      */
     public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer,
@@ -495,8 +477,7 @@ public class SearchServiceAsyncClient {
         try {
             return withContext(context -> this.createOrUpdateIndexerWithResponse(indexer,
                 accessCondition, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -521,8 +502,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.getIndexerWithResponse(indexerName, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -530,9 +510,9 @@ public class SearchServiceAsyncClient {
     /**
      * Retrieves an indexer definition.
      *
-     * @param indexerName the name of the indexer to retrieve
+     * @param indexerName    the name of the indexer to retrieve
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the indexer.
      */
     public Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
@@ -540,8 +520,7 @@ public class SearchServiceAsyncClient {
             return withContext(
                 context -> this.getIndexerWithResponse(indexerName, requestOptions, context)
             );
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -559,8 +538,7 @@ public class SearchServiceAsyncClient {
     public PagedFlux<Indexer> listIndexers() {
         try {
             return this.listIndexers(null, null);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -568,9 +546,9 @@ public class SearchServiceAsyncClient {
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of the indexers to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
+     * @param select         Selects which top-level properties of the indexers to retrieve.
+     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *                       The default is all properties.
      * @param requestOptions Additional parameters for the operation.
      * @return a response containing all Indexers from the Search service.
      */
@@ -579,8 +557,7 @@ public class SearchServiceAsyncClient {
             return new PagedFlux<>(
                 () -> withContext(context -> this.listIndexersWithResponse(select, requestOptions, context)),
                 nextLink -> Mono.empty());
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -617,8 +594,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.deleteIndexerWithResponse(indexerName, null, null)
                 .flatMap(FluxUtil::toMono);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -626,11 +602,11 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
-     * @param indexerName the name of the indexer to delete
+     * @param indexerName     the name of the indexer to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                        doesn't match specified values
+     * @param requestOptions  additional parameters for the operation.
+     *                        Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteIndexerWithResponse(String indexerName,
@@ -639,8 +615,7 @@ public class SearchServiceAsyncClient {
         try {
             return withContext(context -> this.deleteIndexerWithResponse(indexerName,
                 accessCondition, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -648,12 +623,12 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
-     * @param indexerName the name of the indexer to delete
+     * @param indexerName     the name of the indexer to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context the context
+     *                        doesn't match specified values
+     * @param requestOptions  additional parameters for the operation.
+     *                        Contains the tracking ID sent with the request to help with debugging
+     * @param context         the context
      * @return a response signalling completion.
      */
     Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, AccessCondition accessCondition,
@@ -673,8 +648,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.resetIndexerWithResponse(indexerName, null)
                 .flatMap(FluxUtil::toMono);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -682,16 +656,15 @@ public class SearchServiceAsyncClient {
     /**
      * Resets the change tracking state associated with an indexer.
      *
-     * @param indexerName the name of the indexer to reset
+     * @param indexerName    the name of the indexer to reset
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
         try {
             return withContext(context -> this.resetIndexerWithResponse(indexerName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -713,8 +686,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.runIndexerWithResponse(indexerName, null)
                 .flatMap(FluxUtil::toMono);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -722,16 +694,15 @@ public class SearchServiceAsyncClient {
     /**
      * Runs an indexer on-demand.
      *
-     * @param indexerName the name of the indexer to run
+     * @param indexerName    the name of the indexer to run
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
         try {
             return withContext(context -> this.runIndexerWithResponse(indexerName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -752,8 +723,7 @@ public class SearchServiceAsyncClient {
     public Mono<IndexerExecutionInfo> getIndexerStatus(String indexerName) {
         try {
             return this.getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -761,17 +731,16 @@ public class SearchServiceAsyncClient {
     /**
      * Returns the current status and execution history of an indexer.
      *
-     * @param indexerName the name of the indexer for which to retrieve status
+     * @param indexerName    the name of the indexer for which to retrieve status
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response with the indexer execution info.
      */
     public Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName,
                                                                              RequestOptions requestOptions) {
         try {
             return withContext(context -> this.getIndexerStatusWithResponse(indexerName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -794,8 +763,7 @@ public class SearchServiceAsyncClient {
     public Mono<Boolean> indexerExists(String indexerName) {
         try {
             return this.indexerExistsWithResponse(indexerName, null).map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -803,16 +771,15 @@ public class SearchServiceAsyncClient {
     /**
      * Determines whether or not the given indexer exists.
      *
-     * @param indexerName the name of the indexer
+     * @param indexerName    the name of the indexer
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the indexer exists; false otherwise.
      */
     public Mono<Response<Boolean>> indexerExistsWithResponse(String indexerName, RequestOptions requestOptions) {
         try {
             return withContext(context -> this.indexerExistsWithResponse(indexerName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -833,8 +800,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.createIndexWithResponse(index, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -842,16 +808,15 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index.
      *
-     * @param index definition of the index to create
+     * @param index          definition of the index to create
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Index.
      */
     public Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions) {
         try {
             return withContext(context -> this.createIndexWithResponse(index, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -873,8 +838,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.getIndexWithResponse(indexName, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -882,16 +846,15 @@ public class SearchServiceAsyncClient {
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      *
-     * @param indexName the name of the index to retrieve
+     * @param indexName      the name of the index to retrieve
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the Index.
      */
     public Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
         try {
             return withContext(context -> this.getIndexWithResponse(indexName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -912,8 +875,7 @@ public class SearchServiceAsyncClient {
     public Mono<Boolean> indexExists(String indexName) {
         try {
             return this.indexExistsWithResponse(indexName, null).map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -921,16 +883,15 @@ public class SearchServiceAsyncClient {
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
      *
-     * @param indexName the name of the index
+     * @param indexName      the name of the index
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
      */
     public Mono<Response<Boolean>> indexExistsWithResponse(String indexName, RequestOptions requestOptions) {
         try {
             return withContext(context -> this.indexExistsWithResponse(indexName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -951,8 +912,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.getIndexStatisticsWithResponse(indexName, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -960,17 +920,16 @@ public class SearchServiceAsyncClient {
     /**
      * Returns statistics for the given index, including a document count and storage usage.
      *
-     * @param indexName the name of the index for which to retrieve statistics
+     * @param indexName      the name of the index for which to retrieve statistics
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the index statistics result.
      */
     public Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
                                                                                    RequestOptions requestOptions) {
         try {
             return withContext(context -> this.getIndexStatisticsWithResponse(indexName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -992,8 +951,7 @@ public class SearchServiceAsyncClient {
     public PagedFlux<Index> listIndexes() {
         try {
             return this.listIndexes(null, null);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -1001,11 +959,11 @@ public class SearchServiceAsyncClient {
     /**
      * Lists all indexes available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
+     * @param select         selects which top-level properties of the index definitions to retrieve.
+     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *                       The default is all properties
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of indexes.
      */
     public PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions) {
@@ -1013,8 +971,7 @@ public class SearchServiceAsyncClient {
             return new PagedFlux<>(
                 () -> withContext(context -> this.listIndexesWithResponse(select, requestOptions, context)),
                 nextLink -> Mono.empty());
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -1027,21 +984,16 @@ public class SearchServiceAsyncClient {
 
     private Mono<PagedResponse<Index>> listIndexesWithResponse(String select,
                                                                RequestOptions requestOptions, Context context) {
-        try {
-            return restClient.indexes()
-                .listWithRestResponseAsync(select, requestOptions, context)
-                .map(response -> new PagedResponseBase<>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getIndexes(),
-                    null,
-                    deserializeHeaders(response.getHeaders()))
-                );
-        }
-        catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return restClient.indexes()
+            .listWithRestResponseAsync(select, requestOptions, context)
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue().getIndexes(),
+                null,
+                deserializeHeaders(response.getHeaders()))
+            );
     }
 
     /**
@@ -1055,8 +1007,7 @@ public class SearchServiceAsyncClient {
             return this.createOrUpdateIndexWithResponse(index,
                 false, null, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1064,16 +1015,16 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
      *
-     * @param index the definition of the index to create or update
+     * @param index              the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     * index by taking the index offline for at least a few seconds. This temporarily causes
-     * indexing and query requests to fail. Performance and write availability of the index
-     * can be impaired for several minutes after the index is updated, or longer for very
-     * large indexes
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                           index by taking the index offline for at least a few seconds. This temporarily causes
+     *                           indexing and query requests to fail. Performance and write availability of the index
+     *                           can be impaired for several minutes after the index is updated, or longer for very
+     *                           large indexes
+     * @param accessCondition    the condition where the operation will be performed if the ETag on the server matches or
+     *                           doesn't match specified values
+     * @param requestOptions     additional parameters for the operation.
+     *                           Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the index that was created or updated
      */
     public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
@@ -1083,8 +1034,7 @@ public class SearchServiceAsyncClient {
         try {
             return withContext(context -> this.createOrUpdateIndexWithResponse(index,
                 allowIndexDowntime, accessCondition, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1111,8 +1061,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.deleteIndexWithResponse(indexName, null, null)
                 .flatMap(FluxUtil::toMono);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1120,11 +1069,11 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param indexName the name of the index to delete
+     * @param indexName       the name of the index to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                        doesn't match specified values
+     * @param requestOptions  additional parameters for the operation.
+     *                        Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
@@ -1133,8 +1082,7 @@ public class SearchServiceAsyncClient {
         try {
             return withContext(context -> this.deleteIndexWithResponse(indexName,
                 accessCondition, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1152,15 +1100,14 @@ public class SearchServiceAsyncClient {
     /**
      * Shows how an analyzer breaks text into tokens.
      *
-     * @param indexName the name of the index for which to test an analyzer
+     * @param indexName      the name of the index for which to test an analyzer
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @return analyze result.
      */
     public PagedFlux<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
         try {
             return this.analyzeText(indexName, analyzeRequest, null);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -1168,10 +1115,10 @@ public class SearchServiceAsyncClient {
     /**
      * Shows how an analyzer breaks text into tokens.
      *
-     * @param indexName the name of the index for which to test an analyzer
+     * @param indexName      the name of the index for which to test an analyzer
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing analyze result.
      */
     public PagedFlux<TokenInfo> analyzeText(String indexName,
@@ -1181,8 +1128,7 @@ public class SearchServiceAsyncClient {
                 () -> withContext(context -> this.analyzeTextWithResponse(indexName,
                     analyzeRequest, requestOptions, context)),
                 nextLink -> Mono.empty());
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -1221,8 +1167,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.createSkillsetWithResponse(skillset, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1230,16 +1175,15 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new skillset in an Azure Cognitive Search service.
      *
-     * @param skillset definition of the skillset containing one or more cognitive skills
+     * @param skillset       definition of the skillset containing one or more cognitive skills
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Skillset.
      */
     public Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset, RequestOptions requestOptions) {
         try {
             return withContext(context -> createSkillsetWithResponse(skillset, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1263,8 +1207,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.getSkillsetWithResponse(skillsetName, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1272,9 +1215,9 @@ public class SearchServiceAsyncClient {
     /**
      * Retrieves a skillset definition.
      *
-     * @param skillsetName the name of the skillset to retrieve
+     * @param skillsetName   the name of the skillset to retrieve
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the Skillset.
      */
     public Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName,
@@ -1282,8 +1225,7 @@ public class SearchServiceAsyncClient {
         try {
             return withContext(context ->
                 this.getSkillsetWithResponse(skillsetName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1305,8 +1247,7 @@ public class SearchServiceAsyncClient {
     public PagedFlux<Skillset> listSkillsets() {
         try {
             return this.listSkillsets(null, null);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -1314,11 +1255,11 @@ public class SearchServiceAsyncClient {
     /**
      * Lists all skillsets available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the skillset definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
+     * @param select         selects which top-level properties of the skillset definitions to retrieve.
+     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *                       The default is all properties
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of skillsets.
      */
     public PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions) {
@@ -1326,8 +1267,7 @@ public class SearchServiceAsyncClient {
             return new PagedFlux<>(
                 () -> withContext(context -> this.listSkillsetsWithResponse(select, requestOptions, context)),
                 nextLink -> Mono.empty());
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -1363,8 +1303,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.createOrUpdateSkillsetWithResponse(skillset, null, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1372,11 +1311,11 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
-     * @param skillset the definition of the skillset to create or update
+     * @param skillset        the definition of the skillset to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                        doesn't match specified values
+     * @param requestOptions  additional parameters for the operation.
+     *                        Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the skillset that was created or updated.
      */
     public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
@@ -1387,8 +1326,7 @@ public class SearchServiceAsyncClient {
                 accessCondition,
                 requestOptions,
                 context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1414,8 +1352,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.deleteSkillsetWithResponse(skillsetName, null, null)
                 .flatMap(FluxUtil::toMono);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1423,11 +1360,11 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
-     * @param skillsetName the name of the skillset to delete
+     * @param skillsetName    the name of the skillset to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                        doesn't match specified values
+     * @param requestOptions  additional parameters for the operation.
+     *                        Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName,
@@ -1436,8 +1373,7 @@ public class SearchServiceAsyncClient {
         try {
             return withContext(context -> this.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions,
                 context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1461,8 +1397,7 @@ public class SearchServiceAsyncClient {
     public Mono<Boolean> skillsetExists(String skillsetName) {
         try {
             return this.skillsetExistsWithResponse(skillsetName, null).map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1470,16 +1405,15 @@ public class SearchServiceAsyncClient {
     /**
      * Determines whether or not the given skillset exists.
      *
-     * @param skillsetName the name of the skillset
+     * @param skillsetName   the name of the skillset
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the skillset exists; false otherwise.
      */
     public Mono<Response<Boolean>> skillsetExistsWithResponse(String skillsetName, RequestOptions requestOptions) {
         try {
             return withContext(context -> this.skillsetExistsWithResponse(skillsetName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1501,8 +1435,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.createSynonymMapWithResponse(synonymMap, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1510,17 +1443,16 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search synonym map.
      *
-     * @param synonymMap the definition of the synonym map to create
+     * @param synonymMap     the definition of the synonym map to create
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created SynonymMap.
      */
     public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
                                                                    RequestOptions requestOptions) {
         try {
             return withContext(context -> this.createSynonymMapWithResponse(synonymMap, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1544,8 +1476,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.getSynonymMapWithResponse(synonymMapName, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1555,14 +1486,13 @@ public class SearchServiceAsyncClient {
      *
      * @param synonymMapName name of the synonym map to retrieve
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the SynonymMap.
      */
     public Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName, RequestOptions requestOptions) {
         try {
             return withContext(context -> this.getSynonymMapWithResponse(synonymMapName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1584,8 +1514,7 @@ public class SearchServiceAsyncClient {
     public PagedFlux<SynonymMap> listSynonymMaps() {
         try {
             return this.listSynonymMaps(null, null);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -1593,11 +1522,11 @@ public class SearchServiceAsyncClient {
     /**
      * Lists all synonym maps available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the synonym maps to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
+     * @param select         selects which top-level properties of the synonym maps to retrieve.
+     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *                       The default is all properties
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of synonym maps.
      */
     public PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
@@ -1605,8 +1534,7 @@ public class SearchServiceAsyncClient {
             return new PagedFlux<>(
                 () -> withContext(context -> this.listSynonymMapsWithResponse(select, requestOptions, context)),
                 nextLink -> Mono.empty());
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
@@ -1643,8 +1571,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.createOrUpdateSynonymMapWithResponse(synonymMap, null, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1652,11 +1579,11 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
      *
-     * @param synonymMap the definition of the synonym map to create or update
+     * @param synonymMap      the definition of the synonym map to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                        doesn't match specified values
+     * @param requestOptions  additional parameters for the operation.
+     *                        Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the synonym map that was created or updated.
      */
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
@@ -1665,8 +1592,7 @@ public class SearchServiceAsyncClient {
         try {
             return withContext(context -> this.createOrUpdateSynonymMapWithResponse(synonymMap,
                 accessCondition, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1695,8 +1621,7 @@ public class SearchServiceAsyncClient {
         try {
             return this.deleteSynonymMapWithResponse(synonymMapName, null, null)
                 .flatMap(FluxUtil::toMono);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1704,11 +1629,11 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search synonym map.
      *
-     * @param synonymMapName the name of the synonym map to delete
+     * @param synonymMapName  the name of the synonym map to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                        doesn't match specified values
+     * @param requestOptions  additional parameters for the operation.
+     *                        Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName,
@@ -1717,8 +1642,7 @@ public class SearchServiceAsyncClient {
         try {
             return withContext(context ->
                 this.deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1742,8 +1666,7 @@ public class SearchServiceAsyncClient {
     public Mono<Boolean> synonymMapExists(String synonymMapName) {
         try {
             return this.synonymMapExistsWithResponse(synonymMapName, null).map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1753,14 +1676,13 @@ public class SearchServiceAsyncClient {
      *
      * @param synonymMapName the name of the synonym map
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the synonym map exists; false otherwise.
      */
     public Mono<Response<Boolean>> synonymMapExistsWithResponse(String synonymMapName, RequestOptions requestOptions) {
         try {
             return withContext(context -> this.synonymMapExistsWithResponse(synonymMapName, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1794,15 +1716,15 @@ public class SearchServiceAsyncClient {
 
     /**
      * Returns service level statistics for a search service, including service counters and limits.
-     *
+     * <p>
      * Contains the tracking ID sent with the request to help with debugging
+     *
      * @return the search service statistics result.
      */
     public Mono<ServiceStatistics> getServiceStatistics() {
         try {
             return this.getServiceStatisticsWithResponse(null).map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -1812,14 +1734,13 @@ public class SearchServiceAsyncClient {
      * Returns service level statistics for a search service, including service counters and limits.
      *
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return the search service statistics result.
      */
     public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
         try {
             return withContext(context -> this.getServiceStatisticsWithResponse(requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }

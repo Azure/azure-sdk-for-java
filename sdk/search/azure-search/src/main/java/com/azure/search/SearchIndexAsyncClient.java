@@ -87,7 +87,7 @@ public class SearchIndexAsyncClient {
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
     SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion apiVersion,
-        HttpPipeline httpPipeline) {
+                           HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
 
@@ -144,8 +144,7 @@ public class SearchIndexAsyncClient {
         try {
             return this.uploadDocumentsWithResponse(documents)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -159,8 +158,7 @@ public class SearchIndexAsyncClient {
     public Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents) {
         try {
             return withContext(context -> uploadDocumentsWithResponse(documents, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -181,8 +179,7 @@ public class SearchIndexAsyncClient {
         try {
             return this.mergeDocumentsWithResponse(documents)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -196,8 +193,7 @@ public class SearchIndexAsyncClient {
     public Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents) {
         try {
             return withContext(context -> mergeDocumentsWithResponse(documents, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -207,8 +203,7 @@ public class SearchIndexAsyncClient {
         try {
             IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE);
             return this.indexWithResponse(batch, context);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -224,8 +219,7 @@ public class SearchIndexAsyncClient {
         try {
             return this.mergeOrUploadDocumentsWithResponse(documents)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -240,8 +234,7 @@ public class SearchIndexAsyncClient {
     public Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
         try {
             return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -251,8 +244,7 @@ public class SearchIndexAsyncClient {
         try {
             IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD);
             return this.indexWithResponse(batch, context);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -267,8 +259,7 @@ public class SearchIndexAsyncClient {
         try {
             return this.deleteDocumentsWithResponse(documents)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -282,8 +273,7 @@ public class SearchIndexAsyncClient {
     public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
         try {
             return withContext(context -> deleteDocumentsWithResponse(documents, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -293,8 +283,7 @@ public class SearchIndexAsyncClient {
         try {
             IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.DELETE);
             return this.indexWithResponse(batch, context);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -326,8 +315,7 @@ public class SearchIndexAsyncClient {
         try {
             return this.getDocumentCountWithResponse()
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -340,8 +328,7 @@ public class SearchIndexAsyncClient {
     public Mono<Response<Long>> getDocumentCountWithResponse() {
         try {
             return withContext(this::getDocumentCountWithResponse);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -364,8 +351,7 @@ public class SearchIndexAsyncClient {
     public PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText) {
         try {
             return this.search(searchText, null, null);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFluxBase<>(() -> monoError(logger, ex));
         }
     }
@@ -373,10 +359,10 @@ public class SearchIndexAsyncClient {
     /**
      * Searches for documents in the Azure Cognitive Search index
      *
-     * @param searchText Search text
-     * @param searchOptions search options
+     * @param searchText     Search text
+     * @param searchOptions  search options
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return A {@link PagedFluxBase} that iterates over {@link SearchResult} objects
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
@@ -391,8 +377,7 @@ public class SearchIndexAsyncClient {
                 () -> withContext(context -> this.searchFirstPage(searchRequest, requestOptions, context)),
                 nextPageParameters -> withContext(context ->
                     this.searchNextPage(searchRequest, requestOptions, nextPageParameters, context)));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFluxBase<>(() -> monoError(logger, ex));
         }
     }
@@ -417,8 +402,7 @@ public class SearchIndexAsyncClient {
         try {
             return this.getDocumentWithResponse(key, null, null)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -426,10 +410,10 @@ public class SearchIndexAsyncClient {
     /**
      * Retrieves a document from the Azure Cognitive Search index.
      *
-     * @param key document key
+     * @param key            document key
      * @param selectedFields selected fields to return
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return the document object
      */
     public Mono<Document> getDocument(
@@ -439,8 +423,7 @@ public class SearchIndexAsyncClient {
         try {
             return this.getDocumentWithResponse(key, selectedFields, requestOptions)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -448,10 +431,10 @@ public class SearchIndexAsyncClient {
     /**
      * Retrieves a document from the Azure Cognitive Search index.
      *
-     * @param key document key
+     * @param key            document key
      * @param selectedFields selected fields to return
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the document object
      */
     public Mono<Response<Document>> getDocumentWithResponse(
@@ -460,8 +443,7 @@ public class SearchIndexAsyncClient {
         RequestOptions requestOptions) {
         try {
             return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -482,8 +464,7 @@ public class SearchIndexAsyncClient {
                 })
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(Function.identity());
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -491,7 +472,7 @@ public class SearchIndexAsyncClient {
     /**
      * Suggests documents in the Azure Cognitive Search index that match the given partial query text.
      *
-     * @param searchText search text
+     * @param searchText    search text
      * @param suggesterName suggester name
      * @return A {@link PagedFluxBase} that iterates over {@link SuggestResult} objects
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
@@ -500,8 +481,7 @@ public class SearchIndexAsyncClient {
     public PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
         try {
             return this.suggest(searchText, suggesterName, null, null);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFluxBase<>(() -> monoError(logger, ex));
         }
     }
@@ -509,11 +489,11 @@ public class SearchIndexAsyncClient {
     /**
      * Suggests documents in the Azure Cognitive Search index that match the given partial query text.
      *
-     * @param searchText search text
-     * @param suggesterName suggester name
+     * @param searchText     search text
+     * @param suggesterName  suggester name
      * @param suggestOptions suggest options
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return A {@link PagedFluxBase} that iterates over {@link SuggestResult} objects
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
@@ -527,8 +507,7 @@ public class SearchIndexAsyncClient {
                 suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
             return new PagedFluxBase<>(
                 () -> withContext(context -> this.suggestFirst(requestOptions, suggestRequest, context)));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFluxBase<>(() -> monoError(logger, ex));
         }
     }
@@ -554,8 +533,7 @@ public class SearchIndexAsyncClient {
         try {
             return this.indexWithResponse(batch)
                 .map(Response::getValue);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -569,8 +547,7 @@ public class SearchIndexAsyncClient {
     public Mono<Response<IndexDocumentsResult>> indexWithResponse(IndexBatch<?> batch) {
         try {
             return withContext(context -> indexWithResponse(batch, context));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -591,7 +568,7 @@ public class SearchIndexAsyncClient {
     /**
      * Autocomplete incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
-     * @param searchText search text
+     * @param searchText    search text
      * @param suggesterName suggester name
      * @return auto complete result.
      */
@@ -599,8 +576,7 @@ public class SearchIndexAsyncClient {
         String searchText, String suggesterName) {
         try {
             return this.autocomplete(searchText, suggesterName, null, null);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFluxBase<>(() -> monoError(logger, ex));
         }
     }
@@ -608,33 +584,32 @@ public class SearchIndexAsyncClient {
     /**
      * Autocomplete incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
-     * @param searchText search text
-     * @param suggesterName suggester name
+     * @param searchText          search text
+     * @param suggesterName       suggester name
      * @param autocompleteOptions autocomplete options
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions      additional parameters for the operation.
+     *                            Contains the tracking ID sent with the request to help with debugging
      * @return auto complete result.
      */
     public PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
-                                                    String suggesterName,
-                                                    AutocompleteOptions autocompleteOptions,
-                                                    RequestOptions requestOptions) {
+                                                                                   String suggesterName,
+                                                                                   AutocompleteOptions autocompleteOptions,
+                                                                                   RequestOptions requestOptions) {
         try {
             AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
                 searchText, suggesterName, autocompleteOptions);
             return new PagedFluxBase<>(
                 () -> withContext(context -> this.autocompleteFirst(requestOptions, autocompleteRequest, context)));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return new PagedFluxBase<>(() -> monoError(logger, ex));
         }
     }
 
     PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
-                                             String suggesterName,
-                                             AutocompleteOptions autocompleteOptions,
-                                             RequestOptions requestOptions,
-                                             Context context) {
+                                                                            String suggesterName,
+                                                                            AutocompleteOptions autocompleteOptions,
+                                                                            RequestOptions requestOptions,
+                                                                            Context context) {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
             searchText, suggesterName, autocompleteOptions);
         return new PagedFluxBase<>(
@@ -642,8 +617,8 @@ public class SearchIndexAsyncClient {
     }
 
     private Mono<AutocompletePagedResponse> autocompleteFirst(RequestOptions requestOptions,
-                                                    AutocompleteRequest autocompleteRequest,
-                                                    Context context) {
+                                                              AutocompleteRequest autocompleteRequest,
+                                                              Context context) {
         return restClient.documents()
             .autocompletePostWithRestResponseAsync(autocompleteRequest, requestOptions, context)
             .map(AutocompletePagedResponse::new);
@@ -652,9 +627,9 @@ public class SearchIndexAsyncClient {
     /**
      * Retrieve the first page of a document search
      *
-     * @param searchRequest the search request
+     * @param searchRequest  the search request
      * @param requestOptions the request options
-     * @param context the context to associate with this operation.
+     * @param context        the context to associate with this operation.
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
      */
@@ -669,12 +644,12 @@ public class SearchIndexAsyncClient {
     /**
      * Retrieve the next page of a document search
      *
-     * @param searchRequest the search request
+     * @param searchRequest      the search request
      * @param nextPageParameters json string holding the parameters required to get the next page:
-     *  skip is the number of documents to skip, top is the number of documents per page.
-     * Due to a limitation in PageFlux, this value is stored as String and converted to its Integer value
-     * before making the next request
-     * @param context the context to associate with this operation.
+     *                           skip is the number of documents to skip, top is the number of documents per page.
+     *                           Due to a limitation in PageFlux, this value is stored as String and converted to its Integer value
+     *                           before making the next request
+     * @param context            the context to associate with this operation.
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
      */
@@ -722,7 +697,7 @@ public class SearchIndexAsyncClient {
     /**
      * Create search request from search text and parameters
      *
-     * @param searchText search text
+     * @param searchText    search text
      * @param searchOptions search options
      * @return SearchRequest
      */
@@ -762,8 +737,8 @@ public class SearchIndexAsyncClient {
     /**
      * Create suggest request from search text, suggester name, and parameters
      *
-     * @param searchText search text
-     * @param suggesterName search text
+     * @param searchText     search text
+     * @param suggesterName  search text
      * @param suggestOptions suggest options
      * @return SuggestRequest
      */
@@ -804,8 +779,8 @@ public class SearchIndexAsyncClient {
     /**
      * Create Autocomplete request from search text, suggester name, and parameters
      *
-     * @param searchText search text
-     * @param suggesterName search text
+     * @param searchText          search text
+     * @param suggesterName       search text
      * @param autocompleteOptions autocomplete options
      * @return AutocompleteRequest
      */
