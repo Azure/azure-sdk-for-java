@@ -591,7 +591,8 @@ public final class BlobServiceAsyncClient {
      */
     private void checkAccess() {
         if (anonymousAccess) {
-            throw new IllegalStateException("Service client cannot be accessed without credentials");
+            throw logger.logExceptionAsError(new IllegalStateException("Service client cannot be accessed without "
+                + "credentials"));
         }
     }
 }
