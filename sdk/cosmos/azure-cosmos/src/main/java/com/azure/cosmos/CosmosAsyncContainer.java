@@ -191,7 +191,7 @@ public class CosmosAsyncContainer {
         RequestOptions requestOptions = options.toRequestOptions();
         return database.getDocClientWrapper()
                    .createDocument(getLink(),
-                       CosmosItemProperties.fromObject(item),
+                       item,
                        requestOptions,
                        true)
                    .map(response -> new CosmosAsyncItemResponse(response,
