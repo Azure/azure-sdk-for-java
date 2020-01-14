@@ -7,7 +7,9 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -36,6 +38,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
@@ -142,8 +145,13 @@ public class SearchServiceAsyncClient {
      * @return the data source that was created or updated.
      */
     public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource) {
-        return this.createOrUpdateDataSourceWithResponse(dataSource, null, null)
-            .map(Response::getValue);
+        try {
+            return this.createOrUpdateDataSourceWithResponse(dataSource, null, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -159,19 +167,29 @@ public class SearchServiceAsyncClient {
     public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
                                                                            AccessCondition accessCondition,
                                                                            RequestOptions requestOptions) {
-        return withContext(context -> this.createOrUpdateDataSourceWithResponse(dataSource,
-            accessCondition, requestOptions, context));
+        try {
+            return withContext(context -> this.createOrUpdateDataSourceWithResponse(dataSource,
+                accessCondition, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
                                                                     AccessCondition accessCondition,
                                                                     RequestOptions requestOptions,
                                                                     Context context) {
-        return restClient
-            .dataSources()
-            .createOrUpdateWithRestResponseAsync(dataSource.getName(),
-                dataSource, requestOptions, accessCondition, context)
-            .map(Function.identity());
+        try {
+            return restClient
+                .dataSources()
+                .createOrUpdateWithRestResponseAsync(dataSource.getName(),
+                    dataSource, requestOptions, accessCondition, context)
+                .map(Function.identity());
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -181,7 +199,12 @@ public class SearchServiceAsyncClient {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<DataSource> createDataSource(DataSource dataSource) {
-        return this.createDataSourceWithResponse(dataSource, null).map(Response::getValue);
+        try {
+            return this.createDataSourceWithResponse(dataSource, null).map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -194,7 +217,12 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<DataSource>> createDataSourceWithResponse(DataSource dataSource,
                                                                    RequestOptions requestOptions) {
-        return withContext(context -> this.createDataSourceWithResponse(dataSource, requestOptions, context));
+        try {
+            return withContext(context -> this.createDataSourceWithResponse(dataSource, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<DataSource>> createDataSourceWithResponse(DataSource dataSource,
@@ -213,8 +241,13 @@ public class SearchServiceAsyncClient {
      * @return the DataSource.
      */
     public Mono<DataSource> getDataSource(String dataSourceName) {
-        return this.getDataSourceWithResponse(dataSourceName, null)
-            .map(Response::getValue);
+        try {
+            return this.getDataSourceWithResponse(dataSourceName, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -227,7 +260,12 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName,
                                                                 RequestOptions requestOptions) {
-        return withContext(context -> this.getDataSourceWithResponse(dataSourceName, requestOptions, context));
+        try {
+            return withContext(context -> this.getDataSourceWithResponse(dataSourceName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName,
@@ -245,7 +283,12 @@ public class SearchServiceAsyncClient {
      * @return a list of DataSources
      */
     public PagedFlux<DataSource> listDataSources() {
-        return this.listDataSources(null, null);
+        try {
+            return this.listDataSources(null, null);
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -259,9 +302,14 @@ public class SearchServiceAsyncClient {
      * @return a list of DataSources
      */
     public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions) {
-        return new PagedFlux<>(
-            () -> withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)),
-            nextLink -> Mono.empty());
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)),
+                nextLink -> Mono.empty());
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
@@ -292,8 +340,13 @@ public class SearchServiceAsyncClient {
      * @return a void Mono
      */
     public Mono<Void> deleteDataSource(String dataSourceName) {
-        return this.deleteDataSourceWithResponse(dataSourceName, null, null)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return this.deleteDataSourceWithResponse(dataSourceName, null, null)
+                .flatMap(FluxUtil::toMono);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -309,8 +362,13 @@ public class SearchServiceAsyncClient {
     public Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
                                                              AccessCondition accessCondition,
                                                              RequestOptions requestOptions) {
-        return withContext(context -> this.deleteDataSourceWithResponse(dataSourceName,
-            accessCondition, requestOptions, context));
+        try {
+            return withContext(context -> this.deleteDataSourceWithResponse(dataSourceName,
+                accessCondition, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
@@ -333,7 +391,12 @@ public class SearchServiceAsyncClient {
      * @return true if the data source exists; false otherwise.
      */
     public Mono<Boolean> dataSourceExists(String dataSourceName) {
-        return this.dataSourceExistsWithResponse(dataSourceName, null).map(Response::getValue);
+        try {
+            return this.dataSourceExistsWithResponse(dataSourceName, null).map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -345,7 +408,12 @@ public class SearchServiceAsyncClient {
      * @return true if the data source exists; false otherwise.
      */
     public Mono<Response<Boolean>> dataSourceExistsWithResponse(String dataSourceName, RequestOptions requestOptions) {
-        return withContext(context -> this.dataSourceExistsWithResponse(dataSourceName, requestOptions, context));
+        try {
+            return withContext(context -> this.dataSourceExistsWithResponse(dataSourceName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Boolean>> dataSourceExistsWithResponse(String dataSourceName,
@@ -362,8 +430,13 @@ public class SearchServiceAsyncClient {
      * @return the created Indexer.
      */
     public Mono<Indexer> createIndexer(Indexer indexer) {
-        return this.createIndexerWithResponse(indexer, null)
-            .map(Response::getValue);
+        try {
+            return this.createIndexerWithResponse(indexer, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -375,7 +448,12 @@ public class SearchServiceAsyncClient {
      * @return a response containing the created Indexer.
      */
     public Mono<Response<Indexer>> createIndexerWithResponse(Indexer indexer, RequestOptions requestOptions) {
-        return withContext(context -> this.createIndexerWithResponse(indexer, requestOptions, context));
+        try {
+            return withContext(context -> this.createIndexerWithResponse(indexer, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Indexer>> createIndexerWithResponse(Indexer indexer, RequestOptions requestOptions, Context context) {
@@ -392,8 +470,13 @@ public class SearchServiceAsyncClient {
      * @return a response containing the created Indexer.
      */
     public Mono<Indexer> createOrUpdateIndexer(Indexer indexer) {
-        return this.createOrUpdateIndexerWithResponse(indexer, null, null)
-            .map(Response::getValue);
+        try {
+            return this.createOrUpdateIndexerWithResponse(indexer, null, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -409,8 +492,13 @@ public class SearchServiceAsyncClient {
     public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer,
                                                                      AccessCondition accessCondition,
                                                                      RequestOptions requestOptions) {
-        return withContext(context -> this.createOrUpdateIndexerWithResponse(indexer,
-            accessCondition, requestOptions, context));
+        try {
+            return withContext(context -> this.createOrUpdateIndexerWithResponse(indexer,
+                accessCondition, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer,
@@ -430,8 +518,13 @@ public class SearchServiceAsyncClient {
      * @return the indexer.
      */
     public Mono<Indexer> getIndexer(String indexerName) {
-        return this.getIndexerWithResponse(indexerName, null)
-            .map(Response::getValue);
+        try {
+            return this.getIndexerWithResponse(indexerName, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -443,9 +536,14 @@ public class SearchServiceAsyncClient {
      * @return a response containing the indexer.
      */
     public Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
-        return withContext(
-            context -> this.getIndexerWithResponse(indexerName, requestOptions, context)
-        );
+        try {
+            return withContext(
+                context -> this.getIndexerWithResponse(indexerName, requestOptions, context)
+            );
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
@@ -459,7 +557,12 @@ public class SearchServiceAsyncClient {
      * @return all Indexers from the Search service.
      */
     public PagedFlux<Indexer> listIndexers() {
-        return this.listIndexers(null, null);
+        try {
+            return this.listIndexers(null, null);
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -472,9 +575,14 @@ public class SearchServiceAsyncClient {
      * @return a response containing all Indexers from the Search service.
      */
     public PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions) {
-        return new PagedFlux<>(
-            () -> withContext(context -> this.listIndexersWithResponse(select, requestOptions, context)),
-            nextLink -> Mono.empty());
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> this.listIndexersWithResponse(select, requestOptions, context)),
+                nextLink -> Mono.empty());
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
@@ -506,8 +614,13 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndexer(String indexerName) {
-        return this.deleteIndexerWithResponse(indexerName, null, null)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return this.deleteIndexerWithResponse(indexerName, null, null)
+                .flatMap(FluxUtil::toMono);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -523,8 +636,13 @@ public class SearchServiceAsyncClient {
     public Mono<Response<Void>> deleteIndexerWithResponse(String indexerName,
                                                           AccessCondition accessCondition,
                                                           RequestOptions requestOptions) {
-        return withContext(context -> this.deleteIndexerWithResponse(indexerName,
-            accessCondition, requestOptions, context));
+        try {
+            return withContext(context -> this.deleteIndexerWithResponse(indexerName,
+                accessCondition, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -552,8 +670,13 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> resetIndexer(String indexerName) {
-        return this.resetIndexerWithResponse(indexerName, null)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return this.resetIndexerWithResponse(indexerName, null)
+                .flatMap(FluxUtil::toMono);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -565,7 +688,12 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
-        return withContext(context -> this.resetIndexerWithResponse(indexerName, requestOptions, context));
+        try {
+            return withContext(context -> this.resetIndexerWithResponse(indexerName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> resetIndexerWithResponse(String indexerName,
@@ -582,8 +710,13 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> runIndexer(String indexerName) {
-        return this.runIndexerWithResponse(indexerName, null)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return this.runIndexerWithResponse(indexerName, null)
+                .flatMap(FluxUtil::toMono);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -595,7 +728,12 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
-        return withContext(context -> this.runIndexerWithResponse(indexerName, requestOptions, context));
+        try {
+            return withContext(context -> this.runIndexerWithResponse(indexerName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> runIndexerWithResponse(String indexerName,
@@ -612,7 +750,12 @@ public class SearchServiceAsyncClient {
      * @return the indexer execution info.
      */
     public Mono<IndexerExecutionInfo> getIndexerStatus(String indexerName) {
-        return this.getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
+        try {
+            return this.getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -625,7 +768,12 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName,
                                                                              RequestOptions requestOptions) {
-        return withContext(context -> this.getIndexerStatusWithResponse(indexerName, requestOptions, context));
+        try {
+            return withContext(context -> this.getIndexerStatusWithResponse(indexerName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName,
@@ -644,7 +792,12 @@ public class SearchServiceAsyncClient {
      * @return true if the indexer exists; false otherwise.
      */
     public Mono<Boolean> indexerExists(String indexerName) {
-        return this.indexerExistsWithResponse(indexerName, null).map(Response::getValue);
+        try {
+            return this.indexerExistsWithResponse(indexerName, null).map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -656,7 +809,12 @@ public class SearchServiceAsyncClient {
      * @return true if the indexer exists; false otherwise.
      */
     public Mono<Response<Boolean>> indexerExistsWithResponse(String indexerName, RequestOptions requestOptions) {
-        return withContext(context -> this.indexerExistsWithResponse(indexerName, requestOptions, context));
+        try {
+            return withContext(context -> this.indexerExistsWithResponse(indexerName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Boolean>> indexerExistsWithResponse(String indexerName,
@@ -672,8 +830,13 @@ public class SearchServiceAsyncClient {
      * @return the created Index.
      */
     public Mono<Index> createIndex(Index index) {
-        return this.createIndexWithResponse(index, null)
-            .map(Response::getValue);
+        try {
+            return this.createIndexWithResponse(index, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -685,7 +848,12 @@ public class SearchServiceAsyncClient {
      * @return a response containing the created Index.
      */
     public Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions) {
-        return withContext(context -> this.createIndexWithResponse(index, requestOptions, context));
+        try {
+            return withContext(context -> this.createIndexWithResponse(index, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions, Context context) {
@@ -702,8 +870,13 @@ public class SearchServiceAsyncClient {
      * @return the Index.
      */
     public Mono<Index> getIndex(String indexName) {
-        return this.getIndexWithResponse(indexName, null)
-            .map(Response::getValue);
+        try {
+            return this.getIndexWithResponse(indexName, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -715,7 +888,12 @@ public class SearchServiceAsyncClient {
      * @return a response containing the Index.
      */
     public Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
-        return withContext(context -> this.getIndexWithResponse(indexName, requestOptions, context));
+        try {
+            return withContext(context -> this.getIndexWithResponse(indexName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
@@ -732,7 +910,12 @@ public class SearchServiceAsyncClient {
      * @return true if the index exists; false otherwise.
      */
     public Mono<Boolean> indexExists(String indexName) {
-        return this.indexExistsWithResponse(indexName, null).map(Response::getValue);
+        try {
+            return this.indexExistsWithResponse(indexName, null).map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -744,7 +927,12 @@ public class SearchServiceAsyncClient {
      * @return true if the index exists; false otherwise.
      */
     public Mono<Response<Boolean>> indexExistsWithResponse(String indexName, RequestOptions requestOptions) {
-        return withContext(context -> this.indexExistsWithResponse(indexName, requestOptions, context));
+        try {
+            return withContext(context -> this.indexExistsWithResponse(indexName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
@@ -760,8 +948,13 @@ public class SearchServiceAsyncClient {
      * @return the index statistics result.
      */
     public Mono<GetIndexStatisticsResult> getIndexStatistics(String indexName) {
-        return this.getIndexStatisticsWithResponse(indexName, null)
-            .map(Response::getValue);
+        try {
+            return this.getIndexStatisticsWithResponse(indexName, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -774,7 +967,12 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
                                                                                    RequestOptions requestOptions) {
-        return withContext(context -> this.getIndexStatisticsWithResponse(indexName, requestOptions, context));
+        try {
+            return withContext(context -> this.getIndexStatisticsWithResponse(indexName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
@@ -792,7 +990,12 @@ public class SearchServiceAsyncClient {
      * @return a reactive response emitting the list of indexes.
      */
     public PagedFlux<Index> listIndexes() {
-        return this.listIndexes(null, null);
+        try {
+            return this.listIndexes(null, null);
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -806,9 +1009,14 @@ public class SearchServiceAsyncClient {
      * @return a reactive response emitting the list of indexes.
      */
     public PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions) {
-        return new PagedFlux<>(
-            () -> withContext(context -> this.listIndexesWithResponse(select, requestOptions, context)),
-            nextLink -> Mono.empty());
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> this.listIndexesWithResponse(select, requestOptions, context)),
+                nextLink -> Mono.empty());
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
@@ -819,16 +1027,21 @@ public class SearchServiceAsyncClient {
 
     private Mono<PagedResponse<Index>> listIndexesWithResponse(String select,
                                                                RequestOptions requestOptions, Context context) {
-        return restClient.indexes()
-            .listWithRestResponseAsync(select, requestOptions, context)
-            .map(response -> new PagedResponseBase<>(
-                response.getRequest(),
-                response.getStatusCode(),
-                response.getHeaders(),
-                response.getValue().getIndexes(),
-                null,
-                deserializeHeaders(response.getHeaders()))
-            );
+        try {
+            return restClient.indexes()
+                .listWithRestResponseAsync(select, requestOptions, context)
+                .map(response -> new PagedResponseBase<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    response.getValue().getIndexes(),
+                    null,
+                    deserializeHeaders(response.getHeaders()))
+                );
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -838,9 +1051,14 @@ public class SearchServiceAsyncClient {
      * @return the index that was created or updated.
      */
     public Mono<Index> createOrUpdateIndex(Index index) {
-        return this.createOrUpdateIndexWithResponse(index,
-            false, null, null)
-            .map(Response::getValue);
+        try {
+            return this.createOrUpdateIndexWithResponse(index,
+                false, null, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -862,8 +1080,13 @@ public class SearchServiceAsyncClient {
                                                                  boolean allowIndexDowntime,
                                                                  AccessCondition accessCondition,
                                                                  RequestOptions requestOptions) {
-        return withContext(context -> this.createOrUpdateIndexWithResponse(index,
-            allowIndexDowntime, accessCondition, requestOptions, context));
+        try {
+            return withContext(context -> this.createOrUpdateIndexWithResponse(index,
+                allowIndexDowntime, accessCondition, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
@@ -885,8 +1108,13 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndex(String indexName) {
-        return this.deleteIndexWithResponse(indexName, null, null)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return this.deleteIndexWithResponse(indexName, null, null)
+                .flatMap(FluxUtil::toMono);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -902,8 +1130,13 @@ public class SearchServiceAsyncClient {
     public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
                                                         AccessCondition accessCondition,
                                                         RequestOptions requestOptions) {
-        return withContext(context -> this.deleteIndexWithResponse(indexName,
-            accessCondition, requestOptions, context));
+        try {
+            return withContext(context -> this.deleteIndexWithResponse(indexName,
+                accessCondition, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteIndexWithResponse(String indexName,
@@ -924,7 +1157,12 @@ public class SearchServiceAsyncClient {
      * @return analyze result.
      */
     public PagedFlux<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
-        return this.analyzeText(indexName, analyzeRequest, null);
+        try {
+            return this.analyzeText(indexName, analyzeRequest, null);
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -938,10 +1176,15 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<TokenInfo> analyzeText(String indexName,
                                             AnalyzeRequest analyzeRequest, RequestOptions requestOptions) {
-        return new PagedFlux<>(
-            () -> withContext(context -> this.analyzeTextWithResponse(indexName,
-                analyzeRequest, requestOptions, context)),
-            nextLink -> Mono.empty());
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> this.analyzeTextWithResponse(indexName,
+                    analyzeRequest, requestOptions, context)),
+                nextLink -> Mono.empty());
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFlux<TokenInfo> analyzeText(String indexName,
@@ -975,8 +1218,13 @@ public class SearchServiceAsyncClient {
      * @return the created Skillset.
      */
     public Mono<Skillset> createSkillset(Skillset skillset) {
-        return this.createSkillsetWithResponse(skillset, null)
-            .map(Response::getValue);
+        try {
+            return this.createSkillsetWithResponse(skillset, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -988,7 +1236,12 @@ public class SearchServiceAsyncClient {
      * @return a response containing the created Skillset.
      */
     public Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset, RequestOptions requestOptions) {
-        return withContext(context -> createSkillsetWithResponse(skillset, requestOptions, context));
+        try {
+            return withContext(context -> createSkillsetWithResponse(skillset, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset,
@@ -1007,8 +1260,13 @@ public class SearchServiceAsyncClient {
      * @return the Skillset.
      */
     public Mono<Skillset> getSkillset(String skillsetName) {
-        return this.getSkillsetWithResponse(skillsetName, null)
-            .map(Response::getValue);
+        try {
+            return this.getSkillsetWithResponse(skillsetName, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1021,8 +1279,13 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName,
                                                             RequestOptions requestOptions) {
-        return withContext(context ->
-            this.getSkillsetWithResponse(skillsetName, requestOptions, context));
+        try {
+            return withContext(context ->
+                this.getSkillsetWithResponse(skillsetName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName,
@@ -1040,7 +1303,12 @@ public class SearchServiceAsyncClient {
      * @return a reactive response emitting the list of skillsets.
      */
     public PagedFlux<Skillset> listSkillsets() {
-        return this.listSkillsets(null, null);
+        try {
+            return this.listSkillsets(null, null);
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -1054,9 +1322,14 @@ public class SearchServiceAsyncClient {
      * @return a reactive response emitting the list of skillsets.
      */
     public PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions) {
-        return new PagedFlux<>(
-            () -> withContext(context -> this.listSkillsetsWithResponse(select, requestOptions, context)),
-            nextLink -> Mono.empty());
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> this.listSkillsetsWithResponse(select, requestOptions, context)),
+                nextLink -> Mono.empty());
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions, Context context) {
@@ -1087,8 +1360,13 @@ public class SearchServiceAsyncClient {
      * @return the skillset that was created or updated.
      */
     public Mono<Skillset> createOrUpdateSkillset(Skillset skillset) {
-        return this.createOrUpdateSkillsetWithResponse(skillset, null, null)
-            .map(Response::getValue);
+        try {
+            return this.createOrUpdateSkillsetWithResponse(skillset, null, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1104,10 +1382,15 @@ public class SearchServiceAsyncClient {
     public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
                                                                        AccessCondition accessCondition,
                                                                        RequestOptions requestOptions) {
-        return withContext(context -> this.createOrUpdateSkillsetWithResponse(skillset,
-            accessCondition,
-            requestOptions,
-            context));
+        try {
+            return withContext(context -> this.createOrUpdateSkillsetWithResponse(skillset,
+                accessCondition,
+                requestOptions,
+                context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
@@ -1128,8 +1411,13 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteSkillset(String skillsetName) {
-        return this.deleteSkillsetWithResponse(skillsetName, null, null)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return this.deleteSkillsetWithResponse(skillsetName, null, null)
+                .flatMap(FluxUtil::toMono);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1145,8 +1433,13 @@ public class SearchServiceAsyncClient {
     public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName,
                                                            AccessCondition accessCondition,
                                                            RequestOptions requestOptions) {
-        return withContext(context -> this.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions,
-            context));
+        try {
+            return withContext(context -> this.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions,
+                context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName,
@@ -1166,7 +1459,12 @@ public class SearchServiceAsyncClient {
      * @return true if the skillset exists; false otherwise.
      */
     public Mono<Boolean> skillsetExists(String skillsetName) {
-        return this.skillsetExistsWithResponse(skillsetName, null).map(Response::getValue);
+        try {
+            return this.skillsetExistsWithResponse(skillsetName, null).map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1178,7 +1476,12 @@ public class SearchServiceAsyncClient {
      * @return true if the skillset exists; false otherwise.
      */
     public Mono<Response<Boolean>> skillsetExistsWithResponse(String skillsetName, RequestOptions requestOptions) {
-        return withContext(context -> this.skillsetExistsWithResponse(skillsetName, requestOptions, context));
+        try {
+            return withContext(context -> this.skillsetExistsWithResponse(skillsetName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Boolean>> skillsetExistsWithResponse(String skillsetName,
@@ -1195,8 +1498,13 @@ public class SearchServiceAsyncClient {
      * @return the created {@link SynonymMap}.
      */
     public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap) {
-        return this.createSynonymMapWithResponse(synonymMap, null)
-            .map(Response::getValue);
+        try {
+            return this.createSynonymMapWithResponse(synonymMap, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1209,7 +1517,12 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
                                                                    RequestOptions requestOptions) {
-        return withContext(context -> this.createSynonymMapWithResponse(synonymMap, requestOptions, context));
+        try {
+            return withContext(context -> this.createSynonymMapWithResponse(synonymMap, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
@@ -1228,8 +1541,13 @@ public class SearchServiceAsyncClient {
      * @return the {@link SynonymMap} definition
      */
     public Mono<SynonymMap> getSynonymMap(String synonymMapName) {
-        return this.getSynonymMapWithResponse(synonymMapName, null)
-            .map(Response::getValue);
+        try {
+            return this.getSynonymMapWithResponse(synonymMapName, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1241,7 +1559,12 @@ public class SearchServiceAsyncClient {
      * @return a response containing the SynonymMap.
      */
     public Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName, RequestOptions requestOptions) {
-        return withContext(context -> this.getSynonymMapWithResponse(synonymMapName, requestOptions, context));
+        try {
+            return withContext(context -> this.getSynonymMapWithResponse(synonymMapName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName,
@@ -1259,7 +1582,12 @@ public class SearchServiceAsyncClient {
      * @return a reactive response emitting the list of synonym maps.
      */
     public PagedFlux<SynonymMap> listSynonymMaps() {
-        return this.listSynonymMaps(null, null);
+        try {
+            return this.listSynonymMaps(null, null);
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -1273,9 +1601,14 @@ public class SearchServiceAsyncClient {
      * @return a reactive response emitting the list of synonym maps.
      */
     public PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
-        return new PagedFlux<>(
-            () -> withContext(context -> this.listSynonymMapsWithResponse(select, requestOptions, context)),
-            nextLink -> Mono.empty());
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> this.listSynonymMapsWithResponse(select, requestOptions, context)),
+                nextLink -> Mono.empty());
+        }
+        catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
@@ -1307,8 +1640,13 @@ public class SearchServiceAsyncClient {
      * @return the synonym map that was created or updated.
      */
     public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap) {
-        return this.createOrUpdateSynonymMapWithResponse(synonymMap, null, null)
-            .map(Response::getValue);
+        try {
+            return this.createOrUpdateSynonymMapWithResponse(synonymMap, null, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1324,8 +1662,13 @@ public class SearchServiceAsyncClient {
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
                                                                            AccessCondition accessCondition,
                                                                            RequestOptions requestOptions) {
-        return withContext(context -> this.createOrUpdateSynonymMapWithResponse(synonymMap,
-            accessCondition, requestOptions, context));
+        try {
+            return withContext(context -> this.createOrUpdateSynonymMapWithResponse(synonymMap,
+                accessCondition, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
@@ -1349,8 +1692,13 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteSynonymMap(String synonymMapName) {
-        return this.deleteSynonymMapWithResponse(synonymMapName, null, null)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return this.deleteSynonymMapWithResponse(synonymMapName, null, null)
+                .flatMap(FluxUtil::toMono);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1366,8 +1714,13 @@ public class SearchServiceAsyncClient {
     public Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName,
                                                              AccessCondition accessCondition,
                                                              RequestOptions requestOptions) {
-        return withContext(context ->
-            this.deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions, context));
+        try {
+            return withContext(context ->
+                this.deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName,
@@ -1387,7 +1740,12 @@ public class SearchServiceAsyncClient {
      * @return true if the synonym map exists; false otherwise.
      */
     public Mono<Boolean> synonymMapExists(String synonymMapName) {
-        return this.synonymMapExistsWithResponse(synonymMapName, null).map(Response::getValue);
+        try {
+            return this.synonymMapExistsWithResponse(synonymMapName, null).map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1399,7 +1757,12 @@ public class SearchServiceAsyncClient {
      * @return true if the synonym map exists; false otherwise.
      */
     public Mono<Response<Boolean>> synonymMapExistsWithResponse(String synonymMapName, RequestOptions requestOptions) {
-        return withContext(context -> this.synonymMapExistsWithResponse(synonymMapName, requestOptions, context));
+        try {
+            return withContext(context -> this.synonymMapExistsWithResponse(synonymMapName, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Boolean>> synonymMapExistsWithResponse(String synonymMapName,
@@ -1436,7 +1799,12 @@ public class SearchServiceAsyncClient {
      * @return the search service statistics result.
      */
     public Mono<ServiceStatistics> getServiceStatistics() {
-        return this.getServiceStatisticsWithResponse(null).map(Response::getValue);
+        try {
+            return this.getServiceStatisticsWithResponse(null).map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
 
@@ -1448,7 +1816,12 @@ public class SearchServiceAsyncClient {
      * @return the search service statistics result.
      */
     public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
-        return withContext(context -> this.getServiceStatisticsWithResponse(requestOptions, context));
+        try {
+            return withContext(context -> this.getServiceStatisticsWithResponse(requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions,

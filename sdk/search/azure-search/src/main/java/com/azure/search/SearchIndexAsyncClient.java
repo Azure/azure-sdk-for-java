@@ -39,6 +39,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.function.Function;
 
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
@@ -140,8 +141,13 @@ public class SearchIndexAsyncClient {
      * @return document index result.
      */
     public Mono<IndexDocumentsResult> uploadDocuments(Iterable<?> documents) {
-        return this.uploadDocumentsWithResponse(documents)
-            .map(Response::getValue);
+        try {
+            return this.uploadDocumentsWithResponse(documents)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -151,7 +157,12 @@ public class SearchIndexAsyncClient {
      * @return response containing the document index result.
      */
     public Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents) {
-        return withContext(context -> uploadDocumentsWithResponse(documents, context));
+        try {
+            return withContext(context -> uploadDocumentsWithResponse(documents, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -167,8 +178,13 @@ public class SearchIndexAsyncClient {
      * @return document index result
      */
     public Mono<IndexDocumentsResult> mergeDocuments(Iterable<?> documents) {
-        return this.mergeDocumentsWithResponse(documents)
-            .map(Response::getValue);
+        try {
+            return this.mergeDocumentsWithResponse(documents)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -178,13 +194,23 @@ public class SearchIndexAsyncClient {
      * @return response containing the document index result.
      */
     public Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents) {
-        return withContext(context -> mergeDocumentsWithResponse(documents, context));
+        try {
+            return withContext(context -> mergeDocumentsWithResponse(documents, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     @SuppressWarnings("unchecked")
     Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
-        IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE);
-        return this.indexWithResponse(batch, context);
+        try {
+            IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE);
+            return this.indexWithResponse(batch, context);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -195,8 +221,13 @@ public class SearchIndexAsyncClient {
      * @return document index result
      */
     public Mono<IndexDocumentsResult> mergeOrUploadDocuments(Iterable<?> documents) {
-        return this.mergeOrUploadDocumentsWithResponse(documents)
-            .map(Response::getValue);
+        try {
+            return this.mergeOrUploadDocumentsWithResponse(documents)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -207,13 +238,23 @@ public class SearchIndexAsyncClient {
      * @return response containing the document index result.
      */
     public Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
-        return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, context));
+        try {
+            return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     @SuppressWarnings("unchecked")
     Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD);
-        return this.indexWithResponse(batch, context);
+        try {
+            IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD);
+            return this.indexWithResponse(batch, context);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -223,8 +264,13 @@ public class SearchIndexAsyncClient {
      * @return document index result.
      */
     public Mono<IndexDocumentsResult> deleteDocuments(Iterable<?> documents) {
-        return this.deleteDocumentsWithResponse(documents)
-            .map(Response::getValue);
+        try {
+            return this.deleteDocumentsWithResponse(documents)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -234,13 +280,23 @@ public class SearchIndexAsyncClient {
      * @return response containing the document index result.
      */
     public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
-        return withContext(context -> deleteDocumentsWithResponse(documents, context));
+        try {
+            return withContext(context -> deleteDocumentsWithResponse(documents, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     @SuppressWarnings("unchecked")
     Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
-        IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.DELETE);
-        return this.indexWithResponse(batch, context);
+        try {
+            IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.DELETE);
+            return this.indexWithResponse(batch, context);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -267,8 +323,13 @@ public class SearchIndexAsyncClient {
      * @return the number of documents.
      */
     public Mono<Long> getDocumentCount() {
-        return this.getDocumentCountWithResponse()
-            .map(Response::getValue);
+        try {
+            return this.getDocumentCountWithResponse()
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -277,7 +338,12 @@ public class SearchIndexAsyncClient {
      * @return response containing the number of documents.
      */
     public Mono<Response<Long>> getDocumentCountWithResponse() {
-        return withContext(this::getDocumentCountWithResponse);
+        try {
+            return withContext(this::getDocumentCountWithResponse);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Long>> getDocumentCountWithResponse(Context context) {
@@ -296,7 +362,12 @@ public class SearchIndexAsyncClient {
      * facet, and coverage information.
      */
     public PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText) {
-        return this.search(searchText, null, null);
+        try {
+            return this.search(searchText, null, null);
+        }
+        catch (RuntimeException ex) {
+            return new PagedFluxBase<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -313,12 +384,17 @@ public class SearchIndexAsyncClient {
     public PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText,
                                                                    SearchOptions searchOptions,
                                                                    RequestOptions requestOptions) {
-        SearchRequest searchRequest = this.createSearchRequest(searchText, searchOptions);
-        return new PagedFluxBase<>(
+        try {
+            SearchRequest searchRequest = this.createSearchRequest(searchText, searchOptions);
+            return new PagedFluxBase<>(
 
-            () -> withContext(context -> this.searchFirstPage(searchRequest, requestOptions, context)),
-            nextPageParameters -> withContext(context ->
-                this.searchNextPage(searchRequest, requestOptions, nextPageParameters, context)));
+                () -> withContext(context -> this.searchFirstPage(searchRequest, requestOptions, context)),
+                nextPageParameters -> withContext(context ->
+                    this.searchNextPage(searchRequest, requestOptions, nextPageParameters, context)));
+        }
+        catch (RuntimeException ex) {
+            return new PagedFluxBase<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText,
@@ -338,9 +414,13 @@ public class SearchIndexAsyncClient {
      * @return the document object
      */
     public Mono<Document> getDocument(String key) {
-        return this.getDocumentWithResponse(key, null, null)
-            .map(Response::getValue);
-
+        try {
+            return this.getDocumentWithResponse(key, null, null)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -356,8 +436,13 @@ public class SearchIndexAsyncClient {
         String key,
         List<String> selectedFields,
         RequestOptions requestOptions) {
-        return this.getDocumentWithResponse(key, selectedFields, requestOptions)
-            .map(Response::getValue);
+        try {
+            return this.getDocumentWithResponse(key, selectedFields, requestOptions)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -373,7 +458,12 @@ public class SearchIndexAsyncClient {
         String key,
         List<String> selectedFields,
         RequestOptions requestOptions) {
-        return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
+        try {
+            return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Document>> getDocumentWithResponse(
@@ -381,16 +471,21 @@ public class SearchIndexAsyncClient {
         List<String> selectedFields,
         RequestOptions requestOptions,
         Context context) {
-        return restClient
-            .documents()
-            .getWithRestResponseAsync(key, selectedFields, requestOptions, context)
-            .map(res -> {
-                Document doc = res.getValue();
-                DocumentResponseConversions.cleanupDocument(doc);
-                return new SimpleResponse<>(res, doc);
-            })
-            .onErrorMap(DocumentResponseConversions::exceptionMapper)
-            .map(Function.identity());
+        try {
+            return restClient
+                .documents()
+                .getWithRestResponseAsync(key, selectedFields, requestOptions, context)
+                .map(res -> {
+                    Document doc = res.getValue();
+                    DocumentResponseConversions.cleanupDocument(doc);
+                    return new SimpleResponse<>(res, doc);
+                })
+                .onErrorMap(DocumentResponseConversions::exceptionMapper)
+                .map(Function.identity());
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -403,7 +498,12 @@ public class SearchIndexAsyncClient {
      * HTTP response and coverage information.
      */
     public PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
-        return this.suggest(searchText, suggesterName, null, null);
+        try {
+            return this.suggest(searchText, suggesterName, null, null);
+        }
+        catch (RuntimeException ex) {
+            return new PagedFluxBase<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -422,10 +522,15 @@ public class SearchIndexAsyncClient {
                                                                       String suggesterName,
                                                                       SuggestOptions suggestOptions,
                                                                       RequestOptions requestOptions) {
-        SuggestRequest suggestRequest = this.createSuggestRequest(searchText,
-            suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
-        return new PagedFluxBase<>(
-            () -> withContext(context -> this.suggestFirst(requestOptions, suggestRequest, context)));
+        try {
+            SuggestRequest suggestRequest = this.createSuggestRequest(searchText,
+                suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
+            return new PagedFluxBase<>(
+                () -> withContext(context -> this.suggestFirst(requestOptions, suggestRequest, context)));
+        }
+        catch (RuntimeException ex) {
+            return new PagedFluxBase<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
@@ -446,8 +551,13 @@ public class SearchIndexAsyncClient {
      * @return document index result
      */
     public Mono<IndexDocumentsResult> index(IndexBatch<?> batch) {
-        return this.indexWithResponse(batch)
-            .map(Response::getValue);
+        try {
+            return this.indexWithResponse(batch)
+                .map(Response::getValue);
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -457,7 +567,12 @@ public class SearchIndexAsyncClient {
      * @return a response containing the document index result
      */
     public Mono<Response<IndexDocumentsResult>> indexWithResponse(IndexBatch<?> batch) {
-        return withContext(context -> indexWithResponse(batch, context));
+        try {
+            return withContext(context -> indexWithResponse(batch, context));
+        }
+        catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<IndexDocumentsResult>> indexWithResponse(IndexBatch<?> batch, Context context) {
@@ -482,7 +597,12 @@ public class SearchIndexAsyncClient {
      */
     public PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(
         String searchText, String suggesterName) {
-        return this.autocomplete(searchText, suggesterName, null, null);
+        try {
+            return this.autocomplete(searchText, suggesterName, null, null);
+        }
+        catch (RuntimeException ex) {
+            return new PagedFluxBase<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -499,10 +619,15 @@ public class SearchIndexAsyncClient {
                                                     String suggesterName,
                                                     AutocompleteOptions autocompleteOptions,
                                                     RequestOptions requestOptions) {
-        AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
-            searchText, suggesterName, autocompleteOptions);
-        return new PagedFluxBase<>(
-            () -> withContext(context -> this.autocompleteFirst(requestOptions, autocompleteRequest, context)));
+        try {
+            AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
+                searchText, suggesterName, autocompleteOptions);
+            return new PagedFluxBase<>(
+                () -> withContext(context -> this.autocompleteFirst(requestOptions, autocompleteRequest, context)));
+        }
+        catch (RuntimeException ex) {
+            return new PagedFluxBase<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
