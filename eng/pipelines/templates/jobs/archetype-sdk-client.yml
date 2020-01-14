@@ -207,8 +207,8 @@ jobs:
 #        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
         inputs:
           mavenPomFile: 'DependencyChecker/pom.xml'
-          options: '-Dexec.args="-showall -dependencymanagement"'
-          mavenOptions: '$(DefaultOptions) $(MemoryOptions) $(LoggingOptions)'
+          options: '$(DefaultOptions) -Dexec.args="-showall -dependencymanagement"'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
