@@ -81,12 +81,12 @@ public class RetryUtil {
                 }
 
                 if (error instanceof TimeoutException) {
-                    LOGGER.info("TimeoutException error occurred. Retrying operation. Attempt: {}. Error: {}",
+                    LOGGER.info("TimeoutException error occurred. Retrying operation. Attempt: {}.",
                         attempt, error);
 
                     return retryPolicy.calculateRetryDelay(error, attempt);
                 } else if (error instanceof AmqpException && (((AmqpException) error).isTransient())) {
-                    LOGGER.info("Retryable error occurred. Retrying operation. Attempt: {}. Error: {}",
+                    LOGGER.info("Retryable error occurred. Retrying operation. Attempt: {}. Error condition: {}",
                         attempt, ((AmqpException) error).getErrorCondition(), error);
 
                     return retryPolicy.calculateRetryDelay(error, attempt);
