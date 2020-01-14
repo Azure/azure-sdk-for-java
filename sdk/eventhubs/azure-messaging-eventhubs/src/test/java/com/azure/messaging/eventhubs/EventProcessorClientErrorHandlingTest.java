@@ -3,23 +3,30 @@
 
 package com.azure.messaging.eventhubs;
 
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.Checkpoint;
+import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.InitializationContext;
+import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -35,15 +42,6 @@ public class EventProcessorClientErrorHandlingTest {
 
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
-    private static final String EVENT_HUB_NAME = "eventHubName";
-    private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
-    private static final String SHARED_ACCESS_KEY = "dummySasKey";
-    private static final String ENDPOINT = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME)
-        .toString();
-
-    private static final String CORRECT_CONNECTION_STRING = String
-        .format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
-            ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, EVENT_HUB_NAME);
 
     @Mock
     private EventHubClientBuilder eventHubClientBuilder;
@@ -54,16 +52,10 @@ public class EventProcessorClientErrorHandlingTest {
     @Mock
     private EventHubConsumerAsyncClient eventHubConsumer;
 
-    private CountDownLatch countDownLatch;
+    @Mock
+    private EventData eventData1;
 
-    private static URI getURI(String endpointFormat, String namespace, String domainName) {
-        try {
-            return new URI(String.format(Locale.US, endpointFormat, namespace, domainName));
-        } catch (URISyntaxException exception) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "Invalid namespace name: %s", namespace), exception);
-        }
-    }
+    private CountDownLatch countDownLatch;
 
     @BeforeEach
     public void setup() {
@@ -85,7 +77,52 @@ public class EventProcessorClientErrorHandlingTest {
             Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
             Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
             Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
-        });
+        }, new HashMap<>());
+        client.start();
+        boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
+        client.stop();
+        Assertions.assertTrue(completed);
+    }
+
+    @Test
+    public void testProcessEventHandlerError() throws InterruptedException {
+        countDownLatch = new CountDownLatch(1);
+        when(eventHubAsyncClient.createConsumer("cg", DEFAULT_PREFETCH_COUNT)).thenReturn(eventHubConsumer);
+        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1)));
+        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
+            () -> new BadProcessEventHandler(countDownLatch), new InMemoryCheckpointStore(), false,
+            null, errorContext -> { }, new HashMap<>());
+        client.start();
+        boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
+        client.stop();
+        Assertions.assertTrue(completed);
+    }
+
+    @Test
+    public void testInitHandlerError() throws InterruptedException {
+        countDownLatch = new CountDownLatch(1);
+        when(eventHubAsyncClient.createConsumer("cg", DEFAULT_PREFETCH_COUNT)).thenReturn(eventHubConsumer);
+        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1)));
+        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
+            () -> new BadInitHandler(countDownLatch), new InMemoryCheckpointStore(), false,
+            null, errorContext -> { }, new HashMap<>());
+        client.start();
+        boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
+        client.stop();
+        Assertions.assertTrue(completed);
+    }
+
+    @Test
+    public void testCloseHandlerError() throws InterruptedException {
+        countDownLatch = new CountDownLatch(1);
+        when(eventHubAsyncClient.createConsumer("cg", DEFAULT_PREFETCH_COUNT)).thenReturn(eventHubConsumer);
+        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1)));
+        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
+            () -> new BadCloseHandler(countDownLatch), new InMemoryCheckpointStore(), false,
+            null, errorContext -> { }, new HashMap<>());
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -97,6 +134,11 @@ public class EventProcessorClientErrorHandlingTest {
             Arguments.of(new ListOwnershipErrorStore()),
             Arguments.of(new ClaimOwnershipErrorStore()),
             Arguments.of(new ListCheckpointErrorStore()));
+    }
+
+    private PartitionEvent getEvent(EventData event) {
+        PartitionContext context = new PartitionContext("ns", "foo", "bar", "baz");
+        return new PartitionEvent(context, event, null);
     }
 
 
@@ -189,6 +231,77 @@ public class EventProcessorClientErrorHandlingTest {
         public void processError(ErrorContext errorContext) {
             // do nothing
             return;
+        }
+    }
+
+    private static final class BadProcessEventHandler extends PartitionProcessor {
+
+        CountDownLatch countDownLatch;
+
+        BadProcessEventHandler(CountDownLatch countDownLatch) {
+            this.countDownLatch = countDownLatch;
+        }
+
+        @Override
+        public void processEvent(EventContext eventContext) {
+            countDownLatch.countDown();
+            throw new IllegalStateException("Process event error");
+        }
+
+        @Override
+        public void processError(ErrorContext errorContext) {
+            Assertions.fail("Process error handler should not be called when process event throws exception");
+            return;
+        }
+    }
+
+    private static final class BadInitHandler extends PartitionProcessor {
+
+        CountDownLatch countDownLatch;
+
+        BadInitHandler(CountDownLatch countDownLatch) {
+            this.countDownLatch = countDownLatch;
+        }
+
+        @Override
+        public void initialize(InitializationContext initContext) {
+            countDownLatch.countDown();
+            throw new IllegalStateException("Init error");
+        }
+
+        @Override
+        public void processEvent(EventContext eventContext) {
+            Assertions.fail("Process event handler should not be called when there's an error during initialization");
+        }
+
+        @Override
+        public void processError(ErrorContext errorContext) {
+            Assertions.fail("Process error handler should not be called when process event throws exception");
+            return;
+        }
+    }
+
+    private static final class BadCloseHandler extends PartitionProcessor {
+
+        CountDownLatch countDownLatch;
+        BadCloseHandler(CountDownLatch countDownLatch) {
+            this.countDownLatch = countDownLatch;
+        }
+
+        @Override
+        public void close(CloseContext closeContext) {
+            countDownLatch.countDown();
+            throw new IllegalStateException("Close error");
+        }
+
+        @Override
+        public void processEvent(EventContext eventContext) {
+            // do nothing
+        }
+
+        @Override
+        public void processError(ErrorContext errorContext) {
+            // do nothing
         }
     }
 }

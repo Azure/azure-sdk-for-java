@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
@@ -115,7 +116,29 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(BlobRequestConditions requestConditions) {
-        return BlobOutputStream.blockBlobOutputStream(client, requestConditions);
+        return getBlobOutputStream(null, null, null, null, requestConditions);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob.
+     * @param tier {@link AccessTier} for the destination blob.
+     * @param requestConditions {@link BlobRequestConditions}
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        BlobRequestConditions requestConditions) {
+        return BlobOutputStream.blockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier,
+            requestConditions);
     }
 
     /**

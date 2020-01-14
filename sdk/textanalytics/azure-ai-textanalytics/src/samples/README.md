@@ -1,14 +1,19 @@
+---
+topic: sample
+languages:
+  - java
+products:
+  - azure
+  - azure-cognitive-service
+---
 
-## Azure Text Analytics client library for Java Samples
+# Azure Text Analytics client library for Java Samples
 
 Azure Text Analytics samples are a set of self-contained Java programs that demonstrate interacting with Azure Text Analytics service
 using the client library. Each sample focuses on a specific scenario and can be executed independently. 
 
 ## Key concepts
 Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
-
-# Samples Azure Text Analytics APIs
-This document describes how to use samples and what is done in each sample.
 
 ## Getting started
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
@@ -22,6 +27,7 @@ The following sections provide several code snippets covering some of the most c
 - [Recognize linked entities in text][sample_linked_entities]
 - [Extract key phrases in text][sample_key_phrases]
 - [Analyze sentiment in text.][sample_sentiment]
+- [Async Detect language in text][async_sample_hello_world]
 
 Batch Samples:
 - [Detect language for a batch of documents][sample_language_batch]
@@ -50,7 +56,8 @@ Guidelines](../../CONTRIBUTING.md) for more information.
 [SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [SDK_README_NEXT_STEPS]: ../../README.md#next-steps
 
-[sample_hello_world]: java/com/azure/ai/textanalytics/HelloWorld.java
+[async_sample_hello_world]: java/com/azure/ai/textanalytics/DetectLanguageAsync.java
+[sample_hello_world]: java/com/azure/ai/textanalytics/DetectLanguage.java
 [sample_entities]: java/com/azure/ai/textanalytics/RecognizeEntities.java
 [sample_pii_entities]: java/com/azure/ai/textanalytics/RecognizePii.java
 [sample_linked_entities]: java/com/azure/ai/textanalytics/RecognizeLinkedEntities.java

@@ -2,8 +2,8 @@
 
 ## 1.2.0-beta.1 (Unreleased)
 
-## Version 1.1.0 (2019-11-26)
-- Switch to JUnit version 5.
+## 1.1.0 (2020-01-07)
+- Updated version of dependent libraries.
 
 ## Version 1.0.0 (2019-10-29)
 This package's

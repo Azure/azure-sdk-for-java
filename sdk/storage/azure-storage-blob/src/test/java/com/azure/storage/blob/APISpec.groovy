@@ -148,7 +148,6 @@ class APISpec extends Specification {
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", testMode))
     }
 
     def setup() {
@@ -159,6 +158,9 @@ class APISpec extends Specification {
         this.testName = fullTestName.substring(0, substringIndex)
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null

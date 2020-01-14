@@ -17,31 +17,36 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrate how to detect language of a batch of text inputs.
+ * Sample demonstrates how to detect the languages of a batch input text.
  */
 public class DetectLanguageBatchDocuments {
     /**
-     * Main method to invoke this demo about how to detect language of a batch of text inputs.
+     * Main method to invoke this demo about how to detect the languages of a batch input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
 
         // The texts that need be analysed.
         List<DetectLanguageInput> inputs = Arrays.asList(
-            new DetectLanguageInput("1", "This is written in English.", "en"),
-            new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
+            new DetectLanguageInput("1", "This is written in English.", "US"),
+            new DetectLanguageInput("2", "Este es un document escrito en Español.", "ES")
         );
 
+        // Request options: show statistics and model version
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
-        final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = client.detectBatchLanguagesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+
+        // Detecting batch languages
+        final DocumentResultCollection<DetectLanguageResult> detectedBatchResult =
+            client.detectBatchLanguagesWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
+        // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
         System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
@@ -49,16 +54,22 @@ public class DetectLanguageBatchDocuments {
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
-        // Detecting languages for a document from a batch of documents
+        // Detected languages for a document from a batch of documents
         for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
+            System.out.printf("Document ID: %s%n", detectLanguageResult.getId());
+            // Erroneous document
+            if (detectLanguageResult.isError()) {
+                System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());
+                continue;
+            }
+            // Valid document
             final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
-            System.out.printf("Detected primary Language for Document: %s, %s, ISO 6391 Name: %s, Score: %s.%n",
-                detectLanguageResult.getId(),
+            System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %s.%n",
                 detectedPrimaryLanguage.getName(),
                 detectedPrimaryLanguage.getIso6391Name(),
                 detectedPrimaryLanguage.getScore());
             for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-                System.out.printf("Other detected Languages: %s, ISO 6391 Name: %s, Score: %s.%n",
+                System.out.printf("Another detected language: %s, ISO 6391 name: %s, score: %s.%n",
                     detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(),
                     detectedLanguage.getScore());

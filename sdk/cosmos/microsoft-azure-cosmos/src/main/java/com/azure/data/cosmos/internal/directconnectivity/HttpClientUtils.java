@@ -10,6 +10,7 @@ import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 import com.azure.data.cosmos.internal.http.HttpRequest;
 import com.azure.data.cosmos.internal.http.HttpResponse;
+import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 
 public class HttpClientUtils {
@@ -31,7 +32,7 @@ public class HttpClientUtils {
     }
 
     private static Mono<CosmosClientException> createDocumentClientException(HttpResponse httpResponse) {
-        Mono<String> readStream = httpResponse.bodyAsString();
+        Mono<String> readStream = httpResponse.bodyAsString().switchIfEmpty(Mono.just(StringUtils.EMPTY));
 
         return readStream.map(body -> {
             CosmosError cosmosError = BridgeInternal.createCosmosError(body);

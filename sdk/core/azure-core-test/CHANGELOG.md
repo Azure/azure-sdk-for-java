@@ -1,5 +1,9 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+## 1.1.0 (2020-01-07)
+
 ## 1.1.0-beta.2 (2019-12-18)
 - Quick release to have client library depends on the right version of azure-core and azure-core-test changes. 
 

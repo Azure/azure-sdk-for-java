@@ -1,5 +1,34 @@
 ## Changelog
+### 3.6.0-beta.2
+- Takes advantage of Reactive Stream Concurrency for Query (Improves latency and fixes earlier issues): (https://github.com/Azure/azure-sdk-for-java/pull/7322)
+- API to retrieve min throughput for a CosmosContainer: (https://github.com/Azure/azure-sdk-for-java/pull/7259)
 
+### 3.6.0-beta.1
+- Added the ability to select default Direct TCP options
+
+  In priority order we will take default Direct TCP options from:
+  
+  - The string value of system property `"azure.cosmos.directTcp.options"`
+ 
+    Example:
+    ``` 
+    -Dazure.cosmos.directTcp.defaultOptions={\"idleEndpointTimeout\":"PT1M10S",\"maxChannelsPerEndpoint\":10,\"maxRequestsPerChannel\":30}
+    ```
+   - The contents of the file located by the system property "azure.cosmos.directTcp.defaultOptionsFile".
+  
+     Example:
+     ```
+     -Dazure.cosmos.directTcp.defaultOptionsFile=/path/to/default/options/file
+     ```
+  
+   - The contents of the resource file named `"azure.cosmos.directTcp.options.json"`
+  
+   Otherwise, if none of these values are set or an error occurs we create default options based on a set of hard-wired 
+   values defined in the default private parameterless constructor for `RntbdTransportClient.Options` as we did before 
+   this release.
+   
+- Fixed Reactor Netty connection re-use issue: https://github.com/Azure/azure-sdk-for-java/issues/6973 
+    
 ### 3.5.0
 - Changefeed bug fixes (includes all the bug fixes released in 3.3.3) 
 - Disaster Recovery related bug fixes

@@ -104,6 +104,8 @@
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
     <build.context>azure-client-sdk-parent</build.context>
+    <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
   </properties>
 
   <build>
@@ -259,6 +261,7 @@
               <failOnError>true</failOnError>
               <failOnWarnings>true</failOnWarnings>
               <doclint>all</doclint>
+              <quiet>true</quiet>
             </configuration>
           </execution>
         </executions>
@@ -331,6 +334,31 @@
             <configuration>
               <!-- Sets the output directory for the code coverage report. -->
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${jacoco.min.linecoverage}</minimum>
+                    </limit>
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${jacoco.min.branchcoverage}</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
             </configuration>
           </execution>
         </executions>
@@ -458,6 +486,10 @@
                 <packages>com.azure.storage.blob.cryptography*</packages>
               </group>
               <group>
+                <title>Azure Storage Blobs - NIO</title>
+                <packages>com.azure.storage.blob.nio*</packages>
+              </group>
+              <group>
                 <title>Azure Storage - Files</title>
                 <packages>com.azure.storage.file*</packages>
               </group>
@@ -471,7 +503,7 @@
               </group>
               <group>
                 <title>Azure Telemetry</title>
-                <title>Azure Telemetry - OpenCensus</title>
+                <title>Azure Telemetry - OpenTelemetry</title>
                 <packages>com.azure.core.tracing*</packages>
               </group>
               <group>
@@ -503,6 +535,7 @@
             <sourceFileExcludes>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
+            <quiet>true</quiet>
           </configuration>
         </plugin>
 
@@ -780,6 +813,7 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
+              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -795,6 +829,7 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
+              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -935,6 +970,7 @@
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <failOnWarnings>false</failOnWarnings>
+              <quiet>true</quiet>
 
               <!-- For codesnippet4javadoc tool to work with JDK9+, it is recommended to add this additional option
               https://github.com/jtulach/codesnippet4javadoc#use-with-jdk9 -->
@@ -1034,6 +1070,7 @@
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
               <overview>${project.basedir}/readme_overview.html</overview>
+              <quiet>true</quiet>
             </configuration>
           </plugin>
          </plugins>
@@ -1098,7 +1135,7 @@
                   <executable>npx.cmd</executable>
                   <arguments>
                     <argument>embedme</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1134,7 +1171,7 @@
                   <executable>npx</executable>
                   <arguments>
                     <argument>embedme</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1170,7 +1207,7 @@
                   <arguments>
                     <argument>embedme</argument>
                     <argument>--verify</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1207,7 +1244,7 @@
                   <arguments>
                     <argument>embedme</argument>
                     <argument>--verify</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1226,7 +1263,6 @@
     <module>sdk/core/azure-core-http-netty</module>
     <module>sdk/core/azure-core-http-okhttp</module>
     <module>sdk/core/azure-core-test</module>
-    <module>sdk/core/azure-core-tracing-opencensus</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
     <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
@@ -1238,6 +1274,7 @@
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
+    <module>sdk/storage/azure-storage-blob-nio</module>
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
