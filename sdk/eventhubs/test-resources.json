@@ -275,7 +275,7 @@
     "outputs": {
         "AZURE_EVENTHUBS_CONNECTION_STRING": {
             "type": "string",
-            "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('baseName'), 'RootManageSharedAccessKey'), variables('eventHubsApiVersion')).primaryConnectionString, ';EntityPath=', concat(parameters('baseName'), '/', parameters('eventHubName')) )]"
+            "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('baseName'), 'RootManageSharedAccessKey'), variables('eventHubsApiVersion')).primaryConnectionString, ';EntityPath=', parameters('eventHubName') )]"
         },
         "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME": {
             "type": "string",
