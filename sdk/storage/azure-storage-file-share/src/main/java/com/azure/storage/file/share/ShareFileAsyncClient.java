@@ -37,6 +37,7 @@ import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteTyp
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
+import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
@@ -333,13 +334,13 @@ public class ShareFileAsyncClient {
         final AtomicReference<String> copyId = new AtomicReference<>();
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
 
-        FileSmbProperties finalSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        FileSmbProperties tempSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
-        String filePermissionKey = finalSmbProperties.getFilePermissionKey();
+        String filePermissionKey = tempSmbProperties.getFilePermissionKey();
 
-        String fileAttributes = finalSmbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
-        String fileCreationTime = FileSmbProperties.parseFileSMBDate(finalSmbProperties.getFileCreationTime());
-        String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(finalSmbProperties.getFileLastWriteTime());
+        String fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+        String fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+        String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
 
         if (filePermissionCopyMode == null || filePermissionCopyMode == PermissionCopyModeType.SOURCE) {
             if (filePermission != null || filePermissionKey != null) {
@@ -349,7 +350,7 @@ public class ShareFileAsyncClient {
             }
         } else if (filePermissionCopyMode == PermissionCopyModeType.OVERRIDE) {
             // Checks that file permission and file permission key are valid
-            validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
+            validateFilePermissionAndKey(filePermission, tempSmbProperties.getFilePermissionKey());
         }
 
         final CopyFileSmbInfo copyFileSmbInfo = new CopyFileSmbInfo()
@@ -365,7 +366,7 @@ public class ShareFileAsyncClient {
                 try {
                     return withContext(context -> azureFileStorageClient.files()
                             .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null,
-                                metadata, filePermission, finalSmbProperties.getFilePermissionKey(),
+                                metadata, filePermission, tempSmbProperties.getFilePermissionKey(),
                                 finalRequestConditions.getLeaseId(), copyFileSmbInfo, context))
 
                             .map(response -> {

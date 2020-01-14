@@ -24,6 +24,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.BlobServiceVersionPolicy;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -161,6 +162,7 @@ public final class EncryptedBlobClientBuilder {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
+        policies.add(new BlobServiceVersionPolicy());
         String clientName = USER_AGENT_PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = USER_AGENT_PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
         policies.add(new UserAgentPolicy(logOptions.getApplicationId(), clientName, clientVersion,

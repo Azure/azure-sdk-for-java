@@ -200,6 +200,8 @@ public final class Constants {
 
         public static final String ETAG_WILDCARD = "*";
 
+        public static final String SERVICE_VERSION = "x-ms-version";
+
         private HeaderConstants() {
             // Private to prevent construction.
         }
