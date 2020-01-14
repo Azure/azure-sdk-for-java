@@ -13,6 +13,6 @@ public class CircularFlux {
 
         return Flux.range(0, quotient)
             .map(i -> byteBuffer.duplicate())
-            .concatWithValues(byteBuffer.duplicate().limit(remainder));
+            .concatWithValues((ByteBuffer) byteBuffer.duplicate().limit(remainder));
     }
 }

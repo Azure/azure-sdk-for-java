@@ -1,5 +1,6 @@
 package com.azure.storage.blob.perfstress;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 import com.azure.perfstress.RandomFlux;
@@ -31,7 +32,15 @@ public class DownloadTest extends ContainerTest<SizeOptions> {
 
     @Override
     public void Run() {
-        _blobClient.download(OutputStream.nullOutputStream());
+        _blobClient.download(new NullOutputStream());
+    }
+
+
+    /**Writes to nowhere*/
+    class NullOutputStream extends OutputStream {
+        @Override
+        public void write(int b) throws IOException {
+        }
     }
 
     @Override

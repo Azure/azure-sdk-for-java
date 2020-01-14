@@ -1,5 +1,8 @@
 package com.azure.storage.blob.perfstress.core;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.UUID;
 
 import com.azure.perfstress.PerfStressOptions;
@@ -24,5 +27,16 @@ public abstract class RandomBlobTest<TOptions extends PerfStressOptions> extends
 
         _blockBlobClient = _blobClient.getBlockBlobClient();
         _blockBlobAsyncClient = _blobAsyncClient.getBlockBlobAsyncClient();
+    }
+
+    public long copyStream(InputStream input, OutputStream out) throws IOException {
+        long transferred = 0;
+        byte[] buffer = new byte[8192];
+        int read;
+        while ((read = input.read(buffer, 0, 8192)) >= 0) {
+            out.write(buffer, 0, read);
+            transferred += read;
+        }
+        return transferred;
     }
 }

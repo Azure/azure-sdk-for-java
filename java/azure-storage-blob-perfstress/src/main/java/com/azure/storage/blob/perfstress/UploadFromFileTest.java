@@ -37,7 +37,7 @@ public class UploadFromFileTest extends RandomBlobTest<SizeOptions> {
             
             InputStream inputStream = RandomStream.create(Options.Size);
             OutputStream outputStream = new FileOutputStream(tempFile.toString());
-            inputStream.transferTo(outputStream);
+            copyStream(inputStream, outputStream);
             outputStream.close();
             
             return Mono.empty();

@@ -21,7 +21,7 @@ public class UploadOutputStreamTest extends RandomBlobTest<SizeOptions> {
         try {
             InputStream inputStream = RandomStream.create(Options.Size);
             BlobOutputStream blobOutputStream = _blockBlobClient.getBlobOutputStream();
-            inputStream.transferTo(blobOutputStream);
+            copyStream(inputStream, blobOutputStream);
             blobOutputStream.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
