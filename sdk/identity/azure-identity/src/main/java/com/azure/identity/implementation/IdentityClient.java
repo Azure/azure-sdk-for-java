@@ -143,7 +143,6 @@ public class IdentityClient {
             ConfidentialClientApplication.Builder applicationBuilder =
                     ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromCertificate(
                                 new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
-                            .httpClient(new HttpPipelineAdapter(options.getHttpPipeline()))
                             .authority(authorityUrl);
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
@@ -173,7 +172,6 @@ public class IdentityClient {
                 ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromCertificate(
                             CertificateUtil.privateKeyFromPem(pemCertificateBytes),
                             CertificateUtil.publicKeyFromPem(pemCertificateBytes)))
-                        .httpClient(new HttpPipelineAdapter(options.getHttpPipeline()))
                         .authority(authorityUrl);
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
