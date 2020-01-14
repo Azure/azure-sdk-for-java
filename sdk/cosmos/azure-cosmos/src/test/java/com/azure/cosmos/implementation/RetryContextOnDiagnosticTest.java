@@ -10,7 +10,6 @@ import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
 import io.reactivex.subscribers.TestSubscriber;
-import org.assertj.core.api.Assertions;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
@@ -26,6 +25,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     private final static String exceptionText = "TestException";
@@ -47,7 +48,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"})
-    public void backoffRetryUtilityExecuteRetryTest() throws Exception {
+    public void backoffRetryUtilityExecuteRetry() throws Exception {
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         CosmosClientException exception = new CosmosClientException(410, exceptionText);
@@ -56,13 +57,13 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         StoreResponse response = validateSuccess(monoResponse);
 
-        Assertions.assertThat(response.getResponseBody()).isEqualTo(responseText);
-        Assertions.assertThat(retryPolicy.getRetryCount()).isEqualTo(5);
-        Assertions.assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount());
+        assertThat(response.getResponseBody()).isEqualTo(responseText);
+        assertThat(retryPolicy.getRetryCount()).isEqualTo(5);
+        assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount());
     }
 
     @Test(groups = {"simple"})
-    public void backoffRetryUtilityExecuteRetryWithFailureTest() throws Exception {
+    public void backoffRetryUtilityExecuteRetryWithFailure() throws Exception {
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         CosmosClientException exception = new CosmosClientException(410, exceptionText);
@@ -74,12 +75,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         validateFailure(monoResponse);
 
-        Assertions.assertThat(retryPolicy.getRetryCount()).isGreaterThanOrEqualTo(5);
-        Assertions.assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount() + 1);
+        assertThat(retryPolicy.getRetryCount()).isGreaterThanOrEqualTo(5);
+        assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount() + 1);
     }
 
     @Test(groups = {"simple"})
-    public void backoffRetryUtilityExecuteAsyncTest() {
+    public void backoffRetryUtilityExecuteAsync() {
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         CosmosClientException exception = new CosmosClientException(410, exceptionText);
@@ -89,14 +90,14 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(parameterizedCallbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, Duration.ofSeconds(5), serviceRequest);
         StoreResponse response = validateSuccess(monoResponse);
 
-        Assertions.assertThat(serviceRequest.requestContext.retryContext.retryCount).isEqualTo(5);
-        Assertions.assertThat(response.getResponseBody()).isEqualTo(responseText);
-        Assertions.assertThat(retryPolicy.getRetryCount()).isEqualTo(5);
-        Assertions.assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount());
+        assertThat(serviceRequest.requestContext.retryContext.retryCount).isEqualTo(5);
+        assertThat(response.getResponseBody()).isEqualTo(responseText);
+        assertThat(retryPolicy.getRetryCount()).isEqualTo(5);
+        assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount());
     }
 
     @Test(groups = {"simple"})
-    public void backoffRetryUtilityExecuteAsyncWithFailureTest() {
+    public void backoffRetryUtilityExecuteAsyncWithFailure() {
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         CosmosClientException exception = new CosmosClientException(410, exceptionText);
@@ -109,9 +110,9 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(parameterizedCallbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, Duration.ofSeconds(5), serviceRequest);
         validateFailure(monoResponse);
 
-        Assertions.assertThat(serviceRequest.requestContext.retryContext.retryCount).isGreaterThanOrEqualTo(5);
-        Assertions.assertThat(retryPolicy.getRetryCount()).isGreaterThanOrEqualTo(5);
-        Assertions.assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount() + 1);
+        assertThat(serviceRequest.requestContext.retryContext.retryCount).isGreaterThanOrEqualTo(5);
+        assertThat(retryPolicy.getRetryCount()).isGreaterThanOrEqualTo(5);
+        assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount() + 1);
     }
 
     @Test(groups = {"simple"})

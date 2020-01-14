@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.sun.management.OperatingSystemMXBean;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -37,14 +39,14 @@ import java.util.Map;
 import java.util.Set;
 
 class ClientSideRequestStatistics {
-
+    private final Logger logger = LoggerFactory.getLogger(ClientSideRequestStatistics.class);
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
 
     private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
         DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US);
-    private final static OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
+    private static final  OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public ConnectionMode connectionMode;
 
@@ -200,7 +202,7 @@ class ClientSideRequestStatistics {
                 printSystemInformation();
                 return objectMapper.writeValueAsString(this);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                logger.error("Error while parsing diagnostics " + e.getStackTrace());
             }
         }
         return StringUtils.EMPTY;
