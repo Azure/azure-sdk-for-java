@@ -241,20 +241,7 @@ public final class FluxUtil {
             @Override
             public void onNext(ByteBuffer bytes) {
                 isWriting = true;
-
-                /*
-                 * Given that the buffer is unknown to this operation perform a deep copy of it and use that when
-                 * writing to the file. This prevents scenarios where underlying buffer is mutated before the write
-                 * operation is triggered.
-                 */
-                int bufferOffset = bytes.position();
-                int bufferSize = bytes.remaining();
-                byte[] buffer = new byte[bufferSize];
-                for (int i = 0; i < bufferSize; i++) {
-                    buffer[i] = bytes.get(i + bufferOffset);
-                }
-
-                outFile.write(ByteBuffer.wrap(buffer), pos, null, onWriteCompleted);
+                outFile.write(bytes, pos, null, onWriteCompleted);
             }
 
 
