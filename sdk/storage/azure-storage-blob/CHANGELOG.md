@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.3.0-beta.1 (Unreleased)
-- Added ability to create service clients anonymously. Anonymous service clients will throw on attempting to create network requests.
+- Added ability to create service clients anonymously and should only be used to create anonymous container and blob clients. Anonymous service clients will throw on attempting to create network requests.
 
 ## 12.2.0 (2020-01-08)
 This package's
