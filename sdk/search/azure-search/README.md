@@ -23,7 +23,7 @@ This library provides an easy (native) way for a Java developer to interact with
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search</artifactId>
-    <version>1.0.0-preview.2</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 
