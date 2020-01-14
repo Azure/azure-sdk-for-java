@@ -157,36 +157,6 @@ public class Utils {
     }
 
     /**
-     * Checks whether the specified path segment is a resource type
-     *
-     * @param resourcePathSegment the path segment to analyze.
-     * @return true or false
-     */
-    public static boolean IsResourceType(String resourcePathSegment) {
-        if (StringUtils.isEmpty(resourcePathSegment)) {
-            return false;
-        }
-
-        switch (resourcePathSegment.toLowerCase()) {
-            case Paths.ATTACHMENTS_PATH_SEGMENT:
-            case Paths.COLLECTIONS_PATH_SEGMENT:
-            case Paths.DATABASES_PATH_SEGMENT:
-            case Paths.PERMISSIONS_PATH_SEGMENT:
-            case Paths.USERS_PATH_SEGMENT:
-            case Paths.DOCUMENTS_PATH_SEGMENT:
-            case Paths.STORED_PROCEDURES_PATH_SEGMENT:
-            case Paths.TRIGGERS_PATH_SEGMENT:
-            case Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT:
-            case Paths.CONFLICTS_PATH_SEGMENT:
-            case Paths.PARTITION_KEY_RANGES_PATH_SEGMENT:
-                return true;
-
-            default:
-                return false;
-        }
-    }
-
-    /**
      * Joins the specified paths by appropriately padding them with '/'
      *
      * @param path1 the first path segment to join.
