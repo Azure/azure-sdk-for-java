@@ -242,7 +242,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         throw new UnsupportedOperationException();
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -315,8 +314,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     public void info(final String msg, final Throwable t) {
         throw new UnsupportedOperationException();
     }
-
-
 
     /**
      * {@inheritDoc}
