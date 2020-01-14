@@ -3,10 +3,10 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
-import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
@@ -80,15 +80,21 @@ public class RetryUtil {
                     throw Exceptions.propagate(error);
                 }
 
-                if (!(error instanceof TimeoutException)
-                    && (error instanceof AmqpException && !(((AmqpException) error).isTransient()))) {
+                if (error instanceof TimeoutException) {
+                    LOGGER.info("TimeoutException error occurred. Retrying operation. Attempt: {}. Error: {}",
+                        attempt, error);
+
+                    return retryPolicy.calculateRetryDelay(error, attempt);
+                } else if (error instanceof AmqpException && (((AmqpException) error).isTransient())) {
+                    LOGGER.info("Retryable error occurred. Retrying operation. Attempt: {}. Error: {}",
+                        attempt, ((AmqpException) error).getErrorCondition(), error);
+
+                    return retryPolicy.calculateRetryDelay(error, attempt);
+                } else {
                     LOGGER.warning("Error is not a TimeoutException nor is it a retryable AMQP exception.", error);
 
                     throw Exceptions.propagate(error);
                 }
-
-                LOGGER.info("Retryable error occurred. Retrying operation. Attempt: {}", attempt, error);
-                return retryPolicy.calculateRetryDelay(error, attempt);
             })
             .flatMap(Mono::delay);
     }
