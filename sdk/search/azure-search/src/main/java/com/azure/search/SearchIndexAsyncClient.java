@@ -360,7 +360,7 @@ public class SearchIndexAsyncClient {
      * Searches for documents in the Azure Cognitive Search index
      *
      * @param searchText Search text
-     * @param searchOptions  search options
+     * @param searchOptions search options
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return A {@link PagedFluxBase} that iterates over {@link SearchResult} objects
@@ -592,9 +592,7 @@ public class SearchIndexAsyncClient {
      * @return auto complete result.
      */
     public PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
-                                                                                   String suggesterName,
-                                                                                   AutocompleteOptions autocompleteOptions,
-                                                                                   RequestOptions requestOptions) {
+            String suggesterName, AutocompleteOptions autocompleteOptions, RequestOptions requestOptions) {
         try {
             AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
                 searchText, suggesterName, autocompleteOptions);
@@ -647,7 +645,8 @@ public class SearchIndexAsyncClient {
      * @param searchRequest the search request
      * @param nextPageParameters json string holding the parameters required to get the next page:
      *                           skip is the number of documents to skip, top is the number of documents per page.
-     *                           Due to a limitation in PageFlux, this value is stored as String and converted to its Integer value
+     *                           Due to a limitation in PageFlux, this value is stored as String and converted
+     *                           to its Integer value
      *                           before making the next request
      * @param context the context to associate with this operation.
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
