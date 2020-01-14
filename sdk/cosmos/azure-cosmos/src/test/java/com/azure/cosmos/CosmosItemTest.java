@@ -22,8 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosItemTest extends TestSuiteBase {
 
-    private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
-    private List<String> databases = new ArrayList<>();
     private CosmosClient client;
     private CosmosContainer container;
 
@@ -125,7 +123,7 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemResponse itemResponse = container.createItem(properties);
 
         FeedOptions feedOptions = new FeedOptions();
-        
+
         Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
                 container.readAllItems(feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.hasNext()).isTrue();

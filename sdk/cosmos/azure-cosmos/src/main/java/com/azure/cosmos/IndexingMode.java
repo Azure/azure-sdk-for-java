@@ -15,14 +15,14 @@ public enum IndexingMode {
      * With consistent indexing, query behavior is the same as the default consistency level for the collection. The
      * index is always kept up to date with the data.
      */
-    CONSISTENT,
+    CONSISTENT("Consistent"),
 
     /**
      * Index is updated asynchronously with respect to a create or update operation.
      * <p>
      * With lazy indexing, queries are eventually consistent. The index is updated when the collection is idle.
      */
-    LAZY,
+    LAZY("Lazy"),
 
     /**
      * No index is provided.
@@ -31,10 +31,16 @@ public enum IndexingMode {
      * collection, to save the storage cost or improve the write throughput. Your queries will degenerate to scans of
      * the entire collection.
      */
-    NONE;
+    NONE("None");
+
+    IndexingMode(String overWireValue) {
+        this.overWireValue = overWireValue;
+    }
+
+    private final String overWireValue;
 
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());
+        return this.overWireValue;
     }
 }

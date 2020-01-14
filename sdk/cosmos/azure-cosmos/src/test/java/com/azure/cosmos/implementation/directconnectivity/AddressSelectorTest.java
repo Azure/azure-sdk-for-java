@@ -141,7 +141,7 @@ public class AddressSelectorTest {
 
         List<AddressInformation> res = selector.resolveAddressesAsync(request, false).block();
 
-        assertThat(res).isEqualTo(replicaAddresses.stream().filter(a -> a.getProtocolName().equals(Protocol.HTTPS.toString())).collect(Collectors.toList()));
+        assertThat(res).isEqualTo(replicaAddresses.stream().filter(a -> a.getProtocolName().equalsIgnoreCase(Protocol.HTTPS.toString())).collect(Collectors.toList()));
     }
 
     @Test(groups = "unit")

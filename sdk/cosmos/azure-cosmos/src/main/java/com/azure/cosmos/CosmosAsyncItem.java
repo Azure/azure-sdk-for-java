@@ -9,13 +9,15 @@ import reactor.core.publisher.Mono;
 
 public class CosmosAsyncItem {
     private final Object partitionKey;
+    private final String id;
+    private final String link;
     private CosmosAsyncContainer container;
-    private String id;
 
     CosmosAsyncItem(String id, Object partitionKey, CosmosAsyncContainer container) {
         this.id = id;
         this.partitionKey = partitionKey;
         this.container = container;
+        this.link = getParentLink() + "/" + getURIPathSegment() + "/" + getId();
     }
 
     /**
@@ -25,17 +27,6 @@ public class CosmosAsyncItem {
      */
     public String getId() {
         return id;
-    }
-
-    /**
-     * Set the id of the {@link CosmosAsyncItem}
-     *
-     * @param id the id of the {@link CosmosAsyncItem}
-     * @return the same {@link CosmosAsyncItem} that had the id set
-     */
-    CosmosAsyncItem setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -158,12 +149,6 @@ public class CosmosAsyncItem {
     }
 
     String getLink() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(getParentLink());
-        builder.append("/");
-        builder.append(getURIPathSegment());
-        builder.append("/");
-        builder.append(getId());
-        return builder.toString();
+        return this.link;
     }
 }

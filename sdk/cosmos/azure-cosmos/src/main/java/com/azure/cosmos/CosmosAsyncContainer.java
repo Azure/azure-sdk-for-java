@@ -21,12 +21,14 @@ import static com.azure.cosmos.Resource.validateResource;
 public class CosmosAsyncContainer {
 
     private final CosmosAsyncDatabase database;
-    private String id;
+    private final String id;
+    private final String link;
     private CosmosAsyncScripts scripts;
 
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
         this.id = id;
         this.database = database;
+        this.link = getParentLink() + "/" + getURIPathSegment() + "/" + getId();
     }
 
     /**
@@ -36,17 +38,6 @@ public class CosmosAsyncContainer {
      */
     public String getId() {
         return id;
-    }
-
-    /**
-     * Set the id of the {@link CosmosAsyncContainer}
-     *
-     * @param id the id of the {@link CosmosAsyncContainer}
-     * @return the same {@link CosmosAsyncContainer} that had the id set
-     */
-    CosmosAsyncContainer setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -504,13 +495,6 @@ public class CosmosAsyncContainer {
     }
 
     String getLink() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(getParentLink());
-        builder.append("/");
-        builder.append(getURIPathSegment());
-        builder.append("/");
-        builder.append(getId());
-        return builder.toString();
+        return this.link;
     }
-
 }

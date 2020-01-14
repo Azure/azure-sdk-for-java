@@ -3,9 +3,6 @@
 
 package com.azure.cosmos;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-
 /**
  * Represents the consistency levels supported for Cosmos DB client operations in the Azure Cosmos DB database service.
  * <p>
@@ -17,36 +14,42 @@ public enum ConsistencyLevel {
     /**
      * STRONG Consistency guarantees that read operations always return the value that was last written.
      */
-    STRONG,
+    STRONG ("Strong"),
 
     /**
      * Bounded Staleness guarantees that reads are not too out-of-date. This can be configured based on number of
      * operations (MaxStalenessPrefix) or time (MaxStalenessIntervalInSeconds)
      */
-    BOUNDED_STALENESS,
+    BOUNDED_STALENESS("BoundedStaleness"),
 
     /**
      * SESSION Consistency guarantees monotonic reads (you never read old data, then new, then old again), monotonic
      * writes (writes are ordered) and read your writes (your writes are immediately visible to your reads) within
      * any single session.
      */
-    SESSION,
+    SESSION("Session"),
 
     /**
      * EVENTUAL Consistency guarantees that reads will return a subset of writes. ALL writes will be eventually be
      * available for reads.
      */
-    EVENTUAL,
+    EVENTUAL("Eventual"),
 
     /**
-     * CONSISTENT_PREFIX Consistency guarantees that reads will return some prefix of all writes with no gaps. ALL 
+     * CONSISTENT_PREFIX Consistency guarantees that reads will return some prefix of all writes with no gaps. ALL
      * writes
      * will be eventually be available for reads.
      */
-    CONSISTENT_PREFIX;
+    CONSISTENT_PREFIX ("ConsistentPrefix");
+
+    ConsistencyLevel(String overWireValue) {
+        this.overWireValue = overWireValue;
+    }
+
+    private final String overWireValue;
 
     @Override
     public String toString() {
-        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');
+        return this.overWireValue;
     }
 }
