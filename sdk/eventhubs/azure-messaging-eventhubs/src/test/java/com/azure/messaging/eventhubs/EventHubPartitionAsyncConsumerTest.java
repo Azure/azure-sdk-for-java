@@ -71,6 +71,9 @@ class EventHubPartitionAsyncConsumerTest {
     private Message message2;
     @Mock
     private MessageSerializer messageSerializer;
+    @Mock
+    private Disposable parentConnection;
+
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplierCaptor;
 
@@ -118,7 +121,7 @@ class EventHubPartitionAsyncConsumerTest {
     @ValueSource(strings = { "true", "false" })
     void receivesMessages(boolean trackLastEnqueuedProperties) {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy));
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties);
 
@@ -166,7 +169,7 @@ class EventHubPartitionAsyncConsumerTest {
     @Test
     void receiveMultipleTimes() {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy));
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
@@ -234,7 +237,7 @@ class EventHubPartitionAsyncConsumerTest {
     @Test
     void listensToShutdownSignals() throws InterruptedException {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy));
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 

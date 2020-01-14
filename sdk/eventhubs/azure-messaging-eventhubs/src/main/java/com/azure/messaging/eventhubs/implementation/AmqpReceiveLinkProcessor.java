@@ -40,6 +40,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
     private final int prefetch;
     private final AmqpRetryPolicy retryPolicy;
+    private Disposable parentConnection;
 
     private volatile Subscription upstream;
     private volatile CoreSubscriber<? super Message> downstream;
@@ -54,12 +55,15 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      *
      * @param prefetch The number if messages to initially fetch.
      * @param retryPolicy Retry policy to apply when fetching a new AMQP channel.
+     * @param parentConnection Represents the parent connection.
      *
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public AmqpReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy) {
+    public AmqpReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, Disposable parentConnection) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
+        this.parentConnection = Objects.requireNonNull(parentConnection, "'parentConnection' cannot be null.");
+
         if (prefetch < 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'prefetch' cannot be less than 0."));
         }
@@ -156,7 +160,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         onError(error);
                     },
                     () -> {
-                        if (isTerminated()) {
+                        if (parentConnection.isDisposed()) {
+                            logger.info("Parent connection is disposed.");
+                        } else if (isTerminated()) {
                             logger.info("Processor is disposed.");
                         } else {
                             logger.info("Receive link endpoint states are closed.");
@@ -203,7 +209,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         Objects.requireNonNull(actual, "'actual' cannot be null.");
 
         if (isTerminated()) {
-            logger.info("Processor is already terminated.");
+            logger.info("AmqpReceiveLink is already terminated.");
 
             actual.onSubscribe(Operators.emptySubscription());
 
@@ -237,13 +243,14 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
         if (isTerminated()) {
+            logger.info("AmqpReceiveLinkProcessor is terminated. Not reopening on error.");
             return;
         }
 
         final int attempt = retryAttempts.incrementAndGet();
         final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
 
-        if (retryInterval != null) {
+        if (retryInterval != null && !parentConnection.isDisposed()) {
             logger.warning("Transient error occurred. Attempt: {}. Retrying after {} ms.",
                 attempt, retryInterval.toMillis(), throwable);
 
@@ -252,6 +259,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             });
 
             return;
+        }
+
+        if (parentConnection.isDisposed()) {
+            logger.info("Parent connection is disposed. Not reopening on error.");
         }
 
         logger.warning("Non-retryable error occurred in AMQP receive link.", throwable);

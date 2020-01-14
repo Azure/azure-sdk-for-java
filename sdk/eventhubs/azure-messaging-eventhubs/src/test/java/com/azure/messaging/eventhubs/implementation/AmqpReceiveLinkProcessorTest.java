@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
+import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -52,6 +53,9 @@ class AmqpReceiveLinkProcessorTest {
     private Message message1;
     @Mock
     private Message message2;
+    @Mock
+    private Disposable parentConnection;
+
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplierCaptor;
 
@@ -75,7 +79,7 @@ class AmqpReceiveLinkProcessorTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
 
-        linkProcessor = new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy);
+        linkProcessor = new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection);
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor);
         when(link1.receive()).thenReturn(messageProcessor);
@@ -88,8 +92,12 @@ class AmqpReceiveLinkProcessorTest {
 
     @Test
     void constructor() {
-        Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(PREFETCH, null));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpReceiveLinkProcessor(-1, retryPolicy));
+        Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(PREFETCH, null,
+            parentConnection));
+        Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy,
+            null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpReceiveLinkProcessor(-1, retryPolicy,
+            parentConnection));
     }
 
     /**
@@ -417,6 +425,38 @@ class AmqpReceiveLinkProcessorTest {
         Assertions.assertTrue(processor.isTerminated());
         Assertions.assertTrue(processor.hasError());
         Assertions.assertSame(amqpException2, processor.getError());
+    }
+
+    /**
+     * Does not request another link when parent connection is closed.
+     */
+    @Test
+    void doNotRetryWhenParentConnectionIsClosed() {
+        // Arrange
+        final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2};
+
+        final AmqpReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
+        final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
+
+        final DirectProcessor<AmqpEndpointState> link2StateProcessor = DirectProcessor.create();
+
+        when(parentConnection.isDisposed()).thenReturn(true);
+
+        when(link2.getEndpointStates()).thenReturn(link2StateProcessor);
+        when(link2.receive()).thenReturn(Flux.never());
+
+        // Act & Assert
+        StepVerifier.create(processor)
+            .then(() -> {
+                endpointSink.next(AmqpEndpointState.ACTIVE);
+                messageProcessorSink.next(message1);
+            })
+            .expectNext(message1)
+            .then(() -> endpointSink.complete())
+            .thenCancel()
+            .verify();
+
+        Assertions.assertTrue(processor.isTerminated());
     }
 
     @Test
