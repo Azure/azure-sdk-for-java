@@ -1,5 +1,7 @@
 # Release History
 
+## 1.3.0-beta.1 (Unreleased)
+
 ## 1.2.0 (2020-01-07)
 - Upgrade netty dependencies to latest version 
 

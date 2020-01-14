@@ -1,5 +1,7 @@
 # Release History
 
+## 1.3.0-beta.1 (Unreleased)
+
 ## 1.2.0 (2020-01-07)
 - Ignore null headers and allow full url paths 
 - Add missing HTTP request methods to HttpMethod enum
@@ -11,7 +13,7 @@
 - Reduce Prefetch Limit for PagedIterable and IterableStream
 - Add Iterable<T> overload for IterableStream<T>
 
-## Version 1.1.0 (2019-11-26)
+## 1.1.0 (2019-11-26)
 - Added support for creating reactor-netty-http client from an existing client.
 - Added UserAgent helper methods for fetching client name and version from pom file.
 - Added toReactorContext to FluxUtil.
@@ -24,7 +26,7 @@
 - Reduce Prefetch Limit for PagedIterable and IterableStream.
 - Ensure HTTPS is used when authenticating with tokens.
 
-## Version 1.0.0 (2019-10-29)
+## 1.0.0 (2019-10-29)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/README.md)
 and
