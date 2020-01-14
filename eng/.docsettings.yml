@@ -106,7 +106,6 @@ known_presence_issues:
   - ['sdk/storage/microsoft-azure-storage-blob/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-complete/CHANGELOG.md', '#2847']
 
-
 known_content_issues:
   - ['cosmosdb/data-plane/benchmark/README.md', '#3113']
   - ['cosmosdb/data-plane/changelog/README.md', '#3113']
@@ -124,7 +123,7 @@ known_content_issues:
   - ['sdk/cosmos/README.md', '#3113']
   - ['sdk/e2e/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
-  - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/Readme.md', '#3113']
+  - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/README.md', '#3113']
   - ['sdk/eventhubs/README.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
