@@ -136,7 +136,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public void debug(final String format, final Object arg1, final Object arg2) {
-        logMessageWithFormat("DEBUG", format, arg1, arg2);;
+        logMessageWithFormat("DEBUG", format, arg1, arg2);
     }
 
     /**
