@@ -39,23 +39,23 @@ Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-
             $artifactId = $dependencyNode.artifactId
             $groupId = $dependencyNode.groupId
             $versionNode = $dependencyNode.GetElementsByTagName("version")[0]
-            if (!$versionNode) 
+            if (!$versionNode)
             {
                 $script:FoundError = $true
                 Write-Error-With-Color "Error: dependency is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
                 continue
             }
             # if there is no version update tag for the dependency then fail
-            if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") 
+            if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
             {
                 $versionUpdateTag = $versionNode.NextSibling.Value.Trim()
-                if ($versionUpdateTag -match "{x-version-update;unreleased_$($groupId)") 
+                if ($versionUpdateTag -match "{x-version-update;unreleased_$($groupId)")
                 {
                     $script:FoundError = $true
                     Write-Error-With-Color "Error: Cannot release libraries with unreleased dependencies. dependency=$($versionUpdateTag)"
                     continue
                 }
-            } 
+            }
             else
             {
                 $script:FoundError = $true
