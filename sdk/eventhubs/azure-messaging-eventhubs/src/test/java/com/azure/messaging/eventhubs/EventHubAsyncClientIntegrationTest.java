@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
@@ -12,16 +13,19 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.IntStream;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
@@ -31,16 +35,16 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Tests scenarios on {@link EventHubAsyncClient}.
  */
-public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
+class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final int NUMBER_OF_EVENTS = 5;
     private static final String PARTITION_ID = "1";
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static volatile IntegrationTestEventData testData = null;
 
     private EventHubAsyncClient client;
-    private AmqpTransportType transportType;
+    private EventHubProducerAsyncClient producer;
 
-    public EventHubAsyncClientIntegrationTest() {
+    EventHubAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubAsyncClientIntegrationTest.class));
     }
 
@@ -49,7 +53,6 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             .transportType(transportType)
             .shareConnection()
             .buildAsyncClient();
-        this.transportType = transportType;
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.warning("Already pushed events to partition. Skipping.");
@@ -64,7 +67,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        dispose(client);
+        dispose(producer, client);
     }
 
     /**
@@ -73,7 +76,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @ParameterizedTest
     @EnumSource(value = AmqpTransportType.class)
-    public void receiveMessage(AmqpTransportType transportType) {
+    void receiveMessage(AmqpTransportType transportType) {
         beforeTest(transportType);
         // Arrange
         final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 2);
@@ -91,9 +94,11 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can have multiple consumers listening to the same partition + consumer group at the same time.
      */
-    @Disabled("Investigate. Only 2 of the 4 consumers get the events. The other two consumers do not.")
-    @Test
-    public void parallelEventHubClients() throws InterruptedException {
+    @ParameterizedTest
+    @EnumSource(value = AmqpTransportType.class)
+    void parallelEventHubClients(AmqpTransportType transportType) throws InterruptedException {
+        beforeTest(transportType);
+
         // Arrange
         final int numberOfClients = 4;
         final int numberOfEvents = 10;
@@ -158,7 +163,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
      * Sending with credentials.
      */
     @Test
-    public void getPropertiesWithCredentials() {
+    void getPropertiesWithCredentials() {
         // Arrange
         final EventHubAsyncClient client = createBuilder(true)
             .buildAsyncClient();
@@ -171,5 +176,53 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .expectComplete()
             .verify(TIMEOUT);
+    }
+
+    @Disabled("Testing long running operations and disconnections.")
+    @Test
+    void worksAfterReconnection() throws InterruptedException {
+        beforeTest(AmqpTransportType.AMQP);
+
+        final String partitionId = "0";
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionId(partitionId);
+
+        producer = new EventHubClientBuilder()
+            .connectionString(getConnectionString())
+            .retry(RETRY_OPTIONS)
+            .buildAsyncProducerClient();
+
+        Disposable subscribe = Flux.interval(Duration.ofSeconds(1))
+            .flatMap(position -> client.getPartitionIds().collectList())
+            .subscribe(partitionIds -> {
+                System.out.printf("Ids %s: {%s}%n", Instant.now(), String.join(",", partitionIds));
+            }, error -> {
+                    logger.error("Error fetching info.", error);
+                }, () -> {
+                    logger.info("Complete.");
+                });
+
+        Disposable subscription2 = Flux.interval(Duration.ofSeconds(5))
+            .flatMap(position -> producer.createBatch(options).flatMap(batch -> {
+                IntStream.range(0, 3).mapToObj(number -> new EventData("Position" + position + ": " + number))
+                    .forEach(event -> {
+                        if (!batch.tryAdd(event)) {
+                            logger.error("Could not add event. Size: {}. Max: {}. Content: {}",
+                                batch.getSizeInBytes(), batch.getMaxSizeInBytes(), event.getBodyAsString());
+                        }
+                    });
+
+                return producer.send(batch).thenReturn(Instant.now());
+            }))
+            .subscribe(instant -> {
+                System.out.println("---- Sent batch at: " + instant);
+            }, error -> {
+                    logger.error("---- Error sending batch: ", error);
+                }, () -> {
+                    logger.info("---- Complete.");
+                });
+
+        System.out.println("Sleeping while performing work.");
+        TimeUnit.MINUTES.sleep(30);
+        System.out.println("Complete.");
     }
 }

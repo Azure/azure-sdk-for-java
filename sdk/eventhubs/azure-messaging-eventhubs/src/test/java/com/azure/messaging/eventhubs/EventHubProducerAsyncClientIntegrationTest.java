@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -23,12 +23,13 @@ import java.util.stream.IntStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
+class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
 
     private EventHubProducerAsyncClient producer;
+    private EventHubConsumerAsyncClient consumer;
 
-    public EventHubProducerAsyncClientIntegrationTest() {
+    EventHubProducerAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubProducerAsyncClientIntegrationTest.class));
     }
 
@@ -42,14 +43,14 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
 
     @Override
     protected void afterTest() {
-        dispose(producer);
+        dispose(producer, consumer);
     }
 
     /**
      * Verifies that we can create and send a message to an Event Hub partition.
      */
     @Test
-    public void sendMessageToPartition() {
+    void sendMessageToPartition() {
         // Arrange
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
@@ -67,7 +68,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * the service distribute the events.
      */
     @Test
-    public void sendMessage() {
+    void sendMessage() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -83,7 +84,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * Verifies we can create an {@link EventDataBatch} and send it using our EventHubProducer.
      */
     @Test
-    public void sendBatch() {
+    void sendBatch() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -107,7 +108,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * Verifies we can create an {@link EventDataBatch} with a partition key and send it using our EventHubProducer.
      */
     @Test
-    public void sendBatchWithPartitionKey() {
+    void sendBatchWithPartitionKey() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -135,7 +136,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * Verify that we can send to multiple partitions, round-robin, and with a partition key, using the same producer.
      */
     @Test
-    public void sendEventsWithKeyAndPartition() {
+    void sendEventsWithKeyAndPartition() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -155,7 +156,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
     }
 
     @Test
-    public void sendAllPartitions() {
+    void sendAllPartitions() {
         final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
 
         Assertions.assertNotNull(partitionIds);
@@ -177,7 +178,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * Sending with credentials.
      */
     @Test
-    public void sendWithCredentials() {
+    void sendWithCredentials() {
         // Arrange
         final EventData event = new EventData("body");
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
@@ -205,8 +206,25 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
     @Disabled("Testing long running operations and disconnections.")
     @Test
     void worksAfterReconnection() throws InterruptedException {
-        Flux.interval(Duration.ofSeconds(5))
-            .flatMap(position -> producer.createBatch().flatMap(batch -> {
+        final EventPosition firstPosition = EventPosition.fromEnqueuedTime(Instant.now());
+        final String partitionId = "0";
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionId(partitionId);
+
+        consumer = new EventHubClientBuilder()
+            .connectionString(getConnectionString())
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .retry(RETRY_OPTIONS)
+            .buildAsyncConsumerClient();
+
+        consumer.receiveFromPartition(partitionId, firstPosition)
+            .subscribe(event -> {
+                logger.info("[{}]: {}", event.getData().getEnqueuedTime(), event.getData().getSequenceNumber());
+            }, error -> {
+                    logger.error("Exception occurred in receive.", error);
+                }, () -> logger.info("Completed receiving."));
+
+        Flux.interval(Duration.ofSeconds(3))
+            .flatMap(position -> producer.createBatch(options).flatMap(batch -> {
                 IntStream.range(0, 3).mapToObj(number -> new EventData("Position" + position + ": " + number))
                     .forEach(event -> {
                         if (!batch.tryAdd(event)) {
@@ -217,10 +235,6 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
 
                 return producer.send(batch).thenReturn(Instant.now());
             }))
-            .onErrorContinue(error -> error instanceof AmqpException && ((AmqpException) error).isTransient(),
-                (error, value) -> {
-                    System.out.println("Retries were exhausted. No logger retrying operation. " + error.getMessage());
-                })
             .subscribe(instant -> {
                 System.out.println("Sent batch at: " + instant);
             }, error -> {
