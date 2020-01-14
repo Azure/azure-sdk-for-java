@@ -260,7 +260,7 @@
 
   <!-- Suppress checks for AutoRest generated Search code -->
   <!-- Hand-written classes should be specified here to be checked -->
-    <suppress checks="." files=".*[/\\]search[/\\]implementation[/\\]((?!(GeoPointDeserializer|ISO8601DateDeserializer|SerializationUtil)).*)"/>
+    <suppress checks="." files=".*[/\\]search[/\\]implementation[/\\]((?!(GeoPointDeserializer|Iso8601DateDeserializer|SerializationUtil)).*)"/>
   <suppress checks="." files=".*[/\\]search[/\\]models[/\\]((?!(CoordinateSystem|GeoPoint|IndexBatch|ValueFacetResult|RangeFacetResult)).*)"/>
 
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->

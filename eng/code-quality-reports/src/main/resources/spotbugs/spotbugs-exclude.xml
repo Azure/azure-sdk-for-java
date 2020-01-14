@@ -665,7 +665,7 @@
         <Or>
           <!-- Hand-written classes should be specified here to be checked  -->
           <Class name="com.azure.search.implementation.GeoPointDeserializer"/>
-          <Class name="com.azure.search.implementation.ISO8601DateDeserializer"/>
+          <Class name="com.azure.search.implementation.Iso8601DateDeserializer"/>
           <Class name="com.azure.search.implementation.SerializationUtil"/>
           <Class name="com.azure.search.models.CoordinateSystem"/>
           <Class name="com.azure.search.models.GeoPoint"/>

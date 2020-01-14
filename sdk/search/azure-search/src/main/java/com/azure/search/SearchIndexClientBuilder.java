@@ -157,10 +157,12 @@ public class SearchIndexClientBuilder {
      * @param searchApiKeyCredential api key for request authentication
      * @return the updated SearchIndexClientBuilder object
      * @throws IllegalArgumentException when the api key is empty
-     * @throws IllegalArgumentException when the api key is empty
      */
     public SearchIndexClientBuilder credential(SearchApiKeyCredential searchApiKeyCredential) {
-        if (searchApiKeyCredential == null || CoreUtils.isNullOrEmpty(searchApiKeyCredential.getApiKey())) {
+        if (searchApiKeyCredential == null) {
+            throw logger.logExceptionAsError(new NullPointerException("Empty apiKeyCredentials"));
+        }
+        if (CoreUtils.isNullOrEmpty(searchApiKeyCredential.getApiKey())) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Empty apiKeyCredentials"));
         }
         this.searchApiKeyCredential = searchApiKeyCredential;

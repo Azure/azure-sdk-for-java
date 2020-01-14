@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * Custom deserializer to deserialize strings as instances of {@link OffsetDateTime}
  */
-final class ISO8601DateDeserializer extends UntypedObjectDeserializer {
+final class Iso8601DateDeserializer extends UntypedObjectDeserializer {
     private static final long serialVersionUID = 1L;
     private final UntypedObjectDeserializer defaultDeserializer;
 
@@ -25,7 +25,7 @@ final class ISO8601DateDeserializer extends UntypedObjectDeserializer {
      *
      * @param defaultDeserializer the deserializer to use when an OffsetDateTime match is not found
      */
-    ISO8601DateDeserializer(UntypedObjectDeserializer defaultDeserializer) {
+    Iso8601DateDeserializer(UntypedObjectDeserializer defaultDeserializer) {
         super(null, null);
         this.defaultDeserializer = defaultDeserializer;
     }

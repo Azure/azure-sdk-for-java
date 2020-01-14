@@ -29,7 +29,7 @@ public class SerializationUtil {
         mapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
 
         UntypedObjectDeserializer defaultDeserializer = new UntypedObjectDeserializer(null, null);
-        ISO8601DateDeserializer dateDeserializer = new ISO8601DateDeserializer(defaultDeserializer);
+        Iso8601DateDeserializer dateDeserializer = new Iso8601DateDeserializer(defaultDeserializer);
         GeoPointDeserializer geoPointDeserializer = new GeoPointDeserializer(dateDeserializer);
         SimpleModule module = new SimpleModule();
         module.addDeserializer(Object.class, geoPointDeserializer);

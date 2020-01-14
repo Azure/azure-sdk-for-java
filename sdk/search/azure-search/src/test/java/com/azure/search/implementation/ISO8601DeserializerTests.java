@@ -15,14 +15,14 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
-public class ISO8601DeserializerTests {
+public class Iso8601DeserializerTests {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @BeforeAll
     public static void setupClass() {
         SimpleModule module = new SimpleModule();
         UntypedObjectDeserializer defaultDeserializer = new  UntypedObjectDeserializer(null, null);
-        module.addDeserializer(Object.class, new ISO8601DateDeserializer(defaultDeserializer));
+        module.addDeserializer(Object.class, new Iso8601DateDeserializer(defaultDeserializer));
         MAPPER.registerModule(module);
     }
 
