@@ -74,6 +74,7 @@ public final class BlobServiceAsyncClient {
     private final String accountName;
     private final BlobServiceVersion serviceVersion;
     private final CpkInfo customerProvidedKey;
+    private final boolean anonymousAccess;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
@@ -84,9 +85,10 @@ public final class BlobServiceAsyncClient {
      * @param accountName The storage account name.
      * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
+     * @param anonymousAccess Whether or not the client was built with anonymousAccess
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
-        CpkInfo customerProvidedKey) {
+        CpkInfo customerProvidedKey, boolean anonymousAccess) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -96,6 +98,7 @@ public final class BlobServiceAsyncClient {
 
         this.accountName = accountName;
         this.customerProvidedKey = customerProvidedKey;
+        this.anonymousAccess = anonymousAccess;
     }
 
     /**
@@ -187,6 +190,7 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
         Map<String, String> metadata, PublicAccessType accessType, Context context) {
+        checkAccess();
         BlobContainerAsyncClient blobContainerAsyncClient = getBlobContainerAsyncClient(containerName);
 
         return blobContainerAsyncClient.createWithResponse(metadata, accessType, context)
@@ -233,6 +237,7 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName, Context context) {
+        checkAccess();
         return getBlobContainerAsyncClient(containerName).deleteWithResponse(null, context);
     }
 
@@ -284,6 +289,7 @@ public final class BlobServiceAsyncClient {
 
     PagedFlux<BlobContainerItem> listBlobContainersWithOptionalTimeout(ListBlobContainersOptions options,
         Duration timeout) {
+        checkAccess();
         Function<String, Mono<PagedResponse<BlobContainerItem>>> func =
             marker -> listBlobContainersSegment(marker, options, timeout)
                 .map(response -> new PagedResponseBase<>(
@@ -345,6 +351,7 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
+        checkAccess();
         return this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
@@ -391,6 +398,7 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties, Context context) {
+        checkAccess();
         return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(properties, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -449,6 +457,7 @@ public final class BlobServiceAsyncClient {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
+        checkAccess();
 
         return this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
                 new KeyInfo()
@@ -499,6 +508,7 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse(Context context) {
+        checkAccess();
         return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
@@ -540,6 +550,7 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
+        checkAccess();
         return this.azureBlobStorage.services().getAccountInfoWithRestResponseAsync(context)
             .map(rb -> {
                 ServiceGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
@@ -570,7 +581,17 @@ public final class BlobServiceAsyncClient {
      * @return A {@code String} representing all SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
+        checkAccess();
         return new AccountSasImplUtil(accountSasSignatureValues)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+    }
+
+    /**
+     * Checks if service client was built with credentials.
+     */
+    private void checkAccess() {
+        if (anonymousAccess) {
+            throw new IllegalStateException("Service client cannot be accessed without credentials");
+        }
     }
 }
