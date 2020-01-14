@@ -105,7 +105,7 @@ public class SearchIndexClientBuilder {
      *
      *  @return List of HttpPipelinePolicy
      *  */
-    public List<HttpPipelinePolicy> getPolicies() {
+    List<HttpPipelinePolicy> getPolicies() {
         return this.policies;
     }
 
