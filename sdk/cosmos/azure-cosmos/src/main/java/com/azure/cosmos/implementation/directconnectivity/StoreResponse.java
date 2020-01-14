@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.RequestTimeline;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -5,7 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.directconnectivity.RequestTimeline;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.apache.commons.lang3.StringUtils;
 

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.directconnectivity;
+package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -17,12 +17,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Represents the time and duration of important events in the lifetime of a request.
- *
+ * <p>
  * A {@link RequestTimeline} represents a timeline as a sequence of {@link Event} instances with name, time, and
  * duration properties. Hence, one might use this class to represent any timeline. Today we use it to represent
- * {@link RntbdTransportClient} request timelines. In the future we might also use it to represent
- * {@link HttpTransportClient} request timelines.
- *
+ * request timelines for:
+ * <p><ul>
+ * <li>{@link com.azure.cosmos.implementation.http.HttpClient#send},
+ * <li>{@link com.azure.cosmos.implementation.directconnectivity.HttpTransportClient#invokeStoreAsync}, and
+ * <li>{@link com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient#invokeStoreAsync}.
+ * </ul></p>
  * A {@link RequestTimeline} serializes to JSON as an array of {@link Event} instances. This is the default
  * serialization for any class that implements {@link Iterable}.
  * <p>
