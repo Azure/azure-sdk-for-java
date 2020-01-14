@@ -3,7 +3,9 @@
 
 package com.azure.search;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedResponse;
@@ -139,6 +141,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to upload to the target Index.
      * @return document index result.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> uploadDocuments(Iterable<?> documents) {
         return this.uploadDocumentsWithResponse(documents)
             .map(Response::getValue);
@@ -150,6 +153,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to upload to the target Index.
      * @return response containing the document index result.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents) {
         return withContext(context -> uploadDocumentsWithResponse(documents, context));
     }
@@ -166,6 +170,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged
      * @return document index result
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> mergeDocuments(Iterable<?> documents) {
         return this.mergeDocumentsWithResponse(documents)
             .map(Response::getValue);
@@ -194,6 +199,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> mergeOrUploadDocuments(Iterable<?> documents) {
         return this.mergeOrUploadDocumentsWithResponse(documents)
             .map(Response::getValue);
@@ -206,6 +212,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return response containing the document index result.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
         return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, context));
     }
@@ -222,6 +229,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to delete from the target Index.
      * @return document index result.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> deleteDocuments(Iterable<?> documents) {
         return this.deleteDocumentsWithResponse(documents)
             .map(Response::getValue);
@@ -233,6 +241,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to delete from the target Index.
      * @return response containing the document index result.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
         return withContext(context -> deleteDocumentsWithResponse(documents, context));
     }
@@ -266,6 +275,7 @@ public class SearchIndexAsyncClient {
      *
      * @return the number of documents.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Long> getDocumentCount() {
         return this.getDocumentCountWithResponse()
             .map(Response::getValue);
@@ -276,6 +286,7 @@ public class SearchIndexAsyncClient {
      *
      * @return response containing the number of documents.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Long>> getDocumentCountWithResponse() {
         return withContext(this::getDocumentCountWithResponse);
     }
@@ -295,6 +306,7 @@ public class SearchIndexAsyncClient {
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText) {
         return this.search(searchText, null, null);
     }
@@ -310,6 +322,7 @@ public class SearchIndexAsyncClient {
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText,
                                                                    SearchOptions searchOptions,
                                                                    RequestOptions requestOptions) {
@@ -337,6 +350,7 @@ public class SearchIndexAsyncClient {
      * @param key the name of the document
      * @return the document object
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Document> getDocument(String key) {
         return this.getDocumentWithResponse(key, null, null)
             .map(Response::getValue);
@@ -352,6 +366,7 @@ public class SearchIndexAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return the document object
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Document> getDocument(
         String key,
         List<String> selectedFields,
@@ -369,6 +384,7 @@ public class SearchIndexAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the document object
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Document>> getDocumentWithResponse(
         String key,
         List<String> selectedFields,
@@ -402,6 +418,7 @@ public class SearchIndexAsyncClient {
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
         return this.suggest(searchText, suggesterName, null, null);
     }
@@ -418,6 +435,7 @@ public class SearchIndexAsyncClient {
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
                                                                       String suggesterName,
                                                                       SuggestOptions suggestOptions,
@@ -445,6 +463,7 @@ public class SearchIndexAsyncClient {
      * @param batch batch of documents to send to the index with the requested action
      * @return document index result
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> index(IndexBatch<?> batch) {
         return this.indexWithResponse(batch)
             .map(Response::getValue);
@@ -456,6 +475,7 @@ public class SearchIndexAsyncClient {
      * @param batch batch of documents to send to the index with the requested action
      * @return a response containing the document index result
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> indexWithResponse(IndexBatch<?> batch) {
         return withContext(context -> indexWithResponse(batch, context));
     }
@@ -480,6 +500,7 @@ public class SearchIndexAsyncClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(
         String searchText, String suggesterName) {
         return this.autocomplete(searchText, suggesterName, null, null);
@@ -495,6 +516,7 @@ public class SearchIndexAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return auto complete result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
                                                     String suggesterName,
                                                     AutocompleteOptions autocompleteOptions,
