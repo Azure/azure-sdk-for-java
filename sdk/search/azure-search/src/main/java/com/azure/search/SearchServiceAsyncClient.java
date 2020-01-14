@@ -154,10 +154,10 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource      The definition of the data source to create or update.
+     * @param dataSource The definition of the data source to create or update.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions  additional parameters for the operation.
+     * @param requestOptions additional parameters for the operation.
      *                        Contains the tracking ID sent with the request to help with debugging
      * @return a data source response.
      */
@@ -204,7 +204,7 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source
      *
-     * @param dataSource     The definition of the data source to create.
+     * @param dataSource The definition of the data source to create.
      * @param requestOptions Additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging.
      * @return a Mono which performs the network request upon subscription.
@@ -284,7 +284,7 @@ public class SearchServiceAsyncClient {
     /**
      * List all DataSources from an Azure Cognitive Search service.
      *
-     * @param select         Selects which top-level properties of DataSource definitions to retrieve.
+     * @param select Selects which top-level properties of DataSource definitions to retrieve.
      *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
      *                       The default is all properties.
      * @param requestOptions Additional parameters for the operation.
@@ -340,10 +340,10 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search data source.
      *
-     * @param dataSourceName  The name of the data source to delete.
+     * @param dataSourceName The name of the data source to delete.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions  additional parameters for the operation.
+     * @param requestOptions additional parameters for the operation.
      *                        Contains the tracking ID sent with the request to help with debugging
      * @return a mono response
      */
@@ -426,7 +426,7 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search indexer.
      *
-     * @param indexer        definition of the indexer to create
+     * @param indexer definition of the indexer to create
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Indexer.
@@ -464,10 +464,10 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
-     * @param indexer         the definition of the indexer to create or update
+     * @param indexer the definition of the indexer to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions  additional parameters for the operation
+     * @param requestOptions additional parameters for the operation
      *                        Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Indexer.
      */
@@ -510,7 +510,7 @@ public class SearchServiceAsyncClient {
     /**
      * Retrieves an indexer definition.
      *
-     * @param indexerName    the name of the indexer to retrieve
+     * @param indexerName the name of the indexer to retrieve
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the indexer.
@@ -546,9 +546,9 @@ public class SearchServiceAsyncClient {
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
      *
-     * @param select         Selects which top-level properties of the indexers to retrieve.
-     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *                       The default is all properties.
+     * @param select Selects which top-level properties of the indexers to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties.
      * @param requestOptions Additional parameters for the operation.
      * @return a response containing all Indexers from the Search service.
      */
@@ -602,11 +602,11 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
-     * @param indexerName     the name of the indexer to delete
+     * @param indexerName the name of the indexer to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions  additional parameters for the operation.
-     *                        Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteIndexerWithResponse(String indexerName,
@@ -623,12 +623,12 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
-     * @param indexerName     the name of the indexer to delete
+     * @param indexerName the name of the indexer to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions  additional parameters for the operation.
-     *                        Contains the tracking ID sent with the request to help with debugging
-     * @param context         the context
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context the context
      * @return a response signalling completion.
      */
     Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, AccessCondition accessCondition,
@@ -656,7 +656,7 @@ public class SearchServiceAsyncClient {
     /**
      * Resets the change tracking state associated with an indexer.
      *
-     * @param indexerName    the name of the indexer to reset
+     * @param indexerName the name of the indexer to reset
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
@@ -694,7 +694,7 @@ public class SearchServiceAsyncClient {
     /**
      * Runs an indexer on-demand.
      *
-     * @param indexerName    the name of the indexer to run
+     * @param indexerName the name of the indexer to run
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
@@ -731,7 +731,7 @@ public class SearchServiceAsyncClient {
     /**
      * Returns the current status and execution history of an indexer.
      *
-     * @param indexerName    the name of the indexer for which to retrieve status
+     * @param indexerName the name of the indexer for which to retrieve status
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response with the indexer execution info.
@@ -771,7 +771,7 @@ public class SearchServiceAsyncClient {
     /**
      * Determines whether or not the given indexer exists.
      *
-     * @param indexerName    the name of the indexer
+     * @param indexerName the name of the indexer
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the indexer exists; false otherwise.
@@ -808,7 +808,7 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index.
      *
-     * @param index          definition of the index to create
+     * @param index definition of the index to create
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Index.
@@ -846,7 +846,7 @@ public class SearchServiceAsyncClient {
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      *
-     * @param indexName      the name of the index to retrieve
+     * @param indexName the name of the index to retrieve
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the Index.
@@ -883,7 +883,7 @@ public class SearchServiceAsyncClient {
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
      *
-     * @param indexName      the name of the index
+     * @param indexName the name of the index
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
@@ -920,7 +920,7 @@ public class SearchServiceAsyncClient {
     /**
      * Returns statistics for the given index, including a document count and storage usage.
      *
-     * @param indexName      the name of the index for which to retrieve statistics
+     * @param indexName the name of the index for which to retrieve statistics
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the index statistics result.
@@ -959,9 +959,9 @@ public class SearchServiceAsyncClient {
     /**
      * Lists all indexes available for an Azure Cognitive Search service.
      *
-     * @param select         selects which top-level properties of the index definitions to retrieve.
-     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *                       The default is all properties
+     * @param select selects which top-level properties of the index definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of indexes.
@@ -1015,16 +1015,16 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
      *
-     * @param index              the definition of the index to create or update
+     * @param index the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
      *                           index by taking the index offline for at least a few seconds. This temporarily causes
      *                           indexing and query requests to fail. Performance and write availability of the index
      *                           can be impaired for several minutes after the index is updated, or longer for very
      *                           large indexes
-     * @param accessCondition    the condition where the operation will be performed if the ETag on the server matches or
-     *                           doesn't match specified values
-     * @param requestOptions     additional parameters for the operation.
-     *                           Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the index that was created or updated
      */
     public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
@@ -1069,11 +1069,11 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param indexName       the name of the index to delete
+     * @param indexName the name of the index to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions  additional parameters for the operation.
-     *                        Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
@@ -1100,7 +1100,7 @@ public class SearchServiceAsyncClient {
     /**
      * Shows how an analyzer breaks text into tokens.
      *
-     * @param indexName      the name of the index for which to test an analyzer
+     * @param indexName the name of the index for which to test an analyzer
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @return analyze result.
      */
@@ -1115,7 +1115,7 @@ public class SearchServiceAsyncClient {
     /**
      * Shows how an analyzer breaks text into tokens.
      *
-     * @param indexName      the name of the index for which to test an analyzer
+     * @param indexName the name of the index for which to test an analyzer
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
@@ -1175,7 +1175,7 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new skillset in an Azure Cognitive Search service.
      *
-     * @param skillset       definition of the skillset containing one or more cognitive skills
+     * @param skillset definition of the skillset containing one or more cognitive skills
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Skillset.
@@ -1215,7 +1215,7 @@ public class SearchServiceAsyncClient {
     /**
      * Retrieves a skillset definition.
      *
-     * @param skillsetName   the name of the skillset to retrieve
+     * @param skillsetName the name of the skillset to retrieve
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the Skillset.
@@ -1255,9 +1255,9 @@ public class SearchServiceAsyncClient {
     /**
      * Lists all skillsets available for an Azure Cognitive Search service.
      *
-     * @param select         selects which top-level properties of the skillset definitions to retrieve.
-     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *                       The default is all properties
+     * @param select selects which top-level properties of the skillset definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of skillsets.
@@ -1311,11 +1311,11 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
-     * @param skillset        the definition of the skillset to create or update
+     * @param skillset the definition of the skillset to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions  additional parameters for the operation.
-     *                        Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the skillset that was created or updated.
      */
     public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
@@ -1360,11 +1360,11 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
-     * @param skillsetName    the name of the skillset to delete
+     * @param skillsetName the name of the skillset to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions  additional parameters for the operation.
-     *                        Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName,
@@ -1405,7 +1405,7 @@ public class SearchServiceAsyncClient {
     /**
      * Determines whether or not the given skillset exists.
      *
-     * @param skillsetName   the name of the skillset
+     * @param skillsetName the name of the skillset
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the skillset exists; false otherwise.
@@ -1443,7 +1443,7 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search synonym map.
      *
-     * @param synonymMap     the definition of the synonym map to create
+     * @param synonymMap the definition of the synonym map to create
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created SynonymMap.
@@ -1522,9 +1522,9 @@ public class SearchServiceAsyncClient {
     /**
      * Lists all synonym maps available for an Azure Cognitive Search service.
      *
-     * @param select         selects which top-level properties of the synonym maps to retrieve.
-     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *                       The default is all properties
+     * @param select selects which top-level properties of the synonym maps to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of synonym maps.
@@ -1579,11 +1579,11 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
      *
-     * @param synonymMap      the definition of the synonym map to create or update
+     * @param synonymMap the definition of the synonym map to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions  additional parameters for the operation.
-     *                        Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the synonym map that was created or updated.
      */
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
@@ -1629,11 +1629,11 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search synonym map.
      *
-     * @param synonymMapName  the name of the synonym map to delete
+     * @param synonymMapName the name of the synonym map to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions  additional parameters for the operation.
-     *                        Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName,

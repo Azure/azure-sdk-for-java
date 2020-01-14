@@ -359,7 +359,7 @@ public class SearchIndexAsyncClient {
     /**
      * Searches for documents in the Azure Cognitive Search index
      *
-     * @param searchText     Search text
+     * @param searchText Search text
      * @param searchOptions  search options
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
@@ -410,7 +410,7 @@ public class SearchIndexAsyncClient {
     /**
      * Retrieves a document from the Azure Cognitive Search index.
      *
-     * @param key            document key
+     * @param key document key
      * @param selectedFields selected fields to return
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
@@ -431,7 +431,7 @@ public class SearchIndexAsyncClient {
     /**
      * Retrieves a document from the Azure Cognitive Search index.
      *
-     * @param key            document key
+     * @param key document key
      * @param selectedFields selected fields to return
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
@@ -472,7 +472,7 @@ public class SearchIndexAsyncClient {
     /**
      * Suggests documents in the Azure Cognitive Search index that match the given partial query text.
      *
-     * @param searchText    search text
+     * @param searchText search text
      * @param suggesterName suggester name
      * @return A {@link PagedFluxBase} that iterates over {@link SuggestResult} objects
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
@@ -489,8 +489,8 @@ public class SearchIndexAsyncClient {
     /**
      * Suggests documents in the Azure Cognitive Search index that match the given partial query text.
      *
-     * @param searchText     search text
-     * @param suggesterName  suggester name
+     * @param searchText search text
+     * @param suggesterName suggester name
      * @param suggestOptions suggest options
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
@@ -568,7 +568,7 @@ public class SearchIndexAsyncClient {
     /**
      * Autocomplete incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
-     * @param searchText    search text
+     * @param searchText search text
      * @param suggesterName suggester name
      * @return auto complete result.
      */
@@ -584,11 +584,11 @@ public class SearchIndexAsyncClient {
     /**
      * Autocomplete incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
-     * @param searchText          search text
-     * @param suggesterName       suggester name
+     * @param searchText search text
+     * @param suggesterName suggester name
      * @param autocompleteOptions autocomplete options
-     * @param requestOptions      additional parameters for the operation.
-     *                            Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return auto complete result.
      */
     public PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
@@ -627,9 +627,9 @@ public class SearchIndexAsyncClient {
     /**
      * Retrieve the first page of a document search
      *
-     * @param searchRequest  the search request
+     * @param searchRequest the search request
      * @param requestOptions the request options
-     * @param context        the context to associate with this operation.
+     * @param context the context to associate with this operation.
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
      */
@@ -644,12 +644,12 @@ public class SearchIndexAsyncClient {
     /**
      * Retrieve the next page of a document search
      *
-     * @param searchRequest      the search request
+     * @param searchRequest the search request
      * @param nextPageParameters json string holding the parameters required to get the next page:
      *                           skip is the number of documents to skip, top is the number of documents per page.
      *                           Due to a limitation in PageFlux, this value is stored as String and converted to its Integer value
      *                           before making the next request
-     * @param context            the context to associate with this operation.
+     * @param context the context to associate with this operation.
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
      */
@@ -697,7 +697,7 @@ public class SearchIndexAsyncClient {
     /**
      * Create search request from search text and parameters
      *
-     * @param searchText    search text
+     * @param searchText search text
      * @param searchOptions search options
      * @return SearchRequest
      */
@@ -737,8 +737,8 @@ public class SearchIndexAsyncClient {
     /**
      * Create suggest request from search text, suggester name, and parameters
      *
-     * @param searchText     search text
-     * @param suggesterName  search text
+     * @param searchText search text
+     * @param suggesterName search text
      * @param suggestOptions suggest options
      * @return SuggestRequest
      */
@@ -779,8 +779,8 @@ public class SearchIndexAsyncClient {
     /**
      * Create Autocomplete request from search text, suggester name, and parameters
      *
-     * @param searchText          search text
-     * @param suggesterName       search text
+     * @param searchText search text
+     * @param suggesterName search text
      * @param autocompleteOptions autocomplete options
      * @return AutocompleteRequest
      */
