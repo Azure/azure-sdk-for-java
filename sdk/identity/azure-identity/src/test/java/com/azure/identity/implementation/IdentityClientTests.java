@@ -9,6 +9,7 @@ import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.IClientSecret;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
@@ -185,13 +186,13 @@ public class IdentityClientTests {
         when(builder.httpClient(any())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
-//            AsymmetricKeyCredential keyCredential = (AsymmetricKeyCredential) invocation.getArguments()[1];
+            IClientCredential keyCredential = (IClientCredential) invocation.getArguments()[1];
             if (!clientId.equals(cid)) {
                 throw new MsalServiceException("Invalid clientId", "InvalidClientId");
             }
-//            if (keyCredential == null || keyCredential.key() == null) {
-//                throw new MsalServiceException("Invalid clientCertificate", "InvalidClientCertificate");
-//            }
+            if (keyCredential == null) {
+                throw new MsalServiceException("Invalid clientCertificate", "InvalidClientCertificate");
+            }
             return builder;
         });
     }
