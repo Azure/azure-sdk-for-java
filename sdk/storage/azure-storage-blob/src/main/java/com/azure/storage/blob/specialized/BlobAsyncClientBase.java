@@ -851,7 +851,7 @@ public class BlobAsyncClientBase {
                         // The first chunk was retrieved during setup.
                         if (chunkNum == 0) {
                             return writeBodyToFile(initialResponse, file, 0, finalParallelTransferOptions, progressLock,
-                                totalProgress).then();
+                                totalProgress);
                         }
 
                         // Calculate whether we need a full chunk or something smaller because we are at the end.
@@ -866,8 +866,7 @@ public class BlobAsyncClientBase {
                             .subscribeOn(Schedulers.elastic())
                             .flatMap(response ->
                                 writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
-                                    totalProgress))
-                            .then();
+                                    totalProgress));
                     })
                     // Only the first download call returns a value.
                     .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
@@ -976,12 +975,7 @@ public class BlobAsyncClientBase {
             finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
 
         // Write to the file.
-        return FluxUtil.collectBytesInByteBufferStream(data)
-            .flatMap(bytes -> {
-                file.write(ByteBuffer.wrap(bytes), chunkNum * finalParallelTransferOptions.getBlockSize());
-                return Mono.empty();
-            })
-            .then();
+        return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSize());
     }
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
