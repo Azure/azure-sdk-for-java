@@ -3,8 +3,8 @@
 
 package com.azure.search;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import org.apache.commons.lang3.StringUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,18 +29,18 @@ class SearchServiceUrlParser {
         // (e.g. http://myservice.search.windows.net ==> myservice.search.windows.net) and verify its structure,
         // we expect the service name and domain to be present.
         String extractedHost = url.getHost();
-        if (StringUtils.isBlank(extractedHost) || extractedHost.startsWith(".") || extractedHost.endsWith(".")) {
+        if (CoreUtils.isNullOrEmpty(extractedHost) || extractedHost.startsWith(".") || extractedHost.endsWith(".")) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Illegal endpoint URL: invalid host"));
         }
 
-        String[] tokens = StringUtils.split(extractedHost, ".");
-        if ((tokens.length < 3) || (StringUtils.isBlank(tokens[0]))) {
+        String[] tokens = extractedHost.split("\\.");
+        if ((tokens.length < 3) || (CoreUtils.isNullOrEmpty(tokens[0]))) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Illegal endpoint URL: invalid host"));
         }
 
         // split the service name and dns suffix
         String serviceName = tokens[0];
-        int index = StringUtils.indexOf(extractedHost, ".");
+        int index = extractedHost.indexOf(".");
         String searchDnsSuffix = extractedHost.substring(index + 1);
 
         return new SearchServiceUrlParts(serviceName, searchDnsSuffix);

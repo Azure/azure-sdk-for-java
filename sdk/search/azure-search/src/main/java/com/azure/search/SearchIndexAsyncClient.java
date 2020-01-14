@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -33,7 +34,6 @@ import com.azure.search.models.SuggestRequest;
 import com.azure.search.models.SuggestResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -90,7 +90,7 @@ public class SearchIndexAsyncClient {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
 
-        if (StringUtils.isBlank(indexName)) {
+        if (CoreUtils.isNullOrEmpty(indexName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid indexName"));
         }
         if (apiVersion == null) {
@@ -559,7 +559,7 @@ public class SearchIndexAsyncClient {
         String nextPageParameters,
         Context context) {
 
-        if (StringUtils.isBlank(nextPageParameters)) {
+        if (CoreUtils.isNullOrEmpty(nextPageParameters)) {
             return Mono.empty();
         }
 

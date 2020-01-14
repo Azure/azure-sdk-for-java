@@ -14,7 +14,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import org.apache.commons.lang3.StringUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -118,7 +117,7 @@ public class SearchServiceClientBuilder {
      * @throws IllegalArgumentException when the api key is empty
      */
     public SearchServiceClientBuilder credential(SearchApiKeyCredential searchApiKeyCredential) {
-        if (searchApiKeyCredential == null || StringUtils.isBlank(searchApiKeyCredential.getApiKey())) {
+        if (searchApiKeyCredential == null || CoreUtils.isNullOrEmpty(searchApiKeyCredential.getApiKey())) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Empty apiKeyCredentials"));
         }
         this.searchApiKeyCredential = searchApiKeyCredential;

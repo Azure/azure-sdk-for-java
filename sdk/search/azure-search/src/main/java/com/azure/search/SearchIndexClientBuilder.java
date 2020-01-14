@@ -21,7 +21,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import org.apache.commons.lang3.StringUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -134,7 +133,7 @@ public class SearchIndexClientBuilder {
      * @return the updated SearchIndexClientBuilder object
      */
     public SearchIndexClientBuilder indexName(String indexName) {
-        if (StringUtils.isBlank(indexName)) {
+        if (CoreUtils.isNullOrEmpty(indexName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid indexName"));
         }
         this.indexName = indexName;
@@ -161,7 +160,7 @@ public class SearchIndexClientBuilder {
      * @throws IllegalArgumentException when the api key is empty
      */
     public SearchIndexClientBuilder credential(SearchApiKeyCredential searchApiKeyCredential) {
-        if (searchApiKeyCredential == null || StringUtils.isBlank(searchApiKeyCredential.getApiKey())) {
+        if (searchApiKeyCredential == null || CoreUtils.isNullOrEmpty(searchApiKeyCredential.getApiKey())) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Empty apiKeyCredentials"));
         }
         this.searchApiKeyCredential = searchApiKeyCredential;

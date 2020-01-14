@@ -5,7 +5,6 @@ package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +44,7 @@ public class CoordinateSystem {
      * @return true if valid, false if invalid
      */
     public boolean isValid() {
-        return StringUtils.equals(NAME_PROPERTY, type)
+        return NAME_PROPERTY.equals(type)
             && properties != null
             && properties.keySet().size() == 1
             && properties.containsKey(NAME_PROPERTY)

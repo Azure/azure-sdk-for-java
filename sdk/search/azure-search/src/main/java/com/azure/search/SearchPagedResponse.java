@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.SearchDocumentsResult;
 import com.azure.search.models.SearchRequest;
@@ -14,7 +15,6 @@ import com.azure.search.models.SearchResult;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),
             documentSearchResponse.getValue().getResults(),
-            StringUtils.isBlank(documentSearchResponse.getValue().getNextLink())
+            CoreUtils.isNullOrEmpty(documentSearchResponse.getValue().getNextLink())
                 || documentSearchResponse.getValue().getNextPageParameters() == null
                 || documentSearchResponse.getValue().getNextPageParameters().getSkip() == null
                 ? null : serialize(documentSearchResponse.getValue().getNextPageParameters()),
