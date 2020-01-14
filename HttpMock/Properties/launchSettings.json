@@ -1,0 +1,20 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:3607/",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "HttpMock": {
+      "commandName": "Project",
+      "commandLineArgs": "--dots -s storageblob",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:3608/"
+    }
+  }
+}

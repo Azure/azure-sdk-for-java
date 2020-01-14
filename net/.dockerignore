@@ -1,13 +1,12 @@
-# directories
-**/bin/
-**/obj/
-**/out/
-
-# files
+# Docker
+**/Dockerfile
 .dockerignore
-Dockerfile*
-**/*.trx
-**/*.md
+
+# Build Outputs
+**/bin
+**/obj
+**/out
+
+# Misc
+**/.vs
 **/*.ps1
-**/*.cmd
-**/*.sh
