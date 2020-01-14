@@ -136,6 +136,10 @@ Represents an HTTP response from the autocomplete API request that contains a li
 
 [Search queries options with async client](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchOptionsAsyncExample.java)
 
+## Examples
+
+Samples are explained in detail [here][samples_readme].
+
 ## Troubleshooting
 
 ### General
