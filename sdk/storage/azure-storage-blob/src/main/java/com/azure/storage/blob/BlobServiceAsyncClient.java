@@ -19,7 +19,6 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
-import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
@@ -463,7 +462,7 @@ public final class BlobServiceAsyncClient {
             return;
         }
         if (retentionPolicy.isEnabled()) {
-            StorageImplUtils.assertInBounds(policyName,retentionPolicy.getDays(), 1, 365);
+            StorageImplUtils.assertInBounds(policyName, retentionPolicy.getDays(), 1, 365);
         }
     }
 
