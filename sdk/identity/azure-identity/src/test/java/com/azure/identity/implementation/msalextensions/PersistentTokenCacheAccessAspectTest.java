@@ -42,13 +42,13 @@ public class PersistentTokenCacheAccessAspectTest {
         };
 
         confApp = ConfidentialClientApplication.builder(TestConfiguration.CONFIDENTIAL_CLIENT_ID,
-                ClientCredentialFactory.create(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET))
+                ClientCredentialFactory.createFromSecret(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET))
                 .authority(TestConfiguration.TENANT_SPECIFIC_AUTHORITY)
                 .setTokenCacheAccessAspect(accessAspect)
                 .build();
 
         confApp2 = ConfidentialClientApplication.builder(TestConfiguration.CONFIDENTIAL_CLIENT_ID_2,
-                ClientCredentialFactory.create(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET_2))
+                ClientCredentialFactory.createFromSecret(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET_2))
                 .authority(TestConfiguration.TENANT_SPECIFIC_AUTHORITY)
                 .setTokenCacheAccessAspect(accessAspect)
                 .build();
