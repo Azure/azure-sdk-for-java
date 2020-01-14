@@ -5,8 +5,12 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
+import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
@@ -24,7 +28,7 @@ import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ConfigurationClientBuilderTest {
+public class ConfigurationClientBuilderTest extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String DEFAULT_DOMAIN_NAME = ".azconfig.io";
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -146,18 +150,28 @@ public class ConfigurationClientBuilderTest {
     }
 
     @Test
-    public void defaultPipelineWithAADCredential() throws NoSuchAlgorithmException, InvalidKeyException {
+    public void defaultPipelineWithAADCredential() {
         final String key = "newKey";
         final String value = "newValue";
-
         final String connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-        final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
-            .endpoint(new ConfigurationClientCredentials(connectionString).getBaseUri())
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .pipeline(new HttpPipelineBuilder().build());
+        final ConfigurationClientBuilder clientBuilder;
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(interceptorManager.getPlaybackClient())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        } else {
+            clientBuilder = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy())
+                .pipeline(new HttpPipelineBuilder().build());
 
-        assertThrows(HttpResponseException.class,
-            () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
+            assertThrows(HttpResponseException.class,
+                () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
+        }
 
         clientBuilder.pipeline(null);
 
