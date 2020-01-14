@@ -132,6 +132,7 @@ public class ReadMyWritesConsistencyTest {
         ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg) {
             @Override
             protected void onError(Throwable throwable) {
+                logger.error("Error occurred in ReadMyWriteWorkflow", throwable);
                 error.incrementAndGet();
             }
 

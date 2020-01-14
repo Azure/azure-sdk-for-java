@@ -4,18 +4,21 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.ResourceResponse;
+import org.apache.commons.lang3.StringUtils;
 
 public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabaseProperties> {
     private final CosmosAsyncDatabase database;
 
     CosmosAsyncDatabaseResponse(ResourceResponse<Database> response, CosmosAsyncClient client) {
         super(response);
-        if (response.getResource() == null) {
+        String bodyAsString = response.getBodyAsString();
+        if (StringUtils.isEmpty(bodyAsString)) {
             super.setProperties(null);
             database = null;
         } else {
-            super.setProperties(new CosmosDatabaseProperties(response));
-            database = new CosmosAsyncDatabase(this.getProperties().getId(), client);
+            CosmosDatabaseProperties props = new CosmosDatabaseProperties(bodyAsString, null);
+            super.setProperties(props);
+            database = new CosmosAsyncDatabase(props.getId(), client);
         }
     }
 

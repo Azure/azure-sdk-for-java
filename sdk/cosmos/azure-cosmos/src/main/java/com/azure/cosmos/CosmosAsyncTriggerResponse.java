@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.Trigger;
+import org.apache.commons.lang3.StringUtils;
 
 public class CosmosAsyncTriggerResponse extends CosmosResponse<CosmosTriggerProperties> {
 
@@ -12,13 +13,13 @@ public class CosmosAsyncTriggerResponse extends CosmosResponse<CosmosTriggerProp
 
     CosmosAsyncTriggerResponse(ResourceResponse<Trigger> response, CosmosAsyncContainer container) {
         super(response);
-        if (response.getResource() != null) {
-            super.setProperties(new CosmosTriggerProperties(response));
-            cosmosTriggerProperties = new CosmosTriggerProperties(response);
-            cosmosTrigger = new CosmosAsyncTrigger(cosmosTriggerProperties.getId(), container);
-        } else {
+        String bodyAsString = response.getBodyAsString();
+        if (StringUtils.isEmpty(bodyAsString)) {
             cosmosTriggerProperties = null;
             cosmosTrigger = null;
+        } else {
+            cosmosTriggerProperties = new CosmosTriggerProperties(bodyAsString);
+            cosmosTrigger = new CosmosAsyncTrigger(cosmosTriggerProperties.getId(), container);
         }
     }
 

@@ -18,10 +18,6 @@ public class CosmosUserDefinedFunctionProperties extends Resource {
         super();
     }
 
-    CosmosUserDefinedFunctionProperties(ResourceResponse<UserDefinedFunction> response) {
-        super(response.getResource().toJson());
-    }
-
     /**
      * Constructor.
      *

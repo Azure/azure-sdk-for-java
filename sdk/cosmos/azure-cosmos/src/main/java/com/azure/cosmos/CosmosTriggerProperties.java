@@ -28,10 +28,6 @@ public class CosmosTriggerProperties extends Resource {
         super(jsonString);
     }
 
-    CosmosTriggerProperties(ResourceResponse<Trigger> response) {
-        super(response.getResource().toJson());
-    }
-
     /**
      * Sets the id
      *

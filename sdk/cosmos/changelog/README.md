@@ -1,5 +1,29 @@
 ## Changelog
 
+### unreleased
+- Added the ability to select default Direct TCP options
+
+  In priority order we will take default Direct TCP options from:
+
+  - The string value of system property `"azure.cosmos.directTcp.options"`
+
+    Example:
+    ```
+    -Dazure.cosmos.directTcp.defaultOptions={\"idleEndpointTimeout\":"PT1M10S",\"maxChannelsPerEndpoint\":10,\"maxRequestsPerChannel\":30}
+    ```
+   - The contents of the file located by the system property "azure.cosmos.directTcp.defaultOptionsFile".
+
+     Example:
+     ```
+     -Dazure.cosmos.directTcp.defaultOptionsFile=/path/to/default/options/file
+     ```
+
+   - The contents of the resource file named `"azure.cosmos.directTcp.options.json"`
+
+   Otherwise, if none of these values are set or an error occurs we create default options based on a set of hard-wired 
+   values defined in the default private parameterless constructor for `RntbdTransportClient.Options` as we did before 
+   this release.
+
 ### 4.0.0-preview.1
 - GroupId change from com.microsoft.azure to com.azure
 - Namespace changes from microsoft-azure-cosmos to azure-cosmos

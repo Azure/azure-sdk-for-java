@@ -66,9 +66,62 @@ public class ClientRetryPolicyTest {
             Mono<IRetryPolicy.ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(exception);
             validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
-                    .shouldRetry(true)
-                    .backOfTime(i > 0 ? Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS) : Duration.ZERO)
+                    .shouldRetry(false)
                     .build());
+
+            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
+            Mockito.verify(endpointManager, Mockito.times(i + 1)).markEndpointUnavailableForWrite(Mockito.any());
+        }
+    }
+
+    @Test(groups = "unit")
+    public void networkFailureOnUpsert() throws Exception {
+        RetryOptions retryOptions = new RetryOptions();
+        GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
+
+        Exception exception = ReadTimeoutException.INSTANCE;
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            OperationType.Upsert, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+        for (int i = 0; i < 10; i++) {
+            Mono<IRetryPolicy.ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(exception);
+            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                                                             .nullException()
+                                                             .shouldRetry(false)
+                                                             .build());
+
+            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
+            Mockito.verify(endpointManager, Mockito.times(i + 1)).markEndpointUnavailableForWrite(Mockito.any());
+        }
+    }
+
+    @Test(groups = "unit")
+    public void networkFailureOnDelete() throws Exception {
+        RetryOptions retryOptions = new RetryOptions();
+        GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
+
+        Exception exception = ReadTimeoutException.INSTANCE;
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            OperationType.Delete, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+        for (int i = 0; i < 10; i++) {
+            Mono<IRetryPolicy.ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(exception);
+            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                                                             .nullException()
+                                                             .shouldRetry(false)
+                                                             .build());
 
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
             Mockito.verify(endpointManager, Mockito.times(i + 1)).markEndpointUnavailableForWrite(Mockito.any());

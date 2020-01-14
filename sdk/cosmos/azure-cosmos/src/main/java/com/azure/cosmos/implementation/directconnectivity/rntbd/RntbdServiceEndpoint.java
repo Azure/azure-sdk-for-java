@@ -317,7 +317,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             checkNotNull(sslContext, "expected non-null sslContext");
 
             final DefaultThreadFactory threadFactory = new DefaultThreadFactory("cosmos-rntbd-nio", true);
-            final int threadCount = 2 * Runtime.getRuntime().availableProcessors();
+            final int threadCount = Runtime.getRuntime().availableProcessors();
             final LogLevel wireLogLevel;
 
             if (logger.isTraceEnabled()) {
@@ -330,9 +330,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
             this.transportClient = transportClient;
             this.config = new Config(options, sslContext, wireLogLevel);
-            this.requestTimer = new RntbdRequestTimer(config.requestTimeoutInNanos());
-            this.eventLoopGroup = new NioEventLoopGroup(threadCount, threadFactory);
 
+            this.requestTimer = new RntbdRequestTimer(
+                config.requestTimeoutInNanos(),
+                config.requestTimerResolutionInNanos());
+
+            this.eventLoopGroup = new NioEventLoopGroup(threadCount, threadFactory);
             this.endpoints = new ConcurrentHashMap<>();
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();

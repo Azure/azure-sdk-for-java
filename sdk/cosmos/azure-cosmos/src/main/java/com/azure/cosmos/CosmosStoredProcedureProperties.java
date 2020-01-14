@@ -50,10 +50,6 @@ public class CosmosStoredProcedureProperties extends Resource {
         this.setBody(body);
     }
 
-    CosmosStoredProcedureProperties(ResourceResponse<StoredProcedure> response) {
-        super(response.getResource().toJson());
-    }
-
     /**
      * Get the body of the stored procedure.
      *
