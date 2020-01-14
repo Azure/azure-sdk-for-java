@@ -56,8 +56,71 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * {@inheritDoc}
      */
     @Override
+    public String getName() {
+        return classPath;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isTraceEnabled() {
+        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
+        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
+        return currentLogLevel.getLogLevel() < LogLevel.VERBOSE.getLogLevel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void trace(final String msg) {
+        logMessageWithFormat("TRACE", msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void trace(final String format, final Object arg1) {
+        logMessageWithFormat("TRACE", format, arg1);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void trace(final String format, final Object arg1, final Object arg2) {
+        logMessageWithFormat("TRACE", format, arg1, arg2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void trace(final String format, final Object... arguments) {
+        logMessageWithFormat("TRACE", format, arguments);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void trace(final String msg, final Throwable t) {
+        log("TRACE", msg, t);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isDebugEnabled() {
         return isLogLevelEnabledFromEnv(LogLevel.VERBOSE);
+    }
+
+    @Override
+    public void debug(final String msg) {
+        logMessageWithFormat("DEBUG", msg);
     }
 
     /**
@@ -65,7 +128,15 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public void debug(String format, Object arg) {
-        logFromFormat(LogLevel.VERBOSE, format, arg);
+        logMessageWithFormat("DEBUG", format, arg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void debug(final String format, final Object arg1, final Object arg2) {
+        logMessageWithFormat("DEBUG", format, arg1, arg2);;
     }
 
     /**
@@ -73,7 +144,15 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public void debug(String format, Object... args) {
-        logFromFormat(LogLevel.VERBOSE, format, args);
+        logMessageWithFormat("DEBUG", format, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void debug(final String msg, final Throwable t) {
+        log("DEBUG", msg, t);
     }
 
     /**
@@ -84,21 +163,45 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         return isLogLevelEnabledFromEnv(LogLevel.INFORMATIONAL);
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void info(final String msg) {
+        logMessageWithFormat("INFO", msg);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void info(String format, Object arg) {
-        logFromFormat(LogLevel.INFORMATIONAL, format, arg);
+        logMessageWithFormat("INFO", format, arg);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void info(final String format, final Object arg1, final Object arg2) {
+        logMessageWithFormat("INFO", format, arg1, arg2);
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void info(String format, Object... args) {
-        logFromFormat(LogLevel.INFORMATIONAL, format, args);
+        logMessageWithFormat("INFO", format, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void info(final String msg, final Throwable t) {
+        log("INFO", msg, t);
     }
 
     /**
@@ -113,8 +216,24 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * {@inheritDoc}
      */
     @Override
+    public void warn(final String msg) {
+        logMessageWithFormat("WARN", msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void warn(String format, Object arg) {
-        logFromFormat(LogLevel.WARNING, format, arg);
+        logMessageWithFormat("WARN", format, arg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void warn(final String format, final Object arg1, final Object arg2) {
+        logMessageWithFormat("WARN", format, arg1, arg2);
     }
 
     /**
@@ -122,7 +241,15 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public void warn(String format, Object... args) {
-        logFromFormat(LogLevel.WARNING, format, args);
+        logMessageWithFormat("WARN", format, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void warn(final String msg, final Throwable t) {
+        log("WARN", msg, t);
     }
 
     /**
@@ -138,7 +265,23 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public void error(String format, Object arg) {
-        logFromFormat(LogLevel.ERROR, format, arg);
+        logMessageWithFormat("ERROR", format, arg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(final String msg) {
+        logMessageWithFormat("ERROR", msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(final String format, final Object arg1, final Object arg2) {
+        logMessageWithFormat("ERROR", format, arg1, arg2);
     }
 
     /**
@@ -146,7 +289,15 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public void error(String format, Object... args) {
-        logFromFormat(LogLevel.ERROR, format, args);
+        logMessageWithFormat("ERROR", format, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(final String msg, final Throwable t) {
+        log("ERROR", msg, t);
     }
 
     private boolean isLogLevelEnabledFromEnv(LogLevel logLevel) {
@@ -158,26 +309,25 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     /**
      * Format and write the message according to the {@code MESSAGE_TEMPLATE}.
      *
-     * @param level The level to log.
+     * @param levelName The level to log.
      * @param format The log message format.
      * @param arguments a list of arbitrary arguments taken in by format.
      */
-    private void logFromFormat(LogLevel level, String format, Object... arguments) {
+    private void logMessageWithFormat(String levelName, String format, Object... arguments) {
         FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
-        log(level, tp.getMessage(), tp.getThrowable());
+        log(levelName, tp.getMessage(), tp.getThrowable());
     }
 
     /**
      * Format and write the message according to the {@code MESSAGE_TEMPLATE}.
      *
-     * @param level log level
+     * @param levelName log level
      * @param message The message itself
      * @param t The exception whose stack trace should be logged
      */
-    private void log(LogLevel level, String message, Throwable t) {
+    private void log(String levelName, String message, Throwable t) {
         String dateTime = getFormattedDate();
         String threadName = Thread.currentThread().getName();
-        String levelName = level.name();
         StringBuilder buf = new StringBuilder(64);
         buf.append(String.format(MESSAGE_TEMPLATE, dateTime, threadName, levelName, classPath, message));
         writeWithThrowable(buf, t);
@@ -208,161 +358,5 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             }
         }
         System.out.println(buf.toString());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getName() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isTraceEnabled() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void trace(final String msg) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void trace(final String format, final Object arg1) {
-        throw new UnsupportedOperationException();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void trace(final String format, final Object arg1, final Object arg2) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void trace(final String format, final Object... arguments) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void trace(final String msg, final Throwable t) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void debug(final String msg) {
-        throw new UnsupportedOperationException();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void debug(final String format, final Object arg1, final Object arg2) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void debug(final String msg, final Throwable t) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void info(final String msg) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void info(final String format, final Object arg1, final Object arg2) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void info(final String msg, final Throwable t) {
-        throw new UnsupportedOperationException();
-    }
-
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void warn(final String msg) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void warn(final String format, final Object arg1, final Object arg2) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void warn(final String msg, final Throwable t) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void error(final String msg) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void error(final String format, final Object arg1, final Object arg2) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void error(final String msg, final Throwable t) {
-        throw new UnsupportedOperationException();
     }
 }
