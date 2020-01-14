@@ -204,6 +204,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
         if (isTerminated()) {
             logger.info("Processor is already terminated.");
+
+            actual.onSubscribe(Operators.emptySubscription());
+
             if (hasError()) {
                 actual.onError(lastError);
             } else {

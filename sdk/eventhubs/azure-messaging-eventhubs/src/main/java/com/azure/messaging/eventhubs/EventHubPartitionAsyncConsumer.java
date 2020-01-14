@@ -52,6 +52,11 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         this.eventHubName = eventHubName;
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
+        this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
+
+        if (trackLastEnqueuedEventProperties) {
+            lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
+        }
 
         currentEventPosition.set(() -> {
             final Long offset = currentOffset;
@@ -75,11 +80,6 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                 }
             })
             .subscribeWith(EmitterProcessor.create(false));
-        this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
-
-        if (trackLastEnqueuedEventProperties) {
-            lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
-        }
     }
 
     /**

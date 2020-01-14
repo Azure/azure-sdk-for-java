@@ -192,6 +192,8 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
         if (isDisposed()) {
             logger.info("Processor is already terminated.");
+            actual.onSubscribe(Operators.emptySubscription());
+
             if (lastError != null) {
                 actual.onError(lastError);
             } else {
