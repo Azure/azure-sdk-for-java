@@ -148,10 +148,10 @@ public class EventProcessorClientTest {
         // Assert
         assertNotNull(eventProcessorClient.getIdentifier());
 
-        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
 
-        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
             .assertNext(partitionOwnership -> {
                 assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
                 assertEquals("test-consumer", partitionOwnership.getConsumerGroup(), "Consumer");
@@ -287,7 +287,7 @@ public class EventProcessorClientTest {
 
         // Assert
         Assertions.assertTrue(completed);
-        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
 
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
@@ -297,7 +297,7 @@ public class EventProcessorClientTest {
         // We expected one to be removed.
         Assertions.assertEquals(2, identifiers.size());
 
-        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
             .assertNext(po -> {
                 String partitionId = po.getPartitionId();
                 verify(consumer1, atLeastOnce()).receiveFromPartition(eq(partitionId), any(EventPosition.class), any());
@@ -305,7 +305,7 @@ public class EventProcessorClientTest {
     }
 
     private PartitionEvent getEvent(EventData event) {
-        PartitionContext context = new PartitionContext("ns", "foo", "bar", "baz");
+        PartitionContext context = new PartitionContext("test-ns", "foo", "bar", "baz");
         return new PartitionEvent(context, event, null);
     }
 
