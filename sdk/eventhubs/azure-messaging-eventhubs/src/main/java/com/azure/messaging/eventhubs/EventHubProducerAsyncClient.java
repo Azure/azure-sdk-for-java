@@ -438,11 +438,6 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
-        logger.info("sendInternal AZURE_EVENTHUBS_CONNECTION_STRING=" +
-            System.getenv("AZURE_EVENTHUBS_CONNECTION_STRING"));
-        logger.error("sendInternal AZURE_EVENTHUBS_CONNECTION_STRING=" +
-            System.getenv("AZURE_EVENTHUBS_CONNECTION_STRING"));
-
         final String partitionKey = options.getPartitionKey();
         final String partitionId = options.getPartitionId();
 
