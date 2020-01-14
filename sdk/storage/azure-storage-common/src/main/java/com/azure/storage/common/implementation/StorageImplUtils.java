@@ -265,7 +265,7 @@ public class StorageImplUtils {
     public static void throwIfContainsHeader(HttpHeaders headers, String header, String operationName,
         String serviceVersion) {
         if (headers.get(header) != null) {
-            throw new IllegalArgumentException(header + " is not supported for " + operationName + " in service "
+            throw new IllegalStateException(header + " is not supported for " + operationName + " in service "
                 + "version " + serviceVersion);
         }
     }
@@ -282,7 +282,7 @@ public class StorageImplUtils {
     public static void throwIfContainsQuery(URL url, String query, String operationName,
         String serviceVersion) {
         if (url.getQuery() != null && url.getQuery().contains(query)) {
-            throw new IllegalArgumentException("The query " + query + " is not supported for " + operationName
+            throw new IllegalStateException("The query " + query + " is not supported for " + operationName
                 + " in service version " + serviceVersion);
         }
     }

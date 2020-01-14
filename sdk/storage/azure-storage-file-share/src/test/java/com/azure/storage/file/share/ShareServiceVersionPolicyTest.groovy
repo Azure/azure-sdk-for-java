@@ -50,7 +50,7 @@ class ShareServiceVersionPolicyTest extends APISpec {
         lc.acquireLease()
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(IllegalStateException)
         e.getMessage() == "x-ms-lease-duration is not supported for any file API in service version 2019-02-02"
     }
 
@@ -74,7 +74,7 @@ class ShareServiceVersionPolicyTest extends APISpec {
         poller.poll()
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(IllegalStateException)
         e.getMessage() == exceptionKeyWord + " is not supported for copy file in service version 2019-02-02"
 
         where:

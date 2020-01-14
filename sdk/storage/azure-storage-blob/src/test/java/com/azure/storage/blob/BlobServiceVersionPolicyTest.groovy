@@ -45,7 +45,7 @@ class BlobServiceVersionPolicyTest extends APISpec {
         cpkncesContainer.createWithResponse(null, null, null, null)
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(IllegalStateException)
         e.getMessage() == "x-ms-default-encryption-scope is not supported for create container in service version 2019-02-02"
     }
 
@@ -61,7 +61,7 @@ class BlobServiceVersionPolicyTest extends APISpec {
         cpkncesContainer.createWithResponse(null, null, null, null)
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(IllegalStateException)
         e.getMessage() == "x-ms-deny-encryption-scope-override is not supported for create container in service version 2019-02-02"
     }
 
@@ -79,21 +79,21 @@ class BlobServiceVersionPolicyTest extends APISpec {
         cpknAppendBlob.create()
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(IllegalStateException)
         e.getMessage() == "x-ms-encryption-scope is not supported for any blob API in service version 2019-02-02"
 
         when:
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES)
 
         then:
-        e = thrown(IllegalArgumentException)
+        e = thrown(IllegalStateException)
         e.getMessage() == "x-ms-encryption-scope is not supported for any blob API in service version 2019-02-02"
 
         when:
         cpknBlockBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         then:
-        e = thrown(IllegalArgumentException)
+        e = thrown(IllegalStateException)
         e.getMessage() == "x-ms-encryption-scope is not supported for any blob API in service version 2019-02-02"
     }
 
@@ -114,7 +114,7 @@ class BlobServiceVersionPolicyTest extends APISpec {
         managedDiskBlob.getManagedDiskRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapUrl, null, null, null)
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(IllegalStateException)
         e.getMessage() == "x-ms-previous-snapshot-url is not supported for any blob API in service version 2019-02-02"
     }
 
