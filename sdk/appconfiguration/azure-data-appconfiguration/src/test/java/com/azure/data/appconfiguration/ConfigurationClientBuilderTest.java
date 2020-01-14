@@ -12,6 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -25,6 +26,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -34,6 +37,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
 
     private static final String ENDPOINT = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
+    static String connectionString;
 
     @Test
     public void missingEndpoint() {
@@ -100,61 +104,112 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
-    public void validAADCredential() throws NoSuchAlgorithmException, InvalidKeyException {
+    public void validAADCredential() {
         final String key = "newKey";
         final String value = "newValue";
 
-        final String connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-        final ConfigurationClient client = new ConfigurationClientBuilder()
-            .endpoint(new ConfigurationClientCredentials(connectionString).getBaseUri())
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .retryPolicy(new RetryPolicy())
-            .configuration(Configuration.getGlobalConfiguration())
-            .buildClient();
+        connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
 
-        ConfigurationSetting addedSetting = client.setConfigurationSetting(key, null, value);
-        Assertions.assertEquals(addedSetting.getKey(), key);
-        Assertions.assertEquals(addedSetting.getValue(), value);
-    }
-
-    @Test
-    public void timeoutPolicyWithAADCredential() throws NoSuchAlgorithmException, InvalidKeyException {
-        final String key = "newKey";
-        final String value = "newValue";
-
-        final String connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-        final ConfigurationClient client = new ConfigurationClientBuilder()
-            .endpoint(new ConfigurationClientCredentials(connectionString).getBaseUri())
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .addPolicy(new TimeoutPolicy(Duration.ofMillis(1)))
-            .buildClient();
-
-        assertThrows(RuntimeException.class, () -> client.setConfigurationSetting(key, null, value));
-    }
-
-    @Test
-    public void nullServiceVersionWithAADCredential() throws NoSuchAlgorithmException, InvalidKeyException {
-        final String key = "newKey";
-        final String value = "newValue";
-
-        final String connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-        final ConfigurationClient client = new ConfigurationClientBuilder()
-            .endpoint(new ConfigurationClientCredentials(connectionString).getBaseUri())
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .serviceVersion(null)
-            .buildClient();
-
-        ConfigurationSetting addedSetting = client.setConfigurationSetting(key, null, value);
-        Assertions.assertEquals(addedSetting.getKey(), key);
-        Assertions.assertEquals(addedSetting.getValue(), value);
-    }
-
-    @Test
-    public void defaultPipelineWithAADCredential() {
-        final String key = "newKey";
-        final String value = "newValue";
-        final String connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+        Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
         final ConfigurationClientBuilder clientBuilder;
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(interceptorManager.getPlaybackClient())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        } else {
+            clientBuilder = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy())
+                .configuration(Configuration.getGlobalConfiguration())
+                .pipeline(new HttpPipelineBuilder().build());
+        }
+
+        ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
+        Assertions.assertEquals(addedSetting.getKey(), key);
+        Assertions.assertEquals(addedSetting.getValue(), value);
+    }
+
+    @Test
+    public void timeoutPolicy() {
+        final String key = "newKey";
+        final String value = "newValue";
+
+        connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+
+        Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
+
+        final ConfigurationClientBuilder clientBuilder;
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(interceptorManager.getPlaybackClient())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        } else {
+            clientBuilder = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy())
+                .addPolicy(new TimeoutPolicy(Duration.ofMillis(1)))
+                .pipeline(new HttpPipelineBuilder().build());
+        }
+
+        assertThrows(RuntimeException.class, () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
+    }
+
+    @Test
+    public void nullServiceVersion() {
+        final String key = "newKey";
+        final String value = "newValue";
+        connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+
+        Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
+
+        final ConfigurationClientBuilder clientBuilder;
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(interceptorManager.getPlaybackClient())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        } else {
+            clientBuilder = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy())
+                .serviceVersion(null)
+                .pipeline(new HttpPipelineBuilder().build());
+        }
+
+        ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
+        Assertions.assertEquals(addedSetting.getKey(), key);
+        Assertions.assertEquals(addedSetting.getValue(), value);
+    }
+
+    @Test
+    public void defaultPipeline() {
+        final String key = "newKey";
+        final String value = "newValue";
+        final ConfigurationClientBuilder clientBuilder;
+
+        connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+
+        Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
+
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
