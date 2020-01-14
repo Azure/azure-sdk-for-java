@@ -14,9 +14,9 @@ import java.util.Map;
 
 /**
  * This class defines a custom exception type for all operations on
- * DocumentClient in the Azure Cosmos DB database service. Applications are
+ * CosmosClient in the Azure Cosmos DB database service. Applications are
  * expected to catch CosmosClientException and handle errors as appropriate when
- * calling methods on DocumentClient.
+ * calling methods on CosmosClient.
  * <p>
  * Errors coming from the service during normal execution are converted to
  * CosmosClientException before returning to the application with the following
@@ -28,7 +28,7 @@ import java.util.Map;
  * When a transport level error happens that request is not able to reach the
  * service, an IllegalStateException is thrown instead of CosmosClientException.
  */
-public class CosmosClientException extends Exception {
+public class CosmosClientException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     private final int statusCode;
