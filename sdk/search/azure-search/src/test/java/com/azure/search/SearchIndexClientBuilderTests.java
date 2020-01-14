@@ -194,7 +194,7 @@ public class SearchIndexClientBuilderTests {
 
     @Test
     public void verifyNullApiKeyIsInvalidAsyncTest() {
-        expectThrowsWithMessage("Empty apiKeyCredentials", () -> new SearchIndexClientBuilder()
+        expectNullPointerExceptionWithMessage("Empty apiKeyCredentials", () -> new SearchIndexClientBuilder()
             .endpoint(searchEndpoint)
             .credential(null)
             .indexName(indexName)
@@ -204,7 +204,7 @@ public class SearchIndexClientBuilderTests {
 
     @Test
     public void verifyNullApiKeyIsInvalidTest() {
-        expectThrowsWithMessage("Empty apiKeyCredentials", () -> new SearchIndexClientBuilder()
+        expectNullPointerExceptionWithMessage("Empty apiKeyCredentials", () -> new SearchIndexClientBuilder()
             .endpoint(searchEndpoint)
             .credential(null)
             .indexName(indexName)
@@ -347,6 +347,17 @@ public class SearchIndexClientBuilderTests {
 
         } catch (Exception e) {
             Assert.assertEquals(IllegalArgumentException.class, e.getClass());
+            Assert.assertTrue(e.getMessage().contains(expectedMessage));
+        }
+    }
+
+    private void expectNullPointerExceptionWithMessage(String expectedMessage, Runnable runnable) {
+        try {
+            runnable.run();
+            Assert.fail();
+
+        } catch (Exception e) {
+            Assert.assertEquals(NullPointerException.class, e.getClass());
             Assert.assertTrue(e.getMessage().contains(expectedMessage));
         }
     }
