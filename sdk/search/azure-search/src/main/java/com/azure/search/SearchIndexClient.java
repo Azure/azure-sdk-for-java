@@ -3,9 +3,7 @@
 
 package com.azure.search;
 
-import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedIterableBase;
@@ -65,7 +63,6 @@ public class SearchIndexClient {
      * @param documents collection of documents to upload to the target Index.
      * @return document index result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult uploadDocuments(Iterable<?> documents) {
         return this.uploadDocumentsWithResponse(documents, Context.NONE).getValue();
     }
@@ -77,7 +74,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the document index result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.uploadDocumentsWithResponse(documents, context).block();
     }
@@ -88,7 +84,6 @@ public class SearchIndexClient {
      * @param documents collection of documents to be merged
      * @return document index result
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult mergeDocuments(Iterable<?> documents) {
         return this.mergeDocumentsWithResponse(documents, Context.NONE).getValue();
     }
@@ -100,7 +95,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the document index result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.mergeDocumentsWithResponse(documents, context).block();
     }
@@ -112,7 +106,6 @@ public class SearchIndexClient {
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult mergeOrUploadDocuments(Iterable<?> documents) {
         return this.mergeOrUploadDocumentsWithResponse(documents, Context.NONE).getValue();
     }
@@ -125,7 +118,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document index result
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.mergeOrUploadDocumentsWithResponse(documents, context).block();
     }
@@ -136,7 +128,6 @@ public class SearchIndexClient {
      * @param documents collection of documents to delete from the target Index.
      * @return document index result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult deleteDocuments(Iterable<?> documents) {
         return this.deleteDocumentsWithResponse(documents, Context.NONE).getValue();
     }
@@ -148,7 +139,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document index result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.deleteDocumentsWithResponse(documents, context).block();
     }
@@ -186,7 +176,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the number of documents.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Long> getDocumentCountWithResponse(Context context) {
         Mono<Response<Long>> result = asyncClient.getDocumentCountWithResponse(context);
         return result.block();
@@ -200,7 +189,6 @@ public class SearchIndexClient {
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText) {
         return new PagedIterableBase<>(asyncClient.search(searchText, null, null));
     }
@@ -217,7 +205,6 @@ public class SearchIndexClient {
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText,
                                                                        SearchOptions searchOptions,
                                                                        RequestOptions requestOptions,
@@ -231,7 +218,6 @@ public class SearchIndexClient {
      * @param key the name of the document
      * @return document object
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Document getDocument(String key) {
         Mono<Document> results = asyncClient.getDocument(key);
         return results.block();
@@ -246,7 +232,6 @@ public class SearchIndexClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return document object
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Document getDocument(String key,
                                 List<String> selectedFields,
                                 RequestOptions requestOptions) {
@@ -266,7 +251,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document object
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Document> getDocumentWithResponse(String key,
                                                       List<String> selectedFields,
                                                       RequestOptions requestOptions,
@@ -287,7 +271,6 @@ public class SearchIndexClient {
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
         return new PagedIterableBase<>(asyncClient.suggest(searchText,
             suggesterName, null, null));
@@ -306,7 +289,6 @@ public class SearchIndexClient {
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
                                                                           String suggesterName,
                                                                           SuggestOptions suggestOptions,
@@ -322,7 +304,6 @@ public class SearchIndexClient {
      * @param batch batch of documents to send to the index with the requested action
      * @return document index result
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult index(IndexBatch<?> batch) {
         return this.indexWithResponse(batch, Context.NONE).getValue();
     }
@@ -334,7 +315,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing a document index result
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> indexWithResponse(IndexBatch<?> batch, Context context) {
         Mono<Response<IndexDocumentsResult>> results = asyncClient.indexWithResponse(batch, context);
         return results.block();
@@ -347,7 +327,6 @@ public class SearchIndexClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(
         String searchText, String suggesterName) {
         return new PagedIterableBase<>(asyncClient.autocomplete(searchText, suggesterName));
@@ -364,7 +343,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return auto complete result.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
                                                         String suggesterName,
                                                         AutocompleteOptions autocompleteOptions,

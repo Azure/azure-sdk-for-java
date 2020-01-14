@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -143,7 +141,6 @@ public class SearchServiceAsyncClient {
      * @param dataSource the definition of the data source to create or update
      * @return the data source that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource) {
         return this.createOrUpdateDataSourceWithResponse(dataSource, null, null)
             .map(Response::getValue);
@@ -159,7 +156,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a data source response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
                                                                            AccessCondition accessCondition,
                                                                            RequestOptions requestOptions) {
@@ -184,7 +180,6 @@ public class SearchServiceAsyncClient {
      * @param dataSource The definition of the dataSource to create.
      * @return a Mono which performs the network request upon subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataSource> createDataSource(DataSource dataSource) {
         return this.createDataSourceWithResponse(dataSource, null).map(Response::getValue);
     }
@@ -197,7 +192,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging.
      * @return a Mono which performs the network request upon subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataSource>> createDataSourceWithResponse(DataSource dataSource,
                                                                    RequestOptions requestOptions) {
         return withContext(context -> this.createDataSourceWithResponse(dataSource, requestOptions, context));
@@ -218,7 +212,6 @@ public class SearchServiceAsyncClient {
      * @param dataSourceName the name of the data source to retrieve
      * @return the DataSource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataSource> getDataSource(String dataSourceName) {
         return this.getDataSourceWithResponse(dataSourceName, null)
             .map(Response::getValue);
@@ -232,7 +225,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging.
      * @return a response containing the DataSource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName,
                                                                 RequestOptions requestOptions) {
         return withContext(context -> this.getDataSourceWithResponse(dataSourceName, requestOptions, context));
@@ -252,7 +244,6 @@ public class SearchServiceAsyncClient {
      *
      * @return a list of DataSources
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataSource> listDataSources() {
         return this.listDataSources(null, null);
     }
@@ -267,7 +258,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging.
      * @return a list of DataSources
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
             () -> withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)),
@@ -301,7 +291,6 @@ public class SearchServiceAsyncClient {
      * @param dataSourceName the name of the data source for deletion
      * @return a void Mono
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataSource(String dataSourceName) {
         return this.deleteDataSourceWithResponse(dataSourceName, null, null)
             .flatMap(FluxUtil::toMono);
@@ -317,7 +306,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a mono response
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
                                                              AccessCondition accessCondition,
                                                              RequestOptions requestOptions) {
@@ -344,7 +332,6 @@ public class SearchServiceAsyncClient {
      * @param dataSourceName the name of the data source
      * @return true if the data source exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> dataSourceExists(String dataSourceName) {
         return this.dataSourceExistsWithResponse(dataSourceName, null).map(Response::getValue);
     }
@@ -357,7 +344,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return true if the data source exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> dataSourceExistsWithResponse(String dataSourceName, RequestOptions requestOptions) {
         return withContext(context -> this.dataSourceExistsWithResponse(dataSourceName, requestOptions, context));
     }
@@ -375,7 +361,6 @@ public class SearchServiceAsyncClient {
      * @param indexer definition of the indexer to create.
      * @return the created Indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Indexer> createIndexer(Indexer indexer) {
         return this.createIndexerWithResponse(indexer, null)
             .map(Response::getValue);
@@ -389,7 +374,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Indexer>> createIndexerWithResponse(Indexer indexer, RequestOptions requestOptions) {
         return withContext(context -> this.createIndexerWithResponse(indexer, requestOptions, context));
     }
@@ -407,7 +391,6 @@ public class SearchServiceAsyncClient {
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Indexer> createOrUpdateIndexer(Indexer indexer) {
         return this.createOrUpdateIndexerWithResponse(indexer, null, null)
             .map(Response::getValue);
@@ -423,7 +406,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer,
                                                                      AccessCondition accessCondition,
                                                                      RequestOptions requestOptions) {
@@ -447,7 +429,6 @@ public class SearchServiceAsyncClient {
      * @param indexerName the name of the indexer to retrieve
      * @return the indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Indexer> getIndexer(String indexerName) {
         return this.getIndexerWithResponse(indexerName, null)
             .map(Response::getValue);
@@ -461,7 +442,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
         return withContext(
             context -> this.getIndexerWithResponse(indexerName, requestOptions, context)
@@ -478,7 +458,6 @@ public class SearchServiceAsyncClient {
     /**
      * @return all Indexers from the Search service.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Indexer> listIndexers() {
         return this.listIndexers(null, null);
     }
@@ -492,7 +471,6 @@ public class SearchServiceAsyncClient {
      * @param requestOptions Additional parameters for the operation.
      * @return a response containing all Indexers from the Search service.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
             () -> withContext(context -> this.listIndexersWithResponse(select, requestOptions, context)),
@@ -527,7 +505,6 @@ public class SearchServiceAsyncClient {
      * @param indexerName the name of the indexer to delete
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIndexer(String indexerName) {
         return this.deleteIndexerWithResponse(indexerName, null, null)
             .flatMap(FluxUtil::toMono);
@@ -543,7 +520,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIndexerWithResponse(String indexerName,
                                                           AccessCondition accessCondition,
                                                           RequestOptions requestOptions) {
@@ -562,7 +538,6 @@ public class SearchServiceAsyncClient {
      * @param context the context
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, AccessCondition accessCondition,
                                                    RequestOptions requestOptions, Context context) {
         return restClient.indexers().deleteWithRestResponseAsync(
@@ -576,7 +551,6 @@ public class SearchServiceAsyncClient {
      * @param indexerName the name of the indexer to reset
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetIndexer(String indexerName) {
         return this.resetIndexerWithResponse(indexerName, null)
             .flatMap(FluxUtil::toMono);
@@ -590,7 +564,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
         return withContext(context -> this.resetIndexerWithResponse(indexerName, requestOptions, context));
     }
@@ -608,7 +581,6 @@ public class SearchServiceAsyncClient {
      * @param indexerName the name of the indexer to run
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> runIndexer(String indexerName) {
         return this.runIndexerWithResponse(indexerName, null)
             .flatMap(FluxUtil::toMono);
@@ -622,7 +594,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
         return withContext(context -> this.runIndexerWithResponse(indexerName, requestOptions, context));
     }
@@ -640,7 +611,6 @@ public class SearchServiceAsyncClient {
      * @param indexerName the name of the indexer for which to retrieve status
      * @return the indexer execution info.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexerExecutionInfo> getIndexerStatus(String indexerName) {
         return this.getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
     }
@@ -653,7 +623,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response with the indexer execution info.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName,
                                                                              RequestOptions requestOptions) {
         return withContext(context -> this.getIndexerStatusWithResponse(indexerName, requestOptions, context));
@@ -674,7 +643,6 @@ public class SearchServiceAsyncClient {
      * @param indexerName the name of the indexer
      * @return true if the indexer exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> indexerExists(String indexerName) {
         return this.indexerExistsWithResponse(indexerName, null).map(Response::getValue);
     }
@@ -687,7 +655,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return true if the indexer exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> indexerExistsWithResponse(String indexerName, RequestOptions requestOptions) {
         return withContext(context -> this.indexerExistsWithResponse(indexerName, requestOptions, context));
     }
@@ -704,7 +671,6 @@ public class SearchServiceAsyncClient {
      * @param index definition of the index to create.
      * @return the created Index.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Index> createIndex(Index index) {
         return this.createIndexWithResponse(index, null)
             .map(Response::getValue);
@@ -718,7 +684,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Index.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions) {
         return withContext(context -> this.createIndexWithResponse(index, requestOptions, context));
     }
@@ -736,7 +701,6 @@ public class SearchServiceAsyncClient {
      * @param indexName The name of the index to retrieve
      * @return the Index.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Index> getIndex(String indexName) {
         return this.getIndexWithResponse(indexName, null)
             .map(Response::getValue);
@@ -750,7 +714,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the Index.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
         return withContext(context -> this.getIndexWithResponse(indexName, requestOptions, context));
     }
@@ -768,7 +731,6 @@ public class SearchServiceAsyncClient {
      * @param indexName the name of the index
      * @return true if the index exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> indexExists(String indexName) {
         return this.indexExistsWithResponse(indexName, null).map(Response::getValue);
     }
@@ -781,7 +743,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> indexExistsWithResponse(String indexName, RequestOptions requestOptions) {
         return withContext(context -> this.indexExistsWithResponse(indexName, requestOptions, context));
     }
@@ -798,7 +759,6 @@ public class SearchServiceAsyncClient {
      * @param indexName the name of the index for which to retrieve statistics
      * @return the index statistics result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetIndexStatisticsResult> getIndexStatistics(String indexName) {
         return this.getIndexStatisticsWithResponse(indexName, null)
             .map(Response::getValue);
@@ -812,7 +772,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the index statistics result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
                                                                                    RequestOptions requestOptions) {
         return withContext(context -> this.getIndexStatisticsWithResponse(indexName, requestOptions, context));
@@ -832,7 +791,6 @@ public class SearchServiceAsyncClient {
      *
      * @return a reactive response emitting the list of indexes.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Index> listIndexes() {
         return this.listIndexes(null, null);
     }
@@ -847,7 +805,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of indexes.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
             () -> withContext(context -> this.listIndexesWithResponse(select, requestOptions, context)),
@@ -880,7 +837,6 @@ public class SearchServiceAsyncClient {
      * @param index the definition of the index to create or update
      * @return the index that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Index> createOrUpdateIndex(Index index) {
         return this.createOrUpdateIndexWithResponse(index,
             false, null, null)
@@ -902,7 +858,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the index that was created or updated
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
                                                                  boolean allowIndexDowntime,
                                                                  AccessCondition accessCondition,
@@ -929,7 +884,6 @@ public class SearchServiceAsyncClient {
      * @param indexName the name of the index to delete
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIndex(String indexName) {
         return this.deleteIndexWithResponse(indexName, null, null)
             .flatMap(FluxUtil::toMono);
@@ -945,7 +899,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
                                                         AccessCondition accessCondition,
                                                         RequestOptions requestOptions) {
@@ -970,7 +923,6 @@ public class SearchServiceAsyncClient {
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @return analyze result.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
         return this.analyzeText(indexName, analyzeRequest, null);
     }
@@ -984,7 +936,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing analyze result.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TokenInfo> analyzeText(String indexName,
                                             AnalyzeRequest analyzeRequest, RequestOptions requestOptions) {
         return new PagedFlux<>(
@@ -1023,7 +974,6 @@ public class SearchServiceAsyncClient {
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @return the created Skillset.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Skillset> createSkillset(Skillset skillset) {
         return this.createSkillsetWithResponse(skillset, null)
             .map(Response::getValue);
@@ -1037,7 +987,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Skillset.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset, RequestOptions requestOptions) {
         return withContext(context -> createSkillsetWithResponse(skillset, requestOptions, context));
     }
@@ -1057,7 +1006,6 @@ public class SearchServiceAsyncClient {
      * @param skillsetName the name of the skillset to retrieve
      * @return the Skillset.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Skillset> getSkillset(String skillsetName) {
         return this.getSkillsetWithResponse(skillsetName, null)
             .map(Response::getValue);
@@ -1071,7 +1019,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the Skillset.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName,
                                                             RequestOptions requestOptions) {
         return withContext(context ->
@@ -1092,7 +1039,6 @@ public class SearchServiceAsyncClient {
      *
      * @return a reactive response emitting the list of skillsets.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Skillset> listSkillsets() {
         return this.listSkillsets(null, null);
     }
@@ -1107,7 +1053,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of skillsets.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
             () -> withContext(context -> this.listSkillsetsWithResponse(select, requestOptions, context)),
@@ -1141,7 +1086,6 @@ public class SearchServiceAsyncClient {
      * @param skillset the definition of the skillset to create or update
      * @return the skillset that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Skillset> createOrUpdateSkillset(Skillset skillset) {
         return this.createOrUpdateSkillsetWithResponse(skillset, null, null)
             .map(Response::getValue);
@@ -1157,7 +1101,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the skillset that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
                                                                        AccessCondition accessCondition,
                                                                        RequestOptions requestOptions) {
@@ -1184,7 +1127,6 @@ public class SearchServiceAsyncClient {
      * @param skillsetName the name of the skillset to delete
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSkillset(String skillsetName) {
         return this.deleteSkillsetWithResponse(skillsetName, null, null)
             .flatMap(FluxUtil::toMono);
@@ -1200,7 +1142,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName,
                                                            AccessCondition accessCondition,
                                                            RequestOptions requestOptions) {
@@ -1224,7 +1165,6 @@ public class SearchServiceAsyncClient {
      * @param skillsetName the name of the skillset
      * @return true if the skillset exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> skillsetExists(String skillsetName) {
         return this.skillsetExistsWithResponse(skillsetName, null).map(Response::getValue);
     }
@@ -1237,7 +1177,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return true if the skillset exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> skillsetExistsWithResponse(String skillsetName, RequestOptions requestOptions) {
         return withContext(context -> this.skillsetExistsWithResponse(skillsetName, requestOptions, context));
     }
@@ -1255,7 +1194,6 @@ public class SearchServiceAsyncClient {
      * @param synonymMap the definition of the synonym map to create
      * @return the created {@link SynonymMap}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap) {
         return this.createSynonymMapWithResponse(synonymMap, null)
             .map(Response::getValue);
@@ -1269,7 +1207,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created SynonymMap.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
                                                                    RequestOptions requestOptions) {
         return withContext(context -> this.createSynonymMapWithResponse(synonymMap, requestOptions, context));
@@ -1290,7 +1227,6 @@ public class SearchServiceAsyncClient {
      * @param synonymMapName name of the synonym map to retrieve
      * @return the {@link SynonymMap} definition
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> getSynonymMap(String synonymMapName) {
         return this.getSynonymMapWithResponse(synonymMapName, null)
             .map(Response::getValue);
@@ -1304,7 +1240,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the SynonymMap.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName, RequestOptions requestOptions) {
         return withContext(context -> this.getSynonymMapWithResponse(synonymMapName, requestOptions, context));
     }
@@ -1323,7 +1258,6 @@ public class SearchServiceAsyncClient {
      *
      * @return a reactive response emitting the list of synonym maps.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SynonymMap> listSynonymMaps() {
         return this.listSynonymMaps(null, null);
     }
@@ -1338,7 +1272,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of synonym maps.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
             () -> withContext(context -> this.listSynonymMapsWithResponse(select, requestOptions, context)),
@@ -1373,7 +1306,6 @@ public class SearchServiceAsyncClient {
      * @param synonymMap the definition of the synonym map to create or update
      * @return the synonym map that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap) {
         return this.createOrUpdateSynonymMapWithResponse(synonymMap, null, null)
             .map(Response::getValue);
@@ -1389,7 +1321,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the synonym map that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
                                                                            AccessCondition accessCondition,
                                                                            RequestOptions requestOptions) {
@@ -1417,7 +1348,6 @@ public class SearchServiceAsyncClient {
      * @param synonymMapName the name of the synonym map to delete
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSynonymMap(String synonymMapName) {
         return this.deleteSynonymMapWithResponse(synonymMapName, null, null)
             .flatMap(FluxUtil::toMono);
@@ -1433,7 +1363,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName,
                                                              AccessCondition accessCondition,
                                                              RequestOptions requestOptions) {
@@ -1457,7 +1386,6 @@ public class SearchServiceAsyncClient {
      * @param synonymMapName the name of the synonym map
      * @return true if the synonym map exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> synonymMapExists(String synonymMapName) {
         return this.synonymMapExistsWithResponse(synonymMapName, null).map(Response::getValue);
     }
@@ -1470,7 +1398,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return true if the synonym map exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> synonymMapExistsWithResponse(String synonymMapName, RequestOptions requestOptions) {
         return withContext(context -> this.synonymMapExistsWithResponse(synonymMapName, requestOptions, context));
     }
@@ -1508,7 +1435,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return the search service statistics result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceStatistics> getServiceStatistics() {
         return this.getServiceStatisticsWithResponse(null).map(Response::getValue);
     }
@@ -1521,7 +1447,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return the search service statistics result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
         return withContext(context -> this.getServiceStatisticsWithResponse(requestOptions, context));
     }

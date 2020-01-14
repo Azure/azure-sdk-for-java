@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -82,7 +80,6 @@ public class SearchServiceClient {
      * @param dataSource The definition of the data source to create or update.
      * @return the data source that was created or updated.
      */
-     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataSource createOrUpdateDataSource(DataSource dataSource) {
         return asyncClient.createOrUpdateDataSource(dataSource).block();
     }
@@ -98,7 +95,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing data source that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSource> createOrUpdateDataSourceWithResponse(DataSource dataSource,
                                                                      AccessCondition accessCondition,
                                                                      RequestOptions requestOptions,
@@ -113,7 +109,6 @@ public class SearchServiceClient {
      * @param dataSource The definition of the data source to create
      * @return the data source that was created.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public DataSource createDataSource(DataSource dataSource) {
         return asyncClient.createDataSource(dataSource).block();
     }
@@ -128,7 +123,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing data source that was created.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSource> createDataSourceWithResponse(DataSource dataSource,
                                                              RequestOptions requestOptions,
                                                              Context context) {
@@ -141,7 +135,6 @@ public class SearchServiceClient {
      * @param dataSourceName the name of the data source to retrieve
      * @return the DataSource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public DataSource getDataSource(String dataSourceName) {
         return asyncClient.getDataSource(dataSourceName).block();
     }
@@ -155,7 +148,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the DataSource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSource> getDataSourceWithResponse(String dataSourceName,
                                                           RequestOptions requestOptions,
                                                           Context context) {
@@ -167,7 +159,6 @@ public class SearchServiceClient {
      *
      * @return a list of DataSources
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSource> listDataSources() {
         return new PagedIterable<>(asyncClient.listDataSources());
     }
@@ -183,7 +174,6 @@ public class SearchServiceClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return a response containing the list of DataSources.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listDataSources(select, requestOptions, context));
     }
@@ -193,7 +183,6 @@ public class SearchServiceClient {
      *
      * @param dataSourceName the name of the data source to be deleted
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDataSource(String dataSourceName) {
         asyncClient.deleteDataSource(dataSourceName).block();
     }
@@ -209,7 +198,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return an empty response
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataSourceWithResponse(String dataSourceName,
                                                        AccessCondition accessCondition,
                                                        RequestOptions requestOptions,
@@ -224,7 +212,6 @@ public class SearchServiceClient {
      * @param dataSourceName the name of the data source
      * @return true if the data source exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Boolean dataSourceExists(String dataSourceName) {
         return asyncClient.dataSourceExists(dataSourceName).block();
     }
@@ -238,7 +225,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the data source exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> dataSourceExistsWithResponse(String dataSourceName,
                                                           RequestOptions requestOptions, Context context) {
         return asyncClient
@@ -251,7 +237,6 @@ public class SearchServiceClient {
      * @param indexer definition of the indexer to create.
      * @return the created Indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Indexer createIndexer(Indexer indexer) {
         return this.asyncClient.createIndexer(indexer).block();
     }
@@ -265,7 +250,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Indexer> createIndexerWithResponse(Indexer indexer,
                                                        RequestOptions requestOptions,
                                                        Context context) {
@@ -278,7 +262,6 @@ public class SearchServiceClient {
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Indexer createOrUpdateIndexer(Indexer indexer) {
         return asyncClient.createOrUpdateIndexer(indexer).block();
     }
@@ -294,7 +277,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return A response object containing the Indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Indexer> createOrUpdateIndexerWithResponse(Indexer indexer,
                                                                AccessCondition accessCondition,
                                                                RequestOptions requestOptions,
@@ -307,7 +289,6 @@ public class SearchServiceClient {
      *
      * @return all Indexers from the Search service.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Indexer> listIndexers() {
         return new PagedIterable<>(asyncClient.listIndexers());
     }
@@ -322,7 +303,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return all Indexers from the Search service.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Indexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listIndexers(select, requestOptions, context));
     }
@@ -333,7 +313,6 @@ public class SearchServiceClient {
      * @param indexerName the name of the indexer to retrieve
      * @return the indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Indexer getIndexer(String indexerName) {
         return asyncClient.getIndexer(indexerName).block();
     }
@@ -347,7 +326,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the indexer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Indexer> getIndexerWithResponse(String indexerName,
                                                     RequestOptions requestOptions, Context context) {
         return asyncClient.getIndexerWithResponse(indexerName, requestOptions, context).block();
@@ -358,7 +336,6 @@ public class SearchServiceClient {
      *
      * @param indexerName the name of the indexer to delete
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIndexer(String indexerName) {
         asyncClient.deleteIndexer(indexerName).block();
     }
@@ -374,7 +351,6 @@ public class SearchServiceClient {
      * @param context the context
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexerWithResponse(String indexerName,
                                                     AccessCondition accessCondition,
                                                     RequestOptions requestOptions,
@@ -387,7 +363,6 @@ public class SearchServiceClient {
      *
      * @param indexerName the name of the indexer to reset
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public void resetIndexer(String indexerName) {
         asyncClient.resetIndexer(indexerName).block();
     }
@@ -401,7 +376,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         return asyncClient.resetIndexerWithResponse(indexerName, requestOptions, context).block();
     }
@@ -411,7 +385,6 @@ public class SearchServiceClient {
      *
      * @param indexerName the name of the indexer to run
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public void runIndexer(String indexerName) {
         asyncClient.runIndexer(indexerName).block();
     }
@@ -425,7 +398,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runIndexerWithResponse(String indexerName,
                                                  RequestOptions requestOptions,
                                                  Context context) {
@@ -438,7 +410,6 @@ public class SearchServiceClient {
      * @param indexerName the name of the indexer for which to retrieve status
      * @return a response with the indexer execution info.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexerExecutionInfo getIndexerStatus(String indexerName) {
         return asyncClient.getIndexerStatus(indexerName).block();
     }
@@ -452,7 +423,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response with the indexer execution info.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexerExecutionInfo> getIndexerStatusWithResponse(String indexerName,
                                                                        RequestOptions requestOptions,
                                                                        Context context) {
@@ -467,7 +437,6 @@ public class SearchServiceClient {
      * @param indexerName the name of the indexer
      * @return true if the indexer exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Boolean indexerExists(String indexerName) {
         return asyncClient.indexerExists(indexerName).block();
     }
@@ -481,7 +450,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the indexer exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> indexerExistsWithResponse(String indexerName,
                                                        RequestOptions requestOptions, Context context) {
         return asyncClient.indexerExistsWithResponse(indexerName, requestOptions, context).block();
@@ -494,7 +462,6 @@ public class SearchServiceClient {
      * @param index definition of the index to create
      * @return the created Index.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Index createIndex(Index index) {
         return asyncClient.createIndex(index).block();
     }
@@ -508,7 +475,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Index.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Index> createIndexWithResponse(Index index, RequestOptions requestOptions, Context context) {
         return asyncClient.createIndexWithResponse(index, requestOptions, context).block();
     }
@@ -519,7 +485,6 @@ public class SearchServiceClient {
      * @param indexName the name of the index to retrieve
      * @return the Index.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Index getIndex(String indexName) {
         return asyncClient.getIndex(indexName).block();
     }
@@ -533,7 +498,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Index.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Index> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
         return asyncClient.getIndexWithResponse(indexName, requestOptions, context).block();
     }
@@ -544,7 +508,6 @@ public class SearchServiceClient {
      * @param indexName the name of the index
      * @return true if the index exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Boolean indexExists(String indexName) {
         return asyncClient.indexExists(indexName).block();
     }
@@ -558,7 +521,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the index exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> indexExistsWithResponse(String indexName, RequestOptions requestOptions, Context context) {
         return asyncClient.indexExistsWithResponse(indexName, requestOptions, context).block();
     }
@@ -569,7 +531,6 @@ public class SearchServiceClient {
      * @param indexName the name of the index for which to retrieve statistics
      * @return the index statistics result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public GetIndexStatisticsResult getIndexStatistics(String indexName) {
         return asyncClient.getIndexStatistics(indexName).block();
     }
@@ -583,7 +544,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the index statistics result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetIndexStatisticsResult> getIndexStatisticsWithResponse(String indexName,
                                                                              RequestOptions requestOptions,
                                                                              Context context) {
@@ -595,7 +555,6 @@ public class SearchServiceClient {
      *
      * @return the list of indexes.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Index> listIndexes() {
         return new PagedIterable<>(asyncClient.listIndexes());
     }
@@ -611,7 +570,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of indexes.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listIndexes(select, requestOptions, context));
     }
@@ -622,7 +580,6 @@ public class SearchServiceClient {
      * @param index the definition of the index to create or update
      * @return the index that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Index createOrUpdateIndex(Index index) {
         return asyncClient.createOrUpdateIndex(index).block();
     }
@@ -643,7 +600,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Index that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Index> createOrUpdateIndexWithResponse(Index index,
                                                            boolean allowIndexDowntime,
                                                            AccessCondition accessCondition,
@@ -658,7 +614,6 @@ public class SearchServiceClient {
      *
      * @param indexName the name of the index to delete
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIndex(String indexName) {
         asyncClient.deleteIndex(indexName).block();
     }
@@ -674,7 +629,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexWithResponse(String indexName,
                                                   AccessCondition accessCondition,
                                                   RequestOptions requestOptions,
@@ -690,7 +644,6 @@ public class SearchServiceClient {
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @return analyze result.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
         return new PagedIterable<>(asyncClient.analyzeText(indexName, analyzeRequest));
     }
@@ -705,7 +658,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return analyze result.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TokenInfo> analyzeText(String indexName,
                                                 AnalyzeRequest analyzeRequest,
                                                 RequestOptions requestOptions,
@@ -720,7 +672,6 @@ public class SearchServiceClient {
      *
      * @return the created Skillset.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Skillset createSkillset(Skillset skillset) {
         return asyncClient.createSkillset(skillset).block();
     }
@@ -734,7 +685,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Skillset.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Skillset> createSkillsetWithResponse(Skillset skillset,
                                                          RequestOptions requestOptions,
                                                          Context context) {
@@ -747,7 +697,6 @@ public class SearchServiceClient {
      * @param skillsetName the name of the skillset to retrieve
      * @return the Skillset.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Skillset getSkillset(String skillsetName) {
         return asyncClient.getSkillset(skillsetName).block();
     }
@@ -761,7 +710,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Skillset.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Skillset> getSkillsetWithResponse(String skillsetName,
                                                       RequestOptions requestOptions,
                                                       Context context) {
@@ -773,7 +721,6 @@ public class SearchServiceClient {
      *
      * @return the list of skillsets.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Skillset> listSkillsets() {
         return new PagedIterable<>(asyncClient.listSkillsets());
     }
@@ -789,7 +736,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of skillsets.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Skillset> listSkillsets(String select, RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listSkillsets(select, requestOptions, context));
     }
@@ -800,7 +746,6 @@ public class SearchServiceClient {
      * @param skillset the definition of the skillset to create or update
      * @return the skillset that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Skillset createOrUpdateSkillset(Skillset skillset) {
         return asyncClient.createOrUpdateSkillset(skillset).block();
     }
@@ -816,7 +761,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the skillset that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Skillset> createOrUpdateSkillsetWithResponse(Skillset skillset,
                                                                  AccessCondition accessCondition,
                                                                  RequestOptions requestOptions,
@@ -832,7 +776,6 @@ public class SearchServiceClient {
      *
      * @param skillsetName the name of the skillset to delete
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSkillset(String skillsetName) {
         asyncClient.deleteSkillset(skillsetName).block();
     }
@@ -848,7 +791,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSkillsetWithResponse(String skillsetName,
                                                      AccessCondition accessCondition,
                                                      RequestOptions requestOptions,
@@ -862,7 +804,6 @@ public class SearchServiceClient {
      * @param skillsetName the name of the skillset
      * @return true if the skillset exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Boolean skillsetExists(String skillsetName) {
         return asyncClient.skillsetExists(skillsetName).block();
     }
@@ -876,7 +817,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the skillset exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> skillsetExistsWithResponse(String skillsetName,
                                                         RequestOptions requestOptions,
                                                         Context context) {
@@ -890,7 +830,6 @@ public class SearchServiceClient {
      * @param synonymMap the definition of the synonym map to create
      * @return the created {@link SynonymMap}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public SynonymMap createSynonymMap(SynonymMap synonymMap) {
         return asyncClient.createSynonymMap(synonymMap).block();
     }
@@ -904,7 +843,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created SynonymMap.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> createSynonymMapWithResponse(SynonymMap synonymMap,
                                                              RequestOptions requestOptions,
                                                              Context context) {
@@ -917,7 +855,6 @@ public class SearchServiceClient {
      * @param synonymMapName name of the synonym map to retrieve
      * @return the {@link SynonymMap} definition
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public SynonymMap getSynonymMap(String synonymMapName) {
         return asyncClient.getSynonymMap(synonymMapName).block();
     }
@@ -931,7 +868,6 @@ public class SearchServiceClient {
      * @param context a context that is passed through the HTTP pipeline during the service call
      * @return a response containing the SynonymMap.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> getSynonymMapWithResponse(String synonymMapName,
                                                           RequestOptions requestOptions,
                                                           Context context) {
@@ -943,7 +879,6 @@ public class SearchServiceClient {
      *
      * @return the list of synonym maps.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SynonymMap> listSynonymMaps() {
         return new PagedIterable<>(asyncClient.listSynonymMaps());
     }
@@ -959,7 +894,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of synonym maps.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listSynonymMaps(select, requestOptions, context));
     }
@@ -970,7 +904,6 @@ public class SearchServiceClient {
      * @param synonymMap the definition of the synonym map to create or update
      * @return the synonym map that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap) {
         return asyncClient.createOrUpdateSynonymMap(synonymMap).block();
     }
@@ -986,7 +919,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the synonym map that was created or updated.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
                                                                      AccessCondition accessCondition,
                                                                      RequestOptions requestOptions,
@@ -1000,7 +932,6 @@ public class SearchServiceClient {
      *
      * @param synonymMapName the name of the synonym map to delete
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSynonymMap(String synonymMapName) {
         asyncClient.deleteSynonymMap(synonymMapName).block();
     }
@@ -1016,7 +947,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSynonymMapWithResponse(String synonymMapName,
                                                        AccessCondition accessCondition,
                                                        RequestOptions requestOptions,
@@ -1031,7 +961,6 @@ public class SearchServiceClient {
      * @param synonymMapName the name of the synonym map
      * @return true if the synonym map exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Boolean synonymMapExists(String synonymMapName) {
         return asyncClient.synonymMapExists(synonymMapName).block();
     }
@@ -1045,7 +974,7 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the synonym map exists; false otherwise.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+
     public Response<Boolean> synonymMapExistsWithResponse(String synonymMapName,
                                                           RequestOptions requestOptions,
                                                           Context context) {
@@ -1059,7 +988,6 @@ public class SearchServiceClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return the search service statistics result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceStatistics getServiceStatistics() {
         return asyncClient.getServiceStatistics().block();
     }
@@ -1072,7 +1000,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the search service statistics result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions,
                                                                         Context context) {
         return asyncClient.getServiceStatisticsWithResponse(requestOptions, context).block();
