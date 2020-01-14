@@ -1,5 +1,8 @@
 # Release History
 
+## 12.3.0-beta.1 (Unreleased)
+- Added ability to create service clients anonymously. Anonymous service clients will throw on attempting to create network requests.
+
 ## 12.2.0 (2020-01-08)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.2.0/sdk/storage/azure-storage-blob/README.md)
