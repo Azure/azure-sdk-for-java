@@ -40,7 +40,8 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
     @Test
     public void eventHubConnectionStringTest() {
         String actualConnectionString = System.getenv("AZURE_EVENTHUBS_CONNECTION_STRING");
-        System.out.println("AZURE_EVENTHUBS_CONNECTION_STRING ="+actualConnectionString);
+        System.out.println("AZURE_EVENTHUBS_CONNECTION_STRING length ="+actualConnectionString.length());
+        System.out.println("AZURE_EVENTHUBS_CONNECTION_STRING EntityPath index ="+actualConnectionString.indexOf("EntityPath="));
         Assertions.assertEquals("expected_actualConnectionString_test", actualConnectionString);
     }
 
