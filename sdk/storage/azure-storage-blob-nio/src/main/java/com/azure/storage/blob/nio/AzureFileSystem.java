@@ -28,6 +28,12 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
+ * In the hierarchy of this file system, an {@code AzureFileSystem} corresponds to an Azure Blob Storage account. A
+ * file store is represented by a container in the storage account. Each container has one root directory.
+ *
+ * Closing the file system will not block on outstanding operations. Any operations in progress will be allowed to
+ * terminate naturally after the file system is closed, though no further operations may be started after the parent
+ * file system is closed.
  * {@inheritDoc}
  */
 public final class AzureFileSystem extends FileSystem {
@@ -95,6 +101,11 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * Closing the file system will not block on outstanding operations. Any operations in progress will be allowed to
+     * terminate naturally after the file system is closed, though no further operations may be started after the
+     * parent file system is closed.
+     *
+     * Once closed, a file system with the same identifier as the one closed may be re-opened.
      * {@inheritDoc}
      */
     @Override
