@@ -123,20 +123,17 @@ public class ConfigurationClientBuilderTest extends TestBase {
 
         Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
 
-        final ConfigurationClientBuilder clientBuilder;
+        final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
+            .connectionString(connectionString)
+            .retryPolicy(new RetryPolicy())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .serviceVersion(null);
+
         if (interceptorManager.isPlaybackMode()) {
-            clientBuilder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else {
-            clientBuilder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .serviceVersion(null);
+            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .addPolicy(interceptorManager.getRecordPolicy());
         }
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
@@ -148,7 +145,6 @@ public class ConfigurationClientBuilderTest extends TestBase {
     public void defaultPipeline() {
         final String key = "newKey";
         final String value = "newValue";
-        final ConfigurationClientBuilder clientBuilder;
 
         connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
@@ -156,19 +152,18 @@ public class ConfigurationClientBuilderTest extends TestBase {
 
         Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
 
+        final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
+            .connectionString(connectionString)
+            .retryPolicy(new RetryPolicy())
+            .configuration(Configuration.getGlobalConfiguration())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .pipeline(new HttpPipelineBuilder().build());
+
         if (interceptorManager.isPlaybackMode()) {
-            clientBuilder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else {
-            clientBuilder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .pipeline(new HttpPipelineBuilder().build());
+            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .addPolicy(interceptorManager.getRecordPolicy());
 
             assertThrows(HttpResponseException.class,
                 () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
