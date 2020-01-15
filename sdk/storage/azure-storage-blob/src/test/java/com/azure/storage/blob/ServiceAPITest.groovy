@@ -290,6 +290,23 @@ class ServiceAPITest extends APISpec {
         primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getStatusCode() == 202
     }
 
+    def "Set props cors check"() {
+        setup:
+        def serviceProperties = primaryBlobServiceClient.getProperties()
+
+        // Some properties are not set and this test validates that they are not null when sent to the service
+        def rule = new BlobCorsRule()
+        rule.setAllowedOrigins("microsoft.com")
+        rule.setMaxAgeInSeconds(60)
+        rule.setAllowedMethods("GET")
+        rule.setAllowedHeaders("x-ms-version")
+
+        serviceProperties.setCors(Collections.singletonList(rule))
+
+        expect:
+        primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode() == 202
+    }
+
     def "Set props error"() {
         when:
         getServiceClient(primaryCredential, "https://error.blob.core.windows.net")

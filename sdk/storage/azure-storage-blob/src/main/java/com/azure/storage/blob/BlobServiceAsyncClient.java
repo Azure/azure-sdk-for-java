@@ -20,6 +20,8 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobCorsRule;
+import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
@@ -38,6 +40,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -361,6 +365,8 @@ public final class BlobServiceAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -382,6 +388,8 @@ public final class BlobServiceAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#BlobServiceProperties}
@@ -399,8 +407,97 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties, Context context) {
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(properties, null, null, context)
+        BlobServiceProperties finalProperties = null;
+        if (properties != null) {
+            finalProperties = new BlobServiceProperties();
+
+            // Logging
+            finalProperties.setLogging(properties.getLogging());
+            if (finalProperties.getLogging() != null) {
+                StorageImplUtils.assertNotNull("Logging Version", finalProperties.getLogging().getVersion());
+                validateRetentionPolicy(finalProperties.getLogging().getRetentionPolicy(), "Logging Retention Policy");
+            }
+
+            // Hour Metrics
+            finalProperties.setHourMetrics(properties.getHourMetrics());
+            if (finalProperties.getHourMetrics() != null) {
+                StorageImplUtils.assertNotNull("HourMetrics Version", finalProperties.getHourMetrics().getVersion());
+                validateRetentionPolicy(finalProperties.getHourMetrics().getRetentionPolicy(), "HourMetrics Retention "
+                    + "Policy");
+                if (finalProperties.getHourMetrics().isEnabled()) {
+                    StorageImplUtils.assertNotNull("HourMetrics IncludeApis",
+                        finalProperties.getHourMetrics().isIncludeApis());
+                }
+            }
+
+            // Minute Metrics
+            finalProperties.setMinuteMetrics(properties.getMinuteMetrics());
+            if (finalProperties.getMinuteMetrics() != null) {
+                StorageImplUtils.assertNotNull("MinuteMetrics Version",
+                    finalProperties.getMinuteMetrics().getVersion());
+                validateRetentionPolicy(finalProperties.getMinuteMetrics().getRetentionPolicy(), "MinuteMetrics "
+                    + "Retention Policy");
+                if (finalProperties.getMinuteMetrics().isEnabled()) {
+                    StorageImplUtils.assertNotNull("MinuteMetrics IncludeApis",
+                        finalProperties.getHourMetrics().isIncludeApis());
+                }
+            }
+
+            // CORS
+            if (properties.getCors() != null) {
+                List<BlobCorsRule> corsRules = new ArrayList<>();
+                for (BlobCorsRule rule : properties.getCors()) {
+                    corsRules.add(validatedCorsRule(rule));
+                }
+                finalProperties.setCors(corsRules);
+            }
+
+            // Default Service Version
+            finalProperties.setDefaultServiceVersion(properties.getDefaultServiceVersion());
+
+            // Delete Retention Policy
+            finalProperties.setDeleteRetentionPolicy(properties.getDeleteRetentionPolicy());
+            validateRetentionPolicy(finalProperties.getDeleteRetentionPolicy(), "DeleteRetentionPolicy Days");
+
+            // Static Website
+            finalProperties.setStaticWebsite(properties.getStaticWebsite());
+
+        }
+
+        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(finalProperties, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Sets any null fields to "" since the service requires all Cors rules to be set if some are set.
+     * @param originalRule {@link BlobCorsRule}
+     * @return The validated {@link BlobCorsRule}
+     */
+    private BlobCorsRule validatedCorsRule(BlobCorsRule originalRule) {
+        if (originalRule == null) {
+            return null;
+        }
+        BlobCorsRule validRule = new BlobCorsRule();
+        validRule.setAllowedHeaders(StorageImplUtils.emptyIfNull(originalRule.getAllowedHeaders()));
+        validRule.setAllowedMethods(StorageImplUtils.emptyIfNull(originalRule.getAllowedMethods()));
+        validRule.setAllowedOrigins(StorageImplUtils.emptyIfNull(originalRule.getAllowedOrigins()));
+        validRule.setExposedHeaders(StorageImplUtils.emptyIfNull(originalRule.getExposedHeaders()));
+        validRule.setMaxAgeInSeconds(originalRule.getMaxAgeInSeconds());
+        return validRule;
+    }
+
+    /**
+     * Validates a {@link BlobRetentionPolicy} according to service specs for set properties.
+     * @param retentionPolicy {@link BlobRetentionPolicy}
+     * @param policyName The name of the variable for errors.
+     */
+    private void validateRetentionPolicy(BlobRetentionPolicy retentionPolicy, String policyName) {
+        if (retentionPolicy == null) {
+            return;
+        }
+        if (retentionPolicy.isEnabled()) {
+            StorageImplUtils.assertInBounds(policyName, retentionPolicy.getDays(), 1, 365);
+        }
     }
 
     /**
