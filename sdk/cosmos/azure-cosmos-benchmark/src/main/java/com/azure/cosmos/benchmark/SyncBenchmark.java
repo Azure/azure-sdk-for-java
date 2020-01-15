@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
+import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemResponse;
 import com.azure.cosmos.implementation.Utils;
 import com.codahale.metrics.ConsoleReporter;
@@ -123,7 +124,7 @@ abstract class SyncBenchmark<T> {
                 CompletableFuture<PojoizedJson> futureResult = CompletableFuture.supplyAsync(() -> {
 
                     try {
-                        CosmosItemResponse itemResponse = cosmosContainer.createItem(newDoc);
+                        CosmosItemResponse<PojoizedJson> itemResponse = cosmosContainer.createItem(newDoc);
                         return toPojoizedJson(itemResponse);
 
                     } catch (Exception e) {
@@ -354,7 +355,7 @@ abstract class SyncBenchmark<T> {
         }
     }
 
-    PojoizedJson toPojoizedJson(CosmosItemResponse resp) throws Exception {
+    PojoizedJson toPojoizedJson(CosmosItemResponse<PojoizedJson> resp) throws Exception {
         return Utils.getSimpleObjectMapper().readValue(
             resp.getProperties().toJson(), PojoizedJson.class);
     }

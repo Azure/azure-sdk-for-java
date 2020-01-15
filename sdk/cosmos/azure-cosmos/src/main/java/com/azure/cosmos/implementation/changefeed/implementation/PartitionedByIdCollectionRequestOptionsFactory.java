@@ -15,7 +15,6 @@ class PartitionedByIdCollectionRequestOptionsFactory implements RequestOptionsFa
     @Override
     public CosmosItemRequestOptions createRequestOptions(Lease lease) {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
-        requestOptions.setPartitionKey(new PartitionKey(lease.getId()));
 
         return requestOptions;
     }

@@ -5,10 +5,10 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.AccessCondition;
 import com.azure.cosmos.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosAsyncItem;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -55,9 +55,8 @@ class DocumentServiceLeaseStore implements LeaseStore {
         CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createRequestOptions(
             ServiceItemLease.fromDocument(doc));
 
-        CosmosAsyncItem docItem = this.client.getContainerClient().getItem(markerDocId, markerDocId);
-        return this.client.readItem(docItem, requestOptions)
-            .flatMap(documentResourceResponse -> Mono.just(documentResourceResponse.getItem() != null))
+        return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, CosmosItemProperties.class)
+            .flatMap(documentResourceResponse -> Mono.just(documentResourceResponse.getProperties() != null))
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) throwable;
@@ -77,7 +76,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         CosmosItemProperties containerDocument = new CosmosItemProperties();
         containerDocument.setId(markerDocId);
 
-        return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(markerDocId), false)
+        return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
             .map( item -> true)
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosClientException) {
@@ -99,9 +98,9 @@ class DocumentServiceLeaseStore implements LeaseStore {
         containerDocument.setId(lockId);
         BridgeInternal.setProperty(containerDocument, Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
 
-        return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(lockId), false)
+        return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
             .map(documentResourceResponse -> {
-                if (documentResourceResponse.getItem() != null) {
+                if (documentResourceResponse.getProperties() != null) {
                     this.lockETag = documentResourceResponse.getProperties().getETag();
                     return true;
                 } else {
@@ -139,10 +138,9 @@ class DocumentServiceLeaseStore implements LeaseStore {
         accessCondition.setCondition(this.lockETag);
         requestOptions.setAccessCondition(accessCondition);
 
-        CosmosAsyncItem docItem = this.client.getContainerClient().getItem(lockId, lockId);
-        return this.client.deleteItem(docItem, requestOptions)
+        return this.client.deleteItem(lockId, new PartitionKey(lockId), requestOptions)
             .map(documentResourceResponse -> {
-                if (documentResourceResponse.getItem() != null) {
+                if (documentResourceResponse.getProperties() != null) {
                     this.lockETag = null;
                     return true;
                 } else {
