@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.util.TestUtils;
+import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
@@ -21,6 +22,7 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Random;
@@ -137,6 +139,25 @@ public class IdentityClientTests {
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
 
+    @Test
+    public void testValidAuthorizationCodeFlow() throws Exception {
+        // setup
+        String authCode = "fake auth code";
+        URI redirectUri = new URI("http://localhost");
+        String accessToken = "token";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        mockForAuthorizationCodeFlow(authCode, redirectUri, request, accessToken, expiresOn);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
+        AccessToken token = client.authenticateWithAuthorizationCode(request, authCode, redirectUri).block();
+        Assert.assertEquals(accessToken, token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+    }
+
     /****** mocks ******/
 
     private void mockForClientSecret(String secret, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn) throws Exception {
@@ -210,6 +231,36 @@ public class IdentityClientTests {
             if (argument.deviceCodeConsumer() == null) {
                 return CompletableFuture.runAsync(() -> {
                     throw new MsalServiceException("Invalid device code consumer", "InvalidDeviceCodeConsumer");
+                });
+            }
+            cached.set(true);
+            return TestUtils.getMockAuthenticationResult(accessToken, expiresOn);
+        });
+        PublicClientApplication.Builder builder = PowerMockito.mock(PublicClientApplication.Builder.class);
+        when(builder.build()).thenReturn(application);
+        when(builder.authority(any())).thenReturn(builder);
+        when(builder.httpClient(any())).thenReturn(builder);
+        whenNew(PublicClientApplication.Builder.class).withArguments(clientId).thenReturn(builder);
+    }
+
+    private void mockForAuthorizationCodeFlow(String authCode, URI redirectUri, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn) throws Exception {
+        PublicClientApplication application = PowerMockito.mock(PublicClientApplication.class);
+        AtomicBoolean cached = new AtomicBoolean(false);
+        when(application.acquireToken(any(AuthorizationCodeParameters.class))).thenAnswer(invocation -> {
+            AuthorizationCodeParameters argument = (AuthorizationCodeParameters) invocation.getArguments()[0];
+            if (argument.scopes().size() != 1 || !request.getScopes().get(0).equals(argument.scopes().iterator().next())) {
+                return CompletableFuture.runAsync(() -> {
+                    throw new MsalServiceException("Invalid request", "InvalidScopes");
+                });
+            }
+            if (!authCode.equals(argument.authorizationCode())) {
+                return CompletableFuture.runAsync(() -> {
+                    throw new MsalServiceException("Invalid authorization code", "InvalidAuthorizationCode");
+                });
+            }
+            if (redirectUri != argument.redirectUri()) {
+                return CompletableFuture.runAsync(() -> {
+                    throw new MsalServiceException("Invalid redirect URI", "InvalidRedirectUri");
                 });
             }
             cached.set(true);
