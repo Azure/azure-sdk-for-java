@@ -107,13 +107,13 @@ jobs:
             -ProvisionerApplicationSecret '$(provisioner-aad-secret)'
             -Force
             -Verbose
-          condition: ne(variables['AZURE_RESOURCEGROUP_NAME'], '')
+          condition: and(always(), ne(variables['AZURE_RESOURCEGROUP_NAME'], ''))
           continueOnError: true
           displayName: Remove Test Resources
 
 
       - task: PublishTestResults@2
-        condition: always()
+        condition: succeededOrFailed()
         inputs:
           mergeTestResults: true
           testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(DisplayName)'
