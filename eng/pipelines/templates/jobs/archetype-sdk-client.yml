@@ -145,7 +145,7 @@ jobs:
       - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
         # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
         # builds should be sufficient.
-        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
         displayName: 'Component Detection'
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
@@ -311,7 +311,7 @@ jobs:
         condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
       - task: PublishTestResults@2
-        condition: and(succeededOrFailed(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
+        condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
