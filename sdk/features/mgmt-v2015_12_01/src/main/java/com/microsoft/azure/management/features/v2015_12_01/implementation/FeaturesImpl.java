@@ -84,10 +84,14 @@ class FeaturesImpl extends WrapperImpl<FeaturesInner> implements Features {
     public Observable<FeatureResult> getAsync(String resourceProviderNamespace, String featureName) {
         FeaturesInner client = this.inner();
         return client.getAsync(resourceProviderNamespace, featureName)
-        .map(new Func1<FeatureResultInner, FeatureResult>() {
+        .flatMap(new Func1<FeatureResultInner, Observable<FeatureResult>>() {
             @Override
-            public FeatureResult call(FeatureResultInner inner) {
-                return wrapModel(inner);
+            public Observable<FeatureResult> call(FeatureResultInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((FeatureResult)wrapModel(inner));
+                }
             }
        });
     }
