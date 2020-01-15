@@ -10,10 +10,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.UrlBuilder;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
-
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import io.opentelemetry.OpenTelemetry;
 import io.opentelemetry.context.propagation.HttpTextFormat;
 import io.opentelemetry.trace.AttributeValue;
@@ -26,6 +25,8 @@ import reactor.util.context.Context;
 
 import java.util.Optional;
 
+import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
@@ -73,7 +74,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
         // If span is sampled in, add additional TRACING attributes
         if (span.isRecording()) {
-            addSpanRequestAttributes(span, request); // Adds HTTP method, URL, & user-agent
+            addSpanRequestAttributes(span, request, context); // Adds HTTP method, URL, & user-agent
         }
 
         // For no-op tracer, SpanContext is INVALID; inject valid span headers onto outgoing request
@@ -88,10 +89,15 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             .subscriberContext(Context.of("TRACING_SPAN", span, "REQUEST", request));
     }
 
-    private static void addSpanRequestAttributes(Span span, HttpRequest request) {
+    private static void addSpanRequestAttributes(Span span, HttpRequest request,
+        HttpPipelineCallContext context) {
         putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().getValue("User-Agent"));
         putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
         putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
+        Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
+        if (tracingNamespace.isPresent()) {
+            putAttributeIfNotEmptyOrNull(span, AZ_NAMESPACE_KEY, tracingNamespace.get().toString());
+        }
     }
 
     private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
