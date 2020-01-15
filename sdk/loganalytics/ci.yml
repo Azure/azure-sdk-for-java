@@ -40,7 +40,9 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: loganalytics
+      SDKType: data
       Artifacts:
         - name: azure-loganalytics
+          groupId: com.microsoft.azure
           safeName: azureloganalytics
           stagingProfileId: 534d15ee3800f4

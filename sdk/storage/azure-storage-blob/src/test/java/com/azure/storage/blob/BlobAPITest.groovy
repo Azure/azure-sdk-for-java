@@ -383,6 +383,7 @@ class BlobAPITest extends APISpec {
         20                   | _ // small file
         16 * 1024 * 1024     | _ // medium file in several chunks
         8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
