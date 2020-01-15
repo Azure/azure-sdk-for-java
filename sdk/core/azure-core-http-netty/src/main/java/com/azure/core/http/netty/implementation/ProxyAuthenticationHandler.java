@@ -1,14 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.netty;
+package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.AuthorizationChallengeHandler;
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -30,10 +28,23 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-@ChannelHandler.Sharable
-class ProxyAuthenticationHandler extends ProxyHandler {
-    static final AttributeKey<String> REQUEST_METHOD_KEY = AttributeKey.newInstance("RequestMethod");
-    static final AttributeKey<Supplier<byte[]>> REQUEST_ENTITY_BODY_KEY = AttributeKey.newInstance("RequestEntityBody");
+public final class ProxyAuthenticationHandler extends ProxyHandler {
+    /*
+     * AttributeKey used to pass the HTTP request through the channel's attributes.
+     */
+    public static final AttributeKey<String> REQUEST_METHOD_KEY = AttributeKey.newInstance("RequestMethod");
+
+    /*
+     * AttributeKey used to pass the HTTP request entity body supplier through the channel's attributes.
+     */
+    public static final AttributeKey<Supplier<byte[]>> REQUEST_ENTITY_BODY_KEY = AttributeKey
+        .newInstance("RequestEntityBody");
+
+    /*
+     * AttributeKey used to pass the proxy authentication challenge between
+     */
+    private static final AttributeKey<ChallengeHolder> AUTHENTICATION_CHALLENGE = AttributeKey
+        .newInstance("AuthenticationChallenge");
 
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
@@ -49,13 +60,10 @@ class ProxyAuthenticationHandler extends ProxyHandler {
 
     private volatile ChallengeHolder challengeHolder;
 
-    ProxyAuthenticationHandler(ProxyOptions proxyOptions) {
-        super(proxyOptions.getAddress());
+    public ProxyAuthenticationHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler) {
+        super(proxyAddress);
 
-        this.challengeHandler = (proxyOptions.getUsername() != null)
-            ? new AuthorizationChallengeHandler(proxyOptions.getUsername(), proxyOptions.getPassword())
-            : null;
-
+        this.challengeHandler = challengeHandler;
         this.codec = new HttpClientCodec();
         this.authScheme = new AtomicReference<>();
     }
@@ -143,6 +151,8 @@ class ProxyAuthenticationHandler extends ProxyHandler {
         if (o instanceof HttpResponse) {
             HttpResponse response = (HttpResponse) o;
             if (response.status().code() == 407) {
+                channelHandlerContext.channel().attr(AUTHENTICATION_CHALLENGE)
+                    .set(extractChallengesFromHeaders(response.headers()));
                 this.challengeHolder = extractChallengesFromHeaders(response.headers());
                 return false;
             } else if (response.status().code() == 200) {

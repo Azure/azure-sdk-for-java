@@ -3,16 +3,16 @@
 
 package com.azure.core.http.netty;
 
+import com.azure.core.http.AuthorizationChallengeHandler;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.ProxyAuthenticationHandler;
 import com.azure.core.util.logging.ClientLogger;
-import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.proxy.Socks4ProxyHandler;
 import io.netty.handler.proxy.Socks5ProxyHandler;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
-import reactor.netty.tcp.TcpClient;
 
 import java.util.Objects;
 
@@ -78,7 +78,11 @@ public class NettyAsyncHttpClientBuilder {
             .port(port)
             .wiretap(enableWiretap);
 
-        return new NettyAsyncHttpClient(nettyHttpClient, nioEventLoopGroup, getProxyHandler());
+        AuthorizationChallengeHandler challengeHandler = (proxyOptions == null)
+            ? null
+            : new AuthorizationChallengeHandler(proxyOptions.getUsername(), proxyOptions.getPassword());
+
+        return new NettyAsyncHttpClient(nettyHttpClient, nioEventLoopGroup, () -> getProxyHandler(challengeHandler));
     }
 
     /**
@@ -146,39 +150,17 @@ public class NettyAsyncHttpClientBuilder {
         return this;
     }
 
-    private TcpClient setupTcpConfiguration(TcpClient tcpClient) {
-        if (nioEventLoopGroup != null) {
-            tcpClient = tcpClient.runOn(nioEventLoopGroup);
-        }
-
-        return tcpClient.bootstrap(this::setupBootstrap);
-    }
-
-    private Bootstrap setupBootstrap(Bootstrap bootstrap) {
-        ProxyHandler proxyHandler = getProxyHandler();
-
-        if (proxyHandler == null) {
-            return bootstrap;
-        }
-
-        return bootstrap;
-
-//        return BootstrapHandlers.updateConfiguration(bootstrap, PROXY_HANDLER_IDENTIFIER, b ->
-//            (connectionObserver, channel) ->
-//                channel.pipeline().addFirst(PROXY_HANDLER_IDENTIFIER, proxyHandler));
-    }
-
     /*
      * Creates a proxy handler based on the passed ProxyOptions.
      */
-    private ProxyHandler getProxyHandler() {
+    private ProxyHandler getProxyHandler(AuthorizationChallengeHandler challengeHandler) {
         if (proxyOptions == null) {
             return null;
         }
 
         switch (proxyOptions.getType()) {
             case HTTP:
-                return new ProxyAuthenticationHandler(proxyOptions);
+                return new ProxyAuthenticationHandler(proxyOptions.getAddress(), challengeHandler);
             case SOCKS4:
                 return new Socks4ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername());
             case SOCKS5:
