@@ -81,7 +81,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * @param provider the Page Retrieval Provider
      * @param ignored ignored
      */
-    public PagedFluxBase(Supplier<PageRetriever<String, P>> provider, boolean ignored) {
+    PagedFluxBase(Supplier<PageRetriever<String, P>> provider, boolean ignored) {
         super(provider);
     }
 

@@ -16,7 +16,9 @@ import java.util.stream.Collectors;
  */
 public interface Page<T> extends ContinuablePage<String, T> {
     /**
-     * @return list of elements in the page.
+     * Get list of elements in the page.
+     *
+     * @return the page elements
      *
      * @deprecated use {@link this#getElements()}.
      */

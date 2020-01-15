@@ -71,19 +71,11 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     }
 
     /**
-     * PRIVATE CONSTRUCTOR. SEE BELOW NOTES.
-     *
      * Create PagedFlux backed by Page Retriever Function Supplier.
      *
      * @param provider the Page Retrieval Provider
      * @param ignored param is ignored, exists in signature only to avoid conflict with first ctr
      */
-    // NOTES: Proposal for azure-core-v2:
-    //
-    // 1. Remove the first ctr "PagedFlux(Supplier<Mono<PagedResponse<T>>>)".
-    // 2. Add a new ctr        "PagedFlux(Supplier<PageRetriever<String, PagedResponse<T>>>)".
-    // 3. Remove the factory method "PagedFlux::create" and this PRIVATE ctr in favour of #2.
-    //
     private PagedFlux(Supplier<PageRetriever<String, PagedResponse<T>>> provider, boolean ignored) {
         super(provider, ignored);
     }
@@ -97,8 +89,10 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * returned by Page Retriever has {@code null} continuation token.
      *
      * The provider is useful mainly in two scenarios:
-     * 1. To manage state across multiple call to Page Retrieval within the same Subscription
-     * 2. To decorate a PagedFlux to produce new PagedFlux
+     * <ul>
+     * <li> To manage state across multiple call to Page Retrieval within the same Subscription.
+     * <li> To decorate a PagedFlux to produce new PagedFlux.
+     * </ul>
      *
      * <p><strong>Decoration sample</strong></p>
      * {@codesnippet com.azure.core.http.rest.pagedflux.create.decoration}

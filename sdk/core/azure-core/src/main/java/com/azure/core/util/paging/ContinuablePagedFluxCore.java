@@ -30,6 +30,7 @@ import java.util.function.Supplier;
  * <p><strong>Extending PagedFluxCore for Custom Continuation Token support</strong></p>
  * {@codesnippet com.azure.core.util.paging.pagedfluxcore.continuationtoken}
  *
+ * @param <C> the type of the continuation token
  * @param <T> The type of elements in a {@link ContinuablePage}
  * @param <P> The {@link ContinuablePage} holding items of type {@code T}.
  *
@@ -69,7 +70,9 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
     }
 
     /**
-     * @return the page size configured for this {@link ContinuablePagedFluxCore}, {@code null} if unspecified.
+     * Get the page size configured this {@link ContinuablePagedFluxCore}.
+     *
+     * @return the page size configured, {@code null} if unspecified.
      */
     public Integer getPageSize() {
         return this.defaultPageSize;
