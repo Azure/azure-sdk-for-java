@@ -1,9 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.serializer.jsonwrapper.api;
+package com.azure.core.util.serializer.jsonwrapper.api;
 
 import java.util.List;
 
+/**
+ * Representation of a generic node in a JSON tree model
+ */
 public interface Node {
 
     /**

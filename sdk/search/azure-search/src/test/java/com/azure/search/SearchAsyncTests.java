@@ -4,10 +4,10 @@
 package com.azure.search;
 
 import com.azure.core.http.rest.PagedFluxBase;
-import com.azure.core.implementation.serializer.jsonwrapper.JsonWrapper;
-import com.azure.core.implementation.serializer.jsonwrapper.api.Config;
-import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
-import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
+import com.azure.core.util.serializer.jsonwrapper.JsonWrapper;
+import com.azure.core.util.serializer.jsonwrapper.api.Config;
+import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
+import com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.models.CoordinateSystem;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.QueryType;

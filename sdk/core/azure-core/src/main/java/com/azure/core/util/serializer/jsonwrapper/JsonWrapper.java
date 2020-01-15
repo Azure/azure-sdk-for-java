@@ -1,14 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.serializer.jsonwrapper;
+package com.azure.core.util.serializer.jsonwrapper;
 
-import com.azure.core.implementation.serializer.jsonwrapper.api.Config;
-import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
-import com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin;
+import com.azure.core.util.serializer.jsonwrapper.api.Config;
+import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
+import com.azure.core.util.serializer.jsonwrapper.spi.JsonPlugin;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
+/**
+ * Utility class generating an instance of a JsonAPI
+ */
 @SuppressWarnings("unchecked")
 public class JsonWrapper {
 

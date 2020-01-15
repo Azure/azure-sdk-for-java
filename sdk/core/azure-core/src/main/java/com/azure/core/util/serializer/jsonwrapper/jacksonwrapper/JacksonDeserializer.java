@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper;
+package com.azure.core.util.serializer.jsonwrapper.jacksonwrapper;
 
-import com.azure.core.implementation.serializer.jsonwrapper.api.Config;
-import com.azure.core.implementation.serializer.jsonwrapper.api.Deserializer;
-import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
-import com.azure.core.implementation.serializer.jsonwrapper.api.Type;
+import com.azure.core.util.serializer.jsonwrapper.api.Config;
+import com.azure.core.util.serializer.jsonwrapper.api.Deserializer;
+import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
+import com.azure.core.util.serializer.jsonwrapper.api.Type;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-
+/**
+ * Jackson implementation of the JsonApi
+ */
 public class JacksonDeserializer implements JsonApi {
 
     private static final Map<Config, DeserializationFeature> CONFIG_MAP;

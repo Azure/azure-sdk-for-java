@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.serializer.jsonwrapper.api;
+package com.azure.core.util.serializer.jsonwrapper.api;
 
-import com.azure.core.implementation.serializer.jsonwrapper.JsonWrapper;
+import com.azure.core.util.serializer.jsonwrapper.JsonWrapper;
 /**
  * A custom deserialization API for JSON content that will return a specific Java type. A Deserializer is registered on
  * a specific instance of a {@link JsonApi} after it is retrieved from the {@link JsonWrapper}
