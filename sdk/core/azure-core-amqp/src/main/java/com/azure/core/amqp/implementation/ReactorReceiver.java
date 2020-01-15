@@ -60,16 +60,13 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 }, error -> {
                     logger.error("Error occurred in connection.", error);
                     endpointStateSink.error(error);
-                    close();
                 }, () -> {
                     endpointStateSink.next(AmqpEndpointState.CLOSED);
-                    close();
                 }),
 
             this.handler.getErrors().subscribe(error -> {
                 logger.error("Error occurred in link.", error);
                 endpointStateSink.error(error);
-                close();
             }),
 
             this.tokenManager.getAuthorizationResults().subscribe(
@@ -125,7 +122,12 @@ public class ReactorReceiver implements AmqpReceiveLink {
     }
 
     @Override
-    public void close() {
+    public boolean isDisposed() {
+        return isDisposed.get();
+    }
+
+    @Override
+    public void dispose() {
         if (isDisposed.getAndSet(true)) {
             return;
         }
