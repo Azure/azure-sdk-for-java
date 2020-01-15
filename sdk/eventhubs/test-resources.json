@@ -277,29 +277,13 @@
             "type": "string",
             "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('baseName'), 'RootManageSharedAccessKey'), variables('eventHubsApiVersion')).primaryConnectionString, ';EntityPath=', parameters('eventHubName') )]"
         },
-        "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME": {
-            "type": "string",
-            "value": "[concat(variables('eventHubNameSpaceName'), '.', parameters('eventHubNamespaceHostNameSuffix'))]"
-        },
         "AZURE_EVENTHUBS_EVENT_HUB_NAME": {
             "type": "string",
             "value": "[parameters('eventHubName')]"
         },
-        "PRIMARY_STORAGE_ACCOUNT_NAME": {
+        "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME": {
             "type": "string",
-            "value": "[variables('primaryAccountName')]"
-        },
-        "PRIMARY_STORAGE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-        "SECONDARY_STORAGE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('secondaryAccountName')]"
-        },
-        "SECONDARY_STORAGE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+            "value": "[concat(variables('eventHubNameSpaceName'), '.', parameters('eventHubNamespaceHostNameSuffix'))]"
         },
         "BLOB_STORAGE_ACCOUNT_NAME": {
             "type": "string",
@@ -317,23 +301,6 @@
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
-        "AZURE_STORAGE_FILE_ENDPOINT": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.file]"
-        },
-        "AZURE_STORAGE_QUEUE_ENDPOINT": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.queue]"
-        },
-        "STORAGE_DATA_LAKE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('dataLakeAccountName')]"
-        },
-        "STORAGE_DATA_LAKE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-
         "AZURE_STORAGE_BLOB_CONNECTION_STRING": {
             "type": "string",
             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
@@ -342,10 +309,41 @@
             "type": "string",
             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
         },
+        "AZURE_STORAGE_FILE_ENDPOINT": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.file]"
+        },
         "AZURE_STORAGE_QUEUE_CONNECTION_STRING": {
             "type": "string",
             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
+        },
+        "AZURE_STORAGE_QUEUE_ENDPOINT": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.queue]"
+        },
+        "PRIMARY_STORAGE_ACCOUNT_NAME": {
+            "type": "string",
+            "value": "[variables('primaryAccountName')]"
+        },
+        "PRIMARY_STORAGE_ACCOUNT_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+        },
+        "STORAGE_DATA_LAKE_ACCOUNT_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value]"
+        },
+        "STORAGE_DATA_LAKE_ACCOUNT_NAME": {
+            "type": "string",
+            "value": "[variables('dataLakeAccountName')]"
+        },
+        "SECONDARY_STORAGE_ACCOUNT_NAME": {
+            "type": "string",
+            "value": "[variables('secondaryAccountName')]"
+        },
+        "SECONDARY_STORAGE_ACCOUNT_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
         }
-
     }
 }
