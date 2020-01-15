@@ -1,5 +1,7 @@
 # Release History
 
+## 12.4.0-beta.1 (Unreleased)
+
 ## 12.3.0-beta.1 (Unreleased)
 - Added .blobClient(BlobClient) and .blobAsyncClient(BlobAsyncClient) methods on EncryptedBlobClientBuilder to create an EncryptedBlobClient from a BlobClient.
 

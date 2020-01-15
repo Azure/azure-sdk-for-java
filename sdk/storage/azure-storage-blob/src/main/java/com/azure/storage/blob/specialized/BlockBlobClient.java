@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -18,6 +19,8 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
+import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -137,8 +140,26 @@ public final class BlockBlobClient extends BlobClientBase {
     public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return BlobOutputStream.blockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier,
+
+        BlobAsyncClient blobClient = prepareBuilder(client).buildAsyncClient();
+
+        return BlobOutputStream.blockBlobOutputStream(blobClient, parallelTransferOptions, headers, metadata, tier,
             requestConditions);
+    }
+
+    private BlobClientBuilder prepareBuilder(BlobAsyncClientBase client) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .pipeline(client.getHttpPipeline())
+            .endpoint(client.getBlobUrl())
+            .snapshot(client.getSnapshotId())
+            .serviceVersion(client.getServiceVersion());
+
+        CpkInfo cpk = client.getCustomerProvidedKey();
+        if (cpk != null) {
+            builder.customerProvidedKey(new CustomerProvidedKey(cpk.getEncryptionKey()));
+        }
+
+        return builder;
     }
 
     /**

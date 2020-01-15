@@ -40,7 +40,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         return new AppendBlobOutputStream(client, appendBlobRequestConditions);
     }
 
-    static BlobOutputStream blockBlobOutputStream(final BlockBlobAsyncClient client,
+    public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
         final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
         final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
         return new BlockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier, requestConditions);
@@ -149,12 +149,10 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         boolean complete;
 
-        private BlockBlobOutputStream(final BlockBlobAsyncClient client,
+        private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
             final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
             super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
-
-            BlobAsyncClient blobClient = prepareBuilder(client).buildAsyncClient();
 
             Flux<ByteBuffer> fbb = Flux.create((FluxSink<ByteBuffer> sink) -> this.sink = sink);
 
@@ -163,7 +161,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
              subscribe. */
             fbb.subscribe();
 
-            blobClient.uploadWithResponse(fbb, parallelTransferOptions, headers, metadata, tier, requestConditions)
+            client.uploadWithResponse(fbb, parallelTransferOptions, headers, metadata, tier, requestConditions)
                 // This allows the operation to continue while maintaining the error that occurred.
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
@@ -171,21 +169,6 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 })
                 .doOnTerminate(() -> complete = true)
                 .subscribe();
-        }
-
-        private BlobClientBuilder prepareBuilder(BlobAsyncClientBase client) {
-            BlobClientBuilder builder = new BlobClientBuilder()
-                .pipeline(client.getHttpPipeline())
-                .endpoint(client.getBlobUrl())
-                .snapshot(client.getSnapshotId())
-                .serviceVersion(client.getServiceVersion());
-
-            CpkInfo cpk = client.getCustomerProvidedKey();
-            if (cpk != null) {
-                builder.customerProvidedKey(new CustomerProvidedKey(cpk.getEncryptionKey()));
-            }
-
-            return builder;
         }
 
         @Override
