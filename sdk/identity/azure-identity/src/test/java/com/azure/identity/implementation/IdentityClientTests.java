@@ -10,10 +10,13 @@ import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.IClientSecret;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.SilentParameters;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +28,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -158,6 +162,70 @@ public class IdentityClientTests {
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
 
+    @Test
+    public void testValidAcquireTokenFromCache() throws Exception {
+        // setup
+        IAccount account = new IAccount() {
+            @Override
+            public String homeAccountId() {
+                return "homeAccountId";
+            }
+
+            @Override
+            public String environment() {
+                return "environment";
+            }
+
+            @Override
+            public String username() {
+                return "username";
+            }
+        };
+        MsalToken previousToken = new MsalToken(new IAuthenticationResult() {
+            @Override
+            public String accessToken() {
+                return "msal token";
+            }
+
+            @Override
+            public String idToken() {
+                return "id token";
+            }
+
+            @Override
+            public IAccount account() {
+                return account;
+            }
+
+            @Override
+            public String environment() {
+                return "environment";
+            }
+
+            @Override
+            public String scopes() {
+                return "https://vault.azure.net/.default";
+            }
+
+            @Override
+            public Date expiresOnDate() {
+                return Date.from(OffsetDateTime.now().toInstant());
+            }
+        });
+        String accessToken = "token";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        mockForAcquireTokenFromCache(previousToken, request, accessToken, expiresOn);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
+        AccessToken token = client.authenticateWithUserRefreshToken(request, previousToken).block();
+        Assert.assertEquals(accessToken, token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+    }
+
     /****** mocks ******/
 
     private void mockForClientSecret(String secret, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn) throws Exception {
@@ -261,6 +329,31 @@ public class IdentityClientTests {
             if (redirectUri != argument.redirectUri()) {
                 return CompletableFuture.runAsync(() -> {
                     throw new MsalServiceException("Invalid redirect URI", "InvalidRedirectUri");
+                });
+            }
+            cached.set(true);
+            return TestUtils.getMockAuthenticationResult(accessToken, expiresOn);
+        });
+        PublicClientApplication.Builder builder = PowerMockito.mock(PublicClientApplication.Builder.class);
+        when(builder.build()).thenReturn(application);
+        when(builder.authority(any())).thenReturn(builder);
+        when(builder.httpClient(any())).thenReturn(builder);
+        whenNew(PublicClientApplication.Builder.class).withArguments(clientId).thenReturn(builder);
+    }
+
+    private void mockForAcquireTokenFromCache(MsalToken msalToken, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn) throws Exception {
+        PublicClientApplication application = PowerMockito.mock(PublicClientApplication.class);
+        AtomicBoolean cached = new AtomicBoolean(false);
+        when(application.acquireTokenSilently(any(SilentParameters.class))).thenAnswer(invocation -> {
+            SilentParameters argument = (SilentParameters) invocation.getArguments()[0];
+            if (argument.scopes().size() != 1 || !request.getScopes().get(0).equals(argument.scopes().iterator().next())) {
+                return CompletableFuture.runAsync(() -> {
+                    throw new MsalServiceException("Invalid request", "InvalidScopes");
+                });
+            }
+            if (msalToken.getAccount() != argument.account()) {
+                return CompletableFuture.runAsync(() -> {
+                    throw new MsalServiceException("Invalid account", "InvalidAccount");
                 });
             }
             cached.set(true);
