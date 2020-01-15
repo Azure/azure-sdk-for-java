@@ -12,22 +12,16 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
-import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -104,38 +98,6 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
-    public void validAADCredential() {
-        final String key = "newKey";
-        final String value = "newValue";
-
-        connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-
-        Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
-        final ConfigurationClientBuilder clientBuilder;
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        } else {
-            clientBuilder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .configuration(Configuration.getGlobalConfiguration())
-                .pipeline(new HttpPipelineBuilder().build());
-        }
-
-        ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
-        Assertions.assertEquals(addedSetting.getKey(), key);
-        Assertions.assertEquals(addedSetting.getValue(), value);
-    }
-
-    @Test
     public void timeoutPolicy() {
         final String key = "newKey";
         final String value = "newValue";
@@ -189,8 +151,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
-                .serviceVersion(null)
-                .pipeline(new HttpPipelineBuilder().build());
+                .serviceVersion(null);
         }
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
