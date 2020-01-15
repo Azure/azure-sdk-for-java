@@ -4,10 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.channel.Channel;
 import io.netty.channel.pool.ChannelHealthChecker;
 import io.netty.util.concurrent.Future;
@@ -15,7 +12,6 @@ import io.netty.util.concurrent.Promise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
@@ -24,7 +20,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.concurrent.atomic.AtomicLongFieldUpdater.newUpdater;
 
-@JsonSerialize(using = RntbdClientChannelHealthChecker.JsonSerializer.class)
 public final class RntbdClientChannelHealthChecker implements ChannelHealthChecker {
 
     // region Fields
@@ -43,22 +38,17 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
     // A channel will not be declared unhealthy if a write was attempted recently. As such gaps between
     // Timestamps.lastChannelWriteAttempt and Timestamps.lastChannelWrite lower than this value are ignored.
-    // Guidance: The grace period should be large enough to accommodate slow writes. For example, a value of 2s requires
-    // that the client can sustain data rates of at least 1 MB/s when writing 2 MB documents.
+    // Guidance: The grace period should be large enough to accommodate slow writes. For example, a value of 2s
+    // requires that the client can sustain data rates of at least 1 MB/s when writing 2 MB documents.
     private static final long writeHangGracePeriodInNanos = 2L * 1_000_000_000L;
 
-    // A channel is considered idle if:
-    // idleConnectionTimeout > 0L && System.nanoTime() - Timestamps.lastChannelRead() >= idleConnectionTimeout
+    @JsonProperty
     private final long idleConnectionTimeoutInNanos;
 
-    // A channel will be declared unhealthy if the gap between Timestamps.lastChannelWrite and Timestamps.lastChannelRead
-    // grows beyond this value.
-    // Constraint: readDelayLimit > readHangGracePeriod
+    @JsonProperty
     private final long readDelayLimitInNanos;
 
-    // A channel will be declared unhealthy if the gap between Timestamps.lastChannelWriteAttempt and Timestamps.lastChannelWrite
-    // grows beyond this value.
-    // Constraint: writeDelayLimit > writeHangGracePeriod
+    @JsonProperty
     private final long writeDelayLimitInNanos;
 
     // endregion
@@ -67,33 +57,72 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
     public RntbdClientChannelHealthChecker(final Config config) {
 
-        checkNotNull(config, "config: null");
+        checkNotNull(config, "expected non-null config");
+
+        checkArgument(config.receiveHangDetectionTimeInNanos() > readHangGracePeriodInNanos,
+            "config.receiveHangDetectionTimeInNanos: %s",
+            config.receiveHangDetectionTimeInNanos());
+
+        checkArgument(config.sendHangDetectionTimeInNanos() > writeHangGracePeriodInNanos,
+            "config.sendHangDetectionTimeInNanos: %s",
+            config.sendHangDetectionTimeInNanos());
 
         this.idleConnectionTimeoutInNanos = config.idleConnectionTimeoutInNanos();
-
         this.readDelayLimitInNanos = config.receiveHangDetectionTimeInNanos();
-        checkArgument(this.readDelayLimitInNanos > readHangGracePeriodInNanos, "config.receiveHangDetectionTimeInNanos: %s", this.readDelayLimitInNanos);
-
         this.writeDelayLimitInNanos = config.sendHangDetectionTimeInNanos();
-        checkArgument(this.writeDelayLimitInNanos > writeHangGracePeriodInNanos, "config.sendHangDetectionTimeInNanos: %s", this.writeDelayLimitInNanos);
+
     }
 
     // endregion
 
     // region Methods
 
+    /**
+     * Returns the idle connection timeout interval in nanoseconds.
+     * <p>
+     * A channel is considered idle if {@link #idleConnectionTimeoutInNanos} is greater than zero and the time since
+     * the last channel read is greater than {@link #idleConnectionTimeoutInNanos}.
+     *
+     * @return Idle connection timeout interval in nanoseconds.
+     */
     public long idleConnectionTimeoutInNanos() {
         return this.idleConnectionTimeoutInNanos;
     }
 
+    /**
+     * Returns the read delay limit in nanoseconds.
+     * <p>
+     * A channel will be declared unhealthy if the gap between the last channel write and the last channel read grows
+     * beyond this value.
+     * <p>
+     * Constraint: {@link #readDelayLimitInNanos} > {@link #readHangGracePeriodInNanos}
+     *
+     * @return Read delay limit in nanoseconds.
+     */
     public long readDelayLimitInNanos() {
         return this.readDelayLimitInNanos;
     }
 
+    /**
+     * Returns the write delay limit in nanoseconds.
+     * <p>
+     * A channel will be declared unhealthy if the gap between the last channel write attempt and the last channel write
+     * grows beyond this value.
+     * <p>
+     * Constraint: {@link #writeDelayLimitInNanos} > {@link #writeHangGracePeriodInNanos}
+     *
+     * @return Write delay limit in nanoseconds.
+     */
     public long writeDelayLimitInNanos() {
         return this.writeDelayLimitInNanos;
     }
 
+    /**
+     * Determines whether a specified channel is healthy.
+     *
+     * @param channel A channel whose health is to be checked.
+     * @return A future with a result of {@code true} if the channel is healthy, or {@code false} otherwise.
+     */
     public Future<Boolean> isHealthy(final Channel channel) {
 
         checkNotNull(channel, "expected non-null channel");
@@ -109,7 +138,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         final Timestamps timestamps = requestManager.snapshotTimestamps();
         final long currentTime = System.nanoTime();
 
-        if (currentTime - timestamps.lastChannelRead() < recentReadWindowInNanos) {
+        if (currentTime - timestamps.lastChannelReadNanoTime() < recentReadWindowInNanos) {
             return promise.setSuccess(Boolean.TRUE);  // because we recently received data
         }
 
@@ -117,17 +146,22 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         // Treat the channel as unhealthy if the gap between the last attempted write and the last successful write
         // grew beyond acceptable limits, unless a write was attempted recently. This is a sign of a hung write.
 
-        final long writeDelay = timestamps.lastChannelWriteAttempt() - timestamps.lastChannelWrite();
+        final long writeDelayInNanos =
+            timestamps.lastChannelWriteAttemptNanoTime() - timestamps.lastChannelWriteNanoTime();
 
-        if (writeDelay > this.writeDelayLimitInNanos && currentTime - timestamps.lastChannelWriteAttempt() > writeHangGracePeriodInNanos) {
+        final long writeHangDurationInNanos =
+            currentTime - timestamps.lastChannelWriteAttemptNanoTime();
+
+        if (writeDelayInNanos > this.writeDelayLimitInNanos && writeHangDurationInNanos > writeHangGracePeriodInNanos) {
 
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();
 
-            logger.warn("{} health check failed due to hung write: {lastChannelWriteAttempt: {}, lastChannelWrite: {}, "
-                + "writeDelay: {}, writeDelayLimit: {}, rntbdContext: {}, pendingRequestCount: {}}", channel,
-                timestamps.lastChannelWriteAttempt(), timestamps.lastChannelWrite(), writeDelay,
-                this.writeDelayLimitInNanos, rntbdContext, pendingRequestCount);
+            logger.warn("{} health check failed due to hung write: {lastChannelWriteAttemptNanoTime: {}, " +
+                    "lastChannelWriteNanoTime: {}, writeDelayInNanos: {}, writeDelayLimitInNanos: {}, " +
+                    "rntbdContext: {}, pendingRequestCount: {}}",
+                channel, timestamps.lastChannelWriteAttemptNanoTime(), timestamps.lastChannelWriteNanoTime(),
+                writeDelayInNanos, this.writeDelayLimitInNanos, rntbdContext, pendingRequestCount);
 
             return promise.setSuccess(Boolean.FALSE);
         }
@@ -136,23 +170,24 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         // Treat the connection as unhealthy if the gap between the last successful write and the last successful read
         // grew beyond acceptable limits, unless a write succeeded recently. This is a sign of a hung read.
 
-        final long readDelay = timestamps.lastChannelWrite() - timestamps.lastChannelRead();
+        final long readDelay = timestamps.lastChannelWriteNanoTime() - timestamps.lastChannelReadNanoTime();
+        final long readHangDuration = currentTime - timestamps.lastChannelWriteNanoTime();
 
-        if (readDelay > this.readDelayLimitInNanos && currentTime - timestamps.lastChannelWrite() > readHangGracePeriodInNanos) {
+        if (readDelay > this.readDelayLimitInNanos && readHangDuration > readHangGracePeriodInNanos) {
 
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();
 
             logger.warn("{} health check failed due to hung read: {lastChannelWrite: {}, lastChannelRead: {}, "
                 + "readDelay: {}, readDelayLimit: {}, rntbdContext: {}, pendingRequestCount: {}}", channel,
-                timestamps.lastChannelWrite(), timestamps.lastChannelRead(), readDelay,
+                timestamps.lastChannelWriteNanoTime(), timestamps.lastChannelReadNanoTime(), readDelay,
                 this.readDelayLimitInNanos, rntbdContext, pendingRequestCount);
 
             return promise.setSuccess(Boolean.FALSE);
         }
 
         if (this.idleConnectionTimeoutInNanos > 0L) {
-            if (currentTime - timestamps.lastChannelRead() > this.idleConnectionTimeoutInNanos) {
+            if (currentTime - timestamps.lastChannelReadNanoTime() > this.idleConnectionTimeoutInNanos) {
                 return promise.setSuccess(Boolean.FALSE);
             }
         }
@@ -178,41 +213,24 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
     // region Types
 
-    static final class JsonSerializer extends StdSerializer<RntbdClientChannelHealthChecker> {
-
-        JsonSerializer() {
-            super(RntbdClientChannelHealthChecker.class);
-        }
-
-        @Override
-        public void serialize(RntbdClientChannelHealthChecker value, JsonGenerator generator, SerializerProvider provider) throws IOException {
-            generator.writeStartObject();
-            generator.writeNumberField("idleConnectionTimeoutInNanos", value.idleConnectionTimeoutInNanos());
-            generator.writeNumberField("readDelayLimitInNanos", value.readDelayLimitInNanos());
-            generator.writeNumberField("writeDelayLimitInNanos", value.writeDelayLimitInNanos());
-            generator.writeEndObject();
-        }
-    }
-
-    @JsonSerialize(using = Timestamps.JsonSerializer.class)
     static final class Timestamps {
 
         private static final AtomicLongFieldUpdater<Timestamps> lastPingUpdater =
-            newUpdater(Timestamps.class, "lastPing");
+            newUpdater(Timestamps.class, "lastPingNanoTime");
 
         private static final AtomicLongFieldUpdater<Timestamps> lastReadUpdater =
-            newUpdater(Timestamps.class, "lastRead");
+            newUpdater(Timestamps.class, "lastReadNanoTime");
 
         private static final AtomicLongFieldUpdater<Timestamps> lastWriteUpdater =
-            newUpdater(Timestamps.class, "lastWrite");
+            newUpdater(Timestamps.class, "lastWriteNanoTime");
 
         private static final AtomicLongFieldUpdater<Timestamps> lastWriteAttemptUpdater =
-            newUpdater(Timestamps.class, "lastWriteAttempt");
+            newUpdater(Timestamps.class, "lastWriteAttemptNanoTime");
 
-        private volatile long lastPing;
-        private volatile long lastRead;
-        private volatile long lastWrite;
-        private volatile long lastWriteAttempt;
+        private volatile long lastPingNanoTime;
+        private volatile long lastReadNanoTime;
+        private volatile long lastWriteNanoTime;
+        private volatile long lastWriteAttemptNanoTime;
 
         public Timestamps() {
         }
@@ -220,10 +238,10 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         @SuppressWarnings("CopyConstructorMissesField")
         public Timestamps(Timestamps other) {
             checkNotNull(other, "other: null");
-            this.lastPing = lastPingUpdater.get(other);
-            this.lastRead = lastReadUpdater.get(other);
-            this.lastWrite = lastWriteUpdater.get(other);
-            this.lastWriteAttempt = lastWriteAttemptUpdater.get(other);
+            this.lastPingNanoTime = lastPingUpdater.get(other);
+            this.lastReadNanoTime = lastReadUpdater.get(other);
+            this.lastWriteNanoTime = lastWriteUpdater.get(other);
+            this.lastWriteAttemptNanoTime = lastWriteAttemptUpdater.get(other);
         }
 
         public void channelPingCompleted() {
@@ -242,42 +260,29 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             lastWriteAttemptUpdater.set(this, System.nanoTime());
         }
 
-        public long lastChannelPing() {
+        @JsonProperty
+        public long lastChannelPingNanoTime() {
             return lastPingUpdater.get(this);
         }
 
-        public long lastChannelRead() {
+        @JsonProperty
+        public long lastChannelReadNanoTime() {
             return lastReadUpdater.get(this);
         }
 
-        public long lastChannelWrite() {
+        @JsonProperty
+        public long lastChannelWriteNanoTime() {
             return lastWriteUpdater.get(this);
         }
 
-        public long lastChannelWriteAttempt() {
+        @JsonProperty
+        public long lastChannelWriteAttemptNanoTime() {
             return lastWriteAttemptUpdater.get(this);
         }
 
         @Override
         public String toString() {
-            return "RntbdClientChannelHealthChecker.Timestamps(" + RntbdObjectMapper.toJson(this) + ')';
-        }
-
-        static final class JsonSerializer extends StdSerializer<Timestamps> {
-
-            JsonSerializer() {
-                super(Timestamps.class);
-            }
-
-            @Override
-            public void serialize(Timestamps value, JsonGenerator generator, SerializerProvider provider) throws IOException {
-                generator.writeStartObject();
-                generator.writeNumberField("lastChannelPing", value.lastChannelPing());
-                generator.writeNumberField("lastChannelRead", value.lastChannelRead());
-                generator.writeNumberField("lastChannelWrite", value.lastChannelWrite());
-                generator.writeNumberField("lastChannelWriteAttempt", value.lastChannelWriteAttempt());
-                generator.writeEndObject();
-            }
+            return RntbdObjectMapper.toString(this);
         }
     }
 

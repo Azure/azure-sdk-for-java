@@ -44,7 +44,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
      */
     @Override
     public void channelAcquired(final Channel channel) {
-        logger.trace("{} CHANNEL ACQUIRED", channel);
+        logger.debug("{} CHANNEL ACQUIRED", channel);
     }
 
     /**
@@ -56,7 +56,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
      */
     @Override
     public void channelCreated(final Channel channel) {
-        logger.trace("{} CHANNEL CREATED", channel);
+        logger.debug("{} CHANNEL CREATED", channel);
         this.initChannel(channel);
     }
 
@@ -69,7 +69,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
      */
     @Override
     public void channelReleased(final Channel channel) {
-        logger.trace("{} CHANNEL RELEASED", channel);
+        logger.debug("{} CHANNEL RELEASED", channel);
     }
 
     /**
