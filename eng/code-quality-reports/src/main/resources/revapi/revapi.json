@@ -47,6 +47,12 @@
       {
         "regex": true,
         "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class com\\.fasterxml\\.jackson\\.databind\\.JsonNode",
+        "justification": "We allow this in com.azure.core.util.serializer.jsonwrapper"
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
         "new": "missing\\-class reactor\\.core(\\..+)?",
         "justification": "Reactor is allowed in the public API. Since we don't analyze dependencies, these show up as being unresolved."
       },
