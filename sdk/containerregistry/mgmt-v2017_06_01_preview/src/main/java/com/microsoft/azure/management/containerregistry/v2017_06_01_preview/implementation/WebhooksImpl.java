@@ -109,10 +109,14 @@ class WebhooksImpl extends WrapperImpl<WebhooksInner> implements Webhooks {
     public Observable<Webhook> getAsync(String resourceGroupName, String registryName, String webhookName) {
         WebhooksInner client = this.inner();
         return client.getAsync(resourceGroupName, registryName, webhookName)
-        .map(new Func1<WebhookInner, Webhook>() {
+        .flatMap(new Func1<WebhookInner, Observable<Webhook>>() {
             @Override
-            public Webhook call(WebhookInner inner) {
-                return wrapModel(inner);
+            public Observable<Webhook> call(WebhookInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Webhook)wrapModel(inner));
+                }
             }
        });
     }
