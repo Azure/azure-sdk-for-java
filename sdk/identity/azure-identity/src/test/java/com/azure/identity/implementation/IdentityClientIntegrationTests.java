@@ -18,7 +18,7 @@ public class IdentityClientIntegrationTests {
     private static final String AZURE_CLIENT_CERTIFICATE = "AZURE_CLIENT_CERTIFICATE";
     private final TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
 
-    @Ignore("Integration test")
+    @Ignore("Integration tests")
     public void clientSecretCanGetToken() {
         IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), System.getenv(AZURE_CLIENT_SECRET), null, null, new IdentityClientOptions());
         StepVerifier.create(client.authenticateWithClientSecret(request))

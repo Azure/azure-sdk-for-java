@@ -65,7 +65,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="AvoidStarImport"/>
     <module name="IllegalImport">
       <property name="regexp" value="true"/>
-      <property name="illegalPkgs" value="^(com\.)?sun\.\w*, ^io\.opencensus"/>
+      <property name="illegalPkgs" value="^(com\.)?sun\.\w*, ^io.opentelemetry"/>
     </module>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>

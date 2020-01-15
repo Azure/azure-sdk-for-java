@@ -30,13 +30,13 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
+import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.nio.channels.NonWritableChannelException
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
@@ -580,8 +580,22 @@ class BlobAPITest extends APISpec {
         StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
             .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
             .verifyErrorSatisfies({
-                assert it instanceof BlobStorageException
-                assert ((BlobStorageException) it).getStatusCode() == 412
+                /*
+                 * If an operation is running on multiple threads and multiple return an exception Reactor will combine
+                 * them into a CompositeException which needs to be unwrapped. If there is only a single exception
+                 * 'Exceptions.unwrapMultiple' will return a singleton list of the exception it was passed.
+                 *
+                 * These exceptions may be wrapped exceptions where the exception we are expecting is contained within
+                 * ReactiveException that needs to be unwrapped. If the passed exception isn't a 'ReactiveException' it
+                 * will be returned unmodified by 'Exceptions.unwrap'.
+                 */
+                assert Exceptions.unwrapMultiple(it).stream().anyMatch({ it2 ->
+                    def exception = Exceptions.unwrap(it2)
+                    if (exception instanceof BlobStorageException) {
+                        assert ((BlobStorageException) exception).getStatusCode() == 412
+                        return true
+                    }
+                })
             })
 
         // Give the file a chance to be deleted by the download operation before verifying its deletion

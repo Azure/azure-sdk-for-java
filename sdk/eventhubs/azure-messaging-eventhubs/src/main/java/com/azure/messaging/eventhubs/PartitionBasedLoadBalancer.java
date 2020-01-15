@@ -116,10 +116,10 @@ final class PartitionBasedLoadBalancer {
 
         Mono.zip(partitionOwnershipMono, partitionsMono)
             .flatMap(this::loadBalance)
-            // if there was an error, log warning and TODO: call user provided error handler
+            // if there was an error, log warning
             .subscribe(ignored -> { },
                 ex -> {
-                    logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage());
+                    logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage(), ex);
                     ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
                     processError.accept(errorContext);
                 }, () -> logger.info("Load balancing completed successfully"));
@@ -131,7 +131,7 @@ final class PartitionBasedLoadBalancer {
      */
     private Mono<Void> loadBalance(final Tuple2<Map<String, PartitionOwnership>, List<String>> tuple) {
         return Mono.fromRunnable(() -> {
-            logger.info("Starting load balancer");
+            logger.info("Starting load balancer for {}", this.ownerId);
             Map<String, PartitionOwnership> partitionOwnershipMap = tuple.getT1();
 
             List<String> partitionIds = tuple.getT2();
@@ -143,8 +143,8 @@ final class PartitionBasedLoadBalancer {
             }
 
             int numberOfPartitions = partitionIds.size();
-            logger.info("Partition manager returned {} ownership records", partitionOwnershipMap.size());
-            logger.info("EventHubAsyncClient returned {} partitions", numberOfPartitions);
+            logger.info("CheckpointStore returned {} ownership records", partitionOwnershipMap.size());
+            logger.info("Event Hubs service returned {} partitions", numberOfPartitions);
             if (!isValid(partitionOwnershipMap)) {
                 // User data is corrupt.
                 throw logger.logExceptionAsError(Exceptions.propagate(
@@ -205,7 +205,8 @@ final class PartitionBasedLoadBalancer {
             if (isLoadBalanced(minPartitionsPerEventProcessor, numberOfEventProcessorsWithAdditionalPartition,
                 ownerPartitionMap)) {
                 // If the partitions are evenly distributed among all active event processors, no change required.
-                logger.info("Load is balanced");
+                logger.info("Load is balanced with this event processor owning {} partitions",
+                    ownerPartitionMap.get(ownerId).size());
                 // renew ownership of already owned partitions
                 checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
                     .stream()
@@ -231,7 +232,8 @@ final class PartitionBasedLoadBalancer {
             // If we have reached this stage, this event processor has to claim/steal ownership of at least 1
             // more partition
             logger.info(
-                "Load is unbalanced and this event processor should own more partitions");
+                "Load is unbalanced and this event processor owns {} partitions and should own more partitions",
+                ownerPartitionMap.get(ownerId).size());
             /*
              * If some partitions are unclaimed, this could be because an event processor is down and
              * it's partitions are now available for others to own or because event processors are just
