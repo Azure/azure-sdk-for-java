@@ -60,13 +60,16 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 }, error -> {
                     logger.error("Error occurred in connection.", error);
                     endpointStateSink.error(error);
+                    dispose();
                 }, () -> {
                     endpointStateSink.next(AmqpEndpointState.CLOSED);
+                    dispose();
                 }),
 
             this.handler.getErrors().subscribe(error -> {
                 logger.error("Error occurred in link.", error);
                 endpointStateSink.error(error);
+                dispose();
             }),
 
             this.tokenManager.getAuthorizationResults().subscribe(
