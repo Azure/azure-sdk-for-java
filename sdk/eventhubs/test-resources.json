@@ -104,7 +104,7 @@
             ],
             "properties": {
                 "messageRetentionInDays": 7,
-                "partitionCount": 1
+                "partitionCount": 2
             }
         },
         {
