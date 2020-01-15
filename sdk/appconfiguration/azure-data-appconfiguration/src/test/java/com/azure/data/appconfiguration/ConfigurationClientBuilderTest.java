@@ -128,8 +128,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
 
         assertThrows(RuntimeException.class, () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
     }
-    
-    @Disabled
+
     @Test
     public void nullServiceVersion() {
         final String key = "newKey";
