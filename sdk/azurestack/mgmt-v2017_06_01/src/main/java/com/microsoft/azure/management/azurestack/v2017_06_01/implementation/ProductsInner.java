@@ -13,7 +13,9 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.azurestack.v2017_06_01.DeviceConfiguration;
 import com.microsoft.azure.management.azurestack.v2017_06_01.ErrorResponseException;
+import com.microsoft.azure.management.azurestack.v2017_06_01.MarketplaceProductLogUpdate;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -22,6 +24,7 @@ import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -70,6 +73,18 @@ public class ProductsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azurestack.v2017_06_01.Products listDetails" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/products/{productName}/listDetails")
         Observable<Response<ResponseBody>> listDetails(@Path("subscriptionId") String subscriptionId, @Path("resourceGroup") String resourceGroup, @Path("registrationName") String registrationName, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azurestack.v2017_06_01.Products getProducts" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/products/_all/GetProducts")
+        Observable<Response<ResponseBody>> getProducts(@Path("subscriptionId") String subscriptionId, @Path("resourceGroup") String resourceGroup, @Path("registrationName") String registrationName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body DeviceConfiguration deviceConfiguration, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azurestack.v2017_06_01.Products getProduct" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/products/{productName}/GetProduct")
+        Observable<Response<ResponseBody>> getProduct(@Path("subscriptionId") String subscriptionId, @Path("resourceGroup") String resourceGroup, @Path("registrationName") String registrationName, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body DeviceConfiguration deviceConfiguration, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azurestack.v2017_06_01.Products uploadLog" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/products/{productName}/uploadProductLog")
+        Observable<Response<ResponseBody>> uploadLog(@Path("subscriptionId") String subscriptionId, @Path("resourceGroup") String resourceGroup, @Path("registrationName") String registrationName, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body MarketplaceProductLogUpdate marketplaceProductLogUpdate, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azurestack.v2017_06_01.Products listNext" })
         @GET
@@ -383,6 +398,278 @@ public class ProductsInner {
         return this.client.restClient().responseBuilderFactory().<ExtendedProductInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ExtendedProductInner>() { }.getType())
                 .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns a list of products.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProductListInner object if successful.
+     */
+    public ProductListInner getProducts(String resourceGroup, String registrationName) {
+        return getProductsWithServiceResponseAsync(resourceGroup, registrationName).toBlocking().single().body();
+    }
+
+    /**
+     * Returns a list of products.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProductListInner> getProductsAsync(String resourceGroup, String registrationName, final ServiceCallback<ProductListInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getProductsWithServiceResponseAsync(resourceGroup, registrationName), serviceCallback);
+    }
+
+    /**
+     * Returns a list of products.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProductListInner object
+     */
+    public Observable<ProductListInner> getProductsAsync(String resourceGroup, String registrationName) {
+        return getProductsWithServiceResponseAsync(resourceGroup, registrationName).map(new Func1<ServiceResponse<ProductListInner>, ProductListInner>() {
+            @Override
+            public ProductListInner call(ServiceResponse<ProductListInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns a list of products.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProductListInner object
+     */
+    public Observable<ServiceResponse<ProductListInner>> getProductsWithServiceResponseAsync(String resourceGroup, String registrationName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroup == null) {
+            throw new IllegalArgumentException("Parameter resourceGroup is required and cannot be null.");
+        }
+        if (registrationName == null) {
+            throw new IllegalArgumentException("Parameter registrationName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getProducts(this.client.subscriptionId(), resourceGroup, registrationName, this.client.apiVersion(), this.client.acceptLanguage(), deviceConfiguration, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProductListInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ProductListInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ProductListInner> clientResponse = getProductsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ProductListInner> getProductsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ProductListInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ProductListInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProductInner object if successful.
+     */
+    public ProductInner getProduct(String resourceGroup, String registrationName, String productName) {
+        return getProductWithServiceResponseAsync(resourceGroup, registrationName, productName).toBlocking().single().body();
+    }
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProductInner> getProductAsync(String resourceGroup, String registrationName, String productName, final ServiceCallback<ProductInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getProductWithServiceResponseAsync(resourceGroup, registrationName, productName), serviceCallback);
+    }
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProductInner object
+     */
+    public Observable<ProductInner> getProductAsync(String resourceGroup, String registrationName, String productName) {
+        return getProductWithServiceResponseAsync(resourceGroup, registrationName, productName).map(new Func1<ServiceResponse<ProductInner>, ProductInner>() {
+            @Override
+            public ProductInner call(ServiceResponse<ProductInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProductInner object
+     */
+    public Observable<ServiceResponse<ProductInner>> getProductWithServiceResponseAsync(String resourceGroup, String registrationName, String productName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroup == null) {
+            throw new IllegalArgumentException("Parameter resourceGroup is required and cannot be null.");
+        }
+        if (registrationName == null) {
+            throw new IllegalArgumentException("Parameter registrationName is required and cannot be null.");
+        }
+        if (productName == null) {
+            throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getProduct(this.client.subscriptionId(), resourceGroup, registrationName, productName, this.client.apiVersion(), this.client.acceptLanguage(), deviceConfiguration, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProductInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ProductInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ProductInner> clientResponse = getProductDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ProductInner> getProductDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ProductInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ProductInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProductLogInner object if successful.
+     */
+    public ProductLogInner uploadLog(String resourceGroup, String registrationName, String productName) {
+        return uploadLogWithServiceResponseAsync(resourceGroup, registrationName, productName).toBlocking().single().body();
+    }
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProductLogInner> uploadLogAsync(String resourceGroup, String registrationName, String productName, final ServiceCallback<ProductLogInner> serviceCallback) {
+        return ServiceFuture.fromResponse(uploadLogWithServiceResponseAsync(resourceGroup, registrationName, productName), serviceCallback);
+    }
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProductLogInner object
+     */
+    public Observable<ProductLogInner> uploadLogAsync(String resourceGroup, String registrationName, String productName) {
+        return uploadLogWithServiceResponseAsync(resourceGroup, registrationName, productName).map(new Func1<ServiceResponse<ProductLogInner>, ProductLogInner>() {
+            @Override
+            public ProductLogInner call(ServiceResponse<ProductLogInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProductLogInner object
+     */
+    public Observable<ServiceResponse<ProductLogInner>> uploadLogWithServiceResponseAsync(String resourceGroup, String registrationName, String productName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroup == null) {
+            throw new IllegalArgumentException("Parameter resourceGroup is required and cannot be null.");
+        }
+        if (registrationName == null) {
+            throw new IllegalArgumentException("Parameter registrationName is required and cannot be null.");
+        }
+        if (productName == null) {
+            throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.uploadLog(this.client.subscriptionId(), resourceGroup, registrationName, productName, this.client.apiVersion(), this.client.acceptLanguage(), marketplaceProductLogUpdate, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProductLogInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ProductLogInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ProductLogInner> clientResponse = uploadLogDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ProductLogInner> uploadLogDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ProductLogInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ProductLogInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 

@@ -28,6 +28,38 @@ public interface Products extends HasInner<ProductsInner> {
     Observable<ExtendedProduct> listDetailsAsync(String resourceGroup, String registrationName, String productName);
 
     /**
+     * Returns a list of products.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ProductList> getProductsAsync(String resourceGroup, String registrationName);
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Product> getProductAsync(String resourceGroup, String registrationName, String productName);
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ProductLog> uploadLogAsync(String resourceGroup, String registrationName, String productName);
+
+    /**
      * Returns the specified product.
      *
      * @param resourceGroup Name of the resource group.

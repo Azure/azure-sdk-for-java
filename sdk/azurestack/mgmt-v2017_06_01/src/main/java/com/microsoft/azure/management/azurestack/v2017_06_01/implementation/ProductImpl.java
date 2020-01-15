@@ -11,6 +11,7 @@ package com.microsoft.azure.management.azurestack.v2017_06_01.implementation;
 import com.microsoft.azure.management.azurestack.v2017_06_01.Product;
 import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
 import rx.Observable;
+import com.microsoft.azure.management.azurestack.v2017_06_01.Compatibility;
 import com.microsoft.azure.management.azurestack.v2017_06_01.IconUris;
 import java.util.List;
 import com.microsoft.azure.management.azurestack.v2017_06_01.ProductLink;
@@ -47,6 +48,11 @@ class ProductImpl extends IndexableRefreshableWrapperImpl<Product, ProductInner>
     @Override
     public String billingPartNumber() {
         return this.inner().billingPartNumber();
+    }
+
+    @Override
+    public Compatibility compatibility() {
+        return this.inner().compatibility();
     }
 
     @Override

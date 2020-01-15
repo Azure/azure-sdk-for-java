@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.azurestack.v2017_06_01.implementation;
 
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
-import com.microsoft.azure.management.azurestack.v2017_06_01.Location;
 import com.microsoft.azure.management.azurestack.v2017_06_01.Registration;
 import rx.Observable;
 import com.microsoft.azure.management.azurestack.v2017_06_01.RegistrationParameter;
@@ -25,7 +24,7 @@ class RegistrationImpl extends GroupableResourceCoreImpl<Registration, Registrat
     @Override
     public Observable<Registration> createResourceAsync() {
         RegistrationsInner client = this.manager().inner().registrations();
-        this.createOrUpdateParameter.withLocation(Location.fromString(inner().location()));
+        this.createOrUpdateParameter.withLocation(inner().location());
         return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.createOrUpdateParameter)
             .map(new Func1<RegistrationInner, RegistrationInner>() {
                @Override
