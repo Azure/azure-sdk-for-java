@@ -69,7 +69,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         AzureFileSystem afs = new AzureFileSystem(this, accountName, config);
         this.openFileSystems.put(accountName, afs);
 
-        return null;
+        return afs;
     }
 
     /**

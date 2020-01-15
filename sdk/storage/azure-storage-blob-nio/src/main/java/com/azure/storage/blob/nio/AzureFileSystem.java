@@ -21,7 +21,7 @@ import java.nio.file.PathMatcher;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.spi.FileSystemProvider;
-import java.util.Collections;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -31,6 +31,7 @@ import java.util.Set;
  * {@inheritDoc}
  */
 public final class AzureFileSystem extends FileSystem {
+    // Configuration constants for blob clients.
     public static final String AZURE_STORAGE_ACCOUNT_KEY = "AzureStorageAccountKey";
     public static final String AZURE_STORAGE_SAS_TOKEN = "AzureStorageSasToken";
     public static final String AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL = "AzureStorageHttpLogDetailLevel";
@@ -42,9 +43,10 @@ public final class AzureFileSystem extends FileSystem {
     public static final String AZURE_STORAGE_SECONDARY_HOST = "AzureStorageSecondaryHost";
     public static final String AZURE_STORAGE_BLOCK_SIZE = "AzureStorageBlockSize";
     public static final String AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES = "AzureStorageDownloadResumeRetries";
-    public static final String AZURE_STORAGE_USE_HTTP = "AzureStorageUseHttp";
-    public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
+    public static final String AZURE_STORAGE_USE_HTTPS = "AzureStorageUseHttps";
     public static final String AZURE_STORAGE_HTTP_CLIENT = "AzureStorageHttpClient"; // undocumented; for test.
+
+    public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
 
     private static final String AZURE_STORAGE_ENDPOINT_TEMPLATE = "%s://%s.blob.core.windows.net";
 
@@ -57,19 +59,30 @@ public final class AzureFileSystem extends FileSystem {
 
     AzureFileSystem(AzureFileSystemProvider parentFileSystemProvider, String accountName, Map<String, ?> config)
             throws IOException {
+        // A FileSystem should only ever be instantiated by a provider.
         if (Objects.isNull(parentFileSystemProvider)) {
-            throw new IllegalStateException("AzureFileSystem cannot be instantiated without a parent " +
+            throw new IllegalArgumentException("AzureFileSystem cannot be instantiated without a parent " +
                 "FileSystemProvider");
         }
         this.parentFileSystemProvider = parentFileSystemProvider;
-        this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
-        this.blockSize = (Integer) config.get(AZURE_STORAGE_BLOCK_SIZE);
-        this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
+
+        // Read configurations and build client.
+        try {
+            this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
+            this.blockSize = (Integer) config.get(AZURE_STORAGE_BLOCK_SIZE);
+            this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("There was an error parsing the configurations map. Please ensure all" +
+                "fields are set to a legal value of the correct type.");
+        }
+
+        // Initialize and ensure access to FileStores.
         try {
             this.fileStores = this.initializeFileStores(config);
         } catch (IOException e) {
             throw new IOException("Initializing FileStores failed. FileSystem could not be opened.", e);
         }
+
         this.closed = false;
     }
 
@@ -180,12 +193,14 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     private BlobServiceClient buildBlobServiceClient(String accountName, Map<String,?> config) {
-        String scheme = config.containsKey(AZURE_STORAGE_USE_HTTP)
-                && (Boolean) config.get(AZURE_STORAGE_USE_HTTP)
-                ? "http" : "https";
+        // Build the endpoint.
+        String scheme = !config.containsKey(AZURE_STORAGE_USE_HTTPS)
+                || (Boolean) config.get(AZURE_STORAGE_USE_HTTPS)
+                ? "https" : "http";
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
                 .endpoint(String.format(AZURE_STORAGE_ENDPOINT_TEMPLATE, scheme, accountName));
 
+        // Set the credentials.
         if (config.containsKey(AZURE_STORAGE_ACCOUNT_KEY)) {
             builder.credential(new StorageSharedKeyCredential(accountName,
                     (String)config.get(AZURE_STORAGE_ACCOUNT_KEY)));
@@ -199,6 +214,7 @@ public final class AzureFileSystem extends FileSystem {
                     AZURE_STORAGE_SAS_TOKEN));
         }
 
+        // Configure options and client.
         builder.httpLogOptions(new HttpLogOptions()
             .setLogLevel((HttpLogDetailLevel)config.get(AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL)));
 

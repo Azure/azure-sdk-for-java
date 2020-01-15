@@ -19,6 +19,7 @@ public final class AzureFileStore extends FileStore {
     private final BlobContainerClient containerClient;
 
     AzureFileStore(AzureFileSystem parentFileSystem, String containerName) throws IOException {
+        // A FileStore should only ever be created by a FileSystem.
         if (Objects.isNull(parentFileSystem)) {
             throw new IllegalStateException("AzureFileStore cannot be instantiated without a parent FileSystem");
         }
@@ -26,11 +27,12 @@ public final class AzureFileStore extends FileStore {
         this.containerClient = this.parentFileSystem.getBlobServiceClient().getBlobContainerClient(containerName);
 
         try {
+            // This also serves as our connection check.
             if (!this.containerClient.exists()) {
                 this.containerClient.create();
             }
         } catch (Exception e) {
-            throw new IOException("There was an error in establishing the existence of container: " + containerName);
+            throw new IOException("There was an error in establishing the existence of container: " + containerName, e);
         }
     }
 

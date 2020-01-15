@@ -15,58 +15,112 @@
 
 package com.azure.storage.blob.nio
 
-class AzureFileSystemProviderSpec extends APISpec {
+import spock.lang.Unroll
 
-//    def "Create file system single account"() {
-//
-//        where:
-//        sharedKey | sasToken
-//        true | false |
-//        false | true |
-//        true | true |
-//    }
-//
-//    def "Create file system single account containers"() {
-//
-//        where:
-//        containerCount | createContainers
-//        1 | true
-//        1 | false
-//        4 | true
-//        4 |false
-//    }
-//
-//    def "Create file system multiple accounts"() {
-//
-//        where:
-//    }
+import java.nio.file.FileSystemAlreadyExistsException
+import java.nio.file.FileSystemNotFoundException
+
+class AzureFileSystemProviderSpec extends APISpec {
+    def config = [:]
+    AzureFileSystemProvider provider
+
+    def setup() {
+        config = initializeConfigMap()
+        provider = new AzureFileSystemProvider()
+    }
+
+    def "FileSystemProvider createFileSystem"() {
+        setup:
+        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
+        def uri = getAccountUri()
+
+        when:
+        provider.newFileSystem(uri, config)
+
+        then:
+        provider.getFileSystem(uri).isOpen()
+        ((AzureFileSystem) provider.getFileSystem(uri)).getFileSystemName() == getAccountName(PRIMARY_STORAGE)
+    }
+
+    @Unroll
+    def "FileSystemProvider createFileSystem invalid uri"() {
+        when:
+        provider.newFileSystem(uri, config)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        uri                        | _
+        new URI("azc://path")      | _
+        new URI("azb://path")      | _
+        new URI("azb://?foo=bar")  | _
+        new URI("azb://?account=") | _
+    }
+
+    def "FileSystemProvider createFileSystem duplicate"() {
+        setup:
+        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
+        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+        provider.newFileSystem(getAccountUri(), config)
+
+        when:
+        provider.newFileSystem(getAccountUri(), config)
+
+        then:
+        thrown(FileSystemAlreadyExistsException)
+    }
+
+    def "FileSystemProvider createFileSystem initial check fail"() {
+        when:
+        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
+        def badKey = getAccountKey(PRIMARY_STORAGE).getBytes()
+        badKey[0]++
+        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = new String(badKey)
+        provider.newFileSystem(getAccountUri(), config)
+
+        then:
+        thrown(IOException)
+
+        when:
+        provider.getFileSystem(getAccountUri())
+
+        then:
+        thrown(FileSystemNotFoundException)
+    }
+
+    def "FileSystemProvider getFileSystem not found"() {
+        when:
+        provider.getFileSystem(getAccountUri())
+
+        then:
+        thrown(FileSystemNotFoundException)
+    }
+
+    @Unroll
+    def "FileSystemProvider getFileSystem IA"() {
+        when:
+        provider.getFileSystem(uri)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        uri                        | _
+        new URI("azc://path")      | _
+        new URI("azb://path")      | _
+        new URI("azb://?foo=bar")  | _
+        new URI("azb://?account=") | _
+    }
 
     // TODO: Be sure to test directories
     // TODO: Be sure to test operating on containers that already have data
-    // TODO: Test FileSystem configurations
 
-    // Create a file system success
-    // Check container existence (already existing and new)
-    // Sas and Shared Key and token
-    // Check configurations? How?
+    // all apis should have a test that tries them after the FileSystem is closed to ensure they throw.
 
-    // Create file system fail
-    // invalid account
-    // no account in uri
-    // Already open FileSystem
-    // Fail initial connection check (insufficient sas). This should pass with only service sas now.
-    // No containers listed, etc.
-
-    // Illegal arguments for option
-
-    // Assert that an IOException occurs and not a BlobStorageException
-
-    // Close file system
-    // Try operating on it
-    // Try getting it from FileSystemProvider
-    // Try creating a new one with the same way
-
-    // getFileSystem
-
-    // getScheme
+    def "FileSystemProvider getScheme"() {
+        expect:
+        provider.getScheme() == "azb"
+    }
 }

@@ -17,5 +17,4 @@ package com.azure.storage.blob.nio
 
 class AzureFileStoreSpec extends APISpec {
 
-
 }
