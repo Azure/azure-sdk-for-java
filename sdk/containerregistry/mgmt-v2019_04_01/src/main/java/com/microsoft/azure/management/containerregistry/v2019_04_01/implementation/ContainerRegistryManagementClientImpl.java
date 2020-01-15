@@ -51,18 +51,6 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** The client API version. */
-    private String apiVersion;
-
-    /**
-     * Gets The client API version.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
-    }
-
     /** The preferred language for the response. */
     private String acceptLanguage;
 
@@ -146,6 +134,45 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The OperationsInner object to access its operations.
+     */
+    private OperationsInner operations;
+
+    /**
+     * Gets the OperationsInner object to access its operations.
+     * @return the OperationsInner object.
+     */
+    public OperationsInner operations() {
+        return this.operations;
+    }
+
+    /**
+     * The ReplicationsInner object to access its operations.
+     */
+    private ReplicationsInner replications;
+
+    /**
+     * Gets the ReplicationsInner object to access its operations.
+     * @return the ReplicationsInner object.
+     */
+    public ReplicationsInner replications() {
+        return this.replications;
+    }
+
+    /**
+     * The WebhooksInner object to access its operations.
+     */
+    private WebhooksInner webhooks;
+
+    /**
+     * Gets the WebhooksInner object to access its operations.
+     * @return the WebhooksInner object.
+     */
+    public WebhooksInner webhooks() {
+        return this.webhooks;
+    }
+
+    /**
      * The RunsInner object to access its operations.
      */
     private RunsInner runs;
@@ -202,11 +229,13 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2019-04-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.registries = new RegistriesInner(restClient().retrofit(), this);
+        this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.replications = new ReplicationsInner(restClient().retrofit(), this);
+        this.webhooks = new WebhooksInner(restClient().retrofit(), this);
         this.runs = new RunsInner(restClient().retrofit(), this);
         this.tasks = new TasksInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);

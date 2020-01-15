@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The properties for updating encoded task step.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = EncodedTaskStepUpdateParameters.class)
 @JsonTypeName("EncodedTask")
 public class EncodedTaskStepUpdateParameters extends TaskStepUpdateParameters {
     /**

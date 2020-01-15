@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The request parameters for scheduling a run.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = RunRequest.class)
 @JsonTypeName("RunRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DockerBuildRequest", value = DockerBuildRequest.class),
