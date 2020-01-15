@@ -116,20 +116,26 @@ public class ReactorSession implements AmqpSession {
         return endpointStates;
     }
 
+    @Override
+    public boolean isDisposed() {
+        return isDisposed.get();
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void close() {
+    public void dispose() {
         if (isDisposed.getAndSet(true)) {
             return;
         }
 
-        openReceiveLinks.forEach((key, link) -> link.close());
+        openReceiveLinks.forEach((key, link) -> link.dispose());
         openReceiveLinks.clear();
 
-        openSendLinks.forEach((key, link) -> link.close());
+        openSendLinks.forEach((key, link) -> link.dispose());
         openSendLinks.clear();
+
         subscriptions.dispose();
     }
 
