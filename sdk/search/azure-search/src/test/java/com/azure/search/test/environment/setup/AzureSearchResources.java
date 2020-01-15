@@ -96,7 +96,7 @@ public class AzureSearchResources {
      */
     public void createService() {
         searchServiceName = SdkContext.randomResourceName(SEARCH_SERVICE_NAME_PREFIX, 24);
-        System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
+        //System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
         searchService = azure.searchServices()
             .define(searchServiceName)
             .withRegion(location)
@@ -112,7 +112,7 @@ public class AzureSearchResources {
      */
     public void deleteService() {
         if (searchService != null) {
-            System.out.println("Deleting Azure Cognitive Search service: " + searchService.name());
+            //System.out.println("Deleting Azure Cognitive Search service: " + searchService.name());
             azure.searchServices().deleteById(searchService.id());
         }
     }
@@ -123,7 +123,7 @@ public class AzureSearchResources {
     public void createResourceGroup() {
         if (resourceGroup == null) {
             resourceGroupName = SdkContext.randomResourceName(RESOURCE_GROUP_NAME_PREFIX, 24);
-            System.out.println("Creating Resource Group: " + resourceGroupName);
+            //System.out.println("Creating Resource Group: " + resourceGroupName);
             resourceGroup = azure.resourceGroups()
                 .define(resourceGroupName)
                 .withRegion(location)
@@ -136,7 +136,7 @@ public class AzureSearchResources {
      */
     public void deleteResourceGroup() {
         if (resourceGroup != null) {
-            System.out.println("Deleting Resource Group: " + resourceGroup.name());
+            //System.out.println("Deleting Resource Group: " + resourceGroup.name());
             azure.resourceGroups().beginDeleteByName(resourceGroup.name());
             resourceGroup = null;
         }
