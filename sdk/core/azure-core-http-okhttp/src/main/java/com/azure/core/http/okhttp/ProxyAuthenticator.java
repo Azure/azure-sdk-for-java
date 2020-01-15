@@ -17,14 +17,11 @@ import okio.Buffer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.core.http.AuthorizationChallengeHandler.ENTITY_HEADERS;
 import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
 import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
 
@@ -32,8 +29,6 @@ import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHORIZAT
  * This class handles authorizing requests being sent through a proxy which require authentication.
  */
 final class ProxyAuthenticator implements Authenticator {
-    private static final String HTTP_NEWLINE = "\r\n";
-
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
 
@@ -125,39 +120,19 @@ final class ProxyAuthenticator implements Authenticator {
      * present.
      */
     private byte[] entitySupplier(Request request) {
-        StringBuilder entityBuilder = new StringBuilder();
-
-        // Get entity headers
-        for (String headerName : request.headers().names()) {
-            if (!ENTITY_HEADERS.contains(headerName.toLowerCase(Locale.ROOT))) {
-                continue;
-            }
-
-            entityBuilder.append(headerName)
-                .append(":")
-                .append(request.header(headerName))
-                .append(HTTP_NEWLINE);
-        }
-
-        // Get body
         RequestBody requestBody = request.body();
+
         if (requestBody == null) {
-            return entityBuilder.toString().getBytes(StandardCharsets.UTF_8);
+            return new byte[0];
         }
 
-        // There are two newlines between entity headers and the body.
-        entityBuilder.append(HTTP_NEWLINE).append(HTTP_NEWLINE);
-
-        Buffer bodyBuffer = new Buffer();
         try {
+            Buffer bodyBuffer = new Buffer();
             requestBody.writeTo(bodyBuffer);
+            return bodyBuffer.readByteArray();
         } catch (IOException e) {
             throw logger.logExceptionAsWarning(new UncheckedIOException(e));
         }
-
-        entityBuilder.append(bodyBuffer.readString(StandardCharsets.UTF_8));
-
-        return entityBuilder.toString().getBytes(StandardCharsets.UTF_8);
     }
 
     /**

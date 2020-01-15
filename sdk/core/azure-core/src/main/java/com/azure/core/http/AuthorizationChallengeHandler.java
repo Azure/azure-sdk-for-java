@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -102,22 +101,6 @@ public class AuthorizationChallengeHandler {
      */
     public static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
 
-    /**
-     * Entity headers that are needed when using {@code sess} based algorithms.
-     */
-    public static final Set<String> ENTITY_HEADERS = Stream.of(
-        "allow",
-        "content-encoding",
-        "content-language",
-        "content-length",
-        "content-location",
-        "content-md5",
-        "content-range",
-        "content-type",
-        "expires",
-        "last-modified")
-        .collect(Collectors.toSet());
-
     private final String username;
     private final String password;
     private final Map<String, AtomicInteger> nonceTracker;
@@ -155,12 +138,12 @@ public class AuthorizationChallengeHandler {
      * @param uri Relative URI for the request.
      * @param challenges List of challenges that the server returned for the client to choose from and use when creating
      * the authorization header.
-     * @param entitySupplier Supplies the request entity, used to compute the hash of the body when using {@code
+     * @param entityBodySupplier Supplies the request entity body, used to compute the hash of the body when using {@code
      * "qop=auth-int"}.
      * @return Authorization header for Digest authentication challenges.
      */
     public final String handleDigest(String method, String uri, List<Map<String, String>> challenges,
-        Supplier<byte[]> entitySupplier) {
+        Supplier<byte[]> entityBodySupplier) {
         authorizationPipeliningType.set(DIGEST);
         Map<String, List<Map<String, String>>> challengesByType = partitionByChallengeType(challenges);
 
@@ -180,7 +163,7 @@ public class AuthorizationChallengeHandler {
             Map<String, String> challenge = challengesByType.get(algorithm).get(0);
             lastChallenge.set(challenge);
 
-            return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entitySupplier, digestFunction);
+            return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier, digestFunction);
         }
 
         return null;
@@ -192,18 +175,18 @@ public class AuthorizationChallengeHandler {
      *
      * @param method HTTP method being used in the request.
      * @param uri Relative URI for the request.
-     * @param entitySupplier Supplies the request entity, used to compute the hash of the body when using {@code
-     * "qop=auth-int"}.
+     * @param entityBodySupplier Supplies the request entity body, used to compute the hash of the body when using
+     * {@code "qop=auth-int"}.
      * @return A preemptive authorization header for a potential Digest authentication challenge.
      */
-    public final String attemptToPipelineAuthorization(String method, String uri, Supplier<byte[]> entitySupplier) {
+    public final String attemptToPipelineAuthorization(String method, String uri, Supplier<byte[]> entityBodySupplier) {
         String pipeliningType = authorizationPipeliningType.get();
 
         if (DIGEST.equals(pipeliningType)) {
             Map<String, String> challenge = lastChallenge.get();
             String algorithm = challenge.get(ALGORITHM);
 
-            return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entitySupplier,
+            return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier,
                 getDigestFunction(algorithm));
         } else if (BASIC.equals(pipeliningType)) {
             return handleBasic();
@@ -254,7 +237,7 @@ public class AuthorizationChallengeHandler {
      * Creates the Authorization header for the Digest authentication challenge.
      */
     private String createDigestAuthorizationHeader(String method, String uri, Map<String, String> challenge,
-        String algorithm, Supplier<byte[]> entitySupplier, Function<byte[], byte[]> digestFunction) {
+        String algorithm, Supplier<byte[]> entityBodySupplier, Function<byte[], byte[]> digestFunction) {
         int nc = getNc(challenge);
         String realm = challenge.get(REALM);
         String nonce = challenge.get(NONCE);
@@ -276,7 +259,7 @@ public class AuthorizationChallengeHandler {
             : calculateHa1NoSess(digestFunction, realm);
 
         String ha2 = AUTH_INT.equals(qop)
-            ? calculateHa2AuthIntQop(digestFunction, method, uri, entitySupplier.get())
+            ? calculateHa2AuthIntQop(digestFunction, method, uri, entityBodySupplier.get())
             : calculateHa2AuthQopOrEmpty(digestFunction, method, uri);
 
         String response = (AUTH.equals(qop) || AUTH_INT.equals(qop))
@@ -364,20 +347,20 @@ public class AuthorizationChallengeHandler {
      * Calculates the 'HA2' hex string when using 'qop=auth-int'.
      *
      * This performs the following operations:
-     * - Create the digest of (requestEntity).
+     * - Create the digest of (requestEntityBody).
      * - Convert the resulting bytes to a hex string, aliased as bodyHex.
      * - Create the digest of (httpMethod + ":" + uri + ":" bodyHex).
      * - Return the resulting bytes as a hex string.
      *
-     * The request entity is the entity headers (https://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html) and the body of
-     * the request. Using 'qop=auth-int' requires the request body to be replay-able, this is why 'auth' is preferred
-     * instead of auth-int as this cannot be guaranteed. In addition to the body being replay-able this runs into risks
-     * when the body is very large and potentially consuming large amounts of memory.
+     * The request entity body is the unmodified body of the request. Using 'qop=auth-int' requires the request body to
+     * be replay-able, this is why 'auth' is preferred instead of auth-int as this cannot be guaranteed. In addition to
+     * the body being replay-able this runs into risks when the body is very large and potentially consuming large
+     * amounts of memory.
      */
     private String calculateHa2AuthIntQop(Function<byte[], byte[]> digestFunction, String httpMethod, String uri,
-        byte[] requestEntity) {
+        byte[] requestEntityBody) {
         return hexStringOf(digestFunction.apply(String.format("%s:%s:%s", httpMethod, uri,
-            hexStringOf(digestFunction.apply(requestEntity))).getBytes(StandardCharsets.UTF_8)));
+            hexStringOf(digestFunction.apply(requestEntityBody))).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*

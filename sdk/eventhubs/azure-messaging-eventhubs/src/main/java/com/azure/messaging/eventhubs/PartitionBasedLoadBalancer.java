@@ -5,7 +5,10 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import java.util.function.Consumer;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -47,6 +50,8 @@ final class PartitionBasedLoadBalancer {
     private final long inactiveTimeLimitInSeconds;
     private final PartitionPumpManager partitionPumpManager;
     private final String fullyQualifiedNamespace;
+    private final Consumer<ErrorContext> processError;
+    private final PartitionContext partitionAgnosticContext;
 
     /**
      * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
@@ -60,11 +65,13 @@ final class PartitionBasedLoadBalancer {
      * assuming the owner of the partition is inactive.
      * @param partitionPumpManager The partition pump manager that keeps track of all EventHubConsumers and partitions
      * that this {@link EventProcessorClient} is processing.
+     * @param processError The callback that will be called when an error occurs while running the load balancer.
      */
     PartitionBasedLoadBalancer(final CheckpointStore checkpointStore,
         final EventHubAsyncClient eventHubAsyncClient, final String fullyQualifiedNamespace,
         final String eventHubName, final String consumerGroupName, final String ownerId,
-        final long inactiveTimeLimitInSeconds, final PartitionPumpManager partitionPumpManager) {
+        final long inactiveTimeLimitInSeconds, final PartitionPumpManager partitionPumpManager,
+        final Consumer<ErrorContext> processError) {
         this.checkpointStore = checkpointStore;
         this.eventHubAsyncClient = eventHubAsyncClient;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
@@ -73,6 +80,9 @@ final class PartitionBasedLoadBalancer {
         this.ownerId = ownerId;
         this.inactiveTimeLimitInSeconds = inactiveTimeLimitInSeconds;
         this.partitionPumpManager = partitionPumpManager;
+        this.processError = processError;
+        this.partitionAgnosticContext = new PartitionContext(fullyQualifiedNamespace, eventHubName,
+            consumerGroupName, "NONE");
     }
 
     /**
@@ -106,9 +116,13 @@ final class PartitionBasedLoadBalancer {
 
         Mono.zip(partitionOwnershipMono, partitionsMono)
             .flatMap(this::loadBalance)
-            // if there was an error, log warning and TODO: call user provided error handler
-            .doOnError(ex -> logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage()))
-            .subscribe();
+            // if there was an error, log warning
+            .subscribe(ignored -> { },
+                ex -> {
+                    logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage(), ex);
+                    ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
+                    processError.accept(errorContext);
+                }, () -> logger.info("Load balancing completed successfully"));
     }
 
     /*
@@ -117,7 +131,7 @@ final class PartitionBasedLoadBalancer {
      */
     private Mono<Void> loadBalance(final Tuple2<Map<String, PartitionOwnership>, List<String>> tuple) {
         return Mono.fromRunnable(() -> {
-            logger.info("Starting load balancer");
+            logger.info("Starting load balancer for {}", this.ownerId);
             Map<String, PartitionOwnership> partitionOwnershipMap = tuple.getT1();
 
             List<String> partitionIds = tuple.getT2();
@@ -129,8 +143,8 @@ final class PartitionBasedLoadBalancer {
             }
 
             int numberOfPartitions = partitionIds.size();
-            logger.info("Partition manager returned {} ownership records", partitionOwnershipMap.size());
-            logger.info("EventHubAsyncClient returned {} partitions", numberOfPartitions);
+            logger.info("CheckpointStore returned {} ownership records", partitionOwnershipMap.size());
+            logger.info("Event Hubs service returned {} partitions", numberOfPartitions);
             if (!isValid(partitionOwnershipMap)) {
                 // User data is corrupt.
                 throw logger.logExceptionAsError(Exceptions.propagate(
@@ -191,9 +205,14 @@ final class PartitionBasedLoadBalancer {
             if (isLoadBalanced(minPartitionsPerEventProcessor, numberOfEventProcessorsWithAdditionalPartition,
                 ownerPartitionMap)) {
                 // If the partitions are evenly distributed among all active event processors, no change required.
-                logger.info("Load is balanced");
+                logger.info("Load is balanced with this event processor owning {} partitions",
+                    ownerPartitionMap.get(ownerId).size());
                 // renew ownership of already owned partitions
-                checkpointStore.claimOwnership(ownerPartitionMap.get(this.ownerId)).subscribe();
+                checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
+                    .stream()
+                    .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
+                    .collect(Collectors.toList()))
+                    .subscribe();
                 return;
             }
 
@@ -202,14 +221,19 @@ final class PartitionBasedLoadBalancer {
                 logger.info("This event processor owns {} partitions and shouldn't own more",
                     ownerPartitionMap.get(ownerId).size());
                 // renew ownership of already owned partitions
-                checkpointStore.claimOwnership(ownerPartitionMap.get(this.ownerId)).subscribe();
+                checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
+                    .stream()
+                    .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
+                    .collect(Collectors.toList()))
+                    .subscribe();
                 return;
             }
 
             // If we have reached this stage, this event processor has to claim/steal ownership of at least 1
             // more partition
             logger.info(
-                "Load is unbalanced and this event processor should own more partitions");
+                "Load is unbalanced and this event processor owns {} partitions and should own more partitions",
+                ownerPartitionMap.get(ownerId).size());
             /*
              * If some partitions are unclaimed, this could be because an event processor is down and
              * it's partitions are now available for others to own or because event processors are just
@@ -331,11 +355,16 @@ final class PartitionBasedLoadBalancer {
         PartitionOwnership ownershipRequest = createPartitionOwnershipRequest(partitionOwnershipMap,
             partitionIdToClaim);
 
-        List<PartitionOwnership> currentPartitionsOwned = ownerPartitionsMap.get(ownerId);
-        currentPartitionsOwned.add(ownershipRequest);
+        List<PartitionOwnership> partitionsToClaim = new ArrayList<>();
+        partitionsToClaim.add(ownershipRequest);
+        partitionsToClaim.addAll(partitionPumpManager.getPartitionPumps()
+            .keySet()
+            .stream()
+            .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
+            .collect(Collectors.toList()));
 
         checkpointStore
-            .claimOwnership(currentPartitionsOwned)
+            .claimOwnership(partitionsToClaim)
             .timeout(Duration.ofMinutes(1)) // TODO: configurable
             .doOnNext(partitionOwnership -> logger.info("Successfully claimed ownership of partition {}",
                 partitionOwnership.getPartitionId()))
@@ -350,7 +379,10 @@ final class PartitionBasedLoadBalancer {
                     .stream()
                     .forEach(po -> partitionPumpManager.startPartitionPump(po,
                         ownedPartitionCheckpointsTuple.getT2().get(po.getPartitionId())));
-            });
+            },
+                ex -> {
+                    throw logger.logExceptionAsError(new RuntimeException("Error while listing checkpoints", ex));
+                });
     }
 
     private PartitionOwnership createPartitionOwnershipRequest(

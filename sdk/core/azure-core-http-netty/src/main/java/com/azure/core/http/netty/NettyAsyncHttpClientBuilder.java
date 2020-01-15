@@ -6,22 +6,12 @@ package com.azure.core.http.netty;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.http.HttpClientCodec;
-import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.proxy.Socks4ProxyHandler;
 import io.netty.handler.proxy.Socks5ProxyHandler;
-import io.netty.handler.ssl.SslContextBuilder;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
-import reactor.netty.tcp.ProxyProvider;
 import reactor.netty.tcp.TcpClient;
 
 import java.util.Objects;
@@ -37,12 +27,7 @@ import java.util.Objects;
  * @see HttpClient
  */
 public class NettyAsyncHttpClientBuilder {
-    // Reactor Netty uses this string to uniquely identify the ProxyHandler being used in the pipeline.
-    private static final String PROXY_HANDLER_IDENTIFIER = "reactor.left.proxyHandler";
-
     private static final String INVALID_PROXY_MESSAGE = "Unknown Proxy type '%s' in use. Not configuring Netty proxy.";
-    private static final String INVALID_INITIALIZER_STATE_MESSAGE = "connectionProvider cannot be set on an " +
-        "existing reactor netty HttpClient.";
 
     private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
@@ -82,7 +67,7 @@ public class NettyAsyncHttpClientBuilder {
      */
     public com.azure.core.http.HttpClient build() {
         if (this.baseHttpClient != null) {
-            return new NettyAsyncHttpClient(baseHttpClient);
+            return new NettyAsyncHttpClient(baseHttpClient, null, null);
         }
 
         HttpClient nettyHttpClient = (this.connectionProvider != null)
@@ -93,29 +78,7 @@ public class NettyAsyncHttpClientBuilder {
             .port(port)
             .wiretap(enableWiretap);
 
-        if (proxyOptions != null) {
-            ProxyProvider.Proxy proxy = mapProxyType(proxyOptions.getType(), logger);
-
-            // HTTP proxy has special handling if it is using authentication to support digest authentication.
-            if (proxy == ProxyProvider.Proxy.HTTP && proxyOptions.getUsername() != null) {
-                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(proxyOptions.getUsername(),
-                    proxyOptions.getPassword());
-
-                nettyHttpClient = nettyHttpClient.doOnRequest(proxyAuthenticator::doOnRequestHandler)
-                    .doOnRequestError(proxyAuthenticator::doOnRequestErrorHandler)
-                    .doOnResponse(proxyAuthenticator::doOnResponseHandler)
-                    .tcpConfiguration(tcpClient -> tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP)
-                        .address(proxyOptions.getAddress())));
-            } else {
-                nettyHttpClient = nettyHttpClient.tcpConfiguration(tcpClient ->
-                    tcpClient.proxy(typeSpec -> typeSpec.type(proxy)
-                        .address(proxyOptions.getAddress())
-                        .username(proxyOptions.getUsername())
-                        .password(username -> proxyOptions.getPassword())));
-            }
-        }
-
-        return new NettyAsyncHttpClient(nettyHttpClient);
+        return new NettyAsyncHttpClient(nettyHttpClient, nioEventLoopGroup, getProxyHandler());
     }
 
     /**
@@ -129,6 +92,7 @@ public class NettyAsyncHttpClientBuilder {
         this.connectionProvider = connectionProvider;
         return this;
     }
+
     /**
      * Sets the {@link ProxyOptions proxy options} that the client will use.
      *
@@ -182,75 +146,32 @@ public class NettyAsyncHttpClientBuilder {
         return this;
     }
 
-    /*
-     * Maps the ProxyOptions.Type to the corresponding ProxyProvider.Proxy type. If the type is unknown this will throw
-     * an IllegalStateException.
-     */
-    private static ProxyProvider.Proxy mapProxyType(ProxyOptions.Type type, ClientLogger logger) {
-        switch (type) {
-            case HTTP:
-                return ProxyProvider.Proxy.HTTP;
-            case SOCKS4:
-                return ProxyProvider.Proxy.SOCKS4;
-            case SOCKS5:
-                return ProxyProvider.Proxy.SOCKS5;
-            default:
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(INVALID_PROXY_MESSAGE, type)));
-        }
-    }
-
     private TcpClient setupTcpConfiguration(TcpClient tcpClient) {
-        if (proxyOptions == null) {
-            return tcpClient;
+        if (nioEventLoopGroup != null) {
+            tcpClient = tcpClient.runOn(nioEventLoopGroup);
         }
 
-        return tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP)
-            .address(proxyOptions.getAddress())
-            .httpHeaders(headers -> headers.add(HttpHeaderNames.PROXY_AUTHORIZATION, "Basic wrong")));
-            //.bootstrap(this::setupBootstrap);
+        return tcpClient.bootstrap(this::setupBootstrap);
     }
 
     private Bootstrap setupBootstrap(Bootstrap bootstrap) {
-        if (nioEventLoopGroup != null) {
-            bootstrap = bootstrap.group(nioEventLoopGroup);
+        ProxyHandler proxyHandler = getProxyHandler();
+
+        if (proxyHandler == null) {
+            return bootstrap;
         }
 
-        bootstrap.handler(new ChannelInitializer<SocketChannel>() {
-            @Override
-            protected void initChannel(SocketChannel ch) throws Exception {
-                ChannelPipeline pipeline = ch.pipeline();
-                pipeline.addLast("encoder", new HttpResponseEncoder())
-                    .addLast("decoder", new HttpRequestDecoder())
-                    .addLast("aggregator", new HttpObjectAggregator(1048576))
-                    .addLast("ssl", SslContextBuilder.forClient().build().newHandler(ch.alloc()))
-                    .addLast("connect", new HttpClientCodec());
-
-                ProxyHandler proxyHandler = getProxyHandler(proxyOptions, logger);
-                if (proxyHandler != null) {
-                    pipeline.addLast("proxy", proxyHandler);
-                }
-            }
-        });
-
-//        if (proxyOptions != null) {
-//            ProxyHandler proxyHandler = getProxyHandler(proxyOptions, logger);
-//
-//            if (proxyHandler == null) {
-//
-//            }
-//
-//            bootstrap = BootstrapHandlers.updateConfiguration(bootstrap, PROXY_HANDLER_IDENTIFIER, (b) ->
-//                (connectionObserver, channel) ->
-//                    channel.pipeline().addFirst(PROXY_HANDLER_IDENTIFIER, proxyHandler));
-//        }
-
         return bootstrap;
+
+//        return BootstrapHandlers.updateConfiguration(bootstrap, PROXY_HANDLER_IDENTIFIER, b ->
+//            (connectionObserver, channel) ->
+//                channel.pipeline().addFirst(PROXY_HANDLER_IDENTIFIER, proxyHandler));
     }
 
     /*
      * Creates a proxy handler based on the passed ProxyOptions.
      */
-    private static ProxyHandler getProxyHandler(ProxyOptions proxyOptions, ClientLogger logger) {
+    private ProxyHandler getProxyHandler() {
         if (proxyOptions == null) {
             return null;
         }

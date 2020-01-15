@@ -4,8 +4,6 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.AuthorizationChallengeHandler;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -48,10 +46,10 @@ public class ReactorAuthenticationTests {
     @ParameterizedTest
     @MethodSource("authorizationParametersSupplier")
     public void connectWithDigest(String username, String password, HttpStatusClass expectedCodeClass) {
-        //HttpClient client = configureClient(username, password);
-
-        NettyAsyncHttpClient httpClient = new NettyAsyncHttpClient(HttpClient.create().port(PORT));
-        HttpResponse response = httpClient.send(new HttpRequest(com.azure.core.http.HttpMethod.CONNECT, "https://localhost")).block();
+//        HttpClient client = configureClient(username, password);
+//
+//        NettyAsyncHttpClient httpClient = new NettyAsyncHttpClient(HttpClient.create().port(PORT));
+//        HttpResponse response = httpClient.send(new HttpRequest(com.azure.core.http.HttpMethod.CONNECT, "https://localhost")).block();
 
 //        StepVerifier.create(client.request(HttpMethod.CONNECT).uri(HOST).response())
 //            .assertNext(httpClientResponse ->

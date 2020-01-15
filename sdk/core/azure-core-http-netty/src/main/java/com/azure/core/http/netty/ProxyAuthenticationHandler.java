@@ -8,6 +8,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -19,40 +20,23 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.proxy.ProxyHandler;
+import io.netty.util.AttributeKey;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+@ChannelHandler.Sharable
 class ProxyAuthenticationHandler extends ProxyHandler {
-    private static final String HTTP_NEWLINE = "\r\n";
+    static final AttributeKey<String> REQUEST_METHOD_KEY = AttributeKey.newInstance("RequestMethod");
+    static final AttributeKey<Supplier<byte[]>> REQUEST_ENTITY_BODY_KEY = AttributeKey.newInstance("RequestEntityBody");
 
-    private static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
-
-    /*
-     * Entity headers
-     */
-    private static final Set<String> ENTITY_HEADERS = Stream.of(
-        "allow",
-        "content-encoding",
-        "content-language",
-        "content-length",
-        "content-location",
-        "content-md5",
-        "content-range",
-        "content-type",
-        "expires",
-        "last-modified")
-        .collect(Collectors.toSet());
 
     private final ClientLogger logger = new ClientLogger(ProxyAuthenticationHandler.class);
 
@@ -118,7 +102,10 @@ class ProxyAuthenticationHandler extends ProxyHandler {
 
         // Proxy requires authorization, construct the Proxy-Authorization header.
         if (challengeHandler != null) {
-            String proxyAuthorizationHeader = createAuthorizationHeader(null, url, null);
+            String proxyAuthorizationHeader = challengeHandler.attemptToPipelineAuthorization(
+                channelHandlerContext.channel().attr(REQUEST_METHOD_KEY).get(), url,
+                channelHandlerContext.channel().attr(REQUEST_ENTITY_BODY_KEY).get());
+
             if (!CoreUtils.isNullOrEmpty(proxyAuthorizationHeader)) {
                 request.headers().set(HttpHeaderNames.PROXY_AUTHORIZATION, proxyAuthorizationHeader);
             }

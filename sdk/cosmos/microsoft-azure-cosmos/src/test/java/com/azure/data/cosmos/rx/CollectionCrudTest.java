@@ -235,6 +235,34 @@ public class CollectionCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void readCollectionThroughput(String collectionName) throws InterruptedException {
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
+
+        Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition, 400);
+        CosmosContainer collection = createObservable.block().container();
+
+        Mono<CosmosContainerResponse> readObservable = collection.read();
+        CosmosContainer readCollection = readObservable.block().container();
+
+        int provisionedThroughputForCollection = readCollection.readProvisionedThroughput().block();
+        assertThat(provisionedThroughputForCollection).isEqualTo(400);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void readCollectionMinThroughput(String collectionName) throws InterruptedException {
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
+
+        Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition, 400);
+        CosmosContainer collection = createObservable.block().container();
+
+        Mono<CosmosContainerResponse> readObservable = collection.read();
+        CosmosContainer readCollection = readObservable.block().container();
+
+        int minThroughputForCollection = readCollection.readMinThroughput().block();
+        assertThat(minThroughputForCollection).isGreaterThan(0);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void deleteCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 

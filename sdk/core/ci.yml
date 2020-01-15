@@ -15,7 +15,6 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
       - hotfix/*
       - release/*
   paths:
@@ -54,9 +53,6 @@ stages:
           stagingProfileId: 88192f04117501
         - name: azure-core-test
           safeName: azurecoretest
-          stagingProfileId: 88192f04117501
-        - name: azure-core-tracing-opencensus
-          safeName: azurecoretracingopencensus
           stagingProfileId: 88192f04117501
         - name: azure-core-tracing-opentelemetry
           safeName: azurecoretracingopentelemetry

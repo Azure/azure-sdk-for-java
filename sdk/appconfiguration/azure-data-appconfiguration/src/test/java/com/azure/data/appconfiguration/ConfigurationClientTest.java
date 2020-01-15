@@ -111,7 +111,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @Test
     public void addConfigurationSettingWithNettyProxy() {
         HttpClient httpClient = new NettyAsyncHttpClientBuilder()
-            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
+            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 3128))
                 .setCredentials("1", "1"))
             .build();
 

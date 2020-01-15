@@ -11,8 +11,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.proxy.ProxyHandler;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,6 +24,7 @@ import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
+import reactor.netty.tcp.TcpClient;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -38,13 +42,19 @@ import java.util.function.BiFunction;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
+    // Reactor Netty uses this string to uniquely identify the ProxyHandler being used in the pipeline.
+    private static final String PROXY_HANDLER_IDENTIFIER = "reactor.left.proxyHandler";
+
+    private final NioEventLoopGroup eventLoopGroup;
+    private final ProxyHandler proxyHandler;
+
     final reactor.netty.http.client.HttpClient nettyClient;
 
     /**
      * Creates default NettyAsyncHttpClient.
      */
     NettyAsyncHttpClient() {
-        this(reactor.netty.http.client.HttpClient.create());
+        this(reactor.netty.http.client.HttpClient.create(), null, null);
     }
 
     /**
@@ -52,8 +62,11 @@ class NettyAsyncHttpClient implements HttpClient {
      *
      * @param nettyClient the reactor-netty http client
      */
-    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient) {
+    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, NioEventLoopGroup eventLoopGroup,
+        ProxyHandler proxyHandler) {
         this.nettyClient = nettyClient;
+        this.eventLoopGroup = eventLoopGroup;
+        this.proxyHandler = proxyHandler;
     }
 
     /** {@inheritDoc} */
@@ -64,11 +77,39 @@ class NettyAsyncHttpClient implements HttpClient {
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
 
         return nettyClient
+            .tcpConfiguration(tcpClient -> configureTcpClient(tcpClient, request))
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request))
             .single();
+    }
+
+    private TcpClient configureTcpClient(TcpClient tcpClient, HttpRequest request) {
+        if (eventLoopGroup != null) {
+            tcpClient = tcpClient.runOn(eventLoopGroup);
+        }
+
+        if (proxyHandler != null) {
+            tcpClient = tcpClient.bootstrap(bootstrap -> {
+                bootstrap.attr(ProxyAuthenticationHandler.REQUEST_METHOD_KEY, request.getHttpMethod().name())
+                    .attr(ProxyAuthenticationHandler.REQUEST_ENTITY_BODY_KEY, null);
+
+                return bootstrap.handler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel ch) {
+                        ch.pipeline().addFirst(PROXY_HANDLER_IDENTIFIER, proxyHandler);
+                    }
+                });
+
+//                return BootstrapHandlers.updateConfiguration(bootstrap, PROXY_HANDLER_IDENTIFIER, b ->
+//                    (connectionObserver, channel) ->
+//                        channel.pipeline().addFirst(PROXY_HANDLER_IDENTIFIER, proxyHandler));
+            });
+        }
+
+
+        return tcpClient;
     }
 
     /**

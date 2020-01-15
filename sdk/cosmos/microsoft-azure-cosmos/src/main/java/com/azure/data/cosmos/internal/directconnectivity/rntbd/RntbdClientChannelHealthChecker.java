@@ -32,34 +32,34 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     private static final Logger logger = LoggerFactory.getLogger(RntbdClientChannelHealthChecker.class);
 
     // A channel will be declared healthy if a read succeeded recently as defined by this value.
-    private static final long recentReadWindow = 1_000_000_000L;
+    private static final long recentReadWindowInNanos = 1_000_000_000L;
 
     // A channel should not be declared unhealthy if a write succeeded recently. As such gaps between
     // Timestamps.lastChannelWrite and Timestamps.lastChannelRead lower than this value are ignored.
     // Guidance: The grace period should be large enough to accommodate the round trip time of the slowest server
     // request. Assuming 1s of network RTT, a 2 MB request, a 2 MB response, a connection that can sustain 1 MB/s
     // both ways, and a 5-second deadline at the server, 10 seconds should be enough.
-    private static final long readHangGracePeriod = 10L * 1_000_000_000L;
+    private static final long readHangGracePeriodInNanos = 10L * 1_000_000_000L;
 
     // A channel will not be declared unhealthy if a write was attempted recently. As such gaps between
     // Timestamps.lastChannelWriteAttempt and Timestamps.lastChannelWrite lower than this value are ignored.
     // Guidance: The grace period should be large enough to accommodate slow writes. For example, a value of 2s requires
     // that the client can sustain data rates of at least 1 MB/s when writing 2 MB documents.
-    private static final long writeHangGracePeriod = 2L * 1_000_000_000L;
+    private static final long writeHangGracePeriodInNanos = 2L * 1_000_000_000L;
 
     // A channel is considered idle if:
     // idleConnectionTimeout > 0L && System.nanoTime() - Timestamps.lastChannelRead() >= idleConnectionTimeout
-    private final long idleConnectionTimeout;
+    private final long idleConnectionTimeoutInNanos;
 
     // A channel will be declared unhealthy if the gap between Timestamps.lastChannelWrite and Timestamps.lastChannelRead
     // grows beyond this value.
     // Constraint: readDelayLimit > readHangGracePeriod
-    private final long readDelayLimit;
+    private final long readDelayLimitInNanos;
 
     // A channel will be declared unhealthy if the gap between Timestamps.lastChannelWriteAttempt and Timestamps.lastChannelWrite
     // grows beyond this value.
     // Constraint: writeDelayLimit > writeHangGracePeriod
-    private final long writeDelayLimit;
+    private final long writeDelayLimitInNanos;
 
     // endregion
 
@@ -69,29 +69,29 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         checkNotNull(config, "config: null");
 
-        this.idleConnectionTimeout = config.idleConnectionTimeoutInNanos();
+        this.idleConnectionTimeoutInNanos = config.idleConnectionTimeoutInNanos();
 
-        this.readDelayLimit = config.receiveHangDetectionTimeInNanos();
-        checkArgument(this.readDelayLimit > readHangGracePeriod, "config.receiveHangDetectionTime: %s", this.readDelayLimit);
+        this.readDelayLimitInNanos = config.receiveHangDetectionTimeInNanos();
+        checkArgument(this.readDelayLimitInNanos > readHangGracePeriodInNanos, "config.receiveHangDetectionTimeInNanos: %s", this.readDelayLimitInNanos);
 
-        this.writeDelayLimit = config.sendHangDetectionTimeInNanos();
-        checkArgument(this.writeDelayLimit > writeHangGracePeriod, "config.sendHangDetectionTime: %s", this.writeDelayLimit);
+        this.writeDelayLimitInNanos = config.sendHangDetectionTimeInNanos();
+        checkArgument(this.writeDelayLimitInNanos > writeHangGracePeriodInNanos, "config.sendHangDetectionTimeInNanos: %s", this.writeDelayLimitInNanos);
     }
 
     // endregion
 
     // region Methods
 
-    public long idleConnectionTimeout() {
-        return this.idleConnectionTimeout;
+    public long idleConnectionTimeoutInNanos() {
+        return this.idleConnectionTimeoutInNanos;
     }
 
-    public long readDelayLimit() {
-        return this.readDelayLimit;
+    public long readDelayLimitInNanos() {
+        return this.readDelayLimitInNanos;
     }
 
-    public long writeDelayLimit() {
-        return this.writeDelayLimit;
+    public long writeDelayLimitInNanos() {
+        return this.writeDelayLimitInNanos;
     }
 
     public Future<Boolean> isHealthy(final Channel channel) {
@@ -109,7 +109,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         final Timestamps timestamps = requestManager.snapshotTimestamps();
         final long currentTime = System.nanoTime();
 
-        if (currentTime - timestamps.lastChannelRead() < recentReadWindow) {
+        if (currentTime - timestamps.lastChannelRead() < recentReadWindowInNanos) {
             return promise.setSuccess(Boolean.TRUE);  // because we recently received data
         }
 
@@ -119,7 +119,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         final long writeDelay = timestamps.lastChannelWriteAttempt() - timestamps.lastChannelWrite();
 
-        if (writeDelay > this.writeDelayLimit && currentTime - timestamps.lastChannelWriteAttempt() > writeHangGracePeriod) {
+        if (writeDelay > this.writeDelayLimitInNanos && currentTime - timestamps.lastChannelWriteAttempt() > writeHangGracePeriodInNanos) {
 
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();
@@ -127,7 +127,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             logger.warn("{} health check failed due to hung write: {lastChannelWriteAttempt: {}, lastChannelWrite: {}, "
                 + "writeDelay: {}, writeDelayLimit: {}, rntbdContext: {}, pendingRequestCount: {}}", channel,
                 timestamps.lastChannelWriteAttempt(), timestamps.lastChannelWrite(), writeDelay,
-                this.writeDelayLimit, rntbdContext, pendingRequestCount);
+                this.writeDelayLimitInNanos, rntbdContext, pendingRequestCount);
 
             return promise.setSuccess(Boolean.FALSE);
         }
@@ -138,7 +138,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         final long readDelay = timestamps.lastChannelWrite() - timestamps.lastChannelRead();
 
-        if (readDelay > this.readDelayLimit && currentTime - timestamps.lastChannelWrite() > readHangGracePeriod) {
+        if (readDelay > this.readDelayLimitInNanos && currentTime - timestamps.lastChannelWrite() > readHangGracePeriodInNanos) {
 
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();
@@ -146,13 +146,13 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             logger.warn("{} health check failed due to hung read: {lastChannelWrite: {}, lastChannelRead: {}, "
                 + "readDelay: {}, readDelayLimit: {}, rntbdContext: {}, pendingRequestCount: {}}", channel,
                 timestamps.lastChannelWrite(), timestamps.lastChannelRead(), readDelay,
-                this.readDelayLimit, rntbdContext, pendingRequestCount);
+                this.readDelayLimitInNanos, rntbdContext, pendingRequestCount);
 
             return promise.setSuccess(Boolean.FALSE);
         }
 
-        if (this.idleConnectionTimeout > 0L) {
-            if (currentTime - timestamps.lastChannelRead() > this.idleConnectionTimeout) {
+        if (this.idleConnectionTimeoutInNanos > 0L) {
+            if (currentTime - timestamps.lastChannelRead() > this.idleConnectionTimeoutInNanos) {
                 return promise.setSuccess(Boolean.FALSE);
             }
         }
@@ -187,9 +187,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         @Override
         public void serialize(RntbdClientChannelHealthChecker value, JsonGenerator generator, SerializerProvider provider) throws IOException {
             generator.writeStartObject();
-            generator.writeNumberField("idleConnectionTimeout", value.idleConnectionTimeout());
-            generator.writeNumberField("readDelayLimit", value.readDelayLimit());
-            generator.writeNumberField("writeDelayLimit", value.writeDelayLimit());
+            generator.writeNumberField("idleConnectionTimeoutInNanos", value.idleConnectionTimeoutInNanos());
+            generator.writeNumberField("readDelayLimitInNanos", value.readDelayLimitInNanos());
+            generator.writeNumberField("writeDelayLimitInNanos", value.writeDelayLimitInNanos());
             generator.writeEndObject();
         }
     }
