@@ -305,6 +305,28 @@ public class BlobContainerClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlobContainerClient#listBlobs(ListBlobsOptions, String, Duration)}
+     */
+    public void listBlobsFlat3() {
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-String-Duration
+        ListBlobsOptions options = new ListBlobsOptions()
+            .setPrefix("prefixToMatch")
+            .setDetails(new BlobListDetails()
+                .setRetrieveDeletedBlobs(true)
+                .setRetrieveSnapshots(true));
+
+        String continuationToken = "continuationToken";
+
+        client.listBlobs(options, continuationToken, timeout).forEach(blob ->
+            System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
+                blob.getName(),
+                blob.isPrefix(),
+                blob.isDeleted(),
+                blob.getSnapshot()));
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-String-Duration
+    }
+
+    /**
      * Code snippet for {@link BlobContainerClient#listBlobsByHierarchy(String)}
      */
     public void listBlobsHierarchy() {
