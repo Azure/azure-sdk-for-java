@@ -24,8 +24,10 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -46,7 +48,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ReactorConnectionTest {
+class ReactorConnectionTest {
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String SESSION_NAME = "test-session-name";
     private static final Duration TEST_DURATION = Duration.ofSeconds(30);
@@ -81,8 +83,18 @@ public class ReactorConnectionTest {
     private ReactorProvider reactorProvider;
     private ConnectionHandler connectionHandler;
 
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
+
     @BeforeEach
-    public void setup() throws IOException {
+    void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
 
         when(reactor.selectable()).thenReturn(selectable);
@@ -108,7 +120,7 @@ public class ReactorConnectionTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMocks();
@@ -118,12 +130,12 @@ public class ReactorConnectionTest {
      * Can create a ReactorConnection and the appropriate properties are set for TransportType.AMQP
      */
     @Test
-    public void createConnection() {
+    void createConnection() {
         // Arrange
         final Map<String, Object> expectedProperties = new HashMap<>(connectionHandler.getConnectionProperties());
 
         // Assert
-        Assertions.assertTrue(connection instanceof ReactorConnection);
+        Assertions.assertNotNull(connection);
         Assertions.assertEquals(CONNECTION_ID, connection.getId());
         Assertions.assertEquals(HOSTNAME, connection.getFullyQualifiedNamespace());
 
@@ -147,7 +159,7 @@ public class ReactorConnectionTest {
      * Creates a session with the given name and set handler.
      */
     @Test
-    public void createSession() {
+    void createSession() {
         // Arrange
         // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
         // process.
@@ -182,7 +194,7 @@ public class ReactorConnectionTest {
      * Creates a session with the given name and set handler.
      */
     @Test
-    public void removeSessionThatExists() {
+    void removeSessionThatExists() {
         // Arrange
         // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
         // process.
@@ -204,7 +216,7 @@ public class ReactorConnectionTest {
      * Creates a session with the given name and set handler.
      */
     @Test
-    public void removeSessionThatDoesNotExist() {
+    void removeSessionThatDoesNotExist() {
         // Arrange
         // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
         // process.
@@ -226,7 +238,7 @@ public class ReactorConnectionTest {
      * Verifies initial endpoint state is uninitialized and completes when the connection is closed.
      */
     @Test
-    public void initialConnectionState() {
+    void initialConnectionState() {
         // Assert
         StepVerifier.create(connection.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
@@ -240,7 +252,7 @@ public class ReactorConnectionTest {
      * Verifies Connection state reports correct status when ConnectionHandler updates its state.
      */
     @Test
-    public void onConnectionStateOpen() {
+    void onConnectionStateOpen() {
         // Arrange
         final Event event = mock(Event.class);
         when(event.getConnection()).thenReturn(connectionProtonJ);
@@ -265,7 +277,7 @@ public class ReactorConnectionTest {
      * Verifies that we can get the CBS node.
      */
     @Test
-    public void createCBSNode() {
+    void createCBSNode() {
         // Arrange
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
         final Event mock = mock(Event.class);
@@ -283,7 +295,7 @@ public class ReactorConnectionTest {
      * Verifies that if the connection cannot be created within the timeout period, it errors.
      */
     @Test
-    public void createCBSNodeTimeoutException() {
+    void createCBSNodeTimeoutException() {
         // Arrange
         final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
         final ReactorHandlerProvider provider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler,
@@ -315,7 +327,7 @@ public class ReactorConnectionTest {
      * Verifies if the ConnectionHandler transport fails, then we are unable to create the CBS node or sessions.
      */
     @Test
-    public void cannotCreateResourcesOnFailure() {
+    void cannotCreateResourcesOnFailure() {
         // Arrange
         final Event event = mock(Event.class);
         final Transport transport = mock(Transport.class);
@@ -339,8 +351,13 @@ public class ReactorConnectionTest {
                 AmqpException amqpException = (AmqpException) e;
                 Assertions.assertEquals(condition, amqpException.getErrorCondition());
             })
-            .verify(Duration.ofSeconds(30));
+            .verify();
 
         verify(transport, times(1)).unbind();
+    }
+
+    @Test
+    void cannotCreateSessionWhenDisposed() {
+
     }
 }
