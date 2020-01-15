@@ -11,6 +11,9 @@ resources:
       name: Azure/azure-sdk-tools
       endpoint: azure
 
+# Random change to debug check run creation.
+
+
 trigger:
   branches:
     include:
