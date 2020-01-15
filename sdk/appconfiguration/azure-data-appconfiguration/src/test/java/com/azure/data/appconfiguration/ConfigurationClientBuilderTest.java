@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -127,7 +128,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
 
         assertThrows(RuntimeException.class, () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
     }
-
+    
+    @Disabled
     @Test
     public void nullServiceVersion() {
         final String key = "newKey";
