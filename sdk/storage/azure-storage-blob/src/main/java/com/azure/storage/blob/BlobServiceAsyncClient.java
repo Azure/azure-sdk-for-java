@@ -402,21 +402,33 @@ public final class BlobServiceAsyncClient {
             // Logging
             finalProperties.setLogging(properties.getLogging());
             if (finalProperties.getLogging() != null) {
+                StorageImplUtils.assertNotNull("Logging Version", finalProperties.getLogging().getVersion());
                 validateRetentionPolicy(finalProperties.getLogging().getRetentionPolicy(), "Logging Retention Policy");
             }
 
             // Hour Metrics
             finalProperties.setHourMetrics(properties.getHourMetrics());
             if (finalProperties.getHourMetrics() != null) {
+                StorageImplUtils.assertNotNull("HourMetrics Version", finalProperties.getHourMetrics().getVersion());
                 validateRetentionPolicy(finalProperties.getHourMetrics().getRetentionPolicy(), "HourMetrics Retention "
                     + "Policy");
+                if (finalProperties.getHourMetrics().isEnabled()) {
+                    StorageImplUtils.assertNotNull("HourMetrics IncludeApis",
+                        finalProperties.getHourMetrics().isIncludeApis());
+                }
             }
 
             // Minute Metrics
             finalProperties.setMinuteMetrics(properties.getMinuteMetrics());
             if (finalProperties.getMinuteMetrics() != null) {
+                StorageImplUtils.assertNotNull("MinuteMetrics Version",
+                    finalProperties.getMinuteMetrics().getVersion());
                 validateRetentionPolicy(finalProperties.getMinuteMetrics().getRetentionPolicy(), "MinuteMetrics "
                     + "Retention Policy");
+                if (finalProperties.getMinuteMetrics().isEnabled()) {
+                    StorageImplUtils.assertNotNull("MinuteMetrics IncludeApis",
+                        finalProperties.getHourMetrics().isIncludeApis());
+                }
             }
 
             // CORS
@@ -425,7 +437,7 @@ public final class BlobServiceAsyncClient {
                 for (BlobCorsRule rule : properties.getCors()) {
                     corsRules.add(validatedCorsRule(rule));
                 }
-                properties.setCors(corsRules);
+                finalProperties.setCors(corsRules);
             }
 
             // Default Service Version
@@ -433,7 +445,7 @@ public final class BlobServiceAsyncClient {
 
             // Delete Retention Policy
             finalProperties.setDeleteRetentionPolicy(properties.getDeleteRetentionPolicy());
-            validateRetentionPolicy(properties.getDeleteRetentionPolicy(), "DeleteRetentionPolicy Days");
+            validateRetentionPolicy(finalProperties.getDeleteRetentionPolicy(), "DeleteRetentionPolicy Days");
 
             // Static Website
             finalProperties.setStaticWebsite(properties.getStaticWebsite());
