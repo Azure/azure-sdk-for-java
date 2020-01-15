@@ -41,8 +41,8 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     /**
      * Construct DefaultLogger for the given class name.
      *
-     * @param className Class name creating the logger.
-     * @throws RuntimeException it is an error.
+     * @param className Class name creating the logger. Will use class canonical name if exists, otherwise use the
+     * class name passes in.
      */
     public DefaultLogger(String className) {
         try {
