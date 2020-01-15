@@ -13,9 +13,10 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/cosmosdb/
+      - sdk/cosmos/
     exclude:
-      - sdk/cosmosdb/microsoft-azure
+      - sdk/cosmos/microsoft-azure
+      - sdk/cosmos/azure
 
 pr:
   branches:
@@ -26,9 +27,10 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/cosmosdb/
+      - sdk/cosmos/
     exclude:
-      - sdk/cosmosdb/microsoft-azure
+      - sdk/cosmos/microsoft-azure
+      - sdk/cosmos/azure
 
 
 variables:

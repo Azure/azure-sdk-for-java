@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.3 (2020-01-013)
+- Support datetime format `M/d/yyyy K:mm:ss a XXX` for token `expires_on` property on Windows App Services.
+
 ## 1.0.2 (2020-01-07)
 - Fix MSI_ENDPOINT and MSI_SECRET environment variable lookup issue in `ManagedIdentityCredential` when running on App Service
 

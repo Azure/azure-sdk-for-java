@@ -167,6 +167,7 @@ public class HttpConstants {
         // Offer header
         public static final String OFFER_TYPE = "x-ms-offer-type";
         public static final String OFFER_THROUGHPUT = "x-ms-offer-throughput";
+        public static final String OFFER_MIN_THROUGHPUT = "x-ms-cosmos-min-throughput";
         public static final String OFFER_IS_RU_PER_MINUTE_THROUGHPUT_ENABLED = "x-ms-offer-is-ru-per-minute-throughput-enabled";
 
         // Upsert header
@@ -257,7 +258,7 @@ public class HttpConstants {
         // @see
         // https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
         // {x-version-update-start;com.microsoft.azure:azure-cosmos;current}
-        public static final String SDK_VERSION = "3.6.0-beta.2";
+        public static final String SDK_VERSION = "3.6.0";
         // {x-version-update-end}
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }

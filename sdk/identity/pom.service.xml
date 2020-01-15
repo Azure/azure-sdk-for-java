@@ -11,7 +11,9 @@
   <modules>
     <!-- NOTE: Commenting out becuase we are now binary composed.
     -->
-      <module>../core/azure-core</module>
+    <module>../core/azure-core</module>
+    <module>../core/azure-core-http-netty</module>
+    <module>../core/azure-core-test</module>
     <module>azure-identity</module>
   </modules>
 </project>
