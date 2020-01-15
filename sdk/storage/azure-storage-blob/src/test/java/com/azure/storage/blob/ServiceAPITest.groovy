@@ -20,12 +20,24 @@ import com.azure.storage.blob.models.BlobStorageException
 
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
 
 import java.time.Duration
 import java.time.OffsetDateTime
 
 class ServiceAPITest extends APISpec {
+
+    BlobServiceClient anonymousClient;
+
     def setup() {
+        setup:
+        // We shouldnt be getting to the network layer anyway
+        anonymousClient = new BlobServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .buildClient()
         def disabled = new BlobRetentionPolicy().setEnabled(false)
         primaryBlobServiceClient.setProperties(new BlobServiceProperties()
             .setStaticWebsite(new StaticWebsite().setEnabled(false))
@@ -140,6 +152,14 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "List containers anonymous"() {
+        when:
+        anonymousClient.listBlobContainers().iterator()
+
+        then:
+        thrown(IllegalStateException)
     }
 
     def "List containers with timeout still backed by PagedFlux"() {
@@ -279,6 +299,14 @@ class ServiceAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Set props anonymous"() {
+        when:
+        anonymousClient.setProperties(new BlobServiceProperties())
+
+        then:
+        thrown(IllegalStateException)
+    }
+
     def "Get props min"() {
         expect:
         primaryBlobServiceClient.getPropertiesWithResponse(null, null).getStatusCode() == 200
@@ -291,6 +319,14 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Get props anonymous"() {
+        when:
+        anonymousClient.getProperties()
+
+        then:
+        thrown(IllegalStateException)
     }
 
     def "Get UserDelegationKey"() {
@@ -335,6 +371,14 @@ class ServiceAPITest extends APISpec {
         OffsetDateTime.now() | OffsetDateTime.now().minusDays(1) || IllegalArgumentException
     }
 
+    def "Get UserDelegationKey anonymous"() {
+        when:
+        anonymousClient.getUserDelegationKey(null, OffsetDateTime.now().plusDays(1))
+
+        then:
+        thrown(IllegalStateException)
+    }
+
     def "Get stats"() {
         setup:
         def secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.getAccountName())
@@ -364,6 +408,14 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Get stats anonymous"() {
+        when:
+        anonymousClient.getStatistics()
+
+        then:
+        thrown(IllegalStateException)
     }
 
     def "Get account info"() {
@@ -396,6 +448,28 @@ class ServiceAPITest extends APISpec {
         then:
         def e = thrown(RuntimeException)
         e.getCause() instanceof UnknownHostException
+    }
+
+    def "Get account info anonymous"() {
+        when:
+        anonymousClient.getAccountInfo()
+
+        then:
+        thrown(IllegalStateException)
+    }
+
+    def "Get account sas anonymous"() {
+        setup:
+        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def permissions = new AccountSasPermission().setReadPermission(true)
+        def services = new AccountSasService().setBlobAccess(true)
+        def resourceTypes = new AccountSasResourceType().setService(true)
+
+        when:
+        anonymousClient.generateAccountSas(new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes))
+
+        then:
+        thrown(IllegalStateException)
     }
 
     def "Builder cpk validation"() {

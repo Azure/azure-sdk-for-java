@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.3.0-beta.1 (Unreleased)
-- Added an overload to listBlobs to include a continuation marker.
+- Added ability to create service clients anonymously and should only be used to create anonymous container and blob clients. Anonymous service clients will throw on attempting to create network requests.
+- Added an overload to listBlobs to include a continuation token.
 
 ## 12.2.0 (2020-01-08)
 This package's
