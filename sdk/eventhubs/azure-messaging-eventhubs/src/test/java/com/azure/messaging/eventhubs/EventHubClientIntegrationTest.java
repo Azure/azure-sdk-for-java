@@ -35,25 +35,6 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies connection string name.
-     */
-    @Test
-    public void eventHubConnectionStringTest() {
-        String actualConnectionString = System.getenv("AZURE_EVENTHUBS_CONNECTION_STRING");
-        System.out.println("AZURE_EVENTHUBS_CONNECTION_STRING length ="+actualConnectionString.length());
-        System.out.println("AZURE_EVENTHUBS_CONNECTION_STRING EntityPath index ="+actualConnectionString.indexOf("EntityPath="));
-        Assertions.assertEquals("expected_actualConnectionString_test", actualConnectionString);
-    }
-
-    /**
-     * Verifies DB connection string name.
-     */
-    @Test
-    public void primaryDBConnectionStringTest() {
-        String primaryDBAccountName = System.getenv("PRIMARY_STORAGE_ACCOUNT_NAME");
-        Assertions.assertEquals("expected_primaryDBAccountName_test", primaryDBAccountName);
-    }
-    /**
      * Verifies we can get partition ids of an Event Hub.
      */
     @Test
