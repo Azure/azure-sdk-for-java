@@ -163,6 +163,12 @@ class ExpressRouteCircuitImpl extends GroupableResourceCoreImpl<ExpressRouteCirc
     }
 
     @Override
+    public ExpressRouteCircuitImpl withCircuitProvisioningState(String circuitProvisioningState) {
+        this.inner().withCircuitProvisioningState(circuitProvisioningState);
+        return this;
+    }
+
+    @Override
     public ExpressRouteCircuitImpl withExpressRoutePort(SubResource expressRoutePort) {
         this.inner().withExpressRoutePort(expressRoutePort);
         return this;
@@ -175,8 +181,20 @@ class ExpressRouteCircuitImpl extends GroupableResourceCoreImpl<ExpressRouteCirc
     }
 
     @Override
+    public ExpressRouteCircuitImpl withGlobalReachEnabled(Boolean globalReachEnabled) {
+        this.inner().withGlobalReachEnabled(globalReachEnabled);
+        return this;
+    }
+
+    @Override
     public ExpressRouteCircuitImpl withPeerings(List<ExpressRouteCircuitPeeringInner> peerings) {
         this.inner().withPeerings(peerings);
+        return this;
+    }
+
+    @Override
+    public ExpressRouteCircuitImpl withServiceKey(String serviceKey) {
+        this.inner().withServiceKey(serviceKey);
         return this;
     }
 
@@ -189,6 +207,12 @@ class ExpressRouteCircuitImpl extends GroupableResourceCoreImpl<ExpressRouteCirc
     @Override
     public ExpressRouteCircuitImpl withServiceProviderProperties(ExpressRouteCircuitServiceProviderProperties serviceProviderProperties) {
         this.inner().withServiceProviderProperties(serviceProviderProperties);
+        return this;
+    }
+
+    @Override
+    public ExpressRouteCircuitImpl withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState) {
+        this.inner().withServiceProviderProvisioningState(serviceProviderProvisioningState);
         return this;
     }
 
