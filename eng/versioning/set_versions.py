@@ -3,6 +3,8 @@
 
 # Python version 3.4 or higher is required to run this script.
 
+# Nobody outside of the EngSys team should actually be using this script which is primarily
+# used for version verification and manipulation in the pipeline automation.
 # Use case: Append the build qualifier onto the existing version in such a way that the
 # resulting version string is still in semver format. This will be utilized by the build
 # system to modify the version string to produce nightly DevOps builds.
@@ -49,12 +51,15 @@ items_we_should_not_update = ['com.azure:azure-sdk-all', 'com.azure:azure-sdk-pa
 version_regex_named = re.compile(version_regex_str_with_names_anchored)
 prerelease_regex_named = re.compile(prerelease_version_regex_with_name)
 
-def update_versions_file_for_nightly_devops(update_type, build_type, build_qualifier, artifact_id):
+def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifact_id, group_id):
 
     version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
     print('version_file=' + version_file)
+    library_to_update = group_id + ':' + artifact_id
+    print('adding build_qualifier({}) to {}'.format(build_qualifier, library_to_update))
     version_map = {}
     newlines = []
+    artifact_found = False
     with open(version_file, encoding='utf-8') as f:
         for raw_line in f:
             stripped_line = raw_line.strip()
@@ -64,49 +69,55 @@ def update_versions_file_for_nightly_devops(update_type, build_type, build_quali
                 module = CodeModule(stripped_line)
                 # basically we don't want to change any of the parent versions here, only
                 # library versions
-                if not artifact_id and module.name in items_we_should_not_update:
+                if module.name in items_we_should_not_update:
                     newlines.append(module.string_for_version_file())
                     continue
-                if not artifact_id or module.artifact_id == artifact_id:
-                    if (update_type == UpdateType.library or update_type == UpdateType.all):
-                        if hasattr(module, 'current'):
-                            set_both = False
-                            # In the case where the current and dependency are both equal then both
-                            # need to be updated. In theory, this should only really happen when a
-                            # new library has been added and has not yet been released but can also
-                            # happen if a library has just been released and the devops build kicks
-                            # of before the human submits the PR to increase the current version. Being
-                            # that it's a devops build and both versions are being updated this should
-                            # be OK.
-                            if module.current == module.dependency:
-                                set_both = True
-                            if '-' in module.current:
-                                module.current += "." + build_qualifier
-                            else:
-                                module.current += '-' + build_qualifier
-                            match = version_regex_named.match(module.current)
-                            if not match:
-                                raise ValueError('{}\'s current version + build qualifier {} is not a valid semver version'.format(module.name, module.current + build_qualifier))
-                            if set_both:
-                                module.dependency = module.current
-                        # we need to handle the unreleased dependency which should have the same version as the "current" dependency
-                        # of the non-unreleased artifact
+                if library_to_update == module.name:
+                    artifact_found = True
+                    if hasattr(module, 'current'):
+                        set_both = False
+                        # In the case where the current and dependency are both equal then both
+                        # need to be updated. In theory, this should only really happen when a
+                        # new library has been added and has not yet been released but can also
+                        # happen if a library has just been released and the devops build kicks
+                        # of before the human submits the PR to increase the current version. Being
+                        # that it's a devops build and both versions are being updated this should
+                        # be OK.
+                        if module.current == module.dependency:
+                            set_both = True
+                        if '-' in module.current:
+                            module.current += "." + build_qualifier
                         else:
-                            if (module.name.startswith('unreleased_')):
-                                # strip off the 'unreleased_' prepend to get the regular module entry
-                                real_name = module.name.replace('unreleased_', '')
-                                real_module = version_map[real_name]
-                                module.dependency = real_module.current
-                            else:
-                                raise ValueError('{}\' does not have a current dependency and its groupId does not the required unreleased_ prepend'.format(module.name))
+                            module.current += '-' + build_qualifier
+                        match = version_regex_named.match(module.current)
+                        if not match:
+                            raise ValueError('{}\'s current version + build qualifier {} is not a valid semver version'.format(module.name, module.current + build_qualifier))
+                        if set_both:
+                            module.dependency = module.current
+                    # we need to handle the unreleased dependency which should have the same version as the "current" dependency
+                    # of the non-unreleased artifact
+                    else:
+                        if (module.name.startswith('unreleased_')):
+                            # strip off the 'unreleased_' prepend to get the regular module entry
+                            real_name = module.name.replace('unreleased_', '')
+                            real_module = version_map[real_name]
+                            module.dependency = real_module.current
+                        else:
+                            raise ValueError('{}\' does not have a current dependency and its groupId does not have the required unreleased_ prepend'.format(module.name))
                 version_map[module.name] = module
                 newlines.append(module.string_for_version_file())
+
+    if not artifact_found:
+       raise ValueError('library_to_update ({}) was not found in version file {}'.format(library_to_update, version_file))
 
     with open(version_file, 'w', encoding='utf-8') as f:
         for line in newlines:
             f.write(line)
 
-# Prep the appropriate version file for source 
+# Prep the appropriate version file for source testing. What this really means is set the
+# all of the dependency versions to the current versions. This will effectively cause maven
+# to use the built version of the libraries for build and testing. The purpose of this is to
+# ensure current version compatibility amongst the various libraries for a given built type
 def prep_version_file_for_source_testing(build_type):
 
     version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
@@ -132,17 +143,13 @@ def prep_version_file_for_source_testing(build_type):
     
     return file_changed
 
-# given a build type and artifact id
-def increment_version_for_artifact(build_type, artifact_id):
-
-    if not build_type:
-        raise ValueError('build_type cannot be empty.')
-
-    if not artifact_id:
-        raise ValueError('artifact_id cannot be empty.')
+# given a build type, artifact id and group id, set the dependency version to the 
+# current version and increment the current version
+def increment_library_version(build_type, artifact_id, group_id):
 
     version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
     print('version_file=' + version_file)
+    library_to_update = group_id + ':' + artifact_id
 
     artifact_found = False
     newlines = []
@@ -157,11 +164,15 @@ def increment_version_for_artifact(build_type, artifact_id):
                 # version then just increment the revision. Otherwise increment the
                 # minor version, zero the patch and add "-beta.1" to the end
                 # https://github.com/Azure/azure-sdk/blob/master/docs/policies/releases.md#java
-                if module.artifact_id == artifact_id and hasattr(module, 'current'):
+                if module.name == library_to_update and hasattr(module, 'current'):
                     artifact_found = True
                     vmatch = version_regex_named.match(module.current)
                     if (vmatch.group('prerelease') is not None):
                         prever = prerelease_regex_named.match(vmatch.group('prerelease'))
+                        # This is the case where, somehow, the versioning verification has failed and
+                        # the prerelease verification doesn't match "beta.X"
+                        if prever is None:
+                            raise ValueError('library_to_update ({}:{}) has an invalid prerelease version ({}) which should be of the format beta.X'.format(library_to_update, module.current, vmatch.group('prerelease')))
                         rev = int(prever.group('revision'))
                         rev += 1
                         new_version = '{}.{}.{}-beta.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'), str(rev))
@@ -169,12 +180,17 @@ def increment_version_for_artifact(build_type, artifact_id):
                         minor = int(vmatch.group('minor'))
                         minor += 1
                         new_version = '{}.{}.{}-beta.1'.format(vmatch.group('major'), minor, 0)
-                    print('artifact_id {}, previous version={}, new current version={}'.format(artifact_id, module.current, new_version))
+                    # The dependency version only needs to be updated it if is different from the current version. 
+                    # This would be the case where a library hasn't been released yet and has been released (either GA or preview)
+                    if (module.dependency != module.current):
+                        print('library_to_update {}, previous dependency version={}, new dependency version={}'.format(library_to_update, module.dependency, module.current))
+                        module.dependency = module.current
+                    print('library_to_update {}, previous version={}, new current version={}'.format(library_to_update, module.current, new_version))
                     module.current = new_version
                 newlines.append(module.string_for_version_file())
 
     if not artifact_found:
-       raise ValueError('artifact_id ({}) was not found in version file {}'.format(artifact_id, version_file)) 
+       raise ValueError('library_to_update ({}) was not found in version file {}'.format(library_to_update, version_file))
 
     with open(version_file, 'w', encoding='utf-8') as f:
         for line in newlines:
@@ -183,15 +199,11 @@ def increment_version_for_artifact(build_type, artifact_id):
 # Verify that the current version of an artifact matches our versioning scheme. This is meant to be called
 # as part of the release pipeline for a given artifact to verify that we don't accidentally release a version
 # that doesn't match our versioning scheme
-def verify_current_version_of_artifact(build_type, artifact_id):
-    if not build_type:
-        raise ValueError('build_type cannot be empty.')
-
-    if not artifact_id:
-        raise ValueError('artifact_id cannot be empty.')
+def verify_current_version_of_artifact(build_type, artifact_id, group_id):
 
     version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
     print('version_file=' + version_file)
+    library_to_update = group_id + ':' + artifact_id
 
     artifact_found = False
     with open(version_file, encoding='utf-8') as f:
@@ -205,13 +217,13 @@ def verify_current_version_of_artifact(build_type, artifact_id):
                 # of the following:
                 # <major>.<minor>.<patch/hotfix>
                 # <major>.<minor>.<patch/hotfix>-beta.<prerelease>
-                if module.artifact_id == artifact_id and hasattr(module, 'current'):
+                if module.name == library_to_update and hasattr(module, 'current'):
                     artifact_found = True
                     vmatch = version_regex_named.match(module.current)
                     temp_ver = '{}.{}.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'))
                     # we should never have buildmetadata in our versioning scheme
                     if vmatch.group('buildmetadata') is not None:
-                        raise ValueError('artifact ({}) version ({}) in version file ({}) is not a correct version to release. buildmetadata is set and should never be {}'.format(artifact_id, module.current, version_file, vmatch.group('buildmetadata'))) 
+                        raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. buildmetadata is set and should never be {}'.format(library_to_update, module.current, version_file, vmatch.group('buildmetadata')))
 
                     # reconstruct the version from the semver pieces and it should match exactly the current
                     # version in the module
@@ -220,7 +232,7 @@ def verify_current_version_of_artifact(build_type, artifact_id):
                         prerel = vmatch.group('prerelease')
 
                         if prerelease_regex_named.match(prerel) is None:
-                            raise ValueError('artifact ({}) version ({}) in version file ({}) is not a correct version to release. The accepted prerelease tag is (beta.X) and the current prerelease tag is ({})'.format(artifact_id, module.current, version_file, prerel))
+                            raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. The accepted prerelease tag is (beta.X) and the current prerelease tag is ({})'.format(library_to_update, module.current, version_file, prerel))
 
                         prever = prerelease_regex_named.match(prerel)
                         rev = int(prever.group('revision'))
@@ -229,23 +241,27 @@ def verify_current_version_of_artifact(build_type, artifact_id):
                     # last but not least, for sanity verify that the version constructed from the
                     # semver pieces matches module's current version
                     if module.current != temp_ver:
-                        raise ValueError('artifact ({}) version ({}) in version file ({}) does not match the version constructed from the semver pieces ({})'.format(artifact_id, module.current, version_file, temp_ver)) 
+                        raise ValueError('library ({}) version ({}) in version file ({}) does not match the version constructed from the semver pieces ({})'.format(library_to_update, module.current, version_file, temp_ver))
 
                     print('The version {} for {} looks good!'.format(module.current, module.name))
                     
 
     if not artifact_found:
-       raise ValueError('artifact_id ({}) was not found in version file {}'.format(artifact_id, version_file))
+       raise ValueError('library ({}) was not found in version file {}'.format(library_to_update, version_file))
 
 def main():
-    parser = argparse.ArgumentParser(description='set version numbers in the appropriate version text file')
-    parser.add_argument('--update-type', '--ut', type=UpdateType, choices=list(UpdateType))
-    parser.add_argument('--build-type', '--bt', type=BuildType, choices=list(BuildType))
-    parser.add_argument('--build-qualifier', '--bq', help='build qualifier to append onto the version string.')
-    parser.add_argument('--artifact-id', '--ar', help='artifactId to target.')
-    parser.add_argument('--prep-source-testing', '--pst', action='store_true', help='prep the version file for source testing')
-    parser.add_argument('--increment-version', '--iv', action='store_true', help='increment the version for a given artifact')
-    parser.add_argument('--verify-version', '--vv', action='store_true', help='verify the version for a given artifact')
+    parser = argparse.ArgumentParser(description='set version numbers in the appropriate version text file', add_help=False)
+    required = parser.add_argument_group('required arguments')
+    required.add_argument('--build-type', '--bt', type=BuildType, choices=list(BuildType), required=True)
+    optional = parser.add_argument_group('optional arguments')
+    optional.add_argument('--build-qualifier', '--bq', help='build qualifier to append onto the version string.')
+    optional.add_argument('--artifact-id', '--ai', help='artifactId of the target library')
+    optional.add_argument('--group-id', '--gi', help='groupId of the target library')
+    optional.add_argument('--prep-source-testing', '--pst', action='store_true', help='prep the version file for source testing')
+    optional.add_argument('--increment-version', '--iv', action='store_true', help='increment the version for a given group/artifact')
+    optional.add_argument('--verify-version', '--vv', action='store_true', help='verify the version for a given group/artifact')
+    optional.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='show this help message and exit')
+
     args = parser.parse_args()
     if (args.build_type == BuildType.management):
         raise ValueError('{} is not currently supported.'.format(BuildType.management.name))
@@ -254,11 +270,17 @@ def main():
     if (args.prep_source_testing):
         file_changed = prep_version_file_for_source_testing(args.build_type)
     elif (args.increment_version):
-        increment_version_for_artifact(args.build_type, args.artifact_id)
+        if not args.artifact_id or not args.group_id:
+            raise ValueError('increment-version requires both the artifact-id and group-id arguments. artifact-id={}, group-id={}'.format(args.artifact_id, args.group_id))
+        increment_library_version(args.build_type, args.artifact_id, args.group_id)
     elif (args.verify_version):
-        verify_current_version_of_artifact(args.build_type, args.artifact_id)
+        if not args.artifact_id or not args.group_id:
+            raise ValueError('verify-version requires both the artifact-id and group-id arguments. artifact-id={}, group-id={}'.format(args.artifact_id, args.group_id))
+        verify_current_version_of_artifact(args.build_type, args.artifact_id, args.group_id)
     else:
-        update_versions_file_for_nightly_devops(args.update_type, args.build_type, args.build_qualifier, args.artifact_id)
+        if not args.artifact_id or not args.group_id or not args.build_qualifier:
+            raise ValueError('update-version requires the artifact-id, group-id and build-qualifier arguments. artifact-id={}, group-id={}, build-qualifier={}'.format(args.artifact_id, args.group_id, args.build_qualifier))
+        update_versions_file_for_nightly_devops(args.build_type, args.build_qualifier, args.artifact_id, args.group_id)
     elapsed_time = time.time() - start_time
     print('elapsed_time={}'.format(elapsed_time))
     print('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))
