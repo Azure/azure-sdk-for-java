@@ -36,11 +36,8 @@ import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
 
@@ -651,19 +648,20 @@ class BlockBlobAPITest extends APISpec {
             .verifyComplete()
 
         then:
-        def outFile = file.getPath().toString() + "result"
-        def outChannel = AsynchronousFileChannel.open(Paths.get(outFile), StandardOpenOption.CREATE,
-            StandardOpenOption.WRITE)
-        StepVerifier.create(FluxUtil.writeFile(blobAsyncClient.download(), outChannel)).verifyComplete()
-        outChannel.close()
+        def outFile = new File(file.getPath().toString() + "result")
+        outFile.createNewFile()
 
-        compareFiles(file, new File(outFile), 0, fileSize)
+        def outStream = new FileOutputStream(outFile)
+        outStream.write(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.download()).block())
+        outStream.close()
+
+        compareFiles(file, outFile, 0, fileSize)
         StepVerifier.create(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED))
             .assertNext({ assert it.getCommittedBlocks().size() == commitedBlockCount })
             .verifyComplete()
 
         cleanup:
-        Files.delete(Paths.get(outFile))
+        outFile.delete()
         file.delete()
 
         where:
