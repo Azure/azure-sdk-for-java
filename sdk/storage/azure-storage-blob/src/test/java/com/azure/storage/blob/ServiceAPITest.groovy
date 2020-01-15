@@ -274,6 +274,7 @@ class ServiceAPITest extends APISpec {
         setup:
         def serviceProperties = primaryBlobServiceClient.getProperties()
 
+        // Some properties are not set and this test validates that they are not null when sent to the service
         def rule = new BlobCorsRule()
         rule.setAllowedOrigins("microsoft.com")
         rule.setMaxAgeInSeconds(60)

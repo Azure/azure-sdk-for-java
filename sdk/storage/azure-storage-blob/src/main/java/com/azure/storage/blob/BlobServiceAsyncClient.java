@@ -456,6 +456,11 @@ public final class BlobServiceAsyncClient {
             .map(response -> new SimpleResponse<>(response, null));
     }
 
+    /**
+     * Sets any null fields to "" since the service requires all Cors rules to be set if some are set.
+     * @param originalRule {@link BlobCorsRule}
+     * @return The validated {@link BlobCorsRule}
+     */
     private BlobCorsRule validatedCorsRule(BlobCorsRule originalRule) {
         if (originalRule == null) {
             return null;
@@ -469,6 +474,11 @@ public final class BlobServiceAsyncClient {
         return validRule;
     }
 
+    /**
+     * Validates a {@link BlobRetentionPolicy} according to service specs for set properties.
+     * @param retentionPolicy {@link BlobRetentionPolicy}
+     * @param policyName The name of the variable for errors.
+     */
     private void validateRetentionPolicy(BlobRetentionPolicy retentionPolicy, String policyName) {
         if (retentionPolicy == null) {
             return;
