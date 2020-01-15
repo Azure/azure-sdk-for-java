@@ -106,26 +106,11 @@ public class ConfigurationClientBuilderTest extends TestBase {
             ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
             : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
 
-        Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
+        final ConfigurationClient client = new ConfigurationClientBuilder()
+            .connectionString(connectionString)
+            .addPolicy(new TimeoutPolicy(Duration.ofMillis(1))).buildClient();
 
-        final ConfigurationClientBuilder clientBuilder;
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        } else {
-            clientBuilder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .addPolicy(new TimeoutPolicy(Duration.ofMillis(1)))
-                .pipeline(new HttpPipelineBuilder().build());
-        }
-
-        assertThrows(RuntimeException.class, () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
+        assertThrows(RuntimeException.class, () -> client.setConfigurationSetting(key, null, value));
     }
 
     @Test
