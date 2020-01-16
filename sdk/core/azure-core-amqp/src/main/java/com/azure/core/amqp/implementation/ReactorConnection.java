@@ -133,6 +133,10 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public Mono<ClaimsBasedSecurityNode> getClaimsBasedSecurityNode() {
+        if (isDisposed()) {
+            return Mono.error(new IllegalStateException("Connection is disposed. Cannot get CBS node."));
+        }
+
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = RetryUtil.withRetry(
             getEndpointStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
             connectionOptions.getRetry().getTryTimeout(), retryPolicy)
@@ -177,7 +181,12 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
-        AmqpSession existingSession = sessionMap.get(sessionName);
+        if (isDisposed()) {
+            return Mono.error(new IllegalStateException(String.format(
+                "connectionId[%s]: Connection is disposed. Cannot create session '%s'.", connectionId, sessionName)));
+        }
+
+        final AmqpSession existingSession = sessionMap.get(sessionName);
         if (existingSession != null) {
             return Mono.just(existingSession);
         }
@@ -313,10 +322,28 @@ public class ReactorConnection implements AmqpConnection {
             }
 
             logger.warning(
-                "onReactorError messagingFactory[{}], hostName[{}], message[starting new reactor], error[{}]",
+                "onReactorError connectionId[{}], hostName[{}], message[Starting new reactor], error[{}]",
                 getId(), getFullyQualifiedNamespace(), exception.getMessage());
 
             endpointStates.onError(exception);
+        }
+
+        @Override
+        void onConnectionShutdown(AmqpShutdownSignal shutdownSignal) {
+            if (isDisposed()) {
+                super.onConnectionShutdown(shutdownSignal);
+                return;
+            }
+
+            logger.warning(
+                "onReactorError connectionId[{}], hostName[{}], message[Shutting down], shutdown signal[{}]",
+                getId(), getFullyQualifiedNamespace(), shutdownSignal.isInitiatedByClient(), shutdownSignal);
+
+            if (!endpointStatesSink.isCancelled()) {
+                endpointStatesSink.next(AmqpEndpointState.CLOSED);
+                endpointStatesSink.complete();
+            }
+
             dispose();
         }
     }

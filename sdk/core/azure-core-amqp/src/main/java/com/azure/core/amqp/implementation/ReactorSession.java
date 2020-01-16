@@ -55,6 +55,7 @@ public class ReactorSession implements AmqpSession {
     private final TokenManagerProvider tokenManagerProvider;
     private final MessageSerializer messageSerializer;
     private final Duration openTimeout;
+
     private final Disposable.Composite subscriptions;
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
@@ -130,13 +131,13 @@ public class ReactorSession implements AmqpSession {
             return;
         }
 
+        subscriptions.dispose();
+
         openReceiveLinks.forEach((key, link) -> link.dispose());
         openReceiveLinks.clear();
 
         openSendLinks.forEach((key, link) -> link.dispose());
         openSendLinks.clear();
-
-        subscriptions.dispose();
     }
 
     /**
