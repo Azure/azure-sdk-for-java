@@ -61,7 +61,7 @@ jobs:
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
-        condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
+        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -74,13 +74,13 @@ jobs:
         - script: |
             python3 --version
             python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}} --group-id ${{artifact.groupId}}
-          condition: eq(variables['SetDevVersion'],'true')
+          condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
           displayName: Append dev package version suffix for ${{artifact.name}}
 
       - script: |
           python3 --version
           python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}}
-        condition: eq(variables['SetDevVersion'],'true')
+        condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Apply version settings to repository
 
       - script: |
@@ -118,7 +118,7 @@ jobs:
         artifact: repository
 
   - job: 'Analyze'
-    condition: ne(variables['Skip.Analyze'], 'true')
+    condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
     variables:
       - template: ../variables/globals.yml
@@ -228,7 +228,7 @@ jobs:
         artifact: reports
 
   - job: 'Test'
-    condition: ne(variables['Skip.Test'], 'true')
+    condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
     variables:
       - template: ../variables/globals.yml
@@ -253,7 +253,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Start Jetty'
-        condition: ne('${{ parameters.SDKType }}', 'client')
+        condition: and(succeeded(), ne(variables['SdkType'], 'client'))
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions)'
@@ -270,7 +270,7 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
-        condition: and(eq('${{ parameters.SDKType }}', 'client'), eq(variables['TestFromSource'],'true'))
+        condition: and(succeeded(), eq('${{ parameters.SDKType }}', 'client'), eq(variables['TestFromSource'],'true'))
 
       - pwsh: |
           python --version
@@ -287,12 +287,12 @@ jobs:
             exit 1
           }
         displayName: 'Set versions for source build'
-        condition: and(eq('${{ parameters.SDKType }}', 'client'), eq(variables['TestFromSource'],'true'))
+        condition: and(succeeded(), eq('${{ parameters.SDKType }}', 'client'), eq(variables['TestFromSource'],'true'))
 
       - script: |
           python --version
           python eng/versioning/update_versions.py --update-type library --build-type client
-        condition: eq(variables['ShouldRunSourceTests'],'true')
+        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
         displayName: 'Update versions for source build'
 
       - task: Maven@3
