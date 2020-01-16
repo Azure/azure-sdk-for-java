@@ -147,6 +147,7 @@ org.mockito:mockito-core;3.0.0
 org.nanohttpd:nanohttpd;2.3.1
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
+com.sun.activation:jakarta.activation;1.2.1
 
 
 # External Dependency Exceptions
