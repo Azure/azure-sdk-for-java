@@ -76,6 +76,7 @@ jobs:
             ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
             SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-secondary-key)
             DESIRED_CONSISTENCIES: '["Session"]'
+            ACCOUNT_CONSISTENCY: "Session"
             PROTOCOLS: '["Tcp"]'
         MaxParallel: 1
         Matrix:
@@ -84,25 +85,21 @@ jobs:
                 DisplayName: Multimaster Single Region Fast
                 OSVmImage: 'macOS-10.13'
                 ProfileFlag: '-Pfast'
-                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
             # 09m 14s, expect passed
             Direct:
                 DisplayName: Multimaster Single Region Direct
                 OSVmImage: 'macOS-10.13'
                 ProfileFlag: '-Pdirect'
-                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
             # 07m 42s, expect passed
             Examples:
                 DisplayName: Multimaster Single Region Examples
                 OSVmImage: 'macOS-10.13'
                 ProfileFlag: '-Pexamples'
-                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
             # 07m 05s, expect passed
             NonEmulator:
                 DisplayName: Multimaster Single Region NonEmulator
                 OSVmImage: 'macOS-10.13'
                 ProfileFlag: '-Pnon-emulator'
-                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
             # 28m 42s, expect passed (rebalanced)
             Single_Region_Long:
                 DisplayName: Long Integration Tests
@@ -111,7 +108,6 @@ jobs:
                 DESIRED_CONSISTENCIES: '["Session"]'
                 PREFERRED_LOCATIONS: null
                 PROTOCOLS: ''
-                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
             # 6m 58s, expect passed (rebalanced)
             Single_Region_NonEmulator:
                 DisplayName: Single Region Examples
@@ -119,7 +115,6 @@ jobs:
                 ProfileFlag: '-Pnon-emulator'
                 PROTOCOLS: '["Https"]'
                 DESIRED_CONSISTENCIES: '["Session"]'
-                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
 
         PreRunSteps:
         -   template: /eng/pipelines/templates/steps/install-reporting-tools.yml
