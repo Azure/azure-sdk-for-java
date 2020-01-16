@@ -24,6 +24,40 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
+  <build>
+    <plugins>
+      <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <version>3.0.0-M3</version>
+<!--        <dependencies>-->
+<!--          <dependency>-->
+<!--            <groupId>org.junit.jupiter</groupId>-->
+<!--            <artifactId>junit-jupiter-engine</artifactId>-->
+<!--            <version>5.3.2</version>-->
+<!--          </dependency>-->
+<!--        </dependencies>-->
+        <configuration>
+<!--          <forkCount>0</forkCount>-->
+<!--          <argLine>-->
+<!--            &#45;&#45;add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED-->
+<!--            &#45;&#45;add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED-->
+<!--            &#45;&#45;add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED-->
+<!--            &#45;&#45;add-opens com.azure.search.common/com.azure.storage.common.implementation=ALL-UNNAMED-->
+<!--            &#45;&#45;add-opens com.azure.storage.common/com.azure.storage.common.sas=ALL-UNNAMED-->
+<!--            &#45;&#45;add-opens com.azure.storage.blob/com.azure.storage.blob=ALL-UNNAMED-->
+<!--            &#45;&#45;add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED-->
+<!--            &#45;&#45;add-opens com.azure.storage.blob/com.azure.storage.blob.implementation.util=ALL-UNNAMED-->
+<!--            &#45;&#45;add-opens com.azure.storage.blob/com.azure.storage.blob.specialized=ALL-UNNAMED-->
+<!--            &#45;&#45;add-reads com.azure.core=ALL-UNNAMED-->
+<!--            &#45;&#45;add-reads com.azure.core.test=ALL-UNNAMED-->
+<!--            &#45;&#45;add-reads com.azure.core.amqp=ALL-UNNAMED-->
+<!--            &#45;&#45;add-reads com.azure.storage.common=ALL-UNNAMED-->
+<!--          </argLine>-->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <dependencies>
     <dependency>
@@ -56,22 +90,28 @@
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.3.2</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.junit.jupiter</groupId>-->
+<!--      <artifactId>junit-jupiter-api</artifactId>-->
+<!--      <version>5.4.2</version> &lt;!&ndash; {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} &ndash;&gt;-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.junit.jupiter</groupId>-->
+<!--      <artifactId>junit-jupiter-engine</artifactId>-->
+<!--      <version>5.3.2</version> &lt;!&ndash; {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} &ndash;&gt;-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.junit.jupiter</groupId>-->
+<!--      <artifactId>junit-jupiter-params</artifactId>-->
+<!--      <version>5.4.2</version> &lt;!&ndash; {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} &ndash;&gt;-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
@@ -88,12 +128,6 @@
       <groupId>org.unitils</groupId>
       <artifactId>unitils-core</artifactId>
       <version>3.4.2</version> <!-- {x-version-update;org.unitils:unitils-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-surefire-provider</artifactId>
-      <version>1.0.0-M4</version>
       <scope>test</scope>
     </dependency>
     <!-- Test dependencies for creating search resources -->
