@@ -74,9 +74,9 @@ jobs:
         EnvVars:
             ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
             ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
+            ACCOUNT_CONSISTENCY: "Session"
             SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-secondary-key)
             DESIRED_CONSISTENCIES: '["Session"]'
-            ACCOUNT_CONSISTENCY: "Session"
             PROTOCOLS: '["Tcp"]'
         MaxParallel: 1
         Matrix:
