@@ -63,20 +63,20 @@ Once you have the values of the Cognitive Search Service [URL endpoint](https://
 
 <!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L28-L31 -->
 ```Java
-SearchServiceClient client = new SearchServiceClientBuilder()
-    .endpoint(ENDPOINT)
-    .credential(new SearchApiKeyCredential(ADMIN_KEY))
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new SearchApiKeyCredential(adminKey))
+        .buildClient();
+}
 ```
 
 or
 
 <!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L35-L38 -->
 ```Java
-SearchServiceAsyncClient client = new SearchServiceClientBuilder()
-    .endpoint(ENDPOINT)
-    .credential(new SearchApiKeyCredential(ADMIN_KEY))
-    .buildAsyncClient();
+        .endpoint(endpoint)
+        .credential(new SearchApiKeyCredential(adminKey))
+        .buildAsyncClient();
+}
 ```
 
 #### Create a SearchIndexClient
@@ -85,22 +85,22 @@ To create a SearchIndexClient, you will need an exisitng index name as well as t
 
 <!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L42-L46 -->
 ```Java
-SearchIndexClient client = new SearchIndexClientBuilder()
-    .endpoint(ENDPOINT)
-    .credential(new SearchApiKeyCredential(API_KEY))
-    .indexName(INDEX_NAME)
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new SearchApiKeyCredential(apiKey))
+        .indexName(indexName)
+        .buildClient();
+}
 ```
 
 or
 
 <!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L50-L54 -->
 ```Java
-SearchIndexAsyncClient client = new SearchIndexClientBuilder()
-    .endpoint(ENDPOINT)
-    .credential(new SearchApiKeyCredential(API_KEY))
-    .indexName(INDEX_NAME)
-    .buildAsyncClient();
+        .endpoint(endpoint)
+        .credential(new SearchApiKeyCredential(apiKey))
+        .indexName(indexName)
+        .buildAsyncClient();
+}
 ```
 
 ### Asynchronous and Synchronous Pagination and Iteration
@@ -152,17 +152,17 @@ App Configuration provides a way to define customized headers through `Context` 
 
 <!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L58-L68 -->
 ```java
-HttpHeaders headers = new HttpHeaders();
-headers.put("my-header1", "my-header1-value");
-headers.put("my-header2", "my-header2-value");
-headers.put("my-header3", "my-header3-value");
-// Call API by passing headers in Context.
-Index index = new Index().setName(INDEX_NAME);
-searchClient.createIndexWithResponse(
-    index,
-    new RequestOptions(),
-    new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
-// Above three HttpHeader will be added in outgoing HttpRequest.
+    headers.put("my-header1", "my-header1-value");
+    headers.put("my-header2", "my-header2-value");
+    headers.put("my-header3", "my-header3-value");
+    // Call API by passing headers in Context.
+    Index index = new Index().setName(indexName);
+    searchClient.createIndexWithResponse(
+        index,
+        new RequestOptions(),
+        new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
+    // Above three HttpHeader will be added in outgoing HttpRequest.
+}
 ```
 For more detail information, check out the [AddHeadersFromContextPolicy][add_headers_from_context_policy]
 
