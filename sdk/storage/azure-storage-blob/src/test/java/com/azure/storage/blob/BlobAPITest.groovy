@@ -30,6 +30,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
+import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
@@ -39,6 +40,8 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
+import java.nio.file.OpenOption
+import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -263,11 +266,29 @@ class BlobAPITest extends APISpec {
         }
 
         when:
+        // Default overwrite is false so this should fail
         bc.downloadToFile(testFile.getPath())
 
         then:
         def ex = thrown(UncheckedIOException)
         ex.getCause() instanceof FileAlreadyExistsException
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download to file exists succeeds"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (!testFile.exists()) {
+            assert testFile.createNewFile()
+        }
+
+        when:
+        bc.downloadToFile(testFile.getPath(), true)
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
 
         cleanup:
         testFile.delete()
@@ -282,6 +303,49 @@ class BlobAPITest extends APISpec {
 
         when:
         bc.downloadToFile(testFile.getPath())
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download file does not exist open options"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (testFile.exists()) {
+            assert testFile.delete()
+        }
+
+        when:
+        Set<OpenOption> openOptions = new HashSet<>()
+        openOptions.add(StandardOpenOption.CREATE_NEW)
+        openOptions.add(StandardOpenOption.READ)
+        openOptions.add(StandardOpenOption.WRITE)
+        bc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download file exist open options"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (!testFile.exists()) {
+            assert testFile.createNewFile()
+        }
+
+        when:
+        Set<OpenOption> openOptions = new HashSet<>()
+        openOptions.add(StandardOpenOption.CREATE)
+        openOptions.add(StandardOpenOption.TRUNCATE_EXISTING)
+        openOptions.add(StandardOpenOption.READ)
+        openOptions.add(StandardOpenOption.WRITE)
+        bc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
         new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
@@ -319,6 +383,7 @@ class BlobAPITest extends APISpec {
         20                   | _ // small file
         16 * 1024 * 1024     | _ // medium file in several chunks
         8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
@@ -516,8 +581,22 @@ class BlobAPITest extends APISpec {
         StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
             .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
             .verifyErrorSatisfies({
-                assert it instanceof BlobStorageException
-                assert ((BlobStorageException) it).getStatusCode() == 412
+                /*
+                 * If an operation is running on multiple threads and multiple return an exception Reactor will combine
+                 * them into a CompositeException which needs to be unwrapped. If there is only a single exception
+                 * 'Exceptions.unwrapMultiple' will return a singleton list of the exception it was passed.
+                 *
+                 * These exceptions may be wrapped exceptions where the exception we are expecting is contained within
+                 * ReactiveException that needs to be unwrapped. If the passed exception isn't a 'ReactiveException' it
+                 * will be returned unmodified by 'Exceptions.unwrap'.
+                 */
+                assert Exceptions.unwrapMultiple(it).stream().anyMatch({ it2 ->
+                    def exception = Exceptions.unwrap(it2)
+                    if (exception instanceof BlobStorageException) {
+                        assert ((BlobStorageException) exception).getStatusCode() == 412
+                        return true
+                    }
+                })
             })
 
         // Give the file a chance to be deleted by the download operation before verifying its deletion
@@ -1811,6 +1890,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
+
         bc.getProperties()
 
         then:

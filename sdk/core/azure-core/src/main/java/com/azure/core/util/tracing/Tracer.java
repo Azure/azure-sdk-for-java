@@ -58,6 +58,11 @@ public interface Tracer {
     String SPAN_BUILDER_KEY = "builder";
 
     /**
+     * Key for {@link Context} which indicates that the context contains the Azure resource provider namespace.
+     */
+    String AZ_TRACING_NAMESPACE_KEY = "az.tracing.namespace";
+
+    /**
      * Creates a new tracing span.
      * <p>
      * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
@@ -122,7 +127,7 @@ public interface Tracer {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <p>Completes the tracing span present in the context, with the corresponding OpenCensus status for the given
+     * <p>Completes the tracing span present in the context, with the corresponding OpenTelemetry status for the given
      * response status code</p>
      * {@codesnippet com.azure.core.util.tracing.end#int-throwable-context}
      *
@@ -138,7 +143,7 @@ public interface Tracer {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <p>Completes the tracing span with the corresponding OpenCensus status for the given status message</p>
+     * <p>Completes the tracing span with the corresponding OpenTelemetry status for the given status message</p>
      * {@codesnippet com.azure.core.util.tracing.end#string-throwable-context}
      *
      * @param statusMessage The error or success message that occurred during the call, or {@code null} if no error
@@ -204,4 +209,23 @@ public interface Tracer {
      * @throws NullPointerException if {@code diagnosticId} or {@code context} is {@code null}.
      */
     Context extractContext(String diagnosticId, Context context);
+
+    /**
+     * Returns a span builder with the provided name in {@link Context}.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Returns a builder with the provided span name.</p>
+     * {@codesnippet com.azure.core.util.tracing.getSpanBuilder#string-context}
+     *
+     * @param spanName Name to give the span for the created builder.
+     * @param context Additional metadata that is passed through the call stack.
+     *
+     * @return The updated {@link Context} object containing the span builder.
+     * @throws NullPointerException if {@code context} or {@code spanName} is {@code null}.
+     */
+    default Context getSharedSpanBuilder(String spanName, Context context) {
+        // no-op
+        return Context.NONE;
+    }
 }

@@ -15,7 +15,6 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
       - hotfix/*
       - release/*
   paths:
@@ -37,7 +36,9 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: batch
+      SDKType: data
       Artifacts:
         - name: azure-batch
+          groupId: com.microsoft.azure
           safeName: azurebatch
           stagingProfileId: 534d15ee3800f4

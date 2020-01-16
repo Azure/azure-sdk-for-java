@@ -15,9 +15,11 @@ import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -26,6 +28,7 @@ import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Map;
 
 import static com.azure.core.amqp.implementation.CbsAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
@@ -35,9 +38,18 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
 
     @Mock
     private MessageSerializer serializer;
+    private static String product;
+    private static String clientVersion;
 
     public ReactorConnectionIntegrationTest() {
         super(new ClientLogger(ReactorConnectionIntegrationTest.class));
+    }
+
+    @BeforeAll
+    public static void init() {
+        Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
+        product = properties.get("name");
+        clientVersion = properties.get("version");
     }
 
     @Override
@@ -58,7 +70,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
         connection = new ReactorConnection("test-connection-id", options, reactorProvider,
-            handlerProvider, tokenManagerProvider, serializer);
+            handlerProvider, tokenManagerProvider, serializer, product, clientVersion);
     }
 
     @Override
@@ -84,7 +96,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
             getConnectionStringProperties().getEndpoint().getHost(),
             ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
-        final String tokenAudience = provider.getResourceString(getConnectionStringProperties().getEntityPath());
+        final String tokenAudience = provider.getScopesFromResource(getConnectionStringProperties().getEntityPath());
 
         // Act & Assert
         StepVerifier.create(connection.getClaimsBasedSecurityNode().flatMap(node -> node.authorize(tokenAudience, tokenAudience)))

@@ -1,4 +1,4 @@
-# Java SDK for SQL API of Azure Cosmos DB
+﻿# Java SDK for SQL API of Azure Cosmos DB
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmos.svg)](https://search.maven.org/artifact/com.microsoft.azure/azure-cosmos)
 [![Known Vulnerabilities](https://snyk.io/test/github/Azure/azure-cosmosdb-java/badge.svg?targetFile=sdk%2Fpom.xml)](https://snyk.io/test/github/Azure/azure-cosmosdb-java?targetFile=sdk%2Fpom.xml)
@@ -92,7 +92,7 @@ For example, using maven, you can add the following dependency to your maven pom
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>3.4.0</version>
+  <version>3.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

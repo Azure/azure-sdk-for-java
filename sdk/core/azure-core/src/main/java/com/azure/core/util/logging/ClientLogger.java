@@ -3,7 +3,6 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.implementation.LogLevel;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.slf4j.Logger;
@@ -173,6 +172,16 @@ public class ClientLogger {
         return runtimeException;
     }
 
+    /**
+     * Determines if the environment and logger support logging at the given log level.
+     *
+     * @param logLevel The {@link LogLevel} being validated as supported.
+     * @return Flag indicating if the environment and logger support logging at the given log level.
+     */
+    public boolean canLogAtLevel(LogLevel logLevel) {
+        return canLogAtLevel(logLevel, getEnvironmentLoggingLevel());
+    }
+
     /*
      * Performs the logging.
      *
@@ -198,7 +207,7 @@ public class ClientLogger {
              * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
              * stack trace which is only expected when logging at a verbose level.
              */
-            if (environmentLogLevel.toNumeric() > LogLevel.VERBOSE.toNumeric()) {
+            if (environmentLogLevel.getLogLevel() > LogLevel.VERBOSE.getLogLevel()) {
                 args = removeThrowable(args);
             }
         }
@@ -236,8 +245,13 @@ public class ClientLogger {
      * @return Flag indicating if the environment and logger are configured to support logging at the given log level.
      */
     private boolean canLogAtLevel(LogLevel logLevel, LogLevel environmentLoggingLevel) {
+        // Do not log if logLevel is null is not set.
+        if (logLevel == null) {
+            return false;
+        }
+
         // Attempting to log at a level not supported by the environment.
-        if (logLevel.toNumeric() < environmentLoggingLevel.toNumeric()) {
+        if (logLevel.getLogLevel() < environmentLoggingLevel.getLogLevel()) {
             return false;
         }
 

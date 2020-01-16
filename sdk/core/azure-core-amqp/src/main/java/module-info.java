@@ -5,8 +5,8 @@ module com.azure.core.amqp {
     requires transitive com.azure.core;
     requires transitive reactor.core;
 
+    requires com.microsoft.azure.qpid.protonj.extensions;
     requires proton.j;
-    requires qpid.proton.j.extensions;
     requires org.reactivestreams;
 
     exports com.azure.core.amqp;

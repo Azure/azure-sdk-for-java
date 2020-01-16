@@ -177,7 +177,7 @@ public class ConfigurationClientCredentials {
 
         CredentialInformation(String connectionString) {
             if (CoreUtils.isNullOrEmpty(connectionString)) {
-                throw new IllegalArgumentException(connectionString);
+                throw new IllegalArgumentException("'connectionString' cannot be null or empty.");
             }
 
             String[] args = connectionString.split(";");
@@ -211,7 +211,7 @@ public class ConfigurationClientCredentials {
             this.id = id;
             this.secret = secret;
 
-            if (this.baseUri == null || this.id == null || this.secret == null) {
+            if (this.baseUri == null || CoreUtils.isNullOrEmpty(this.id) || this.secret == null) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."
                     + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
             }
