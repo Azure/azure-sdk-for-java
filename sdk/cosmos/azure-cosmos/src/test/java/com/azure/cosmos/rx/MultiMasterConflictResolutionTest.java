@@ -77,7 +77,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         } catch (Exception e) {
 
             // when (e.StatusCode == HttpStatusCode.BadRequest)
-            CosmosClientException dce = Utils.as(e.getCause(), CosmosClientException.class);
+            CosmosClientException dce = Utils.as(e, CosmosClientException.class);
             if (dce != null && dce.getStatusCode() == 400) {
                 assertThat(dce.getMessage()).contains("Invalid path '\\/a\\/b' for last writer wins conflict resolution");
             } else {
@@ -94,7 +94,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
             fail("Expected exception on invalid path.");
         } catch (Exception e) {
             // when (e.StatusCode == HttpStatusCode.BadRequest)
-            CosmosClientException dce = Utils.as(e.getCause(), CosmosClientException.class);
+            CosmosClientException dce = Utils.as(e, CosmosClientException.class);
             if (dce != null && dce.getStatusCode() == 400) {
                 assertThat(dce.getMessage()).contains("Invalid path 'someText' for last writer wins conflict resolution");
             } else {
