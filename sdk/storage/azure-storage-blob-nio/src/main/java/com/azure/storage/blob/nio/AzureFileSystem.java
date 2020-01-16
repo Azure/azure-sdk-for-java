@@ -183,6 +183,8 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * The separator used in this file system is {@code "/"}.
+     *
      * {@inheritDoc}
      */
     @Override

@@ -8,25 +8,39 @@ import reactor.core.publisher.Flux;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
  * {@inheritDoc}
  */
 public final class AzurePath implements Path {
+    private static final String ROOT_DIR_SUFFIX = ":";
+
     private final AzureFileSystem parentFileSystem;
     private final String pathString;
 
     AzurePath(AzureFileSystem parentFileSystem, String s, String... strings) {
         this.parentFileSystem = parentFileSystem;
         this.pathString = String.join(this.parentFileSystem.getSeparator(),
-                Flux.just(s).concatWith(Flux.just(strings)).toIterable());
+                Flux.just(s).concatWith(Flux.just(strings))
+                    // Strip any trailing or leading delimiters so there are no duplicates when we join.
+                    .map(str-> {
+                        while (str.startsWith(this.parentFileSystem.getSeparator())){
+                            str = str.substring(1);
+                        }
+                        while (str.endsWith(this.parentFileSystem.getSeparator())) {
+                            str = str.substring(0, str.length()-1);
+                        }
+                        return str;
+                    }).toIterable());
     }
 
     /**
@@ -42,7 +56,7 @@ public final class AzurePath implements Path {
      */
     @Override
     public boolean isAbsolute() {
-        return false;
+        return this.getRoot() != null;
     }
 
     /**
@@ -50,6 +64,22 @@ public final class AzurePath implements Path {
      */
     @Override
     public Path getRoot() {
+        /*
+        Check if the first element of the path is formatted like a root directory and if the name of the directory
+        matches one of the file stores. (No directory should be formatted like a root dir and not match a file store
+        name, but we validate just in case.)
+         */
+        String firstElement = pathString.split(parentFileSystem.getSeparator())[0];
+        if (firstElement.endsWith(ROOT_DIR_SUFFIX)) {
+            String fileStoreName = firstElement.substring(0, firstElement.length()-1);
+            Boolean validRootName = Flux.fromIterable(parentFileSystem.getFileStores())
+                .map(FileStore::name)
+                .hasElement(fileStoreName)
+                .block();
+            if (validRootName != null && validRootName) {
+                return this.parentFileSystem.getPath(firstElement + this.parentFileSystem.getSeparator());
+            }
+        }
         return null;
     }
 
@@ -58,7 +88,12 @@ public final class AzurePath implements Path {
      */
     @Override
     public Path getFileName() {
-        return null;
+        if (this.withoutRoot().isEmpty()) {
+            return null;
+        } else {
+          return this.parentFileSystem.getPath(
+              Flux.fromArray(this.pathString.split(this.parentFileSystem.getSeparator())).last().block());
+        }
     }
 
     /**
@@ -66,7 +101,24 @@ public final class AzurePath implements Path {
      */
     @Override
     public Path getParent() {
-        return null;
+        /*
+        If this path only has one element, there is no parent. Note the root is included in the parent, so we don't
+        use getNameCount here.
+         */
+        if (this.pathString.split(this.parentFileSystem.getSeparator()).length == 1) {
+            return null;
+        }
+
+        /*
+        This method may seem a bit circuitous, but using the javadocs define the behavior of this method in terms of
+        the subpath method, so this is the best way to guarantee correctness.
+         */
+        Path parentNoRoot = this.subpath(0, getNameCount()-1);
+        Path root = getRoot();
+        if (root != null) {
+            return this.parentFileSystem.getPath(root.toString() +  parentNoRoot.toString());
+        }
+        return parentNoRoot;
     }
 
     /**
@@ -74,7 +126,7 @@ public final class AzurePath implements Path {
      */
     @Override
     public int getNameCount() {
-        return 0;
+        return this.withoutRoot().split(this.parentFileSystem.getSeparator()).length;
     }
 
     /**
@@ -82,7 +134,10 @@ public final class AzurePath implements Path {
      */
     @Override
     public Path getName(int i) {
-        return null;
+        if (i < 0 || i >= this.getNameCount()) {
+            throw new IllegalArgumentException();
+        }
+        return this.parentFileSystem.getPath(this.withoutRoot().split(this.parentFileSystem.getSeparator())[i]);
     }
 
     /**
@@ -190,11 +245,13 @@ public final class AzurePath implements Path {
     }
 
     /**
+     * Unsupported.
+     *
      * {@inheritDoc}
      */
     @Override
     public Path toRealPath(LinkOption... linkOptions) throws IOException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -206,6 +263,8 @@ public final class AzurePath implements Path {
     }
 
     /**
+     * Unsupported.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -214,6 +273,8 @@ public final class AzurePath implements Path {
     }
 
     /**
+     * Unsupported.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -235,5 +296,22 @@ public final class AzurePath implements Path {
     @Override
     public int compareTo(Path path) {
         return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.pathString;
+    }
+
+    private String withoutRoot() {
+        Path root = this.getRoot();
+        if (root != null) {
+            return this.pathString.substring(root.toString().length());
+        }
+
+        return this.pathString;
     }
 }
