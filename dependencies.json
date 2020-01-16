@@ -1,6 +1,6 @@
 [
   {
     "projectName": "azure-sdk-for-java",
-    "pomUrls": ["file:./pom.client.xml"]
+    "pomUrls": ["file:./sdk/cosmos/pom.service.xml"]
   }
 ]
