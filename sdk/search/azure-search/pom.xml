@@ -31,15 +31,50 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <version>3.0.0-M4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+
+<!--        <dependencies>-->
+<!--          <dependency>-->
+<!--            <groupId>org.junit.platform</groupId>-->
+<!--            <artifactId>junit-platform-surefire-provider-->
+<!--            </artifactId>-->
+<!--            <version>1.2.0</version>-->
+<!--          </dependency>-->
+<!--          <dependency>-->
+<!--            <groupId>org.junit.jupiter</groupId>-->
+<!--            <artifactId>junit-jupiter-engine</artifactId>-->
+<!--            <version>5.4.2</version>-->
+<!--          </dependency>-->
+<!--        </dependencies>-->
         <configuration>
-          <forkCount>0</forkCount>
+<!--          <argLine>&#45;&#45;illegal-access=permit</argLine>-->
+          <forkCount>2</forkCount>
+          <argLine>
+            --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+            --add-exports com.azure.core/com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer=ALL-UNNAMED
+            --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+            --add-opens com.azure.search/com.azure.search=ALL-UNNAMED
+            --add-opens com.azure.search/com.azure.search.models=ALL-UNNAMED
+            --add-opens com.azure.search/com.azure.search.implementation=ALL-UNNAMED
+            --add-opens com.azure.search/com.azure.search.implementation.models=ALL-UNNAMED
+            --add-opens com.azure.search/com.azure.search.test.environment.models=com.fasterxml.jackson.databind
+            --add-opens com.azure.search/com.azure.search.test.environment.models=ALL-UNNAMED
+            --add-reads com.azure.core=ALL-UNNAMED
+            --add-reads com.azure.core.test=ALL-UNNAMED
+            --add-reads com.azure.core.http.netty=ALL-UNNAMED
+
+          </argLine>
         </configuration>
       </plugin>
     </plugins>
   </build>
 
   <dependencies>
+    <dependency>
+      <groupId>com.sun.activation</groupId>
+      <artifactId>jakarta.activation</artifactId>
+      <version>1.2.1</version>
+    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>

@@ -4,10 +4,10 @@
 package com.azure.search;
 
 import com.azure.core.http.rest.PagedFluxBase;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.jsonwrapper.JsonWrapper;
 import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
-import com.azure.core.util.Configuration;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.Hotel;
 
