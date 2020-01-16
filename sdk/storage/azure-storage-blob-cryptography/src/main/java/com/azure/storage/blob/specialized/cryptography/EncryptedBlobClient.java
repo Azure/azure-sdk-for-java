@@ -5,7 +5,6 @@ package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
