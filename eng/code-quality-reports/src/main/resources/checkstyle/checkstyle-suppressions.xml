@@ -201,6 +201,9 @@
   <!-- Report AMQP retry attempts in static withRetry method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.amqp.implementation.RetryUtil.java"/>
 
+  <!-- Factory pattern with static method want to produce sync token -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.data.appconfiguration.implementation.SyncToken.java"/>
+
   <!-- Event Hubs uses AMQP, which does not contain an HTTP response. Returning PagedResponse and Response does not apply. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubAsyncClient.java"/>

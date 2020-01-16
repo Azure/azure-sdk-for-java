@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public final class SyncTokenPolicy implements HttpPipelinePolicy {
     private static final String SYNC_TOKEN = "Sync-Token";
 
-    private final ClientLogger logger = new ClientLogger(SyncToken.class);
+    private final ClientLogger logger = new ClientLogger(SyncTokenPolicy.class);
 
     private final ConcurrentHashMap<String, SyncToken> syncTokenMap = new ConcurrentHashMap<>(); // key is sync-token id
 
@@ -96,7 +96,7 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
      * @return sync-token string
      */
     private String getSyncTokenHeader() {
-        return syncTokenMap.values().stream().map(syncToken -> syncToken.getId() + "=" + syncToken.getValue() )
+        return syncTokenMap.values().stream().map(syncToken -> syncToken.getId() + "=" + syncToken.getValue())
             .collect(Collectors.joining(","));
     }
 }

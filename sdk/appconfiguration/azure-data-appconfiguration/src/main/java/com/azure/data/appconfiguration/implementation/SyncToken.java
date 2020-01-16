@@ -19,7 +19,7 @@ import com.azure.core.util.logging.ClientLogger;
  */
 @Immutable
 public final class SyncToken {
-    private static final ClientLogger logger = new ClientLogger(SyncToken.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SyncToken.class);
 
     private final String id;
     private final String value;
@@ -44,8 +44,8 @@ public final class SyncToken {
      * Create an {@code SyncToken} by parsing a given sync-token string with only one sync-token.
      *
      * @param syncToken only one raw sync-token string from HTTP response header, ex.,
-     * <p>Sync-Token: <id>=<value>;sn=<sn></p>. But not
-     * <p>Sync-Token: <id>=<value>;sn=<sn>,<id>=<value>;sn=<sn></p>
+     * <p>Sync-Token: {@code <id>=<value>;sn=<sn></p>}. But not
+     * <p>Sync-Token: {@code <id>=<value>;sn=<sn>,<id>=<value>;sn=<sn>}</p>
      * @return {@code SyncToken} instance
      */
     static SyncToken parseSyncToken(String syncToken) {
@@ -56,7 +56,7 @@ public final class SyncToken {
             final String[] syncTokenParts = syncToken.split(";", 2);
             // Not a fully formatted sync-token
             if (syncTokenParts.length != 2) {
-                logger.logExceptionAsWarning(
+                LOGGER.logExceptionAsWarning(
                     new RuntimeException("Failed to parse sync token, it cannot split to two parts by delimiter ';'."));
                 return null;
             }
@@ -64,14 +64,14 @@ public final class SyncToken {
             final String[] idParts = syncTokenParts[0].split("=", 2);
             // Identifier is missing a section.
             if (idParts.length != 2) {
-                logger.logExceptionAsWarning(
+                LOGGER.logExceptionAsWarning(
                     new RuntimeException("Failed to parse sync token, it cannot split 'id=value' into two parts."));
                 return null;
             }
 
             final String[] snParts = syncTokenParts[1].split("=", 2);
             if (snParts.length != 2) {
-                logger.logExceptionAsWarning(
+                LOGGER.logExceptionAsWarning(
                     new RuntimeException("Failed to parse sync token, it cannot split 'sn=value' into two parts."));
                 return null;
             }
@@ -80,16 +80,16 @@ public final class SyncToken {
             try {
                 sequenceNumber = Long.parseLong(snParts[1]);
             } catch (NumberFormatException ex) {
-                logger.logExceptionAsWarning(
+                LOGGER.logExceptionAsWarning(
                     new RuntimeException("Cannot parse sequence number for invalid number format.", ex));
                 return null;
             }
 
             return new SyncToken(idParts[0], idParts[1], sequenceNumber);
         } catch (IllegalArgumentException ex) {
-            logger.logExceptionAsWarning(new RuntimeException("Cannot parse sync token for invalid format.", ex));
+            LOGGER.logExceptionAsWarning(new RuntimeException("Cannot parse sync token for invalid format.", ex));
+            return null;
         }
-        return null;
     }
 
     /**
