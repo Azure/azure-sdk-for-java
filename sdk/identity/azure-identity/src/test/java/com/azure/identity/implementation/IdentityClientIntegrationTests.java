@@ -4,13 +4,10 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.ProxyOptions;
 import org.junit.Assert;
 import org.junit.Ignore;
-import org.junit.Test;
 import reactor.test.StepVerifier;
 
-import java.net.InetSocketAddress;
 import java.net.URI;
 
 public class IdentityClientIntegrationTests {
@@ -21,24 +18,14 @@ public class IdentityClientIntegrationTests {
     private static final String AZURE_CLIENT_CERTIFICATE = "AZURE_CLIENT_CERTIFICATE";
     private final TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
 
-    @Test
+    @Ignore("Integration tests")
     public void clientSecretCanGetToken() {
-        IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), System.getenv(AZURE_CLIENT_SECRET), null, null, new IdentityClientOptions().setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("10.127.70.25", 8888))));
+        IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), System.getenv(AZURE_CLIENT_SECRET), null, null, new IdentityClientOptions());
         StepVerifier.create(client.authenticateWithClientSecret(request))
-                .expectNextMatches(token -> token.getToken() != null
-                        && token.getExpiresAt() != null
-                        && !token.isExpired())
-                .verifyComplete();
-        StepVerifier.create(client.authenticateWithClientSecret(request))
-                .expectNextMatches(token -> token.getToken() != null
-                        && token.getExpiresAt() != null
-                        && !token.isExpired())
-                .verifyComplete();
-        StepVerifier.create(client.authenticateWithClientSecret(request))
-                .expectNextMatches(token -> token.getToken() != null
-                        && token.getExpiresAt() != null
-                        && !token.isExpired())
-                .verifyComplete();
+            .expectNextMatches(token -> token.getToken() != null
+                && token.getExpiresAt() != null
+                && !token.isExpired())
+            .verifyComplete();
         StepVerifier.create(client.authenticateWithClientSecret(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
             .expectNextMatches(token -> token.getToken() != null
                 && token.getExpiresAt() != null
