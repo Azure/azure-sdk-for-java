@@ -6,16 +6,14 @@ Thank you for your interest in contributing to Azure SDK for Java.
 Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. 
 List any dependencies that are required for this change.
 
-
 Fixes # (issue)
 
 ## Type of change
 
-Please delete options that are not relevant.
-
-- [ ] Bug fix (non-breaking change with fixes an issue)
-- [ ] New feature (non-breaking change with adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected) 
+- [ ] Non-breaking bug fix
+- [ ] Breaking bug fix
+- [ ] Non-breaking feature
+- [ ] Breaking feature
 - [ ] This change requires a documentation update
 
 ## How has this been tested?
