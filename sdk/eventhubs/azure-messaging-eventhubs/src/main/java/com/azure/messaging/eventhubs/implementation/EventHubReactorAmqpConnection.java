@@ -139,11 +139,11 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     }
 
     @Override
-    public void close() {
+    public void dispose() {
         logger.info("Disposing of connection.");
-        sendLinks.forEach((key, value) -> value.close());
+        sendLinks.forEach((key, value) -> value.dispose());
         sendLinks.clear();
 
-        super.close();
+        super.dispose();
     }
 }

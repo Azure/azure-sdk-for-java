@@ -28,6 +28,7 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -433,6 +434,11 @@ public class EventHubProducerAsyncClient implements Closeable {
             .doOnEach(signal -> {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);
+                }
+            })
+            .doOnError(error -> {
+                if (isTracingEnabled) {
+                    tracerProvider.endSpan(parentContext.get(), Signal.error(error));
                 }
             }), retryOptions.getTryTimeout(), retryPolicy);
     }
