@@ -58,7 +58,7 @@ public class SyncTokenPolicyTest extends TestBase {
             })
             .verifyComplete();
 
-        // Verify the new sync token value from the concurrent map
+        // Verify the new sync token value is from the concurrent map
         StepVerifier.create(pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))))
             .assertNext(response -> assertEquals(constructSyncTokenStringWithoutSeqNumber(ID, VALUE),
                 response.getRequest().getHeaders().getValue(SYNC_TOKEN)))

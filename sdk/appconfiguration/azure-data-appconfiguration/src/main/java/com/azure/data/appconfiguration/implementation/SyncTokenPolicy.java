@@ -11,6 +11,8 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -60,16 +62,27 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
                 }
 
                 final String tokenId = syncToken.getId();
+                // Max time of trying replace an existing token is 4 times.
+                final AtomicInteger retryTimes = new AtomicInteger(0);
+                // Used atomic boolean with default value, false
+                AtomicBoolean isReplaced = new AtomicBoolean();
 
-                if (syncTokenMap.containsKey(tokenId)) {
-                    // Get the latest sync token from map
-                    final SyncToken existSyncToken = syncTokenMap.get(tokenId);
-                    if (existSyncToken.getSequenceNumber() < syncToken.getSequenceNumber()) {
-                        // Update the same sync token.
-                        syncTokenMap.replace(tokenId, existSyncToken, syncToken);
+                while (retryTimes.getAndAdd(1) < 4 && !isReplaced.get()) {
+                    // Get the latest sync token from map. If not exit, current one is latest.
+                    final SyncToken existSyncToken = syncTokenMap.getOrDefault(tokenId, syncToken);
+                    // A new sync token that not exists in the concurrent map
+                    if (existSyncToken == syncToken) {
+                        syncTokenMap.putIfAbsent(tokenId, syncToken);
+                        break;
+                    } else if (existSyncToken.getSequenceNumber() < syncToken.getSequenceNumber()) {
+                        // If replacement is successful, updated the 'isReplaced' to true,
+                        if (syncTokenMap.replace(tokenId, existSyncToken, syncToken)) {
+                            isReplaced.compareAndSet(false, true);
+                        }
+                    } else {
+                        // A sync token with outdated sequence number will be ignored
+                        break;
                     }
-                } else {
-                    syncTokenMap.put(tokenId, syncToken);
                 }
             }
 
