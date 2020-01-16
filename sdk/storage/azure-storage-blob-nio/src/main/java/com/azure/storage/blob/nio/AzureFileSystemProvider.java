@@ -4,6 +4,8 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.nio.implementation.util.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -92,13 +94,14 @@ import java.util.concurrent.ConcurrentMap;
  * @see FileSystemProvider
  */
 public final class AzureFileSystemProvider extends FileSystemProvider {
-    // TODO: Add logger
+    private final ClientLogger logger = new ClientLogger(AzureFileSystemProvider.class);
+
     private static final String ACCOUNT_QUERY_KEY = "account";
 
-    private ConcurrentMap<String, FileSystem> openFileSystems;
+    private final ConcurrentMap<String, FileSystem> openFileSystems;
+
 
     // Specs require a public zero argument constructor.
-
     /**
      * Creates an AzureFileSystemProvider.
      */
@@ -125,7 +128,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         String accountName = extractAccountName(uri);
 
         if (this.openFileSystems.containsKey(accountName)) {
-            throw new FileSystemAlreadyExistsException();
+            throw Utility.logError(this.logger, new FileSystemAlreadyExistsException("Name: " + accountName));
         }
 
         AzureFileSystem afs = new AzureFileSystem(this, accountName, config);
@@ -145,7 +148,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     public FileSystem getFileSystem(URI uri) {
         String accountName = extractAccountName(uri);
         if (!this.openFileSystems.containsKey(accountName)) {
-            throw new FileSystemNotFoundException();
+            throw Utility.logError(this.logger, new FileSystemNotFoundException("Name: " + accountName));
         }
         return this.openFileSystems.get(accountName);
     }
@@ -277,23 +280,24 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     private String extractAccountName(URI uri) {
         if (!uri.getScheme().equals(this.getScheme())) {
-            throw new IllegalArgumentException("URI scheme does not match this provider");
+            throw Utility.logError(this.logger, new IllegalArgumentException(
+                "URI scheme does not match this provider"));
         }
         if (CoreUtils.isNullOrEmpty(uri.getQuery())) {
-            throw new IllegalArgumentException("URI does not contain a query component. FileSystems require a URI of " +
-                    "the format \"azb://?account=<account_name>\".");
+            throw Utility.logError(this.logger, new IllegalArgumentException("URI does not contain a query " +
+                "component. FileSystems require a URI of the format \"azb://?account=<account_name>\"."));
         }
 
         String accountName = Flux.fromArray(uri.getQuery().split("&"))
                 .filter(s -> s.startsWith(ACCOUNT_QUERY_KEY + "="))
-                .switchIfEmpty(Mono.error(new IllegalArgumentException(
+                .switchIfEmpty(Mono.error(Utility.logError(this.logger, new IllegalArgumentException(
                         "URI does not contain an \"" + ACCOUNT_QUERY_KEY + "=\" parameter. FileSystems require a URI " +
-                                "of the format \"azb://?account=<account_name>\"")))
+                                "of the format \"azb://?account=<account_name>\""))))
                 .map(s -> s.substring(ACCOUNT_QUERY_KEY.length() + 1))
                 .blockLast();
 
         if (CoreUtils.isNullOrEmpty(accountName)) {
-            throw new IllegalArgumentException("No account name provided in URI query.");
+            throw Utility.logError(logger, new IllegalArgumentException("No account name provided in URI query."));
         }
 
         return accountName;

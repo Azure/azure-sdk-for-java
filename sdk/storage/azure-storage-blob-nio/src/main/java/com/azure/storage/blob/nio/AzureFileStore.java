@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.nio.implementation.util.Utility;
 
 import java.io.IOException;
 import java.nio.file.FileStore;
@@ -13,17 +15,19 @@ import java.util.Objects;
 
 /**
  * An {@code AzureFileStore} is backed by an Azure Blob Storage container.
- * 
+ *
  * {@inheritDoc}
  */
 public final class AzureFileStore extends FileStore {
+    private final ClientLogger logger = new ClientLogger(AzureFileStore.class);
     private final AzureFileSystem parentFileSystem;
     private final BlobContainerClient containerClient;
 
     AzureFileStore(AzureFileSystem parentFileSystem, String containerName) throws IOException {
         // A FileStore should only ever be created by a FileSystem.
         if (Objects.isNull(parentFileSystem)) {
-            throw new IllegalStateException("AzureFileStore cannot be instantiated without a parent FileSystem");
+            throw Utility.logError(logger, new IllegalStateException("AzureFileStore cannot be instantiated without " +
+                "a parent FileSystem"));
         }
         this.parentFileSystem = parentFileSystem;
         this.containerClient = this.parentFileSystem.getBlobServiceClient().getBlobContainerClient(containerName);
@@ -34,11 +38,14 @@ public final class AzureFileStore extends FileStore {
                 this.containerClient.create();
             }
         } catch (Exception e) {
-            throw new IOException("There was an error in establishing the existence of container: " + containerName, e);
+            throw Utility.logError(logger, new IOException("There was an error in establishing the existence of " +
+                "container: " + containerName, e));
         }
     }
 
     /**
+     * Returns the name of the container that underlies this file store.
+     *
      * {@inheritDoc}
      */
     @Override

@@ -7,8 +7,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.nio.implementation.util.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
@@ -37,24 +39,73 @@ import java.util.Set;
  * {@inheritDoc}
  */
 public final class AzureFileSystem extends FileSystem {
+    private final ClientLogger logger = new ClientLogger(AzureFileSystem.class);
+
     // Configuration constants for blob clients.
+    /**
+     * Expected type: String
+     */
     public static final String AZURE_STORAGE_ACCOUNT_KEY = "AzureStorageAccountKey";
+
+    /**
+     * Expected type: String
+     */
     public static final String AZURE_STORAGE_SAS_TOKEN = "AzureStorageSasToken";
+
+    /**
+     * Expected type: com.azure.core.http.policy.HttpLogLevelDetail
+     */
     public static final String AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL = "AzureStorageHttpLogDetailLevel";
+
+    /**
+     * Expected type: Integer
+     */
     public static final String AZURE_STORAGE_MAX_TRIES = "AzureStorageMaxTries";
+
+    /**
+     * Expected type: Integer
+     */
     public static final String AZURE_STORAGE_TRY_TIMEOUT = "AzureStorageTryTimeout";
+
+    /**
+     * Expected type: Long
+     */
     public static final String AZURE_STORAGE_RETRY_DELAY_IN_MS = "AzureStorageRetryDelayInMs";
+
+    /**
+     * Expected type: Long
+     */
     public static final String AZURE_STORAGE_MAX_RETRY_DELAY_IN_MS = "AzureStorageMaxRetryDelayInMs";
+
+    /**
+     * Expected type: com.azure.storage.common.policy.RetryPolicyType
+     */
     public static final String AZURE_STORAGE_RETRY_POLICY_TYPE = "AzureStorageRetryPolicyType";
+
+    /**
+     * Expected type: String
+     */
     public static final String AZURE_STORAGE_SECONDARY_HOST = "AzureStorageSecondaryHost";
-    public static final String AZURE_STORAGE_BLOCK_SIZE = "AzureStorageBlockSize";
+
+    /**
+     * Expected type: Integer
+     */
+    public static final String AZURE_STORAGE_UPLOAD_BLOCK_SIZE = "AzureStorageUploadBlockSize";
+
+    /**
+     * Expected type: Integer
+     */
     public static final String AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES = "AzureStorageDownloadResumeRetries";
+
+    /**
+     * Expected type: Boolean
+     */
     public static final String AZURE_STORAGE_USE_HTTPS = "AzureStorageUseHttps";
     public static final String AZURE_STORAGE_HTTP_CLIENT = "AzureStorageHttpClient"; // undocumented; for test.
 
     public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
 
-    private static final String AZURE_STORAGE_ENDPOINT_TEMPLATE = "%s://%s.blob.core.windows.net";
+    private static final String AZURE_STORAGE_BLOB_ENDPOINT_TEMPLATE = "%s://%s.blob.core.windows.net";
 
     private final AzureFileSystemProvider parentFileSystemProvider;
     private final BlobServiceClient blobServiceClient;
@@ -67,26 +118,27 @@ public final class AzureFileSystem extends FileSystem {
             throws IOException {
         // A FileSystem should only ever be instantiated by a provider.
         if (Objects.isNull(parentFileSystemProvider)) {
-            throw new IllegalArgumentException("AzureFileSystem cannot be instantiated without a parent " +
-                "FileSystemProvider");
+            throw Utility.logError(logger, new IllegalArgumentException("AzureFileSystem cannot be instantiated" +
+                " without a parent FileSystemProvider"));
         }
         this.parentFileSystemProvider = parentFileSystemProvider;
 
         // Read configurations and build client.
         try {
             this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
-            this.blockSize = (Integer) config.get(AZURE_STORAGE_BLOCK_SIZE);
+            this.blockSize = (Integer) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
             this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
         } catch (Exception e) {
-            throw new IllegalArgumentException("There was an error parsing the configurations map. Please ensure all" +
-                "fields are set to a legal value of the correct type.");
+            throw Utility.logError(logger, new IllegalArgumentException("There was an error parsing the configurations " +
+                "map. Please ensure all fields are set to a legal value of the correct type."));
         }
 
         // Initialize and ensure access to FileStores.
         try {
             this.fileStores = this.initializeFileStores(config);
         } catch (IOException e) {
-            throw new IOException("Initializing FileStores failed. FileSystem could not be opened.", e);
+            throw Utility.logError(logger,
+                new IOException("Initializing FileStores failed. FileSystem could not be opened.", e));
         }
 
         this.closed = false;
@@ -151,8 +203,7 @@ public final class AzureFileSystem extends FileSystem {
      */
     @Override
     public Iterable<FileStore> getFileStores() {
-        return
-            this.fileStores.values();
+        return this.fileStores.values();
     }
 
     /**
@@ -209,7 +260,7 @@ public final class AzureFileSystem extends FileSystem {
                 || (Boolean) config.get(AZURE_STORAGE_USE_HTTPS)
                 ? "https" : "http";
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-                .endpoint(String.format(AZURE_STORAGE_ENDPOINT_TEMPLATE, scheme, accountName));
+                .endpoint(String.format(AZURE_STORAGE_BLOB_ENDPOINT_TEMPLATE, scheme, accountName));
 
         // Set the credentials.
         if (config.containsKey(AZURE_STORAGE_ACCOUNT_KEY)) {
@@ -220,13 +271,13 @@ public final class AzureFileSystem extends FileSystem {
             builder.sasToken((String) config.get(AZURE_STORAGE_SAS_TOKEN));
         }
         else {
-            throw new IllegalArgumentException(String.format("No credentials were provided. Please specify one of the" +
-                    " following when constructing an AzureFileSystem: %s, %s.", AZURE_STORAGE_ACCOUNT_KEY,
-                    AZURE_STORAGE_SAS_TOKEN));
+            throw Utility.logError(logger, new IllegalArgumentException(String.format("No credentials were provided. " +
+                    "Please specify one of the following when constructing an AzureFileSystem: %s, %s.",
+                AZURE_STORAGE_ACCOUNT_KEY, AZURE_STORAGE_SAS_TOKEN)));
         }
 
         // Configure options and client.
-        builder.httpLogOptions(new HttpLogOptions()
+        builder.httpLogOptions(BlobServiceClientBuilder.getDefaultHttpLogOptions()
             .setLogLevel((HttpLogDetailLevel)config.get(AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL)));
 
         RequestRetryOptions retryOptions = new RequestRetryOptions(
@@ -246,7 +297,7 @@ public final class AzureFileSystem extends FileSystem {
     private Map<String, FileStore> initializeFileStores(Map<String, ?> config) throws IOException {
         String fileStoreNames = (String)config.get(AZURE_STORAGE_FILE_STORES);
         if (CoreUtils.isNullOrEmpty(fileStoreNames)) {
-            throw new IllegalArgumentException("The list of FileStores cannot be null.");
+            throw Utility.logError(logger, new IllegalArgumentException("The list of FileStores cannot be null."));
         }
 
         Map<String, FileStore> fileStores = new HashMap<>();
