@@ -14,7 +14,6 @@ public abstract class AutocompleteTestBase extends SearchIndexClientTestBase {
     protected void beforeTest() {
         super.beforeTest();
         try {
-            System.out.println("****************** Azure Search TEST PRINT ***********************");
             initializeClient();
         } catch (IOException e) {
             e.printStackTrace();

@@ -161,7 +161,6 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
             try {
                 processResult(asyncClient.search("*"), 200);
             } catch (Exception ex) {
-                System.out.println("An exception occurred: " + ex.getMessage());
                 failed.set(true);
             }
         };
@@ -170,7 +169,6 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
             try {
                 processResult(asyncClient.search("*"), 200);
             } catch (Exception ex) {
-                System.out.println("An exception occurred: " + ex.getMessage());
                 failed.set(true);
             }
         };
@@ -180,7 +178,6 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
             try {
                 processResult(asyncClient.search("*"), 200);
             } catch (Exception ex) {
-                System.out.println("An exception occurred: " + ex.getMessage());
                 failed.set(true);
             }
         };
@@ -223,7 +220,6 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
                 SearchOptions sp = new SearchOptions();
                 processResult(asyncClient.search("*", sp, generateRequestOptions()), 200);
             } catch (Exception ex) {
-                System.out.println("An exception occurred in searchWithNoSkip: " + ex.getMessage());
                 failed.set(true);
             }
         };
@@ -233,7 +229,6 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
                 SearchOptions sp = new SearchOptions().setSkip(10);
                 processResult(asyncClient.search("*", sp, generateRequestOptions()), 190);
             } catch (Exception ex) {
-                System.out.println("An exception occurred in searchWithSkip10: " + ex.getMessage());
                 failed.set(true);
             }
         };
@@ -244,7 +239,6 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
                 SearchOptions sp = new SearchOptions().setSkip(30);
                 processResult(asyncClient.search("*", sp, generateRequestOptions()), 170);
             } catch (Exception ex) {
-                System.out.println("An exception occurred in searchWithSkip30: " + ex.getMessage());
                 failed.set(true);
             }
         };
