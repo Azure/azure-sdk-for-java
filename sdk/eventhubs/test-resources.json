@@ -40,9 +40,10 @@
             "type": "string",
             "metadata": {
                 "description": "The application client secret used to run tests."
-            }}
-        },
-        "variables": {
+            }
+        }
+    },
+    "variables": {
             "storageApiVersion": "2019-04-01",
             "eventHubsApiVersion": "2017-04-01",
             "authorizationApiVersion": "2018-09-01-preview",
@@ -55,8 +56,8 @@
             "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
             "location": "[resourceGroup().location]",
             "eventHubNameSpaceName": "[parameters('baseName')]"
-        },
-        "resources": [
+    },
+    "resources": [
             {
                 "type": "Microsoft.EventHub/namespaces",
                 "apiVersion": "[variables('eventHubsApiVersion')]",
@@ -339,8 +340,8 @@
                     "accessTier": "Hot"
                 }
             }
-        ],
-        "outputs": {
+    ],
+    "outputs": {
             "AZURE_TENANT_ID": {
                 "type": "string",
                 "value": "[parameters('tenantId')]"
@@ -427,4 +428,3 @@
             }
         }
     }
-}
