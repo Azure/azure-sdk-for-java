@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -50,6 +51,10 @@ public class BridgeInternal {
 
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.FromObject(document, mapper);
+    }
+
+    public static String toJsonString(Object document, ObjectMapper mapper) {
+        return CosmosItemProperties.toJsonString(document, mapper);
     }
 
     public static void monitorTelemetry(MeterRegistry registry) {
@@ -213,6 +218,11 @@ public class BridgeInternal {
 
     public static <E extends CosmosClientException> E setPartitionKeyRangeId(E e, String partitionKeyRangeId) {
         e.partitionKeyRangeId = partitionKeyRangeId;
+        return e;
+    }
+
+    public static <E extends CosmosClientException> E setRequestTimeline(E e, RequestTimeline timeline) {
+        e.setRequestTimeline(timeline);
         return e;
     }
 

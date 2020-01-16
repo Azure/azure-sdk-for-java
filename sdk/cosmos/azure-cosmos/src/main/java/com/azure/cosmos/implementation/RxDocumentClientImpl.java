@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -61,6 +62,7 @@ import static com.azure.cosmos.BridgeInternal.documentFromObject;
 import static com.azure.cosmos.BridgeInternal.getAltLink;
 import static com.azure.cosmos.BridgeInternal.toDatabaseAccount;
 import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
+import static com.azure.cosmos.BridgeInternal.toJsonString;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 
@@ -854,27 +856,34 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return headers;
     }
 
-    private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request, Document document,
-                                                                        RequestOptions options) {
+    private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request,
+                                                                      String contentAsString,
+                                                                      Document document,
+                                                                      RequestOptions options) {
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
         return collectionObs
                 .map(collectionValueHolder -> {
-                    addPartitionKeyInformation(request, document, options, collectionValueHolder.v);
+                    addPartitionKeyInformation(request, contentAsString, document, options, collectionValueHolder.v);
                     return request;
                 });
     }
 
-    private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request, Document document, RequestOptions options,
+    private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request,
+                                                                      String contentAsString,
+                                                                      Object document,
+                                                                      RequestOptions options,
                                                                       Mono<Utils.ValueHolder<DocumentCollection>> collectionObs) {
 
         return collectionObs.map(collectionValueHolder -> {
-            addPartitionKeyInformation(request, document, options, collectionValueHolder.v);
+            addPartitionKeyInformation(request, contentAsString, document, options, collectionValueHolder.v);
             return request;
         });
     }
 
-    private void addPartitionKeyInformation(RxDocumentServiceRequest request, Document document, RequestOptions options,
+    private void addPartitionKeyInformation(RxDocumentServiceRequest request,
+                                            String contentAsString,
+                                            Object objectDoc, RequestOptions options,
                                             DocumentCollection collection) {
         PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
 
@@ -887,8 +896,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
             // have empty value for it and user doesn't need to specify it explicitly.
             partitionKeyInternal = PartitionKeyInternal.getEmpty();
-        } else if (document != null) {
-            partitionKeyInternal = extractPartitionKeyValueFromDocument(document, partitionKeyDefinition);
+        } else if (contentAsString != null) {
+            CosmosItemProperties cosmosItemProperties;
+            if (objectDoc instanceof CosmosItemProperties) {
+                cosmosItemProperties = (CosmosItemProperties) objectDoc;
+            } else {
+                cosmosItemProperties = new CosmosItemProperties(contentAsString);
+            }
+
+            partitionKeyInternal = extractPartitionKeyValueFromDocument(cosmosItemProperties, partitionKeyDefinition);
         } else {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
         }
@@ -910,7 +926,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private static PartitionKeyInternal extractPartitionKeyValueFromDocument(
-            Document document,
+            CosmosItemProperties document,
             PartitionKeyDefinition partitionKeyDefinition) {
         if (partitionKeyDefinition != null) {
             String path = partitionKeyDefinition.getPaths().iterator().next();
@@ -942,23 +958,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("document");
         }
 
-        Document typedDocument = documentFromObject(document, mapper);
+        String content = toJsonString(document, mapper);
 
-        RxDocumentClientImpl.validateResource(typedDocument);
-
-        if (typedDocument.getId() == null && !disableAutomaticIdGeneration) {
-            // We are supposed to use GUID. Basically UUID is the same as GUID
-            // when represented as a string.
-            typedDocument.setId(UUID.randomUUID().toString());
-        }
         String path = Utils.joinPath(documentCollectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         Map<String, String> requestHeaders = this.getRequestHeaders(options);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, path,
-                typedDocument, requestHeaders, options);
+                                                                           requestHeaders, options, content);
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
-        return addPartitionKeyInformation(request, typedDocument, options, collectionObs);
+        return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
 
     private void populateHeaders(RxDocumentServiceRequest request, String httpMethod) {
@@ -1190,8 +1199,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private Flux<ResourceResponse<Document>> replaceDocumentInternal(String documentLink, Document document,
-                                                                           RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
+    private Flux<ResourceResponse<Document>> replaceDocumentInternal(String documentLink,
+                                                                     Document document,
+                                                                     RequestOptions options,
+                                                                     IDocumentClientRetryPolicy retryPolicyInstance) {
 
         if (document == null) {
             throw new IllegalArgumentException("document");
@@ -1200,13 +1211,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         logger.debug("Replacing a Document. documentLink: [{}]", documentLink);
         final String path = Utils.joinPath(documentLink, null);
         final Map<String, String> requestHeaders = getRequestHeaders(options);
-        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
-                ResourceType.Document, path, document, requestHeaders, options);
 
-        validateResource(document);
+        String content = toJsonString(document, mapper);
+
+        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
+                ResourceType.Document, path, requestHeaders, options, content);
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
-        Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, document, options, collectionObs);
+        Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
 
         return requestObs.flux().flatMap(req -> {
             if (retryPolicyInstance != null) {
@@ -1237,7 +1249,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
 
-            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, options, collectionObs);
+            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
             return requestObs.flux().flatMap(req -> {
                 if (retryPolicyInstance != null) {
@@ -1273,7 +1285,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
 
-            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, options, collectionObs);
+            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
             return requestObs.flux().flatMap(req -> {
                 if (retryPolicyInstance != null) {
@@ -1650,7 +1662,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     procedureParams != null ? RxDocumentClientImpl.serializeProcedureParams(procedureParams) : "",
                     requestHeaders, options);
 
-            Flux<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).flux();
+            Flux<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, null, options).flux();
             return reqObs.flatMap(req -> create(request)
                     .map(response -> {
                         this.captureSessionToken(request, response);
@@ -2072,7 +2084,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.Conflict, path, requestHeaders, options);
 
-            Flux<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).flux();
+            Flux<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, null, options).flux();
 
             return reqObs.flatMap(req -> {
                 if (retryPolicyInstance != null) {
@@ -2130,7 +2142,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Conflict, path, requestHeaders, options);
 
-            Flux<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).flux();
+            Flux<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, null, options).flux();
             return reqObs.flatMap(req -> {
                 if (retryPolicyInstance != null) {
                     retryPolicyInstance.onBeforeSendRequest(request);
@@ -2576,7 +2588,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = request -> {
             return ObservableHelper.inlineIfPossibleAsObs(() -> {
                 Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
-                Mono<RxDocumentServiceRequest> requestObs = this.addPartitionKeyInformation(request, null, requestOptions, collectionObs);
+                Mono<RxDocumentServiceRequest> requestObs = this.addPartitionKeyInformation(request, null, null, requestOptions, collectionObs);
 
                 return requestObs.flux().flatMap(req -> this.readFeed(req)
                         .map(response -> toFeedResponsePage(response, klass)));

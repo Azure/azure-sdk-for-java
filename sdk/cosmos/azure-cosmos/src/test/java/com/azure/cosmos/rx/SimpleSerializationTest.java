@@ -59,7 +59,7 @@ public class SimpleSerializationTest extends TestSuiteBase {
         testObject.prop = UUID.randomUUID().toString();
 
         try {
-            createdCollection.createItem(testObject);
+            createdCollection.createItem(testObject).block();
             Assert.fail();
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage()).contains("Can't serialize the object into the json string");

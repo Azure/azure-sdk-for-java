@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -23,7 +25,6 @@ import io.netty.handler.ssl.SslContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 
 import java.io.File;
 import java.io.IOException;
@@ -117,6 +118,7 @@ public final class RntbdTransportClient extends TransportClient {
         URI address = addressUri.getURI();
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, address);
+
         requestArgs.traceOperation(logger, null, "invokeStoreAsync");
 
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
@@ -124,14 +126,19 @@ public final class RntbdTransportClient extends TransportClient {
 
         logger.debug("RntbdTransportClient.invokeStoreAsync({}, {}): {}", address, request, record);
 
-        return Mono.fromFuture(record).doFinally(signalType -> {
-            logger.debug("SignalType.{} received from reactor: {\n  endpoint: {},\n  record: {}\n}",
-                signalType.name(),
-                endpoint,
-                record);
-            if (signalType == SignalType.CANCEL) {
-                record.stage(RntbdRequestRecord.Stage.CANCELLED_BY_CLIENT);
+        return Mono.fromFuture(record.whenComplete((response, throwable) -> {
+
+            record.stage(RntbdRequestRecord.Stage.COMPLETED);
+
+            if (throwable == null) {
+                response.setRequestTimeline(record.takeTimelineSnapshot());
+            } else if (throwable instanceof CosmosClientException) {
+                CosmosClientException error = (CosmosClientException) throwable;
+                BridgeInternal.setRequestTimeline(error, record.takeTimelineSnapshot());
             }
+
+        })).doOnCancel(() -> {
+            record.cancel(true);
         });
     }
 
@@ -407,7 +414,7 @@ public final class RntbdTransportClient extends TransportClient {
                         final ClassLoader loader = RntbdTransportClient.class.getClassLoader();
                         final String name = DEFAULT_OPTIONS_PROPERTY_NAME + ".json";
 
-                        try (final InputStream stream = loader.getResourceAsStream(name)) {
+                        try (InputStream stream = loader.getResourceAsStream(name)) {
                             if (stream != null) {
                                 // Attempt to load default options from the JSON resource file "{propertyName}.json"
                                 options = RntbdObjectMapper.readValue(stream, Options.class);
@@ -417,7 +424,14 @@ public final class RntbdTransportClient extends TransportClient {
                         }
                     }
                 } finally {
-                    DEFAULT_OPTIONS = options != null ? options : new Options();
+                    if (options == null) {
+                        DEFAULT_OPTIONS = new Options();
+                    } else {
+                        logger.info("Updated default Direct TCP options from system property {}: {}",
+                            DEFAULT_OPTIONS_PROPERTY_NAME,
+                            options);
+                        DEFAULT_OPTIONS = options;
+                    }
                 }
             }
 
@@ -587,7 +601,9 @@ public final class RntbdTransportClient extends TransportClient {
 
     static final class JsonSerializer extends StdSerializer<RntbdTransportClient> {
 
-        public JsonSerializer() {
+        private static final long serialVersionUID = 1007663695768825670L;
+
+        JsonSerializer() {
             super(RntbdTransportClient.class);
         }
 
