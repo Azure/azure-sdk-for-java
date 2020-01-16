@@ -13,9 +13,9 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.tracing.opentelemetry.implementation.AmqpPropagationFormatUtil;
 import com.azure.core.util.Context;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.opentelemetry.OpenTelemetry;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.SpanContext;
@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
@@ -38,9 +39,10 @@ public class OpenTelemetryHttpPolicyTests {
 
     @Test
     public void addAfterPolicyTest() {
-
+        // Arrange & Act
         final HttpPipeline pipeline = createHttpPipeline();
 
+        // Assert
         assertEquals(1, pipeline.getPolicyCount());
         assertEquals(OpenTelemetryHttpPolicy.class, pipeline.getPolicy(0).getClass());
     }
@@ -102,4 +104,32 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals(expectedSpanContext.isValid(), actualSpanContext.isValid());
         assertEquals(expectedSpanContext.isRemote(), actualSpanContext.isRemote());
     }
+
+    /**
+     * Maps to the JSON return values from http://httpbin.org.
+     */
+    static class HttpBinJSON {
+
+        @JsonProperty()
+        private Map<String, String> headers;
+
+        /**
+         * Gets the response headers.
+         *
+         * @return The response headers.
+         */
+        public Map<String, String> headers() {
+            return headers;
+        }
+
+        /**
+         * Sets the response headers.
+         *
+         * @param headers The response headers.
+         */
+        public void headers(Map<String, String> headers) {
+            this.headers = headers;
+        }
+    }
+
 }
