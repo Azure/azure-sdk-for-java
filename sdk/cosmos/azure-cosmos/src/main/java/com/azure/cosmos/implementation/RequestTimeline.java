@@ -182,10 +182,6 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
             return this.duration;
         }
 
-        public long getDurationInMicroSec() {
-            return this.durationInMicroSec;
-        }
-
         public String getName() {
             return name;
         }

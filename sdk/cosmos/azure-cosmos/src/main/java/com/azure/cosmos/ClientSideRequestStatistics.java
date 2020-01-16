@@ -286,7 +286,7 @@ class ClientSideRequestStatistics {
             Iterator<RequestTimeline.Event> iterator = transportRequestTimeline.iterator();
             while (iterator.hasNext()) {
                 RequestTimeline.Event event = iterator.next();
-                stringBuilder.append("  eventName = " + event.getName() + ",  startTime = " + event.getStartTime() + ",  durationInMicrosec = " + event.getDurationInMicroSec()).append(System.lineSeparator());
+                stringBuilder.append("  eventName = " + event.getName() + ",  startTime = " + event.getStartTime() + ",  durationInMicrosec = " + event.getDuration().toNanos()/1000L).append(System.lineSeparator());
             }
         }
     }
