@@ -212,9 +212,11 @@ public class IdentityClient {
         return Mono.defer(() -> {
             try {
                 if (publicClientApplication != null) {
-                    return Mono.fromFuture(publicClientApplication.acquireTokenSilently(parameters)).map(MsalToken::new);
+                    return Mono.fromFuture(publicClientApplication.acquireTokenSilently(parameters))
+                            .map(MsalToken::new);
                 } else {
-                    return Mono.fromFuture(confidentialClientApplication.acquireTokenSilently(parameters)).map(MsalToken::new);
+                    return Mono.fromFuture(confidentialClientApplication.acquireTokenSilently(parameters))
+                            .map(MsalToken::new);
                 }
             } catch (MalformedURLException e) {
                 return Mono.error(e);
