@@ -215,11 +215,16 @@ public class ReactorConnection implements AmqpConnection {
         return sessionName != null && sessionMap.remove(sessionName) != null;
     }
 
+    @Override
+    public boolean isDisposed() {
+        return isDisposed.get();
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void close() {
+    public void dispose() {
         if (isDisposed.getAndSet(true)) {
             return;
         }
@@ -234,7 +239,7 @@ public class ReactorConnection implements AmqpConnection {
         final HashMap<String, AmqpSession> map = new HashMap<>(sessionMap);
 
         sessionMap.clear();
-        map.forEach((name, session) -> session.close());
+        map.forEach((name, session) -> session.dispose());
     }
 
     /**
@@ -312,7 +317,7 @@ public class ReactorConnection implements AmqpConnection {
                 getId(), getFullyQualifiedNamespace(), exception.getMessage());
 
             endpointStates.onError(exception);
-            close();
+            dispose();
         }
     }
 }

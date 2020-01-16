@@ -28,10 +28,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     implements Processor<EventHubAmqpConnection, EventHubAmqpConnection>, CoreSubscriber<EventHubAmqpConnection>,
     Disposable {
-
     private final ClientLogger logger = new ClientLogger(EventHubConnectionProcessor.class);
-    private final AtomicBoolean isTerminated = new AtomicBoolean();
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean isRequested = new AtomicBoolean();
+    private final AtomicBoolean isRetryPending = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
     private final Object lock = new Object();
     private final String fullyQualifiedNamespace;
@@ -132,7 +132,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
         }
 
         if (oldConnection != null) {
-            oldConnection.close();
+            oldConnection.dispose();
         }
 
         if (oldSubscription != null) {
@@ -146,15 +146,34 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     public void onError(Throwable throwable) {
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
+        if (isRetryPending.get() && retryPolicy.calculateRetryDelay(throwable, retryAttempts.get()) != null) {
+            logger.warning("Retry is already pending. Ignoring transient error.", throwable);
+            return;
+        }
+
         final int attempt = retryAttempts.incrementAndGet();
         final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
 
         if (retryInterval != null) {
+            // There was already a retry in progress, so we decrement the value because we don't want to make two retry
+            // attempts concurrently.
+            if (isRetryPending.getAndSet(true)) {
+                retryAttempts.decrementAndGet();
+                return;
+            }
+
             logger.warning("Transient error occurred. Attempt: {}. Retrying after {} ms.",
                 attempt, retryInterval.toMillis(), throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
-                requestUpstream();
+                if (isDisposed()) {
+                    logger.info("Retry #{}. Not requesting from upstream. Processor is disposed.");
+                } else {
+                    logger.info("Retry #{}. Requesting from upstream.", attempt);
+
+                    requestUpstream();
+                    isRetryPending.set(false);
+                }
             });
 
             return;
@@ -162,7 +181,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
         logger.warning("Non-retryable error occurred in connection.", throwable);
         lastError = throwable;
-        isTerminated.set(true);
+        isDisposed.set(true);
         dispose();
 
         synchronized (lock) {
@@ -177,7 +196,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     public void onComplete() {
         logger.info("Upstream connection publisher was completed. Terminating processor.");
 
-        isTerminated.set(true);
+        isDisposed.set(true);
         synchronized (lock) {
             final ConcurrentLinkedDeque<ConnectionSubscriber> currentSubscribers = subscribers;
             subscribers = new ConcurrentLinkedDeque<>();
@@ -214,12 +233,15 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
         }
 
         subscribers.add(subscriber);
-        requestUpstream();
+
+        if (!isRetryPending.get()) {
+            requestUpstream();
+        }
     }
 
     @Override
     public void dispose() {
-        if (isTerminated.getAndSet(true)) {
+        if (isDisposed.getAndSet(true)) {
             return;
         }
 
@@ -231,7 +253,7 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
         synchronized (lock) {
             if (currentConnection != null) {
-                currentConnection.close();
+                currentConnection.dispose();
             }
 
             currentConnection = null;
@@ -240,16 +262,19 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
     @Override
     public boolean isDisposed() {
-        return isTerminated.get();
+        return isDisposed.get();
     }
 
     private void requestUpstream() {
         synchronized (lock) {
             if (currentConnection != null) {
-                logger.info("Connection exists, not requesting another.");
+                logger.verbose("Not requesting another connection. Connection exists.");
                 return;
-            } else if (isTerminated.get() || upstream == null) {
-                logger.verbose("Terminated. Not requesting another.");
+            } else if (isDisposed()) {
+                logger.verbose("Not requesting another connection. Processor is disposed.");
+                return;
+            } else if (upstream == null) {
+                logger.verbose("Not requesting another connection. No upstream.");
                 return;
             }
         }

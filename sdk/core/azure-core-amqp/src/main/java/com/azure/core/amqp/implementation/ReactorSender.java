@@ -62,6 +62,7 @@ class ReactorSender implements AmqpSendLink {
     private final Disposable.Composite subscriptions;
 
     private final AtomicBoolean hasConnected = new AtomicBoolean();
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean hasAuthorized = new AtomicBoolean(true);
     private final AtomicInteger retryAttempts = new AtomicInteger();
 
@@ -265,7 +266,16 @@ class ReactorSender implements AmqpSendLink {
     }
 
     @Override
-    public void close() {
+    public boolean isDisposed() {
+        return isDisposed.get();
+    }
+
+    @Override
+    public void dispose() {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
         subscriptions.dispose();
         endpointStateSink.complete();
         tokenManager.close();

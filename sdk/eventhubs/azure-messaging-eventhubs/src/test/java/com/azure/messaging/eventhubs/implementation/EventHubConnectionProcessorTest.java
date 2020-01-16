@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -36,8 +37,10 @@ import static org.mockito.Mockito.when;
 public class EventHubConnectionProcessorTest {
     private static final String NAMESPACE = "test-namespace.eventhubs.com";
     private static final String EVENT_HUB_NAME = "test-event-hub-name";
-    private static final AmqpRetryOptions AMQP_RETRY_OPTIONS = new AmqpRetryOptions().setMaxRetries(2)
-        .setDelay(Duration.ofSeconds(10));
+    private static final AmqpRetryOptions AMQP_RETRY_OPTIONS = new AmqpRetryOptions()
+        .setMaxRetries(2)
+        .setMode(AmqpRetryMode.FIXED)
+        .setDelay(Duration.ofSeconds(2));
 
     @Mock
     private EventHubAmqpConnection connection;
@@ -46,7 +49,7 @@ public class EventHubConnectionProcessorTest {
     @Mock
     private EventHubAmqpConnection connection3;
 
-    private final Duration timeout = Duration.ofSeconds(10);
+    private final Duration timeout = Duration.ofSeconds(15);
     private DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private DirectProcessor<AmqpShutdownSignal> shutdownSignalProcessor = DirectProcessor.create();
     private EventHubConnectionProcessor eventHubConnectionProcessor = new EventHubConnectionProcessor(NAMESPACE,

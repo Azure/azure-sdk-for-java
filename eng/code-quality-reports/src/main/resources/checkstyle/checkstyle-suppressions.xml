@@ -184,8 +184,9 @@
   <!-- CodeSnippet Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck" files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
 
-  <!-- ClientLogger class suppression -->
+  <!-- Logger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="DefaultLogger.java"/>
 
   <!-- Use the logger in Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.Utility.java"/>
