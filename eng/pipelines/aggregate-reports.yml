@@ -9,7 +9,7 @@ jobs:
     pool:
       vmImage: 'ubuntu-16.04'
     steps:
-    - template: templats/steps/install-reporting-tools.yml
+    - template: templates/steps/install-reporting-tools.yml
       parameters:
         Options: --batch-mode
         MavenOptions: $(MemoryOptions) $(LoggingOptions)
