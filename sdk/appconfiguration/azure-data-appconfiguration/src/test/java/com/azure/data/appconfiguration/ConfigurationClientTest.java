@@ -86,11 +86,18 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected, client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
     }
 
+    private static final ProxyOptions SQUID_PROXY = new ProxyOptions(ProxyOptions.Type.HTTP,
+        new InetSocketAddress("localhost", 3128))
+        .setCredentials("test", "password");
+
+    private static final ProxyOptions FIDDLER_PROXY = new ProxyOptions(ProxyOptions.Type.HTTP,
+        new InetSocketAddress("localhost", 8888))
+        .setCredentials("1", "1");
+
     @Test
     public void addConfigurationSettingWithOkHttpProxy() {
         HttpClient httpClient = new OkHttpAsyncHttpClientBuilder()
-            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888/*3128*/))
-                .setCredentials("1", "1"))
+            .proxy(SQUID_PROXY)
             .build();
 
         ConfigurationClient client = new ConfigurationClientBuilder()
@@ -111,8 +118,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @Test
     public void addConfigurationSettingWithNettyProxy() {
         HttpClient httpClient = new NettyAsyncHttpClientBuilder()
-            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 3128))
-                .setCredentials("1", "1"))
+            .proxy(FIDDLER_PROXY)
             .build();
 
         ConfigurationClient client = new ConfigurationClientBuilder()

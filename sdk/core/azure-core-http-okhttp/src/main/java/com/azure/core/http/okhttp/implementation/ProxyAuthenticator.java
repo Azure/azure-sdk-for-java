@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.okhttp;
+package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.AuthorizationChallengeHandler;
 import com.azure.core.util.CoreUtils;
@@ -28,7 +28,7 @@ import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHORIZAT
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.
  */
-final class ProxyAuthenticator implements Authenticator {
+public final class ProxyAuthenticator implements Authenticator {
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
 
@@ -42,7 +42,7 @@ final class ProxyAuthenticator implements Authenticator {
      * @param username Username used in authentication challenges.
      * @param password Password used in authentication challenges.
      */
-    ProxyAuthenticator(String username, String password) {
+    public ProxyAuthenticator(String username, String password) {
         this.challengeHandler = new AuthorizationChallengeHandler(username, password);
     }
 
@@ -52,7 +52,7 @@ final class ProxyAuthenticator implements Authenticator {
      *
      * @return An {@link Interceptor} that attempts to read headers from the response.
      */
-    Interceptor getProxyAuthenticationInfoInterceptor() {
+    public Interceptor getProxyAuthenticationInfoInterceptor() {
         return new ProxyAuthenticationInfoInterceptor(challengeHandler);
     }
 
@@ -109,7 +109,7 @@ final class ProxyAuthenticator implements Authenticator {
         Request.Builder requestBuilder = response.request().newBuilder();
 
         if (authorizationHeader != null) {
-            requestBuilder.header("Proxy-Authorization", authorizationHeader);
+            requestBuilder.header(PROXY_AUTHORIZATION, authorizationHeader);
         }
 
         return requestBuilder.build();

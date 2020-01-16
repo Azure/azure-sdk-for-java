@@ -238,7 +238,6 @@ public class AuthorizationChallengeHandler {
      */
     private String createDigestAuthorizationHeader(String method, String uri, Map<String, String> challenge,
         String algorithm, Supplier<byte[]> entityBodySupplier, Function<byte[], byte[]> digestFunction) {
-        int nc = getNc(challenge);
         String realm = challenge.get(REALM);
         String nonce = challenge.get(NONCE);
         String qop = getQop(challenge.get(QOP));
@@ -247,15 +246,19 @@ public class AuthorizationChallengeHandler {
 
         /*
          * If the algorithm being used is <algorithm>-sess or QOP is 'auth' or 'auth-int' a client nonce will be needed
-         * to calculate the authorization header.
+         * to calculate the authorization header. If the QOP is set a nonce-count will need to retrieved.
          */
-        String cnonce = null;
-        if (algorithm.endsWith(_SESS) || AUTH.equals(qop) || AUTH_INT.equals(qop)) {
-            cnonce = generateNonce();
+        int nc = 0;
+        String clientNonce = null;
+        if (AUTH.equals(qop) || AUTH_INT.equals(qop)) {
+            clientNonce = generateNonce();
+            nc = getNc(challenge);
+        } else if (algorithm.endsWith(_SESS)) {
+            clientNonce = generateNonce();
         }
 
         String ha1 = algorithm.endsWith(_SESS)
-            ? calculateHa1Sess(digestFunction, realm, nonce, cnonce)
+            ? calculateHa1Sess(digestFunction, realm, nonce, clientNonce)
             : calculateHa1NoSess(digestFunction, realm);
 
         String ha2 = AUTH_INT.equals(qop)
@@ -263,13 +266,13 @@ public class AuthorizationChallengeHandler {
             : calculateHa2AuthQopOrEmpty(digestFunction, method, uri);
 
         String response = (AUTH.equals(qop) || AUTH_INT.equals(qop))
-            ? calculateResponseKnownQop(digestFunction, ha1, nonce, nc, cnonce, qop, ha2)
+            ? calculateResponseKnownQop(digestFunction, ha1, nonce, nc, clientNonce, qop, ha2)
             : calculateResponseUnknownQop(digestFunction, ha1, nonce, ha2);
 
         String headerUsername = (hashUsername) ? calculateUserhash(digestFunction, realm) : username;
 
-        return buildAuthorizationHeader(headerUsername, realm, uri, algorithm, nonce, nc, cnonce, qop, response, opaque,
-            hashUsername);
+        return buildAuthorizationHeader(headerUsername, realm, uri, algorithm, nonce, nc, clientNonce, qop, response,
+            opaque, hashUsername);
     }
 
     /*
@@ -457,25 +460,33 @@ public class AuthorizationChallengeHandler {
     private static String buildAuthorizationHeader(String username, String realm, String uri, String algorithm,
         String nonce, int nc, String cnonce, String qop, String response, String opaque, boolean userhash) {
         StringBuilder authorizationBuilder = new StringBuilder(DIGEST);
-        authorizationBuilder.append("username=\"").append(username).append("\", ");
-        authorizationBuilder.append("realm=\"").append(realm).append("\", ");
-        authorizationBuilder.append("uri=\"").append(uri).append("\", ");
+
+        authorizationBuilder.append("username=\"").append(username).append("\", ")
+            .append("realm=\"").append(realm).append("\", ")
+            .append("nonce=\"").append(nonce).append("\", ")
+            .append("uri=\"").append(uri).append("\", ")
+            .append("response=\"").append(response);
 
         if (!CoreUtils.isNullOrEmpty(algorithm)) {
-            authorizationBuilder.append("algorithm=").append(algorithm).append(", ");
+            authorizationBuilder.append(", ").append("algorithm=").append(algorithm).append("\"");
         }
 
-        authorizationBuilder.append("nonce=\"").append(nonce).append("\", ");
-        authorizationBuilder.append("nc=").append(String.format("%08X", nc)).append(", ");
-        authorizationBuilder.append("cnonce=\"").append(cnonce).append("\", ");
+        if (!CoreUtils.isNullOrEmpty(cnonce)) {
+            authorizationBuilder.append(", ").append("cnonce=\"").append(cnonce).append("\"");
+        }
+
+        if (!CoreUtils.isNullOrEmpty(opaque)) {
+            authorizationBuilder.append(", ").append("opaque=\"").append(opaque).append("\"");
+        }
 
         if (!CoreUtils.isNullOrEmpty(qop)) {
-            authorizationBuilder.append("qop=").append(qop).append(", ");
+            authorizationBuilder.append(", ").append("qop=").append(qop);
+            authorizationBuilder.append(", ").append("nc=").append(String.format("%08X", nc));
         }
 
-        authorizationBuilder.append("response=\"").append(response).append("\", ");
-        authorizationBuilder.append("opaque=\"").append(opaque).append("\", ");
-        authorizationBuilder.append("userhash=").append(userhash);
+        if (userhash) {
+            authorizationBuilder.append(", ").append("userhash=").append(userhash);
+        }
 
         return authorizationBuilder.toString();
     }

@@ -5,6 +5,7 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.AuthorizationChallengeHandler;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.ProxyAuthenticationHandler;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -15,6 +16,7 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
@@ -81,8 +83,10 @@ public class NettyAsyncHttpClientBuilder {
         AuthorizationChallengeHandler challengeHandler = (proxyOptions == null)
             ? null
             : new AuthorizationChallengeHandler(proxyOptions.getUsername(), proxyOptions.getPassword());
+        AtomicReference<ChallengeHolder> proxyChallengeHolder = new AtomicReference<>();
 
-        return new NettyAsyncHttpClient(nettyHttpClient, nioEventLoopGroup, () -> getProxyHandler(challengeHandler));
+        return new NettyAsyncHttpClient(nettyHttpClient, nioEventLoopGroup,
+            () -> getProxyHandler(challengeHandler, proxyChallengeHolder));
     }
 
     /**
@@ -153,14 +157,16 @@ public class NettyAsyncHttpClientBuilder {
     /*
      * Creates a proxy handler based on the passed ProxyOptions.
      */
-    private ProxyHandler getProxyHandler(AuthorizationChallengeHandler challengeHandler) {
+    private ProxyHandler getProxyHandler(AuthorizationChallengeHandler challengeHandler,
+        AtomicReference<ChallengeHolder> proxyChallengeHolder) {
         if (proxyOptions == null) {
             return null;
         }
 
         switch (proxyOptions.getType()) {
             case HTTP:
-                return new ProxyAuthenticationHandler(proxyOptions.getAddress(), challengeHandler);
+                return new ProxyAuthenticationHandler(proxyOptions.getAddress(), challengeHandler,
+                    proxyChallengeHolder);
             case SOCKS4:
                 return new Socks4ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername());
             case SOCKS5:

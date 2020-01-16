@@ -12,7 +12,9 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ProxyAuthenticationHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.proxy.ProxyHandler;
 import org.reactivestreams.Publisher;
@@ -22,7 +24,6 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.NettyPipeline;
-import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.tcp.TcpClient;
@@ -45,7 +46,7 @@ import java.util.function.Supplier;
  */
 class NettyAsyncHttpClient implements HttpClient {
     private final NioEventLoopGroup eventLoopGroup;
-    private final Supplier<ProxyHandler> proxyHandler;
+    private final Supplier<ProxyHandler> proxyHandlerSupplier;
 
     final reactor.netty.http.client.HttpClient nettyClient;
 
@@ -62,10 +63,10 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param nettyClient the reactor-netty http client
      */
     NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, NioEventLoopGroup eventLoopGroup,
-        Supplier<ProxyHandler> proxyHandler) {
+        Supplier<ProxyHandler> proxyHandlerSupplier) {
         this.nettyClient = nettyClient;
         this.eventLoopGroup = eventLoopGroup;
-        this.proxyHandler = proxyHandler;
+        this.proxyHandlerSupplier = proxyHandlerSupplier;
     }
 
     /** {@inheritDoc} */
@@ -89,14 +90,22 @@ class NettyAsyncHttpClient implements HttpClient {
             tcpClient = tcpClient.runOn(eventLoopGroup);
         }
 
+        ProxyHandler proxyHandler = proxyHandlerSupplier.get();
         if (proxyHandler != null) {
             tcpClient = tcpClient.bootstrap(bootstrap -> {
-                bootstrap.attr(ProxyAuthenticationHandler.REQUEST_METHOD_KEY, request.getHttpMethod().name())
-                    .attr(ProxyAuthenticationHandler.REQUEST_ENTITY_BODY_KEY, null);
+                return bootstrap.attr(ProxyAuthenticationHandler.REQUEST_METHOD_KEY, request.getHttpMethod().name())
+                    .attr(ProxyAuthenticationHandler.REQUEST_URI_KEY, request.getUrl().getPath())
+                    .attr(ProxyAuthenticationHandler.REQUEST_ENTITY_BODY_KEY, null)
+                    .handler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel ch) {
+                            ch.pipeline().addFirst(NettyPipeline.ProxyHandler, proxyHandler);
+                        }
+                    });
 
-                return BootstrapHandlers.updateConfiguration(bootstrap, NettyPipeline.ProxyHandler,
-                    (connectionObserver, channel) ->
-                        channel.pipeline().addFirst(NettyPipeline.ProxyHandler, proxyHandler.get()));
+//                return BootstrapHandlers.updateConfiguration(bootstrap, NettyPipeline.ProxyHandler,
+//                    (connectionObserver, channel) ->
+//                        channel.pipeline().addFirst(NettyPipeline.ProxyHandler, proxyHandler));
             });
         }
 
