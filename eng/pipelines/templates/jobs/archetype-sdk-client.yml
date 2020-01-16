@@ -151,10 +151,10 @@ jobs:
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
 
-      # - template: ../steps/install-reporting-tools.yml
-      #   parameters:
-      #     Options: --batch-mode
-      #     MavenOptions: $(MemoryOptions) $(LoggingOptions)
+      - template: ../steps/install-reporting-tools.yml
+        parameters:
+          Options: --batch-mode
+          MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
       # - task: Maven@3
       #   displayName: 'Install azure-sdk-parent'
