@@ -17,8 +17,7 @@ This library provides an easy (native) way for a Java developer to interact with
 
 ### Adding the package to your product
 
-[//]: # {x-version-update-start;com.azure:azure-search;current}
-
+[//]: # ({x-version-update-start;com.azure:azure-search;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -26,8 +25,7 @@ This library provides an easy (native) way for a Java developer to interact with
     <version>1.0.0-beta.2</version>
 </dependency>
 ```
-
-[//]: # {x-version-update-end}
+[//]: # ({x-version-update-end})
 
 ## Using the library
 
