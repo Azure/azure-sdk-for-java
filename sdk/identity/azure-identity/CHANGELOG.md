@@ -1,5 +1,9 @@
 # Release History
 
+## 1.1.0 (TBD)
+- Update msal4j to 1.3.0.
+- Support web apps (confidential apps) for `InteractiveBrowserCredential` and `AuthorizationCodeCredential`. Either a client secret or a certificate is required on the builder for web apps. (#7246)
+
 ## 1.0.3 (2020-01-013)
 - Support datetime format `M/d/yyyy K:mm:ss a XXX` for token `expires_on` property on Windows App Services.
 
