@@ -77,8 +77,7 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
-     * will be overwritten.
+     * Creates and opens an output stream to write data to the block blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
@@ -88,8 +87,7 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
-     * will be overwritten.
+     * Creates and opens an output stream to write data to the block blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
