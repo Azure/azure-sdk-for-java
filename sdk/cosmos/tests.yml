@@ -74,7 +74,6 @@ jobs:
         EnvVars:
             ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
             ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
-            ACCOUNT_CONSISTENCY: "Session"
             SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-secondary-key)
             DESIRED_CONSISTENCIES: '["Session"]'
             PROTOCOLS: '["Tcp"]'
@@ -90,7 +89,7 @@ jobs:
                 DisplayName: Multimaster Single Region Direct
                 OSVmImage: 'macOS-10.13'
                 ProfileFlag: '-Pdirect'
-                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=$(ACCOUNT_CONSISTENCY)"'
+                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
             # 07m 42s, expect passed
             Examples:
                 DisplayName: Multimaster Single Region Examples
