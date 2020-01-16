@@ -110,7 +110,7 @@ jobs:
                 PROTOCOLS: ''
             # 6m 58s, expect passed (rebalanced)
             Single_Region_NonEmulator:
-                DisplayName: Single Region Examples
+                DisplayName: Single Region NonEmulator
                 OSVmImage: 'macOS-10.13'
                 ProfileFlag: '-Pnon-emulator'
                 PROTOCOLS: '["Https"]'
