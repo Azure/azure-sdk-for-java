@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
+import java.nio.file.InvalidPathException;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -30,17 +30,18 @@ public final class AzurePath implements Path {
     AzurePath(AzureFileSystem parentFileSystem, String s, String... strings) {
         this.parentFileSystem = parentFileSystem;
         this.pathString = String.join(this.parentFileSystem.getSeparator(),
-                Flux.just(s).concatWith(Flux.just(strings))
-                    // Strip any trailing or leading delimiters so there are no duplicates when we join.
-                    .map(str-> {
-                        while (str.startsWith(this.parentFileSystem.getSeparator())){
-                            str = str.substring(1);
-                        }
-                        while (str.endsWith(this.parentFileSystem.getSeparator())) {
-                            str = str.substring(0, str.length()-1);
-                        }
-                        return str;
-                    }).toIterable());
+            // Strip any trailing or leading delimiters so there are no duplicates when we join.
+            Flux.fromArray(s.split(this.parentFileSystem.getSeparator()))
+                .concatWith(Flux.fromArray(strings)
+                    .flatMap(str -> Flux.fromArray(str.split(this.parentFileSystem.getSeparator()))))
+                .filter(str -> !str.isEmpty())
+                .toIterable());
+        if (this.pathString.contains(ROOT_DIR_SUFFIX)
+            && (this.pathString.indexOf(ROOT_DIR_SUFFIX) >
+            this.pathString.indexOf(this.parentFileSystem.getSeparator()))) {
+            throw new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX + " is an invalid character except to " +
+                "identify the root element of this path if there is one.");
+        }
     }
 
     /**
@@ -71,7 +72,7 @@ public final class AzurePath implements Path {
          */
         String firstElement = pathString.split(parentFileSystem.getSeparator())[0];
         if (firstElement.endsWith(ROOT_DIR_SUFFIX)) {
-            String fileStoreName = firstElement.substring(0, firstElement.length()-1);
+            String fileStoreName = firstElement.substring(0, firstElement.length() - 1);
             Boolean validRootName = Flux.fromIterable(parentFileSystem.getFileStores())
                 .map(FileStore::name)
                 .hasElement(fileStoreName)
@@ -91,8 +92,8 @@ public final class AzurePath implements Path {
         if (this.withoutRoot().isEmpty()) {
             return null;
         } else {
-          return this.parentFileSystem.getPath(
-              Flux.fromArray(this.pathString.split(this.parentFileSystem.getSeparator())).last().block());
+            return this.parentFileSystem.getPath(
+                Flux.fromArray(this.pathString.split(this.parentFileSystem.getSeparator())).last().block());
         }
     }
 
@@ -113,10 +114,10 @@ public final class AzurePath implements Path {
         This method may seem a bit circuitous, but using the javadocs define the behavior of this method in terms of
         the subpath method, so this is the best way to guarantee correctness.
          */
-        Path parentNoRoot = this.subpath(0, getNameCount()-1);
+        Path parentNoRoot = this.subpath(0, getNameCount() - 1);
         Path root = getRoot();
         if (root != null) {
-            return this.parentFileSystem.getPath(root.toString() +  parentNoRoot.toString());
+            return this.parentFileSystem.getPath(root.toString() + parentNoRoot.toString());
         }
         return parentNoRoot;
     }
@@ -144,8 +145,18 @@ public final class AzurePath implements Path {
      * {@inheritDoc}
      */
     @Override
-    public Path subpath(int i, int i1) {
-        return null;
+    public Path subpath(int begin, int end) {
+        if (begin < 0 || begin >= this.getNameCount()
+            || end <= begin || end > this.getNameCount()) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterable<String> subnames = Flux.fromArray(this.withoutRoot().split(this.parentFileSystem.getSeparator()))
+            .skip(begin)
+            .take(end - begin)
+            .toIterable();
+
+        return this.parentFileSystem.getPath(String.join(this.parentFileSystem.getSeparator(), subnames));
     }
 
     /**
@@ -153,7 +164,11 @@ public final class AzurePath implements Path {
      */
     @Override
     public boolean startsWith(Path path) {
-        return false;
+        /*
+        There can only be one instance of a file system with a given id, so comparing object identity is equivalent
+        to checking ids here.
+         */
+        return path.toString().equals(this.toString()) && path.getFileSystem() == this.parentFileSystem;
     }
 
     /**
@@ -161,7 +176,7 @@ public final class AzurePath implements Path {
      */
     @Override
     public boolean startsWith(String s) {
-        return false;
+        return this.startsWith(this.parentFileSystem.getPath(s));
     }
 
     /**
@@ -246,7 +261,7 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     *
+     * <p>
      * {@inheritDoc}
      */
     @Override
@@ -264,7 +279,7 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     *
+     * <p>
      * {@inheritDoc}
      */
     @Override
@@ -274,7 +289,7 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     *
+     * <p>
      * {@inheritDoc}
      */
     @Override
