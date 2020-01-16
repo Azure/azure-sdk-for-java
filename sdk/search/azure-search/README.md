@@ -63,6 +63,7 @@ The SDK provides two types of clients - SearchIndexClient for all document opera
 
 Once you have the values of the Cognitive Search Service [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and admin key you can create the Search Service client:
 
+<!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L27-L32 -->
 ```Java
 SearchServiceClient client = new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
@@ -72,6 +73,7 @@ SearchServiceClient client = new SearchServiceClientBuilder()
 
 or
 
+<!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L34-L39 -->
 ```Java
 SearchServiceAsyncClient client = new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
@@ -83,6 +85,7 @@ SearchServiceAsyncClient client = new SearchServiceClientBuilder()
 
 To create a SearchIndexClient, you will need an exisitng index name as well as the values of the Cognitive Search Service [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and query key:
 
+<!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L41-L47 -->
 ```Java
 SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
@@ -93,6 +96,7 @@ SearchIndexClient client = new SearchIndexClientBuilder()
 
 or
 
+<!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L49-L55 -->
 ```Java
 SearchIndexAsyncClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
@@ -148,17 +152,17 @@ When you interact with Azure Cognitive Search using this Java client library, er
 
 App Configuration provides a way to define customized headers through `Context` object in the public API. 
 
-<!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L160-L169 -->
+<!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L57-L69 -->
 ```java
-// Add your headers
 HttpHeaders headers = new HttpHeaders();
 headers.put("my-header1", "my-header1-value");
 headers.put("my-header2", "my-header2-value");
 headers.put("my-header3", "my-header3-value");
 // Call API by passing headers in Context.
+Index index = new Index().setName(INDEX_NAME);
 searchClient.createIndexWithResponse(
     index,
-    requestOptions,
+    new RequestOptions(),
     new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
 // Above three HttpHeader will be added in outgoing HttpRequest.
 ```
@@ -206,4 +210,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
 [rest_api]: https://docs.microsoft.com/en-us/rest/api/searchservice/http-status-codes
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/search/azure-search/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%search%2Fazure-search%2FREADME.png)
