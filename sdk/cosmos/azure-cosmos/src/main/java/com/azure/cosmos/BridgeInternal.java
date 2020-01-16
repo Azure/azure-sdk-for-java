@@ -221,11 +221,6 @@ public class BridgeInternal {
         return e;
     }
 
-    public static <E extends CosmosClientException> E setRequestTimeline(E e, RequestTimeline timeline) {
-        e.setRequestTimeline(timeline);
-        return e;
-    }
-
     public static boolean isEnableMultipleWriteLocations(DatabaseAccount account) {
         return account.getEnableMultipleWriteLocations();
     }
@@ -416,6 +411,10 @@ public class BridgeInternal {
 
     public static CosmosResponseDiagnostics createCosmosResponseDiagnostics() {
         return new CosmosResponseDiagnostics();
+    }
+
+    public static void setTransportClientRequestTimelineOnDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics, RequestTimeline requestTimeline) {
+        cosmosResponseDiagnostics.clientSideRequestStatistics().setTransportClientRequestTimeline(requestTimeline);
     }
 
     public static void recordResponse(CosmosResponseDiagnostics cosmosResponseDiagnostics,

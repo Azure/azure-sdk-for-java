@@ -129,14 +129,11 @@ public final class RntbdTransportClient extends TransportClient {
         return Mono.fromFuture(record.whenComplete((response, throwable) -> {
 
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
-
-            if (throwable == null) {
-                response.setRequestTimeline(record.takeTimelineSnapshot());
-            } else if (throwable instanceof CosmosClientException) {
-                CosmosClientException error = (CosmosClientException) throwable;
-                BridgeInternal.setRequestTimeline(error, record.takeTimelineSnapshot());
+            if (request.requestContext.cosmosResponseDiagnostics == null) {
+                request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
             }
 
+            BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosResponseDiagnostics, record.takeTimelineSnapshot());
         })).doOnCancel(() -> {
             record.cancel(true);
         });

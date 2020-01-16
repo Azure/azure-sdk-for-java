@@ -56,6 +56,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("Gateway statistics");
         assertThat(diagnostics).contains("Operation Type : " + OperationType.Create);
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+        validateTransportRequestTimelineGateway(diagnostics);
     }
 
     @Test(groups = {"simple"})
@@ -76,6 +77,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("Status Code : 404");
             assertThat(diagnostics).contains("Operation Type : " + OperationType.Read);
             assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+            validateTransportRequestTimelineGateway(diagnostics);
         }
     }
 
@@ -103,6 +105,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).doesNotContain("Gateway request URI :");
         assertThat(diagnostics).contains("AddressResolutionStatistics");
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+        validateTransportRequestTimelineDirect(diagnostics);
     }
 
     @Test(groups = {"simple"})
@@ -121,7 +124,25 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.DIRECT);
             assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+            validateTransportRequestTimelineDirect(diagnostics);
         }
+    }
+
+    private void validateTransportRequestTimelineGateway(String diagnostics) {
+        assertThat(diagnostics).contains("eventName = connectionCreated");
+        assertThat(diagnostics).contains("eventName = connectionConfigured");
+        assertThat(diagnostics).contains("eventName = requestSent");
+        assertThat(diagnostics).contains("eventName = transitTime");
+        assertThat(diagnostics).contains("eventName = received");
+    }
+
+    private void validateTransportRequestTimelineDirect(String diagnostics) {
+        assertThat(diagnostics).contains("eventName = created");
+        assertThat(diagnostics).contains("eventName = queued");
+        assertThat(diagnostics).contains("eventName = pipelined");
+        assertThat(diagnostics).contains("eventName = transitTime");
+        assertThat(diagnostics).contains("eventName = received");
+        assertThat(diagnostics).contains("eventName = completed");
     }
 
     private CosmosItemProperties getCosmosItemProperties() {

@@ -250,15 +250,6 @@ public class CosmosClientException extends Exception {
         return this;
     }
 
-    public RequestTimeline getRequestTimeline() {
-        return this.requestTimeline;
-    }
-
-    CosmosClientException setRequestTimeline(RequestTimeline requestTimeline) {
-        this.requestTimeline = requestTimeline;
-        return this;
-    }
-
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" + "error=" + cosmosError + ", resourceAddress='"

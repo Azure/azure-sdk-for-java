@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -16,9 +17,9 @@ import java.util.Iterator;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Represents the time and duration of important events in the lifetime of a request.
+ * Represents the startTime and duration of important events in the lifetime of a request.
  * <p>
- * A {@link RequestTimeline} represents a timeline as a sequence of {@link Event} instances with name, time, and
+ * A {@link RequestTimeline} represents a timeline as a sequence of {@link Event} instances with name, startTime, and
  * duration properties. Hence, one might use this class to represent any timeline. Today we use it to represent
  * request timelines for:
  * <p><ul>
@@ -35,7 +36,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *     new RequestTimeline.Event("foo", startTime, startTime.plusSeconds(1)),
  *     new RequestTimeline.Event("bar", startTime.plusSeconds(1), startTime.plusSeconds(2))));}</pre>
  * JSON serialization:
- * <pre>{@code [{"name":"foo","time":"2020-01-07T11:24:12.842749-08:00","duration":"PT1S"},{"name":"bar","time":"2020-01-07T11:24:13.842749-08:00","duration":"PT1S"}])}</pre>
+ * <pre>{@code [{"name":"foo","startTime":"2020-01-07T11:24:12.842749-08:00","duration":"PT1S"},{"name":"bar","startTime":"2020-01-07T11:24:13.842749-08:00","duration":"PT1S"}])}</pre>
  */
 public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
 
@@ -54,7 +55,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
     /**
      * Returns an empty {@link RequestTimeline}.
      *
-     * The empty time line returned is static.
+     * The empty startTime line returned is static.
      *
      * @return an empty {@link RequestTimeline}.
      */
@@ -75,7 +76,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
     /**
      * Returns an empty {@link RequestTimeline}.
      *
-     * The empty time line returned is static and equivalent to calling {@link RequestTimeline#empty}.
+     * The empty startTime line returned is static and equivalent to calling {@link RequestTimeline#empty}.
      *
      * @return an empty request timeline.
      */
@@ -148,37 +149,49 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         return RntbdObjectMapper.toString(this);
     }
 
-    @JsonPropertyOrder({ "name", "time", "duration" })
+    @JsonPropertyOrder({ "name", "startTime", "durationInMicroSec" })
     public static final class Event {
 
-        @JsonSerialize(using = ToStringSerializer.class)
+        @JsonIgnore
         private final Duration duration;
+
+        @JsonSerialize(using = ToStringSerializer.class)
+        private final long durationInMicroSec;
 
         private final String name;
 
         @JsonSerialize(using = ToStringSerializer.class)
-        private final OffsetDateTime time;
+        private final OffsetDateTime startTime;
 
         public Event(final String name, final OffsetDateTime from, final OffsetDateTime to) {
 
             checkNotNull(name, "expected non-null name");
 
             this.name = name;
-            this.time = from;
+            this.startTime = from;
 
             this.duration = from == null ? null : to == null ? Duration.ZERO : Duration.between(from, to);
+            if(this.duration != null) {
+                this.durationInMicroSec = duration.toNanos()/1000L;
+            } else {
+                this.durationInMicroSec = 0;
+            }
         }
 
         public Duration getDuration() {
             return this.duration;
         }
 
+        public long getDurationInMicroSec() {
+            return this.durationInMicroSec;
+        }
+
         public String getName() {
             return name;
         }
 
-        public OffsetDateTime getTime() {
-            return time;
+        public OffsetDateTime getStartTime() {
+            return startTime;
         }
     }
 }

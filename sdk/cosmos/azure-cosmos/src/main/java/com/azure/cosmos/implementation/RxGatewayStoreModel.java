@@ -2,23 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosError;
+import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosError;
-import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
+import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -29,6 +31,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -141,8 +144,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
         try {
 
-            if (request.getResourceType().equals(ResourceType.Document) &&
-                request.requestContext.cosmosResponseDiagnostics == null) {
+            if (request.requestContext.cosmosResponseDiagnostics == null) {
                 request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
             }
 
@@ -165,9 +167,11 @@ class RxGatewayStoreModel implements RxStoreModel {
                     httpHeaders,
                     byteBufObservable);
 
-            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+            ReactorNettyRequestRecord reactorNettyRequestRecord = new ReactorNettyRequestRecord();
+            reactorNettyRequestRecord.setTimeCreated(OffsetDateTime.now());
+            Mono<Pair<HttpResponse, ReactorNettyRequestRecord>> httpResponsePairMono = this.httpClient.send(httpRequest, reactorNettyRequestRecord);
 
-            return toDocumentServiceResponse(httpResponseMono, request);
+            return toDocumentServiceResponse(httpResponsePairMono, request);
 
         } catch (Exception e) {
             return Flux.error(e);
@@ -242,15 +246,16 @@ class RxGatewayStoreModel implements RxStoreModel {
      * Once the customer code subscribes to the observable returned by the CRUD APIs,
      * the subscription goes up till it reaches the source reactor netty's observable, and at that point the HTTP invocation will be made.
      *
-     * @param httpResponseMono
+     * @param httpResponsePairMono
      * @param request
      * @return {@link Flux}
      */
-    private Flux<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
-                                                                            RxDocumentServiceRequest request) {
+    private Flux<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<Pair<HttpResponse, ReactorNettyRequestRecord>> httpResponsePairMono,
+                                                                      RxDocumentServiceRequest request) {
 
-        return httpResponseMono.flatMap(httpResponse ->  {
+        return httpResponsePairMono.flatMap(httpResponseTuple ->  {
 
+            HttpResponse httpResponse = httpResponseTuple.getLeft();
             // header key/value pairs
             HttpHeaders httpResponseHeaders = httpResponse.headers();
             int httpResponseStatus = httpResponse.statusCode();
@@ -271,6 +276,14 @@ class RxGatewayStoreModel implements RxStoreModel {
             return contentObservable
                        .flatMap(content -> {
                            try {
+                               //Adding transport client request timeline to diagnostics
+                               ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponseTuple.getRight();
+                               if (reactorNettyRequestRecord != null) {
+                                   reactorNettyRequestRecord.setTimeCompleted(OffsetDateTime.now());
+                                   BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosResponseDiagnostics,
+                                       reactorNettyRequestRecord.takeTimelineSnapshot());
+                               }
+
                                // If there is any error in the header response this throws exception
                                // TODO: potential performance improvement: return Observable.error(exception) on failure instead of throwing Exception
                                validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content, null);
@@ -279,8 +292,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                StoreResponse rsp = new StoreResponse(httpResponseStatus,
                                    HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
                                    content);
-                               if (request.requestContext.cosmosResponseDiagnostics != null &&
-                                   request.getResourceType().equals(ResourceType.Document)) {
+                               if (request.requestContext.cosmosResponseDiagnostics != null) {
                                    BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, request, rsp, null);
                                    DirectBridgeInternal.setCosmosResponseDiagnostics(rsp, request.requestContext.cosmosResponseDiagnostics);
                                }
@@ -309,8 +321,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                            return Mono.error(dce);
                        }
 
-                       if (request.requestContext.cosmosResponseDiagnostics != null &&
-                           request.getResourceType().equals(ResourceType.Document)) {
+                       if (request.requestContext.cosmosResponseDiagnostics != null) {
                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, request, null, (CosmosClientException)exception);
                            BridgeInternal.setCosmosResponseDiagnostics((CosmosClientException)exception, request.requestContext.cosmosResponseDiagnostics);
                        }

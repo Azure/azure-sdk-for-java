@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Mono;
 import reactor.netty.resources.ConnectionProvider;
+import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 
@@ -19,6 +22,15 @@ public interface HttpClient {
      * @return A {@link Mono} that emits response asynchronously
      */
     Mono<HttpResponse> send(HttpRequest request);
+
+    /**
+     * Send the provided request asynchronously and capture transport client request timeline for diagnostics.
+     *
+     * @param request The HTTP request to send
+     * @param reactorNettyRequestRecord The requestRecord to capture request timeline
+     * @return A {@link Mono} that emits response asynchronously
+     */
+    Mono<Pair<HttpResponse,ReactorNettyRequestRecord>> send(HttpRequest request, ReactorNettyRequestRecord reactorNettyRequestRecord);
 
     /**
      * Create HttpClient with FixedChannelPool {@link HttpClientConfig}

@@ -121,15 +121,6 @@ public class StoreResponse {
         return this;
     }
 
-    public RequestTimeline getRequestTimeline() {
-        return this.requestTimeline;
-    }
-
-    public StoreResponse setRequestTimeline(RequestTimeline requestTimeline) {
-        this.requestTimeline = requestTimeline;
-        return this;
-    }
-
     int getSubStatusCode() {
         int subStatusCode = HttpConstants.SubStatusCodes.UNKNOWN;
         String subStatusCodeString = this.getHeaderValue(WFConstants.BackendHeaders.SUB_STATUS);

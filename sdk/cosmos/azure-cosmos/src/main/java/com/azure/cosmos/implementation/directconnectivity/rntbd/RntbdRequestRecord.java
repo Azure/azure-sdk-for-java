@@ -175,7 +175,7 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
                 timeQueued, timePipelined == null ? timeCompletedOrNow : timePipelined),
             new RequestTimeline.Event("pipelined",
                 timePipelined, timeSent == null ? timeCompletedOrNow : timeSent),
-            new RequestTimeline.Event("sent",
+            new RequestTimeline.Event("transitTime",
                 timeSent, timeReceived == null ? timeCompletedOrNow : timeReceived),
             new RequestTimeline.Event("received",
                 timeReceived, timeCompletedOrNow),

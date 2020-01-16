@@ -3,11 +3,10 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -17,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.lang.management.ManagementFactory;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -26,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -43,7 +42,7 @@ class ClientSideRequestStatistics {
     private ZonedDateTime requestEndTime;
 
     private ConnectionMode connectionMode;
-    
+
     private final List<StoreResponseStatistics> responseStatisticsList;
     private final List<StoreResponseStatistics> supplementalResponseStatisticsList;
     private final Map<String, AddressResolutionStatistics> addressResolutionStatistics;
@@ -53,6 +52,8 @@ class ClientSideRequestStatistics {
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
     private Set<URI> regionsContacted;
+
+    private RequestTimeline transportRequestTimeline;
 
     ClientSideRequestStatistics() {
         this.requestStartTime = ZonedDateTime.now(ZoneOffset.UTC);
@@ -100,7 +101,7 @@ class ClientSideRequestStatistics {
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
-                    || storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
+                || storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
                 this.supplementalResponseStatisticsList.add(storeResponseStatistics);
             } else {
                 this.responseStatisticsList.add(storeResponseStatistics);
@@ -117,6 +118,7 @@ class ClientSideRequestStatistics {
             }
             this.gatewayStatistic = new GatewayStatistic();
             this.gatewayStatistic.operationType = rxDocumentServiceRequest.getOperationType();
+
             if (storeResponse != null) {
                 this.gatewayStatistic.statusCode = storeResponse.getStatus();
                 this.gatewayStatistic.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
@@ -129,6 +131,9 @@ class ClientSideRequestStatistics {
         }
     }
 
+    void setTransportClientRequestTimeline(RequestTimeline transportRequestTimeline) {
+        this.transportRequestTimeline = transportRequestTimeline;
+    }
 
     String recordAddressResolutionStart(URI targetEndpoint) {
         String identifier = Utils.randomUUID().toString();
@@ -221,6 +226,7 @@ class ClientSideRequestStatistics {
             }
 
             printSystemInformation(stringBuilder);
+            printTransportRequestTimeline(stringBuilder);
         }
         String requestStatsString = stringBuilder.toString();
         if (!requestStatsString.isEmpty()) {
@@ -274,6 +280,17 @@ class ClientSideRequestStatistics {
         }
     }
 
+    private void printTransportRequestTimeline(StringBuilder stringBuilder) {
+        if (transportRequestTimeline != null) {
+            stringBuilder.append("Transport request timeline -------").append(System.lineSeparator());
+            Iterator<RequestTimeline.Event> iterator = transportRequestTimeline.iterator();
+            while (iterator.hasNext()) {
+                RequestTimeline.Event event = iterator.next();
+                stringBuilder.append("  eventName = " + event.getName() + ",  startTime = " + event.getStartTime() + ",  durationInMicrosec = " + event.getDurationInMicroSec()).append(System.lineSeparator());
+            }
+        }
+    }
+
     private static String formatDateTime(ZonedDateTime dateTime) {
         if (dateTime == null) {
             return null;
@@ -291,11 +308,11 @@ class ClientSideRequestStatistics {
         @Override
         public String toString() {
             return "StoreResponseStatistics{"
-                       + "requestResponseTime=\"" + formatDateTime(requestResponseTime) + "\"" +
-                       ", storeResult=" + storeResult
-                       + ", requestResourceType=" + requestResourceType 
-                       + ", requestOperationType=" + requestOperationType 
-                       + '}';
+                + "requestResponseTime=\"" + formatDateTime(requestResponseTime) + "\"" +
+                ", storeResult=" + storeResult
+                + ", requestResourceType=" + requestResourceType
+                + ", requestOperationType=" + requestOperationType
+                + '}';
         }
     }
 
