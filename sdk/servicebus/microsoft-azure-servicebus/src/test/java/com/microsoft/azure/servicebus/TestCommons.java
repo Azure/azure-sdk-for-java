@@ -49,7 +49,7 @@ public class TestCommons {
         }
 
         sender.send(message);
-        
+
         IMessage receivedMessage = receiver.receive();
         Assert.assertNotNull("Message not received", receivedMessage);
         Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
@@ -63,8 +63,8 @@ public class TestCommons {
         testBasicReceiveAndDeleteWithBinaryData(sender, sessionId, receiver, 64);
     }
 
-    public static void testBasicReceiveAndDeleteWithLargeBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
-        testBasicReceiveAndDeleteWithBinaryData(sender, sessionId, receiver, 64 * 1024);
+    public static void testBasicReceiveAndCompleteWithLargeBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
+        testBasicReceiveAndCompleteWithBinaryData(sender, sessionId, receiver, 64 * 1024);
     }
 
     private static void testBasicReceiveAndDeleteWithBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver, int messageSize) throws InterruptedException, ServiceBusException, ExecutionException {
@@ -80,12 +80,36 @@ public class TestCommons {
         }
 
         sender.send(message);
-        
+
         IMessage receivedMessage = receiver.receive();
         Assert.assertNotNull("Message not received", receivedMessage);
         Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
         Assert.assertEquals("Message Body Type did not match", MessageBodyType.BINARY, receivedMessage.getMessageBody().getBodyType());
         Assert.assertArrayEquals("Message content did not match", binaryData, Utils.getDataFromMessageBody(receivedMessage.getMessageBody()));
+        receivedMessage = receiver.receive(SHORT_WAIT_TIME);
+        Assert.assertNull("Message received again", receivedMessage);
+    }
+    
+    private static void testBasicReceiveAndCompleteWithBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver, int messageSize) throws InterruptedException, ServiceBusException, ExecutionException {
+        String messageId = UUID.randomUUID().toString();
+        byte[] binaryData = new byte[messageSize];
+        for (int i = 0; i < binaryData.length; i++) {
+            binaryData[i] = (byte) i;
+        }
+        Message message = new Message(Utils.fromBinay(binaryData));
+        message.setMessageId(messageId);
+        if (sessionId != null) {
+            message.setSessionId(sessionId);
+        }
+
+        sender.send(message);
+
+        IMessage receivedMessage = receiver.receive();
+        Assert.assertNotNull("Message not received", receivedMessage);
+        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+        Assert.assertEquals("Message Body Type did not match", MessageBodyType.BINARY, receivedMessage.getMessageBody().getBodyType());
+        Assert.assertArrayEquals("Message content did not match", binaryData, Utils.getDataFromMessageBody(receivedMessage.getMessageBody()));
+        receiver.complete(receivedMessage.getLockToken());
         receivedMessage = receiver.receive(SHORT_WAIT_TIME);
         Assert.assertNull("Message received again", receivedMessage);
     }
@@ -102,7 +126,7 @@ public class TestCommons {
             message.setSessionId(sessionId);
         }
         sender.send(message);
-                
+
         IMessage receivedMessage = receiver.receive();
         Assert.assertNotNull("Message not received", receivedMessage);
         Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
@@ -485,7 +509,7 @@ public class TestCommons {
         String secondDeferredPhase = "deferred first time and second time";
 
         Message sentMessage = new Message("AMQP message");
-        HashMap customProperties = new HashMap();
+        HashMap<String, Object> customProperties = new HashMap<>();
         customProperties.put(phaseKey, initialPhase);
         sentMessage.setProperties(customProperties);
         if (sessionId != null) {

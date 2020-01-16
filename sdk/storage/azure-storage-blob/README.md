@@ -22,63 +22,16 @@ definition, such as text or binary data.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.0.0-preview.5</version>
+    <version>12.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-### Default HTTP Client
-All client libraries, by default, use the Netty HTTP client. Adding the above dependency will automatically configure 
-Storage Blob to use the Netty HTTP client. 
-
-### Alternate HTTP client
-If, instead of Netty it is preferable to use OkHTTP, there is an HTTP client available for that too. Exclude the default
-Netty and include the OkHTTP client in your pom.xml.
-
-[//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
-```xml
-<!-- Add the Storage Blob dependency without the Netty HTTP client -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-storage-blob</artifactId>
-    <version>12.0.0-preview.5</version>
-    <exclusions>
-        <exclusion>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-core-http-netty</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
-```xml
-<!-- Add the OkHTTP client to use with Storage Blob -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.0.0-preview.7</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-### Configuring HTTP Clients
-When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-blobserviceclient) unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this by allowing users to provide custom (or customized) `com.azure.core.http.HttpClient` instances.
-
-For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
-
-```java
-HttpClient client = new NettyAsyncHttpClientBuilder()
-        .port(8080)
-        .wiretap(true)
-        .build();
-```
 
 ### Create a Storage Account
 To create a Storage Account you can use the [Azure Portal][storage_account_create_portal] or [Azure CLI][storage_account_create_cli].
 
 ```bash
-az stoage account create \
+az storage account create \
     --resource-group <resource-group-name> \
     --name <storage-account-name> \
     --location <location>
@@ -91,7 +44,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 
 #### Get credentials
 
-##### **SAS Token**
+##### SAS Token
 
 a. Use the Azure CLI snippet below to get the SAS token from the Storage Account.
 
@@ -279,7 +232,7 @@ blobClient.downloadToFile("downloaded-file.jpg");
 Enumerating all blobs using a `BlobContainerClient`.
 
 ```java
-blobContainerClient.listBlobsFlat()
+blobContainerClient.listBlobs()
         .forEach(
             blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
         );
@@ -302,16 +255,23 @@ When interacting with blobs using this Java client library, errors returned by t
 status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a container or blob that
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
 
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
+better performance compared to the default SSL implementation within the JDK. For more information, including how to 
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ## Next steps
 
-Get started with our [Blob samples][samples]:
+Several Storage blob Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
-1. [Basic Examples][samples_basic]: Create storage, container and blob clients. Upload, download and list blobs.
-2. [File Transfer Examples][samples_file_transfer]: Upload and download a large file through blobs.
-3. [Storage Error Examples][samples_storage_error]: Handle the exceptions thrown from the Storage Blob service side.
-4. [List Container Examples][samples_list_containers]: Create, list and delete containers.
-5. [Set Metadata and HTTPHeaders Examples][samples_metadata]: Set metadata for containers and blobs, and set HTTPHeaders for blobs.
-6. [Azure Identity Examples][samples_identity]: Use `DefaultAzureCredential` to do the authentication.
+## Next steps Samples
+Samples are explained in detail [here][samples_readme].
 
 ## Contributing
 
@@ -321,10 +281,9 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2FAzure.Storage.Blobs%2FREADME.png)
-
 <!-- LINKS -->
 [source]: src
+[samples_readme]: src/samples/README.md
 [docs]: http://azure.github.io/azure-sdk-for-java/
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
@@ -337,15 +296,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [samples]: src/samples
-[samples_basic]: src/samples/java/com/azure/storage/blob/BasicExample.java
-[samples_file_transfer]: src/samples/java/com/azure/storage/blob/FileTransferExample.java
-[samples_storage_error]: src/samples/java/com/azure/storage/blob/StorageErrorHandlingExample.java
-[samples_list_containers]: src/samples/java/com/azure/storage/blob/ListContainersExample.java
-[samples_metadata]: src/samples/java/com/azure/storage/blob/SetMetadataAndHTTPHeadersExample.java
-[samples_identity]: src/samples/java/com/azure/storage/blob/AzureIdentityExample.java
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-blob/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2FREADME.png)

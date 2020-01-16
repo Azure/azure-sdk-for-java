@@ -33,9 +33,9 @@
       <modules>
         <module>../core/azure-core</module>
         <module>../core/azure-core-test</module>
-        <module>../core/azure-core-amqp</module>
         <module>../core/azure-core-http-netty</module>
         <module>../identity/azure-identity</module>
+        <module>../core/azure-core-amqp</module>
         <module>../storage/azure-storage-common</module>
         <module>../storage/azure-storage-blob</module>
         <module>azure-messaging-eventhubs</module>

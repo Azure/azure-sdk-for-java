@@ -49,6 +49,9 @@ public final class Constants {
     public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
 
+    public static final String BLOB_ALREADY_EXISTS =
+        "Blob already exists. Specify overwrite to true to force update the blob.";
+
     private Constants() {
     }
 
@@ -194,6 +197,8 @@ public final class Constants {
         public static final String SERVER_ENCRYPTED = "x-ms-server-encrypted";
 
         public static final String REQUEST_SERVER_ENCRYPTED = "x-ms-request-server-encrypted";
+
+        public static final String ETAG_WILDCARD = "*";
 
         private HeaderConstants() {
             // Private to prevent construction.

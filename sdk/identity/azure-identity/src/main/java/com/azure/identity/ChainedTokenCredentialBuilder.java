@@ -25,6 +25,7 @@ public class ChainedTokenCredentialBuilder {
 
     /**
      * Adds a credential to try to authenticate at the front of the chain.
+     *
      * @param credential the credential to be added to the front of chain
      * @return the ChainedTokenCredential itself
      */
@@ -44,6 +45,8 @@ public class ChainedTokenCredentialBuilder {
     }
 
     /**
+     * Creates a new {@link ChainedTokenCredential} with the current configurations.
+     *
      * @return a {@link ChainedTokenCredential} with the current configurations.
      */
     public ChainedTokenCredential build() {

@@ -9,7 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Represents base properties of an {@link Issuer}.
+ * Represents base properties of an {@link CertificateIssuer}.
  */
 public class IssuerProperties {
     /**
@@ -30,14 +30,6 @@ public class IssuerProperties {
      */
     @JsonProperty(value = "name")
     String name;
-
-
-    public IssuerProperties(String name, String provider) {
-        this.name = name;
-        this.provider = provider;
-    }
-
-    IssuerProperties() { }
 
     /**
      * Get the id of the issuer.
@@ -61,6 +53,16 @@ public class IssuerProperties {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Set the issuer provider
+     * @param provider The issuer provider.
+     * @return the updated IssuerProperties object
+     */
+    public IssuerProperties setProvider(String provider) {
+        this.provider = provider;
+        return this;
     }
 
     @JsonProperty(value = "id")

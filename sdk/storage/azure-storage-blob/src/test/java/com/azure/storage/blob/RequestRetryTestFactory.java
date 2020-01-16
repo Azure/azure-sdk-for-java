@@ -10,7 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.UrlBuilder;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import reactor.core.Disposable;
@@ -216,7 +216,7 @@ class RequestRetryTestFactory {
             UrlBuilder builder = UrlBuilder.parse(request.getUrl());
             builder.setQueryParameter(RETRY_TEST_QUERY_PARAM, "testquery");
             try {
-                request.setUrl(builder.toURL());
+                request.setUrl(builder.toUrl());
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("The URL has been mangled");
             }

@@ -15,7 +15,6 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
       - hotfix/*
       - release/*
   paths:
@@ -23,6 +22,7 @@ trigger:
       - sdk/keyvault/
     exclude:
       - sdk/keyvault/microsoft-azure
+      - sdk/keyvault/mgmt-
 
 pr:
   branches:
@@ -36,18 +36,23 @@ pr:
       - sdk/keyvault/
     exclude:
       - sdk/keyvault/microsoft-azure
+      - sdk/keyvault/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: keyvault
+      SDKType: client
       Artifacts:
         - name: azure-security-keyvault-certificates
+          groupId: com.azure
           safeName: azuresecuritykeyvaultcertificates
           stagingProfileId: 88192f04117501
         - name: azure-security-keyvault-keys
+          groupId: com.azure
           safeName: azuresecuritykeyvaultkeys
           stagingProfileId: 88192f04117501
         - name: azure-security-keyvault-secrets
+          groupId: com.azure
           safeName: azuresecuritykeyvaultsecrets
           stagingProfileId: 88192f04117501

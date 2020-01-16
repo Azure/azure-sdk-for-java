@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -86,18 +87,18 @@ public final class PageBlobClient extends BlobClientBase {
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
-     * @param accessConditions A {@link BlobRequestConditions} object that represents the access conditions for the
+     * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public BlobOutputStream getBlobOutputStream(PageRange pageRange, BlobRequestConditions accessConditions) {
-        return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, pageRange, accessConditions);
+    public BlobOutputStream getBlobOutputStream(PageRange pageRange, BlobRequestConditions requestConditions) {
+        return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, pageRange, requestConditions);
     }
 
     /**
-     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
-     * information, see the
+     * Creates a page blob of the specified length. By default this method will not overwrite an existing blob.
+     * Call PutPage to upload data data to a page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -109,7 +110,29 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the created page blob.
      */
     public PageBlobItem create(long size) {
-        return createWithResponse(size, null, null, null, null, null, Context.NONE).getValue();
+        return create(size, false);
+    }
+
+    /**
+     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobClient.create#long-boolean}
+     *
+     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @return The information of the created page blob.
+     */
+    public PageBlobItem create(long size, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return createWithResponse(size, null, null, null, blobRequestConditions, null, Context.NONE).getValue();
     }
 
 
@@ -117,6 +140,8 @@ public final class PageBlobClient extends BlobClientBase {
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -128,22 +153,21 @@ public final class PageBlobClient extends BlobClientBase {
      * number must be between 0 and 2^63 - 1.The default value is 0.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the created page blob.
      */
     public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
-        Map<String, String> metadata, BlobRequestConditions accessConditions, Duration timeout, Context context) {
+        Map<String, String> metadata, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, sequenceNumber, headers,
-            metadata, accessConditions, context);
+            metadata, requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
-     * Writes one or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
-     * information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     * Writes one or more pages to the page blob. The write size must be a multiple of 512. For more information, see
+     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
@@ -159,25 +183,28 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the uploaded pages.
      */
     public PageBlobItem uploadPages(PageRange pageRange, InputStream body) {
-        return uploadPagesWithResponse(pageRange, body, null, null, Context.NONE).getValue();
+        return uploadPagesWithResponse(pageRange, body, null, null, null, Context.NONE).getValue();
     }
 
     /**
-     * Writes one or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
-     * information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     * Writes one or more pages to the page blob. The write size must be a multiple of 512. For more information, see
+     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobRequestConditions-Duration-Context}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
      * @param body The data to upload.
+     * @param contentMd5 An MD5 hash of the page content. This hash is used to verify the integrity of the page during
+     * transport. When this header is specified, the storage service compares the hash of the content that has arrived
+     * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
+     * operation will fail.
      * @param pageBlobRequestConditions {@link PageBlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -185,21 +212,20 @@ public final class PageBlobClient extends BlobClientBase {
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
-    public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
+    public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(body, "'body' cannot be null.");
         final long length = pageRange.getEnd() - pageRange.getStart() + 1;
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES);
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange,
-            fbb.subscribeOn(Schedulers.elastic()),
-            pageBlobRequestConditions, context);
+            fbb.subscribeOn(Schedulers.elastic()), contentMd5, pageBlobRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
-     * Writes one or more pages from the source page blob to this page blob. The start and end offsets must be a
-     * multiple of 512. For more information, see the
+     * Writes one or more pages from the source page blob to this page blob. The write size must be a multiple of 512.
+     * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -224,8 +250,8 @@ public final class PageBlobClient extends BlobClientBase {
     }
 
     /**
-     * Writes one or more pages from the source page blob to this page blob. The start and end offsets must be a
-     * multiple of 512. For more information, see the
+     * Writes one or more pages from the source page blob to this page blob. The write size must be a multiple of 512.
+     * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -242,7 +268,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param sourceOffset The source offset to copy from.  Pass null or 0 to copy from the beginning of source blob.
      * @param sourceContentMd5 An MD5 hash of the block content from the source blob. If specified, the service will
      * calculate the MD5 of the received data and fail the request if it does not match the provided MD5.
-     * @param destAccessConditions {@link PageBlobRequestConditions}
+     * @param destRequestConditions {@link PageBlobRequestConditions}
      * @param sourceRequestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -250,17 +276,17 @@ public final class PageBlobClient extends BlobClientBase {
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
     public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
-        byte[] sourceContentMd5, PageBlobRequestConditions destAccessConditions,
+        byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(range, sourceUrl,
-            sourceOffset, sourceContentMd5, destAccessConditions, sourceRequestConditions, context);
+            sourceOffset, sourceContentMd5, destRequestConditions, sourceRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
-     * Frees the specified pages from the page blob. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     * Frees the specified pages from the page blob. The size of the range must be a multiple of 512. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -276,8 +302,8 @@ public final class PageBlobClient extends BlobClientBase {
     }
 
     /**
-     * Frees the specified pages from the page blob. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     * Frees the specified pages from the page blob. The size of the range must be a multiple of 512. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -323,15 +349,15 @@ public final class PageBlobClient extends BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobRequestConditions-Duration-Context}
      *
      * @param blobRange {@link BlobRange}
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the page ranges.
      */
-    public Response<PageList> getPageRangesWithResponse(BlobRange blobRange, BlobRequestConditions accessConditions,
+    public Response<PageList> getPageRangesWithResponse(BlobRange blobRange, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
-            .getPageRangesWithResponse(blobRange, accessConditions, context), timeout);
+            .getPageRangesWithResponse(blobRange, requestConditions, context), timeout);
     }
 
     /**
@@ -366,15 +392,15 @@ public final class PageBlobClient extends BlobClientBase {
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
      * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
      * long as the snapshot specified by prevsnapshot is the older of the two.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the different page ranges.
      */
     public Response<PageList> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
-        BlobRequestConditions accessConditions, Duration timeout, Context context) {
+        BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
-            .getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context), timeout);
+            .getPageRangesDiffWithResponse(blobRange, prevSnapshot, requestConditions, context), timeout);
     }
 
     /**
@@ -403,14 +429,15 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The resized page blob.
      */
-    public Response<PageBlobItem> resizeWithResponse(long size, BlobRequestConditions accessConditions,
+    public Response<PageBlobItem> resizeWithResponse(long size, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.resizeWithResponse(size, accessConditions, context);
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.resizeWithResponse(size, requestConditions,
+            context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -443,15 +470,15 @@ public final class PageBlobClient extends BlobClientBase {
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
      * use to track requests and manage concurrency issues.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The updated page blob.
      */
     public Response<PageBlobItem> updateSequenceNumberWithResponse(SequenceNumberActionType action,
-        Long sequenceNumber, BlobRequestConditions accessConditions, Duration timeout, Context context) {
+        Long sequenceNumber, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient
-            .updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context);
+            .updateSequenceNumberWithResponse(action, sequenceNumber, requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -490,7 +517,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -499,9 +526,9 @@ public final class PageBlobClient extends BlobClientBase {
      * @throws IllegalArgumentException If {@code source} is a malformed {@link URL}.
      */
     public Response<CopyStatusType> copyIncrementalWithResponse(String source, String snapshot,
-        RequestConditions modifiedAccessConditions, Duration timeout, Context context) {
+        RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
         Mono<Response<CopyStatusType>> response = pageBlobAsyncClient
-            .copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context);
+            .copyIncrementalWithResponse(source, snapshot, modifiedRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }

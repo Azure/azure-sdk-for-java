@@ -13,6 +13,8 @@ import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Collections;
@@ -32,6 +34,15 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     private String sourceUrl = "https://example.com";
     private long offset = 1024L;
     private long count = length;
+    private byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
+
+    /**
+     * Constructor for snippets.
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public BlockBlobAsyncClientJavaDocCodeSnippets() throws NoSuchAlgorithmException {
+    }
 
     /**
      * Code snippet for {@link BlockBlobAsyncClient#upload(Flux, long)}
@@ -45,24 +56,39 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#upload(Flux, long, boolean)}
      */
-    public void upload2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+    public void uploadWithOverwrite() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long-boolean
+        boolean overwrite = false; // Default behavior
+        client.upload(data, length, overwrite).subscribe(response ->
+            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getContentMd5())));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long-boolean
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHttpHeaders, Map, AccessTier, byte[], BlobRequestConditions)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public void upload2() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
             .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, accessConditions)
+        client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, md5, requestConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions
     }
 
     /**
@@ -78,13 +104,15 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, String)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, byte[], String)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
-    public void stageBlock2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-String
-        client.stageBlockWithResponse(base64BlockID, data, length, leaseId).subscribe(response ->
+    public void stageBlock2() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String
+        client.stageBlockWithResponse(base64BlockID, data, length, md5, leaseId).subscribe(response ->
             System.out.printf("Staging block completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-String
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String
     }
 
     /**
@@ -155,6 +183,17 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobAsyncClient#commitBlockList(List, boolean)}
+     */
+    public void commitBlockListWithOverwrite() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List-boolean
+        boolean overwrite = false; // Default behavior
+        client.commitBlockList(Collections.singletonList(base64BlockID), overwrite).subscribe(response ->
+            System.out.printf("Committing block list completed. Last modified: %s%n", response.getLastModified()));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List-boolean
+    }
+
+    /**
      * Code snippet for {@link BlockBlobAsyncClient#commitBlockListWithResponse(List, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
      */
     public void commitBlockList2() {
@@ -165,11 +204,11 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
-            AccessTier.HOT, accessConditions).subscribe(response ->
+            AccessTier.HOT, requestConditions).subscribe(response ->
                 System.out.printf("Committing block list completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
     }

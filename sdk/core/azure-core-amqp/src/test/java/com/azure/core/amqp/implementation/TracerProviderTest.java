@@ -3,15 +3,15 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -22,7 +22,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.never;
@@ -31,7 +33,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TracerProviderTest {
-    private static final String METHOD_NAME = "Azure.eventhubs.send";
+    private static final String METHOD_NAME = "EventHubs.send";
 
     @Mock
     private Tracer tracer;
@@ -41,7 +43,7 @@ public class TracerProviderTest {
     private List<Tracer> tracers;
     private TracerProvider tracerProvider;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
@@ -49,7 +51,7 @@ public class TracerProviderTest {
         tracerProvider = new TracerProvider(tracers);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
     }
@@ -72,7 +74,7 @@ public class TracerProviderTest {
         final TracerProvider provider = new TracerProvider(Collections.emptyList());
 
         // Act & Assert
-        Assert.assertFalse(provider.isEnabled());
+        Assertions.assertFalse(provider.isEnabled());
     }
 
     @Test
@@ -102,12 +104,12 @@ public class TracerProviderTest {
         // Assert
         // Want to ensure that the data added to the parent and child are available.
         final Optional<Object> parentData = updatedContext.getData(parentKey);
-        Assert.assertTrue(parentData.isPresent());
-        Assert.assertEquals(parentValue, parentData.get());
+        Assertions.assertTrue(parentData.isPresent());
+        Assertions.assertEquals(parentValue, parentData.get());
 
         final Optional<Object> childData = updatedContext.getData(childKey);
-        Assert.assertTrue(childData.isPresent());
-        Assert.assertEquals(childValue, childData.get());
+        Assertions.assertTrue(childData.isPresent());
+        Assertions.assertEquals(childValue, childData.get());
     }
 
     @Test
@@ -165,7 +167,7 @@ public class TracerProviderTest {
     @Test
     public void endSpanAmqpException() {
         // Arrange
-        final ErrorCondition errorCondition = ErrorCondition.NOT_FOUND;
+        final AmqpErrorCondition errorCondition = AmqpErrorCondition.NOT_FOUND;
         final Exception exception = new AmqpException(true, errorCondition, "", null);
         Context sendContext = new Context("test-span-key", "value");
 
@@ -179,18 +181,54 @@ public class TracerProviderTest {
         }
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void addSpanLinksNoContext() {
         // Act
-        tracerProvider.addSpanLinks(null);
+        assertThrows(NullPointerException.class, () -> tracerProvider.addSpanLinks(null));
     }
 
     /**
      * Verify that we add spans for all the tracers.
      */
-    @Test(expected = NullPointerException.class)
+    @Test
     public void addSpanLinks() {
         // Act
-        tracerProvider.addSpanLinks(null);
+        assertThrows(NullPointerException.class, () -> tracerProvider.addSpanLinks(null));
+    }
+
+    @Test
+    public void getSpanBuilderReturnsUpdatedContext() {
+        // Arrange
+        final String spanBuilderKey = "spanBuilder-key";
+        final String spanBuilderValue = "spanBuilder-value";
+
+        final String spanBuilderKey1 = "spanBuilder-key1";
+        final String spanBuilderValue1 = "spanBuilder-value1";
+        final Context startingContext = Context.NONE;
+
+        when(tracer.getSharedSpanBuilder(anyString(), any())).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(spanBuilderKey, spanBuilderValue);
+            }
+        );
+        when(tracer2.getSharedSpanBuilder(anyString(), any())).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(spanBuilderKey1, spanBuilderValue1);
+            }
+        );
+
+        // Act
+        final Context updatedContext = tracerProvider.getSharedSpanBuilder(startingContext);
+
+        // Assert
+        final Optional<Object> spanBuilderData = updatedContext.getData(spanBuilderKey);
+        Assertions.assertTrue(spanBuilderData.isPresent());
+        Assertions.assertEquals(spanBuilderValue, spanBuilderData.get());
+
+        final Optional<Object> spanBuilderData1 = updatedContext.getData(spanBuilderKey1);
+        Assertions.assertTrue(spanBuilderData1.isPresent());
+        Assertions.assertEquals(spanBuilderValue1, spanBuilderData1.get());
     }
 }

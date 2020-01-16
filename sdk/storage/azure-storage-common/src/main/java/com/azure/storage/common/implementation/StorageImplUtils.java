@@ -3,8 +3,8 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.core.implementation.http.UrlBuilder;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 import java.net.MalformedURLException;
@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -65,7 +66,7 @@ public class StorageImplUtils {
                                                              Function<String, T> valueParser) {
         TreeMap<String, T> pieces = new TreeMap<>();
 
-        if (com.azure.core.implementation.util.ImplUtils.isNullOrEmpty(queryString)) {
+        if (CoreUtils.isNullOrEmpty(queryString)) {
             return pieces;
         }
 
@@ -196,7 +197,7 @@ public class StorageImplUtils {
         builder.setPath(builder.getPath() + name);
 
         try {
-            return builder.toURL();
+            return builder.toUrl();
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException(ex);
         }
@@ -220,7 +221,7 @@ public class StorageImplUtils {
 
         builder.setPath(builder.getPath().substring(0, builder.getPath().lastIndexOf("/")));
         try {
-            return builder.toURL();
+            return builder.toUrl();
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException(ex);
         }
@@ -238,7 +239,7 @@ public class StorageImplUtils {
         String host = builder.getHost();
         //Parse host to get account name
         // host will look like this : <accountname>.blob.core.windows.net
-        if (!ImplUtils.isNullOrEmpty(host)) {
+        if (!CoreUtils.isNullOrEmpty(host)) {
             int accountNameIndex = host.indexOf('.');
             if (accountNameIndex == -1) {
                 // host only contains account name
@@ -249,5 +250,14 @@ public class StorageImplUtils {
             }
         }
         return accountName;
+    }
+
+    /**
+     * Returns an empty string if value is {@code null}, otherwise returns value
+     * @param value The value to check and return.
+     * @return The value or empty string.
+     */
+    public static String emptyIfNull(String value) {
+        return value == null ? "" : value;
     }
 }

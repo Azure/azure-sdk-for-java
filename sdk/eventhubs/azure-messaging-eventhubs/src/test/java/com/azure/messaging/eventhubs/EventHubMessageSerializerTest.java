@@ -8,18 +8,18 @@ import com.azure.messaging.eventhubs.implementation.ManagementChannel;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.message.Message;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.TestUtils.OFFSET;
@@ -28,43 +28,42 @@ import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
 import static com.azure.messaging.eventhubs.TestUtils.SEQUENCE_NUMBER;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EventHubMessageSerializerTest {
     private final EventHubMessageSerializer serializer = new EventHubMessageSerializer();
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void deserializeMessageNotNull() {
-        serializer.deserialize(null, EventData.class);
+        assertThrows(NullPointerException.class, () -> serializer.deserialize(null, EventData.class));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void deserializeClassNotNull() {
-        serializer.deserialize(Proton.message(), null);
+        assertThrows(NullPointerException.class, () -> serializer.deserialize(Proton.message(), null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void serializeObjectNotNull() {
-        serializer.serialize(null);
+        assertThrows(NullPointerException.class, () -> serializer.serialize(null));
     }
 
     /**
      * Verify that we cannot serialize something that is not of type EventData.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void cannotSerializeObject() {
         String something = "oops";
-
-        serializer.serialize(something);
+        assertThrows(IllegalArgumentException.class, () -> serializer.serialize(something));
     }
 
     /**
      * Verify we can only deserialize supported classes.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void cannotDeserializeObject() {
         final Message message = getMessage("hello-world".getBytes(UTF_8));
-
-        serializer.deserialize(message, EventHubAsyncClient.class);
+        assertThrows(IllegalArgumentException.class, () -> serializer.deserialize(message, EventHubAsyncClient.class));
     }
 
     /**
@@ -86,28 +85,27 @@ public class EventHubMessageSerializerTest {
 
         // Assert
         // Verifying all our system properties were properly deserialized.
-        Assert.assertEquals(ENQUEUED_TIME, eventData.getEnqueuedTime());
-        Assert.assertEquals(OFFSET, eventData.getOffset());
-        Assert.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
-        Assert.assertEquals(SEQUENCE_NUMBER, eventData.getSequenceNumber());
+        Assertions.assertEquals(ENQUEUED_TIME, eventData.getEnqueuedTime());
+        Assertions.assertEquals(OFFSET, eventData.getOffset());
+        Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
+        Assertions.assertEquals(SEQUENCE_NUMBER, eventData.getSequenceNumber());
 
-        Assert.assertTrue(eventData.getSystemProperties().containsKey(OTHER_SYSTEM_PROPERTY));
+        Assertions.assertTrue(eventData.getSystemProperties().containsKey(OTHER_SYSTEM_PROPERTY));
         final Object otherPropertyValue = eventData.getSystemProperties().get(OTHER_SYSTEM_PROPERTY);
-        Assert.assertTrue(otherPropertyValue instanceof Boolean);
-        Assert.assertTrue((Boolean) otherPropertyValue);
+        Assertions.assertTrue(otherPropertyValue instanceof Boolean);
+        Assertions.assertTrue((Boolean) otherPropertyValue);
 
         // Verifying our application properties are the same.
-        Assert.assertEquals(APPLICATION_PROPERTIES.size(), eventData.getProperties().size());
+        Assertions.assertEquals(APPLICATION_PROPERTIES.size(), eventData.getProperties().size());
         APPLICATION_PROPERTIES.forEach((key, value) -> {
-            Assert.assertTrue(eventData.getProperties().containsKey(key));
-            Assert.assertEquals(value, eventData.getProperties().get(key));
+            Assertions.assertTrue(eventData.getProperties().containsKey(key));
+            Assertions.assertEquals(value, eventData.getProperties().get(key));
         });
 
         // Verify that the partitionKey, offset, enqueued time, sequenceNumber properties are no longer in the system
         // properties map.
         for (String property : systemPropertyNames) {
-            Assert.assertFalse(property + " should not be in system properties map.",
-                eventData.getSystemProperties().containsKey(property));
+            Assertions.assertFalse(eventData.getSystemProperties().containsKey(property), property + " should not be in system properties map.");
         }
 
         // Verifying the contents of our message is the same.
@@ -146,14 +144,14 @@ public class EventHubMessageSerializerTest {
         final PartitionProperties partitionProperties = serializer.deserialize(message, PartitionProperties.class);
 
         // Assert
-        Assert.assertNotNull(partitionProperties);
-        Assert.assertEquals(eventHubName, partitionProperties.getEventHubName());
-        Assert.assertEquals(id, partitionProperties.getId());
-        Assert.assertEquals(beginningSequenceNumber, partitionProperties.getBeginningSequenceNumber());
-        Assert.assertEquals(lastEnqueuedSequenceNumber, partitionProperties.getLastEnqueuedSequenceNumber());
-        Assert.assertEquals(lastEnqueuedOffset, partitionProperties.getLastEnqueuedOffset());
-        Assert.assertEquals(lastEnqueuedTime, partitionProperties.getLastEnqueuedTime());
-        Assert.assertEquals(isEmpty, partitionProperties.isEmpty());
+        Assertions.assertNotNull(partitionProperties);
+        Assertions.assertEquals(eventHubName, partitionProperties.getEventHubName());
+        Assertions.assertEquals(id, partitionProperties.getId());
+        Assertions.assertEquals(beginningSequenceNumber, partitionProperties.getBeginningSequenceNumber());
+        Assertions.assertEquals(lastEnqueuedSequenceNumber, partitionProperties.getLastEnqueuedSequenceNumber());
+        Assertions.assertEquals(lastEnqueuedOffset, partitionProperties.getLastEnqueuedOffset());
+        Assertions.assertEquals(lastEnqueuedTime, partitionProperties.getLastEnqueuedTime());
+        Assertions.assertEquals(isEmpty, partitionProperties.isEmpty());
     }
 
     /**
@@ -181,21 +179,21 @@ public class EventHubMessageSerializerTest {
         final EventHubProperties properties = serializer.deserialize(message, EventHubProperties.class);
 
         // Assert
-        Assert.assertNotNull(properties);
-        Assert.assertEquals(eventHubName, properties.getName());
-        Assert.assertEquals(createdAt, properties.getCreatedAt());
-        Assert.assertArrayEquals(partitionIds, properties.getPartitionIds());
+        Assertions.assertNotNull(properties);
+        Assertions.assertEquals(eventHubName, properties.getName());
+        Assertions.assertEquals(createdAt, properties.getCreatedAt());
+        Assertions.assertArrayEquals(partitionIds, properties.getPartitionIds().stream().toArray(String[]::new));
     }
 
     /**
      * Verify that it throws if the value is not what we expect. In this case, eventHubName is not a string.
      */
-    @Test(expected = AzureException.class)
+    @Test
     public void throwsWhenIncorrectTypeInResponse() {
         // Arrange
         final Long eventHubName = 100L;
-        final Date createdAtAsDate  = new Date(1569275540L);
-        final String[] partitionIds = new String[]{ "1", "foo", "bar", "baz" };
+        final Date createdAtAsDate = new Date(1569275540L);
+        final String[] partitionIds = new String[]{"1", "foo", "bar", "baz"};
 
         final Map<String, Object> values = new HashMap<>();
         values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
@@ -207,18 +205,20 @@ public class EventHubMessageSerializerTest {
         final Message message = Proton.message();
         message.setBody(amqpValue);
 
-        // Act
-        serializer.deserialize(message, EventHubProperties.class);
+        assertThrows(AzureException.class, () -> {
+            // Act
+            serializer.deserialize(message, EventHubProperties.class);
+        });
     }
 
     /**
      * Verify that it throws if the value in the map is null.
      */
-    @Test(expected = AzureException.class)
+    @Test
     public void throwsWhenNullValueInResponse() {
         // Arrange
         final String eventHubName = "event-hub-name-test";
-        final Date createdAtAsDate  = new Date(1569275540L);
+        final Date createdAtAsDate = new Date(1569275540L);
 
         final Map<String, Object> values = new HashMap<>();
         values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
@@ -230,7 +230,9 @@ public class EventHubMessageSerializerTest {
         final Message message = Proton.message();
         message.setBody(amqpValue);
 
-        // Act
-        serializer.deserialize(message, EventHubProperties.class);
+        assertThrows(AzureException.class, () -> {
+            // Act
+            serializer.deserialize(message, EventHubProperties.class);
+        });
     }
 }

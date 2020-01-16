@@ -24,8 +24,8 @@ class SecretRequestAttributes {
         if (secretProperties.getNotBefore() != null) {
             this.notBefore = secretProperties.getNotBefore().toEpochSecond();
         }
-        if (secretProperties.getExpires() != null) {
-            this.expires = secretProperties.getExpires().toEpochSecond();
+        if (secretProperties.getExpiresOn() != null) {
+            this.expires = secretProperties.getExpiresOn().toEpochSecond();
         }
         this.enabled = secretProperties.isEnabled();
     }

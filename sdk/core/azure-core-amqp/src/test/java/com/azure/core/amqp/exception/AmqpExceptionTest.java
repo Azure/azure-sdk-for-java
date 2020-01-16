@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AmqpExceptionTest {
     private final SessionErrorContext context = new SessionErrorContext("namespace-test", "entity-path-test");
@@ -19,17 +19,17 @@ public class AmqpExceptionTest {
         AmqpException exception = new AmqpException(true, message, context);
 
         // Assert
-        Assert.assertTrue(exception.isTransient());
-        Assert.assertNotNull(exception.getMessage());
-        Assert.assertTrue(exception.getMessage().contains(message));
+        Assertions.assertTrue(exception.isTransient());
+        Assertions.assertNotNull(exception.getMessage());
+        Assertions.assertTrue(exception.getMessage().contains(message));
 
-        Assert.assertTrue(exception.getContext() instanceof SessionErrorContext);
+        Assertions.assertTrue(exception.getContext() instanceof SessionErrorContext);
 
         SessionErrorContext actualContext = (SessionErrorContext) exception.getContext();
-        Assert.assertEquals(context.getNamespace(), actualContext.getNamespace());
-        Assert.assertEquals(context.getEntityPath(), actualContext.getEntityPath());
+        Assertions.assertEquals(context.getNamespace(), actualContext.getNamespace());
+        Assertions.assertEquals(context.getEntityPath(), actualContext.getEntityPath());
 
-        Assert.assertNull(exception.getErrorCondition());
+        Assertions.assertNull(exception.getErrorCondition());
     }
 
     /**
@@ -39,20 +39,20 @@ public class AmqpExceptionTest {
     public void constructorErrorCondition() {
         // Arrange
         IllegalArgumentException innerException = new IllegalArgumentException("Some parameter");
-        ErrorCondition condition = ErrorCondition.ILLEGAL_STATE;
+        AmqpErrorCondition condition = AmqpErrorCondition.ILLEGAL_STATE;
 
         // Act
         AmqpException exception = new AmqpException(false, condition, message, innerException, context);
 
         // Assert
-        Assert.assertEquals(condition, exception.getErrorCondition());
+        Assertions.assertEquals(condition, exception.getErrorCondition());
 
-        Assert.assertTrue(exception.getContext() instanceof SessionErrorContext);
+        Assertions.assertTrue(exception.getContext() instanceof SessionErrorContext);
 
         SessionErrorContext actualContext = (SessionErrorContext) exception.getContext();
-        Assert.assertEquals(context.getNamespace(), actualContext.getNamespace());
-        Assert.assertEquals(context.getEntityPath(), actualContext.getEntityPath());
+        Assertions.assertEquals(context.getNamespace(), actualContext.getNamespace());
+        Assertions.assertEquals(context.getEntityPath(), actualContext.getEntityPath());
 
-        Assert.assertSame(innerException, exception.getCause());
+        Assertions.assertSame(innerException, exception.getCause());
     }
 }

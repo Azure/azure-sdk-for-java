@@ -78,6 +78,9 @@ public class HttpConstants {
         public static final String IS_QUERY = "x-ms-documentdb-isquery";
         public static final String ENABLE_CROSS_PARTITION_QUERY = "x-ms-documentdb-query-enablecrosspartition";
         public static final String PARALLELIZE_CROSS_PARTITION_QUERY = "x-ms-documentdb-query-parallelizecrosspartitionquery";
+        public static final String IS_QUERY_PLAN_REQUEST = "x-ms-cosmos-is-query-plan-request";
+        public static final String SUPPORTED_QUERY_FEATURES = "x-ms-cosmos-supported-query-features";
+        public static final String QUERY_VERSION = "x-ms-cosmos-query-version";
 
         // Our custom DocDB headers
         public static final String CONTINUATION = "x-ms-continuation";
@@ -164,6 +167,7 @@ public class HttpConstants {
         // Offer header
         public static final String OFFER_TYPE = "x-ms-offer-type";
         public static final String OFFER_THROUGHPUT = "x-ms-offer-throughput";
+        public static final String OFFER_MIN_THROUGHPUT = "x-ms-cosmos-min-throughput";
         public static final String OFFER_IS_RU_PER_MINUTE_THROUGHPUT_ENABLED = "x-ms-offer-is-ru-per-minute-throughput-enabled";
 
         // Upsert header
@@ -248,12 +252,13 @@ public class HttpConstants {
 
     public static class Versions {
         public static final String CURRENT_VERSION = "2018-12-31";
+        public static final String QUERY_VERSION = "1.0";
 
         // TODO: FIXME we can use maven plugin for generating a version file
         // @see
         // https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
         // {x-version-update-start;com.microsoft.azure:azure-cosmos;current}
-        public static final String SDK_VERSION = "3.4.0";
+        public static final String SDK_VERSION = "3.7.0-beta.1";
         // {x-version-update-end}
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }

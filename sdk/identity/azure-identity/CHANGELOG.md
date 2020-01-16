@@ -1,5 +1,33 @@
 # Release History
 
+## 1.0.3 (2020-01-013)
+- Support datetime format `M/d/yyyy K:mm:ss a XXX` for token `expires_on` property on Windows App Services.
+
+## 1.0.2 (2020-01-07)
+- Fix MSI_ENDPOINT and MSI_SECRET environment variable lookup issue in `ManagedIdentityCredential` when running on App Service
+
+## 1.0.0 (2019-10-25) - November 2019 SDK Release
+**Breaking changes**
+
+- The `getToken(TokenRequest tokenRequest)` methods on all the credentials are changed to `getToken(TokenRequestContext tokenRequestContext)`. 
+- All credentials are moved from `com.azure.identity.credential` package to `com.azure.identity` package
+- `DeviceCodeChallenge` is renamed to `DeviceCodeInfo`, with `int expiresIn()` replaced with `OffsetDateTime expiresOn()` returning the time of the device code expiration
+- All methods containing `uri` is renamed to contain `url` for consistency
+
+**Known issues**
+- Support connecting to different clouds with `AZURE_CLOUD` environment variable ([#5741](https://github.com/Azure/azure-sdk-for-java/issues/5741))
+
+## 1.0.0-preview.4 (2019-10-07)
+**New features**
+
+- A new credential `AuthorizationCodeCredential` is added.
+- `DeviceCodeCredentialBuilder`, `InteractiveBrowserCredentialBuilder`, and `UsernamePasswordCredentialBuilder` now
+supports single tenant apps with `.tenantId(String)` method.
+
+**Breaking changes**
+
+The `getToken(String... scopes)` methods on all the credentials are changed to `getToken(TokenRequest tokenRequest)`. 
+
 ## 1.0.0-preview.3 (2019-09-09)
 **New features**
 

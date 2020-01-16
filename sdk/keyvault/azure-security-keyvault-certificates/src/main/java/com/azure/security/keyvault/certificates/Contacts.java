@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.security.keyvault.certificates.models.Contact;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -22,7 +22,7 @@ class Contacts {
      * The contact list for the vault certificates.
      */
     @JsonProperty(value = "contacts")
-    private List<Contact> contactList;
+    private List<CertificateContact> contactList;
 
     /**
      * Get the id value.
@@ -38,7 +38,7 @@ class Contacts {
      *
      * @return the contactList value
      */
-    List<Contact> contactList() {
+    List<CertificateContact> contactList() {
         return this.contactList;
     }
 
@@ -48,7 +48,7 @@ class Contacts {
      * @param contactList the contactList value to set
      * @return the Contacts object itself.
      */
-    Contacts contactList(List<Contact> contactList) {
+    Contacts contactList(List<CertificateContact> contactList) {
         this.contactList = contactList;
         return this;
     }

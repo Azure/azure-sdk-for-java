@@ -4,46 +4,56 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.RequestConditions
-import com.azure.core.implementation.util.ImplUtils
-import com.azure.core.util.polling.PollResponse
+import com.azure.core.util.CoreUtils
+import com.azure.core.util.polling.LongRunningOperationStatus
+import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
-
+import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
-
+import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
-import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.sas.BlobSasPermission
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.common.implementation.Constants
+import reactor.core.Exceptions
+import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
+import java.nio.file.Files
+import java.nio.file.OpenOption
+import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
 
 class BlobAPITest extends APISpec {
-    BlobClientBase bc
+    BlobClient bc
     String blobName
 
     def setup() {
         blobName = generateBlobName()
-        bc = cc.getBlobClient(blobName).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc = cc.getBlobClient(blobName)
+        bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
     }
 
     def "Download all null"() {
@@ -51,39 +61,39 @@ class BlobAPITest extends APISpec {
         def stream = new ByteArrayOutputStream()
         def response = bc.downloadWithResponse(stream, null, null, null, false, null, null)
         def body = ByteBuffer.wrap(stream.toByteArray())
-        def headers = response.getHeaders()
+        def headers = response.getDeserializedHeaders()
 
         then:
         body == defaultData
-        headers.toMap().keySet().stream().noneMatch({ it.startsWith("x-ms-meta-") })
-        headers.getValue("Content-Length") != null
-        headers.getValue("Content-Type") != null
-        headers.getValue("Content-Range") == null
-        headers.getValue("Content-MD5") != null
-        headers.getValue("Content-Encoding") == null
-        headers.getValue("Cache-Control") == null
-        headers.getValue("Content-Disposition") == null
-        headers.getValue("Content-Language") == null
-        headers.getValue("x-ms-blob-sequence-number") == null
-        headers.getValue("x-ms-blob-type") == BlobType.BLOCK_BLOB.toString()
-        headers.getValue("x-ms-copy-completion-time") == null
-        headers.getValue("x-ms-copy-status-description") == null
-        headers.getValue("x-ms-copy-id") == null
-        headers.getValue("x-ms-copy-progress") == null
-        headers.getValue("x-ms-copy-source") == null
-        headers.getValue("x-ms-copy-status") == null
-        headers.getValue("x-ms-lease-duration") == null
-        headers.getValue("x-ms-lease-state") == LeaseStateType.AVAILABLE.toString()
-        headers.getValue("x-ms-lease-status") == LeaseStatusType.UNLOCKED.toString()
-        headers.getValue("Accept-Ranges") == "bytes"
-        headers.getValue("x-ms-blob-committed-block-count") == null
-        headers.getValue("x-ms-server-encrypted") != null
-        headers.getValue("x-ms-blob-content-md5") == null
+        CoreUtils.isNullOrEmpty(headers.getMetadata())
+        headers.getContentLength() != null
+        headers.getContentType() != null
+        headers.getContentRange() == null
+        headers.getContentMd5() != null
+        headers.getContentEncoding() == null
+        headers.getCacheControl() == null
+        headers.getContentDisposition() == null
+        headers.getContentLanguage() == null
+        headers.getBlobSequenceNumber() == null
+        headers.getBlobType() == BlobType.BLOCK_BLOB
+        headers.getCopyCompletionTime() == null
+        headers.getCopyStatusDescription() == null
+        headers.getCopyId() == null
+        headers.getCopyProgress() == null
+        headers.getCopySource() == null
+        headers.getCopyStatus() == null
+        headers.getLeaseDuration() == null
+        headers.getLeaseState() == LeaseStateType.AVAILABLE
+        headers.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        headers.getAcceptRanges() == "bytes"
+        headers.getBlobCommittedBlockCount() == null
+        headers.isServerEncrypted() != null
+        headers.getBlobContentMD5() == null
     }
 
     def "Download empty file"() {
         setup:
-        bc = cc.getBlobClient("emptyAppendBlob").getAppendBlobClient()
+        def bc = cc.getBlobClient("emptyAppendBlob").getAppendBlobClient()
         bc.create()
 
         when:
@@ -104,7 +114,7 @@ class BlobAPITest extends APISpec {
     def "Download with retry range"() {
         /*
         We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
-        a retry per the ReliableDownloadOptions. The next request should have the same range header, which was generated
+        a retry per the DownloadRetryOptions. The next request should have the same range header, which was generated
         from the count and offset values in HttpGetterInfo that was constructed on the initial call to download. We
         don't need to check the data here, but we want to ensure that the correct range is set each time. This will
         test the correction of a bug that was found which caused HttpGetterInfo to have an incorrect offset when it was
@@ -115,7 +125,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def range = new BlobRange(2, 5L)
-        def options = new ReliableDownloadOptions().maxRetryRequests(3)
+        def options = new DownloadRetryOptions().setMaxRetryRequests(3)
         bu2.downloadWithResponse(new ByteArrayOutputStream(), range, options, null, false, null, null)
 
         then:
@@ -214,15 +224,15 @@ class BlobAPITest extends APISpec {
     def "Download md5"() {
         when:
         def response = bc.downloadWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3), null, null, true, null, null)
-        def contentMD5 = response.getHeaders().getValue("content-md5").getBytes()
+        def contentMD5 = response.getDeserializedHeaders().getContentMd5()
 
         then:
-        contentMD5 == Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes()))
+        contentMD5 == MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes())
     }
 
     def "Download error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.download(null)
@@ -240,7 +250,7 @@ class BlobAPITest extends APISpec {
         new SpecializedBlobClientBuilder()
             .blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream("ABC".getBytes()), 3)
+            .upload(new ByteArrayInputStream("ABC".getBytes()), 3, true)
 
         then:
         def snapshotStream = new ByteArrayOutputStream()
@@ -256,11 +266,29 @@ class BlobAPITest extends APISpec {
         }
 
         when:
+        // Default overwrite is false so this should fail
         bc.downloadToFile(testFile.getPath())
 
         then:
         def ex = thrown(UncheckedIOException)
         ex.getCause() instanceof FileAlreadyExistsException
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download to file exists succeeds"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (!testFile.exists()) {
+            assert testFile.createNewFile()
+        }
+
+        when:
+        bc.downloadToFile(testFile.getPath(), true)
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
 
         cleanup:
         testFile.delete()
@@ -275,12 +303,359 @@ class BlobAPITest extends APISpec {
 
         when:
         bc.downloadToFile(testFile.getPath())
-        def fileContent = new Scanner(testFile).useDelimiter("\\Z").next()
+
         then:
-        fileContent == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
 
         cleanup:
         testFile.delete()
+    }
+
+    def "Download file does not exist open options"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (testFile.exists()) {
+            assert testFile.delete()
+        }
+
+        when:
+        Set<OpenOption> openOptions = new HashSet<>()
+        openOptions.add(StandardOpenOption.CREATE_NEW)
+        openOptions.add(StandardOpenOption.READ)
+        openOptions.add(StandardOpenOption.WRITE)
+        bc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download file exist open options"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (!testFile.exists()) {
+            assert testFile.createNewFile()
+        }
+
+        when:
+        Set<OpenOption> openOptions = new HashSet<>()
+        openOptions.add(StandardOpenOption.CREATE)
+        openOptions.add(StandardOpenOption.TRUNCATE_EXISTING)
+        openOptions.add(StandardOpenOption.READ)
+        openOptions.add(StandardOpenOption.WRITE)
+        bc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file"() {
+        setup:
+        def file = getRandomFile(fileSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def properties = bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false, null, null)
+
+        then:
+        compareFiles(file, outFile, 0, fileSize)
+        properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
+        // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file range"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(resourceNamer.randomName(testName, 60))
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), range, null, null, null, false, null, null)
+
+        then:
+        compareFiles(file, outFile, range.getOffset(), range.getCount())
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+
+        /*
+        The last case is to test a range much much larger than the size of the file to ensure we don't accidentally
+        send off parallel requests with invalid ranges.
+         */
+        where:
+        range                                         | _
+        new BlobRange(0, defaultDataSize)             | _ // Exact count
+        new BlobRange(1, defaultDataSize - 1 as Long) | _ // Offset and exact count
+        new BlobRange(3, 2)                           | _ // Narrow range in middle
+        new BlobRange(0, defaultDataSize - 1 as Long) | _ // Count that is less than total
+        new BlobRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
+    }
+
+    /*
+    This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
+     */
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file range fail"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(defaultDataSize + 1), null, null, null, false,
+            null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+    }
+
+    @Requires({ liveMode() })
+    def "Download file count null"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null, null, null, false, null, null)
+
+        then:
+        compareFiles(file, outFile, 0, defaultDataSize)
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file AC"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
+        BlobRequestConditions bro = new BlobRequestConditions().setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file AC fail"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
+        setupBlobLeaseCondition(bc, leaseID)
+        BlobRequestConditions bro = new BlobRequestConditions().setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
+            e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    @Requires({ liveMode() })
+    def "Download file etag lock"() {
+        setup:
+        def file = getRandomFile(Constants.MB)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        Files.deleteIfExists(file.toPath())
+
+        expect:
+        def bac = new BlobClientBuilder()
+            .pipeline(bc.getHttpPipeline())
+            .endpoint(bc.getBlobUrl())
+            .buildAsyncClient()
+            .getBlockBlobAsyncClient()
+
+        /*
+         * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
+         * to change the ETag therefore failing the download.
+         */
+        def options = new ParallelTransferOptions(Constants.KB, null, null)
+
+        /*
+         * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
+         * registered for onErrorDropped the error is logged at the ERROR level.
+         *
+         * onErrorDropped is triggered once the reactive stream has emitted one element, after that exceptions are
+         * dropped.
+         */
+        Hooks.onErrorDropped({ ignored -> /* do nothing with it */ })
+
+        /*
+         * When the download begins trigger an upload to overwrite the downloading blob after waiting 500 milliseconds
+         * so that the download is able to get an ETag before it is changed.
+         */
+        StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
+            .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
+            .verifyErrorSatisfies({
+                /*
+                 * If an operation is running on multiple threads and multiple return an exception Reactor will combine
+                 * them into a CompositeException which needs to be unwrapped. If there is only a single exception
+                 * 'Exceptions.unwrapMultiple' will return a singleton list of the exception it was passed.
+                 *
+                 * These exceptions may be wrapped exceptions where the exception we are expecting is contained within
+                 * ReactiveException that needs to be unwrapped. If the passed exception isn't a 'ReactiveException' it
+                 * will be returned unmodified by 'Exceptions.unwrap'.
+                 */
+                assert Exceptions.unwrapMultiple(it).stream().anyMatch({ it2 ->
+                    def exception = Exceptions.unwrap(it2)
+                    if (exception instanceof BlobStorageException) {
+                        assert ((BlobStorageException) exception).getStatusCode() == 412
+                        return true
+                    }
+                })
+            })
+
+        // Give the file a chance to be deleted by the download operation before verifying its deletion
+        sleep(500)
+        !outFile.exists()
+
+        cleanup:
+        file.delete()
+        outFile.delete()
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file progress receiver"() {
+        def file = getRandomFile(fileSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        def mockReceiver = Mock(ProgressReceiver)
+
+        def numBlocks = fileSize / (4 * 1024 * 1024)
+        def prevCount = 0
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(null, null, mockReceiver),
+            new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null)
+
+        then:
+        // We should receive exactly one notification of the completed progress.
+        1 * mockReceiver.reportProgress(fileSize)
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred > prevCount)) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            } else {
+                prevCount = bytesTransferred
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockReceiver.reportProgress({ it > fileSize })
+
+        cleanup:
+        file.delete()
+        outFile.delete()
+
+        where:
+        fileSize             | _
+        100                  | _
+        8 * 1026 * 1024 + 10 | _
     }
 
     def "Get properties default"() {
@@ -291,7 +666,7 @@ class BlobAPITest extends APISpec {
 
         then:
         validateBasicHeaders(headers)
-        ImplUtils.isNullOrEmpty(properties.getMetadata())
+        CoreUtils.isNullOrEmpty(properties.getMetadata())
         properties.getBlobType() == BlobType.BLOCK_BLOB
         properties.getCopyCompletionTime() == null // tested in "copy"
         properties.getCopyStatusDescription() == null // only returned when the service has errors; cannot validate.
@@ -376,7 +751,7 @@ class BlobAPITest extends APISpec {
 
     def "Get properties error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.getProperties()
@@ -489,7 +864,7 @@ class BlobAPITest extends APISpec {
 
     def "Set HTTP headers error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.setHttpHeaders(null)
@@ -597,7 +972,7 @@ class BlobAPITest extends APISpec {
 
     def "Set metadata error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.setMetadata(null)
@@ -698,7 +1073,7 @@ class BlobAPITest extends APISpec {
 
     def "Snapshot error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.createSnapshot()
@@ -709,13 +1084,12 @@ class BlobAPITest extends APISpec {
 
     def "Copy"() {
         setup:
-        def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
 
         when:
-        poller.block()
-        def properties = copyDestBlob.getProperties()
-        def response = poller.getLastPollResponse()
+        def response = poller.blockLast()
+        def properties = copyDestBlob.getProperties().block()
 
         then:
         properties.getCopyStatus() == CopyStatusType.SUCCESS
@@ -724,7 +1098,7 @@ class BlobAPITest extends APISpec {
         properties.getCopySource() != null
 
         response != null
-        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+        response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
 
         def blobInfo = response.getValue()
         blobInfo != null
@@ -733,55 +1107,55 @@ class BlobAPITest extends APISpec {
 
     def "Copy min"() {
         setup:
-        def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
 
         when:
         def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
-        def verifier = StepVerifier.create(poller.getObserver().take(1))
+        def verifier = StepVerifier.create(poller.take(1))
 
         then:
         verifier.assertNext({
             assert it.getValue() != null
             assert it.getValue().getCopyId() != null
             assert it.getValue().getCopySourceUrl() == bc.getBlobUrl()
-            assert it.getStatus() == PollResponse.OperationStatus.IN_PROGRESS || it.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+            assert it.getStatus() == LongRunningOperationStatus.IN_PROGRESS || it.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
         }).verifyComplete()
     }
 
     def "Copy poller"() {
         setup:
-        def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null)
+        def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
 
         when:
-        def verifier = StepVerifier.create(poller.getObserver())
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null)
 
         then:
-        verifier.assertNext({
+        def lastResponse = poller.doOnNext({
             assert it.getValue() != null
             assert it.getValue().getCopyId() != null
             assert it.getValue().getCopySourceUrl() == bc.getBlobUrl()
-        }).verifyComplete()
+        }).blockLast()
 
         expect:
-        def properties = copyDestBlob.getProperties()
-
-        properties.getCopyStatus() == CopyStatusType.SUCCESS
-        properties.getCopyCompletionTime() != null
-        properties.getCopyProgress() != null
-        properties.getCopySource() != null
-        properties.getCopyId() != null
-
-        def lastResponse = poller.getLastPollResponse()
         lastResponse != null
         lastResponse.getValue() != null
-        lastResponse.getValue().getCopyId() == properties.getCopyId()
+
+        StepVerifier.create(copyDestBlob.getProperties())
+            .assertNext({
+                assert it.getCopyId() == lastResponse.getValue().getCopyId()
+                assert it.getCopyStatus() == CopyStatusType.SUCCESS
+                assert it.getCopyCompletionTime() != null
+                assert it.getCopyProgress() != null
+                assert it.getCopySource() != null
+                assert it.getCopyId() != null
+            })
+            .verifyComplete()
     }
 
     @Unroll
     def "Copy metadata"() {
         setup:
-        def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
@@ -792,10 +1166,12 @@ class BlobAPITest extends APISpec {
 
         when:
         def poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null, null, null, Duration.ofSeconds(1))
-        poller.block()
+        poller.blockLast()
 
         then:
-        bu2.getProperties().getMetadata() == metadata
+        StepVerifier.create(bu2.getProperties())
+            .assertNext({ assert it.getMetadata() == metadata })
+            .verifyComplete()
 
         where:
         key1  | value1 | key2   | value2
@@ -806,7 +1182,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Copy source AC"() {
         setup:
-        def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         match = setupBlobMatchCondition(bc, match)
         def mac = new RequestConditions()
             .setIfModifiedSince(modified)
@@ -816,11 +1192,10 @@ class BlobAPITest extends APISpec {
 
         when:
         def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, mac, null, null)
-        poller.block()
+        def response = poller.blockLast()
 
         then:
-        def response = poller.getLastPollResponse()
-        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+        response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
         modified | unmodified | match        | noneMatch
@@ -859,8 +1234,8 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Copy dest AC"() {
         setup:
-        def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bu2.upload(defaultInputStream.get(), defaultDataSize)
+        def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
+        bu2.upload(defaultFlux, defaultDataSize).block()
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
         def bac = new BlobRequestConditions()
@@ -872,11 +1247,10 @@ class BlobAPITest extends APISpec {
 
         when:
         def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac, Duration.ofSeconds(1))
-        poller.block()
+        def response = poller.blockLast()
 
         then:
-        def response = poller.getLastPollResponse()
-        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+        response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -923,7 +1297,7 @@ class BlobAPITest extends APISpec {
         new SpecializedBlobClientBuilder()
             .blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -933,13 +1307,13 @@ class BlobAPITest extends APISpec {
         bu2.upload(defaultInputStream.get(), defaultDataSize)
 
         def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
-        def blobAccessConditions = new BlobRequestConditions().setLeaseId(leaseId)
+        def blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccessConditions, Duration.ofMillis(500))
-        def response = poller.getObserver().blockFirst()
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobRequestConditions, Duration.ofMillis(500))
+        def response = poller.poll()
 
-        assert response.getStatus() != PollResponse.OperationStatus.FAILED
+        assert response.getStatus() != LongRunningOperationStatus.FAILED
 
         def blobCopyInfo = response.getValue()
         bu2.abortCopyFromUrlWithResponse(blobCopyInfo.getCopyId(), garbageLeaseID, null, null)
@@ -958,7 +1332,7 @@ class BlobAPITest extends APISpec {
         new SpecializedBlobClientBuilder()
             .blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -968,7 +1342,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, null, Duration.ofSeconds(1))
-        def lastResponse = poller.getObserver().blockFirst()
+        def lastResponse = poller.poll()
 
         assert lastResponse != null
         assert lastResponse.getValue() != null
@@ -992,7 +1366,7 @@ class BlobAPITest extends APISpec {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -1005,7 +1379,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccess, Duration.ofSeconds(1))
-        def lastResponse = poller.getObserver().blockFirst()
+        def lastResponse = poller.poll()
 
         then:
         lastResponse != null
@@ -1021,7 +1395,7 @@ class BlobAPITest extends APISpec {
 
     def "Copy error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.copyFromUrl("http://www.error.com")
@@ -1032,7 +1406,7 @@ class BlobAPITest extends APISpec {
 
     def "Abort copy error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.abortCopyFromUrl("id")
@@ -1300,7 +1674,7 @@ class BlobAPITest extends APISpec {
 
     def "Blob delete error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.delete()
@@ -1487,7 +1861,7 @@ class BlobAPITest extends APISpec {
         setup:
         def blobName = generateBlobName()
         def bc = cc.getBlobClient(blobName).getBlockBlobClient()
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, tier1, null, null, null)
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, tier1, null, null, null, null)
         def bcCopy = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
@@ -1516,6 +1890,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
+
         bc.getProperties()
 
         then:
@@ -1537,7 +1912,7 @@ class BlobAPITest extends APISpec {
     }
 
     def "Undelete error"() {
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.undelete()
@@ -1563,16 +1938,6 @@ class BlobAPITest extends APISpec {
         bc.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
-    def "Get account info error"() {
-        when:
-        def serviceURL = getServiceClient(primaryBlobServiceClient.getAccountUrl())
-
-        serviceURL.getBlobContainerClient(generateContainerName()).getBlobClient(generateBlobName()).getAccountInfo()
-
-        then:
-        thrown(IllegalArgumentException)
-    }
-
     def "Get Container Name"() {
         expect:
         containerName == bc.getContainerName()
@@ -1581,5 +1946,50 @@ class BlobAPITest extends APISpec {
     def "Get Blob Name"() {
         expect:
         blobName == bc.getBlobName()
+    }
+
+    def "Get Blob Name and Build Client"() {
+        when:
+        BlobClient client = cc.getBlobClient(originalBlobName)
+        BlobClientBase baseClient = cc.getBlobClient(client.getBlobName()).getBlockBlobClient()
+
+        then:
+        baseClient.getBlobName() == finalBlobName
+
+        where:
+        originalBlobName       | finalBlobName
+        "blob"                 | "blob"
+        "path/to]a blob"       | "path/to]a blob"
+        "path%2Fto%5Da%20blob" | "path/to]a blob"
+        "斑點"                 | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
+    }
+
+    def "Builder cpk validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(bc.getBlobUrl()).setScheme("http").toUrl()
+        def builder = new BlobClientBuilder()
+            .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Builder bearer token validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(bc.getBlobUrl()).setScheme("http").toUrl()
+        def builder = new BlobClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }

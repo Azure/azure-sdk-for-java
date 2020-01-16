@@ -33,7 +33,7 @@ public class ClientCertificateCredential implements TokenCredential {
      * Creates a ClientSecretCredential with default identity client options.
      * @param tenantId the tenant ID of the application
      * @param clientId the client ID of the application
-     * @param certificatePath the PEM file / PFX file containing the certificate
+     * @param certificatePath the PEM file or PFX file containing the certificate
      * @param certificatePassword the password protecting the PFX file
      * @param identityClientOptions the options to configure the identity client
      */

@@ -48,6 +48,8 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
+     * Creates a new {@link AuthorizationCodeCredential} with the current configurations.
+     *
      * @return a {@link AuthorizationCodeCredential} with the current configurations.
      */
     public AuthorizationCodeCredential build() {

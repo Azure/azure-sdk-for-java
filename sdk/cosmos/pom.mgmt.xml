@@ -1,0 +1,16 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-cosmosdb-management</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0</version>  <!-- Need not change for every release-->
+  <modules>
+    <module>mgmt-v2015_04_08</module>
+    <module>mgmt-v2019_08_01</module>
+    <module>mgmt-v2019_08_01_preview</module>
+  </modules>
+</project>

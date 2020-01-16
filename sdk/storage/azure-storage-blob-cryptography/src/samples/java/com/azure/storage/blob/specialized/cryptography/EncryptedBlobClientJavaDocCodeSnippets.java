@@ -57,6 +57,23 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String, boolean)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadFromFileWithOverwrite() throws IOException {
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-boolean
+        try {
+            boolean overwrite = false; // Default value
+            client.uploadFromFile(filePath, overwrite);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-boolean
+    }
+
+    /**
      * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions, Duration)}
      *
      * @throws IOException If an I/O error occurs
@@ -69,16 +86,15 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
             .setContentType("binary");
 
         Map<String, String> metadata = new HashMap<>(Collections.singletonMap("metadata", "value"));
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         int blockSize = 100 * 1024 * 1024; // 100 MB;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, null, null);
 
         try {
             client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, AccessTier.HOT,
-                accessConditions, timeout);
+                requestConditions, timeout);
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());

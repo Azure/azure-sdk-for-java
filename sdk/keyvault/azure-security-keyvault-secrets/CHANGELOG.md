@@ -1,4 +1,26 @@
 # Release History
+
+## 4.1.0 (2020-01-07)
+- Update azure-core dependency to version 1.2.0
+- Drop commons-codec dependency
+
+## 4.0.1 (2019-12-04)
+
+## 4.0.0 (2019-10-31)
+### Breaking changes
+
+- Secret has been renamed to KeyVaultSecret to avoid ambiguity with other libraries and to yield better search results.
+- endpoint method on SecretClientBuilder has been renamed to vaultUrl.
+- On SecretProperties, expires, created, and updated have been renamed to expiresOn, createdOn, and updatedOn respectively.
+- On DeletedSecret, deletedDate has been renamed to deletedOn.
+- listSecrets and listSecretVersions methods have been renamed to listPropertiesOfSecrets and listPropertiesOfSecretVersions in `SecretClient` and `SecretAsyncClient` respectively.
+- restoreSecret method has been renamed to restoreSecretBackup in `SecretClient` and `SecretAsyncClient` to better associate it with SecretClient.backupSecret.
+- deleteSecret method has been renamed to beginDeleteSecret and now returns a SyncPoller in `SecretClient` and PollerFlux in `SecretAsyncClient` to track this long-running operation.
+- recoverDeletedSecret method has been renamed to beginRecoverDeletedSecret and now returns a SyncPoller in `SecretClient` and PollerFlux in `SecretAsyncClient` to track this long-running operation.
+
+### Major changes
+- SecretClient.vaultUrl has been added with the original value pass to SecretClient.
+
 ## 4.0.0-preview.4 (2019-09-08)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 

@@ -4,9 +4,9 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.http.rest.Response;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.Key;
-import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
 import java.time.OffsetDateTime;
 
@@ -27,25 +27,25 @@ public class HelloWorldAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Let's create Cloud Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
-        Response<Key> createKeyResponse = keyAsyncClient.createRsaKeyWithResponse(new RsaKeyCreateOptions("CloudRsaKey")
-                                                                                                .setExpires(OffsetDateTime.now().plusYears(1))
+        Response<KeyVaultKey> createKeyResponse = keyAsyncClient.createRsaKeyWithResponse(new CreateRsaKeyOptions("CloudRsaKey")
+                                                                                                .setExpiresOn(OffsetDateTime.now().plusYears(1))
                                                                                                 .setKeySize(2048)).block();
 
         // Let's validate create key operation succeeded using the status code information in the response.
         System.out.printf("Create Key operation succeeded with status code %s \n", createKeyResponse.getStatusCode());
-        System.out.printf("Key is created with name %s and type %s \n", createKeyResponse.getValue().getName(), createKeyResponse.getValue().getKeyMaterial().getKty());
+        System.out.printf("Key is created with name %s and type %s \n", createKeyResponse.getValue().getName(), createKeyResponse.getValue().getKeyType());
 
         Thread.sleep(2000);
 
         // Let's Get the Cloud Rsa Key from the key vault.
         keyAsyncClient.getKey("CloudRsaKey").subscribe(keyResponse ->
-                System.out.printf("Key returned with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
+                System.out.printf("Key returned with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 
@@ -53,28 +53,32 @@ public class HelloWorldAsync {
         // After one year, the Cloud Rsa Key is still required, we need to update the expiry time of the key.
         // The update method can be used to update the expiry attribute of the key.
         keyAsyncClient.getKey("CloudRsaKey").subscribe(keyResponse -> {
-            Key key = keyResponse;
+            KeyVaultKey key = keyResponse;
             //Update the expiry time of the key.
-            key.getProperties().setExpires(key.getProperties().getExpires().plusYears(1));
+            key.getProperties().setExpiresOn(key.getProperties().getExpiresOn().plusYears(1));
             keyAsyncClient.updateKeyProperties(key.getProperties()).subscribe(updatedKeyResponse ->
-                System.out.printf("Key's updated expiry time %s \n", updatedKeyResponse.getProperties().getExpires().toString()));
+                System.out.printf("Key's updated expiry time %s \n", updatedKeyResponse.getProperties().getExpiresOn().toString()));
         });
 
         Thread.sleep(2000);
 
         // We need the Cloud Rsa key with bigger key size, so you want to update the key in key vault to ensure it has the required size.
         // Calling createRsaKey on an existing key creates a new version of the key in the key vault with the new specified size.
-        keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .setExpires(OffsetDateTime.now().plusYears(1))
+        keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))
                 .setKeySize(4096))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
+                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
-        keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.getRecoveryId()));
+        keyAsyncClient.beginDeleteKey("CloudRsaKey")
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
+                System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
 
         //To ensure key is deleted on server side.
         Thread.sleep(30000);

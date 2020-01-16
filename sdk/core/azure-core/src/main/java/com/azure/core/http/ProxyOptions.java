@@ -7,7 +7,7 @@ import java.net.InetSocketAddress;
 import java.util.Objects;
 
 /**
- * proxy configuration.
+ * This represents proxy configuration to be used in http clients..
  */
 public class ProxyOptions {
     private final InetSocketAddress address;

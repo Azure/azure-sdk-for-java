@@ -1,5 +1,39 @@
 # Release History
-## Version 12.0.0-preview.4 (2019-10-8)
+
+## 12.2.0 (2020-01-08)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.2.0/sdk/storage/azure-storage-file-queue/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.2.0/sdk/storage/azure-storage-file-queue/src/samples/java/com/azure/storage/queue)
+
+## 12.2.0-beta.1 (2019-12-18)
+- Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setQueueName, generateSasQueryParameters methods on QueueServiceSasSignatureValues to direct users to using the methods added on clients.
+
+## 12.1.0 (2019-12-04)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.0.0/sdk/storage/azure-storage-queue/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.0.0/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue)
+
+- Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
+- Upgraded to version 1.1.0 of Azure Core.
+
+## 12.0.0 (2019-10-31)
+- Removed QueueMessage from public API
+- Removed BaseQueueClientBuilder
+- Removed QueueClientBuilder and QueueServiceClientBuilder inheritance of BaseQueueClientBuilder
+- Renamed QueueSegmentOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
+- Removes StorageError and StorageErrorException from public API
+- Renamed StorageErrorCode to QueueErrorCode, SignedIdentifier to QueueSignedIdentifier, StorageServiceProperties to QueueServiceProperties, StorageServiceStats to QueueServiceStatistics, CorRules to QueueCorRules, AccessPolicy to QueueAccessPolicy, Logging to QueueAnalyticsLogging, Metrics to QueueMetrics, and RetentionPolicy to QueueRetentionPolicy
+- Renamed StorageException to QueueStorageException
+- Added QueueServiceVersion and the ability to set it on client builders
+- Renamed enqueueMessage to sendMessage and changed the response type from EnqueueMessage to SendMessageResult
+- Renamed dequeueMessages to receiveMessages and changed the response type from DequeuedMessage to QueueMessageItem
+- Renamed PeekedMessage to PeekedMessageItem and UpdatedMessage to UpdatedMessageResult
+- Added support for emulator endpoints
+- Renamed QueueSasPermission getters to use has prefix
+
+## 12.0.0-preview.4 (2019-10-8)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
 This package's
@@ -16,9 +50,7 @@ and
 - Removed SAS token generation APIs from clients, use QueueServiceSasSignatureValues to generate SAS tokens. 
 - Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
 
-
-
-## Version 12.0.0-preview.3 (2019-09-10)
+## 12.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 
 This package's
@@ -41,7 +73,7 @@ and
 **Breaking changes: New API design**
 - Changed list responses to `PagedFlux` on async APIs and `PagedIterable` on sync APIs.
 
-## Version 12.0.0-preview.2 (2019-08-08)
+## 12.0.0-preview.2 (2019-08-08)
 Version 12.0.0-preview.2 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
 
 For details on the Azure SDK for Java (August 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).

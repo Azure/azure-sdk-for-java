@@ -7,8 +7,8 @@ import com.azure.core.annotation.HeaderCollection;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.implementation.UnexpectedExceptionInformation;
-import com.azure.core.implementation.util.TypeUtil;
+import com.azure.core.implementation.http.UnexpectedExceptionInformation;
+import com.azure.core.implementation.TypeUtil;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Type;

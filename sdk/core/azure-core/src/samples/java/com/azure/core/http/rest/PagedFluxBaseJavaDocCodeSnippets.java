@@ -22,7 +22,6 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
     public void classDocSnippet() {
         PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = createAnInstance();
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.items
-        // Subscribe to process one item at a time
         pagedFluxBase
             .log()
             .subscribe(item -> System.out.println("Processing item " + item),
@@ -31,7 +30,6 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
         // END: com.azure.core.http.rest.pagedfluxbase.items
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.pages
-        // Subscribe to process one page at a time from the beginning
         pagedFluxBase
             .byPage()
             .log()
@@ -41,8 +39,6 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
         // END: com.azure.core.http.rest.pagedfluxbase.pages
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken
-        // Subscribe to process one page at a time starting from a page associated with
-        // a continuation token
         String continuationToken = getContinuationToken();
         pagedFluxBase
             .byPage(continuationToken)

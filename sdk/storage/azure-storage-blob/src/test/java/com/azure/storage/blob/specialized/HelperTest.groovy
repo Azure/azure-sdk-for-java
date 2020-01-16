@@ -5,12 +5,14 @@ package com.azure.storage.blob.specialized
 
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.BlobContainerSasPermission
-import com.azure.storage.blob.BlobSasPermission
+import com.azure.storage.blob.sas.BlobContainerSasPermission
+import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
+import com.azure.storage.blob.sas.BlobServiceSasQueryParameters
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.implementation.StorageImplUtils
@@ -26,19 +28,6 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 class HelperTest extends APISpec {
-
-    // TODO (alzimmer): Turn this on when nextPageLink can be passed into listing
-    /*def "responseError"() {
-        when:
-        cc.listBlobsFlat().iterator().hasNext()
-
-        then:
-        def e = thrown(BlobStorageException)
-        e.getErrorCode() == BlobErrorCode.INVALID_QUERY_PARAMETER_VALUE
-        e.getStatusCode() == 400
-        e.message().contains("Value for one of the query parameters specified in the request URI is invalid.")
-        e.getServiceMessage().contains("<?xml") // Ensure that the details in the payload are printable
-    }*/
 
     /*
     This test is to validate the workaround for the autorest bug that forgets to set the request property on the
@@ -612,35 +601,6 @@ class HelperTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    def "BlobURLParts"() {
-        setup:
-        BlobUrlParts parts = new BlobUrlParts()
-            .setScheme("http")
-            .setHost("host")
-            .setContainerName("container")
-            .setBlobName("blob")
-            .setSnapshot("snapshot")
-
-        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues()
-            .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
-            .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setBlobName("blob")
-            .setContainerName("container")
-
-        parts.setSasQueryParameters(sasValues.generateSasQueryParameters(primaryCredential))
-
-        when:
-        String[] splitParts = parts.toUrl().toString().split("\\?")
-
-        then:
-        splitParts.size() == 2 // Ensure that there is only one question mark even when sas and snapshot are present
-        splitParts[0] == "http://host/container/blob"
-        splitParts[1].contains("snapshot=snapshot")
-        splitParts[1].contains("sp=r")
-        splitParts[1].contains("sig=")
-        splitParts[1].split("&").size() == 6 // snapshot & sv & sr & sp & sig & se
-    }
-
     def "BlobURLParts implicit root"() {
         when:
         def bup = new BlobUrlParts()
@@ -650,43 +610,5 @@ class HelperTest extends APISpec {
 
         then:
         new BlobUrlParts().parse(bup.toUrl()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
-    }
-
-    def "URLParser"() {
-        when:
-        BlobUrlParts parts = BlobUrlParts.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
-
-        then:
-        parts.getScheme() == "http"
-        parts.getHost() == "host"
-        parts.getBlobContainerName() == "container"
-        parts.getBlobName() == "blob"
-        parts.getSnapshot() == "snapshot"
-        parts.getSasQueryParameters().getPermissions() == "r"
-        parts.getSasQueryParameters().getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
-        parts.getSasQueryParameters().getResource() == "c"
-        parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
-    }
-
-    @Unroll
-    def "IP URLParser"() {
-        when:
-        BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint))
-
-        then:
-        parts.getScheme() == scheme
-        parts.getHost() == host
-        parts.getAccountName() == accountName
-        parts.getBlobContainerName() == blobContainerName
-        parts.getBlobName() == blobName
-
-        where:
-        endpoint                                                 | scheme | host              | accountName        | blobContainerName | blobName
-        "http://127.0.0.1:10000/devstoreaccount1"                | "http" | "127.0.0.1:10000" | "devstoreaccount1" | null              | null
-        "http://127.0.0.1:10000/devstoreaccount1/container"      | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | null
-        "http://127.0.0.1:10000/devstoreaccount1/container/blob" | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | "blob"
-        "http://localhost:10000/devstoreaccount1"                | "http" | "localhost:10000" | "devstoreaccount1" | null              | null
-        "http://localhost:10000/devstoreaccount1/container"      | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | null
-        "http://localhost:10000/devstoreaccount1/container/blob" | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "blob"
     }
 }

@@ -14,7 +14,7 @@ public enum ProcessKind {
     /**
      * Amqp message process call to receive data.
      */
-    RECEIVE,
+    MESSAGE,
     /**
      * Custom process call to process received messages.
      */

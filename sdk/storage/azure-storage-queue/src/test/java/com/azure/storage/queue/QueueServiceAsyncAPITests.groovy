@@ -155,12 +155,11 @@ class QueueServiceAsyncAPITests extends APISpec {
     }
 
     def "List empty queues"() {
-        when:
-        def listQueueVerifier = StepVerifier.create((primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions())))
-        then:
-        listQueueVerifier.assertNext {
-            !it.iterator().hasNext()
-        }
+        expect:
+        // Queue was never made with the prefix, should expect no queues to be listed.
+        StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName)))
+            .expectNextCount(0)
+            .verifyComplete()
     }
 
     def "Get and set properties"() {
@@ -187,7 +186,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         then:
         getPropertiesBeforeVerifier.assertNext {
             assert QueueTestHelper.assertQueueServicePropertiesAreEqual(originalProperties, it)
-        }
+        }.verifyComplete()
         setPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 202)
         }.verifyComplete()

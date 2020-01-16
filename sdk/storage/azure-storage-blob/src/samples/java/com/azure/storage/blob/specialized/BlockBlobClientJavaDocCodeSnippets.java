@@ -15,6 +15,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Base64;
@@ -36,6 +38,15 @@ public class BlockBlobClientJavaDocCodeSnippets {
     private String sourceUrl = "https://example.com";
     private long offset = 1024L;
     private long count = length;
+    private byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
+
+    /**
+     * Constructor for code snippets.
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public BlockBlobClientJavaDocCodeSnippets() throws NoSuchAlgorithmException {
+    }
 
     /**
      * Code snippet for {@link BlockBlobClient#upload(InputStream, long)}
@@ -50,27 +61,45 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#uploadWithResponse(InputStream, long, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions, Duration, Context)}
+     * Code snippet for {@link BlockBlobClient#upload(InputStream, long, boolean)}
+     *
+     * @throws IOException If an I/O error occurs
      */
-    public void upload2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context
+    public void uploadWithOverwrite() throws IOException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long-boolean
+        boolean overwrite = false;
+        System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+            Base64.getEncoder().encodeToString(client.upload(data, length, overwrite).getContentMd5()));
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long-boolean
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#uploadWithResponse(InputStream, long, BlobHttpHeaders, Map, AccessTier, byte[], BlobRequestConditions, Duration, Context)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public void upload2() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
             .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
+
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("key", "value");
 
         System.out.printf("Uploaded BlockBlob MD5 is %s%n", Base64.getEncoder()
-            .encodeToString(client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT,
-                accessConditions, timeout, context)
+            .encodeToString(client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, md5,
+                requestConditions, timeout, context)
                 .getValue()
                 .getContentMd5()));
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context
     }
 
     /**
@@ -83,14 +112,16 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#stageBlockWithResponse(String, InputStream, long, String, Duration, Context)}
+     * Code snippet for {@link BlockBlobClient#stageBlockWithResponse(String, InputStream, long, byte[], String, Duration, Context)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
-    public void stageBlock2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-String-Duration-Context
+    public void stageBlock2() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-byte-String-Duration-Context
         Context context = new Context("key", "value");
         System.out.printf("Staging block completed with status %d%n",
-            client.stageBlockWithResponse(base64BlockId, data, length, leaseId, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-String-Duration-Context
+            client.stageBlockWithResponse(base64BlockId, data, length, md5, leaseId, timeout, context).getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-byte-String-Duration-Context
     }
 
     /**
@@ -159,6 +190,17 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobClient#commitBlockList(List, boolean)}
+     */
+    public void commitBlockListWithOverwrite() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean
+        boolean overwrite = false; // Default behavior
+        System.out.printf("Committing block list completed. Last modified: %s%n",
+            client.commitBlockList(Collections.singletonList(base64BlockId), overwrite).getLastModified());
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean
+    }
+
+    /**
      * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(List, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions, Duration, Context)}
      */
     public void commitBlockList2() {
@@ -169,14 +211,14 @@ public class BlockBlobClientJavaDocCodeSnippets {
             .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("key", "value");
 
         System.out.printf("Committing block list completed with status %d%n",
             client.commitBlockListWithResponse(Collections.singletonList(base64BlockId), headers, metadata,
-                AccessTier.HOT, accessConditions, timeout, context).getStatusCode());
+                AccessTier.HOT, requestConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context
     }
 }

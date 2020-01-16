@@ -169,9 +169,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRangeId);
         boolean forceRefreshPartitionAddresses = false;
-        Mono<AddressInformation[]> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
 
-        ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT));
+        ArrayList<AddressInformation> addressInfosFromCache =
+            Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
         Mono<List<Address>> masterAddressFromGatewayObs = cache.getServerAddressesViaGatewayAsync(req,
                 collectionRid, ImmutableList.of(partitionKeyRangeId), false);
@@ -225,8 +226,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRangeId);
         boolean forceRefreshPartitionAddresses = false;
-        Mono<AddressInformation[]> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
-        ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT));
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
+        ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
         // no new request is made
         assertThat(httpClientWrapper.capturedRequests)
@@ -279,8 +280,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         new Database(), new HashMap<>());
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRangeId);
-        Mono<AddressInformation[]> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
-        ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT));
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
+        ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
         // no new request is made
         assertThat(httpClientWrapper.capturedRequests)
@@ -336,8 +337,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         new Database(), new HashMap<>());
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRangeId);
-        Mono<AddressInformation[]> addressesInfosFromCacheObs = origCache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
-        ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT));
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = origCache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
+        ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
         // no new request is made
         assertThat(httpClientWrapper.capturedRequests)
@@ -380,12 +381,15 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         // force refresh to replace existing with sub-optimal addresses
         addressesInfosFromCacheObs = spyCache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
-        AddressInformation[] suboptimalAddresses = getSuccessResult(addressesInfosFromCacheObs, TIMEOUT);
+        Utils.ValueHolder<AddressInformation[]> suboptimalAddresses = getSuccessResult(addressesInfosFromCacheObs, TIMEOUT);
         assertThat(httpClientWrapper.capturedRequests)
                 .describedAs("getServerAddressesViaGatewayAsync will read addresses from gateway")
                 .asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
-        assertThat(suboptimalAddresses).hasSize(ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize - 1);
+
+        // relaxes one replica being down
+        assertThat(suboptimalAddresses.v.length).isLessThanOrEqualTo((ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize - 1));
+        assertThat(suboptimalAddresses.v.length).isGreaterThanOrEqualTo(ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize - 2);
         assertThat(fetchCounter.get()).isEqualTo(1);
 
         // no refresh, use cache
@@ -394,15 +398,15 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         assertThat(httpClientWrapper.capturedRequests)
                 .describedAs("getServerAddressesViaGatewayAsync will read addresses from gateway")
                 .asList().hasSize(0);
-        assertThat(suboptimalAddresses).hasSize(ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize - 1);
+        assertThat(suboptimalAddresses.v).hasSize(ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize - 1);
         assertThat(fetchCounter.get()).isEqualTo(1);
 
         // wait for refresh time
         TimeUnit.SECONDS.sleep(suboptimalRefreshTime + 1);
 
         addressesInfosFromCacheObs = spyCache.tryGetAddresses(req, partitionKeyRangeIdentity, false);
-        AddressInformation[] addresses = getSuccessResult(addressesInfosFromCacheObs, TIMEOUT);
-        assertThat(addresses).hasSize(ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize);
+        Utils.ValueHolder<AddressInformation[]> addresses = getSuccessResult(addressesInfosFromCacheObs, TIMEOUT);
+        assertThat(addresses.v).hasSize(ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize);
         assertThat(httpClientWrapper.capturedRequests)
                 .describedAs("getServerAddressesViaGatewayAsync will read addresses from gateway")
                 .asList().hasSize(1);
@@ -428,9 +432,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
         boolean forceRefreshPartitionAddresses = false;
-        Mono<AddressInformation[]> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
 
-        ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT));
+        ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
         Mono<List<Address>> masterAddressFromGatewayObs = cache.getMasterAddressesViaGatewayAsync(req, ResourceType.Database,
                 null, "/dbs/", false, false, null);
@@ -478,8 +482,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         // request master partition info to ensure it is cached.
         AddressInformation[] expectedAddresses = cache.tryGetAddresses(req,
                 partitionKeyRangeIdentity,
-                forceRefreshPartitionAddresses)
-                .block();
+            forceRefreshPartitionAddresses).block().v;
 
         assertThat(clientWrapper.capturedRequests).asList().hasSize(1);
         clientWrapper.capturedRequests.clear();
@@ -487,11 +490,11 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         TimeUnit.SECONDS.sleep(waitTimeInBetweenAttemptsInSeconds);
 
-        Mono<AddressInformation[]> addressesObs = cache.tryGetAddresses(req,
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = cache.tryGetAddresses(req,
                 partitionKeyRangeIdentity,
                 forceRefreshPartitionAddresses);
 
-        AddressInformation[] actualAddresses = getSuccessResult(addressesObs, TIMEOUT);
+        AddressInformation[] actualAddresses = getSuccessResult(addressesObs, TIMEOUT).v;
 
         assertExactlyEqual(actualAddresses, expectedAddresses);
 
@@ -525,17 +528,16 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         // request master partition info to ensure it is cached.
         AddressInformation[] expectedAddresses = cache.tryGetAddresses(req,
                 partitionKeyRangeIdentity,
-                false)
-                .block();
+                false).block().v;
 
         assertThat(clientWrapper.capturedRequests).asList().hasSize(1);
         clientWrapper.capturedRequests.clear();
 
-        Mono<AddressInformation[]> addressesObs = cache.tryGetAddresses(req,
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = cache.tryGetAddresses(req,
                 partitionKeyRangeIdentity,
                 true);
 
-        AddressInformation[] actualAddresses = getSuccessResult(addressesObs, TIMEOUT);
+        AddressInformation[] actualAddresses = getSuccessResult(addressesObs, TIMEOUT).v;
 
         assertExactlyEqual(actualAddresses, expectedAddresses);
 
@@ -619,16 +621,16 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         AddressInformation[] expectedAddresses = spyCache.tryGetAddresses(req,
                 partitionKeyRangeIdentity,
                 false)
-                .block();
+                .block().v;
 
         assertThat(clientWrapper.capturedRequests).asList().hasSize(1);
         clientWrapper.capturedRequests.clear();
 
-        Mono<AddressInformation[]> addressesObs = spyCache.tryGetAddresses(req,
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = spyCache.tryGetAddresses(req,
                 partitionKeyRangeIdentity,
                 false);
 
-        AddressInformation[] actualAddresses = getSuccessResult(addressesObs, TIMEOUT);
+        AddressInformation[] actualAddresses = getSuccessResult(addressesObs, TIMEOUT).v;
 
         assertExactlyEqual(actualAddresses, expectedAddresses);
 
@@ -710,7 +712,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         AddressInformation[] subOptimalAddresses = spyCache.tryGetAddresses(req,
                 partitionKeyRangeIdentity,
                 false)
-                .block();
+                .block().v;
 
         assertThat(getMasterAddressesViaGatewayAsyncInvocation.get()).isEqualTo(1);
         assertThat(subOptimalAddresses).hasSize(ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize - 1);
@@ -723,12 +725,12 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         assertThat(clientWrapper.capturedRequests).asList().hasSize(1);
         clientWrapper.capturedRequests.clear();
 
-        Mono<AddressInformation[]> addressesObs = spyCache.tryGetAddresses(req,
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = spyCache.tryGetAddresses(req,
                 partitionKeyRangeIdentity,
                 false);
 
 
-        AddressInformation[] actualAddresses = getSuccessResult(addressesObs, TIMEOUT);
+        AddressInformation[] actualAddresses = getSuccessResult(addressesObs, TIMEOUT).v;
         // the cache address is used. no new http request is sent
         assertThat(clientWrapper.capturedRequests).asList().hasSize(1);
         assertThat(getMasterAddressesViaGatewayAsyncInvocation.get()).isEqualTo(2);

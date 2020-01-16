@@ -10,6 +10,9 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -29,6 +32,7 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     private String leaseId = "leaseId";
     private String proposedId = "proposedId";
     private int leaseDuration = (int) Duration.ofSeconds(30).getSeconds();
+    private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
      * Code snippet for {@link BlobContainerAsyncClient#getBlobAsyncClient(String)}
@@ -114,11 +118,11 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
      */
     public void delete2() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.deleteWithResponse#BlobRequestConditions
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.deleteWithResponse(accessConditions).subscribe(response ->
+        client.deleteWithResponse(requestConditions).subscribe(response ->
             System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteWithResponse#BlobRequestConditions
     }
@@ -167,11 +171,11 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     public void setMetadata2() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.setMetadataWithResponse#Map-BlobRequestConditions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.setMetadataWithResponse(metadata, accessConditions).subscribe(response ->
+        client.setMetadataWithResponse(metadata, requestConditions).subscribe(response ->
             System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.setMetadataWithResponse#Map-BlobRequestConditions
     }
@@ -240,11 +244,11 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
                 .setExpiresOn(OffsetDateTime.now().plusDays(7))
                 .setPermissions("permissionString"));
 
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.setAccessPolicyWithResponse(PublicAccessType.CONTAINER, Collections.singletonList(identifier), accessConditions)
+        client.setAccessPolicyWithResponse(PublicAccessType.CONTAINER, Collections.singletonList(identifier), requestConditions)
             .subscribe(response ->
                 System.out.printf("Set access policy completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobRequestConditions
@@ -278,6 +282,28 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
                 blob.isDeleted(),
                 blob.getSnapshot()));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobs#ListBlobsOptions
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerAsyncClient#listBlobs(ListBlobsOptions, String)}
+     */
+    public void listBlobsFlat3() {
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobs#ListBlobsOptions-String
+        ListBlobsOptions options = new ListBlobsOptions()
+            .setPrefix("prefixToMatch")
+            .setDetails(new BlobListDetails()
+                .setRetrieveDeletedBlobs(true)
+                .setRetrieveSnapshots(true));
+
+        String continuationToken = "continuationToken";
+
+        client.listBlobs(options, continuationToken).subscribe(blob ->
+            System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
+                blob.getName(),
+                blob.isPrefix(),
+                blob.isDeleted(),
+                blob.getSnapshot()));
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobs#ListBlobsOptions-String
     }
 
     /**
@@ -342,5 +368,31 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         String containerName = client.getBlobContainerName();
         System.out.println("The name of the blob is " + containerName);
         // END: com.azure.storage.blob.BlobContainerAsyncClient.getBlobContainerName
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerAsyncClient#generateUserDelegationSas(BlobServiceSasSignatureValues, UserDelegationKey)}
+     * and {@link BlobContainerAsyncClient#generateSas(BlobServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.generateSas#BlobServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        BlobContainerSasPermission permission = new BlobContainerSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.generateSas#BlobServiceSasSignatureValues
+
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        BlobContainerSasPermission myPermission = new BlobContainerSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey);
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
     }
 }

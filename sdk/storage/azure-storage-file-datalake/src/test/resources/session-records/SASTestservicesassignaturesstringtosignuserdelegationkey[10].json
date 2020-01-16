@@ -1,0 +1,129 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsservicesassignaturesstringtosignuserdelegationkey033146f0?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "5f7593df-a07e-40dd-aa1b-b38ec86466b8"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D778264B35EFFD",
+      "Last-Modified" : "Tue, 03 Dec 2019 19:23:36 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "1d9a4fff-e01e-0092-270f-aad9cc000000",
+      "Date" : "Tue, 03 Dec 2019 19:23:36 GMT",
+      "x-ms-client-request-id" : "5f7593df-a07e-40dd-aa1b-b38ec86466b8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfsservicesassignaturesstringtosignuserdelegationkey033146f0/javapathservicesassignaturesstringtosignuserdelegationkey152577?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "567b9891-9261-4779-8438-ab4e863bd67c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D778264B42CE56",
+      "Last-Modified" : "Tue, 03 Dec 2019 19:23:36 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "053c9d11-101f-004b-540f-aa7fe0000000",
+      "Date" : "Tue, 03 Dec 2019 19:23:36 GMT",
+      "x-ms-client-request-id" : "567b9891-9261-4779-8438-ab4e863bd67c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfsservicesassignaturesstringtosignuserdelegationkey033146f0/javapathservicesassignaturesstringtosignuserdelegationkey152577?position=0&action=append",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "da30ac24-3441-4fb7-afec-a8a43288fdb5",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "053c9d12-101f-004b-550f-aa7fe0000000",
+      "Date" : "Tue, 03 Dec 2019 19:23:36 GMT",
+      "x-ms-client-request-id" : "da30ac24-3441-4fb7-afec-a8a43288fdb5"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfsservicesassignaturesstringtosignuserdelegationkey033146f0/javapathservicesassignaturesstringtosignuserdelegationkey152577?position=7&retainUncommittedData=false&close=false&action=flush",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "eff399be-380e-42cc-8583-591deff97e94"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D778264B56245A",
+      "Last-Modified" : "Tue, 03 Dec 2019 19:23:36 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "053c9d13-101f-004b-560f-aa7fe0000000",
+      "Date" : "Tue, 03 Dec 2019 19:23:36 GMT",
+      "x-ms-client-request-id" : "eff399be-380e-42cc-8583-591deff97e94"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprahns.blob.core.windows.net?prefix=jtfsservicesassignaturesstringtosignuserdelegationkey&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6625d4b2-6b9e-4526-99ce-662ae80a126c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1d9a5035-e01e-0092-570f-aad9cc000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahns.blob.core.windows.net/\"><Prefix>jtfsservicesassignaturesstringtosignuserdelegationkey</Prefix><Containers><Container><Name>jtfsservicesassignaturesstringtosignuserdelegationkey033146f0</Name><Properties><Last-Modified>Tue, 03 Dec 2019 19:23:36 GMT</Last-Modified><Etag>\"0x8D778264B35EFFD\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 03 Dec 2019 19:23:36 GMT",
+      "x-ms-client-request-id" : "6625d4b2-6b9e-4526-99ce-662ae80a126c",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsservicesassignaturesstringtosignuserdelegationkey033146f0?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "fb58d69a-be38-4ea3-b23e-e7b772182f16"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "1d9a503f-e01e-0092-600f-aad9cc000000",
+      "Date" : "Tue, 03 Dec 2019 19:23:36 GMT",
+      "x-ms-client-request-id" : "fb58d69a-be38-4ea3-b23e-e7b772182f16"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsservicesassignaturesstringtosignuserdelegationkey033146f0", "javapathservicesassignaturesstringtosignuserdelegationkey152577" ]
+}

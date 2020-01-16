@@ -29,12 +29,14 @@ import com.azure.data.cosmos.internal.query.metrics.SchedulingTimeSpan;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
 import com.azure.data.cosmos.internal.routing.Range;
+import com.azure.data.cosmos.internal.routing.RoutingMapProviderHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -85,16 +87,16 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         if (feedOptions == null) {
             feedOptions = new FeedOptions();
         }
-        
+
         FeedOptions newFeedOptions = new FeedOptions(feedOptions);
-        
+
         // We can not go to backend with the composite continuation token,
         // but we still need the gateway for the query plan.
         // The workaround is to try and parse the continuation token as a composite continuation token.
         // If it is, then we send the query to the gateway with max degree of parallelism to force getting back the query plan
-        
+
         String originalContinuation = newFeedOptions.requestContinuation();
-        
+
         if (isClientSideContinuationToken(originalContinuation)) {
             // At this point we know we want back a query plan
             newFeedOptions.requestContinuation(null);
@@ -115,8 +117,14 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
         // TODO: FIXME this needs to be revisited
 
-        Range<String> r = new Range<>("", "FF", true, false);
-        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(resourceId, r, false, null);
+        return RoutingMapProviderHelper.getOverlappingRanges(client.getPartitionKeyRangeCache(), resourceId, queryRanges);
+    }
+
+    public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId, String partitionKeyRangeIdInternal) {
+        return client.getPartitionKeyRangeCache().tryGetPartitionKeyRangeByIdAsync(resourceId,
+            partitionKeyRangeIdInternal,
+            false,
+            null).flatMap(partitionKeyRange -> Mono.just(Collections.singletonList(partitionKeyRange.v)));
     }
 
     protected Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeInternalAsyncFunc() {
@@ -222,7 +230,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
 
         return request;
     }
-    
+
     private static boolean isClientSideContinuationToken(String continuationToken) {
         if (continuationToken != null) {
             ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();

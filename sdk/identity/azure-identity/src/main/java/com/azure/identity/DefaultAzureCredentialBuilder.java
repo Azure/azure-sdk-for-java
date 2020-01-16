@@ -10,6 +10,8 @@ package com.azure.identity;
  */
 public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<DefaultAzureCredentialBuilder> {
     /**
+     * Creates new {@link DefaultAzureCredential} with the configured options set.
+     *
      * @return a {@link DefaultAzureCredential} with the current configurations.
      */
     public DefaultAzureCredential build() {

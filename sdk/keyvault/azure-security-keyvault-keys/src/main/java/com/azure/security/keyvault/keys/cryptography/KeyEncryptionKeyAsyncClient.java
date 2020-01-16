@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.monoError;
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.http.HttpPipeline;
@@ -30,15 +30,13 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
     }
 
     /**
-     * {@inheritDoc}
+     * Get the identifier of the key to use for cryptography operations.
+     *
+     * @return A {@link Mono} containing the key identifier.
      */
     @Override
     public Mono<String> getKeyId() {
-        try {
-            return Mono.just(key.getKid());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return super.getKeyId();
     }
 
     /**

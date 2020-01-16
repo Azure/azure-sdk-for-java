@@ -2,16 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.exception.AmqpException;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to sent events to a specific event hub by defining partition ID in producer option only.
+ * Sample demonstrates how to sent events with custom metadata to Event Hubs using {@link EventData#getProperties()}.
+ * Allows the service to load-balance the events between all partitions by using
+ * {@link EventHubProducerAsyncClient#createBatch()} which uses the default set of create batch options.
  */
 public class PublishEventsWithCustomMetadata {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
@@ -29,68 +33,80 @@ public class PublishEventsWithCustomMetadata {
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        // Instantiate a client that will be used to call the service.
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        // Create a producer.
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .buildAsyncProducerClient();
 
-        // Create a producer. This overload of `createProducer` does not accept any arguments
-        EventHubAsyncProducer producer = client.createProducer();
-
-        // Because an event consists mainly of an opaque set of bytes, it may be difficult for consumers of those events to
-        // make informed decisions about how to process them.
+        // Because an event consists mainly of an opaque set of bytes, it may be difficult for consumers of those events
+        // to make informed decisions about how to process them.
         //
-        // In order to allow event publishers to offer better context for consumers, event data may also contain custom metadata,
-        // in the form of a set of key/value pairs. This metadata is not used by, or in any way meaningful to, the Event Hubs
-        // service; it exists only for coordination between event publishers and consumers.
+        // In order to allow event publishers to offer better context for consumers, event data may also contain custom
+        // metadata, in the form of a set of key/value pairs. This metadata is not used by, or in any way meaningful to,
+        // the Event Hubs service; it exists only for coordination between event publishers and consumers.
         //
-        // One common scenario for the inclusion of metadata is to provide a hint about the type of data contained by an event,
-        // so that consumers understand its format and can deserialize it appropriately.
-        //
-        // We will publish two events based on simple sentences, but will attach some custom metadata with
-        // pretend type names and other hints. Note that the set of metadata is unique to an event; there is no need for every
-        // event in a batch to have the same metadata properties available nor the same data type for those properties.
+        // One common scenario for the inclusion of metadata is to provide a hint about the type of data contained by an
+        // event, so that consumers understand its format and can deserialize it appropriately.
         EventData firstEvent = new EventData("EventData Sample 1".getBytes(UTF_8));
         firstEvent.getProperties().put("EventType", "com.microsoft.samples.hello-event");
         firstEvent.getProperties().put("priority", 1);
         firstEvent.getProperties().put("score", 9.0);
 
-        EventData secEvent = new EventData("EventData Sample 2".getBytes(UTF_8));
-        secEvent.getProperties().put("EventType", "com.microsoft.samples.goodbye-event");
-        secEvent.getProperties().put("priority", "17");
-        secEvent.getProperties().put("blob", 10);
+        EventData secondEvent = new EventData("EventData Sample 2".getBytes(UTF_8));
+        secondEvent.getProperties().put("EventType", "com.microsoft.samples.goodbye-event");
+        secondEvent.getProperties().put("priority", "17");
+        secondEvent.getProperties().put("blob", 10);
 
-        final Flux<EventData> data = Flux.just(firstEvent, secEvent);
+        final Flux<EventData> data = Flux.just(firstEvent, secondEvent);
 
-        // To create a consumer, we need to know what partition to connect to. We take the first partition id.
-        // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
-        // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
-        // TimeoutException is thrown.
-        String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
+        final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
+            producer.createBatch().block());
 
-        // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
-        // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
-        // the event.
-        producer.send(data).subscribe(
-            (ignored) -> System.out.println("Event sent to specific partition, ID = " + firstPartition),
-            error -> {
-                System.err.println("There was an error sending the event batch: " + error.toString());
+        // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
+        // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
+        // are sent.
+        data.flatMap(event -> {
+            final EventDataBatch batch = currentBatch.get();
+            if (batch.tryAdd(event)) {
+                return Mono.empty();
+            }
 
-                if (error instanceof AmqpException) {
-                    AmqpException amqpException = (AmqpException) error;
+            // The batch is full, so we create a new batch and send the batch. Mono.when completes when both operations
+            // have completed.
+            return Mono.when(
+                producer.send(batch),
+                producer.createBatch().map(newBatch -> {
+                    currentBatch.set(newBatch);
 
-                    System.err.println(String.format("Is send operation retriable? %s. Error condition: %s",
-                        amqpException.isTransient(), amqpException.getErrorCondition()));
+                    // Add that event that we couldn't before.
+                    if (!newBatch.tryAdd(event)) {
+                        throw Exceptions.propagate(new IllegalArgumentException(String.format(
+                            "Event is too large for an empty batch. Max size: %s. Event: %s",
+                            newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
+                    }
+
+                    return newBatch;
+                }));
+        }).then()
+            .doFinally(signal -> {
+                final EventDataBatch batch = currentBatch.getAndSet(null);
+                if (batch != null) {
+                    producer.send(batch).block(OPERATION_TIMEOUT);
                 }
-            }, () -> {
-                // Disposing of our producer and client.
-                try {
-                    producer.close();
-                } catch (IOException e) {
-                    System.err.println("Error encountered while closing producer: " + e.toString());
-                }
+            })
+            .subscribe(unused -> System.out.println("Complete"),
+                error -> System.out.println("Error sending events: " + error),
+                () -> System.out.println("Completed sending events."));
 
-                client.close();
-            });
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException ignored) {
+        } finally {
+            // Disposing of our producer.
+            producer.close();
+        }
     }
 }

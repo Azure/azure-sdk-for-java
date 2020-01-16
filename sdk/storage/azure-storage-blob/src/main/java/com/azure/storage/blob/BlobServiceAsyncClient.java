@@ -10,9 +10,9 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.http.PagedResponseBase;
-import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -20,6 +20,8 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobCorsRule;
+import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
@@ -28,18 +30,24 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -70,6 +78,7 @@ public final class BlobServiceAsyncClient {
     private final String accountName;
     private final BlobServiceVersion serviceVersion;
     private final CpkInfo customerProvidedKey;
+    private final boolean anonymousAccess;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
@@ -80,9 +89,10 @@ public final class BlobServiceAsyncClient {
      * @param accountName The storage account name.
      * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
+     * @param anonymousAccess Whether or not the client was built with anonymousAccess
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
-        CpkInfo customerProvidedKey) {
+        CpkInfo customerProvidedKey, boolean anonymousAccess) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -92,6 +102,7 @@ public final class BlobServiceAsyncClient {
 
         this.accountName = accountName;
         this.customerProvidedKey = customerProvidedKey;
+        this.anonymousAccess = anonymousAccess;
     }
 
     /**
@@ -108,7 +119,7 @@ public final class BlobServiceAsyncClient {
      * @return A {@link BlobContainerAsyncClient} object pointing to the specified container
      */
     public BlobContainerAsyncClient getBlobContainerAsyncClient(String containerName) {
-        if (ImplUtils.isNullOrEmpty(containerName)) {
+        if (CoreUtils.isNullOrEmpty(containerName)) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
@@ -183,6 +194,7 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
         Map<String, String> metadata, PublicAccessType accessType, Context context) {
+        throwOnAnonymousAccess();
         BlobContainerAsyncClient blobContainerAsyncClient = getBlobContainerAsyncClient(containerName);
 
         return blobContainerAsyncClient.createWithResponse(metadata, accessType, context)
@@ -229,6 +241,7 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName, Context context) {
+        throwOnAnonymousAccess();
         return getBlobContainerAsyncClient(containerName).deleteWithResponse(null, context);
     }
 
@@ -280,6 +293,7 @@ public final class BlobServiceAsyncClient {
 
     PagedFlux<BlobContainerItem> listBlobContainersWithOptionalTimeout(ListBlobContainersOptions options,
         Duration timeout) {
+        throwOnAnonymousAccess();
         Function<String, Mono<PagedResponse<BlobContainerItem>>> func =
             marker -> listBlobContainersSegment(marker, options, timeout)
                 .map(response -> new PagedResponseBase<>(
@@ -341,6 +355,7 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
+        throwOnAnonymousAccess();
         return this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
@@ -350,6 +365,8 @@ public final class BlobServiceAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -371,6 +388,8 @@ public final class BlobServiceAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#BlobServiceProperties}
@@ -387,8 +406,98 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties, Context context) {
-        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(properties, null, null, context)
+        throwOnAnonymousAccess();
+        BlobServiceProperties finalProperties = null;
+        if (properties != null) {
+            finalProperties = new BlobServiceProperties();
+
+            // Logging
+            finalProperties.setLogging(properties.getLogging());
+            if (finalProperties.getLogging() != null) {
+                StorageImplUtils.assertNotNull("Logging Version", finalProperties.getLogging().getVersion());
+                validateRetentionPolicy(finalProperties.getLogging().getRetentionPolicy(), "Logging Retention Policy");
+            }
+
+            // Hour Metrics
+            finalProperties.setHourMetrics(properties.getHourMetrics());
+            if (finalProperties.getHourMetrics() != null) {
+                StorageImplUtils.assertNotNull("HourMetrics Version", finalProperties.getHourMetrics().getVersion());
+                validateRetentionPolicy(finalProperties.getHourMetrics().getRetentionPolicy(), "HourMetrics Retention "
+                    + "Policy");
+                if (finalProperties.getHourMetrics().isEnabled()) {
+                    StorageImplUtils.assertNotNull("HourMetrics IncludeApis",
+                        finalProperties.getHourMetrics().isIncludeApis());
+                }
+            }
+
+            // Minute Metrics
+            finalProperties.setMinuteMetrics(properties.getMinuteMetrics());
+            if (finalProperties.getMinuteMetrics() != null) {
+                StorageImplUtils.assertNotNull("MinuteMetrics Version",
+                    finalProperties.getMinuteMetrics().getVersion());
+                validateRetentionPolicy(finalProperties.getMinuteMetrics().getRetentionPolicy(), "MinuteMetrics "
+                    + "Retention Policy");
+                if (finalProperties.getMinuteMetrics().isEnabled()) {
+                    StorageImplUtils.assertNotNull("MinuteMetrics IncludeApis",
+                        finalProperties.getHourMetrics().isIncludeApis());
+                }
+            }
+
+            // CORS
+            if (properties.getCors() != null) {
+                List<BlobCorsRule> corsRules = new ArrayList<>();
+                for (BlobCorsRule rule : properties.getCors()) {
+                    corsRules.add(validatedCorsRule(rule));
+                }
+                finalProperties.setCors(corsRules);
+            }
+
+            // Default Service Version
+            finalProperties.setDefaultServiceVersion(properties.getDefaultServiceVersion());
+
+            // Delete Retention Policy
+            finalProperties.setDeleteRetentionPolicy(properties.getDeleteRetentionPolicy());
+            validateRetentionPolicy(finalProperties.getDeleteRetentionPolicy(), "DeleteRetentionPolicy Days");
+
+            // Static Website
+            finalProperties.setStaticWebsite(properties.getStaticWebsite());
+
+        }
+
+        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(finalProperties, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Sets any null fields to "" since the service requires all Cors rules to be set if some are set.
+     * @param originalRule {@link BlobCorsRule}
+     * @return The validated {@link BlobCorsRule}
+     */
+    private BlobCorsRule validatedCorsRule(BlobCorsRule originalRule) {
+        if (originalRule == null) {
+            return null;
+        }
+        BlobCorsRule validRule = new BlobCorsRule();
+        validRule.setAllowedHeaders(StorageImplUtils.emptyIfNull(originalRule.getAllowedHeaders()));
+        validRule.setAllowedMethods(StorageImplUtils.emptyIfNull(originalRule.getAllowedMethods()));
+        validRule.setAllowedOrigins(StorageImplUtils.emptyIfNull(originalRule.getAllowedOrigins()));
+        validRule.setExposedHeaders(StorageImplUtils.emptyIfNull(originalRule.getExposedHeaders()));
+        validRule.setMaxAgeInSeconds(originalRule.getMaxAgeInSeconds());
+        return validRule;
+    }
+
+    /**
+     * Validates a {@link BlobRetentionPolicy} according to service specs for set properties.
+     * @param retentionPolicy {@link BlobRetentionPolicy}
+     * @param policyName The name of the variable for errors.
+     */
+    private void validateRetentionPolicy(BlobRetentionPolicy retentionPolicy, String policyName) {
+        if (retentionPolicy == null) {
+            return;
+        }
+        if (retentionPolicy.isEnabled()) {
+            StorageImplUtils.assertInBounds(policyName, retentionPolicy.getDays(), 1, 365);
+        }
     }
 
     /**
@@ -445,6 +554,7 @@ public final class BlobServiceAsyncClient {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
+        throwOnAnonymousAccess();
 
         return this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
                 new KeyInfo()
@@ -495,6 +605,7 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse(Context context) {
+        throwOnAnonymousAccess();
         return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
@@ -536,6 +647,7 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
+        throwOnAnonymousAccess();
         return this.azureBlobStorage.services().getAccountInfoWithRestResponseAsync(context)
             .map(rb -> {
                 ServiceGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
@@ -550,5 +662,34 @@ public final class BlobServiceAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
+     * containers and file shares.</p>
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
+        throwOnAnonymousAccess();
+        return new AccountSasImplUtil(accountSasSignatureValues)
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+    }
+
+    /**
+     * Checks if service client was built with credentials.
+     */
+    private void throwOnAnonymousAccess() {
+        if (anonymousAccess) {
+            throw logger.logExceptionAsError(new IllegalStateException("Service client cannot be accessed without "
+                + "credentials"));
+        }
     }
 }

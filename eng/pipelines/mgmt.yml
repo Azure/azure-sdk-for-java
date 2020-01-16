@@ -37,7 +37,7 @@ jobs:
         displayName: 'call mvn for each mgmt sdk individually'
         inputs:
           scriptPath: "$(System.DefaultWorkingDirectory)/eng/pipelines/scripts/mgmt_sdk_compiler.sh"
-          workingDirectory: "$(System.DefaultWorkingDirectory)"
+          cwd: "$(System.DefaultWorkingDirectory)"
           failOnStandardError: true
           args: "$(JavaVersion) $(MavenGoals)"
 

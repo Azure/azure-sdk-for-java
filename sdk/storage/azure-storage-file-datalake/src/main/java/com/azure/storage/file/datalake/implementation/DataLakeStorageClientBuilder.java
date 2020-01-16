@@ -6,7 +6,10 @@ package com.azure.storage.file.datalake.implementation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.RestProxy;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 
 /**
  * A builder for creating a new instance of the DataLakeStorageClient type.
@@ -14,50 +17,82 @@ import com.azure.core.implementation.RestProxy;
 @ServiceClientBuilder(serviceClients = DataLakeStorageClientImpl.class)
 public final class DataLakeStorageClientBuilder {
     /*
-     * Specifies the version of the REST protocol used for processing the request. This is required when using shared key authorization.
+     * The URL of the service account, container, or blob that is the targe of the desired operation.
      */
-    private String xMsVersion;
+    private String url;
 
     /**
-     * Sets Specifies the version of the REST protocol used for processing the request. This is required when using shared key authorization.
+     * Sets The URL of the service account, container, or blob that is the targe of the desired operation.
      *
-     * @param xMsVersion the xMsVersion value.
+     * @param url the url value.
      * @return the DataLakeStorageClientBuilder.
      */
-    public DataLakeStorageClientBuilder xMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public DataLakeStorageClientBuilder url(String url) {
+        this.url = url;
         return this;
     }
 
     /*
-     * The Azure Storage account name.
+     * The value must be "filesystem" for all filesystem operations.
      */
-    private String accountName;
+    private String resource;
 
     /**
-     * Sets The Azure Storage account name.
+     * Sets The value must be "filesystem" for all filesystem operations.
      *
-     * @param accountName the accountName value.
+     * @param resource the resource value.
      * @return the DataLakeStorageClientBuilder.
      */
-    public DataLakeStorageClientBuilder accountName(String accountName) {
-        this.accountName = accountName;
+    public DataLakeStorageClientBuilder resource(String resource) {
+        this.resource = resource;
         return this;
     }
 
     /*
-     * The DNS suffix for the Azure Data Lake Storage endpoint.
+     * Specifies the version of the operation to use for this request.
      */
-    private String dnsSuffix;
+    private String version;
 
     /**
-     * Sets The DNS suffix for the Azure Data Lake Storage endpoint.
+     * Sets Specifies the version of the operation to use for this request.
      *
-     * @param dnsSuffix the dnsSuffix value.
+     * @param version the version value.
      * @return the DataLakeStorageClientBuilder.
      */
-    public DataLakeStorageClientBuilder dnsSuffix(String dnsSuffix) {
-        this.dnsSuffix = dnsSuffix;
+    public DataLakeStorageClientBuilder version(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /*
+     * The filesystem identifier.
+     */
+    private String fileSystem;
+
+    /**
+     * Sets The filesystem identifier.
+     *
+     * @param fileSystem the fileSystem value.
+     * @return the DataLakeStorageClientBuilder.
+     */
+    public DataLakeStorageClientBuilder fileSystem(String fileSystem) {
+        this.fileSystem = fileSystem;
+        return this;
+    }
+
+    /*
+     * The file or directory path.
+     */
+    private String path1;
+
+    /**
+     * Sets The file or directory path.
+     *
+     * @param path1 the path1 value.
+     * @return the DataLakeStorageClientBuilder.
+     */
+    public DataLakeStorageClientBuilder path1(String path1) {
+        this.path1 = path1;
         return this;
     }
 
@@ -84,19 +119,27 @@ public final class DataLakeStorageClientBuilder {
      */
     public DataLakeStorageClientImpl build() {
         if (pipeline == null) {
-            this.pipeline = RestProxy.createDefaultPipeline();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
         DataLakeStorageClientImpl client = new DataLakeStorageClientImpl(pipeline);
-        if (this.xMsVersion != null) {
-            client.setXMsVersion(this.xMsVersion);
+        if (this.url != null) {
+            client.setUrl(this.url);
         }
-        if (this.accountName != null) {
-            client.setAccountName(this.accountName);
-        }
-        if (this.dnsSuffix != null) {
-            client.setDnsSuffix(this.dnsSuffix);
+        if (this.resource != null) {
+            client.setResource(this.resource);
         } else {
-            client.setDnsSuffix("dfs.core.windows.net");
+            client.setResource("filesystem");
+        }
+        if (this.version != null) {
+            client.setVersion(this.version);
+        } else {
+            client.setVersion("2019-02-02");
+        }
+        if (this.fileSystem != null) {
+            client.setFileSystem(this.fileSystem);
+        }
+        if (this.path1 != null) {
+            client.setPath1(this.path1);
         }
         return client;
     }

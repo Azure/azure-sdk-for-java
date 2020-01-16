@@ -53,12 +53,12 @@ import java.io.IOException;
     container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))
         .flatMap(response -> {
             System.out.println("Created item: " + response.properties().toJson());
-            // Read that item 👓
+            // Read that item
             return response.item().read();
         })
         .flatMap(response -> {
             System.out.println("Read item: " + response.properties().toJson());
-            // Replace that item 🔁
+            // Replace that item
             try {
                 Passenger p = response.properties().getObject(Passenger.class);
                 p.setDestination("SFO");
@@ -68,7 +68,7 @@ import java.io.IOException;
                 return Mono.error(e);
             }
         })
-        // delete that item 💣
+        // delete that item
         .flatMap(response -> response.item().delete())
         .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
 // ...
@@ -92,7 +92,7 @@ For example, using maven, you can add the following dependency to your maven pom
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>3.3.1</version>
+  <version>3.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -251,4 +251,4 @@ If you encounter any bugs with the SDK please file an [issue](https://github.com
 
 Copyright (c) 2018 Copyright (c) Microsoft Corporation
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/cosmos/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2FREADME.png)

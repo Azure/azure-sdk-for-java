@@ -3,16 +3,23 @@
 
 package com.azure.data.cosmos.internal.routing;
 
+import com.azure.data.cosmos.internal.IRoutingMapProvider;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
+import com.azure.data.cosmos.internal.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -125,5 +132,57 @@ public class RoutingMapProviderHelperTest {
                 Collections.singletonList(new Range<String>("0012", "0015", false, true)));
 
         assertThat("3,4").isEqualTo(ranges.stream().map(func).collect(Collectors.joining(",")));
+    }
+
+    @Test(groups = {"unit"})
+    public void getOverlappingRangesWithList() {
+
+        Function<PartitionKeyRange, String> func = new Function<PartitionKeyRange, String>() {
+            @Override
+            public String apply(PartitionKeyRange range) {
+                return range.id();
+            }
+        };
+
+        IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
+        List<PartitionKeyRange> rangeList = Arrays.asList(new PartitionKeyRange("0", "", "000A"),
+            new PartitionKeyRange("1", "000A", "000D"),
+            new PartitionKeyRange("2", "000D", "0012"),
+            new PartitionKeyRange("3", "0012", "0015"),
+            new PartitionKeyRange("4", "0015", "0020"),
+            new PartitionKeyRange("5", "0020", "0040"),
+            new PartitionKeyRange("6", "0040", "FF"));
+        Mono<List<PartitionKeyRange>> listSingle = Mono.just(rangeList);
+
+        Map<Range, List<PartitionKeyRange>> resultMap = new HashMap<>();
+
+        resultMap.put(new Range<>("000D", "0012", true, false),
+            Collections.singletonList(new PartitionKeyRange("2", "000D", "0012")));
+        resultMap.put(new Range<>("0012", "0015", true, false),
+            Collections.singletonList(new PartitionKeyRange("3", "0012", "0015")));
+        resultMap.put(new Range<>("0015", "0020", true, false),
+            Collections.singletonList(new PartitionKeyRange("4", "0015", "00120")));
+
+        Mockito.doAnswer(invocationOnMock -> {
+            Range range = invocationOnMock.getArgumentAt(1, Range.class);
+            return Mono.just(new Utils.ValueHolder<>(resultMap.get(range)));
+        }).when(routingMapProviderMock).tryGetOverlappingRangesAsync(Matchers.anyString(),
+            Matchers.any(),
+            Matchers.anyBoolean(),
+            Matchers.anyMap());
+
+        Mono<List<PartitionKeyRange>> overlappingRanges;
+        overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock,
+            "/dbs/db1/colls/coll1",
+            Arrays.asList(new Range<String>("000D", "0012", true, false),
+                new Range<String>("0012", "0015", true, false),
+                new Range<>("0015", "0020", true, false)));
+        assertThat("2,3,4").isEqualTo(overlappingRanges.block().stream().map(func).collect(Collectors.joining(",")));
+
+        overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock,
+            "/dbs/db1/colls/coll1",
+            Arrays.asList(new Range<String>("000D", "0012", true, false)));
+        assertThat("2").isEqualTo(overlappingRanges.block().stream().map(func).collect(Collectors.joining(",")));
+
     }
 }

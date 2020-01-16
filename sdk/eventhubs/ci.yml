@@ -15,7 +15,6 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
       - hotfix/*
       - release/*
   paths:
@@ -23,6 +22,7 @@ trigger:
       - sdk/eventhubs/
     exclude:
       - sdk/eventhubs/microsoft-azure
+      - sdk/eventhubs/mgmt-
 
 pr:
   branches:
@@ -36,15 +36,19 @@ pr:
       - sdk/eventhubs/
     exclude:
       - sdk/eventhubs/microsoft-azure
+      - sdk/eventhubs/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: eventhubs
+      SDKType: client
       Artifacts:
         - name: azure-messaging-eventhubs
+          groupId: com.azure
           safeName: azuremessagingeventhubs
           stagingProfileId: 88192f04117501
         - name: azure-messaging-eventhubs-checkpointstore-blob
+          groupId: com.azure
           safeName: azuremessagingeventhubscheckpointstoreblob
           stagingProfileId: 88192f04117501

@@ -3,54 +3,55 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 
 /**
  * Represents the details of encrypt operation result.
  */
+@Immutable
 public final class EncryptResult {
-
     /**
-     * Creates the instance of Encrypt Result holding encryption operation response information.
-     * @param cipherText The encrypted content.
-     * @param authenticationTag The authentication tag.
-     * @param algorithm The algorithm used to encrypt the content.
-     */
-    public EncryptResult(byte[] cipherText, byte[] authenticationTag, EncryptionAlgorithm algorithm) {
-        this.cipherText = ImplUtils.clone(cipherText);
-        this.authenticationTag = ImplUtils.clone(authenticationTag);
-        this.algorithm = algorithm;
-    }
-
-    /**
-     * THe encrypted content.
+     * The encrypted content.
      */
     private final byte[] cipherText;
 
     /**
-     * The authentication tag.
-     */
-    private final byte[] authenticationTag;
-
-    /**
-     * The encrypyion algorithm used for the encryption operation.
+     * The algorithm used for the encryption operation.
      */
     private final EncryptionAlgorithm algorithm;
+
+    /**
+     * The identifier of the key used for the encryption operation.
+     */
+    private final String keyId;
+
+    /**
+     * Creates the instance of Encrypt Result holding encryption operation response information.
+     * @param cipherText The encrypted content.
+     * @param algorithm The algorithm used to encrypt the content.
+     * @param keyId The identifier of the key usd for the encryption operation.
+     */
+    public EncryptResult(byte[] cipherText, EncryptionAlgorithm algorithm, String keyId) {
+        this.cipherText = CoreUtils.clone(cipherText);
+        this.algorithm = algorithm;
+        this.keyId = keyId;
+    }
+
+    /**
+     * Get the identifier of the key used to do encryption
+     * @return the key identifier
+     */
+    public String getKeyId() {
+        return keyId;
+    }
 
     /**
      * Get the encrypted content.
      * @return The encrypted content.
      */
     public byte[] getCipherText() {
-        return ImplUtils.clone(cipherText);
-    }
-
-    /**
-     * Get the authentication tag.
-     * @return The authentication tag.
-     */
-    public byte[] getAuthenticationTag() {
-        return ImplUtils.clone(authenticationTag);
+        return CoreUtils.clone(cipherText);
     }
 
     /**
@@ -60,5 +61,4 @@ public final class EncryptResult {
     public EncryptionAlgorithm getAlgorithm() {
         return algorithm;
     }
-
 }

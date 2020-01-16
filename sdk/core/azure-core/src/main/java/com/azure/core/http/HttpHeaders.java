@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -132,6 +133,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<HttpHeader> iterator() {
         return headers.values().iterator();
@@ -144,5 +148,12 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public Stream<HttpHeader> stream() {
         return headers.values().stream();
+    }
+
+    @Override
+    public String toString() {
+        return this.stream()
+            .map(header -> header.getName() + "=" + header.getValue())
+            .collect(Collectors.joining(", "));
     }
 }

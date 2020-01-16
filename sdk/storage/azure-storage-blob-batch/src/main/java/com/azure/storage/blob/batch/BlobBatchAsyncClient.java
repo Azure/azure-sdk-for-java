@@ -12,8 +12,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -22,6 +22,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -29,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains all operations that apply to Azure Storage Blob batching.
@@ -103,8 +104,8 @@ public final class BlobBatchAsyncClient {
      * @return A response only containing header and status code information, used to indicate that the batch operation
      * has completed.
      * @throws BlobStorageException If the batch request is malformed.
-     * @throws BlobBatchStorageException If {@code throwOnAnyFailure} is {@code true} and any request in the
-     * {@link BlobBatch} failed.
+     * @throws BlobBatchStorageException If {@code throwOnAnyFailure} is {@code true} and any request in the {@link
+     * BlobBatch} failed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure) {
@@ -116,9 +117,12 @@ public final class BlobBatchAsyncClient {
     }
 
     Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Context context) {
-        return client.services().submitBatchWithRestResponseAsync(
-            batch.getBody(), batch.getContentLength(), batch.getContentType(), context)
-            .flatMap(response -> BlobBatchHelper.mapBatchResponse(batch, response, throwOnAnyFailure, logger));
+        return batch.prepareBlobBatchSubmission()
+            .flatMap(batchOperationInfo -> client.services()
+                .submitBatchWithRestResponseAsync(Flux.fromIterable(batchOperationInfo.getBody()),
+                    batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(), context)
+                .flatMap(response ->
+                    BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger)));
     }
 
     /**
@@ -128,7 +132,7 @@ public final class BlobBatchAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.deleteBlobs#List-DeleteSnapshotsOptionType}
      *
-     * @param blobUrls Urls of the blobs to delete.
+     * @param blobUrls Urls of the blobs to delete. Blob names must be encoded to UTF-8.
      * @param deleteOptions The deletion option for all blobs.
      * @return The status of each delete operation.
      * @throws BlobStorageException If the batch request is malformed.
@@ -162,7 +166,7 @@ public final class BlobBatchAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.setBlobsAccessTier#List-AccessTier}
      *
-     * @param blobUrls Urls of the blobs to set their access tier.
+     * @param blobUrls Urls of the blobs to set their access tier. Blob names must be encoded to UTF-8.
      * @param accessTier {@link AccessTier} to set on each blob.
      * @return The status of each set tier operation.
      * @throws BlobStorageException If the batch request is malformed.

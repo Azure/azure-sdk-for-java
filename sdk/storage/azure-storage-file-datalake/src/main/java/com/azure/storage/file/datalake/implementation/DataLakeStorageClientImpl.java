@@ -5,81 +5,132 @@
 package com.azure.storage.file.datalake.implementation;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.RestProxy;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 
 /**
  * Initializes a new instance of the DataLakeStorageClient type.
  */
 public final class DataLakeStorageClientImpl {
     /**
-     * Specifies the version of the REST protocol used for processing the request. This is required when using shared key authorization.
+     * The URL of the service account, container, or blob that is the targe of the desired operation.
      */
-    private String xMsVersion;
+    private String url;
 
     /**
-     * Gets Specifies the version of the REST protocol used for processing the request. This is required when using shared key authorization.
+     * Gets The URL of the service account, container, or blob that is the targe of the desired operation.
      *
-     * @return the xMsVersion value.
+     * @return the url value.
      */
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public String getUrl() {
+        return this.url;
     }
 
     /**
-     * Sets Specifies the version of the REST protocol used for processing the request. This is required when using shared key authorization.
+     * Sets The URL of the service account, container, or blob that is the targe of the desired operation.
      *
-     * @param xMsVersion the xMsVersion value.
+     * @param url the url value.
      */
-    DataLakeStorageClientImpl setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    DataLakeStorageClientImpl setUrl(String url) {
+        this.url = url;
         return this;
     }
 
     /**
-     * The Azure Storage account name.
+     * The value must be "filesystem" for all filesystem operations.
      */
-    private String accountName;
+    private String resource;
 
     /**
-     * Gets The Azure Storage account name.
+     * Gets The value must be "filesystem" for all filesystem operations.
      *
-     * @return the accountName value.
+     * @return the resource value.
      */
-    public String getAccountName() {
-        return this.accountName;
+    public String getResource() {
+        return this.resource;
     }
 
     /**
-     * Sets The Azure Storage account name.
+     * Sets The value must be "filesystem" for all filesystem operations.
      *
-     * @param accountName the accountName value.
+     * @param resource the resource value.
      */
-    DataLakeStorageClientImpl setAccountName(String accountName) {
-        this.accountName = accountName;
+    DataLakeStorageClientImpl setResource(String resource) {
+        this.resource = resource;
         return this;
     }
 
     /**
-     * The DNS suffix for the Azure Data Lake Storage endpoint.
+     * Specifies the version of the operation to use for this request.
      */
-    private String dnsSuffix;
+    private String version;
 
     /**
-     * Gets The DNS suffix for the Azure Data Lake Storage endpoint.
+     * Gets Specifies the version of the operation to use for this request.
      *
-     * @return the dnsSuffix value.
+     * @return the version value.
      */
-    public String getDnsSuffix() {
-        return this.dnsSuffix;
+    public String getVersion() {
+        return this.version;
     }
 
     /**
-     * Sets The DNS suffix for the Azure Data Lake Storage endpoint.
+     * Sets Specifies the version of the operation to use for this request.
      *
-     * @param dnsSuffix the dnsSuffix value.
+     * @param version the version value.
      */
-    DataLakeStorageClientImpl setDnsSuffix(String dnsSuffix) {
-        this.dnsSuffix = dnsSuffix;
+    DataLakeStorageClientImpl setVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
+     * The filesystem identifier.
+     */
+    private String fileSystem;
+
+    /**
+     * Gets The filesystem identifier.
+     *
+     * @return the fileSystem value.
+     */
+    public String getFileSystem() {
+        return this.fileSystem;
+    }
+
+    /**
+     * Sets The filesystem identifier.
+     *
+     * @param fileSystem the fileSystem value.
+     */
+    DataLakeStorageClientImpl setFileSystem(String fileSystem) {
+        this.fileSystem = fileSystem;
+        return this;
+    }
+
+    /**
+     * The file or directory path.
+     */
+    private String path1;
+
+    /**
+     * Gets The file or directory path.
+     *
+     * @return the path1 value.
+     */
+    public String getPath1() {
+        return this.path1;
+    }
+
+    /**
+     * Sets The file or directory path.
+     *
+     * @param path1 the path1 value.
+     */
+    DataLakeStorageClientImpl setPath1(String path1) {
+        this.path1 = path1;
         return this;
     }
 
@@ -98,17 +149,31 @@ public final class DataLakeStorageClientImpl {
     }
 
     /**
-     * The FilesystemsImpl object to access its operations.
+     * The ServicesImpl object to access its operations.
      */
-    private FilesystemsImpl filesystems;
+    private ServicesImpl services;
 
     /**
-     * Gets the FilesystemsImpl object to access its operations.
+     * Gets the ServicesImpl object to access its operations.
      *
-     * @return the FilesystemsImpl object.
+     * @return the ServicesImpl object.
      */
-    public FilesystemsImpl filesystems() {
-        return this.filesystems;
+    public ServicesImpl services() {
+        return this.services;
+    }
+
+    /**
+     * The FileSystemsImpl object to access its operations.
+     */
+    private FileSystemsImpl fileSystems;
+
+    /**
+     * Gets the FileSystemsImpl object to access its operations.
+     *
+     * @return the FileSystemsImpl object.
+     */
+    public FileSystemsImpl fileSystems() {
+        return this.fileSystems;
     }
 
     /**
@@ -129,7 +194,7 @@ public final class DataLakeStorageClientImpl {
      * Initializes an instance of DataLakeStorageClient client.
      */
     public DataLakeStorageClientImpl() {
-        this(RestProxy.createDefaultPipeline());
+        new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
     }
 
     /**
@@ -139,7 +204,8 @@ public final class DataLakeStorageClientImpl {
      */
     public DataLakeStorageClientImpl(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
-        this.filesystems = new FilesystemsImpl(this);
+        this.services = new ServicesImpl(this);
+        this.fileSystems = new FileSystemsImpl(this);
         this.paths = new PathsImpl(this);
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 
@@ -22,6 +23,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
 
     /**
      * Specifies the max number of retries when an authentication request fails.
+     *
      * @param maxRetry the number of retries
      * @return itself
      */
@@ -33,6 +35,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
 
     /**
      * Specifies a Function to calculate seconds of timeout on every retried request.
+     *
      * @param retryTimeout the Function that returns a timeout in seconds given the number of retry
      * @return itself
      */
@@ -44,12 +47,25 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
 
     /**
      * Specifies he options for proxy configuration.
+     *
      * @param proxyOptions the options for proxy configuration
      * @return itself
      */
     @SuppressWarnings("unchecked")
     public T proxyOptions(ProxyOptions proxyOptions) {
         this.identityClientOptions.setProxyOptions(proxyOptions);
+        return (T) this;
+    }
+
+    /**
+     * Specifies the HttpPipeline to send all requests. This setting overrides the others.
+     *
+     * @param httpPipeline the HttpPipeline to send all requests
+     * @return itself
+     */
+    @SuppressWarnings("unchecked")
+    public T httpPipeline(HttpPipeline httpPipeline) {
+        this.identityClientOptions.setHttpPipeline(httpPipeline);
         return (T) this;
     }
 }

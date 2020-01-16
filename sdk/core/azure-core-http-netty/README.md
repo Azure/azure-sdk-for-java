@@ -15,7 +15,7 @@ Azure Core Netty HTTP client is a plugin for the azure-core HTTP client API.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-netty</artifactId>
-    <version>1.0.0-preview.7</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -33,6 +33,7 @@ The following sections provide several code snippets covering some of the most c
 
 Create a Netty Http client that uses port 80 and has no proxy.
 
+<!-- embedme ./src/samples/java/com/azure/core/http/netty/ReadmeSamples.java#L23-L23 -->
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder().build();
 ```
@@ -41,6 +42,7 @@ HttpClient client = new NettyAsyncHttpClientBuilder().build();
 
 Create a Netty Http client that is using a proxy.
 
+<!-- embedme ./src/samples/java/com/azure/core/http/netty/ReadmeSamples.java#L30-L32 -->
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
@@ -62,4 +64,4 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/azure-core-http-netty/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-netty%2FREADME.png)

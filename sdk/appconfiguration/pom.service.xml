@@ -9,9 +9,12 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
+    <!-- NOTE: Commenting out because we should now be binary composed.
+    -->
     <module>../core/azure-core</module>
     <module>../core/azure-core-test</module>
     <module>../core/azure-core-http-netty</module>
+    <module>../identity/azure-identity</module>
     <module>azure-data-appconfiguration</module>
   </modules>
 </project>

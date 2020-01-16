@@ -11,7 +11,7 @@ import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
 /**
- * The Pipeline policy that adds a particular set of headers to HTTP requests.
+ * The pipeline policy that adds a particular set of headers to HTTP requests.
  */
 public class AddHeadersPolicy implements HttpPipelinePolicy {
     private final HttpHeaders headers;

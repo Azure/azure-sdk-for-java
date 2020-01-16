@@ -4,9 +4,9 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
-import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

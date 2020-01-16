@@ -87,12 +87,18 @@ public abstract class SessionTests extends Tests {
         if (!this.shouldCreateEntityForEveryTest()) {
             this.drainSession();
         }
-
-        this.sender.close();
+        
+        if (this.sender != null) {
+        	this.sender.close();
+        }
+        
         if (this.session != null) {
             this.session.close();
         }
-        this.factory.close();
+        
+        if (this.factory != null) {
+        	this.factory.close();
+        }        
         
         if (this.shouldCreateEntityForEveryTest()) {
             managementClient.deleteQueueAsync(this.entityName).get();
@@ -125,10 +131,10 @@ public abstract class SessionTests extends Tests {
     }
 
     @Test
-    public void testBasicReceiveAndDeleteWithLargeBinaryData() throws InterruptedException, ServiceBusException, ExecutionException {
+    public void testBasicReceiveAndCompleteWithLargeBinaryData() throws InterruptedException, ServiceBusException, ExecutionException {
         String sessionId = TestUtils.getRandomString();
-        this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.RECEIVEANDDELETE);
-        TestCommons.testBasicReceiveAndDeleteWithLargeBinaryData(this.sender, sessionId, this.session);
+        this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
+        TestCommons.testBasicReceiveAndCompleteWithLargeBinaryData(this.sender, sessionId, this.session);
     }
 
     @Test
@@ -258,15 +264,17 @@ public abstract class SessionTests extends Tests {
 
     @Test
     public void testRenewSessionLock() throws InterruptedException, ServiceBusException {
-        String sessionId = TestUtils.getRandomString();
-        this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
-        Instant initialValidity = this.session.getLockedUntilUtc();
-        this.session.renewSessionLock();
-        Instant renewedValidity = this.session.getLockedUntilUtc();
-        Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time.", renewedValidity.isAfter(initialValidity));
-        this.session.renewSessionLock();
-        Instant renewedValidity2 = this.session.getLockedUntilUtc();
-        Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time.", renewedValidity2.isAfter(renewedValidity));
+    	String sessionId = TestUtils.getRandomString();
+		this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
+		Instant initialValidity = this.session.getLockedUntilUtc();
+		Thread.sleep(1000);
+		this.session.renewSessionLock();
+		Instant renewedValidity = this.session.getLockedUntilUtc();
+		Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time. Before :" + initialValidity.toString() + ", After:" + renewedValidity.toString(), renewedValidity.isAfter(initialValidity));
+		Thread.sleep(1000);
+		this.session.renewSessionLock();
+		Instant renewedValidity2 = this.session.getLockedUntilUtc();
+		Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time. Before :" + renewedValidity.toString() + ", After:" + renewedValidity2.toString(), renewedValidity2.isAfter(renewedValidity));
     }
 
     @Test

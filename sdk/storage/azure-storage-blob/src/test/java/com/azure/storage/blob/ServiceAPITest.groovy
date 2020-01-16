@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
+import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.StaticWebsite
 
@@ -19,12 +20,24 @@ import com.azure.storage.blob.models.BlobStorageException
 
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
 
 import java.time.Duration
 import java.time.OffsetDateTime
 
 class ServiceAPITest extends APISpec {
+
+    BlobServiceClient anonymousClient;
+
     def setup() {
+        setup:
+        // We shouldnt be getting to the network layer anyway
+        anonymousClient = new BlobServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .buildClient()
         def disabled = new BlobRetentionPolicy().setEnabled(false)
         primaryBlobServiceClient.setProperties(new BlobServiceProperties()
             .setStaticWebsite(new StaticWebsite().setEnabled(false))
@@ -139,6 +152,14 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "List containers anonymous"() {
+        when:
+        anonymousClient.listBlobContainers().iterator()
+
+        then:
+        thrown(IllegalStateException)
     }
 
     def "List containers with timeout still backed by PagedFlux"() {
@@ -269,6 +290,23 @@ class ServiceAPITest extends APISpec {
         primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getStatusCode() == 202
     }
 
+    def "Set props cors check"() {
+        setup:
+        def serviceProperties = primaryBlobServiceClient.getProperties()
+
+        // Some properties are not set and this test validates that they are not null when sent to the service
+        def rule = new BlobCorsRule()
+        rule.setAllowedOrigins("microsoft.com")
+        rule.setMaxAgeInSeconds(60)
+        rule.setAllowedMethods("GET")
+        rule.setAllowedHeaders("x-ms-version")
+
+        serviceProperties.setCors(Collections.singletonList(rule))
+
+        expect:
+        primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode() == 202
+    }
+
     def "Set props error"() {
         when:
         getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
@@ -276,6 +314,14 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Set props anonymous"() {
+        when:
+        anonymousClient.setProperties(new BlobServiceProperties())
+
+        then:
+        thrown(IllegalStateException)
     }
 
     def "Get props min"() {
@@ -290,6 +336,14 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Get props anonymous"() {
+        when:
+        anonymousClient.getProperties()
+
+        then:
+        thrown(IllegalStateException)
     }
 
     def "Get UserDelegationKey"() {
@@ -334,6 +388,14 @@ class ServiceAPITest extends APISpec {
         OffsetDateTime.now() | OffsetDateTime.now().minusDays(1) || IllegalArgumentException
     }
 
+    def "Get UserDelegationKey anonymous"() {
+        when:
+        anonymousClient.getUserDelegationKey(null, OffsetDateTime.now().plusDays(1))
+
+        then:
+        thrown(IllegalStateException)
+    }
+
     def "Get stats"() {
         setup:
         def secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.getAccountName())
@@ -365,6 +427,14 @@ class ServiceAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Get stats anonymous"() {
+        when:
+        anonymousClient.getStatistics()
+
+        then:
+        thrown(IllegalStateException)
+    }
+
     def "Get account info"() {
         when:
         def response = primaryBlobServiceClient.getAccountInfoWithResponse(null, null)
@@ -382,17 +452,6 @@ class ServiceAPITest extends APISpec {
         primaryBlobServiceClient.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
-    def "Get account info error"() {
-        when:
-        BlobServiceClient serviceURL = getServiceClient((StorageSharedKeyCredential) null, primaryBlobServiceClient.getAccountUrl())
-
-        serviceURL.getAccountInfo()
-
-        then:
-        thrown(IllegalArgumentException)
-    }
-
-
     // This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
     def "Invalid account name"() {
         setup:
@@ -406,5 +465,55 @@ class ServiceAPITest extends APISpec {
         then:
         def e = thrown(RuntimeException)
         e.getCause() instanceof UnknownHostException
+    }
+
+    def "Get account info anonymous"() {
+        when:
+        anonymousClient.getAccountInfo()
+
+        then:
+        thrown(IllegalStateException)
+    }
+
+    def "Get account sas anonymous"() {
+        setup:
+        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def permissions = new AccountSasPermission().setReadPermission(true)
+        def services = new AccountSasService().setBlobAccess(true)
+        def resourceTypes = new AccountSasResourceType().setService(true)
+
+        when:
+        anonymousClient.generateAccountSas(new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes))
+
+        then:
+        thrown(IllegalStateException)
+    }
+
+    def "Builder cpk validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(primaryBlobServiceClient.getAccountUrl()).setScheme("http").toUrl()
+        def builder = new BlobServiceClientBuilder()
+            .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Builder bearer token validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(primaryBlobServiceClient.getAccountUrl()).setScheme("http").toUrl()
+        def builder = new BlobServiceClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }

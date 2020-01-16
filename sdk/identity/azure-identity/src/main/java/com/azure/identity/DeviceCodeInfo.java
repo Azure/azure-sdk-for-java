@@ -41,8 +41,9 @@ public class DeviceCodeInfo {
 
     private final String message;
 
-
     /**
+     * Gets the code which user needs to provide when authenticating at the verification URL.
+     *
      * @return code which user needs to provide when authenticating at the verification URL.
      */
     public String getUserCode() {
@@ -50,6 +51,8 @@ public class DeviceCodeInfo {
     }
 
     /**
+     * Gets the code which should be included in the request for the access token.
+     *
      * @return code which should be included in the request for the access token.
      */
     public String getDeviceCode() {
@@ -57,6 +60,8 @@ public class DeviceCodeInfo {
     }
 
     /**
+     * Gets the URL where user can authenticate.
+     *
      * @return URL where user can authenticate.
      */
     public String getVerificationUrl() {
@@ -64,6 +69,8 @@ public class DeviceCodeInfo {
     }
 
     /**
+     * Gets the expiration time of device code.
+     *
      * @return expiration time of device code.
      */
     public OffsetDateTime getExpiresOn() {
@@ -71,6 +78,8 @@ public class DeviceCodeInfo {
     }
 
     /**
+     * Gets the message which should be displayed to the user.
+     *
      * @return message which should be displayed to the user.
      */
     public String getMessage() {

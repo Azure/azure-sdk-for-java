@@ -242,9 +242,27 @@ class RequestResponseLink extends ClientEntity {
             commonLinkProperties.putAll(this.additionalProperties);
         }
 
+        Connection connection;
+		if(this.sasTokenAudienceURI == null) {
+			// CBS link. Doesn't have to send SAS token
+			connection = this.underlyingFactory.getActiveConnectionCreateIfNecessary();
+		}
+		else {
+			connection = this.underlyingFactory.getActiveConnectionOrNothing();
+			if (connection == null) {
+				// Connection closed after sending CBS token. Happens only in the rare case of azure service bus closing idle connection, just right after sending
+				// CBS token but before opening a link.
+				TRACE_LOGGER.warn("Idle connection closed by service just after sending CBS token. Very rare case. Will retry.");
+				ServiceBusException exception = new ServiceBusException(true, "Idle connection closed by service just after sending CBS token. Please retry.");
+				AsyncUtil.completeFutureExceptionally(this.amqpSender.openFuture, exception);
+				AsyncUtil.completeFutureExceptionally(this.amqpReceiver.openFuture, exception);
+				// Retry with little delay so that link recreation in progress flag is reset
+				Timer.schedule(() -> {RequestResponseLink.this.ensureUniqueLinkRecreation();}, Duration.ofMillis(1000), TimerType.OneTimeRun);
+				return;
+			}
+		}
+		
         // Create send link
-        final Connection connection = this.underlyingFactory.getConnection();
-
         Session session = connection.session();
         session.setOutgoingWindow(Integer.MAX_VALUE);
         session.open();
@@ -493,7 +511,9 @@ class RequestResponseLink extends ClientEntity {
     protected CompletableFuture<Void> onClose() {
         TRACE_LOGGER.info("Closing requestresponselink to {} by closing both internal sender and receiver links.", this.linkPath);
         this.cancelSASTokenRenewTimer();
-        return this.amqpSender.closeAsync().thenComposeAsync((v) -> this.amqpReceiver.closeAsync(), MessagingFactory.INTERNAL_THREAD_POOL);
+        CompletableFuture<Void> senderCloseFuture = this.amqpSender.closeAsync();
+        CompletableFuture<Void> receiverCloseFuture = this.amqpReceiver.closeAsync();
+        return CompletableFuture.allOf(senderCloseFuture, receiverCloseFuture);
     }
 
     private static void scheduleLinkCloseTimeout(CompletableFuture<Void> closeFuture, Duration timeout, String linkName) {

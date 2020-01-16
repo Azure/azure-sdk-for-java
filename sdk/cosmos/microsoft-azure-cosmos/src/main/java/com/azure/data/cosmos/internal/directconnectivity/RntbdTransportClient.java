@@ -11,6 +11,8 @@ import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdObjectMapper
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdServiceEndpoint;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -23,9 +25,12 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -70,7 +75,23 @@ public final class RntbdTransportClient extends TransportClient {
 
     // endregion
 
-    // region Accessors
+    // region Methods
+
+    public boolean isClosed() {
+        return this.closed.get();
+    }
+
+    @Override
+    public void close() {
+
+        if (this.closed.compareAndSet(false, true)) {
+            logger.debug("close {}", this);
+            this.endpointProvider.close();
+            return;
+        }
+
+        logger.debug("already closed {}", this);
+    }
 
     public int endpointCount() {
         return this.endpointProvider.count();
@@ -84,49 +105,36 @@ public final class RntbdTransportClient extends TransportClient {
         return this.id;
     }
 
-    public boolean isClosed() {
-        return this.closed.get();
+    @Override
+    public Mono<StoreResponse> invokeStoreAsync(final URI address, final RxDocumentServiceRequest request) {
+
+        logger.debug("RntbdTransportClient.invokeStoreAsync({}, {})", address, request);
+
+        checkNotNull(address, "expected non-null address");
+        checkNotNull(request, "expected non-null request");
+        this.throwIfClosed();
+
+        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, address);
+        requestArgs.traceOperation(logger, null, "invokeStoreAsync");
+
+        final RntbdEndpoint endpoint = this.endpointProvider.get(address);
+        final RntbdRequestRecord record = endpoint.request(requestArgs);
+
+        logger.debug("RntbdTransportClient.invokeStoreAsync({}, {}): {}", address, request, record);
+
+        return Mono.fromFuture(record).doFinally(signalType -> {
+            logger.debug("SignalType.{} received from reactor: {\n  endpoint: {},\n  record: {}\n}",
+                signalType.name(),
+                endpoint,
+                record);
+            if (signalType == SignalType.CANCEL) {
+                record.stage(RntbdRequestRecord.Stage.CANCELLED_BY_CLIENT);
+            }
+        });
     }
 
     public Tag tag() {
         return this.tag;
-    }
-
-    // endregion
-
-    // region Methods
-
-    @Override
-    public void close() {
-
-        logger.debug("\n  [{}] CLOSE", this);
-
-        if (this.closed.compareAndSet(false, true)) {
-            this.endpointProvider.close();
-            return;
-        }
-
-        logger.debug("\n  [{}]\n  already closed", this);
-    }
-
-    @Override
-    public Mono<StoreResponse> invokeStoreAsync(final URI physicalAddress, final RxDocumentServiceRequest request) {
-
-        checkNotNull(physicalAddress, "physicalAddress");
-        checkNotNull(request, "request");
-        this.throwIfClosed();
-
-        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, physicalAddress);
-        requestArgs.traceOperation(logger, null, "invokeStoreAsync");
-
-        final RntbdEndpoint endpoint = this.endpointProvider.get(physicalAddress);
-        final RntbdRequestRecord requestRecord = endpoint.request(requestArgs);
-
-        return Mono.fromFuture(requestRecord).doFinally(signal -> {
-            if (signal == SignalType.CANCEL) {
-                requestRecord.cancel(false);
-            }
-        });
     }
 
     @Override
@@ -134,88 +142,108 @@ public final class RntbdTransportClient extends TransportClient {
         return RntbdObjectMapper.toString(this);
     }
 
-    private void throwIfClosed() {
-        checkState(!this.closed.get(), "%s is closed", this);
-    }
-
-    // endregion
-
-    // region Privates
-
     private static Tag tag(long id) {
         return Tag.of(TAG_NAME, Strings.padStart(Long.toHexString(id).toUpperCase(), 4, '0'));
     }
 
     // endregion
 
-    // region Types
+    // region Privates
 
-    static final class JsonSerializer extends StdSerializer<RntbdTransportClient> {
-
-        public JsonSerializer() {
-            super(RntbdTransportClient.class);
-        }
-
-        @Override
-        public void serialize(RntbdTransportClient value, JsonGenerator generator, SerializerProvider provider) throws IOException {
-
-            generator.writeStartObject();
-            generator.writeNumberField("id", value.id());
-            generator.writeBooleanField("isClosed", value.isClosed());
-            generator.writeObjectField("configuration", value.endpointProvider.config());
-            generator.writeArrayFieldStart("serviceEndpoints");
-
-            value.endpointProvider.list().forEach(endpoint -> {
-                try {
-                    generator.writeObject(endpoint);
-                } catch (IOException error) {
-                    logger.error("failed to serialize instance {} due to:", value.id(), error);
-                }
-            });
-
-            generator.writeEndArray();
-            generator.writeEndObject();
-        }
+    private void throwIfClosed() {
+        checkState(!this.closed.get(), "%s is closed", this);
     }
+
+    // endregion
+
+    // region Types
 
     public static final class Options {
 
         // region Fields
 
+        @JsonProperty()
         private final int bufferPageSize;
-        private final String certificateHostNameOverride;
+
+        @JsonProperty()
         private final Duration connectionTimeout;
+
+        @JsonProperty()
         private final Duration idleChannelTimeout;
+
+        @JsonProperty()
         private final Duration idleEndpointTimeout;
+
+        @JsonProperty()
         private final int maxBufferCapacity;
+
+        @JsonProperty()
         private final int maxChannelsPerEndpoint;
+
+        @JsonProperty()
         private final int maxRequestsPerChannel;
-        private final int partitionCount;
+
+        @JsonProperty()
         private final Duration receiveHangDetectionTime;
+
+        @JsonProperty()
+        private final Duration requestExpiryInterval;
+
+        @JsonProperty()
         private final Duration requestTimeout;
+
+        @JsonProperty()
+        private final Duration requestTimerResolution;
+
+        @JsonProperty()
         private final Duration sendHangDetectionTime;
+
+        @JsonProperty()
         private final Duration shutdownTimeout;
+
+        @JsonIgnore()
         private final UserAgentContainer userAgent;
 
         // endregion
 
         // region Constructors
 
+        private Options() {
+            this.bufferPageSize = 8192;
+            this.connectionTimeout = null;
+            this.idleChannelTimeout = Duration.ZERO;
+            this.idleEndpointTimeout = Duration.ofSeconds(70L);
+            this.maxBufferCapacity = 8192 << 10;
+            this.maxChannelsPerEndpoint = 10;
+            this.maxRequestsPerChannel = 30;
+            this.receiveHangDetectionTime = Duration.ofSeconds(65L);
+            this.requestExpiryInterval = Duration.ofSeconds(5L);
+            this.requestTimeout = null;
+            this.requestTimerResolution = Duration.ofMillis(5L);
+            this.sendHangDetectionTime = Duration.ofSeconds(10L);
+            this.shutdownTimeout = Duration.ofSeconds(15L);
+            this.userAgent = new UserAgentContainer();
+        }
+
         private Options(Builder builder) {
+
             this.bufferPageSize = builder.bufferPageSize;
-            this.certificateHostNameOverride = builder.certificateHostNameOverride;
-            this.connectionTimeout = builder.connectionTimeout == null ? builder.requestTimeout : builder.connectionTimeout;
             this.idleChannelTimeout = builder.idleChannelTimeout;
             this.idleEndpointTimeout = builder.idleEndpointTimeout;
             this.maxBufferCapacity = builder.maxBufferCapacity;
             this.maxChannelsPerEndpoint = builder.maxChannelsPerEndpoint;
             this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
-            this.partitionCount = builder.partitionCount;
             this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
+            this.requestExpiryInterval = builder.requestExpiryInterval;
             this.requestTimeout = builder.requestTimeout;
+            this.requestTimerResolution = builder.requestTimerResolution;
             this.sendHangDetectionTime = builder.sendHangDetectionTime;
             this.shutdownTimeout = builder.shutdownTimeout;
             this.userAgent = builder.userAgent;
+
+            this.connectionTimeout = builder.connectionTimeout == null
+                ? builder.requestTimeout
+                : builder.connectionTimeout;
         }
 
         // endregion
@@ -224,10 +252,6 @@ public final class RntbdTransportClient extends TransportClient {
 
         public int bufferPageSize() {
             return this.bufferPageSize;
-        }
-
-        public String certificateHostNameOverride() {
-            return this.certificateHostNameOverride;
         }
 
         public Duration connectionTimeout() {
@@ -254,16 +278,20 @@ public final class RntbdTransportClient extends TransportClient {
             return this.maxRequestsPerChannel;
         }
 
-        public int partitionCount() {
-            return this.partitionCount;
-        }
-
         public Duration receiveHangDetectionTime() {
             return this.receiveHangDetectionTime;
         }
 
+        public Duration requestExpiryInterval() {
+            return this.requestExpiryInterval;
+        }
+
         public Duration requestTimeout() {
             return this.requestTimeout;
+        }
+
+        public Duration requestTimerResolution() {
+            return this.requestTimerResolution;
         }
 
         public Duration sendHangDetectionTime() {
@@ -291,37 +319,110 @@ public final class RntbdTransportClient extends TransportClient {
 
         // region Types
 
+        @SuppressWarnings("UnusedReturnValue")
         public static class Builder {
 
             // region Fields
 
-            private static final UserAgentContainer DEFAULT_USER_AGENT_CONTAINER = new UserAgentContainer();
-            private static final Duration FIFTEEN_SECONDS = Duration.ofSeconds(15L);
-            private static final Duration SEVENTY_SECONDS = Duration.ofSeconds(70L);
-            private static final Duration SIXTY_FIVE_SECONDS = Duration.ofSeconds(65L);
-            private static final Duration TEN_SECONDS = Duration.ofSeconds(10L);
+            private static final String DEFAULT_OPTIONS_PROPERTY_NAME = "azure.cosmos.directTcp.defaultOptions";
+            private static final Options DEFAULT_OPTIONS;
 
-            private int bufferPageSize = 8192;
-            private String certificateHostNameOverride = null;
-            private Duration connectionTimeout = null;
-            private Duration idleChannelTimeout = Duration.ZERO;
-            private Duration idleEndpointTimeout = SEVENTY_SECONDS;
-            private int maxBufferCapacity = 8192 << 10;
-            private int maxChannelsPerEndpoint = 10;
-            private int maxRequestsPerChannel = 30;
-            private int partitionCount = 1;
-            private Duration receiveHangDetectionTime = SIXTY_FIVE_SECONDS;
+            static {
+
+                // In priority order we take default Direct TCP options from:
+                //
+                // 1. the string value of system property "azure.cosmos.directTcp.options", or
+                // 2. the contents of the file located by the system property "azure.cosmos.directTcp.optionsFile", or
+                // 3. the contents of the resource file named "azure.cosmos.directTcp.options.json"
+                //
+                // Otherwise, if none of these values are set or an error occurs we create default options based on a
+                // set of hard-wired values defined in the default private parameterless constructor for
+                // RntbdTransportClient.Options.
+
+                Options options = null;
+
+                try {
+                    final String string = System.getProperty(DEFAULT_OPTIONS_PROPERTY_NAME);
+
+                    if (string != null) {
+                        // Attempt to set default options based on the JSON string value of "{propertyName}"
+                        try {
+                            options = RntbdObjectMapper.readValue(string, Options.class);
+                        } catch (IOException error) {
+                            logger.error("failed to parse default Direct TCP options {} due to ", string, error);
+                        }
+                    }
+
+                    if (options == null) {
+
+                        final String path = System.getProperty(DEFAULT_OPTIONS_PROPERTY_NAME + "File");
+
+                        if (path != null) {
+                            // Attempt to load default options from the JSON file on the path specified by
+                            // "{propertyName}File"
+                            try {
+                                options = RntbdObjectMapper.readValue(new File(path), Options.class);
+                            } catch (IOException error) {
+                                logger.error("failed to load default Direct TCP options from {} due to ", path, error);
+                            }
+                        }
+                    }
+
+                    if (options == null) {
+
+                        final ClassLoader loader = RntbdTransportClient.class.getClassLoader();
+                        final String name = DEFAULT_OPTIONS_PROPERTY_NAME + ".json";
+
+                        try (final InputStream stream = loader.getResourceAsStream(name)) {
+                            if (stream != null) {
+                                // Attempt to load default options from the JSON resource file "{propertyName}.json"
+                                options = RntbdObjectMapper.readValue(stream, Options.class);
+                            }
+                        } catch (IOException error) {
+                            logger.error("failed to load Direct TCP options from resource {} due to ", name, error);
+                        }
+                    }
+                } finally {
+                    DEFAULT_OPTIONS = options != null ? options : new Options();
+                }
+            }
+
+            private int bufferPageSize;
+            private Duration connectionTimeout;
+            private Duration idleChannelTimeout;
+            private Duration idleEndpointTimeout;
+            private int maxBufferCapacity;
+            private int maxChannelsPerEndpoint;
+            private int maxRequestsPerChannel;
+            private Duration receiveHangDetectionTime;
+            private Duration requestExpiryInterval;
             private Duration requestTimeout;
-            private Duration sendHangDetectionTime = TEN_SECONDS;
-            private Duration shutdownTimeout = FIFTEEN_SECONDS;
-            private UserAgentContainer userAgent = DEFAULT_USER_AGENT_CONTAINER;
+            private Duration requestTimerResolution;
+            private Duration sendHangDetectionTime;
+            private Duration shutdownTimeout;
+            private UserAgentContainer userAgent;
 
             // endregion
 
             // region Constructors
 
             public Builder(Duration requestTimeout) {
+
                 this.requestTimeout(requestTimeout);
+
+                this.bufferPageSize = DEFAULT_OPTIONS.bufferPageSize;
+                this.connectionTimeout = DEFAULT_OPTIONS.connectionTimeout;
+                this.idleChannelTimeout = DEFAULT_OPTIONS.idleChannelTimeout;
+                this.idleEndpointTimeout = DEFAULT_OPTIONS.idleEndpointTimeout;
+                this.maxBufferCapacity = DEFAULT_OPTIONS.maxBufferCapacity;
+                this.maxChannelsPerEndpoint = DEFAULT_OPTIONS.maxChannelsPerEndpoint;
+                this.maxRequestsPerChannel = DEFAULT_OPTIONS.maxRequestsPerChannel;
+                this.receiveHangDetectionTime = DEFAULT_OPTIONS.receiveHangDetectionTime;
+                this.requestExpiryInterval = DEFAULT_OPTIONS.requestExpiryInterval;
+                this.requestTimerResolution = DEFAULT_OPTIONS.requestTimerResolution;
+                this.sendHangDetectionTime = DEFAULT_OPTIONS.sendHangDetectionTime;
+                this.shutdownTimeout = DEFAULT_OPTIONS.shutdownTimeout;
+                this.userAgent = DEFAULT_OPTIONS.userAgent;
             }
 
             public Builder(int requestTimeoutInSeconds) {
@@ -332,104 +433,114 @@ public final class RntbdTransportClient extends TransportClient {
 
             // region Methods
 
-            public Options build() {
-                checkState(this.bufferPageSize <= this.maxBufferCapacity, "bufferPageSize (%s) > maxBufferCapacity (%s)",
-                    this.bufferPageSize, this.maxBufferCapacity
-                );
-                return new Options(this);
-            }
-
             public Builder bufferPageSize(final int value) {
-                checkArgument(value >= 4096 && (value & (value - 1)) == 0, "value: %s", value);
+                checkArgument(value >= 4096 && (value & (value - 1)) == 0,
+                    "expected value to be a power of 2 >= 4096, not %s",
+                    value);
                 this.bufferPageSize = value;
                 return this;
             }
 
-            public Builder certificateHostNameOverride(final String value) {
-                this.certificateHostNameOverride = value;
-                return this;
+            public Options build() {
+                checkState(this.bufferPageSize <= this.maxBufferCapacity,
+                    "expected bufferPageSize (%s) <= maxBufferCapacity (%s)",
+                    this.bufferPageSize,
+                    this.maxBufferCapacity);
+                return new Options(this);
             }
 
             public Builder connectionTimeout(final Duration value) {
-                checkArgument(value == null || value.compareTo(Duration.ZERO) > 0, "value: %s", value);
+                checkArgument(value == null || value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.connectionTimeout = value;
                 return this;
             }
 
             public Builder idleChannelTimeout(final Duration value) {
-                checkNotNull(value, "value: null");
+                checkNotNull(value, "expected non-null value");
                 this.idleChannelTimeout = value;
                 return this;
             }
 
             public Builder idleEndpointTimeout(final Duration value) {
-                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0, "value: %s", value);
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.idleEndpointTimeout = value;
                 return this;
             }
 
             public Builder maxBufferCapacity(final int value) {
-                checkArgument(value > 0 && (value & (value - 1)) == 0, "value: %s", value);
+                checkArgument(value > 0 && (value & (value - 1)) == 0,
+                    "expected positive value, not %s",
+                    value);
                 this.maxBufferCapacity = value;
                 return this;
             }
 
             public Builder maxChannelsPerEndpoint(final int value) {
-                checkArgument(value > 0, "value: %s", value);
+                checkArgument(value > 0, "expected positive value, not %s", value);
                 this.maxChannelsPerEndpoint = value;
                 return this;
             }
 
             public Builder maxRequestsPerChannel(final int value) {
-                checkArgument(value > 0, "value: %s", value);
+                checkArgument(value > 0, "expected positive value, not %s", value);
                 this.maxRequestsPerChannel = value;
                 return this;
             }
 
-            public Builder partitionCount(final int value) {
-                checkArgument(value > 0, "value: %s", value);
-                this.partitionCount = value;
-                return this;
-            }
-
             public Builder receiveHangDetectionTime(final Duration value) {
-
-                checkNotNull(value, "value: null");
-                checkArgument(value.compareTo(Duration.ZERO) > 0, "value: %s", value);
-
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.receiveHangDetectionTime = value;
                 return this;
             }
 
+            public Builder requestExpiryInterval(final Duration value) {
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
+                this.requestExpiryInterval = value;
+                return this;
+            }
+
             public Builder requestTimeout(final Duration value) {
-
-                checkNotNull(value, "value: null");
-                checkArgument(value.compareTo(Duration.ZERO) > 0, "value: %s", value);
-
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.requestTimeout = value;
                 return this;
             }
 
+            public Builder requestTimerResolution(final Duration value) {
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
+                this.requestTimerResolution = value;
+                return this;
+            }
+
             public Builder sendHangDetectionTime(final Duration value) {
-
-                checkNotNull(value, "value: null");
-                checkArgument(value.compareTo(Duration.ZERO) > 0, "value: %s", value);
-
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.sendHangDetectionTime = value;
                 return this;
             }
 
             public Builder shutdownTimeout(final Duration value) {
-
-                checkNotNull(value, "value: null");
-                checkArgument(value.compareTo(Duration.ZERO) > 0, "value: %s", value);
-
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.shutdownTimeout = value;
                 return this;
             }
 
             public Builder userAgent(final UserAgentContainer value) {
-                checkNotNull(value, "value: null");
+                checkNotNull(value, "expected non-null value");
                 this.userAgent = value;
                 return this;
             }
@@ -438,6 +549,39 @@ public final class RntbdTransportClient extends TransportClient {
         }
 
         // endregion
+    }
+
+    static final class JsonSerializer extends StdSerializer<RntbdTransportClient> {
+
+        public JsonSerializer() {
+            super(RntbdTransportClient.class);
+        }
+
+        @Override
+        public void serialize(
+
+            final RntbdTransportClient value,
+            final JsonGenerator generator,
+            final SerializerProvider provider
+
+        ) throws IOException {
+
+            generator.writeStartObject();
+            generator.writeNumberField("id", value.id());
+            generator.writeBooleanField("isClosed", value.isClosed());
+            generator.writeObjectField("configuration", value.endpointProvider.config());
+            generator.writeObjectFieldStart("serviceEndpoints");
+            generator.writeNumberField("count", value.endpointCount());
+            generator.writeArrayFieldStart("items");
+
+            for (final Iterator<RntbdEndpoint> iterator = value.endpointProvider.list().iterator(); iterator.hasNext(); ) {
+                generator.writeObject(iterator.next());
+            }
+
+            generator.writeEndArray();
+            generator.writeEndObject();
+            generator.writeEndObject();
+        }
     }
 
     // endregion

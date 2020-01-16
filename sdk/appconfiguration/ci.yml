@@ -15,12 +15,13 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/appconfiguration/
+    exclude:
+      - sdk/appconfiguration/mgmt-
 
 pr:
   branches:
@@ -32,12 +33,16 @@ pr:
   paths:
     include:
       - sdk/appconfiguration/
+    exclude:
+      - sdk/appconfiguration/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: appconfiguration
+      SDKType: client
       Artifacts:
         - name: azure-data-appconfiguration
+          groupId: com.azure
           safeName: azuredataappconfiguration
           stagingProfileId: 88192f04117501

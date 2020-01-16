@@ -8,15 +8,14 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
-import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.HttpLogOptions
-import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
+import com.azure.core.util.FluxUtil
+import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
@@ -25,8 +24,10 @@ import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
+import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -35,32 +36,32 @@ import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.StandardCharsets
-import java.nio.file.Paths
-import java.nio.file.StandardOpenOption
+import java.nio.file.Files
 import java.security.MessageDigest
+import java.time.Duration
 
 class BlockBlobAPITest extends APISpec {
-    BlockBlobClient bc
-    BlockBlobAsyncClient bac
-    BlobAsyncClient blobac
+    BlockBlobClient blockBlobClient
+    BlockBlobAsyncClient blockBlobAsyncClient
+    BlobAsyncClient blobAsyncClient
     BlobClient blobClient
     String blobName
 
     def setup() {
         blobName = generateBlobName()
         blobClient = cc.getBlobClient(blobName)
-        bc = blobClient.getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
-        blobac = ccAsync.getBlobAsyncClient(generateBlobName())
-        bac = blobac.getBlockBlobAsyncClient()
-        bac.upload(defaultFlux, defaultDataSize)
+        blockBlobClient = blobClient.getBlockBlobClient()
+        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName())
+        blockBlobAsyncClient = blobAsyncClient.getBlockBlobAsyncClient()
+        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize).block()
     }
 
     def "Stage block"() {
         setup:
-        def response = bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null, null)
+        def response = blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null,
+            null, null)
         def headers = response.getHeaders()
 
         expect:
@@ -74,17 +75,17 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block min"() {
         when:
-        bc.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize) == 201
+        blockBlobClient.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize) == 201
 
         then:
-        bc.listBlocks(BlockListType.ALL).getUncommittedBlocks().size() == 1
+        blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size() == 1
     }
 
     @Unroll
     def "Stage block illegal arguments"() {
         when:
         def blockID = (getBlockId) ? getBlockID() : null
-        bc.stageBlock(blockID, data == null ? null : data.get(), dataSize)
+        blockBlobClient.stageBlock(blockID, data == null ? null : data.get(), dataSize)
 
         then:
         thrown(exceptionType)
@@ -99,15 +100,34 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block empty body"() {
         when:
-        bc.stageBlock(getBlockID(), new ByteArrayInputStream(new byte[0]), 0)
+        blockBlobClient.stageBlock(getBlockID(), new ByteArrayInputStream(new byte[0]), 0)
 
         then:
         thrown(BlobStorageException)
     }
 
+    def "Stage block transactionalMD5"() {
+        setup:
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+
+        expect:
+        blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, md5, null, null, null)
+            .statusCode == 201
+    }
+
+    def "Stage block transactionalMD5 fail"() {
+        when:
+        blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
+    }
+
     def "Stage block null body"() {
         when:
-        bc.stageBlock(getBlockID(), null, 0)
+        blockBlobClient.stageBlock(getBlockID(), null, 0)
 
         then:
         thrown(NullPointerException)
@@ -115,19 +135,20 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block lease"() {
         setup:
-        def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
+        def leaseID = setupBlobLeaseCondition(blockBlobClient, receivedLeaseID)
 
         expect:
-        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, leaseID, null, null)
+        blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, leaseID, null, null)
             .getStatusCode() == 201
     }
 
     def "Stage block lease fail"() {
         setup:
-        setupBlobLeaseCondition(bc, receivedLeaseID)
+        setupBlobLeaseCondition(blockBlobClient, receivedLeaseID)
 
         when:
-        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, garbageLeaseID, null, null)
+        blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, garbageLeaseID, null,
+            null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -136,10 +157,10 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.stageBlock("id", defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock("id", defaultInputStream.get(), defaultDataSize)
 
         then:
         thrown(BlobStorageException)
@@ -152,7 +173,7 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
 
         when:
-        def headers = bu2.stageBlockFromUrlWithResponse(blockID, bc.getBlobUrl(), null, null, null, null, null, null).getHeaders()
+        def headers = bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl(), null, null, null, null, null, null).getHeaders()
 
         then:
         headers.getValue("x-ms-request-id") != null
@@ -181,14 +202,14 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
 
         expect:
-        bu2.stageBlockFromUrlWithResponse(blockID, bc.getBlobUrl(), null, null, null, null, null, null).getStatusCode() == 201
+        bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl(), null, null, null, null, null, null).getStatusCode() == 201
     }
 
     @Unroll
     def "Stage block from URL IA"() {
         when:
         def blockID = (getBlockId) ? getBlockID() : null
-        bc.stageBlockFromUrl(blockID, sourceURL, null)
+        blockBlobClient.stageBlockFromUrl(blockID, sourceURL, null)
 
         then:
         thrown(exceptionType)
@@ -205,7 +226,7 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        destURL.stageBlockFromUrl(getBlockID(), bc.getBlobUrl(), new BlobRange(2, 3))
+        destURL.stageBlockFromUrl(getBlockID(), blockBlobClient.getBlobUrl(), new BlobRange(2, 3))
         def blockList = destURL.listBlocks(BlockListType.UNCOMMITTED)
 
         then:
@@ -219,7 +240,7 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        destURL.stageBlockFromUrlWithResponse(getBlockID(), bc.getBlobUrl(), null,
+        destURL.stageBlockFromUrlWithResponse(getBlockID(), blockBlobClient.getBlobUrl(), null,
             MessageDigest.getInstance("MD5").digest(defaultData.array()), null, null, null, null)
 
         then:
@@ -232,7 +253,7 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        destURL.stageBlockFromUrlWithResponse(getBlockID(), bc.getBlobUrl(), null, "garbage".getBytes(),
+        destURL.stageBlockFromUrlWithResponse(getBlockID(), blockBlobClient.getBlobUrl(), null, "garbage".getBytes(),
             null, null, null, null)
 
         then:
@@ -244,7 +265,7 @@ class BlockBlobAPITest extends APISpec {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
 
         when:
-        bc.stageBlockFromUrlWithResponse(getBlockID(), bc.getBlobUrl(), null, null, setupBlobLeaseCondition(bc, receivedLeaseID), null, null, null)
+        blockBlobClient.stageBlockFromUrlWithResponse(getBlockID(), blockBlobClient.getBlobUrl(), null, null, setupBlobLeaseCondition(blockBlobClient, receivedLeaseID), null, null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -255,7 +276,7 @@ class BlockBlobAPITest extends APISpec {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
 
         when:
-        bc.stageBlockFromUrlWithResponse(getBlockID(), bc.getBlobUrl(), null, null, "garbage", null, null, null)
+        blockBlobClient.stageBlockFromUrlWithResponse(getBlockID(), blockBlobClient.getBlobUrl(), null, null, "garbage", null, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -263,12 +284,12 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block from URL error"() {
         setup:
-        bc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        blockBlobClient = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
             .getBlobClient(generateBlobName())
             .getBlockBlobClient()
 
         when:
-        bc.stageBlockFromUrl(getBlockID(), bc.getBlobUrl(), null)
+        blockBlobClient.stageBlockFromUrl(getBlockID(), blockBlobClient.getBlobUrl(), null)
 
         then:
         thrown(BlobStorageException)
@@ -291,7 +312,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bc.stageBlockFromUrlWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
+        blockBlobClient.stageBlockFromUrlWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -318,7 +339,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
 
         when:
-        bc.stageBlockFromUrlWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
+        blockBlobClient.stageBlockFromUrlWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
 
         then:
         thrown(BlobStorageException)
@@ -334,11 +355,11 @@ class BlockBlobAPITest extends APISpec {
     def "Commit block list"() {
         setup:
         def blockID = getBlockID()
-        bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
         def ids = [blockID] as List
 
         when:
-        def response = bc.commitBlockListWithResponse(ids, null, null, null, null, null, null)
+        def response = blockBlobClient.commitBlockListWithResponse(ids, null, null, null, null, null, null)
         def headers = response.getHeaders()
 
         then:
@@ -350,24 +371,42 @@ class BlockBlobAPITest extends APISpec {
 
     def "Commit block list min"() {
         setup:
+        blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         def blockID = getBlockID()
-        bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
         def ids = [blockID] as List
 
         expect:
-        bc.commitBlockList(ids) != null
+        blockBlobClient.commitBlockList(ids) != null
+    }
+
+    def "Commit block list min no overwrite"() {
+        when:
+        blockBlobClient.commitBlockList([])
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
+    }
+
+    def "Commit block list overwrite"() {
+        when:
+        blockBlobClient.commitBlockList([], true)
+
+        then:
+        notThrown(BlobStorageException)
     }
 
     def "Commit block list null"() {
         expect:
-        bc.commitBlockListWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
+        blockBlobClient.commitBlockListWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
     }
 
     @Unroll
     def "Commit block list headers"() {
         setup:
         def blockID = getBlockID()
-        bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
         def ids = [blockID] as List
         def headers = new BlobHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
@@ -377,8 +416,8 @@ class BlockBlobAPITest extends APISpec {
             .setContentType(contentType)
 
         when:
-        bc.commitBlockListWithResponse(ids, headers, null, null, null, null, null)
-        def response = bc.getPropertiesWithResponse(null, null, null)
+        blockBlobClient.commitBlockListWithResponse(ids, headers, null, null, null, null, null)
+        def response = blockBlobClient.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType
@@ -404,8 +443,8 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bc.commitBlockListWithResponse(null, null, metadata, null, null, null, null)
-        def response = bc.getPropertiesWithResponse(null, null, null)
+        blockBlobClient.commitBlockListWithResponse(null, null, metadata, null, null, null, null)
+        def response = blockBlobClient.getPropertiesWithResponse(null, null, null)
 
         then:
         response.getStatusCode() == 200
@@ -420,8 +459,8 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Commit block list AC"() {
         setup:
-        match = setupBlobMatchCondition(bc, match)
-        leaseID = setupBlobLeaseCondition(bc, leaseID)
+        match = setupBlobMatchCondition(blockBlobClient, match)
+        leaseID = setupBlobLeaseCondition(blockBlobClient, leaseID)
         def bac = new BlobRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
@@ -431,7 +470,7 @@ class BlockBlobAPITest extends APISpec {
 
 
         expect:
-        bc.commitBlockListWithResponse(null, null, null, null, bac, null, null).getStatusCode() == 201
+        blockBlobClient.commitBlockListWithResponse(null, null, null, null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -446,8 +485,8 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Commit block list AC fail"() {
         setup:
-        noneMatch = setupBlobMatchCondition(bc, noneMatch)
-        setupBlobLeaseCondition(bc, leaseID)
+        noneMatch = setupBlobMatchCondition(blockBlobClient, noneMatch)
+        setupBlobLeaseCondition(blockBlobClient, leaseID)
         def bac = new BlobRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
@@ -456,7 +495,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        bc.commitBlockListWithResponse(null, null, null, null, bac, null, null)
+        blockBlobClient.commitBlockListWithResponse(null, null, null, null, bac, null, null)
         then:
         def e = thrown(BlobStorageException)
         e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
@@ -473,10 +512,10 @@ class BlockBlobAPITest extends APISpec {
 
     def "Commit block list error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.commitBlockListWithResponse(new ArrayList<String>(), null, null, null, new BlobRequestConditions().setLeaseId("garbage"), null, null)
+        blockBlobClient.commitBlockListWithResponse(new ArrayList<String>(), null, null, null, new BlobRequestConditions().setLeaseId("garbage"), null, null)
 
         then:
         thrown(BlobStorageException)
@@ -485,17 +524,17 @@ class BlockBlobAPITest extends APISpec {
     def "Get block list"() {
         setup:
         def committedBlocks = [getBlockID(), getBlockID()]
-        bc.stageBlock(committedBlocks.get(0), defaultInputStream.get(), defaultDataSize)
-        bc.stageBlock(committedBlocks.get(1), defaultInputStream.get(), defaultDataSize)
-        bc.commitBlockList(committedBlocks)
+        blockBlobClient.stageBlock(committedBlocks.get(0), defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(committedBlocks.get(1), defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.commitBlockList(committedBlocks, true)
 
         def uncommittedBlocks = [getBlockID(), getBlockID()]
-        bc.stageBlock(uncommittedBlocks.get(0), defaultInputStream.get(), defaultDataSize)
-        bc.stageBlock(uncommittedBlocks.get(1), defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(uncommittedBlocks.get(0), defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(uncommittedBlocks.get(1), defaultInputStream.get(), defaultDataSize)
         uncommittedBlocks.sort(true)
 
         when:
-        def blockList = bc.listBlocks(BlockListType.ALL)
+        def blockList = blockBlobClient.listBlocks(BlockListType.ALL)
 
         then:
         blockList.getCommittedBlocks().collect { it.getName() } as Set == committedBlocks as Set
@@ -507,7 +546,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Get block list min"() {
         when:
-        bc.listBlocks(BlockListType.ALL)
+        blockBlobClient.listBlocks(BlockListType.ALL)
 
         then:
         notThrown(BlobStorageException)
@@ -517,12 +556,12 @@ class BlockBlobAPITest extends APISpec {
     def "Get block list type"() {
         setup:
         def blockID = getBlockID()
-        bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
-        bc.commitBlockList([blockID])
-        bc.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.commitBlockList([blockID], true)
+        blockBlobClient.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize)
 
         when:
-        def response = bc.listBlocks(type)
+        def response = blockBlobClient.listBlocks(type)
 
         then:
         response.getCommittedBlocks().size() == committedCount
@@ -537,7 +576,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Get block list type null"() {
         when:
-        bc.listBlocks(null).iterator().hasNext()
+        blockBlobClient.listBlocks(null).iterator().hasNext()
 
         then:
         notThrown(IllegalArgumentException)
@@ -545,10 +584,10 @@ class BlockBlobAPITest extends APISpec {
 
     def "Get block list lease"() {
         setup:
-        def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
+        def leaseID = setupBlobLeaseCondition(blockBlobClient, receivedLeaseID)
 
         when:
-        bc.listBlocksWithResponse(BlockListType.ALL, leaseID, null, Context.NONE)
+        blockBlobClient.listBlocksWithResponse(BlockListType.ALL, leaseID, null, Context.NONE)
 
         then:
         notThrown(BlobStorageException)
@@ -556,10 +595,10 @@ class BlockBlobAPITest extends APISpec {
 
     def "Get block list lease fail"() {
         setup:
-        setupBlobLeaseCondition(bc, garbageLeaseID)
+        setupBlobLeaseCondition(blockBlobClient, garbageLeaseID)
 
         when:
-        bc.listBlocksWithResponse(BlockListType.ALL, garbageLeaseID, null, Context.NONE)
+        blockBlobClient.listBlocksWithResponse(BlockListType.ALL, garbageLeaseID, null, Context.NONE)
 
         then:
         def e = thrown(BlobStorageException)
@@ -568,10 +607,10 @@ class BlockBlobAPITest extends APISpec {
 
     def "Get block list error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.listBlocks(BlockListType.ALL).iterator().hasNext()
+        blockBlobClient.listBlocks(BlockListType.ALL).iterator().hasNext()
 
         then:
         thrown(BlobStorageException)
@@ -579,12 +618,13 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload"() {
         when:
-        def response = bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null)
+        def response = blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null,
+            null, null)
 
         then:
         response.getStatusCode() == 201
         def outStream = new ByteArrayOutputStream()
-        bc.download(outStream)
+        blockBlobClient.download(outStream)
         outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
         validateBasicHeaders(response.getHeaders())
         response.getHeaders().getValue("Content-MD5") != null
@@ -600,84 +640,211 @@ class BlockBlobAPITest extends APISpec {
     def "Upload from file"() {
         setup:
         def file = getRandomFile(fileSize)
-        def channel = AsynchronousFileChannel.open(file.toPath())
 
         when:
         // Block length will be ignored for single shot.
-        blobac.uploadFromFile(file.toPath().toString(), new ParallelTransferOptions().setBlockSize(blockSize),
-            null, null, null, null).block()
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.getPath(), new ParallelTransferOptions(blockSize, null,
+            null), null, null, null, null))
+            .verifyComplete()
 
         then:
-        def outFile = file.getPath().toString() + "result"
-        def outChannel = AsynchronousFileChannel.open(Paths.get(outFile), StandardOpenOption.CREATE, StandardOpenOption.WRITE)
-        FluxUtil.writeFile(blobac.download(), outChannel).block() == null
+        def outFile = new File(file.getPath().toString() + "result")
+        outFile.createNewFile()
 
-        compareFiles(file, new File(outFile))
-        blobac.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED).block().getCommittedBlocks().size() ==
-            commitedBlockCount
+        def outStream = new FileOutputStream(outFile)
+        outStream.write(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.download()).block())
+        outStream.close()
+
+        compareFiles(file, outFile, 0, fileSize)
+        StepVerifier.create(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED))
+            .assertNext({ assert it.getCommittedBlocks().size() == commitedBlockCount })
+            .verifyComplete()
 
         cleanup:
-        channel.close()
+        outFile.delete()
+        file.delete()
 
         where:
         fileSize                                       | blockSize       || commitedBlockCount
-        0                                              | null            || 0
-        10                                             | null            || 1
-        10 * 1024                                      | null            || 1
-        50 * 1024 * 1024                               | null            || Math.ceil((50 * 1024 * 1024) / BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+        0                                              | null            || 0  // Size is too small to trigger stage block uploading
+        10                                             | null            || 0  // Size is too small to trigger stage block uploading
+        10 * Constants.KB                              | null            || 0  // Size is too small to trigger stage block uploading
+        50 * Constants.MB                              | null            || 0  // Size is too small to trigger stage block uploading
         BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null            || Math.ceil((BlockBlobClient.MAX_UPLOAD_BLOB_BYTES + 1) / BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // HTBB optimizations should trigger when file size is >100MB and defaults are used.
-        101 * 1024 * 1024                              | 4 * 1024 * 1024 || 26 // Making the block size explicit should cancel the optimization
-    }
-
-    def compareFiles(File file1, File file2) {
-        FileInputStream fis1 = new FileInputStream(file1)
-        FileInputStream fis2 = new FileInputStream(file2)
-
-        byte b1 = fis1.read()
-        byte b2 = fis2.read()
-
-        while (b1 != -1 && b2 != -1) {
-            if (b1 != b2) {
-                return false
-            }
-            b1 = fis1.read()
-            b2 = fis2.read()
-        }
-        fis1.close()
-        fis2.close()
-        return b1 == b2
+        101 * Constants.MB                             | 4 * 1024 * 1024 || 0  // Size is too small to trigger stage block uploading
     }
 
     @Requires({ liveMode() })
     def "Upload from file with metadata"() {
         given:
         def metadata = Collections.singletonMap("metadata", "value")
-        def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
+        def file = getRandomFile(Constants.KB)
         def outStream = new ByteArrayOutputStream()
 
         when:
         blobClient.uploadFromFile(file.getAbsolutePath(), null, null, metadata, null, null, null)
 
         then:
-        metadata == bc.getProperties().getMetadata()
-        bc.download(outStream)
-        outStream.toByteArray() == new Scanner(file).useDelimiter("\\z").next().getBytes(StandardCharsets.UTF_8)
+        metadata == blockBlobClient.getProperties().getMetadata()
+        blockBlobClient.download(outStream)
+        outStream.toByteArray() == Files.readAllBytes(file.toPath())
+
+        cleanup:
+        file.delete()
+    }
+
+    @Requires({ liveMode() })
+    def "Upload from file default no overwrite"() {
+        when:
+        def file = getRandomFile(50)
+        blobClient.uploadFromFile(file.toPath().toString())
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
+
+        and:
+        def uploadVerifier = StepVerifier.create(blobAsyncClient.uploadFromFile(getRandomFile(50).toPath().toString()))
+
+        then:
+        uploadVerifier.verifyError(BlobStorageException)
+
+        cleanup:
+        file.delete()
+    }
+
+    @Requires({ liveMode() })
+    def "Upload from file no overwrite interrupted"() {
+        setup:
+        def file = getRandomFile(257 * 1024 * 1024)
+        def smallFile = getRandomFile(50)
+        blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName())
+
+        expect:
+        /*
+         * When the upload begins trigger an upload to write the blob after waiting 500 milliseconds so that the upload
+         * fails when it attempts to put the block list.
+         */
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString())
+            .doOnSubscribe({
+                blobAsyncClient.uploadFromFile(smallFile.toPath().toString()).delaySubscription(Duration.ofMillis(500)).subscribe()
+            }))
+            .verifyErrorSatisfies({
+                assert it instanceof BlobStorageException
+                assert ((BlobStorageException) it).getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
+            })
+
+        cleanup:
+        file.delete()
+        smallFile.delete()
+    }
+
+    @Requires({ liveMode() })
+    def "Upload from file overwrite"() {
+        when:
+        def file = getRandomFile(50)
+        blobClient.uploadFromFile(file.toPath().toString(), true)
+
+        then:
+        notThrown(BlobStorageException)
+
+        and:
+        def uploadVerifier = StepVerifier.create(blobAsyncClient.uploadFromFile(getRandomFile(50).toPath().toString(), true))
+
+        then:
+        uploadVerifier.verifyComplete()
+
+        cleanup:
+        file.delete()
+    }
+
+    /*
+     * Reports the number of bytes sent when uploading a file. This is different than other reporters which track the
+     * number of reportings as upload from file hooks into the loading data from disk data stream which is a hard-coded
+     * read size.
+     */
+    class FileUploadReporter implements ProgressReceiver {
+        private long reportedByteCount
+
+        @Override
+        void reportProgress(long bytesTransferred) {
+            this.reportedByteCount += bytesTransferred
+        }
+
+        long getReportedByteCount() {
+            return this.reportedByteCount
+        }
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Upload from file reporter"() {
+        when:
+        def uploadReporter = new FileUploadReporter()
+        def file = getRandomFile(size)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, bufferCount,
+            uploadReporter, blockSize - 1)
+
+        then:
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
+            null, null, null, null))
+            .verifyComplete()
+
+        // Check if the reported size is equal to or grater than the file size in case there are retries.
+        uploadReporter.getReportedByteCount() >= size
+
+        cleanup:
+        file.delete()
+
+        where:
+        size              | blockSize         | bufferCount
+        10 * Constants.MB | 10 * Constants.MB | 8
+        20 * Constants.MB | 1 * Constants.MB  | 5
+        10 * Constants.MB | 5 * Constants.MB  | 2
+        10 * Constants.MB | 10 * Constants.KB | 100
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Upload from file options"() {
+        setup:
+        def file = getRandomFile(dataSize)
+
+        when:
+        blobClient.uploadFromFile(file.toPath().toString(),
+            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null, null, null, null)
+
+        then:
+        blobClient.getBlockBlobClient()
+            .listBlocks(BlockListType.COMMITTED).getCommittedBlocks().size() == expectedBlockCount
+
+
+        cleanup:
+        file.delete()
+
+        where:
+        dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES - 1 | null             | null      || 0 // Test that the default for singleUploadSize is the maximum
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
+        100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
+        100                                            | 50               | 20        || 5 // Test that blockSize is respected
     }
 
     def "Upload min"() {
         when:
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize, true)
 
         then:
         def outStream = new ByteArrayOutputStream()
-        bc.download(outStream)
+        blockBlobClient.download(outStream)
         outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
     }
 
     @Unroll
     def "Upload illegal argument"() {
         when:
-        bc.upload(data, dataSize)
+        blockBlobClient.upload(data, dataSize)
 
         then:
         thrown(exceptionType)
@@ -691,12 +858,13 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload empty body"() {
         expect:
-        bc.uploadWithResponse(new ByteArrayInputStream(new byte[0]), 0, null, null, null, null, null, null).getStatusCode() == 201
+        blockBlobClient.uploadWithResponse(new ByteArrayInputStream(new byte[0]), 0, null, null, null, null, null, null, null)
+            .getStatusCode() == 201
     }
 
     def "Upload null body"() {
         when:
-        bc.uploadWithResponse(null, 0, null, null, null, null, null, null)
+        blockBlobClient.uploadWithResponse(null, 0, null, null, null, null, null, null, null)
 
         then:
         thrown(NullPointerException)
@@ -713,8 +881,8 @@ class BlockBlobAPITest extends APISpec {
             .setContentType(contentType)
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, headers, null, null, null, null, null)
-        def response = bc.getPropertiesWithResponse(null, null, null)
+        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, headers, null, null, null, null, null, null)
+        def response = blockBlobClient.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
         contentMD5 = (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(defaultData.array()) : contentMD5
@@ -729,6 +897,25 @@ class BlockBlobAPITest extends APISpec {
         "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
     }
 
+    def "Upload transactionalMD5"() {
+        setup:
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+
+        expect:
+        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, md5, null, null, null)
+            .statusCode == 201
+    }
+
+    def "Upload transactionalMD5 fail"() {
+        when:
+        blockBlobClient.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
+    }
+
     @Unroll
     def "Upload metadata"() {
         setup:
@@ -741,8 +928,8 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, metadata, null, null, null, null)
-        def response = bc.getPropertiesWithResponse(null, null, null)
+        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, metadata, null, null, null, null, null)
+        def response = blockBlobClient.getPropertiesWithResponse(null, null, null)
 
         then:
         response.getStatusCode() == 200
@@ -757,8 +944,8 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Upload AC"() {
         setup:
-        match = setupBlobMatchCondition(bc, match)
-        leaseID = setupBlobLeaseCondition(bc, leaseID)
+        match = setupBlobMatchCondition(blockBlobClient, match)
+        leaseID = setupBlobLeaseCondition(blockBlobClient, leaseID)
         def bac = new BlobRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
@@ -767,7 +954,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, bac, null, null).getStatusCode() == 201
+        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -782,8 +969,8 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Upload AC fail"() {
         setup:
-        noneMatch = setupBlobMatchCondition(bc, noneMatch)
-        setupBlobLeaseCondition(bc, leaseID)
+        noneMatch = setupBlobMatchCondition(blockBlobClient, noneMatch)
+        setupBlobLeaseCondition(blockBlobClient, leaseID)
         def bac = new BlobRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
@@ -792,7 +979,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, bac, null, null)
+        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, bac, null, null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -810,10 +997,10 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null,
             new BlobRequestConditions().setLeaseId("id"), null, null)
 
         then:
@@ -825,41 +1012,52 @@ class BlockBlobAPITest extends APISpec {
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, AccessTier.COOL, null, null, null)
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, AccessTier.COOL, null, null, null,
+            null)
 
         then:
         bc.getProperties().getAccessTier() == AccessTier.COOL
     }
 
-    @Requires({ liveMode() })
-    def "Async buffered upload empty"() {
+    def "Upload overwrite false"() {
         when:
-        def emptyUploadVerifier = StepVerifier.create(blobac.upload(Flux.just(ByteBuffer.wrap(new byte[0])), new ParallelTransferOptions()))
+        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize)
 
         then:
-        emptyUploadVerifier.assertNext({
-            assert it.getETag() != null
-        }).verifyComplete()
+        thrown(BlobStorageException)
+    }
 
-        StepVerifier.create(blobac.download()).assertNext({
-            assert it.remaining() == 0
-        }).verifyComplete()
+    def "Upload overwrite true"() {
+        when:
+        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize, true)
+
+        then:
+        notThrown(Throwable)
+    }
+
+    @Requires({ liveMode() })
+    def "Async buffered upload empty"() {
+        expect:
+        StepVerifier.create(blobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null, true))
+            .assertNext({ assert it.getETag() != null })
+            .verifyComplete()
+
+        StepVerifier.create(blobAsyncClient.download())
+            .assertNext({ assert it.remaining() == 0 })
+            .verifyComplete()
     }
 
     @Unroll
     @Requires({ liveMode() })
     def "Async buffered upload empty buffers"() {
-        when:
-        def uploadVerifier = StepVerifier.create(blobac.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), new ParallelTransferOptions()))
+        expect:
+        StepVerifier.create(blobAsyncClient.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), null, true))
+            .assertNext({ assert it.getETag() != null })
+            .verifyComplete()
 
-        then:
-        uploadVerifier.assertNext({
-            assert it.getETag() != null
-        }).verifyComplete()
-
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobac.download())).assertNext({
-            assert it == expectedDownload
-        }).verifyComplete()
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.download()))
+            .assertNext({ assert it == expectedDownload })
+            .verifyComplete()
 
         where:
         buffer1                                                   | buffer2                                               | buffer3                                                    || expectedDownload
@@ -875,28 +1073,32 @@ class BlockBlobAPITest extends APISpec {
     def "Async buffered upload"() {
         when:
         def data = getRandomData(dataSize)
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(bufferSize).setNumBuffers(numBuffs)
-        blobac.upload(Flux.just(data), parallelTransferOptions).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize, numBuffs, null, 4 * Constants.MB)
+        blobAsyncClient.upload(Flux.just(data), parallelTransferOptions, true).block()
         data.position(0)
 
         then:
         // Due to memory issues, this check only runs on small to medium sized data sets.
         if (dataSize < 100 * 1024 * 1024) {
-            assert collectBytesInBuffer(bac.download()).block() == data
+            StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
+                .assertNext({ assert it == data })
+                .verifyComplete()
         }
-        bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
+
+        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
+            .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
+            .verifyComplete()
 
         where:
-        dataSize          | bufferSize        | numBuffs || blockCount
-        350               | 50                | 2        || 7 // Requires cycling through the same buffers multiple times.
-        350               | 50                | 5        || 7 // Most buffers may only be used once.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 2        || 10 // Larger data set.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 5        || 10 // Larger number of Buffs.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 10       || 10 // Exactly enough buffer space to hold all the data.
-        500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5 // Larger data.
-        100 * 1024 * 1024 | 20 * 1024 * 1024  | 4        || 5
-        10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7 // Data does not squarely fit in buffers.
+        dataSize           | bufferSize        | numBuffs || blockCount
+        35 * Constants.MB  | 5 * Constants.MB  | 2        || 7 // Requires cycling through the same buffers multiple times.
+        35 * Constants.MB  | 5 * Constants.MB  | 5        || 7 // Most buffers may only be used once.
+        100 * Constants.MB | 10 * Constants.MB | 2        || 10 // Larger data set.
+        100 * Constants.MB | 10 * Constants.MB | 5        || 10 // Larger number of Buffs.
+        10 * Constants.MB  | 1 * Constants.MB  | 10       || 10 // Exactly enough buffer space to hold all the data.
+        50 * Constants.MB  | 10 * Constants.MB | 2        || 5 // Larger data.
+        10 * Constants.MB  | 2 * Constants.MB  | 4        || 5
+        10 * Constants.MB  | 3 * Constants.MB  | 3        || 4 // Data does not squarely fit in buffers.
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -933,6 +1135,7 @@ class BlockBlobAPITest extends APISpec {
             return this.reportingCount
         }
     }
+
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
@@ -940,23 +1143,28 @@ class BlockBlobAPITest extends APISpec {
         when:
         def uploadReporter = new Reporter(blockSize)
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize).setNumBuffers(bufferCount).setProgressReceiver(uploadReporter)
-
-        def response = blobac
-            .uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions, null, null, null, null)
-            .block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, bufferCount,
+            uploadReporter, 4 * Constants.MB)
 
         then:
-        response.getStatusCode() == 201
-        uploadReporter.getReportingCount() == (long) (size / blockSize)
+        StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
+            null, null, null, null))
+            .assertNext({
+                assert it.getStatusCode() == 201
+
+                /*
+                 * Verify that the reporting count is equal or greater than the size divided by block size in the case
+                 * that operations need to be retried. Retry attempts will increment the reporting count.
+                 */
+                assert uploadReporter.getReportingCount() >= (long) (size / blockSize)
+            }).verifyComplete()
 
         where:
-        size        | blockSize | bufferCount
-        10          | 10        | 8
-        20          | 1         | 5
-        100         | 50        | 2
-        1024 * 1024 | 1024      | 100
+        size              | blockSize          | bufferCount
+        10 * Constants.MB | 10 * Constants.MB  | 8
+        20 * Constants.MB | 1 * Constants.MB   | 5
+        10 * Constants.MB | 5 * Constants.MB   | 2
+        10 * Constants.MB | 512 * Constants.KB | 20
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -968,15 +1176,19 @@ class BlockBlobAPITest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(bufferSize).setNumBuffers(numBuffers)
-        def dataList = [] as List
-        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        blobac.upload(Flux.fromIterable(dataList), parallelTransferOptions).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize * Constants.MB, numBuffers, null, 4 * Constants.MB)
+        def dataList = [] as List<ByteBuffer>
+        dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
+        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
 
         expect:
-        compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
-        bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
+            .assertNext({ assert compareListToBuffer(dataList, it) })
+            .verifyComplete()
+
+        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
+            .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
+            .verifyComplete()
 
         where:
         dataSizeList          | bufferSize | numBuffers || blockCount
@@ -987,22 +1199,66 @@ class BlockBlobAPITest extends APISpec {
         // The case of one large buffer needing to be broken up is tested in the previous test.
     }
 
-    def "Buffered upload illegal arguments null"() {
-        when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(4).setNumBuffers(4)
-        blobac.upload(null, parallelTransferOptions).block()
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload handle pathing"() {
+        setup:
+        def dataList = [] as List<ByteBuffer>
+        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
+        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
 
-        then:
-        thrown(NullPointerException)
+        expect:
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
+            .assertNext({ assert compareListToBuffer(dataList, it) })
+            .verifyComplete()
+
+        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
+            .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
+            .verifyComplete()
+
+        where:
+        dataSizeList                         | blockCount
+        [4 * Constants.MB + 1, 10]           | 2
+        [4 * Constants.MB]                   | 0
+        [10, 100, 1000, 10000]               | 0
+        [4 * Constants.MB, 4 * Constants.MB] | 2
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload handle pathing hot flux"() {
+        setup:
+        def dataList = [] as List<ByteBuffer>
+        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
+        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList).publish().autoConnect(), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
+
+        expect:
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
+            .assertNext({ assert compareListToBuffer(dataList, it) })
+            .verifyComplete()
+
+        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
+            .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
+            .verifyComplete()
+
+        where:
+        dataSizeList                         | blockCount
+        [4 * Constants.MB + 1, 10]           | 2
+        [4 * Constants.MB]                   | 0
+        [10, 100, 1000, 10000]               | 0
+        [4 * Constants.MB, 4 * Constants.MB] | 2
+    }
+
+    def "Buffered upload illegal arguments null"() {
+        expect:
+        StepVerifier.create(blobAsyncClient.upload(null, new ParallelTransferOptions(4, 4, null), true))
+            .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
     @Unroll
     def "Buffered upload illegal args out of bounds"() {
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(bufferSize).setNumBuffers(numBuffs)
-        blobac.upload(Flux.just(defaultData), parallelTransferOptions).block()
+        new ParallelTransferOptions(bufferSize, numBuffs, null)
 
         then:
         thrown(IllegalArgumentException)
@@ -1019,26 +1275,33 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload headers"() {
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(10)
-        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHttpHeaders().setBlobCacheControl(cacheControl)
-            .setBlobContentDisposition(contentDisposition)
-            .setBlobContentEncoding(contentEncoding)
-            .setBlobContentLanguage(contentLanguage)
-            .setBlobContentMD5(contentMD5)
-            .setBlobContentType(contentType),
-            null, null, null).block()
+        def data = getRandomByteArray(dataSize)
+        def contentMD5 = validateContentMD5 ? MessageDigest.getInstance("MD5").digest(data) : null
+        def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), new BlobHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType),
+            null, null, null)
 
         then:
-        validateBlobProperties(bac.getPropertiesWithResponse(null).block(), cacheControl, contentDisposition, contentEncoding,
-            contentLanguage, contentMD5, contentType == null ? "application/octet-stream" : contentType)
+        StepVerifier.create(uploadOperation.then(blockBlobAsyncClient.getPropertiesWithResponse(null)))
+            .assertNext({
+            assert validateBlobProperties(it, cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                contentMD5, contentType == null ? "application/octet-stream" : contentType)
+        }).verifyComplete()
         // HTTP default content type is application/octet-stream.
 
         where:
-        // The MD5 is simply set on the blob for commitBlockList, not validated.
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        null         | null               | null            | null            | null                                                         | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+        // Depending on the size of the stream either Put Blob or Put Block List will be used.
+        // Put Blob will implicitly calculate the MD5 whereas Put Block List won't.
+        dataSize         | cacheControl | contentDisposition | contentEncoding | contentLanguage | validateContentMD5 | contentType
+        defaultDataSize  | null         | null               | null            | null            | true               | null
+        defaultDataSize  | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
+        6 * Constants.MB | null         | null               | null            | null            | false              | null
+        6 * Constants.MB | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -1055,14 +1318,16 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(10).setNumBuffers(10)
-        blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, metadata, null, null).block()
-        def response = bac.getPropertiesWithResponse(null).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, 10, null)
+        def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)),
+            parallelTransferOptions, null, metadata, null, null)
 
         then:
-        response.getStatusCode() == 200
-        response.getValue().getMetadata() == metadata
+        StepVerifier.create(uploadOperation.then(blobAsyncClient.getPropertiesWithResponse(null)))
+            .assertNext({
+            assert it.getStatusCode() == 200
+            assert it.getValue().getMetadata() == metadata
+        }).verifyComplete()
 
         where:
         key1  | value1 | key2   | value2
@@ -1070,15 +1335,37 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload options"() {
+        setup:
+        def data = getRandomData(dataSize)
+
+        when:
+        blobAsyncClient.uploadWithResponse(Flux.just(data),
+            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null, null, null).block()
+
+        then:
+        blobAsyncClient.getBlockBlobAsyncClient()
+            .listBlocks(BlockListType.COMMITTED).block().getCommittedBlocks().size() == expectedBlockCount
+
+        where:
+        dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES - 1 | null             | null      || 0 // Test that the default for singleUploadSize is the maximum
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
+        100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
+        100                                            | 50               | 20        || 5 // Test that blockSize is respected
+    }
+
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
     def "Buffered upload AC"() {
         setup:
-        bac.upload(defaultFlux, defaultDataSize).block()
-        match = setupBlobMatchCondition(bac, match)
-        leaseID = setupBlobLeaseCondition(bac, leaseID)
-        def accessConditions = new BlobRequestConditions()
+        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
+        match = setupBlobMatchCondition(blockBlobAsyncClient, match)
+        leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, leaseID)
+        def requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
@@ -1086,9 +1373,11 @@ class BlockBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(10)
-        blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block().getStatusCode() == 201
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, null, null)
+        StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions,
+            null, null, null, requestConditions))
+            .assertNext({ assert it.getStatusCode() == 201 })
+            .verifyComplete()
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1105,25 +1394,25 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload AC fail"() {
         setup:
-        bac.upload(defaultFlux, defaultDataSize).block()
-        noneMatch = setupBlobMatchCondition(bac, noneMatch)
-        leaseID = setupBlobLeaseCondition(bac, leaseID)
-        def accessConditions = new BlobRequestConditions()
+        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
+        noneMatch = setupBlobMatchCondition(blockBlobAsyncClient, noneMatch)
+        leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, leaseID)
+        def requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def parallelTransferOptions = new ParallelTransferOptions(10, null, null)
 
-        when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(10)
-        blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block()
-
-        then:
-        def e = thrown(BlobStorageException)
-        e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
-            e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+        expect:
+        StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, requestConditions))
+            .verifyErrorSatisfies({
+                assert it instanceof BlobStorageException
+                def storageException = (BlobStorageException) it
+                assert storageException.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
+                    storageException.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+            })
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1140,19 +1429,18 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "UploadBufferPool lock three or more buffers"() {
         setup:
-        bac.upload(defaultFlux, defaultDataSize).block()
-        def leaseID = setupBlobLeaseCondition(bac, garbageLeaseID)
-        def accessConditions = new BlobRequestConditions().setLeaseId(leaseID)
+        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
+        def leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, garbageLeaseID)
+        def requestConditions = new BlobRequestConditions().setLeaseId(leaseID)
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize as int)
-            .setNumBuffers(numBuffers as int)
-        blobac.uploadWithResponse(Flux.just(getRandomData(dataLength as int)), parallelTransferOptions, null, null,
-            null, accessConditions).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize as int,
+            numBuffers as int, null)
 
         then:
-        thrown(BlobStorageException)
+        StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(dataLength)),
+            parallelTransferOptions, null, null, null, requestConditions))
+            .verifyErrorSatisfies({ assert it instanceof BlobStorageException })
 
         where:
         dataLength | blockSize | numBuffers
@@ -1195,64 +1483,149 @@ class BlockBlobAPITest extends APISpec {
     notThrown(IllegalArgumentException)
 }*/
 
+    @Requires({ liveMode() })
     def "Buffered upload network error"() {
         setup:
         /*
          This test uses a Flowable that does not allow multiple subscriptions and therefore ensures that we are
          buffering properly to allow for retries even given this source behavior.
          */
-        bac.upload(Flux.just(defaultData), defaultDataSize).block()
-        def nonReplayableFlux = bac.download()
+        blockBlobAsyncClient.upload(Flux.just(defaultData), defaultDataSize, true).block()
 
         // Mock a response that will always be retried.
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
 
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
-        def mockPolicy = Mock(HttpPipelinePolicy) {
-            process(*_) >> { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-                return collectBytesInBuffer(context.getHttpRequest().getBody())
-                    .map { b ->
-                        return b == defaultData
-                    }
-                    .flatMap { b ->
-                        if (b) {
-                            return Mono.just(mockHttpResponse)
-                        }
-                        return Mono.error(new IllegalArgumentException())
-                    }
-            }
+        def mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+            return collectBytesInBuffer(context.getHttpRequest().getBody())
+                .map({ it == defaultData })
+                .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) })
         }
 
         // Build the pipeline
-        blobac = new BlobServiceClientBuilder()
+        blobAsyncClient = new BlobServiceClientBuilder()
             .credential(primaryCredential)
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())
 
         when:
         // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(1024).setNumBuffers(4)
-        blobac.upload(nonReplayableFlux, parallelTransferOptions).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(1024, 4, null)
         // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
 
         then:
         // A second subscription to a download stream will
-        def e = thrown(BlobStorageException)
-        e.getStatusCode() == 500
+        StepVerifier.create(blobAsyncClient.upload(blockBlobAsyncClient.download(), parallelTransferOptions, true))
+            .verifyErrorSatisfies({
+            assert it instanceof BlobStorageException
+            assert it.getStatusCode() == 500
+        })
+    }
+
+    @Requires({ liveMode() })
+    def "Buffered upload default no overwrite"() {
+        expect:
+        StepVerifier.create(blobAsyncClient.upload(defaultFlux, null))
+            .verifyError(IllegalArgumentException)
+    }
+
+    @Requires({ liveMode() })
+    def "Buffered upload no overwrite interrupted"() {
+        setup:
+        def smallFile = getRandomFile(50)
+
+        /*
+         * Setup the data stream to trigger a small upload upon subscription. This will happen once the upload method
+         * has verified whether a blob with the given name already exists, so this will trigger once uploading begins.
+         */
+        def data = Flux.just(getRandomData(Constants.MB)).repeat(257)
+            .doOnSubscribe({ blobAsyncClient.uploadFromFile(smallFile.toPath().toString()).subscribe() })
+        blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName())
+
+        expect:
+        StepVerifier.create(blobAsyncClient.upload(data, null))
+            .verifyErrorSatisfies({
+                assert it instanceof BlobStorageException
+                assert ((BlobStorageException) it).getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
+            })
+        cleanup:
+        smallFile.delete()
+    }
+
+    @Requires({ liveMode() })
+    def "Buffered upload overwrite"() {
+        when:
+        def file = getRandomFile(50)
+        blobClient.uploadFromFile(file.toPath().toString(), true)
+
+        then:
+        notThrown(BlobStorageException)
+
+        and:
+        def uploadVerifier = StepVerifier.create(blobAsyncClient.uploadFromFile(getRandomFile(50).toPath().toString(), true))
+
+        then:
+        uploadVerifier.verifyComplete()
+
+        cleanup:
+        file.delete()
     }
 
     def "Get Container Name"() {
         expect:
-        containerName == bc.getContainerName()
+        containerName == blockBlobClient.getContainerName()
     }
 
     def "Get Block Blob Name"() {
         expect:
-        blobName == bc.getBlobName()
+        blobName == blockBlobClient.getBlobName()
+    }
+
+    def "Get Blob Name and Build Client"() {
+        when:
+        def client = cc.getBlobClient(originalBlobName)
+        def blockClient = cc.getBlobClient(client.getBlobName()).getBlockBlobClient()
+
+        then:
+        blockClient.getBlobName() == finalBlobName
+
+        where:
+        originalBlobName       | finalBlobName
+        "blob"                 | "blob"
+        "path/to]a blob"       | "path/to]a blob"
+        "path%2Fto%5Da%20blob" | "path/to]a blob"
+        "斑點"                   | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
+    }
+
+    def "Builder cpk validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(blockBlobClient.getBlobUrl()).setScheme("http").toUrl()
+        def builder = new SpecializedBlobClientBuilder()
+            .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint)
+
+        when:
+        builder.buildBlockBlobClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Builder bearer token validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(blockBlobClient.getBlobUrl()).setScheme("http").toUrl()
+        def builder = new SpecializedBlobClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildBlockBlobClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }

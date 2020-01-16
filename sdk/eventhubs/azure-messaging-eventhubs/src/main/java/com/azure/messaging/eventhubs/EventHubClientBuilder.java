@@ -3,10 +3,12 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -15,34 +17,34 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.models.ProxyAuthenticationType;
-import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
-import com.azure.messaging.eventhubs.implementation.EventHubReactorConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
+import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
 /**
- * This class provides a fluent builder API to aid the instantiation of {@link EventHubAsyncClient} and {@link
- * EventHubClient}. Calling {@link #buildAsyncClient() buildAsyncClient()} or {@link #buildClient() buildClient()}
- * constructs an instance of the respective client.
+ * This class provides a fluent builder API to aid the instantiation of {@link EventHubProducerAsyncClient},
+ * {@link EventHubProducerClient}, {@link EventHubConsumerAsyncClient}, and {@link EventHubConsumerClient}. Calling any
+ * of the {@code .build*Client()} methods will create an instance of the respective client.
  *
  * <p>
  * <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
@@ -53,47 +55,91 @@ import java.util.ServiceLoader;
  * <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
  * connection string and the Event Hub name.</li>
  * <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the
- * fully qualified domain name (FQDN), Event Hub name, and a set of credentials authorized to use the Event Hub.
+ * fully qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
  * </li>
  * </ul>
  *
  * <p>
- * <strong>Creating an asynchronous {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong>
+ * In addition, <strong>consumer group</strong> is required when creating {@link EventHubConsumerAsyncClient} or
+ * {@link EventHubConsumerClient}.
  * </p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string-string}
+ * <p><strong>Creating an asynchronous {@link EventHubProducerAsyncClient} using Event Hubs namespace connection string
+ * </strong></p>
+ * <p>In the sample, the namespace connection string is used to create an asynchronous Event Hub producer. Notice that
+ * {@code "EntityPath"} <b>is not</b> a component in the connection string.</p>
  *
- * <p>
- * <strong>Creating a synchronous {@link EventHubClient} using an Event Hub instance connection string</strong>
- * </p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation}
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiation}
+ * <p><strong>Creating a synchronous {@link EventHubConsumerClient} using an Event Hub instance connection string
+ * </strong></p>
+ * <p>In the sample, the namespace connection string is used to create a synchronous Event Hub consumer. Notice that
+ * {@code "EntityPath"} <b>is</b> in the connection string.</p>
  *
- * @see EventHubClient
- * @see EventHubAsyncClient
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation}
+ *
+ * <p><strong>Creating producers and consumers that share the same connection</strong></p>
+ * <p>By default, a dedicated connection is created for each producer and consumer created from the builder. If users
+ * wish to use the same underlying connection, they can toggle {@link #shareConnection() shareConnection()}.</p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation}
+ *
+ * @see EventHubProducerAsyncClient
+ * @see EventHubProducerClient
+ * @see EventHubConsumerAsyncClient
+ * @see EventHubConsumerClient
  */
-@ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventHubClient.class})
+@ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class,
+    EventHubConsumerAsyncClient.class, EventHubConsumerClient.class})
 public class EventHubClientBuilder {
+    /**
+     * The name of the default consumer group in the Event Hubs service.
+     */
+    public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
+    /**
+     * The minimum value allowed for the prefetch count of the consumer.
+     */
+    private static final int MINIMUM_PREFETCH_COUNT = 1;
+    /**
+     * The maximum value allowed for the prefetch count of the consumer.
+     */
+    private static final int MAXIMUM_PREFETCH_COUNT = 8000;
+
+    // Default number of events to fetch when creating the consumer.
+    static final int DEFAULT_PREFETCH_COUNT = 500;
+    private static final String EVENTHUBS_PROPERTIES_FILE = "azure-messaging-eventhubs.properties";
+    private static final String NAME_KEY = "name";
+    private static final String VERSION_KEY = "version";
+    private static final String UNKNOWN = "UNKNOWN";
+
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
-    private static final RetryOptions DEFAULT_RETRY = new RetryOptions()
+    private static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions()
         .setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
 
     private TokenCredential credentials;
     private Configuration configuration;
-    private ProxyConfiguration proxyConfiguration;
-    private RetryOptions retryOptions;
+    private ProxyOptions proxyOptions;
+    private AmqpRetryOptions retryOptions;
     private Scheduler scheduler;
-    private TransportType transport;
+    private AmqpTransportType transport;
     private String fullyQualifiedNamespace;
     private String eventHubName;
+    private String consumerGroup;
+    private EventHubConnectionProcessor eventHubConnectionProcessor;
+    private int prefetchCount;
+    private boolean isSharedConnection;
 
     /**
-     * Creates a new instance with the default transport {@link TransportType#AMQP}.
+     * Creates a new instance with the default transport {@link AmqpTransportType#AMQP} and a non-shared connection. A
+     * non-shared connection means that a dedicated AMQP connection is created for every Event Hub consumer or producer
+     * created using the builder.
      */
     public EventHubClientBuilder() {
-        transport = TransportType.AMQP;
+        transport = AmqpTransportType.AMQP;
+        prefetchCount = DEFAULT_PREFETCH_COUNT;
+        isSharedConnection = false;
     }
 
     /**
@@ -122,14 +168,8 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder connectionString(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final TokenCredential tokenCredential;
-        try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(properties.getSharedAccessKeyName(),
-                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new AzureException(
-                "Could not create the EventHubSharedAccessKeyCredential.", e));
-        }
+        final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
+            properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
 
         return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
     }
@@ -163,16 +203,10 @@ public class EventHubClientBuilder {
         }
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final TokenCredential tokenCredential;
-        try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(properties.getSharedAccessKeyName(),
+        final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
                 properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new AzureException(
-                "Could not create the EventHubSharedAccessKeyCredential.", e));
-        }
 
-        if (!ImplUtils.isNullOrEmpty(properties.getEntityPath())
+        if (!CoreUtils.isNullOrEmpty(properties.getEntityPath())
             && !eventHubName.equals(properties.getEntityPath())) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "'connectionString' contains an Event Hub name [%s] and it does not match the given "
@@ -200,6 +234,17 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Toggles the builder to use the same connection for producers or consumers that are built from this instance. By
+     * default, a new connection is constructed and used created for each Event Hub consumer or producer created.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder shareConnection() {
+        this.isSharedConnection = true;
+        return this;
+    }
+
+    /**
      * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
      *
      * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
@@ -221,9 +266,9 @@ public class EventHubClientBuilder {
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
-        if (ImplUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
-        } else if (ImplUtils.isNullOrEmpty(eventHubName)) {
+        } else if (CoreUtils.isNullOrEmpty(eventHubName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
@@ -232,38 +277,26 @@ public class EventHubClientBuilder {
 
     /**
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
-     * TransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
+     * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
-     * @param proxyConfiguration The proxy configuration to use.
+     * @param proxyOptions The proxy configuration to use.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder proxyConfiguration(ProxyConfiguration proxyConfiguration) {
-        this.proxyConfiguration = proxyConfiguration;
-        return this;
-    }
-
-    /**
-     * Sets the scheduler for operations such as connecting to and receiving or sending data to Event Hubs. If none is
-     * specified, an elastic pool is used.
-     *
-     * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to Event Hubs.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder scheduler(Scheduler scheduler) {
-        this.scheduler = scheduler;
+    public EventHubClientBuilder proxyOptions(ProxyOptions proxyOptions) {
+        this.proxyOptions = proxyOptions;
         return this;
     }
 
     /**
      * Sets the transport type by which all the communication with Azure Event Hubs occurs. Default value is {@link
-     * TransportType#AMQP}.
+     * AmqpTransportType#AMQP}.
      *
      * @param transport The transport type to use.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder transportType(TransportType transport) {
+    public EventHubClientBuilder transportType(AmqpTransportType transport) {
         this.transport = transport;
         return this;
     }
@@ -275,9 +308,126 @@ public class EventHubClientBuilder {
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder retry(RetryOptions retryOptions) {
+    public EventHubClientBuilder retry(AmqpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
+    }
+
+    /**
+     * Sets the name of the consumer group this consumer is associated with. Events are read in the context of this
+     * group. The name of the consumer group that is created by default is
+     * {@link #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     *
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
+     * context of this group. The name of the consumer group that is created by default is
+     * {@link #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder consumerGroup(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
+        return this;
+    }
+
+    /**
+     * Sets the count used by the receiver to control the number of events the Event Hub consumer will actively receive
+     * and queue locally without regard to whether a receive operation is currently active.
+     *
+     * @param prefetchCount The amount of events to queue locally.
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code prefetchCount} is less than {@link #MINIMUM_PREFETCH_COUNT 1} or
+     *     greater than {@link #MAXIMUM_PREFETCH_COUNT 8000}.
+     */
+    public EventHubClientBuilder prefetchCount(int prefetchCount) {
+        if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "PrefetchCount, '%s' has to be above %s", prefetchCount, MINIMUM_PREFETCH_COUNT)));
+        }
+
+        if (prefetchCount > MAXIMUM_PREFETCH_COUNT) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "PrefetchCount, '%s', has to be below %s", prefetchCount, MAXIMUM_PREFETCH_COUNT)));
+        }
+
+        this.prefetchCount = prefetchCount;
+        return this;
+    }
+
+    /**
+     * Package-private method that sets the scheduler for the created Event Hub client.
+     *
+     * TODO (conniey): Currently, the default is to use an elastic scheduler if none is specified to facilitate the
+     * possibility of legacy blocking code. However, we should consider if we should give consumers an option to use a
+     * parallel Scheduler. https://github.com/Azure/azure-sdk-for-java/issues/5466
+     *
+     * @param scheduler Scheduler to set.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    EventHubClientBuilder scheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
+        return this;
+    }
+
+    /**
+     * Creates a new {@link EventHubConsumerAsyncClient} based on the options set on this builder. Every time
+     * {@code buildAsyncConsumer()} is invoked, a new instance of {@link EventHubConsumerAsyncClient} is created.
+     *
+     * @return A new {@link EventHubConsumerAsyncClient} with the configured options.
+     *
+     * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
+     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Also, if
+     *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
+     *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     */
+    public EventHubConsumerAsyncClient buildAsyncConsumerClient() {
+        if (CoreUtils.isNullOrEmpty(consumerGroup)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be null or an empty "
+                + "string. using EventHubClientBuilder.consumerGroup(String)"));
+        }
+
+        return buildAsyncClient().createConsumer(consumerGroup, prefetchCount);
+    }
+
+    /**
+     * Creates a new {@link EventHubConsumerClient} based on the options set on this builder. Every time
+     * {@code buildConsumer()} is invoked, a new instance of {@link EventHubConsumerClient} is created.
+     *
+     * @return A new {@link EventHubConsumerClient} with the configured options.
+     *
+     * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
+     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Also, if
+     *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
+     *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     */
+    public EventHubConsumerClient buildConsumerClient() {
+        return buildClient().createConsumer(consumerGroup, prefetchCount);
+    }
+
+    /**
+     * Creates a new {@link EventHubProducerAsyncClient} based on options set on this builder. Every time
+     * {@code buildAsyncProducer()} is invoked, a new instance of {@link EventHubProducerAsyncClient} is created.
+     *
+     * @return A new {@link EventHubProducerAsyncClient} instance with all the configured options.
+     *
+     * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
+     * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy
+     * is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     */
+    public EventHubProducerAsyncClient buildAsyncProducerClient() {
+        return buildAsyncClient().createProducer();
+    }
+
+    /**
+     * Creates a new {@link EventHubProducerClient} based on options set on this builder. Every time
+     * {@code buildAsyncProducer()} is invoked, a new instance of {@link EventHubProducerClient} is created.
+     *
+     * @return A new {@link EventHubProducerClient} instance with all the configured options.
+     *
+     * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
+     * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy
+     * is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     */
+    public EventHubProducerClient buildProducerClient() {
+        return buildClient().createProducer();
     }
 
     /**
@@ -290,8 +440,8 @@ public class EventHubClientBuilder {
      * <ul>
      * <li>If no configuration is specified, the {@link Configuration#getGlobalConfiguration() global configuration}
      * is used to provide any shared configuration values. The configuration values read are the {@link
-     * Configuration#PROPERTY_HTTP_PROXY}, {@link ProxyConfiguration#PROXY_USERNAME}, and {@link
-     * ProxyConfiguration#PROXY_PASSWORD}.</li>
+     * Configuration#PROPERTY_HTTP_PROXY}, {@link ProxyOptions#PROXY_USERNAME}, and {@link
+     * ProxyOptions#PROXY_PASSWORD}.</li>
      * <li>If no retry is specified, the default retry options are used.</li>
      * <li>If no proxy is specified, the builder checks the {@link Configuration#getGlobalConfiguration() global
      * configuration} for a configured proxy, then it checks to see if a system proxy is configured.</li>
@@ -303,11 +453,30 @@ public class EventHubClientBuilder {
      *
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
-     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubAsyncClient buildAsyncClient() {
-        final ConnectionOptions connectionOptions = getConnectionOptions();
-        return buildAsyncClient(connectionOptions);
+    EventHubAsyncClient buildAsyncClient() {
+        if (retryOptions == null) {
+            retryOptions = DEFAULT_RETRY;
+        }
+
+        if (scheduler == null) {
+            scheduler = Schedulers.elastic();
+        }
+
+        final MessageSerializer messageSerializer = new EventHubMessageSerializer();
+
+        if (isSharedConnection && eventHubConnectionProcessor == null) {
+            eventHubConnectionProcessor = buildConnectionProcessor(messageSerializer);
+        }
+
+        final EventHubConnectionProcessor processor = isSharedConnection
+            ? eventHubConnectionProcessor
+            : buildConnectionProcessor(messageSerializer);
+
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+
+        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, isSharedConnection);
     }
 
     /**
@@ -320,8 +489,8 @@ public class EventHubClientBuilder {
      * <ul>
      * <li>If no configuration is specified, the {@link Configuration#getGlobalConfiguration() global configuration}
      * is used to provide any shared configuration values. The configuration values read are the {@link
-     * Configuration#PROPERTY_HTTP_PROXY}, {@link ProxyConfiguration#PROXY_USERNAME}, and {@link
-     * ProxyConfiguration#PROXY_PASSWORD}.</li>
+     * Configuration#PROPERTY_HTTP_PROXY}, {@link ProxyOptions#PROXY_USERNAME}, and {@link
+     * ProxyOptions#PROXY_PASSWORD}.</li>
      * <li>If no retry is specified, the default retry options are used.</li>
      * <li>If no proxy is specified, the builder checks the {@link Configuration#getGlobalConfiguration() global
      * configuration} for a configured proxy, then it checks to see if a system proxy is configured.</li>
@@ -333,32 +502,36 @@ public class EventHubClientBuilder {
      *
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
-     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubClient buildClient() {
-        final ConnectionOptions connectionOptions = getConnectionOptions();
-        final EventHubAsyncClient client = buildAsyncClient(connectionOptions);
+    EventHubClient buildClient() {
+        final EventHubAsyncClient client = buildAsyncClient();
 
-        return new EventHubClient(client, connectionOptions);
+        return new EventHubClient(client, retryOptions);
     }
 
-    private static EventHubAsyncClient buildAsyncClient(ConnectionOptions connectionOptions) {
+    private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer) {
+        final ConnectionOptions connectionOptions = getConnectionOptions();
+        final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+            connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-        final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        final Mono<EventHubConnection> connectionMono = Mono.fromCallable(() -> {
+        final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
+        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+
+        final Flux<EventHubAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
-            final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
-                ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
-            return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,
-                tokenManagerProvider, messageSerializer);
-        });
+            return (EventHubAmqpConnection) new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider,
+                handlerProvider, tokenManagerProvider, messageSerializer, product, clientVersion);
+        }).repeat();
 
-        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, connectionMono);
+        return connectionFlux.subscribeWith(new EventHubConnectionProcessor(
+            connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getEntityPath(),
+            connectionOptions.getRetry()));
     }
 
     private ConnectionOptions getConnectionOptions() {
@@ -367,7 +540,7 @@ public class EventHubClientBuilder {
         if (credentials == null) {
             final String connectionString = configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
 
-            if (ImplUtils.isNullOrEmpty(connectionString)) {
+            if (CoreUtils.isNullOrEmpty(connectionString)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
                     + "They can be set using: connectionString(String), connectionString(String, String), "
                     + "credentials(String, String, TokenCredential), or setting the environment variable '"
@@ -377,44 +550,36 @@ public class EventHubClientBuilder {
             connectionString(connectionString);
         }
 
-        if (retryOptions == null) {
-            retryOptions = DEFAULT_RETRY;
-        }
-
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
         // is not AMQP_WEB_SOCKETS.
-        if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
-            && transport != TransportType.AMQP_WEB_SOCKETS) {
+        if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()
+            && transport != AmqpTransportType.AMQP_WEB_SOCKETS) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Cannot use a proxy when TransportType is not AMQP."));
         }
 
-        if (proxyConfiguration == null) {
-            proxyConfiguration = getDefaultProxyConfiguration(configuration);
+        if (proxyOptions == null) {
+            proxyOptions = getDefaultProxyConfiguration(configuration);
         }
 
-        if (scheduler == null) {
-            scheduler = Schedulers.elastic();
-        }
-
-        final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedAccessKeyCredential
-            ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
-            : CBSAuthorizationType.JSON_WEB_TOKEN;
+        final CbsAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
+            ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
+            : CbsAuthorizationType.JSON_WEB_TOKEN;
 
         return new ConnectionOptions(fullyQualifiedNamespace, eventHubName, credentials, authorizationType,
-            transport, retryOptions, proxyConfiguration, scheduler);
+            transport, retryOptions, proxyOptions, scheduler);
     }
 
-    private ProxyConfiguration getDefaultProxyConfiguration(Configuration configuration) {
+    private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
         ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
-        if (proxyConfiguration != null) {
-            authentication = proxyConfiguration.getAuthentication();
+        if (proxyOptions != null) {
+            authentication = proxyOptions.getAuthentication();
         }
 
         String proxyAddress = configuration.get(Configuration.PROPERTY_HTTP_PROXY);
 
-        if (ImplUtils.isNullOrEmpty(proxyAddress)) {
-            return ProxyConfiguration.SYSTEM_DEFAULTS;
+        if (CoreUtils.isNullOrEmpty(proxyAddress)) {
+            return ProxyOptions.SYSTEM_DEFAULTS;
         }
 
         final String[] hostPort = proxyAddress.split(":");
@@ -425,9 +590,9 @@ public class EventHubClientBuilder {
         final String host = hostPort[0];
         final int port = Integer.parseInt(hostPort[1]);
         final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
-        final String username = configuration.get(ProxyConfiguration.PROXY_USERNAME);
-        final String password = configuration.get(ProxyConfiguration.PROXY_PASSWORD);
+        final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
+        final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
 
-        return new ProxyConfiguration(authentication, proxy, username, password);
+        return new ProxyOptions(authentication, proxy, username, password);
     }
 }

@@ -15,6 +15,8 @@ import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.internal.routing.Range;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ import java.util.function.Function;
 public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resource>
         extends DocumentQueryExecutionContextBase<T> implements IDocumentQueryExecutionComponent<T> {
 
+    protected final Logger logger;
     protected final List<DocumentProducer<T>> documentProducers;
     protected final List<PartitionKeyRange> partitionKeyRanges;
     protected final SqlQuerySpec querySpec;
@@ -45,6 +48,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         super(client, resourceTypeEnum, resourceType, query, feedOptions, resourceLink, getLazyFeedResponse,
                 correlatedActivityId);
 
+        logger = LoggerFactory.getLogger(this.getClass());
         documentProducers = new ArrayList<>();
 
         this.partitionKeyRanges = partitionKeyRanges;
@@ -68,6 +72,12 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
+                if (feedOptions.partitionKey() != null) {
+                    headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, feedOptions
+                                                                             .partitionKey()
+                                                                             .getInternalPartitionKey()
+                                                                             .toJson());
+                }
                 return this.createDocumentServiceRequest(headers, querySpecForInit, partitionKeyRange, collectionRid);
             };
 

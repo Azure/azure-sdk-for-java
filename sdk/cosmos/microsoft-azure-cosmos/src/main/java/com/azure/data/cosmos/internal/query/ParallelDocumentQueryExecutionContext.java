@@ -8,6 +8,7 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IDocumentClientRetryPolicy;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
@@ -18,6 +19,7 @@ import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
+import reactor.util.concurrent.Queues;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
  */
 public class ParallelDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
+    private FeedOptions feedOptions;
 
     private ParallelDocumentQueryExecutionContext(
             IDocumentQueryClient client,
@@ -50,6 +53,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             UUID correlatedActivityId) {
         super(client, partitionKeyRanges, resourceTypeEnum, resourceType, query, feedOptions, resourceLink,
                 rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
+        this.feedOptions = feedOptions;
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
@@ -169,9 +173,10 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
         private final RequestChargeTracker tracker;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
+        private final FeedOptions feedOptions;
 
         public EmptyPagesFilterTransformer(
-                RequestChargeTracker tracker) {
+                RequestChargeTracker tracker, FeedOptions options) {
 
             if (tracker == null) {
                 throw new IllegalArgumentException("Request Charge Tracker must not be null.");
@@ -179,6 +184,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
             this.tracker = tracker;
             this.previousPage = null;
+            this.feedOptions = options;
         }
 
         private DocumentProducer<T>.DocumentProducerFeedResponse plusCharge(
@@ -222,7 +228,8 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             // Emit an empty page so the downstream observables know when there are no more
             // results.
             return source.filter(documentProducerFeedResponse -> {
-                if (documentProducerFeedResponse.pageResult.results().isEmpty()) {
+                if (documentProducerFeedResponse.pageResult.results().isEmpty()
+                        && !this.feedOptions.allowEmptyPages()) {
                     // filter empty pages and accumulate charge
                     tracker.addCharge(documentProducerFeedResponse.pageResult.requestCharge());
                     return false;
@@ -304,7 +311,14 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 .map(DocumentProducer::produceAsync)
                 // Merge results from all partitions.
                 .collect(Collectors.toList());
-        return Flux.concat(obs).compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker()));
+
+        int fluxConcurrency = fluxSequentialMergeConcurrency(feedOptions, obs.size());
+        int fluxPrefetch = fluxSequentialMergePrefetch(feedOptions, obs.size(), maxPageSize, fluxConcurrency);
+
+        logger.debug("ParallelQuery: flux mergeSequential" +
+                         " concurrency {}, prefetch {}", fluxConcurrency, fluxPrefetch);
+        return Flux.mergeSequential(obs, fluxConcurrency, fluxPrefetch)
+            .compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), feedOptions));
     }
 
     @Override
@@ -336,5 +350,27 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 initialPageSize,
                 initialContinuationToken,
                 top);
+    }
+
+    private int fluxSequentialMergeConcurrency(FeedOptions options, int numberOfPartitions) {
+        int parallelism = options.maxDegreeOfParallelism();
+        if (parallelism < 0) {
+            parallelism = Configs.getCPUCnt();
+        } else if (parallelism == 0) {
+            parallelism = 1;
+        }
+
+        return Math.min(numberOfPartitions, parallelism);
+    }
+
+    private int fluxSequentialMergePrefetch(FeedOptions options, int numberOfPartitions, int pageSize, int fluxConcurrency) {
+        int maxBufferedItemCount = options.maxBufferedItemCount();
+
+        if (maxBufferedItemCount <= 0) {
+            maxBufferedItemCount = Math.min(Configs.getCPUCnt() * numberOfPartitions * pageSize, 100_000);
+        }
+
+        int fluxPrefetch = Math.max(maxBufferedItemCount / (Math.max(fluxConcurrency * pageSize, 1)), 1);
+        return Math.min(fluxPrefetch, Queues.XS_BUFFER_SIZE);
     }
 }

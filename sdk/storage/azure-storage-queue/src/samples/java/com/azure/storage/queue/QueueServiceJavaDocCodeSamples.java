@@ -5,11 +5,16 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -249,5 +254,26 @@ public class QueueServiceJavaDocCodeSamples {
         System.out.printf("Geo replication status: %s, Last synced: %s",
             stats.getGeoReplication().getStatus(), stats.getGeoReplication().getLastSyncTime());
         // END: com.azure.storage.queue.queueServiceClient.getStatisticsWithResponse#duration-context
+    }
+
+    /**
+     * Code snippet for {@link QueueServiceClient#generateAccountSas(AccountSasSignatureValues)}
+     */
+    public void generateAccountSas() {
+        QueueServiceClient queueServiceClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true).setObject(true);
+        AccountSasService services = new AccountSasService().setQueueAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = queueServiceClient.generateAccountSas(sasValues);
+        // END: com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues
     }
 }

@@ -1,4 +1,60 @@
 ## Changelog
+### 3.6.0
+- GA release for fixes in 3.6.0-beta.1 and 3.6.0-beta.2
+
+### 3.6.0-beta.2
+- Takes advantage of Reactive Stream Concurrency for Query (Improves latency and fixes earlier issues): (https://github.com/Azure/azure-sdk-for-java/pull/7322)
+- API to retrieve min throughput for a CosmosContainer: (https://github.com/Azure/azure-sdk-for-java/pull/7259)
+
+### 3.6.0-beta.1
+- Added the ability to select default Direct TCP options
+
+  In priority order we will take default Direct TCP options from:
+  
+  - The string value of system property `"azure.cosmos.directTcp.options"`
+ 
+    Example:
+    ``` 
+    -Dazure.cosmos.directTcp.defaultOptions={\"idleEndpointTimeout\":"PT1M10S",\"maxChannelsPerEndpoint\":10,\"maxRequestsPerChannel\":30}
+    ```
+   - The contents of the file located by the system property "azure.cosmos.directTcp.defaultOptionsFile".
+  
+     Example:
+     ```
+     -Dazure.cosmos.directTcp.defaultOptionsFile=/path/to/default/options/file
+     ```
+  
+   - The contents of the resource file named `"azure.cosmos.directTcp.options.json"`
+  
+   Otherwise, if none of these values are set or an error occurs we create default options based on a set of hard-wired 
+   values defined in the default private parameterless constructor for `RntbdTransportClient.Options` as we did before 
+   this release.
+   
+- Fixed Reactor Netty connection re-use issue: https://github.com/Azure/azure-sdk-for-java/issues/6973 
+    
+### 3.5.0
+- Changefeed bug fixes (includes all the bug fixes released in 3.3.3) 
+- Disaster Recovery related bug fixes
+- Exception when Cosmos DB HTTP response header is larger than 8192 bytes: https://github.com/Azure/azure-sdk-for-java/issues/6069
+- Vulnerability through dependency in the SDK: https://github.com/Azure/azure-sdk-for-java/issues/6433
+- CosmosSyncScripts null pointer exception in azure-cosmos: https://github.com/Azure/azure-sdk-for-java/issues/6281
+- Default consistency level parsing for Bounded Staleness and Consistent Prefix: https://github.com/Azure/azure-sdk-for-java/issues/6707
+- Collection cache improvements: https://github.com/Azure/azure-sdk-for-java/issues/6307
+
+### 3.4.0
+- Added QueryPlan
+- Added OffsetLimit support
+- ChangeFeedProcessor; fixes and extra logging related to the creations of the lease documents.
+- Port consistency policy bug fix (see Azure/azure-cosmosdb-java#196)
+
+### 3.3.3
+- ChangeFeedProcessor; added a "catch all" exception handler that keeps the loop which checks and acquires available leases alive until the user stops the change feed processor.
+
+### 3.3.2
+- ChangeFeedProcessor; fixes and extra logging related to the creations of the lease documents.
+- Port consistency policy bug fix (see https://github.com/Azure/azure-cosmosdb-java/pull/196)
+- Port test fixes (see https://github.com/Azure/azure-cosmosdb-java/pull/196)
+- ChangeFeedProcessor: fix a race condition issue where the lease document has been updated while we are trying to write the current state like when check-pointing the continuation token.
 
 ### 3.3.1
 - Added @JsonIgnore on getLogger in JsonSerializable
@@ -173,3 +229,6 @@
 
 - First release of `azure-documentdb-rx` SDK.
 - CRUD Document API fully non-blocking using netty. Query async API implemented as a wrapper using blocking SDK `azure-documentdb`.
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fchangelog%2FREADME.png)

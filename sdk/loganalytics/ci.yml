@@ -15,12 +15,13 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/loganalytics/
+    exclude:
+      - sdk/loganalytics/mgmt-
 
 pr:
   branches:
@@ -32,12 +33,16 @@ pr:
   paths:
     include:
       - sdk/loganalytics/
+    exclude:
+      - sdk/loganalytics/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: loganalytics
+      SDKType: data
       Artifacts:
         - name: azure-loganalytics
+          groupId: com.microsoft.azure
           safeName: azureloganalytics
           stagingProfileId: 534d15ee3800f4

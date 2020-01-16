@@ -12,9 +12,9 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     private String clientId;
 
     /**
-     * Specifies the client id of user assigned or system assigned identity.
+     * Specifies the client ID of user assigned or system assigned identity.
      *
-     * @param clientId the client id
+     * @param clientId the client ID
      * @return the ManagedIdentityCredentialBuilder itself
      */
     public ManagedIdentityCredentialBuilder clientId(String clientId) {
@@ -23,6 +23,8 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
+     * Creates a new {@link ManagedIdentityCredential} with the current configurations.
+     *
      * @return a {@link ManagedIdentityCredential} with the current configurations.
      */
     public ManagedIdentityCredential build() {

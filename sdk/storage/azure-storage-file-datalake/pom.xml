@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-datalake</artifactId>
-  <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+  <version>12.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
 
   <name>Microsoft Azure client library for File Storage Data Lake</name>
   <description>This module contains client library for Microsoft Azure File Storage Data Lake.</description>
@@ -33,19 +33,34 @@
   </scm>
 
   <properties>
-    <project.automatic.module.name>com.azure.storage.file.datalake</project.automatic.module.name>
+    <src.dir>src/main/java</src.dir>
+    <test.dir>src/test/java</test.dir>
   </properties>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>bintray</id>
+      <name>Groovy Bintray</name>
+      <url>https://dl.bintray.com/groovy/maven</url>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.3.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-common</artifactId>
-      <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <artifactId>azure-core</artifactId>
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -54,38 +69,57 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
-      <version>3.0.2</version>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.1.0</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
+      <version>1.7.25</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
+      <version>3.3.0.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
+      <version>1.3-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.0.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <testResources>
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+      </testResource>
+    </testResources>
+  </build>
 
   <profiles>
     <profile>
@@ -99,10 +133,23 @@
             <!-- Skip maven compiler and use gmavenplus plugin instead -->
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
+              <showWarnings>true</showWarnings>
+              <failOnWarning>true</failOnWarning>
+              <compilerArgs>
+                <arg>-Xlint:all</arg>
+                <arg>-Xlint:-serial</arg>
+                <arg>-Xlint:-deprecation</arg>
+                <arg>-Xlint:-processing</arg>
+              </compilerArgs>
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
             </configuration>
+
             <executions>
               <execution>
                 <id>test-compile</id>
@@ -112,7 +159,10 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>-Xlint:unchecked</compilerArgument>
+                  <compilerArgument>
+                    -Xlint:unchecked
+                    -warn:-unused
+                  </compilerArgument>
                 </configuration>
               </execution>
               <execution>
@@ -123,7 +173,10 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>-Xlint:unchecked</compilerArgument>
+                  <compilerArgument>
+                    -Xlint:unchecked
+                    -warn:-unused
+                  </compilerArgument>
                 </configuration>
               </execution>
             </executions>
@@ -131,12 +184,12 @@
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-eclipse-compiler</artifactId>
-                <version>${groovy-eclipse-compiler.version}</version>
+                <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
               </dependency>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-eclipse-batch</artifactId>
-                <version>${groovy-eclipse-batch.version}</version>
+                <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
               </dependency>
             </dependencies>
           </plugin>
@@ -144,7 +197,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>${maven-surefire-plugin.version}</version>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           </plugin>
         </plugins>
       </build>
@@ -161,6 +214,7 @@
             <!-- Skip maven compiler and use gmavenplus plugin instead -->
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <source>9</source>
               <target>9</target>
@@ -174,7 +228,10 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>-Xlint:unchecked</compilerArgument>
+                  <compilerArgument>
+                    -Xlint:unchecked
+                    -warn:-unused
+                  </compilerArgument>
                   <release>8</release>
                 </configuration>
               </execution>
@@ -186,7 +243,10 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>-Xlint:unchecked</compilerArgument>
+                  <compilerArgument>
+                    -Xlint:unchecked
+                    -warn:-unused
+                  </compilerArgument>
                   <release>8</release>
                 </configuration>
               </execution>
@@ -195,12 +255,12 @@
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-eclipse-compiler</artifactId>
-                <version>${groovy-eclipse-compiler.version}</version>
+                <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
               </dependency>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-eclipse-batch</artifactId>
-                <version>${groovy-eclipse-batch.version}</version>
+                <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
               </dependency>
             </dependencies>
           </plugin>
@@ -208,7 +268,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>${maven-surefire-plugin.version}</version>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
@@ -217,6 +277,11 @@
                 --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake=ALL-UNNAMED
                 --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake.models=ALL-UNNAMED
+                --add-reads com.azure.core=ALL-UNNAMED
+                --add-reads com.azure.core.test=ALL-UNNAMED
+                --add-reads com.azure.core.amqp=ALL-UNNAMED
+                --add-reads com.azure.storage.common=ALL-UNNAMED
+                --add-reads com.azure.storage.blob=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

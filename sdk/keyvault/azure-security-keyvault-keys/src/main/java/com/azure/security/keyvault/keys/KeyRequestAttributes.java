@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.security.keyvault.keys.models.KeyProperties;
-import com.azure.security.keyvault.keys.models.KeyCreateOptions;
+import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
@@ -22,8 +22,8 @@ class KeyRequestAttributes {
         if (keyProperties.getNotBefore() != null) {
             this.notBefore = keyProperties.getNotBefore().toEpochSecond();
         }
-        if (keyProperties.getExpires() != null) {
-            this.expires = keyProperties.getExpires().toEpochSecond();
+        if (keyProperties.getExpiresOn() != null) {
+            this.expires = keyProperties.getExpiresOn().toEpochSecond();
         }
         this.enabled = keyProperties.isEnabled();
     }
@@ -32,14 +32,14 @@ class KeyRequestAttributes {
      * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.getNotBefore, KeyCreateOptions.getExpires and
      * KeyCreateOptions.isEnabled fields
      * from {@code keyOptions}
-     * @param keyOptions the {@link KeyCreateOptions} object with populated attributes
+     * @param keyOptions the {@link CreateKeyOptions} object with populated attributes
      */
-    KeyRequestAttributes(KeyCreateOptions keyOptions) {
+    KeyRequestAttributes(CreateKeyOptions keyOptions) {
         if (keyOptions.getNotBefore() != null) {
             this.notBefore = keyOptions.getNotBefore().toEpochSecond();
         }
-        if (keyOptions.getExpires() != null) {
-            this.expires = keyOptions.getExpires().toEpochSecond();
+        if (keyOptions.getExpiresOn() != null) {
+            this.expires = keyOptions.getExpiresOn().toEpochSecond();
         }
         this.enabled = keyOptions.isEnabled();
     }

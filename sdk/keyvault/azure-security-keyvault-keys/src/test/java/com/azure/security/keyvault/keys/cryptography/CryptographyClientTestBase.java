@@ -3,23 +3,24 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import reactor.core.publisher.Mono;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
@@ -29,22 +30,26 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
-import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 public abstract class CryptographyClientTestBase extends TestBase {
-    @Rule
-    public TestName testName = new TestName();
+    private static final String SDK_NAME = "client_name";
+    private static final String SDK_VERSION = "client_version";
 
     @Override
     protected String getTestName() {
-        return testName.getMethodName();
+        return "";
     }
 
     void beforeTestSetup() {
@@ -55,7 +60,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
                 ? "http://localhost:8080"
                 : System.getenv("AZURE_KEYVAULT_ENDPOINT");
 
-        TokenCredential credential;
+        TokenCredential credential = null;
         HttpClient httpClient;
 
         String tenantId = System.getenv("AZURE_TENANT_ID");
@@ -67,19 +72,18 @@ public abstract class CryptographyClientTestBase extends TestBase {
             assertNotNull(clientSecret);
         }
 
-        if (interceptorManager.isPlaybackMode()) {
-            credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
-        } else {
+        if (!interceptorManager.isPlaybackMode()) {
             credential = new DefaultAzureCredentialBuilder().build();
         }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), CryptographyServiceVersion.getLatest()));
+        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone(), CryptographyServiceVersion.getLatest()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
-        policies.add(new BearerTokenAuthenticationPolicy(credential, CryptographyAsyncClient.KEY_VAULT_SCOPE));
-        policies.addAll(policies);
+        if (credential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(credential, CryptographyAsyncClient.KEY_VAULT_SCOPE));
+        }
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
@@ -120,30 +124,6 @@ public abstract class CryptographyClientTestBase extends TestBase {
     @Test
     public abstract void signVerifyRsa() throws Exception;
 
-    @Test
-    public abstract void wrapUnwrapSymmetricKeyAES128Kw();
-
-    @Test
-    public abstract void wrapUnwrapSymmetricKeyAES192Kw();
-
-    @Test
-    public abstract void wrapUnwrapSymmetricKeyAES256Kw();
-
-    @Test
-    public abstract void encryptDecryptSymmetricKeyAes128CbcHmacSha256();
-
-    @Test
-    public abstract void encryptDecryptSymmetricKeyAes128CbcHmacSha384();
-
-    @Test
-    public abstract void encryptDecryptSymmetricKeyAes128CbcHmacSha512();
-
-    @Test
-    public abstract void encryptDecryptSymmetricKeyaes128CbcOneBlock();
-
-    @Test
-    public abstract void encryptDecryptSymmetricKeyaes128CbcTwoBlock();
-
     private static KeyPair getWellKnownKey() throws Exception {
         BigInteger modulus = new BigInteger("27266783713040163753473734334021230592631652450892850648620119914958066181400432364213298181846462385257448168605902438305568194683691563208578540343969522651422088760509452879461613852042845039552547834002168737350264189810815735922734447830725099163869215360401162450008673869707774119785881115044406101346450911054819448375712432746968301739007624952483347278954755460152795801894283389540036131881712321193750961817346255102052653789197325341350920441746054233522546543768770643593655942246891652634114922277138937273034902434321431672058220631825053788262810480543541597284376261438324665363067125951152574540779");
         BigInteger publicExponent = new BigInteger("65537");
@@ -165,8 +145,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
     public String getEndpoint() {
         final String endpoint = interceptorManager.isPlaybackMode()
                 ? "http://localhost:8080"
-                : "https://cameravault.vault.azure.net";
-            //    : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }

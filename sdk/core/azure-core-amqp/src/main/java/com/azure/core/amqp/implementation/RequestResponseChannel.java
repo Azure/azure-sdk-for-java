@@ -3,11 +3,10 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
-import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
@@ -61,14 +60,14 @@ public class RequestResponseChannel implements Closeable {
     private final SendLinkHandler sendLinkHandler;
     private final ReceiveLinkHandler receiveLinkHandler;
     private final Disposable subscription;
-    private final RetryPolicy retryPolicy;
+    private final AmqpRetryPolicy retryPolicy;
 
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the
      * {@code entityPath} in the message broker.
      *
      * @param connectionId Identifier of the connection.
-     * @param hostname Fully qualified domain name for the the host.
+     * @param fullyQualifiedNamespace Fully qualified namespace for the the host.
      * @param linkName Name of the link.
      * @param entityPath Address in the message broker to send message to.
      * @param session Reactor session associated with this link.
@@ -76,9 +75,9 @@ public class RequestResponseChannel implements Closeable {
      * @param handlerProvider Provides handlers that interact with proton-j's reactor.
      * @param provider The reactor provider that the request will be sent with.
      */
-    public RequestResponseChannel(String connectionId, String hostname, String linkName, String entityPath,
-                                  Session session, RetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
-                                  ReactorProvider provider, MessageSerializer messageSerializer) {
+    public RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
+            String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
+            ReactorProvider provider, MessageSerializer messageSerializer) {
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
@@ -91,7 +90,8 @@ public class RequestResponseChannel implements Closeable {
         this.sendLink.setTarget(target);
         sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(SenderSettleMode.SETTLED);
-        this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, hostname, linkName, entityPath);
+        this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, fullyQualifiedNamespace, linkName,
+            entityPath);
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
         this.receiveLink = session.receiver(linkName + ":receiver");
@@ -103,8 +103,8 @@ public class RequestResponseChannel implements Closeable {
         this.receiveLink.setTarget(receiverTarget);
         this.receiveLink.setSenderSettleMode(SenderSettleMode.SETTLED);
         this.receiveLink.setReceiverSettleMode(ReceiverSettleMode.SECOND);
-        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName,
-            entityPath);
+        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
+            linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         this.subscription = receiveLinkHandler.getDeliveredMessages().map(this::decodeDelivery).subscribe(message -> {
