@@ -14,8 +14,12 @@ import com.microsoft.azure.management.azurestack.v2017_06_01.Products;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.azurestack.v2017_06_01.DeviceConfiguration;
 import com.microsoft.azure.management.azurestack.v2017_06_01.ExtendedProduct;
+import com.microsoft.azure.management.azurestack.v2017_06_01.MarketplaceProductLogUpdate;
+import com.microsoft.azure.management.azurestack.v2017_06_01.ProductList;
 import com.microsoft.azure.management.azurestack.v2017_06_01.Product;
+import com.microsoft.azure.management.azurestack.v2017_06_01.ProductLog;
 
 class ProductsImpl extends WrapperImpl<ProductsInner> implements Products {
     private final AzureStackManager manager;
@@ -46,6 +50,42 @@ class ProductsImpl extends WrapperImpl<ProductsInner> implements Products {
     }
 
     @Override
+    public Observable<ProductList> getProductsAsync(String resourceGroup, String registrationName, DeviceConfiguration deviceConfiguration) {
+        ProductsInner client = this.inner();
+        return client.getProductsAsync(resourceGroup, registrationName, deviceConfiguration)
+        .map(new Func1<ProductListInner, ProductList>() {
+            @Override
+            public ProductList call(ProductListInner inner) {
+                return new ProductListImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Product> getProductAsync(String resourceGroup, String registrationName, String productName, DeviceConfiguration deviceConfiguration) {
+        ProductsInner client = this.inner();
+        return client.getProductAsync(resourceGroup, registrationName, productName, deviceConfiguration)
+        .map(new Func1<ProductInner, Product>() {
+            @Override
+            public Product call(ProductInner inner) {
+                return new ProductImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ProductLog> uploadLogAsync(String resourceGroup, String registrationName, String productName, MarketplaceProductLogUpdate marketplaceProductLogUpdate) {
+        ProductsInner client = this.inner();
+        return client.uploadLogAsync(resourceGroup, registrationName, productName, marketplaceProductLogUpdate)
+        .map(new Func1<ProductLogInner, ProductLog>() {
+            @Override
+            public ProductLog call(ProductLogInner inner) {
+                return new ProductLogImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<Product> listAsync(final String resourceGroup, final String registrationName) {
         ProductsInner client = this.inner();
         return client.listAsync(resourceGroup, registrationName)
@@ -67,10 +107,14 @@ class ProductsImpl extends WrapperImpl<ProductsInner> implements Products {
     public Observable<Product> getAsync(String resourceGroup, String registrationName, String productName) {
         ProductsInner client = this.inner();
         return client.getAsync(resourceGroup, registrationName, productName)
-        .map(new Func1<ProductInner, Product>() {
+        .flatMap(new Func1<ProductInner, Observable<Product>>() {
             @Override
-            public Product call(ProductInner inner) {
-                return wrapModel(inner);
+            public Observable<Product> call(ProductInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Product)wrapModel(inner));
+                }
             }
        });
     }

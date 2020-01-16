@@ -12,6 +12,7 @@ import com.microsoft.azure.management.azurestack.v2017_06_01.IconUris;
 import java.util.List;
 import com.microsoft.azure.management.azurestack.v2017_06_01.ProductLink;
 import com.microsoft.azure.management.azurestack.v2017_06_01.ProductProperties;
+import com.microsoft.azure.management.azurestack.v2017_06_01.Compatibility;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -122,6 +123,12 @@ public class ProductInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.productProperties")
     private ProductProperties productProperties;
+
+    /**
+     * Product compatibility with current device.
+     */
+    @JsonProperty(value = "properties.compatibility")
+    private Compatibility compatibility;
 
     /**
      * The entity tag used for optimistic concurrency when modifying the
@@ -467,6 +474,26 @@ public class ProductInner extends ProxyResource {
      */
     public ProductInner withProductProperties(ProductProperties productProperties) {
         this.productProperties = productProperties;
+        return this;
+    }
+
+    /**
+     * Get product compatibility with current device.
+     *
+     * @return the compatibility value
+     */
+    public Compatibility compatibility() {
+        return this.compatibility;
+    }
+
+    /**
+     * Set product compatibility with current device.
+     *
+     * @param compatibility the compatibility value to set
+     * @return the ProductInner object itself.
+     */
+    public ProductInner withCompatibility(Compatibility compatibility) {
+        this.compatibility = compatibility;
         return this;
     }
 

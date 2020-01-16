@@ -26,6 +26,11 @@ public interface Product extends HasInner<ProductInner>, Indexable, Refreshable<
     String billingPartNumber();
 
     /**
+     * @return the compatibility value.
+     */
+    Compatibility compatibility();
+
+    /**
      * @return the description value.
      */
     String description();
