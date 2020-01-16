@@ -39,7 +39,7 @@ class ReactorExecutor implements Closeable {
     private final String hostname;
 
     ReactorExecutor(Reactor reactor, Scheduler scheduler, String connectionId, AmqpExceptionHandler exceptionHandler,
-                    Duration timeout, String hostname) {
+        Duration timeout, String hostname) {
         Objects.requireNonNull(reactor);
         Objects.requireNonNull(scheduler);
         Objects.requireNonNull(connectionId);
@@ -55,8 +55,8 @@ class ReactorExecutor implements Closeable {
     }
 
     /**
-     * Starts the reactor and will begin processing any reactor events until there are no longer any left or
-     * {@link #close()} is called.
+     * Starts the reactor and will begin processing any reactor events until there are no longer any left or {@link
+     * #close()} is called.
      */
     void start() {
         if (hasStarted.get()) {
@@ -116,8 +116,8 @@ class ReactorExecutor implements Closeable {
             final String message = !CoreUtils.isNullOrEmpty(cause.getMessage())
                 ? cause.getMessage()
                 : !CoreUtils.isNullOrEmpty(handlerException.getMessage())
-                ? handlerException.getMessage()
-                : "Reactor encountered unrecoverable error";
+                    ? handlerException.getMessage()
+                    : "Reactor encountered unrecoverable error";
 
             final AmqpException exception;
             final AmqpErrorContext errorContext = new AmqpErrorContext(hostname);
@@ -171,7 +171,7 @@ class ReactorExecutor implements Closeable {
                 reactor.free();
                 disposeSemaphore.release();
             }
-        }, timeout.toMillis(), TimeUnit.MILLISECONDS);
+        });
     }
 
     @Override
@@ -188,9 +188,14 @@ class ReactorExecutor implements Closeable {
     }
 
     private void close(boolean isUserInitialized, String reason) {
-        if (hasStarted.getAndSet(false)) {
-            scheduleCompletePendingTasks();
-            exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, isUserInitialized, reason));
+        if (!hasStarted.getAndSet(false)) {
+            return;
         }
+
+        if (isUserInitialized) {
+            scheduleCompletePendingTasks();
+        }
+
+        exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, isUserInitialized, reason));
     }
 }
