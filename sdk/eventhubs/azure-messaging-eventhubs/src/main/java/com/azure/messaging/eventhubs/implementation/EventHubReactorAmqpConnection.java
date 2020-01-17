@@ -40,6 +40,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      */
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final Mono<EventHubManagementNode> managementChannelMono;
+    private final String connectionId;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
     private final TokenManagerProvider tokenManagerProvider;
@@ -62,6 +63,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         String clientVersion) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion);
+        this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;
@@ -80,13 +82,12 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
 
     @Override
     public Mono<EventHubManagementNode> getManagementNode() {
-        return managementChannelMono;
-    }
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "connectionId[%s]: Connection is disposed. Cannot get management instance", connectionId))));
+        }
 
-    @Override
-    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
+        return managementChannelMono;
     }
 
     /**
@@ -139,5 +140,11 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         sendLinks.clear();
 
         super.dispose();
+    }
+
+    @Override
+    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
+        return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
+            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
     }
 }

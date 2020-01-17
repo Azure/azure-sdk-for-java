@@ -134,7 +134,8 @@ public class ReactorConnection implements AmqpConnection {
     @Override
     public Mono<ClaimsBasedSecurityNode> getClaimsBasedSecurityNode() {
         if (isDisposed()) {
-            return Mono.error(new IllegalStateException("Connection is disposed. Cannot get CBS node."));
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(
+                "Connection is disposed. Cannot get CBS node.")));
         }
 
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = RetryUtil.withRetry(
@@ -182,8 +183,8 @@ public class ReactorConnection implements AmqpConnection {
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
         if (isDisposed()) {
-            return Mono.error(new IllegalStateException(String.format(
-                "connectionId[%s]: Connection is disposed. Cannot create session '%s'.", connectionId, sessionName)));
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "connectionId[%s]: Connection is disposed. Cannot create session '%s'.", connectionId, sessionName))));
         }
 
         final SessionSubscription existing = sessionMap.get(sessionName);
