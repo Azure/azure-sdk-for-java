@@ -161,7 +161,7 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new DataLakeDirectoryAsyncClient object by concatenating / to the end of
+     * Creates a new DataLakeDirectoryAsyncClient object by concatenating "" to the end of
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
      * as the DataLakeFileSystemAsyncClient.
      *

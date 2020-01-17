@@ -117,7 +117,7 @@ public class DataLakeFileSystemClient {
     }
 
     /**
-     * Initializes a new DataLakeDirectoryClient object by concatenating / to the end of
+     * Initializes a new DataLakeDirectoryClient object by concatenating "" to the end of
      * DataLakeFileSystemClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
      * DataLakeFileSystemClient.
      *
