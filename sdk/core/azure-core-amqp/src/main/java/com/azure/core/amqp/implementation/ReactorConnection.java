@@ -110,7 +110,7 @@ public class ReactorConnection implements AmqpConnection {
                 }),
 
             this.handler.getErrors().subscribe(error -> {
-                logger.error("connectionId[{}] Error occurred in connection handler.", error);
+                logger.error("connectionId[{}] Error occurred in connection handler.", connectionId, error);
                 endpointStatesSink.error(error);
             }));
     }
