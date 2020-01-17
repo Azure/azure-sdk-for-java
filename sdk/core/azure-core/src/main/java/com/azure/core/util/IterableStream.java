@@ -102,13 +102,21 @@ public class IterableStream<T> implements Iterable<T> {
     }
 
     /**
-     * Returns an {@link IterableStream} that does not contain any values.
+     * Create an {@link IterableStream} from an {@link Iterable}.
      *
+     * An empty {@link IterableStream} will be returned if the input iterable
+     * is {@code null}.
+     *
+     * @param iterable the source iterable
      * @param <T> the type of the value
-     * @return an empty {@link IterableStream}
+     * @return an {@link IterableStream}
      */
     @SuppressWarnings("unchecked")
-    public static <T> IterableStream<T> empty() {
-        return (IterableStream<T>) EMPTY;
+    public static <T> IterableStream<T> of(Iterable<T> iterable) {
+        if (iterable == null) {
+            return (IterableStream<T>) EMPTY;
+        } else {
+            return new IterableStream<T>(iterable);
+        }
     }
 }

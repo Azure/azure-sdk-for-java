@@ -45,6 +45,6 @@ public final class IssuerPropertiesPage implements Page<IssuerProperties> {
      */
     @Override
     public IterableStream<IssuerProperties> getElements() {
-        return items == null ? IterableStream.empty() : new IterableStream<>(items);
+        return IterableStream.of(items);
     }
 }

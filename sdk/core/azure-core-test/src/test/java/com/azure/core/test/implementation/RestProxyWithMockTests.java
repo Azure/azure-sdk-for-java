@@ -489,7 +489,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         @Override
         public IterableStream<T> getElements() {
-            return items == null ? IterableStream.empty() : new IterableStream<>(items);
+            return IterableStream.of(items);
         }
 
         @Override

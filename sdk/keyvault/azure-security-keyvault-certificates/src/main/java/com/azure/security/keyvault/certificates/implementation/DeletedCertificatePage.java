@@ -45,6 +45,6 @@ public final class DeletedCertificatePage implements Page<DeletedCertificate> {
      */
     @Override
     public IterableStream<DeletedCertificate> getElements() {
-        return items == null ? IterableStream.empty() : new IterableStream<>(items);
+        return IterableStream.of(items);
     }
 }

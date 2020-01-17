@@ -29,7 +29,7 @@ public final class ContactPage implements Page<CertificateContact> {
      */
     @Override
     public IterableStream<CertificateContact> getElements() {
-        return items == null ? IterableStream.empty() : new IterableStream<>(items);
+        return IterableStream.of(items);
     }
 
     @Override

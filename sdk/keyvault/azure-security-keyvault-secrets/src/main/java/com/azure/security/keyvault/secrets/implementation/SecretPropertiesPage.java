@@ -45,6 +45,6 @@ public final class SecretPropertiesPage implements Page<SecretProperties> {
      */
     @Override
     public IterableStream<SecretProperties> getElements() {
-        return items == null ? IterableStream.empty() : new IterableStream<>(items);
+        return IterableStream.of(items);
     }
 }

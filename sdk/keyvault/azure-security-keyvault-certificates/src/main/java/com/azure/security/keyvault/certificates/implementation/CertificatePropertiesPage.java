@@ -45,7 +45,7 @@ public final class CertificatePropertiesPage implements Page<CertificateProperti
      */
     @Override
     public IterableStream<CertificateProperties> getElements() {
-        return items == null ? IterableStream.empty() : new IterableStream<>(items);
+        return IterableStream.of(items);
     }
 }
 

@@ -45,6 +45,6 @@ public final class DeletedSecretPage implements Page<DeletedSecret> {
      */
     @Override
     public IterableStream<DeletedSecret> getElements() {
-        return items == null ? IterableStream.empty() : new IterableStream<>(items);
+        return IterableStream.of(items);
     }
 }
