@@ -254,10 +254,10 @@ blobClient.downloadToFile("downloaded-file.jpg");
 Enumerating all blobs using a `BlobContainerClient`.
 
 ```java
-blobContainerClient.listBlobs()
-        .forEach(
-            blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
-        );
+Iterator<BlobItem> it = blobContainerClient.listBlobs().iterator();
+it.forEachRemaining(
+    { blobItem -> System.out.println("This is the blob name: " + blobItem.getName()) }
+   );
 ```
 
 ### Authenticate with Azure Identity

@@ -270,10 +270,10 @@ dataLakeFileSystemClient.create();
 Enumerating all paths using a `DataLakeFileSystemClient`.
 
 ```java
-dataLakeFileSystemClient.listPaths()
-        .forEach(
-            pathItem -> System.out.println("This is the path name: " + pathItem.getName())
-        );
+Iterator<PathItem> it = dataLakeFileSystemClient.listPaths().iterator();
+it.forEachRemaining(
+    { pathItem -> System.out.println("This is the path name: " + pathItem.getName()) }
+   );
 ```
 
 ### Rename a file

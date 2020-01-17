@@ -131,7 +131,7 @@ public final class BlobClientBuilder {
     /**
      * Sets the {@link CustomerProvidedKey customer provided key} that is used to encrypt blob contents on the server.
      *
-     * @param customerProvidedKey Customer provided key containing the encryption key information.
+     * @param customerProvidedKey {@link CustomerProvidedKey}
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder customerProvidedKey(CustomerProvidedKey customerProvidedKey) {
