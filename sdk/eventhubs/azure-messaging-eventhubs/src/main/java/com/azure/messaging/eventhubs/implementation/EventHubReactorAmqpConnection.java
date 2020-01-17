@@ -100,19 +100,13 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      */
     @Override
     public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
-        final AmqpSendLink openLink = sendLinks.get(entityPath);
-
-        if (openLink != null) {
-            return Mono.just(openLink);
-        }
-
         return createSession(entityPath).flatMap(session -> {
-            logger.info("Creating producer for {}", entityPath);
+            logger.verbose("Get or create producer for path: '{}'", entityPath);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
             return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy)
                 .cast(AmqpSendLink.class);
-        }).map(link -> sendLinks.computeIfAbsent(entityPath, unusedKey -> link));
+        });
     }
 
     /**
@@ -130,7 +124,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         ReceiveOptions options) {
         return createSession(entityPath).cast(EventHubSession.class)
             .flatMap(session -> {
-                logger.verbose("Creating consumer for path: {}", entityPath);
+                logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
