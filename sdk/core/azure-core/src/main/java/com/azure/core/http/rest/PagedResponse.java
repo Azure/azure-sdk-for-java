@@ -5,6 +5,7 @@ package com.azure.core.http.rest;
 import com.azure.core.util.IterableStream;
 
 import java.io.Closeable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public interface PagedResponse<T> extends Page<T>, Response<List<T>>, Closeable 
     default List<T> getValue() {
         IterableStream<T> iterableStream = this.getElements();
         return iterableStream == null
-            ? null
+            ? new ArrayList<>()
             : iterableStream.stream().collect(Collectors.toList());
     }
 }

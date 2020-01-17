@@ -64,9 +64,7 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      */
     @Override
     public IterableStream<T> getElements() {
-        return items == null
-            ? null
-            : new IterableStream<T>(items);
+        return items == null ? IterableStream.empty() : new IterableStream<>(items);
     }
 
     /**

@@ -5,7 +5,6 @@ package com.azure.core.test.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -490,7 +489,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         @Override
         public IterableStream<T> getElements() {
-            return new IterableStream<>(items);
+            return items == null ? IterableStream.empty() : new IterableStream<>(items);
         }
 
         @Override
@@ -612,9 +611,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         StepVerifier.create(createService(Service2.class).getPageAsyncSerializes(page))
             .assertNext(response -> {
                 assertEquals(page.getContinuationToken(), response.getContinuationToken());
-                assertNull(response.getItems());
+                assertEquals(0, response.getItems().size());
             })
             .verifyComplete();
     }
-
 }

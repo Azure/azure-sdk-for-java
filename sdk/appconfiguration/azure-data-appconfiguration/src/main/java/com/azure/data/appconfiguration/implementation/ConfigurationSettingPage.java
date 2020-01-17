@@ -37,6 +37,6 @@ public final class ConfigurationSettingPage implements Page<ConfigurationSetting
      */
     @Override
     public IterableStream<ConfigurationSetting> getElements() {
-        return new IterableStream<>(items);
+        return items == null ? IterableStream.empty() : new IterableStream<>(items);
     }
 }

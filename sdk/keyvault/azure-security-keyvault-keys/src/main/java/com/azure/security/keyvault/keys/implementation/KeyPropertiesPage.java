@@ -45,7 +45,7 @@ public final class KeyPropertiesPage implements Page<KeyProperties> {
      */
     @Override
     public IterableStream<KeyProperties> getElements() {
-        return new IterableStream<KeyProperties>(items);
+        return items == null ? IterableStream.empty() : new IterableStream<>(items);
     }
 }
 

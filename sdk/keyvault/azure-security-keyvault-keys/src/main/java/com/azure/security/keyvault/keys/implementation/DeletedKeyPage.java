@@ -45,6 +45,6 @@ public final class DeletedKeyPage implements Page<DeletedKey> {
      */
     @Override
     public IterableStream<DeletedKey> getElements() {
-        return new IterableStream<>(items);
+        return items == null ? IterableStream.empty() : new IterableStream<>(items);
     }
 }

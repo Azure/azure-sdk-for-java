@@ -6,6 +6,7 @@ package com.azure.core.http.rest;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public interface Page<T> extends ContinuablePage<String, T> {
     default List<T> getItems() {
         IterableStream<T> iterableStream = this.getElements();
         return iterableStream == null
-            ? null
+            ? new ArrayList<>()
             : this.getElements().stream().collect(Collectors.toList());
     }
 }
