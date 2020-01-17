@@ -126,8 +126,16 @@ Create a `BlobServiceClient` using the [`sasToken`](#get-credentials) generated 
 
 ```java
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-        .endpoint("<your-storage-blob-url>")
+        .endpoint("<your-storage-account-url>")
         .sasToken("<your-sasToken>")
+        .buildClient();
+```
+
+or
+
+```java
+BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+        .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
         .buildClient();
 ```
 
@@ -139,15 +147,21 @@ Create a `BlobContainerClient` using a `BlobServiceClient`.
 BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient("mycontainer");
 ```
 
-or
-
 Create a `BlobContainerClient` from the builder [`sasToken`](#get-credentials) generated above.
 
 ```java
 BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
-        .endpoint("<your-storage-blob-url>")
+        .endpoint("<your-storage-account-url>")
         .sasToken("<your-sasToken>")
         .containerName("mycontainer")
+        .buildClient();
+```
+
+or
+
+```java
+BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
+        .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "?" + "<your-sasToken>")
         .buildClient();
 ```
 
@@ -165,10 +179,18 @@ Create a `BlobClient` from the builder [`sasToken`](#get-credentials) generated 
 
 ```java
 BlobClient blobClient = new BlobClientBuilder()
-        .endpoint("<your-storage-blob-url>")
+        .endpoint("<your-storage-account-url>")
         .sasToken("<your-sasToken>")
         .containerName("mycontainer")
         .blobName("myblob")
+        .buildClient();
+```
+
+or
+
+```java
+BlobClient blobClient = new BlobClientBuilder()
+        .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" +"?" + "<your-sasToken>")
         .buildClient();
 ```
 
