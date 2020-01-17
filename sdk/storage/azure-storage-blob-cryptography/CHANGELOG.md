@@ -4,7 +4,7 @@
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-cryptography_12.3.0/sdk/storage/azure-storage-blob-cryptography/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-cryptography_12.3.0/sdk/storage/azure-storage-blob-cryptography/src/samples/java/com/azure/storage/blob/cryptography)
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-cryptography_12.3.1/sdk/storage/azure-storage-blob-cryptography/src/samples/java/com/azure/storage/blob/cryptography)
 
 ## 12.3.0 (2020-01-15)
 This package's
