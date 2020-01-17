@@ -116,7 +116,7 @@ class ReactorSender implements AmqpSendLink {
 
             this.handler.getEndpointStates().subscribe(
                 state -> {
-                    logger.verbose("Connection state: {}", state);
+                    logger.verbose("[{}] Connection state: {}", entityPath, state);
                     this.hasConnected.set(state == EndpointState.ACTIVE);
                     endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
@@ -252,17 +252,18 @@ class ReactorSender implements AmqpSendLink {
         }
 
         return RetryUtil.withRetry(
-            handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE),
-            timeout, retry)
-            .then(Mono.fromCallable(() -> {
-                final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
+            getEndpointStates()
+                .takeUntil(state -> state == AmqpEndpointState.ACTIVE)
+                .then(Mono.fromCallable(() -> {
+                    final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
 
-                if (remoteMaxMessageSize != null) {
-                    this.maxMessageSize = remoteMaxMessageSize.intValue();
-                }
+                    if (remoteMaxMessageSize != null) {
+                        this.maxMessageSize = remoteMaxMessageSize.intValue();
+                    }
 
-                return this.maxMessageSize;
-            }));
+                    return this.maxMessageSize;
+                })),
+            timeout, retry);
     }
 
     @Override
