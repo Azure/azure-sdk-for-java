@@ -64,10 +64,14 @@ class ExpressRouteCrossConnectionPeeringsImpl extends WrapperImpl<ExpressRouteCr
     public Observable<ExpressRouteCrossConnectionPeering> getAsync(String resourceGroupName, String crossConnectionName, String peeringName) {
         ExpressRouteCrossConnectionPeeringsInner client = this.inner();
         return client.getAsync(resourceGroupName, crossConnectionName, peeringName)
-        .map(new Func1<ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeering>() {
+        .flatMap(new Func1<ExpressRouteCrossConnectionPeeringInner, Observable<ExpressRouteCrossConnectionPeering>>() {
             @Override
-            public ExpressRouteCrossConnectionPeering call(ExpressRouteCrossConnectionPeeringInner inner) {
-                return wrapModel(inner);
+            public Observable<ExpressRouteCrossConnectionPeering> call(ExpressRouteCrossConnectionPeeringInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ExpressRouteCrossConnectionPeering)wrapModel(inner));
+                }
             }
        });
     }
