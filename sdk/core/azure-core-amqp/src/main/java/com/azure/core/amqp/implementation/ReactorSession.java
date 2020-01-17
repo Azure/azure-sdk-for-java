@@ -167,7 +167,7 @@ public class ReactorSession implements AmqpSession {
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
         final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
         if (existing != null) {
-            logger.info("linkName[{}]: Returning existing send link.", linkName);
+            logger.verbose("linkName[{}]: Returning existing send link.", linkName);
             return Mono.just(existing.getLink());
         }
 
