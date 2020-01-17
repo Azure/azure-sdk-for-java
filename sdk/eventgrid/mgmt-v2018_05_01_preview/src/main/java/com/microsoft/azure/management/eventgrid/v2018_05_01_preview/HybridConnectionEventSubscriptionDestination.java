@@ -17,7 +17,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
  * Information about the HybridConnection destination for an event
  * subscription.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType", defaultImpl = HybridConnectionEventSubscriptionDestination.class)
 @JsonTypeName("HybridConnection")
 @JsonFlatten
 public class HybridConnectionEventSubscriptionDestination extends EventSubscriptionDestination {

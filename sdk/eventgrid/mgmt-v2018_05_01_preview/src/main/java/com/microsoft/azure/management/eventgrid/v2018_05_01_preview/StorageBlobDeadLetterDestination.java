@@ -16,7 +16,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 /**
  * Information about the storage blob based dead letter destination.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType", defaultImpl = StorageBlobDeadLetterDestination.class)
 @JsonTypeName("StorageBlob")
 @JsonFlatten
 public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
