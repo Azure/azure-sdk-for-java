@@ -20,7 +20,7 @@ public interface TopicTypes extends HasInner<TopicTypesInner> {
      * List event types.
      * List event types for a topic type.
      *
-     * @param topicTypeName Name of the topic type
+     * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
