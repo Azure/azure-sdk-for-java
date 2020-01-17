@@ -176,20 +176,21 @@ public class ReactorSession implements AmqpSession {
             getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
             timeout, retry)
             .then(tokenManager.authorize().then(Mono.<AmqpLink>create(sink -> {
-                final LinkSubscription<AmqpSendLink> existingLink = openSendLinks.get(linkName);
-                if (existingLink != null) {
-                    logger.info("linkName[{}]: Another send link exists. Disposing of new one.", linkName);
-                    sink.success(existingLink.getLink());
-                    tokenManager.close();
-                    return;
-                }
-
                 try {
                     // We have to invoke this in the same thread or else proton-j will not properly link up the created
                     // sender because the link names are not unique. Link name == entity path.
                     provider.getReactorDispatcher().invoke(() -> {
-                        final LinkSubscription<AmqpSendLink> computed = openSendLinks.computeIfAbsent(linkName,
-                            linkNameKey -> getSubscription(linkNameKey, entityPath, timeout, retry, tokenManager));
+                        final LinkSubscription<AmqpSendLink> computed = openSendLinks.compute(linkName,
+                            (linkNameKey, existingLink) -> {
+                                if (existingLink != null) {
+                                    logger.info("linkName[{}]: Another send link exists. Disposing of new one.",
+                                        linkName);
+                                    tokenManager.close();
+                                    return existingLink;
+                                }
+
+                                return getSubscription(linkNameKey, entityPath, timeout, retry, tokenManager);
+                            });
 
                         sink.success(computed.getLink());
                     });
@@ -214,40 +215,6 @@ public class ReactorSession implements AmqpSession {
     @Override
     public boolean removeLink(String linkName) {
         return removeLink(openSendLinks, linkName) || removeLink(openReceiveLinks, linkName);
-    }
-
-    private LinkSubscription<AmqpSendLink> getSubscription(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retry, TokenManager tokenManager) {
-        final Sender sender = session.sender(linkName);
-        final Target target = new Target();
-
-        target.setAddress(entityPath);
-        sender.setTarget(target);
-
-        final Source source = new Source();
-        sender.setSource(source);
-        sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
-
-        final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(
-            sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
-        BaseHandler.setHandler(sender, sendLinkHandler);
-
-        sender.open();
-
-        final ReactorSender reactorSender = new ReactorSender(entityPath, sender, sendLinkHandler, provider,
-            tokenManager, messageSerializer, timeout, retry, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
-
-        final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {
-        }, error -> {
-            logger.info("linkName[{}]: Error occurred. Removing and disposing send link.",
-                linkName, error);
-            removeLink(openSendLinks, linkName);
-        }, () -> {
-            logger.info("linkName[{}]: Complete. Removing and disposing send link.", linkName);
-            removeLink(openSendLinks, linkName);
-        });
-
-        return new LinkSubscription<>(reactorSender, subscription);
     }
 
     private <T extends AmqpLink> boolean removeLink(ConcurrentMap<String, LinkSubscription<T>> openLinks, String key) {
@@ -296,76 +263,20 @@ public class ReactorSession implements AmqpSession {
         return RetryUtil.withRetry(
             getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), timeout, retry)
             .then(tokenManager.authorize().then(Mono.create(sink -> {
-                final LinkSubscription<AmqpReceiveLink> existing = openReceiveLinks.get(linkName);
-                if (existing != null) {
-                    logger.info("linkName[{}] entityPath[{}]: Existing receive link was created. Disposing of new one.",
-                        linkName, entityPath);
-                    sink.success(existing.getLink());
-                    tokenManager.close();
-                    return;
-                }
-
-                final Receiver receiver = session.receiver(linkName);
-
-                final Source source = new Source();
-                source.setAddress(entityPath);
-
-                if (sourceFilters != null && sourceFilters.size() > 0) {
-                    source.setFilter(sourceFilters);
-                }
-
-                receiver.setSource(source);
-
-                final Target target = new Target();
-                receiver.setTarget(target);
-
-                // Use explicit settlement via dispositions (not pre-settled)
-                receiver.setSenderSettleMode(SenderSettleMode.UNSETTLED);
-                receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
-
-                if (receiverProperties != null && !receiverProperties.isEmpty()) {
-                    receiver.setProperties(receiverProperties);
-                }
-
-                if (receiverDesiredCapabilities != null && receiverDesiredCapabilities.length > 0) {
-                    receiver.setDesiredCapabilities(receiverDesiredCapabilities);
-                }
-
-                final ReceiveLinkHandler receiveLinkHandler = handlerProvider.createReceiveLinkHandler(
-                    sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
-                BaseHandler.setHandler(receiver, receiveLinkHandler);
-
                 try {
                     provider.getReactorDispatcher().invoke(() -> {
-                        receiver.open();
-
-                        final ReactorReceiver reactorReceiver =
-                            new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager);
-                        final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
-                        }, error -> {
-                            logger.info(
-                                "linkName[{}] entityPath[{}]: Error occurred. Removing receive link.",
-                                linkName, entityPath, error);
-
-                            removeLink(openReceiveLinks, linkName);
-                        }, () -> {
-                            logger.info("linkName[{}] entityPath[{}]: Complete. Removing receive link.",
-                                linkName, entityPath);
-
-                            removeLink(openReceiveLinks, linkName);
-                        });
-
                         final LinkSubscription<AmqpReceiveLink> computed = openReceiveLinks.compute(linkName,
-                            (path, existingReceiver) -> {
-                                if (existingReceiver != null) {
-                                    logger.info("linkName[{}] entityPath[{}]: Existing receive link was created.",
-                                        linkName, entityPath);
-                                    reactorReceiver.dispose();
-                                    subscription.dispose();
-                                    return existingReceiver;
+                            (linkNameKey, existing) -> {
+                                if (existing != null) {
+                                    logger.info("linkName[{}]: Another receive link exists. Disposing of new one.",
+                                        linkName);
+                                    tokenManager.close();
+
+                                    return existing;
                                 }
 
-                                return new LinkSubscription<>(reactorReceiver, subscription);
+                                return getSubscription(linkNameKey, entityPath, sourceFilters, receiverProperties,
+                                    receiverDesiredCapabilities, tokenManager);
                             });
 
                         sink.success(computed.getLink());
@@ -374,6 +285,94 @@ public class ReactorSession implements AmqpSession {
                     sink.error(e);
                 }
             })));
+    }
+
+    private LinkSubscription<AmqpSendLink> getSubscription(String linkName, String entityPath, Duration timeout,
+        AmqpRetryPolicy retry, TokenManager tokenManager) {
+        final Sender sender = session.sender(linkName);
+        final Target target = new Target();
+
+        target.setAddress(entityPath);
+        sender.setTarget(target);
+
+        final Source source = new Source();
+        sender.setSource(source);
+        sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
+
+        final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(
+            sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
+        BaseHandler.setHandler(sender, sendLinkHandler);
+
+        sender.open();
+
+        final ReactorSender reactorSender = new ReactorSender(entityPath, sender, sendLinkHandler, provider,
+            tokenManager, messageSerializer, timeout, retry, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
+
+        final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {
+        }, error -> {
+                logger.info("linkName[{}]: Error occurred. Removing and disposing send link.",
+                    linkName, error);
+                removeLink(openSendLinks, linkName);
+            }, () -> {
+                logger.info("linkName[{}]: Complete. Removing and disposing send link.", linkName);
+                removeLink(openSendLinks, linkName);
+            });
+
+        return new LinkSubscription<>(reactorSender, subscription);
+    }
+
+    private LinkSubscription<AmqpReceiveLink> getSubscription(String linkName, String entityPath,
+        Map<Symbol, UnknownDescribedType> sourceFilters, Map<Symbol, Object> receiverProperties,
+        Symbol[] receiverDesiredCapabilities, TokenManager tokenManager) {
+
+        final Receiver receiver = session.receiver(linkName);
+        final Source source = new Source();
+        source.setAddress(entityPath);
+
+        if (sourceFilters != null && sourceFilters.size() > 0) {
+            source.setFilter(sourceFilters);
+        }
+
+        receiver.setSource(source);
+
+        final Target target = new Target();
+        receiver.setTarget(target);
+
+        // Use explicit settlement via dispositions (not pre-settled)
+        receiver.setSenderSettleMode(SenderSettleMode.UNSETTLED);
+        receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
+
+        if (receiverProperties != null && !receiverProperties.isEmpty()) {
+            receiver.setProperties(receiverProperties);
+        }
+
+        if (receiverDesiredCapabilities != null && receiverDesiredCapabilities.length > 0) {
+            receiver.setDesiredCapabilities(receiverDesiredCapabilities);
+        }
+
+        final ReceiveLinkHandler receiveLinkHandler = handlerProvider.createReceiveLinkHandler(
+            sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
+        BaseHandler.setHandler(receiver, receiveLinkHandler);
+
+        receiver.open();
+
+        final ReactorReceiver reactorReceiver =
+            new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager);
+        final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
+        }, error -> {
+                logger.info(
+                    "linkName[{}] entityPath[{}]: Error occurred. Removing receive link.",
+                    linkName, entityPath, error);
+
+                removeLink(openReceiveLinks, linkName);
+            }, () -> {
+                logger.info("linkName[{}] entityPath[{}]: Complete. Removing receive link.",
+                    linkName, entityPath);
+
+                removeLink(openReceiveLinks, linkName);
+            });
+
+        return new LinkSubscription<>(reactorReceiver, subscription);
     }
 
     private static final class LinkSubscription<T extends AmqpLink> implements Disposable {

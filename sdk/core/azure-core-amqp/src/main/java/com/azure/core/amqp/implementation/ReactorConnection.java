@@ -202,12 +202,12 @@ public class ReactorConnection implements AmqpConnection {
                 final Disposable subscription = amqpSession.getEndpointStates()
                     .subscribe(state -> {
                     }, error -> {
-                        logger.info("sessionName[{}]: Error occurred. Removing and disposing session.", error);
-                        removeSession(key);
-                    }, () -> {
-                        logger.info("sessionName[{}]: Complete. Removing and disposing session.");
-                        removeSession(key);
-                    });
+                            logger.info("sessionName[{}]: Error occurred. Removing and disposing session.", error);
+                            removeSession(key);
+                        }, () -> {
+                            logger.info("sessionName[{}]: Complete. Removing and disposing session.");
+                            removeSession(key);
+                        });
 
                 return new SessionSubscription(amqpSession, subscription);
             });

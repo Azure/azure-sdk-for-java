@@ -153,7 +153,9 @@ class ReactorExecutor implements Closeable {
 
     private void scheduleCompletePendingTasks() {
         try {
-            disposeSemaphore.tryAcquire(timeout.toMillis(), TimeUnit.MILLISECONDS);
+            if (!disposeSemaphore.tryAcquire(timeout.toMillis(), TimeUnit.MILLISECONDS)) {
+                logger.info("Unable to acquire dispose reactor semaphore within timeout to schedule pending tasks.");
+            }
         } catch (InterruptedException e) {
             logger.warning("Could not acquire dispose semaphore to schedule pending tasks", e);
         }
@@ -180,7 +182,9 @@ class ReactorExecutor implements Closeable {
             close(true, "ReactorExecutor.close() was called.");
 
             try {
-                disposeSemaphore.tryAcquire(timeout.toMillis(), TimeUnit.MILLISECONDS);
+                if (!disposeSemaphore.tryAcquire(timeout.toMillis(), TimeUnit.MILLISECONDS)) {
+                    logger.info("Unable to acquire dispose reactor semaphore within timeout.");
+                }
             } catch (InterruptedException e) {
                 logger.warning("Could not acquire semaphore to finish close operation.", e);
             }
