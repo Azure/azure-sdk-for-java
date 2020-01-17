@@ -64,10 +64,14 @@ class VpnConnectionsImpl extends WrapperImpl<VpnConnectionsInner> implements Vpn
     public Observable<VpnConnection> getAsync(String resourceGroupName, String gatewayName, String connectionName) {
         VpnConnectionsInner client = this.inner();
         return client.getAsync(resourceGroupName, gatewayName, connectionName)
-        .map(new Func1<VpnConnectionInner, VpnConnection>() {
+        .flatMap(new Func1<VpnConnectionInner, Observable<VpnConnection>>() {
             @Override
-            public VpnConnection call(VpnConnectionInner inner) {
-                return wrapModel(inner);
+            public Observable<VpnConnection> call(VpnConnectionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((VpnConnection)wrapModel(inner));
+                }
             }
        });
     }
