@@ -131,29 +131,17 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
         }
 
         /**
-         * The stage of the domain definition allowing to specify MetricResourceId.
-         */
-        interface WithMetricResourceId {
-            /**
-             * Specifies metricResourceId.
-             * @param metricResourceId Metric resource id for the domain
-             * @return the next definition stage
-             */
-            WithCreate withMetricResourceId(String metricResourceId);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Domain>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAllowTrafficFromAllIPs, DefinitionStages.WithInboundIpRules, DefinitionStages.WithInputSchema, DefinitionStages.WithInputSchemaMapping, DefinitionStages.WithMetricResourceId {
+        interface WithCreate extends Creatable<Domain>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAllowTrafficFromAllIPs, DefinitionStages.WithInboundIpRules, DefinitionStages.WithInputSchema, DefinitionStages.WithInputSchemaMapping {
         }
     }
     /**
      * The template for a Domain update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Domain>, Resource.UpdateWithTags<Update>, UpdateStages.WithAllowTrafficFromAllIPs, UpdateStages.WithInboundIpRules, UpdateStages.WithInputSchema, UpdateStages.WithInputSchemaMapping, UpdateStages.WithMetricResourceId {
+    interface Update extends Appliable<Domain>, Resource.UpdateWithTags<Update>, UpdateStages.WithAllowTrafficFromAllIPs, UpdateStages.WithInboundIpRules {
     }
 
     /**
@@ -182,42 +170,6 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
              * @return the next update stage
              */
             Update withInboundIpRules(List<InboundIpRule> inboundIpRules);
-        }
-
-        /**
-         * The stage of the domain update allowing to specify InputSchema.
-         */
-        interface WithInputSchema {
-            /**
-             * Specifies inputSchema.
-             * @param inputSchema This determines the format that Event Grid should expect for incoming events published to the domain. Possible values include: 'EventGridSchema', 'CustomEventSchema', 'CloudEventSchemaV1_0'
-             * @return the next update stage
-             */
-            Update withInputSchema(InputSchema inputSchema);
-        }
-
-        /**
-         * The stage of the domain update allowing to specify InputSchemaMapping.
-         */
-        interface WithInputSchemaMapping {
-            /**
-             * Specifies inputSchemaMapping.
-             * @param inputSchemaMapping Information about the InputSchemaMapping which specified the info about mapping event payload
-             * @return the next update stage
-             */
-            Update withInputSchemaMapping(InputSchemaMapping inputSchemaMapping);
-        }
-
-        /**
-         * The stage of the domain update allowing to specify MetricResourceId.
-         */
-        interface WithMetricResourceId {
-            /**
-             * Specifies metricResourceId.
-             * @param metricResourceId Metric resource id for the domain
-             * @return the next update stage
-             */
-            Update withMetricResourceId(String metricResourceId);
         }
 
     }

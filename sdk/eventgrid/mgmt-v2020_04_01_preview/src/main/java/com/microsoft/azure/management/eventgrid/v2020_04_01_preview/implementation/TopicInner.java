@@ -55,7 +55,7 @@ public class TopicInner extends Resource {
     /**
      * Metric resource id for the topic.
      */
-    @JsonProperty(value = "properties.metricResourceId")
+    @JsonProperty(value = "properties.metricResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricResourceId;
 
     /**
@@ -137,17 +137,6 @@ public class TopicInner extends Resource {
      */
     public String metricResourceId() {
         return this.metricResourceId;
-    }
-
-    /**
-     * Set metric resource id for the topic.
-     *
-     * @param metricResourceId the metricResourceId value to set
-     * @return the TopicInner object itself.
-     */
-    public TopicInner withMetricResourceId(String metricResourceId) {
-        this.metricResourceId = metricResourceId;
-        return this;
     }
 
     /**

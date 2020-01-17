@@ -228,7 +228,7 @@ public class TopicTypesInner {
      * List event types.
      * List event types for a topic type.
      *
-     * @param topicTypeName Name of the topic type
+     * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -242,7 +242,7 @@ public class TopicTypesInner {
      * List event types.
      * List event types for a topic type.
      *
-     * @param topicTypeName Name of the topic type
+     * @param topicTypeName Name of the topic type.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -255,7 +255,7 @@ public class TopicTypesInner {
      * List event types.
      * List event types for a topic type.
      *
-     * @param topicTypeName Name of the topic type
+     * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EventTypeInner&gt; object
      */
@@ -272,7 +272,7 @@ public class TopicTypesInner {
      * List event types.
      * List event types for a topic type.
      *
-     * @param topicTypeName Name of the topic type
+     * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EventTypeInner&gt; object
      */
