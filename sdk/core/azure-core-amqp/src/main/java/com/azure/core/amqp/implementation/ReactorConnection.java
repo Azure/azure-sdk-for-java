@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -270,17 +269,17 @@ public class ReactorConnection implements AmqpConnection {
             return;
         }
 
-        if (executor != null) {
-            executor.close();
-        }
-
         subscriptions.dispose();
         endpointStatesSink.complete();
 
-        final HashMap<String, AmqpSession> map = new HashMap<>(sessionMap);
+        final String[] keys = sessionMap.keySet().toArray(new String[0]);
+        for (String key : keys) {
+            removeSession(key);
+        }
 
-        sessionMap.clear();
-        map.forEach((name, session) -> session.dispose());
+        if (executor != null) {
+            executor.close();
+        }
     }
 
     /**
