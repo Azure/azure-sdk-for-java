@@ -81,7 +81,7 @@ public class ActiveClientTokenManager implements TokenManager {
 
                 // If this is the first time authorize is called, the task will not have been scheduled yet.
                 if (!hasScheduled.getAndSet(true)) {
-                    logger.info("Scheduling refresh token task");
+                    logger.info("Scheduling refresh token task. scopes[{}]", scopes);
 
                     final Duration firstInterval = Duration.ofMillis(refreshIntervalMS);
                     lastRefreshInterval.set(firstInterval);
