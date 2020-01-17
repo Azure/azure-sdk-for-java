@@ -511,12 +511,12 @@ class DirectoryAPITest extends APISpec {
 
     def "Rename min"() {
         expect:
-        dc.renameWithResponse(generatePathName(), null, null, null, null).getStatusCode() == 201
+        dc.renameWithResponse(null, generatePathName(), null, null, null, null).getStatusCode() == 201
     }
 
     def "Rename with response"() {
         when:
-        def resp = dc.renameWithResponse(generatePathName(), null, null, null, null)
+        def resp = dc.renameWithResponse(null, generatePathName(), null, null, null, null)
 
         def renamedClient = resp.getValue()
         renamedClient.getProperties()
@@ -556,7 +556,7 @@ class DirectoryAPITest extends APISpec {
         dc = fsc.getDirectoryClient(generatePathName())
 
         when:
-        dc.renameWithResponse(generatePathName(), null, null, null, null)
+        dc.renameWithResponse(null, generatePathName(), null, null, null, null)
 
         then:
         thrown(DataLakeStorageException)
@@ -575,7 +575,7 @@ class DirectoryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.renameWithResponse(generatePathName(), drc, null, null, null).getStatusCode() == 201
+        dc.renameWithResponse(null, generatePathName(), drc, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -600,7 +600,7 @@ class DirectoryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.renameWithResponse(generatePathName(), drc, null, null, null)
+        dc.renameWithResponse(null, generatePathName(), drc, null, null, null)
 
         then:
         thrown(DataLakeStorageException)
@@ -630,7 +630,7 @@ class DirectoryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.renameWithResponse(pathName, null, drc, null, null).getStatusCode() == 201
+        dc.renameWithResponse(null, pathName, null, drc, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -658,7 +658,7 @@ class DirectoryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.renameWithResponse(pathName, null, drc, null, null)
+        dc.renameWithResponse(null, pathName, null, drc, null, null)
 
         then:
         thrown(DataLakeStorageException)
