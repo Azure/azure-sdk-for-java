@@ -42,25 +42,25 @@ public class EnvironmentCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.fromSupplier(() -> {
-            if (configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
-                && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_SECRET)
-                && configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)) {
+            if (configuration.containsAll(Configuration.PROPERTY_AZURE_TENANT_ID,
+                    Configuration.PROPERTY_AZURE_CLIENT_ID,
+                    Configuration.PROPERTY_AZURE_CLIENT_SECRET)) {
                 // TODO: support other clouds
                 return new ClientSecretCredential(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
                     configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID),
                     configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET),
                     identityClientOptions);
-            } else if (configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
-                && configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
-                && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH)) {
+            } else if (configuration.containsAll(Configuration.PROPERTY_AZURE_CLIENT_ID,
+                    Configuration.PROPERTY_AZURE_TENANT_ID,
+                    Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH)) {
                 return new ClientCertificateCredential(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
                     configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID),
                     configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH),
                     null,
                     identityClientOptions);
-            } else if (configuration.contains(Configuration.PROPERTY_AZURE_USERNAME)
-                && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
-                && configuration.contains(Configuration.PROPERTY_AZURE_PASSWORD)) {
+            } else if (configuration.containsAll(Configuration.PROPERTY_AZURE_USERNAME,
+                    Configuration.PROPERTY_AZURE_CLIENT_ID,
+                    Configuration.PROPERTY_AZURE_PASSWORD)) {
                 return new UsernamePasswordCredential(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID),
                     configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
                     configuration.get(Configuration.PROPERTY_AZURE_USERNAME),

@@ -281,6 +281,21 @@ public class Configuration implements Cloneable {
     }
 
     /**
+     * Determines if multiple configurations all exist.
+     *
+     * @param names Names of the configuration.
+     * @return True if configurations all exist, otherwise false.
+     */
+    public boolean containsAll(String... names){
+        for(String name: names){
+            if (!contains(name)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * @return A clone of the Configuration object.
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
