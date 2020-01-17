@@ -139,20 +139,20 @@ public final class BlockBlobClient extends BlobClientBase {
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
 
-        BlobAsyncClient blobClient = prepareBuilder(client).buildAsyncClient();
+        BlobAsyncClient blobClient = prepareBuilder().buildAsyncClient();
 
         return BlobOutputStream.blockBlobOutputStream(blobClient, parallelTransferOptions, headers, metadata, tier,
             requestConditions);
     }
 
-    private BlobClientBuilder prepareBuilder(BlobAsyncClientBase client) {
+    private BlobClientBuilder prepareBuilder() {
         BlobClientBuilder builder = new BlobClientBuilder()
-            .pipeline(client.getHttpPipeline())
-            .endpoint(client.getBlobUrl())
-            .snapshot(client.getSnapshotId())
-            .serviceVersion(client.getServiceVersion());
+            .pipeline(getHttpPipeline())
+            .endpoint(getBlobUrl())
+            .snapshot(getSnapshotId())
+            .serviceVersion(getServiceVersion());
 
-        CpkInfo cpk = client.getCustomerProvidedKey();
+        CpkInfo cpk = getCustomerProvidedKey();
         if (cpk != null) {
             builder.customerProvidedKey(new CustomerProvidedKey(cpk.getEncryptionKey()));
         }
