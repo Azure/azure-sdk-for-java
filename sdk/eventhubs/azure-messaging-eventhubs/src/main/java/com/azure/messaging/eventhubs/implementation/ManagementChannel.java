@@ -126,7 +126,7 @@ public class ManagementChannel implements EventHubManagementNode {
     public void close() {
         final RequestResponseChannel channel = channelMono.block(Duration.ofSeconds(60));
         if (channel != null) {
-            channel.close();
+            channel.dispose();
         }
     }
 }
