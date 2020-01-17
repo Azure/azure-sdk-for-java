@@ -9,11 +9,10 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.ProxyExceptionHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.proxy.ProxyHandler;
 import org.reactivestreams.Publisher;
@@ -23,6 +22,7 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.NettyPipeline;
+import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.tcp.TcpClient;
@@ -60,6 +60,9 @@ class NettyAsyncHttpClient implements HttpClient {
      * Creates NettyAsyncHttpClient with provided http client.
      *
      * @param nettyClient the reactor-netty http client
+     * @param eventLoopGroup {@link NioEventLoopGroup} that processes requests.
+     * @param proxyHandlerSupplier Supplier that returns the {@link ProxyHandler} that connects to the configured
+     * proxy.
      */
     NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, NioEventLoopGroup eventLoopGroup,
         Supplier<ProxyHandler> proxyHandlerSupplier) {
@@ -86,6 +89,9 @@ class NettyAsyncHttpClient implements HttpClient {
             .single();
     }
 
+    /*
+     * Configures the underlying TcpClient that sends the request.
+     */
     private TcpClient configureTcpClient(TcpClient tcpClient) {
         if (eventLoopGroup != null) {
             tcpClient = tcpClient.runOn(eventLoopGroup);
@@ -93,13 +99,15 @@ class NettyAsyncHttpClient implements HttpClient {
 
         ProxyHandler proxyHandler = proxyHandlerSupplier.get();
         if (proxyHandler != null) {
-            tcpClient = tcpClient.bootstrap(bootstrap ->
-                bootstrap.handler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) {
-                        ch.pipeline().addFirst(NettyPipeline.ProxyHandler, proxyHandler);
-                    }
-                }));
+            /*
+             * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the first
+             * operation in the pipeline as it needs to handle sending a CONNECT request to the proxy before any request
+             * data is sent.
+             */
+            tcpClient = tcpClient.bootstrap(bootstrap -> BootstrapHandlers
+                .updateConfiguration(bootstrap, NettyPipeline.ProxyHandler, (connectionObserver, channel) ->
+                    channel.pipeline().addFirst(NettyPipeline.ProxyHandler, proxyHandler)
+                        .addLast("azure.proxy.exceptionHandler", new ProxyExceptionHandler())));
         }
 
         return tcpClient;

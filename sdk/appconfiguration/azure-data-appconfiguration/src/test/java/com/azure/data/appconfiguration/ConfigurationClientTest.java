@@ -97,7 +97,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @Test
     public void addConfigurationSettingWithOkHttpProxy() {
         HttpClient httpClient = new OkHttpAsyncHttpClientBuilder()
-            .proxy(SQUID_PROXY)
+            .proxy(FIDDLER_PROXY)
             .build();
 
         ConfigurationClient client = new ConfigurationClientBuilder()
@@ -118,7 +118,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @Test
     public void addConfigurationSettingWithNettyProxy() {
         HttpClient httpClient = new NettyAsyncHttpClientBuilder()
-            .proxy(SQUID_PROXY)
+            .proxy(FIDDLER_PROXY)
             .build();
 
         ConfigurationClient client = new ConfigurationClientBuilder()

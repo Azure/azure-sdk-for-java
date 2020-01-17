@@ -17,10 +17,9 @@ import okio.Buffer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
 import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
@@ -81,20 +80,20 @@ public final class ProxyAuthenticator implements Authenticator {
             return response.request();
         }
 
-        List<Challenge> basicChallenges = response.challenges().stream()
-            .filter(challenge -> "Basic".equalsIgnoreCase(challenge.scheme()))
-            .collect(Collectors.toList());
+        boolean hasBasicChallenge = false;
+        List<Map<String, String>> digestChallenges = new ArrayList<>();
 
-        List<Challenge> digestChallenges = response.challenges().stream()
-            .filter(challenge -> "Digest".equalsIgnoreCase(challenge.scheme()))
-            .collect(Collectors.toList());
+        for (Challenge challenge : response.challenges()) {
+            if ("Basic".equalsIgnoreCase(challenge.scheme())) {
+                hasBasicChallenge = true;
+            } else if ("Digest".equalsIgnoreCase(challenge.scheme())) {
+                digestChallenges.add(challenge.authParams());
+            }
+        }
 
         // Prefer digest challenges over basic.
         if (digestChallenges.size() > 0) {
-            List<Map<String, String>> challenges = digestChallenges.stream().map(Challenge::authParams)
-                .map(HashMap::new).collect(Collectors.toList());
-
-            authorizationHeader = challengeHandler.handleDigest(method, uri, challenges,
+            authorizationHeader = challengeHandler.handleDigest(method, uri, digestChallenges,
                 () -> entitySupplier(response.request()));
         }
 
@@ -102,7 +101,7 @@ public final class ProxyAuthenticator implements Authenticator {
          * If Digest proxy was attempted but it wasn't able to be computed and the server sent a Basic
          * challenge as well apply the basic authorization header.
          */
-        if (authorizationHeader == null && basicChallenges.size() > 0) {
+        if (authorizationHeader == null && hasBasicChallenge) {
             authorizationHeader = challengeHandler.handleBasic();
         }
 

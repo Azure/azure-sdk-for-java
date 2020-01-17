@@ -15,6 +15,7 @@ import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
@@ -66,6 +67,8 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
     private final AtomicReference<ChallengeHolder> proxyChallengeHolderReference;
     private final HttpClientCodec codec;
     private final AtomicReference<String> authScheme;
+
+    private HttpResponseStatus status;
 
     public ProxyAuthenticationHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
         AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
@@ -131,6 +134,10 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
         return request;
     }
 
+    /*
+     * Attempts to create a Proxy-Authorization header based on the AuthorizationChallengeHandler and ChallengeHolder
+     * configurations.
+     */
     private String createAuthorizationHeader() {
         /*
          * Attempt to pipeline the request.
@@ -174,19 +181,43 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
     @Override
     protected boolean handleResponse(ChannelHandlerContext ctx, Object o) {
         if (o instanceof HttpResponse) {
+            if (status != null) {
+                throw logger.logExceptionAsWarning(new RuntimeException("Received too many responses for a request"));
+            }
+
             HttpResponse response = (HttpResponse) o;
+            status = response.status();
 
             if (response.status().code() == 407) {
+                /*
+                 * Attempt to CONNECT to the proxy resulted in a request for authentication, parse the
+                 * Proxy-Authenticate headers returned for challenges and update the ChallengeHolder reference. This
+                 * will allow subsequent requests to CONNECT to this proxy to use the challenges returned to create a
+                 * Proxy-Authorization header.
+                 */
                 proxyChallengeHolderReference.set(extractChallengesFromHeaders(response.headers()));
             } else if (response.status().code() == 200) {
-                consumeProxyAuthenticationInfoHeader(response.headers().get(PROXY_AUTHENTICATION_INFO),
+                /*
+                 * Attempt to CONNECT to the proxy succeeded, retrieve the Proxy-Authorization header passed in the
+                 * Channel's attributes to compare it against a potential Proxy-Authentication-Info response header.
+                 * This header is used by the server to validate to the client that it received the correct request.
+                 */
+                validateProxyAuthenticationInfo(response.headers().get(PROXY_AUTHENTICATION_INFO),
                     ctx.channel().attr(PROXY_AUTHORIZATION_KEY).get());
             }
         }
 
-        return o instanceof LastHttpContent;
+        boolean responseComplete = o instanceof LastHttpContent;
+        if (responseComplete && status.code() != 200) {
+            throw logger.logExceptionAsWarning(new RuntimeException("Failed to connect to proxy."));
+        }
+
+        return responseComplete;
     }
 
+    /*
+     * Search the response HttpHeaders for Proxy-Authenticate headers.
+     */
     private static ChallengeHolder extractChallengesFromHeaders(HttpHeaders headers) {
         boolean hasBasicChallenge = false;
         List<Map<String, String>> digestChallenges = new ArrayList<>();
@@ -196,11 +227,21 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
 
             String challengeType = typeValuePair[0].trim();
             if (challengeType.equalsIgnoreCase(AUTH_BASIC)) {
+                /*
+                 * Proxy-Authenticate is requesting Basic authorization, this only needs a flag as Basic authentication
+                 * is always the same.
+                 */
                 hasBasicChallenge = true;
             } else if (challengeType.equalsIgnoreCase(AUTH_DIGEST)) {
+                /*
+                 * Proxy-Authenticate is requesting Digest authorization, this needs to be parsed for the challenge
+                 * information as Digest authentication always changes.
+                 */
                 Map<String, String> digestChallenge = new HashMap<>();
                 for (String challengePiece : typeValuePair[1].split(",")) {
                     String[] kvp = challengePiece.split("=", 2);
+
+                    // Skip challenge information that has no value.
                     if (kvp.length != 2) {
                         continue;
                     }
@@ -215,7 +256,11 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
         return new ChallengeHolder(hasBasicChallenge, digestChallenges);
     }
 
-    private void consumeProxyAuthenticationInfoHeader(String infoHeader, String authorizationHeader) {
+    /*
+     * Validate the Proxy-Authorization header used in authentication against the server's Proxy-Authentication-Info
+     * header. This header is an optional return by the server so this validation is guaranteed to happen.
+     */
+    private void validateProxyAuthenticationInfo(String infoHeader, String authorizationHeader) {
         // Server didn't return a 'Proxy-Authentication-Info' header, nothing to consume.
         if (CoreUtils.isNullOrEmpty(infoHeader)) {
             return;
