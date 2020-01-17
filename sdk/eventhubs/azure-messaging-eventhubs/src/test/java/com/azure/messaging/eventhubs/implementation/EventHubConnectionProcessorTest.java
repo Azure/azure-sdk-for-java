@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for {@link EventHubConnectionProcessor}.
  */
-public class EventHubConnectionProcessorTest {
+class EventHubConnectionProcessorTest {
     private static final String NAMESPACE = "test-namespace.eventhubs.com";
     private static final String EVENT_HUB_NAME = "test-event-hub-name";
     private static final AmqpRetryOptions AMQP_RETRY_OPTIONS = new AmqpRetryOptions()
@@ -56,7 +56,7 @@ public class EventHubConnectionProcessorTest {
         EVENT_HUB_NAME, AMQP_RETRY_OPTIONS);
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
@@ -67,7 +67,7 @@ public class EventHubConnectionProcessorTest {
      * Verifies that we can get a new connection.
      */
     @Test
-    public void createsNewConnection() {
+    void createsNewConnection() {
         EventHubConnectionProcessor processor = Mono.fromCallable(() -> connection).repeat()
             .subscribeWith(eventHubConnectionProcessor);
 
@@ -81,7 +81,7 @@ public class EventHubConnectionProcessorTest {
      * Verifies that we can get the same, open connection when subscribing twice.
      */
     @Test
-    public void sameConnectionReturned() {
+    void sameConnectionReturned() {
         // Arrange
         EventHubConnectionProcessor processor = Mono.fromCallable(() -> connection).repeat()
             .subscribeWith(eventHubConnectionProcessor);
@@ -102,7 +102,7 @@ public class EventHubConnectionProcessorTest {
      * Verifies that we can get the next connection when the first one is closed.
      */
     @Test
-    public void newConnectionOnClose() {
+    void newConnectionOnClose() {
         // Arrange
         final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
             connection,
@@ -157,7 +157,7 @@ public class EventHubConnectionProcessorTest {
      * Verifies that we can get the next connection when the first one encounters a retryable error.
      */
     @Test
-    public void newConnectionOnRetryableError() {
+    void newConnectionOnRetryableError() {
         // Arrange
         final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
             connection,
@@ -197,7 +197,7 @@ public class EventHubConnectionProcessorTest {
      * Verifies that an error is propagated when the first connection encounters a non-retryable error.
      */
     @Test
-    public void nonRetryableError() {
+    void nonRetryableError() {
         // Arrange
         final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
             connection,
@@ -235,7 +235,7 @@ public class EventHubConnectionProcessorTest {
      * Verifies that when there are no subscribers, no request is fetched from upstream.
      */
     @Test
-    public void noSubscribers() {
+    void noSubscribers() {
         // Arrange
         final Subscription subscription = mock(Subscription.class);
 
@@ -250,7 +250,7 @@ public class EventHubConnectionProcessorTest {
      * Verifies that when the processor has completed (ie. the instance is closed), no more connections are emitted.
      */
     @Test
-    public void completesWhenTerminated() {
+    void completesWhenTerminated() {
         // Arrange
         final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
             connection,
@@ -277,7 +277,7 @@ public class EventHubConnectionProcessorTest {
     }
 
     @Test
-    public void requiresNonNull() {
+    void requiresNonNull() {
         Assertions.assertThrows(NullPointerException.class,
             () -> eventHubConnectionProcessor.onNext(null));
 
