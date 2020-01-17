@@ -677,6 +677,7 @@ public class DataLakePathAsyncClient {
      * Package-private rename method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
      *
      * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath The path of the destination relative to the file system name
      * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
      * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
@@ -687,10 +688,6 @@ public class DataLakePathAsyncClient {
     Mono<Response<DataLakePathAsyncClient>> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Context context) {
-
-        if (destinationFileSystem == null) {
-            destinationFileSystem = getFileSystemName();
-        }
 
         destinationRequestConditions = destinationRequestConditions == null ? new DataLakeRequestConditions()
             : destinationRequestConditions;
@@ -730,9 +727,8 @@ public class DataLakePathAsyncClient {
      * @return A DataLakePathAsyncClient
      */
     DataLakePathAsyncClient getPathAsyncClient(String destinationFileSystem, String destinationPath) {
-        if (CoreUtils.isNullOrEmpty(destinationFileSystem)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "'destinationFileSystem' can not be set to null"));
+        if (destinationFileSystem == null) {
+            destinationFileSystem = getFileSystemName();
         }
         if (CoreUtils.isNullOrEmpty(destinationPath)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
@@ -753,6 +749,9 @@ public class DataLakePathAsyncClient {
      * @return An updated SpecializedBlobClientBuilder
      */
     SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationFileSystem, String destinationPath) {
+        if (destinationFileSystem == null) {
+            destinationFileSystem = getFileSystemName();
+        }
         // Get current Blob URL and replace current path with user provided path
         String newBlobEndpoint = BlobUrlParts.parse(DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(),
             "blob", "dfs")).setBlobName(destinationPath).setContainerName(destinationFileSystem).toUrl().toString();

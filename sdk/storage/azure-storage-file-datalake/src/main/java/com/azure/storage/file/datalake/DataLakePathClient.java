@@ -467,6 +467,7 @@ public class DataLakePathClient {
      * Package-private rename method for use by {@link DataLakeFileClient} and {@link DataLakeDirectoryClient}
      *
      * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath The path of the destination relative to the file system name.
      * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
      * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
@@ -477,10 +478,6 @@ public class DataLakePathClient {
     Mono<Response<DataLakePathClient>> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Context context) {
-
-        if (destinationFileSystem == null) {
-            destinationFileSystem = dataLakePathAsyncClient.getFileSystemName();
-        }
 
         destinationRequestConditions = destinationRequestConditions == null ? new DataLakeRequestConditions()
             : destinationRequestConditions;
@@ -515,6 +512,11 @@ public class DataLakePathClient {
     }
 
     private DataLakePathClient getPathClient(String destinationFileSystem, String destinationPath) {
+
+        if (destinationFileSystem == null) {
+            destinationFileSystem = dataLakePathAsyncClient.getFileSystemName();
+        }
+
         return new DataLakePathClient(
             dataLakePathAsyncClient.getPathAsyncClient(destinationFileSystem, destinationPath),
             dataLakePathAsyncClient.prepareBuilderReplacePath(destinationFileSystem, destinationPath)
