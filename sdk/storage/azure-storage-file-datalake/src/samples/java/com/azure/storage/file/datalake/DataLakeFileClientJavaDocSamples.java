@@ -72,8 +72,8 @@ public class DataLakeFileClientJavaDocSamples {
             .setLeaseId(leaseId);
         DataLakeRequestConditions destinationRequestConditions = new DataLakeRequestConditions();
 
-        DataLakeFileClient newRenamedClient = client.renameWithResponse(fileSystemName, destinationPath, sourceRequestConditions,
-            destinationRequestConditions, timeout, new Context(key1, value1)).getValue();
+        DataLakeFileClient newRenamedClient = client.renameWithResponse(fileSystemName, destinationPath,
+            sourceRequestConditions, destinationRequestConditions, timeout, new Context(key1, value1)).getValue();
         System.out.println("Directory Client has been renamed");
         // END: com.azure.storage.file.datalake.DataLakeFileClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context
     }
