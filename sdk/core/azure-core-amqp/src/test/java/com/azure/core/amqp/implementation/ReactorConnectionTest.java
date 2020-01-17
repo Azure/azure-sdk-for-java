@@ -96,10 +96,13 @@ class ReactorConnectionTest {
     @BeforeEach
     void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
+        connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
 
         when(reactor.selectable()).thenReturn(selectable);
+        when(reactor.connectionToHost(HOSTNAME, connectionHandler.getProtocolPort(), connectionHandler))
+            .thenReturn(connectionProtonJ);
+        when(reactor.process()).thenReturn(true);
 
-        connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
