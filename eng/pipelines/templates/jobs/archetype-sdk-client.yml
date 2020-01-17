@@ -199,11 +199,11 @@ jobs:
           git clone https://github.com/JonathanGiles/DependencyChecker.git
           mkdir input && cp dependencies.json input/
         displayName: 'Download dependency checker'
-        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
+        condition: and(succeeded(), eq('${{ parameters.SDKType }}', 'client'), in(variables['Build.Reason'], 'Schedule', 'Manual'))
 
       - task: Maven@3
         displayName: 'Analyze dependencies'
-        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
+        condition: and(succeeded(), eq('${{ parameters.SDKType }}', 'client'), in(variables['Build.Reason'], 'Schedule', 'Manual'))
         inputs:
           mavenPomFile: 'DependencyChecker/pom.xml'
           options: '-Dexec.args="-showall -dependencymanagement"'
