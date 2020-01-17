@@ -15,7 +15,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * This type is a Flux provides the ability to operate on paginated REST response of type {@link PagedResponse}
+ * This type is a Flux that provides the ability to operate on paginated REST responses of type {@link PagedResponse}
  * and individual items in such pages. When processing the response by page, each response will contain the items
  * in the page as well as the REST response details like status code and headers.
  *
