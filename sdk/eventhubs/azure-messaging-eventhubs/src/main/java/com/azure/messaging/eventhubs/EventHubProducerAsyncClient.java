@@ -11,7 +11,6 @@ import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -482,12 +481,6 @@ public class EventHubProducerAsyncClient implements Closeable {
         return CoreUtils.isNullOrEmpty(partitionId)
             ? eventHubName
             : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, partitionId);
-    }
-
-    private String getLinkName(String partitionId) {
-        return CoreUtils.isNullOrEmpty(partitionId)
-            ? StringUtil.getRandomString("EC")
-            : StringUtil.getRandomString("PS");
     }
 
     private Mono<AmqpSendLink> getSendLink(String partitionId) {
