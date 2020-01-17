@@ -73,7 +73,7 @@ public class DataLakeFileSystemAsyncClient {
 
     public static final String ROOT_FILESYSTEM_NAME = "$root";
 
-    public static final String ROOT_DIRECTORY_NAME = "";
+    private static final String ROOT_DIRECTORY_NAME = "";
 
 //    public static final String STATIC_WEBSITE_FILESYSTEM_NAME = "$web";
 
@@ -161,7 +161,7 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new DataLakeDirectoryAsyncClient object by concatenating "" to the end of
+     * Creates a new DataLakeDirectoryAsyncClient object by concatenating {@code ""} to the end of
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
      * as the DataLakeFileSystemAsyncClient.
      *

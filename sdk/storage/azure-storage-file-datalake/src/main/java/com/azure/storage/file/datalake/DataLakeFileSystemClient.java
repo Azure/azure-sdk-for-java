@@ -56,7 +56,7 @@ public class DataLakeFileSystemClient {
 
     public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
 
-    public static final String ROOT_DIRECTORY_NAME = DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME;
+    private static final String ROOT_DIRECTORY_NAME = "";
 
 //    public static final String STATIC_WEBSITE_FILESYSTEM_NAME =
 //    DataLakeFileSystemAsyncClient.STATIC_WEBSITE_FILESYSTEM_NAME;
@@ -117,7 +117,7 @@ public class DataLakeFileSystemClient {
     }
 
     /**
-     * Initializes a new DataLakeDirectoryClient object by concatenating "" to the end of
+     * Initializes a new DataLakeDirectoryClient object by concatenating {@code ""} to the end of
      * DataLakeFileSystemClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
      * DataLakeFileSystemClient.
      *
