@@ -94,7 +94,7 @@ public class ReactorSession implements AmqpSession {
                     logger.verbose("Connection state: {}", state);
                     endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
-                    logger.error("Error occurred in connection.", error);
+                    logger.error("[{}] Error occurred in session endpoint handler.", sessionName, error);
                     endpointStateSink.error(error);
                     dispose();
                 }, () -> {
@@ -104,7 +104,7 @@ public class ReactorSession implements AmqpSession {
                 }),
 
             this.sessionHandler.getErrors().subscribe(error -> {
-                logger.error("Error occurred in connection.", error);
+                logger.error("[{}] Error occurred in session error handler.", sessionName, error);
                 endpointStateSink.error(error);
                 dispose();
             }));

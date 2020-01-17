@@ -120,7 +120,7 @@ class ReactorSender implements AmqpSendLink {
                     this.hasConnected.set(state == EndpointState.ACTIVE);
                     endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
-                    logger.error("Error occurred in connection.", error);
+                    logger.error("[{}] Error occurred in sender endpoint handler.", entityPath, error);
                     endpointStateSink.error(error);
                 }, () -> {
                     endpointStateSink.next(AmqpEndpointState.CLOSED);
@@ -129,7 +129,7 @@ class ReactorSender implements AmqpSendLink {
                 }),
 
             this.handler.getErrors().subscribe(error -> {
-                logger.error("Error occurred in connection.", error);
+                logger.error("[{}] Error occurred in sender error handler.", entityPath, error);
                 endpointStateSink.error(error);
             }),
 

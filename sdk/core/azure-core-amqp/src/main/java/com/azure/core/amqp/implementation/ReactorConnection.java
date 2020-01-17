@@ -102,7 +102,7 @@ public class ReactorConnection implements AmqpConnection {
                     logger.verbose("Connection state: {}", state);
                     endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
-                    logger.error("Error occurred in connection.", error);
+                    logger.error("connectionId[{}] Error occurred in connection endpoint.", connectionId, error);
                     endpointStatesSink.error(error);
                 }, () -> {
                     endpointStatesSink.next(AmqpEndpointState.CLOSED);
@@ -110,7 +110,7 @@ public class ReactorConnection implements AmqpConnection {
                 }),
 
             this.handler.getErrors().subscribe(error -> {
-                logger.error("Error occurred in connection.", error);
+                logger.error("connectionId[{}] Error occurred in connection handler.", error);
                 endpointStatesSink.error(error);
             }));
     }
