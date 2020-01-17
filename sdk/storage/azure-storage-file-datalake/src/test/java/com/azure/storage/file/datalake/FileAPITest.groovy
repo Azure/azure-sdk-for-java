@@ -1043,6 +1043,26 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    def "Rename filesystem with response"() {
+        setup:
+        def newFileSystem = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName())
+
+        when:
+        def resp = fc.renameWithResponse(newFileSystem.getFileSystemName(), generatePathName(), null, null, null, null)
+
+        def renamedClient = resp.getValue()
+        renamedClient.getProperties()
+
+        then:
+        notThrown(DataLakeStorageException)
+
+        when:
+        fc.getProperties()
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
     def "Rename error"() {
         setup:
         fc = fsc.getFileClient(generatePathName())

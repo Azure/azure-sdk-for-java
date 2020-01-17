@@ -391,17 +391,19 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String-String}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
      * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
      * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the new directory
      * created.
      */
-    public Mono<DataLakeDirectoryAsyncClient> rename(String destinationPath) {
+    public Mono<DataLakeDirectoryAsyncClient> rename(String destinationFileSystem, String destinationPath) {
         try {
-            return renameWithResponse(destinationPath, null, null).flatMap(FluxUtil::toMono);
+            return renameWithResponse(destinationFileSystem, destinationPath, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -414,8 +416,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
+     * @param fileSystemName The file system of the destination within the account. {@code null} for the current file
+     * system.
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
      * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
      * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
@@ -424,10 +428,11 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the directory created.
      */
-    public Mono<Response<DataLakeDirectoryAsyncClient>> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions) {
+    public Mono<Response<DataLakeDirectoryAsyncClient>> renameWithResponse(String fileSystemName,
+        String destinationPath, DataLakeRequestConditions sourceRequestConditions,
+        DataLakeRequestConditions destinationRequestConditions) {
         try {
-            return withContext(context -> renameWithResponse(destinationPath, sourceRequestConditions,
+            return withContext(context -> renameWithResponse(fileSystemName, destinationPath, sourceRequestConditions,
                 destinationRequestConditions, context)).map(response -> new SimpleResponse<>(response,
                     new DataLakeDirectoryAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
