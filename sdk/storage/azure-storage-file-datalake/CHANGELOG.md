@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.1-beta.2 (2020-01-15)
+## 12.0.0-beta.11 (Unreleased)
 - Added ability to rename files and directories across file systems.
 
 ## 12.0.0-beta.10 (2020-01-15)
