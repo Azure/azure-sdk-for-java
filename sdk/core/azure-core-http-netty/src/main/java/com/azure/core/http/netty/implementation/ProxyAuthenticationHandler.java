@@ -19,6 +19,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.util.AttributeKey;
 
@@ -179,7 +180,7 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
     }
 
     @Override
-    protected boolean handleResponse(ChannelHandlerContext ctx, Object o) {
+    protected boolean handleResponse(ChannelHandlerContext ctx, Object o) throws ProxyConnectException {
         if (o instanceof HttpResponse) {
             if (status != null) {
                 throw logger.logExceptionAsWarning(new RuntimeException("Received too many responses for a request"));
@@ -209,7 +210,7 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
 
         boolean responseComplete = o instanceof LastHttpContent;
         if (responseComplete && status.code() != 200) {
-            throw logger.logExceptionAsWarning(new RuntimeException("Failed to connect to proxy."));
+            throw new ProxyConnectException("Failed to connect to proxy.");
         }
 
         return responseComplete;

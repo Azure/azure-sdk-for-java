@@ -46,7 +46,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -96,12 +96,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.0.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.2.0-beta.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

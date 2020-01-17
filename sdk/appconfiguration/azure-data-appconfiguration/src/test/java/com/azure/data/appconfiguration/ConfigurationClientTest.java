@@ -5,11 +5,8 @@ package com.azure.data.appconfiguration;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -25,7 +22,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,56 +80,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @Test
     public void addConfigurationSetting() {
         addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected, client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
-    }
-
-    private static final ProxyOptions SQUID_PROXY = new ProxyOptions(ProxyOptions.Type.HTTP,
-        new InetSocketAddress("localhost", 3128))
-        .setCredentials("test", "password");
-
-    private static final ProxyOptions FIDDLER_PROXY = new ProxyOptions(ProxyOptions.Type.HTTP,
-        new InetSocketAddress("localhost", 8888))
-        .setCredentials("1", "1");
-
-    @Test
-    public void addConfigurationSettingWithOkHttpProxy() {
-        HttpClient httpClient = new OkHttpAsyncHttpClientBuilder()
-            .proxy(FIDDLER_PROXY)
-            .build();
-
-        ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
-            .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
-
-        ConfigurationSetting setting = client.setConfigurationSetting("test", null, "test");
-        assertEquals("test", setting.getKey());
-        assertEquals("test", setting.getValue());
-
-        setting = client.setConfigurationSetting("test", null, "test2");
-        assertEquals("test", setting.getKey());
-        assertEquals("test2", setting.getValue());
-    }
-
-    @Test
-    public void addConfigurationSettingWithNettyProxy() {
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder()
-            .proxy(FIDDLER_PROXY)
-            .build();
-
-        ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
-            .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
-
-        ConfigurationSetting setting = client.setConfigurationSetting("test", null, "test");
-        assertEquals("test", setting.getKey());
-        assertEquals("test", setting.getValue());
-
-        setting = client.setConfigurationSetting("test", null, "test2");
-        assertEquals("test", setting.getKey());
-        assertEquals("test2", setting.getValue());
     }
 
     /**
