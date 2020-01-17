@@ -15,7 +15,6 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
       - hotfix/*
       - release/*
   paths:
@@ -37,7 +36,9 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: identity
+      SDKType: client
       Artifacts:
         - name: azure-identity
+          groupId: com.azure
           safeName: azureidentity
           stagingProfileId: 88192f04117501

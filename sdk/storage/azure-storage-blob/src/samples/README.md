@@ -1,5 +1,15 @@
+---
+page_type: sample
+languages:
+  - java
+products:
+  - azure
+  - azure-storage
+  - azure-blob-storage
+urlFragment: storage-blob-samples
+---
 
-## Azure Azure Storage Blob Samples client library for Java
+# Azure Storage Blob Samples client library for Java
 This document explains samples and how to use them.
 
 ## Key concepts
@@ -13,9 +23,6 @@ Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
 
-## How to run
-These sample can be run in your IDE with default JDK.
-
 ## Examples
    Following section document various examples.
 
@@ -27,7 +34,6 @@ These sample can be run in your IDE with default JDK.
 6. [Azure Identity Examples][samples_identity]: Use `DefaultAzureCredential` to do the authentication.
 
 ## Troubleshooting
-### General
 When interacting with blobs using this Java client library, errors returned by the service correspond to the same HTTP
 status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a container or blob that
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`
@@ -44,7 +50,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 <!-- LINKS -->
 [BLOB_SDK_README]: ../../README.md
 [SDK_README_CONTRIBUTING]:../../README.md#contributing
-[SDK_README_GETTING_STARTDED]: ../../README.md#getting-started
+[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
 [SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
 [samples_basic]: java/com/azure/storage/blob/BasicExample.java
 [samples_file_transfer]: java/com/azure/storage/blob/FileTransferExample.java

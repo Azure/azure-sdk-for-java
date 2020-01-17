@@ -210,9 +210,9 @@ public class BlobEventProcessorClientStoreTest {
 
     private Map<String, String> getMetadata(String owner, String sequenceNumber, String offset) {
         Map<String, String> metadata = new HashMap<>();
-        metadata.put("OwnerId", owner);
-        metadata.put("SequenceNumber", sequenceNumber);
-        metadata.put("Offset", offset);
+        metadata.put("ownerid", owner);
+        metadata.put("sequencenumber", sequenceNumber);
+        metadata.put("offset", offset);
         return metadata;
     }
 }

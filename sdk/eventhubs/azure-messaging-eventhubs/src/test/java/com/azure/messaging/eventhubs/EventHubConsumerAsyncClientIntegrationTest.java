@@ -257,10 +257,12 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             .filter(event -> TestUtils.isMatchingEvent(event, MESSAGE_TRACKING_ID))
             .subscribe(
                 event -> logger.info("C1:\tReceived event sequence: {}", event.getData().getSequenceNumber()),
-                ex -> logger.error("C1:\tERROR", ex),
-                () -> {
-                    logger.info("C1:\tCompleted.");
+                ex -> {
+                    logger.error("C1:\tERROR", ex);
                     semaphore.release();
+                }, () -> {
+                    logger.info("C1:\tCompleted.");
+                    Assertions.fail("Should not be hitting this. An error should occur instead.");
                 }));
 
         Thread.sleep(2000);
@@ -276,7 +278,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
         // Assert
         try {
-            Assertions.assertTrue(semaphore.tryAcquire(60, TimeUnit.SECONDS), "The EventHubConsumer was not closed after one with a higher epoch number started.");
+            Assertions.assertTrue(semaphore.tryAcquire(20, TimeUnit.SECONDS), "The EventHubConsumer was not closed after one with a higher epoch number started.");
         } finally {
             subscriptions.dispose();
             isActive.set(false);
@@ -386,7 +388,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         } finally {
             isActive.set(false);
             producerEvents.dispose();
-            consumer.close();
+            dispose(producer, consumer);
         }
     }
 

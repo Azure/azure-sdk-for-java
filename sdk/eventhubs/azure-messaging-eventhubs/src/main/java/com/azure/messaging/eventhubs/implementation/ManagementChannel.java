@@ -105,7 +105,7 @@ public class ManagementChannel implements EventHubManagementNode {
     }
 
     private <T> Mono<T> getProperties(Map<String, Object> properties, Class<T> responseType) {
-        final String tokenAudience = tokenManagerProvider.getResourceString(eventHubName);
+        final String tokenAudience = tokenManagerProvider.getScopesFromResource(eventHubName);
 
         return tokenProvider.getToken(new TokenRequestContext().addScopes(tokenAudience)).flatMap(accessToken -> {
             properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.getToken());

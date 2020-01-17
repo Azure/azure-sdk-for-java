@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Session;
+import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -77,8 +78,8 @@ public class ReactorConnection implements AmqpConnection {
      * @param clientVersion The version of the client library creating the connection.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
-                             ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
-                             MessageSerializer messageSerializer, String product, String clientVersion) {
+        ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
+        MessageSerializer messageSerializer, String product, String clientVersion) {
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
@@ -214,11 +215,16 @@ public class ReactorConnection implements AmqpConnection {
         return sessionName != null && sessionMap.remove(sessionName) != null;
     }
 
+    @Override
+    public boolean isDisposed() {
+        return isDisposed.get();
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void close() {
+    public void dispose() {
         if (isDisposed.getAndSet(true)) {
             return;
         }
@@ -233,7 +239,7 @@ public class ReactorConnection implements AmqpConnection {
         final HashMap<String, AmqpSession> map = new HashMap<>(sessionMap);
 
         sessionMap.clear();
-        map.forEach((name, session) -> session.close());
+        map.forEach((name, session) -> session.dispose());
     }
 
     /**
@@ -251,10 +257,11 @@ public class ReactorConnection implements AmqpConnection {
      * @param sessionName Name of the session.
      * @param linkName Name of the link.
      * @param entityPath Address to the message broker.
+     *
      * @return A new {@link RequestResponseChannel} to communicate with the message broker.
      */
     protected Mono<RequestResponseChannel> createRequestResponseChannel(String sessionName, String linkName,
-            String entityPath) {
+        String entityPath) {
         return createSession(sessionName)
             .cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(getId(), getFullyQualifiedNamespace(), linkName,
@@ -293,14 +300,24 @@ public class ReactorConnection implements AmqpConnection {
         return connection;
     }
 
-    private static final class ReactorExceptionHandler extends AmqpExceptionHandler {
+    private final class ReactorExceptionHandler extends AmqpExceptionHandler {
         private ReactorExceptionHandler() {
             super();
         }
 
         @Override
         public void onConnectionError(Throwable exception) {
-            super.onConnectionError(exception);
+            if (isDisposed.get()) {
+                super.onConnectionError(exception);
+                return;
+            }
+
+            logger.warning(
+                "onReactorError messagingFactory[{}], hostName[{}], message[starting new reactor], error[{}]",
+                getId(), getFullyQualifiedNamespace(), exception.getMessage());
+
+            endpointStates.onError(exception);
+            dispose();
         }
     }
 }
