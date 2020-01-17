@@ -112,7 +112,7 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new DataLakeFileAsyncClient object by concatenating fileName to the end of
+     * Initializes a new DataLakeFileAsyncClient object by concatenating fileName to the end of
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeFileAsyncClient uses the same request policy pipeline as
      * the DataLakeFileSystemAsyncClient.
      *
@@ -137,7 +137,7 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new DataLakeDirectoryAsyncClient object by concatenating directoryName to the end of
+     * Initializes a new DataLakeDirectoryAsyncClient object by concatenating directoryName to the end of
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
      * as the DataLakeFileSystemAsyncClient.
      *
@@ -161,7 +161,7 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new DataLakeDirectoryAsyncClient object by concatenating {@code ""} to the end of
+     * Initializes a new DataLakeDirectoryAsyncClient object by concatenating {@code ""} to the end of
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
      * as the DataLakeFileSystemAsyncClient.
      *
