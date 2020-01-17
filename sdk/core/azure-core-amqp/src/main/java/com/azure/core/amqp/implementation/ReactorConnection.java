@@ -40,6 +40,8 @@ public class ReactorConnection implements AmqpConnection {
 
     private final ClientLogger logger = new ClientLogger(ReactorConnection.class);
     private final ConcurrentMap<String, AmqpSession> sessionMap = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Disposable> sessionSubscriptions = new ConcurrentHashMap<>();
+
     private final AtomicBoolean hasConnection = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignals = DirectProcessor.create();
@@ -191,14 +193,29 @@ public class ReactorConnection implements AmqpConnection {
             return Mono.just(existingSession);
         }
 
-        return connectionMono.map(connection -> sessionMap.computeIfAbsent(sessionName, key -> {
-            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId,
-                getFullyQualifiedNamespace(), sessionName, connectionOptions.getRetry().getTryTimeout());
-            final Session session = connection.session();
+        return connectionMono.map(connection -> {
+            return sessionMap.computeIfAbsent(sessionName, key -> {
+                final SessionHandler handler = handlerProvider.createSessionHandler(connectionId,
+                    getFullyQualifiedNamespace(), sessionName, connectionOptions.getRetry().getTryTimeout());
+                final Session session = connection.session();
 
-            BaseHandler.setHandler(session, handler);
-            return createSession(sessionName, session, handler);
-        }));
+                BaseHandler.setHandler(session, handler);
+                final AmqpSession amqpSession = createSession(sessionName, session, handler);
+
+                sessionSubscriptions.computeIfAbsent(sessionName, s -> {
+                    return amqpSession.getEndpointStates().subscribe(state -> {
+                    }, error -> {
+                        logger.info("sessionName[{}]: Error occurred. Removing and disposing session.", error);
+                        sessionSubscriptions.remove(sessionName);
+                    }, () -> {
+                        logger.info("sessionName[{}]: Complete. Removing and disposing session.");
+                        sessionSubscriptions.remove(sessionName);
+                    });
+                });
+
+                return amqpSession;
+            });
+        });
     }
 
     /**
@@ -221,7 +238,22 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public boolean removeSession(String sessionName) {
-        return sessionName != null && sessionMap.remove(sessionName) != null;
+        if (sessionName == null) {
+            return false;
+        }
+
+        final AmqpSession removed = sessionMap.remove(sessionName);
+
+        if (removed != null) {
+            final Disposable subscription = sessionSubscriptions.remove(removed.getSessionName());
+            if (subscription != null) {
+                subscription.dispose();
+            }
+
+            removed.dispose();
+        }
+
+        return removed != null;
     }
 
     @Override

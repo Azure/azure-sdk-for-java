@@ -95,14 +95,17 @@ public class ReactorSession implements AmqpSession {
                 }, error -> {
                     logger.error("Error occurred in connection.", error);
                     endpointStateSink.error(error);
+                    dispose();
                 }, () -> {
                     endpointStateSink.next(AmqpEndpointState.CLOSED);
                     endpointStateSink.complete();
+                    dispose();
                 }),
 
             this.sessionHandler.getErrors().subscribe(error -> {
                 logger.error("Error occurred in connection.", error);
                 endpointStateSink.error(error);
+                dispose();
             }));
 
         session.open();
