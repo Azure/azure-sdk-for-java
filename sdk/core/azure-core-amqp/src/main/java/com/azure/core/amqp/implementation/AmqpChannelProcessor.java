@@ -73,10 +73,10 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
 
         Objects.requireNonNull(amqpChannel, "'amqpChannel' cannot be null.");
 
-        final T oldConnection;
+        final T oldChannel;
         final Disposable oldSubscription;
         synchronized (lock) {
-            oldConnection = currentChannel;
+            oldChannel = currentChannel;
             oldSubscription = connectionSubscription;
 
             currentChannel = amqpChannel;
@@ -107,7 +107,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 });
         }
 
-        close(oldConnection);
+        close(oldChannel);
 
         if (oldSubscription != null) {
             oldSubscription.dispose();
@@ -129,7 +129,10 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
 
         if (retryInterval != null) {
+            // There was already a retry in progress, so we decrement the value because we don't want to make two retry
+            // attempts concurrently.
             if (isRetryPending.getAndSet(true)) {
+                retryAttempts.decrementAndGet();
                 return;
             }
 
@@ -265,15 +268,15 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         close(oldChannel);
     }
 
-    private void close(T closeable) {
-        if (!(closeable instanceof AutoCloseable)) {
-            return;
-        }
-
-        try {
-            ((AutoCloseable) closeable).close();
-        } catch (Exception error) {
-            logger.warning("Error occurred closing item.", closeable);
+    private void close(T channel) {
+        if (channel instanceof AutoCloseable) {
+            try {
+                ((AutoCloseable) channel).close();
+            } catch (Exception error) {
+                logger.warning("Error occurred closing item.", channel);
+            }
+        } else if (channel instanceof Disposable) {
+            ((Disposable) channel).dispose();
         }
     }
 
