@@ -1,11 +1,13 @@
 # Release History
 
-## 12.3.0 (2020-01-16)
+## 12.3.1 (2020-01-17)
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.3.0/sdk/storage/azure-storage-blob/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.3.1/sdk/storage/azure-storage-blob/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.3.0/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.3.1/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
 
+
+## 12.3.0 (2020-01-16)
 - Added ability to create service clients anonymously and should only be used to create anonymous container and blob clients. Anonymous service clients will throw on attempting to create network requests.
 - Added an overload to listBlobs to include a continuation token.
 - Added a check in BlobServiceClient.setAccountProperties to block invalid requests.

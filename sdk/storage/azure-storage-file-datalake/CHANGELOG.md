@@ -1,5 +1,12 @@
 # Release History
 
+## 12.0.1-beta.11 (2020-01-17)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.1-beta.11/sdk/storage/azure-storage-file-datalake/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.1-beta.1/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+
+
 ## 12.0.0-beta.10 (2020-01-15)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.0-beta.10/sdk/storage/azure-storage-file-datalake/README.md)
