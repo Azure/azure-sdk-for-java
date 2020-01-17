@@ -492,11 +492,10 @@ public class EventHubProducerAsyncClient implements Closeable {
 
     private Mono<AmqpSendLink> getSendLink(String partitionId) {
         final String entityPath = getEntityPath(partitionId);
+        final String linkName = getEntityPath(partitionId);
 
         return connectionProcessor
-            .flatMap(connection -> {
-                return connection.createSendLink(getLinkName(partitionId), entityPath, retryOptions);
-            });
+            .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
     }
 
     /**
