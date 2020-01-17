@@ -432,9 +432,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         String destinationPath, DataLakeRequestConditions sourceRequestConditions,
         DataLakeRequestConditions destinationRequestConditions) {
         try {
-            return withContext(context -> renameWithResponse(destinationFileSystem, destinationPath, sourceRequestConditions,
-                destinationRequestConditions, context)).map(response -> new SimpleResponse<>(response,
-                    new DataLakeDirectoryAsyncClient(response.getValue())));
+            return withContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
+                sourceRequestConditions, destinationRequestConditions, context)).map(response ->
+                new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
