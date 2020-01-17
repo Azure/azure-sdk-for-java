@@ -118,7 +118,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @Test
     public void addConfigurationSettingWithNettyProxy() {
         HttpClient httpClient = new NettyAsyncHttpClientBuilder()
-            .proxy(FIDDLER_PROXY)
+            .proxy(SQUID_PROXY)
             .build();
 
         ConfigurationClient client = new ConfigurationClientBuilder()

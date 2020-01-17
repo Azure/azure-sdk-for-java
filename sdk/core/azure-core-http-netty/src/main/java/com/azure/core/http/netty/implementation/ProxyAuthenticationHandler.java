@@ -7,7 +7,6 @@ import com.azure.core.http.AuthorizationChallengeHandler;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -16,11 +15,9 @@ import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
-import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.util.AttributeKey;
 
@@ -40,45 +37,35 @@ import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHORIZAT
  * This class handles authorizing requests being sent through a proxy which require authentication.
  */
 public final class ProxyAuthenticationHandler extends ProxyHandler {
-    /*
-     * AttributeKey used to pass the HTTP request through the channel's attributes.
-     */
-    public static final AttributeKey<String> REQUEST_METHOD_KEY = AttributeKey.newInstance("RequestMethod");
-
-    /*
-     * AttributeKey used to pass the HTTP request URI through the channel's attributes.
-     */
-    public static final AttributeKey<String> REQUEST_URI_KEY = AttributeKey.newInstance("RequestUri");
-
-    /*
-     * AttributeKey used to pass the HTTP request entity body supplier through the channel's attributes.
-     */
-    public static final AttributeKey<Supplier<byte[]>> REQUEST_ENTITY_BODY_KEY = AttributeKey
-        .newInstance("RequestEntityBody");
-
-    /*
-     * AttributeKey used to pass the proxy authentication challenge between
-     */
-    public static final AttributeKey<ChallengeHolder> AUTHENTICATION_CHALLENGE_KEY = AttributeKey
-        .newInstance("AuthenticationChallenge");
-
     private static final AttributeKey<String> PROXY_AUTHORIZATION_KEY = AttributeKey.newInstance("ProxyAuthorization");
 
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
 
-    private final ClientLogger logger = new ClientLogger(ProxyAuthenticationHandler.class);
-
     private static final String AUTH_BASIC = "basic";
     private static final String AUTH_DIGEST = "digest";
+
+    /*
+     * Proxies use 'CONNECT' as the HTTP method.
+     */
+    private static final String PROXY_METHOD = HttpMethod.CONNECT.name();
+
+    /*
+     * Proxies are always the root path.
+     */
+    private static final String PROXY_URI_PATH = "/";
+
+    /*
+     * Digest authentication to a proxy uses the 'CONNECT' method, these can't have a request body.
+     */
+    private static final Supplier<byte[]> PROXY_ENTITY_BODY = () -> new byte[0];
+
+    private final ClientLogger logger = new ClientLogger(ProxyAuthenticationHandler.class);
 
     private final AuthorizationChallengeHandler challengeHandler;
     private final AtomicReference<ChallengeHolder> proxyChallengeHolderReference;
     private final HttpClientCodec codec;
     private final AtomicReference<String> authScheme;
-
-    private HttpResponseStatus status;
-    private HttpHeaders inboundHeaders;
 
     public ProxyAuthenticationHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
         AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
@@ -104,17 +91,17 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
     }
 
     @Override
-    protected void addCodec(ChannelHandlerContext channelHandlerContext) {
-        channelHandlerContext.pipeline().addBefore(channelHandlerContext.name(), null, this.codec);
+    protected void addCodec(ChannelHandlerContext ctx) {
+        ctx.pipeline().addBefore(ctx.name(), null, this.codec);
     }
 
     @Override
-    protected void removeEncoder(ChannelHandlerContext channelHandlerContext) {
+    protected void removeEncoder(ChannelHandlerContext ctx) {
         this.codec.removeOutboundHandler();
     }
 
     @Override
-    protected void removeDecoder(ChannelHandlerContext channelHandlerContext) {
+    protected void removeDecoder(ChannelHandlerContext ctx) {
         this.codec.removeInboundHandler();
     }
 
@@ -133,7 +120,7 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
 
         // Proxy is expected to have authentication requirements, attempt to authenticate.
         if (challengeHandler != null) {
-            String authorizationHeader = createAuthorizationHeader(ctx.channel());
+            String authorizationHeader = createAuthorizationHeader();
 
             if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
                 request.headers().set(PROXY_AUTHORIZATION, authorizationHeader);
@@ -144,11 +131,7 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
         return request;
     }
 
-    private String createAuthorizationHeader(Channel channel) {
-        String method = channel.attr(REQUEST_METHOD_KEY).get();
-        String uri = channel.attr(REQUEST_URI_KEY).get();
-        Supplier<byte[]> entityBodySupplier = channel.attr(REQUEST_ENTITY_BODY_KEY).get();
-
+    private String createAuthorizationHeader() {
         /*
          * Attempt to pipeline the request.
          *
@@ -157,7 +140,8 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
          * This may fail and result in the server requesting authentication by returning a proxy authentication
          * challenge.
          */
-        String authorizationHeader = challengeHandler.attemptToPipelineAuthorization(method, uri, entityBodySupplier);
+        String authorizationHeader = challengeHandler.attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH,
+            PROXY_ENTITY_BODY);
 
         if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
             return authorizationHeader;
@@ -174,7 +158,8 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
             // Attempt to apply digest challenges, these are preferred over basic authorization.
             List<Map<String, String>> digestChallenges = proxyChallengeHolder.getDigestChallenges();
             if (!CoreUtils.isNullOrEmpty(digestChallenges)) {
-                authorizationHeader = challengeHandler.handleDigest(method, uri, digestChallenges, entityBodySupplier);
+                authorizationHeader = challengeHandler.handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges,
+                    PROXY_ENTITY_BODY);
             }
 
             // If digest challenges exist or all failed attempt to use basic authorization.
@@ -187,15 +172,9 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
     }
 
     @Override
-    protected boolean handleResponse(ChannelHandlerContext ctx, Object o) throws Exception{
+    protected boolean handleResponse(ChannelHandlerContext ctx, Object o) {
         if (o instanceof HttpResponse) {
-            if (status != null) {
-                throw new HttpProxyHandler.HttpProxyConnectException(exceptionMessage("too many responses"), null);
-            }
-
             HttpResponse response = (HttpResponse) o;
-            this.status = response.status();
-            this.inboundHeaders = response.headers();
 
             if (response.status().code() == 407) {
                 proxyChallengeHolderReference.set(extractChallengesFromHeaders(response.headers()));
@@ -205,19 +184,7 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
             }
         }
 
-        boolean finished = o instanceof LastHttpContent;
-        if (finished) {
-            if (status == null) {
-                throw new HttpProxyHandler.HttpProxyConnectException(exceptionMessage("missing response"),
-                    inboundHeaders);
-            }
-            if (status.code() != 200) {
-                throw new HttpProxyHandler.HttpProxyConnectException(exceptionMessage("status: " + status),
-                    inboundHeaders);
-            }
-        }
-
-        return finished;
+        return o instanceof LastHttpContent;
     }
 
     private static ChallengeHolder extractChallengesFromHeaders(HttpHeaders headers) {

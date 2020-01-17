@@ -465,10 +465,10 @@ public class AuthorizationChallengeHandler {
             .append("realm=\"").append(realm).append("\", ")
             .append("nonce=\"").append(nonce).append("\", ")
             .append("uri=\"").append(uri).append("\", ")
-            .append("response=\"").append(response);
+            .append("response=\"").append(response).append("\"");
 
         if (!CoreUtils.isNullOrEmpty(algorithm)) {
-            authorizationBuilder.append(", ").append("algorithm=").append(algorithm).append("\"");
+            authorizationBuilder.append(", ").append("algorithm=").append(algorithm);
         }
 
         if (!CoreUtils.isNullOrEmpty(cnonce)) {

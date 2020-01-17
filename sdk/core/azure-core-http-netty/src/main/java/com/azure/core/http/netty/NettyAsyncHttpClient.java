@@ -9,7 +9,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.implementation.ProxyAuthenticationHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelInitializer;
@@ -35,11 +34,11 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 /**
- * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of
- * this class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API
- * for features such as {@link NettyAsyncHttpClientBuilder#nioEventLoopGroup(NioEventLoopGroup) thread pooling},
- * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
- * {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
+ * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of this
+ * class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API for
+ * features such as {@link NettyAsyncHttpClientBuilder#nioEventLoopGroup(NioEventLoopGroup) thread pooling}, {@link
+ * NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping}, {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions)
+ * setProxy configuration}, and much more.
  *
  * @see HttpClient
  * @see NettyAsyncHttpClientBuilder
@@ -69,7 +68,9 @@ class NettyAsyncHttpClient implements HttpClient {
         this.proxyHandlerSupplier = proxyHandlerSupplier;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<HttpResponse> send(final HttpRequest request) {
         Objects.requireNonNull(request.getHttpMethod(), "'request.getHttpMethod()' cannot be null.");
@@ -77,7 +78,7 @@ class NettyAsyncHttpClient implements HttpClient {
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
 
         return nettyClient
-            .tcpConfiguration(tcpClient -> configureTcpClient(tcpClient, request))
+            .tcpConfiguration(this::configureTcpClient)
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
@@ -85,30 +86,21 @@ class NettyAsyncHttpClient implements HttpClient {
             .single();
     }
 
-    private TcpClient configureTcpClient(TcpClient tcpClient, HttpRequest request) {
+    private TcpClient configureTcpClient(TcpClient tcpClient) {
         if (eventLoopGroup != null) {
             tcpClient = tcpClient.runOn(eventLoopGroup);
         }
 
         ProxyHandler proxyHandler = proxyHandlerSupplier.get();
         if (proxyHandler != null) {
-            tcpClient = tcpClient.bootstrap(bootstrap -> {
-                return bootstrap.attr(ProxyAuthenticationHandler.REQUEST_METHOD_KEY, request.getHttpMethod().name())
-                    .attr(ProxyAuthenticationHandler.REQUEST_URI_KEY, request.getUrl().getPath())
-                    .attr(ProxyAuthenticationHandler.REQUEST_ENTITY_BODY_KEY, null)
-                    .handler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel ch) {
-                            ch.pipeline().addFirst(NettyPipeline.ProxyHandler, proxyHandler);
-                        }
-                    });
-
-//                return BootstrapHandlers.updateConfiguration(bootstrap, NettyPipeline.ProxyHandler,
-//                    (connectionObserver, channel) ->
-//                        channel.pipeline().addFirst(NettyPipeline.ProxyHandler, proxyHandler));
-            });
+            tcpClient = tcpClient.bootstrap(bootstrap ->
+                bootstrap.handler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel ch) {
+                        ch.pipeline().addFirst(NettyPipeline.ProxyHandler, proxyHandler);
+                    }
+                }));
         }
-
 
         return tcpClient;
     }
@@ -153,7 +145,7 @@ class NettyAsyncHttpClient implements HttpClient {
         private final Connection reactorNettyConnection;
 
         ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
-                                 HttpRequest httpRequest) {
+            HttpRequest httpRequest) {
             super(httpRequest);
             this.reactorNettyResponse = reactorNettyResponse;
             this.reactorNettyConnection = reactorNettyConnection;
