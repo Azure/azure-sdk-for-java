@@ -94,8 +94,8 @@ class ReactorSender implements AmqpSendLink {
     private volatile int maxMessageSize;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
-            TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, AmqpRetryPolicy retry,
-            int maxMessageSize) {
+        TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, AmqpRetryPolicy retry,
+        int maxMessageSize) {
         this.entityPath = entityPath;
         this.sender = sender;
         this.handler = handler;
@@ -283,17 +283,15 @@ class ReactorSender implements AmqpSendLink {
     }
 
     private Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat) {
-        Mono<Void> sendWorkItem = Mono.create(sink -> {
-            send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout));
-        });
-
         if (hasConnected.get()) {
-            return sendWorkItem;
+            return Mono.create(sink -> send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout)));
         } else {
             return RetryUtil.withRetry(
                 handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE),
                 timeout, retry)
-                .then(sendWorkItem);
+                .then(Mono.create(sink -> {
+                    send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout));
+                }));
         }
     }
 
@@ -384,8 +382,8 @@ class ReactorSender implements AmqpSendLink {
                     "Entity(%s): send operation failed. Please see cause for more details", entityPath),
                     sendException, context)
                     : new OperationCancelledException(String.format(Locale.US,
-                    "Entity(%s): send operation failed while advancing delivery(tag: %s).",
-                    entityPath, deliveryTag), context);
+                        "Entity(%s): send operation failed while advancing delivery(tag: %s).",
+                        entityPath, deliveryTag), context);
 
                 workItem.getSink().error(exception);
             }
