@@ -290,8 +290,8 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
             createDocumentObservable.single() // Converts the observable to a single observable
                     .block(); // Blocks and gets the result
             Assert.fail("Document Already Exists. Document Creation must fail");
-        } catch (Exception e) {
-            assertThat("Document already exists.", ((CosmosClientException) e.getCause()).getStatusCode(),
+        } catch (CosmosClientException e) {
+            assertThat("Document already exists.", e.getStatusCode(),
                        equalTo(409));
         }
     }

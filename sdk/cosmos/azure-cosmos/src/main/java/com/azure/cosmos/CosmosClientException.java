@@ -5,18 +5,18 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.apache.commons.lang3.StringUtils;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * This class defines a custom exception type for all operations on
- * DocumentClient in the Azure Cosmos DB database service. Applications are
+ * CosmosClient in the Azure Cosmos DB database service. Applications are
  * expected to catch CosmosClientException and handle errors as appropriate when
- * calling methods on DocumentClient.
+ * calling methods on CosmosClient.
  * <p>
  * Errors coming from the service during normal execution are converted to
  * CosmosClientException before returning to the application with the following
@@ -28,13 +28,14 @@ import java.util.Map;
  * When a transport level error happens that request is not able to reach the
  * service, an IllegalStateException is thrown instead of CosmosClientException.
  */
-public class CosmosClientException extends Exception {
+public class CosmosClientException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     private final int statusCode;
     private final Map<String, String> responseHeaders;
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
+    private RequestTimeline requestTimeline;
     private CosmosError cosmosError;
 
     long lsn;
@@ -46,6 +47,7 @@ public class CosmosClientException extends Exception {
     CosmosClientException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
+        this.requestTimeline = RequestTimeline.empty();
         this.responseHeaders = responseHeaders == null ? new HashMap<>() : new HashMap<>(responseHeaders);
     }
 
@@ -245,6 +247,15 @@ public class CosmosClientException extends Exception {
 
     CosmosClientException setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
         this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
+        return this;
+    }
+
+    public RequestTimeline getRequestTimeline() {
+        return this.requestTimeline;
+    }
+
+    CosmosClientException setRequestTimeline(RequestTimeline requestTimeline) {
+        this.requestTimeline = requestTimeline;
         return this;
     }
 

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.RequestTimeline;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ public class StoreResponse {
     final private String content;
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
+    private RequestTimeline requestTimeline;
 
     public StoreResponse(int status, List<Entry<String, String>> headerEntries, InputStream inputStream) {
         this(status, headerEntries, null, inputStream);
@@ -36,9 +38,11 @@ public class StoreResponse {
 
     private StoreResponse(
             int status,
-            List<Entry<String, String>> headerEntries, 
+            List<Entry<String, String>> headerEntries,
             String content,
             InputStream inputStream) {
+
+        requestTimeline = RequestTimeline.empty();
         responseHeaderNames = new String[headerEntries.size()];
         responseHeaderValues = new String[headerEntries.size()];
 
@@ -112,8 +116,18 @@ public class StoreResponse {
         return cosmosResponseDiagnostics;
     }
 
-    void setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
+    StoreResponse setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
         this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
+        return this;
+    }
+
+    public RequestTimeline getRequestTimeline() {
+        return this.requestTimeline;
+    }
+
+    public StoreResponse setRequestTimeline(RequestTimeline requestTimeline) {
+        this.requestTimeline = requestTimeline;
+        return this;
     }
 
     int getSubStatusCode() {

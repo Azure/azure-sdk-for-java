@@ -19,7 +19,6 @@ import java.util.Map;
  */
 public final class ResourceResponse<T extends Resource> {
     private Class<T> cls;
-    private T resource;
     private RxDocumentServiceResponse response;
     private Map<String, Long> usageHeaders;
     private Map<String, Long> quotaHeaders;
@@ -29,7 +28,6 @@ public final class ResourceResponse<T extends Resource> {
         this.usageHeaders = new HashMap<String, Long>();
         this.quotaHeaders = new HashMap<String, Long>();
         this.cls = cls;
-        this.resource = this.response.getResource(this.cls);
     }
 
     /**
@@ -259,13 +257,17 @@ public final class ResourceResponse<T extends Resource> {
         return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE);
     }
 
+    public String getBodyAsString() {
+        return this.response.getReponseBodyAsString();
+    }
+
     /**
      * Gets the resource for the request.
      *
      * @return the resource.
      */
     public T getResource() {
-        return this.resource;
+        return this.response.getResource(cls);
     }
 
     /**

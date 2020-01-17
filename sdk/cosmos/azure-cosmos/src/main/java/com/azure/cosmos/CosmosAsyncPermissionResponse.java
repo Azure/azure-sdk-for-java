@@ -4,18 +4,21 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.ResourceResponse;
+import org.apache.commons.lang3.StringUtils;
 
 public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissionProperties> {
     private final CosmosAsyncPermission permissionClient;
 
     CosmosAsyncPermissionResponse(ResourceResponse<Permission> response, CosmosAsyncUser cosmosUser) {
         super(response);
-        if (response.getResource() == null) {
+        String bodyAsString = response.getBodyAsString();
+        if (StringUtils.isEmpty(bodyAsString)) {
             super.setProperties(null);
             permissionClient = null;
         } else {
-            super.setProperties(new CosmosPermissionProperties(response.getResource().toJson()));
-            permissionClient = new CosmosAsyncPermission(response.getResource().getId(), cosmosUser);
+            CosmosPermissionProperties props = new CosmosPermissionProperties(bodyAsString);
+            super.setProperties(props);
+            permissionClient = new CosmosAsyncPermission(props.getId(), cosmosUser);
         }
     }
 

@@ -200,7 +200,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     /**
-     * The {@link Channel} of the {@link ChannelHandlerContext} has fully consumed the most-recent message read
+     * The {@link Channel} of the {@link ChannelHandlerContext} has fully consumed the most-recent message read.
      * <p>
      * If {@link ChannelOption#AUTO_READ} is off, no further attempt to read inbound data from the current
      * {@link Channel} will be made until {@link ChannelHandlerContext#read} is called. This leaves time
@@ -485,15 +485,13 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         if (message instanceof RntbdRequestRecord) {
 
-            RntbdRequestRecord record = (RntbdRequestRecord) message;
+            final RntbdRequestRecord record = (RntbdRequestRecord) message;
             this.timestamps.channelWriteAttempted();
 
-            context.writeAndFlush(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
+            context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
+                record.stage(RntbdRequestRecord.Stage.SENT);
                 if (completed.isSuccess()) {
-                    record.stage(RntbdRequestRecord.Stage.SENT);
                     this.timestamps.channelWriteCompleted();
-                } else {
-                    record.stage(RntbdRequestRecord.Stage.UNSENT);
                 }
             });
 
@@ -502,7 +500,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         if (message == RntbdHealthCheckRequest.MESSAGE) {
 
-            context.writeAndFlush(RntbdHealthCheckRequest.MESSAGE, promise).addListener(completed -> {
+            context.write(RntbdHealthCheckRequest.MESSAGE, promise).addListener(completed -> {
                 if (completed.isSuccess()) {
                     this.timestamps.channelPingCompleted();
                 }
@@ -562,7 +560,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         return this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
 
             reportIssueUnless(current == null, context, "id: {}, current: {}, request: {}", record);
-            record.stage(RntbdRequestRecord.Stage.QUEUED);
 
             final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
 
@@ -581,7 +578,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 pendingRequestTimeout.cancel();
             });
 
-            return record.stage(RntbdRequestRecord.Stage.QUEUED);
+            return record;
 
         }).args();
     }
@@ -698,6 +695,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             logger.debug("response {} ignored because its requestRecord is missing: {}", transportRequestId, response);
             return;
         }
+
+        requestRecord.stage(RntbdRequestRecord.Stage.RECEIVED);
 
         final HttpResponseStatus status = response.getStatus();
         final UUID activityId = response.getActivityId();
@@ -845,7 +844,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     private void traceOperation(final ChannelHandlerContext context, final String operationName, final Object... args) {
-        logger.trace("{}\n{}\n{}", operationName, context, args);
+        logger.debug("{}\n{}\n{}", operationName, context, args);
     }
 
     // endregion

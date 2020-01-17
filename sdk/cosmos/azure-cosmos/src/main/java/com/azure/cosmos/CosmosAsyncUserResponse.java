@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.User;
+import org.apache.commons.lang3.StringUtils;
 
 public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties> {
     @SuppressWarnings("EnforceFinalFields")
@@ -12,12 +13,14 @@ public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties
 
     CosmosAsyncUserResponse(ResourceResponse<User> response, CosmosAsyncDatabase database) {
         super(response);
-        if (response.getResource() == null) {
+        String bodyAsString = response.getBodyAsString();
+        if (StringUtils.isEmpty(bodyAsString)) {
             super.setProperties(null);
-            this.user = null;
+            user = null;
         } else {
-            super.setProperties(new CosmosUserProperties(response));
-            this.user = new CosmosAsyncUser(this.getProperties().getId(), database);
+            CosmosUserProperties props = new CosmosUserProperties(bodyAsString);
+            super.setProperties(props);
+            user = new CosmosAsyncUser(props.getId(), database);
         }
     }
 

@@ -54,8 +54,15 @@ class Configuration {
     @Parameter(names = "-documentDataFieldSize", description = "Length of a document data field in characters (16-bit)")
     private int documentDataFieldSize = 20;
 
+    @Parameter(names = "-documentDataFieldCount", description = "Number of data fields in document")
+    private int documentDataFieldCount = 5;
+
     @Parameter(names = "-maxConnectionPoolSize", description = "Max Connection Pool Size")
     private Integer maxConnectionPoolSize = 1000;
+
+    @Parameter(names = "-disablePassingPartitionKeyAsOptionOnWrite", description = "Disables passing partition in request options for write operation;" +
+        " in this case, json will be parsed and partition key will be extracted (this requires more computational overhead).")
+    private boolean disablePassingPartitionKeyAsOptionOnWrite = false;
 
     @Parameter(names = "-consistencyLevel", description = "Consistency Level", converter = ConsistencyLevelConverter.class)
     private ConsistencyLevel consistencyLevel = ConsistencyLevel.SESSION;
@@ -114,6 +121,9 @@ class Configuration {
 
     @Parameter(names = "-numberOfPreCreatedDocuments", description = "Total NUMBER Of Documents To pre create for a read workload to use")
     private int numberOfPreCreatedDocuments = 1000;
+
+    @Parameter(names = "-useSync", description = "Uses Sync API")
+    private boolean useSync = false;
 
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
@@ -192,6 +202,15 @@ class Configuration {
         }
     }
 
+
+    boolean isDisablePassingPartitionKeyAsOptionOnWrite() {
+        return disablePassingPartitionKeyAsOptionOnWrite;
+    }
+
+    boolean isSync() {
+        return useSync;
+    }
+
     Duration getMaxRunningTimeDuration() {
         return maxRunningTimeDuration;
     }
@@ -218,6 +237,10 @@ class Configuration {
 
     int getDocumentDataFieldSize() {
         return documentDataFieldSize;
+    }
+
+    int getDocumentDataFieldCount() {
+        return documentDataFieldCount;
     }
 
     ConnectionPolicy getConnectionPolicy() {

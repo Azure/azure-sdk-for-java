@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Represents a CosmosAsyncDatabase in the Azure Cosmos database service. A cosmos database manages users, 
+ * Represents a CosmosAsyncDatabase in the Azure Cosmos database service. A cosmos database manages users,
  * permissions and a set of containers
  * <p>
  * Each Azure Cosmos DB Service is able to support multiple independent named databases, with the database being the
@@ -29,8 +29,8 @@ public class CosmosDatabaseProperties extends Resource {
         super.setId(id);
     }
 
-    CosmosDatabaseProperties(ResourceResponse<Database> response) {
-        super(response.getResource().toJson());
+    CosmosDatabaseProperties(String jsonString, String dummy) {
+        super(jsonString);
     }
 
     // Converting document collection to CosmosContainerProperties
