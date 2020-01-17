@@ -38,8 +38,7 @@ public class ReactorConnection implements AmqpConnection {
     private static final String CBS_LINK_NAME = "cbs";
 
     private final ClientLogger logger = new ClientLogger(ReactorConnection.class);
-    private final ConcurrentMap<String, AmqpSession> sessionMap = new ConcurrentHashMap<>();
-    private final ConcurrentMap<String, Disposable> sessionSubscriptions = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, SessionSubscription> sessionMap = new ConcurrentHashMap<>();
 
     private final AtomicBoolean hasConnection = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -187,33 +186,33 @@ public class ReactorConnection implements AmqpConnection {
                 "connectionId[%s]: Connection is disposed. Cannot create session '%s'.", connectionId, sessionName)));
         }
 
-        final AmqpSession existingSession = sessionMap.get(sessionName);
-        if (existingSession != null) {
-            return Mono.just(existingSession);
+        final SessionSubscription existing = sessionMap.get(sessionName);
+        if (existing != null) {
+            return Mono.just(existing.getSession());
         }
 
         return connectionMono.map(connection -> {
-            return sessionMap.computeIfAbsent(sessionName, key -> {
+            final SessionSubscription sessionSubscription = sessionMap.computeIfAbsent(sessionName, key -> {
                 final SessionHandler handler = handlerProvider.createSessionHandler(connectionId,
-                    getFullyQualifiedNamespace(), sessionName, connectionOptions.getRetry().getTryTimeout());
+                    getFullyQualifiedNamespace(), key, connectionOptions.getRetry().getTryTimeout());
                 final Session session = connection.session();
 
                 BaseHandler.setHandler(session, handler);
-                final AmqpSession amqpSession = createSession(sessionName, session, handler);
-
-                sessionSubscriptions.computeIfAbsent(sessionName, s -> {
-                    return amqpSession.getEndpointStates().subscribe(state -> {
+                final AmqpSession amqpSession = createSession(key, session, handler);
+                final Disposable subscription = amqpSession.getEndpointStates()
+                    .subscribe(state -> {
                     }, error -> {
                         logger.info("sessionName[{}]: Error occurred. Removing and disposing session.", error);
-                        sessionSubscriptions.remove(sessionName);
+                        removeSession(key);
                     }, () -> {
                         logger.info("sessionName[{}]: Complete. Removing and disposing session.");
-                        sessionSubscriptions.remove(sessionName);
+                        removeSession(key);
                     });
-                });
 
-                return amqpSession;
+                return new SessionSubscription(amqpSession, subscription);
             });
+
+            return sessionSubscription.getSession();
         });
     }
 
@@ -241,14 +240,9 @@ public class ReactorConnection implements AmqpConnection {
             return false;
         }
 
-        final AmqpSession removed = sessionMap.remove(sessionName);
+        final SessionSubscription removed = sessionMap.remove(sessionName);
 
         if (removed != null) {
-            final Disposable subscription = sessionSubscriptions.remove(removed.getSessionName());
-            if (subscription != null) {
-                subscription.dispose();
-            }
-
             removed.dispose();
         }
 
@@ -376,6 +370,35 @@ public class ReactorConnection implements AmqpConnection {
             }
 
             dispose();
+        }
+    }
+
+    private static final class SessionSubscription implements Disposable {
+        private final AtomicBoolean isDisposed = new AtomicBoolean();
+        private final AmqpSession session;
+        private final Disposable subscription;
+
+        private SessionSubscription(AmqpSession session, Disposable subscription) {
+            this.session = session;
+            this.subscription = subscription;
+        }
+
+        public Disposable getSubscription() {
+            return subscription;
+        }
+
+        public AmqpSession getSession() {
+            return session;
+        }
+
+        @Override
+        public void dispose() {
+            if (isDisposed.getAndSet(true)) {
+                return;
+            }
+
+            subscription.dispose();
+            session.dispose();
         }
     }
 }
