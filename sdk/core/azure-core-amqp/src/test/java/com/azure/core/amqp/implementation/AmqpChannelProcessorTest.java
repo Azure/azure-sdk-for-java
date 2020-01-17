@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
-import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -42,9 +41,6 @@ class AmqpChannelProcessorTest {
 
     @Mock
     private AmqpRetryPolicy retryPolicy;
-    @Mock
-    private Disposable parentConnection;
-
     private AmqpChannelProcessor<TestObject> channelProcessor;
 
     @BeforeAll
@@ -63,7 +59,7 @@ class AmqpChannelProcessorTest {
 
         channelProcessor = new AmqpChannelProcessor<>("connection-test", "test-path",
             TestObject::getStates, retryPolicy,
-            new ClientLogger(AmqpChannelProcessor.class + "<TestObject>"), parentConnection);
+            new ClientLogger(AmqpChannelProcessor.class + "<TestObject>"));
     }
 
     /**
@@ -255,31 +251,6 @@ class AmqpChannelProcessorTest {
         Assertions.assertThrows(NullPointerException.class, () -> channelProcessor.onNext(null));
 
         Assertions.assertThrows(NullPointerException.class, () -> channelProcessor.onError(null));
-    }
-
-    @Test
-    void doesNotRequestWhenParentTerminated() {
-        // Arrange
-        final AmqpChannelProcessor<TestObject> processor = createSink(connection1, connection2)
-            .subscribeWith(channelProcessor);
-        final FluxSink<AmqpEndpointState> endpointSink = connection1.getSink();
-
-        // Act & Assert
-        // Verify that we get the first connection.
-        StepVerifier.create(processor)
-            .then(() -> endpointSink.next(AmqpEndpointState.ACTIVE))
-            .expectNext(connection1)
-            .expectComplete()
-            .verify();
-
-        when(parentConnection.isDisposed()).thenReturn(true);
-
-        // The parent connection should be disposed now. We'll complete normally.
-
-        // Verify that it completes without emitting a connection.
-        StepVerifier.create(processor)
-            .expectComplete()
-            .verify();
     }
 
     private static Flux<TestObject> createSink(TestObject... connections) {
