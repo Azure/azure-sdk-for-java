@@ -298,11 +298,15 @@ public class ReactorConnection implements AmqpConnection {
      */
     protected Mono<RequestResponseChannel> createRequestResponseChannel(String sessionName, String linkName,
         String entityPath) {
-        return createSession(sessionName)
+        final Flux<RequestResponseChannel> createChannel = createSession(sessionName)
             .cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(getId(), getFullyQualifiedNamespace(), linkName,
                 entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
-                messageSerializer));
+                messageSerializer)).repeat();
+
+        return createChannel.subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
+            channel -> channel.getEndpointStates(), retryPolicy,
+            new ClientLogger(RequestResponseChannel.class + "<" + sessionName + ">")));
     }
 
     private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {

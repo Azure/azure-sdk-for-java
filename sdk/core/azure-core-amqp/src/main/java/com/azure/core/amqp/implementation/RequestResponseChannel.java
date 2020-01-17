@@ -165,7 +165,7 @@ public class RequestResponseChannel implements Disposable {
 
     @Override
     public boolean isDisposed() {
-        return !isDisposed.get();
+        return isDisposed.get();
     }
 
     /**
