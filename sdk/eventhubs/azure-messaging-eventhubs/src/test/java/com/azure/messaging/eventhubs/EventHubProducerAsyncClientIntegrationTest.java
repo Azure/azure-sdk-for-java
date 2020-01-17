@@ -5,21 +5,15 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -27,7 +21,6 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
 
     private EventHubProducerAsyncClient producer;
-    private EventHubConsumerAsyncClient consumer;
 
     EventHubProducerAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubProducerAsyncClientIntegrationTest.class));
@@ -43,7 +36,7 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        dispose(producer, consumer);
+        dispose(producer);
     }
 
     /**
@@ -200,93 +193,6 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
                 .verify(TIMEOUT);
         } finally {
             dispose(client);
-        }
-    }
-
-    @Disabled("Testing long running operations and disconnections.")
-    @Test
-    void twoConsumersAndSender() throws InterruptedException {
-        final EventPosition firstPosition = EventPosition.fromEnqueuedTime(Instant.now());
-
-        consumer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .retry(RETRY_OPTIONS)
-            .buildAsyncConsumerClient();
-
-        consumer.receiveFromPartition("0", firstPosition)
-            .subscribe(event -> {
-                logger.info("[#0]: [{}]: {}", event.getData().getEnqueuedTime(), event.getData().getSequenceNumber());
-            }, error -> {
-                    logger.error("Exception occurred in receive.", error);
-                }, () -> logger.info("Completed receiving."));
-
-        consumer.receiveFromPartition("1", firstPosition)
-            .subscribe(event -> {
-                logger.info("[#1]: [{}]: {}", event.getData().getEnqueuedTime(), event.getData().getSequenceNumber());
-            }, error -> {
-                    logger.error("Exception occurred in receive.", error);
-                }, () -> logger.info("Completed receiving."));
-
-        Flux.interval(Duration.ofSeconds(5))
-            .flatMap(position -> producer.createBatch().flatMap(batch -> {
-                IntStream.range(0, 3).mapToObj(number -> new EventData("Position" + position + ": " + number))
-                    .forEach(event -> {
-                        if (!batch.tryAdd(event)) {
-                            logger.error("Could not add event. Size: {}. Max: {}. Content: {}",
-                                batch.getSizeInBytes(), batch.getMaxSizeInBytes(), event.getBodyAsString());
-                        }
-                    });
-
-                return producer.send(batch).thenReturn(Instant.now());
-            }))
-            .subscribe(instant -> {
-                System.out.println("Sent batch at: " + instant);
-            }, error -> {
-                    logger.error("Error sending batch: ", error);
-                }, () -> {
-                    logger.info("Complete.");
-                });
-
-        System.out.println("Sleeping while performing work.");
-        TimeUnit.MINUTES.sleep(30);
-        System.out.println("Complete.");
-    }
-
-    @Disabled("Testing idle/long running operations.")
-    @Test
-    void idleSenders() throws InterruptedException {
-        EventHubProducerAsyncClient idleProducer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .buildAsyncProducerClient();
-        try {
-            for (int i = 0; i < 10; i++) {
-                System.out.println("Iteration: " + i);
-
-                idleProducer.createBatch().flatMap(batch -> {
-                    IntStream.range(0, 3).mapToObj(number -> new EventData("Number : " + number))
-                        .forEach(event -> {
-                            if (!batch.tryAdd(event)) {
-                                logger.error("Could not add event. Size: {}. Max: {}. Content: {}",
-                                    batch.getSizeInBytes(), batch.getMaxSizeInBytes(), event.getBodyAsString());
-                            }
-                        });
-
-                    return idleProducer.send(batch).thenReturn(Instant.now());
-                }).subscribe(instant -> {
-                    System.out.println("Sent batch at: " + instant);
-                }, error -> {
-                        logger.error("Error sending batch: ", error);
-                    }, () -> {
-                        logger.info("Complete.");
-                    });
-
-                System.out.println("Sleeping 40 mins.");
-                TimeUnit.MINUTES.sleep(40);
-                System.out.println("Complete.");
-            }
-        } finally {
-            idleProducer.close();
         }
     }
 }
