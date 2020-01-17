@@ -46,16 +46,16 @@ class LongRunningTest extends IntegrationTestBase {
                     logger.info("[#0]: [{}]: {}", event.getData().getEnqueuedTime(),
                         event.getData().getSequenceNumber());
                 }, error -> {
-                    logger.error("Exception occurred in receive.", error);
-                }, () -> logger.info("Completed receiving."));
+                        logger.error("Exception occurred in receive.", error);
+                    }, () -> logger.info("Completed receiving."));
 
             consumer.receiveFromPartition("1", firstPosition)
                 .subscribe(event -> {
                     logger.info("[#1]: [{}]: {}", event.getData().getEnqueuedTime(),
                         event.getData().getSequenceNumber());
                 }, error -> {
-                    logger.error("Exception occurred in receive.", error);
-                }, () -> logger.info("Completed receiving."));
+                        logger.error("Exception occurred in receive.", error);
+                    }, () -> logger.info("Completed receiving."));
 
             Flux.interval(Duration.ofSeconds(1))
                 .flatMap(position -> producer.createBatch().flatMap(batch -> {
@@ -84,7 +84,6 @@ class LongRunningTest extends IntegrationTestBase {
             producer.close();
             consumer.close();
         }
-
     }
 
     @Disabled("Testing idle clients. Connections are timed out at 30 mins.")
@@ -109,10 +108,10 @@ class LongRunningTest extends IntegrationTestBase {
                 }).subscribe(instant -> {
                     System.out.println("Sent batch at: " + instant);
                 }, error -> {
-                    logger.error("Error sending batch: ", error);
-                }, () -> {
-                    logger.info("Complete.");
-                });
+                        logger.error("Error sending batch: ", error);
+                    }, () -> {
+                        logger.info("Complete.");
+                    });
 
                 System.out.println("Sleeping 40 mins.");
                 TimeUnit.MINUTES.sleep(40);
@@ -136,9 +135,7 @@ class LongRunningTest extends IntegrationTestBase {
                         properties.getName(),
                         String.join(",", properties.getPartitionIds()),
                         Instant.now());
-                }, error -> {
-                    System.err.println("Error receiving ids: " + error);
-                });
+                }, error -> System.err.println("Error receiving ids: " + error));
 
                 idleProducer.createBatch().flatMap(batch -> {
                     IntStream.range(0, 3).mapToObj(number -> new EventData("Number : " + number))
@@ -152,9 +149,7 @@ class LongRunningTest extends IntegrationTestBase {
                     return idleProducer.send(batch).thenReturn(Instant.now());
                 }).subscribe(instant -> {
                     System.out.println("Sent batch at: " + instant);
-                }, error -> {
-                    System.err.println("Error sending batch: " + error);
-                });
+                }, error -> System.err.println("Error sending batch: " + error));
 
                 System.out.println("Sleeping 15 mins.");
                 TimeUnit.MINUTES.sleep(15);
@@ -184,10 +179,10 @@ class LongRunningTest extends IntegrationTestBase {
                 .subscribe(partitionIds -> {
                     System.out.printf("Ids %s: {%s}%n", Instant.now(), String.join(",", partitionIds));
                 }, error -> {
-                    logger.error("Error fetching info.", error);
-                }, () -> {
-                    logger.info("Complete.");
-                });
+                        logger.error("Error fetching info.", error);
+                    }, () -> {
+                        logger.info("Complete.");
+                    });
             Flux.interval(Duration.ofSeconds(5))
                 .flatMap(position -> producer.createBatch(options).flatMap(batch -> {
                     IntStream.range(0, 3).mapToObj(number -> new EventData("Position" + position + ": " + number))
@@ -203,10 +198,10 @@ class LongRunningTest extends IntegrationTestBase {
                 .subscribe(instant -> {
                     System.out.println("---- Sent batch at: " + instant);
                 }, error -> {
-                    logger.error("---- Error sending batch: ", error);
-                }, () -> {
-                    logger.info("---- Complete.");
-                });
+                        logger.error("---- Error sending batch: ", error);
+                    }, () -> {
+                        logger.info("---- Complete.");
+                    });
 
             System.out.println("Sleeping while performing work.");
             TimeUnit.MINUTES.sleep(30);
@@ -215,6 +210,5 @@ class LongRunningTest extends IntegrationTestBase {
             client.close();
             producer.close();
         }
-
     }
 }
