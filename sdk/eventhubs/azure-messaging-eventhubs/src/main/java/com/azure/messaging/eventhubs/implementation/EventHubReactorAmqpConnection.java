@@ -123,7 +123,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     @Override
     public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
         ReceiveOptions options) {
-        return createSession(entityPath).cast(EventHubSession.class)
+        return createSession(linkName).cast(EventHubSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
