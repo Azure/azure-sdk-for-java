@@ -17,6 +17,7 @@ import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.appconfiguration.v2019_02_01_preview.ConfigurationStoreUpdateParameters;
 import com.microsoft.azure.management.appconfiguration.v2019_02_01_preview.ErrorException;
+import com.microsoft.azure.management.appconfiguration.v2019_02_01_preview.ListKeyValueParameters;
 import com.microsoft.azure.management.appconfiguration.v2019_02_01_preview.RegenerateKeyParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -111,6 +112,10 @@ public class ConfigurationStoresInner implements InnerSupportsGet<ConfigurationS
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appconfiguration.v2019_02_01_preview.ConfigurationStores regenerateKey" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/RegenerateKey")
         Observable<Response<ResponseBody>> regenerateKey(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("configStoreName") String configStoreName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RegenerateKeyParameters regenerateKeyParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appconfiguration.v2019_02_01_preview.ConfigurationStores listKeyValue" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/listKeyValue")
+        Observable<Response<ResponseBody>> listKeyValue(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("configStoreName") String configStoreName, @Query("api-version") String apiVersion, @Body ListKeyValueParameters listKeyValueParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appconfiguration.v2019_02_01_preview.ConfigurationStores listNext" })
         @GET
@@ -1568,6 +1573,100 @@ public class ConfigurationStoresInner implements InnerSupportsGet<ConfigurationS
     private ServiceResponse<ApiKeyInner> regenerateKeyDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ApiKeyInner, ErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ApiKeyInner>() { }.getType())
+                .registerError(ErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists a configuration store key-value.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param listKeyValueParameters The parameters for retrieving a key-value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the KeyValueInner object if successful.
+     */
+    public KeyValueInner listKeyValue(String resourceGroupName, String configStoreName, ListKeyValueParameters listKeyValueParameters) {
+        return listKeyValueWithServiceResponseAsync(resourceGroupName, configStoreName, listKeyValueParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Lists a configuration store key-value.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param listKeyValueParameters The parameters for retrieving a key-value.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<KeyValueInner> listKeyValueAsync(String resourceGroupName, String configStoreName, ListKeyValueParameters listKeyValueParameters, final ServiceCallback<KeyValueInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listKeyValueWithServiceResponseAsync(resourceGroupName, configStoreName, listKeyValueParameters), serviceCallback);
+    }
+
+    /**
+     * Lists a configuration store key-value.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param listKeyValueParameters The parameters for retrieving a key-value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyValueInner object
+     */
+    public Observable<KeyValueInner> listKeyValueAsync(String resourceGroupName, String configStoreName, ListKeyValueParameters listKeyValueParameters) {
+        return listKeyValueWithServiceResponseAsync(resourceGroupName, configStoreName, listKeyValueParameters).map(new Func1<ServiceResponse<KeyValueInner>, KeyValueInner>() {
+            @Override
+            public KeyValueInner call(ServiceResponse<KeyValueInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists a configuration store key-value.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param listKeyValueParameters The parameters for retrieving a key-value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyValueInner object
+     */
+    public Observable<ServiceResponse<KeyValueInner>> listKeyValueWithServiceResponseAsync(String resourceGroupName, String configStoreName, ListKeyValueParameters listKeyValueParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (configStoreName == null) {
+            throw new IllegalArgumentException("Parameter configStoreName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (listKeyValueParameters == null) {
+            throw new IllegalArgumentException("Parameter listKeyValueParameters is required and cannot be null.");
+        }
+        Validator.validate(listKeyValueParameters);
+        return service.listKeyValue(this.client.subscriptionId(), resourceGroupName, configStoreName, this.client.apiVersion(), listKeyValueParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyValueInner>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyValueInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyValueInner> clientResponse = listKeyValueDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<KeyValueInner> listKeyValueDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<KeyValueInner, ErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<KeyValueInner>() { }.getType())
                 .registerError(ErrorException.class)
                 .build(response);
     }
