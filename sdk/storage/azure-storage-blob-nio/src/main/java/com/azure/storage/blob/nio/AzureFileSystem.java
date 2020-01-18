@@ -112,6 +112,7 @@ public final class AzureFileSystem extends FileSystem {
     private final Integer blockSize;
     private final Integer downloadResumeRetries;
     private final Map<String, FileStore> fileStores;
+    private FileStore defaultFileStore;
     private boolean closed;
 
     AzureFileSystem(AzureFileSystemProvider parentFileSystemProvider, String accountName, Map<String, ?> config)
@@ -304,9 +305,29 @@ public final class AzureFileSystem extends FileSystem {
 
         Map<String, FileStore> fileStores = new HashMap<>();
         for (String fileStoreName : fileStoreNames.split(",")) {
-            fileStores.put(fileStoreName, new AzureFileStore(this, fileStoreName));
+            FileStore fs = new AzureFileStore(this, fileStoreName);
+            if (this.defaultFileStore == null) {
+                this.defaultFileStore = fs;
+            }
+            fileStores.put(fileStoreName, fs);
         }
-
         return fileStores;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AzureFileSystem that = (AzureFileSystem) o;
+        return Objects.equals(this.getFileSystemName(), that.getFileSystemName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getFileSystemName());
+    }
+
+    Path getDefaultDirectory() {
+        return this.getPath(this.defaultFileStore.name() + ":");
     }
 }

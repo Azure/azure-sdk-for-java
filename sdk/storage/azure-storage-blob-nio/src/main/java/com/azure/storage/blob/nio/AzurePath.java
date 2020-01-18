@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.InvalidPathException;
@@ -18,7 +19,11 @@ import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Stack;
 
 /**
@@ -57,6 +62,8 @@ public final class AzurePath implements Path {
     }
 
     /**
+     * An path is considered absolute in this file system if it contains a root element.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -65,6 +72,8 @@ public final class AzurePath implements Path {
     }
 
     /**
+     * The root component of this path also identifies the Azure Storage Container in which the file is stored.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -164,6 +173,9 @@ public final class AzurePath implements Path {
     }
 
     /**
+     * In this implementation, a root component starts with another root component if the two root components are
+     * equivalent strings. In other words, if the files are stored in the same container.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -177,7 +189,7 @@ public final class AzurePath implements Path {
         }
 
         String[] thisPathElements = this.splitToElements();
-        String[] otherPathElements = ((AzurePath) path).pathString.split(this.parentFileSystem.getSeparator());
+        String[] otherPathElements = ((AzurePath) path).splitToElements();
         if (otherPathElements.length > thisPathElements.length) {
             return false;
         }
@@ -199,6 +211,9 @@ public final class AzurePath implements Path {
     }
 
     /**
+     * In this implementation, a root component ends with another root component if the two root components are
+     * equivalent strings. In other words, if the files are stored in the same container.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -238,11 +253,13 @@ public final class AzurePath implements Path {
     }
 
     /**
+     * This file system follows the standard practice mentioned in the original docs.
+     *
      * {@inheritDoc}
      */
     @Override
     public Path normalize() {
-        Stack<String> stack = new Stack<>();
+        Deque<String> stack = new ArrayDeque<>();
         String[] pathElements = this.splitToElements();
         Path root = this.getRoot();
         String rootStr = root == null ? null : root.toString();
@@ -253,31 +270,33 @@ public final class AzurePath implements Path {
             } else if (element.equals("..")) {
                 if (rootStr != null) {
                     // Root path. We never push "..".
-                    if (stack.peek().equals(rootStr)) {
+                    if (stack.peekLast().equals(rootStr)) {
                         // Cannot go higher than root. Ignore.
                         continue;
                     } else {
-                        stack.pop();
+                        stack.removeLast();
                     }
                 } else {
                     // Relative paths can have an arbitrary number of ".." at the beginning.
-                    if (stack.empty()) {
-                        stack.push(element);
+                    if (stack.isEmpty()) {
+                        stack.addLast(element);
                     } else if (stack.peek().equals("..")) {
-                        stack.push(element);
+                        stack.addLast(element);
                     } else {
-                        stack.pop();
+                        stack.removeLast();
                     }
                 }
             } else {
-                stack.push(element);
+                stack.addLast(element);
             }
         }
 
-        return this.parentFileSystem.getPath(String.join(this.parentFileSystem.getSeparator(), stack));
+        return this.parentFileSystem.getPath("", (String[])stack.toArray());
     }
 
     /**
+     * If the other path has a root component, it is considered absolute, and it is returned.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -321,6 +340,8 @@ public final class AzurePath implements Path {
     }
 
     /**
+     * If both paths have a root component, it is still to relativize one against the other.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -329,15 +350,38 @@ public final class AzurePath implements Path {
             throw Utility.logError(logger,
                 new IllegalArgumentException("Both paths must be absolute or neither can be"));
         }
-        return null;
+
+        Deque<String> deque = new ArrayDeque<>(
+            Arrays.asList(path.toString().split(this.parentFileSystem.getSeparator())));
+
+        int i = 0;
+        String[] thisElements = this.splitToElements();
+        while (i < thisElements.length && !deque.isEmpty() && thisElements[i].equals(deque.peekFirst())) {
+            deque.removeFirst();
+            i++;
+        }
+        while (i < thisElements.length) {
+            deque.addFirst("..");
+            i++;
+        }
+
+        return this.parentFileSystem.getPath("", (String[])deque.toArray());
     }
 
     /**
+     * No authority component is defined for the {@code URI} returned by this method. This implementation offers the
+     * same equivalence guarantee as the default provider.
+     *
      * {@inheritDoc}
      */
     @Override
     public URI toUri() {
-        return null;
+        try {
+            return new URI(this.parentFileSystem.provider().getScheme(), null, "/" + this.toAbsolutePath().toString(),
+                null, null);
+        } catch (URISyntaxException e) {
+            throw Utility.logError(logger, new IllegalStateException("Unable to create valid URI from path", e));
+        }
     }
 
     /**
@@ -345,7 +389,10 @@ public final class AzurePath implements Path {
      */
     @Override
     public Path toAbsolutePath() {
-        return null;
+        if (this.isAbsolute()) {
+            return this;
+        }
+        return this.parentFileSystem.getDefaultDirectory().resolve(this);
     }
 
     /**
@@ -391,15 +438,24 @@ public final class AzurePath implements Path {
      */
     @Override
     public Iterator<Path> iterator() {
-        return null;
+        return Flux.fromArray(this.withoutRoot().split((this.parentFileSystem.getSeparator())))
+            .map(s -> this.parentFileSystem.getPath(s))
+            .toIterable()
+            .iterator();
     }
 
     /**
+     * This result of this method is identical to a string comparison on the underlying path strings.
+     *
      * {@inheritDoc}
      */
     @Override
     public int compareTo(Path path) {
-        return 0;
+        if (!(path instanceof AzurePath)) {
+            throw Utility.logError(logger, new ClassCastException("Other path is not an instance of AzurePath."));
+        }
+
+        return this.pathString.compareTo(((AzurePath) path).pathString);
     }
 
     /**
@@ -408,6 +464,26 @@ public final class AzurePath implements Path {
     @Override
     public String toString() {
         return this.pathString;
+    }
+
+    /**
+     * A path is considered equal to another path if it is associated with the same file system instance and if the
+     * path strings are equivalent.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AzurePath paths = (AzurePath) o;
+        return Objects.equals(parentFileSystem, paths.parentFileSystem)
+            && Objects.equals(pathString, paths.pathString);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(parentFileSystem, pathString);
     }
 
     private String withoutRoot() {

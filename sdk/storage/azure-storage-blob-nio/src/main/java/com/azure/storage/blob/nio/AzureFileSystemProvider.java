@@ -87,9 +87,10 @@ import java.util.concurrent.ConcurrentMap;
  * it must have an expiry time that lasts at least until the file system is closed as there is no token refresh offered
  * at this time. The same token will be applied to all containers.
  * <p>
- * An iterable of file stores must also be provided; each entry should simply be the name of a container. All other
- * values listed are used to configure the underlying {@link com.azure.storage.blob.BlobServiceClient}. Please refer to
- * that type for more information on these values.
+ * An iterable of file stores must also be provided; each entry should simply be the name of a container. The first
+ * container listed will be considered the default file store and the root directory of which will be the file system's
+ * default directory. All other values listed are used to configure the underlying
+ * {@link com.azure.storage.blob.BlobServiceClient}. Please refer to that type for more information on these values.
  *
  * @see FileSystemProvider
  */
