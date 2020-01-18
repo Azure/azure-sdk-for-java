@@ -94,8 +94,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                     EventPosition.fromEnqueuedTime(Instant.now()))
                     .take(numberOfEvents)
                     .subscribe(
-                        event -> logger.info("Event[{}] received. partition: {}", event.getData().getSequenceNumber()
-                            , partitionId),
+                        event -> logger.info("Event[{}] received. partition: {}",
+                            event.getData().getSequenceNumber(), partitionId),
                         error -> Assertions.fail("An error should not have occurred:" + error.toString()),
                         () -> {
                             logger.info("Disposing of consumer now that the receive is complete.");
