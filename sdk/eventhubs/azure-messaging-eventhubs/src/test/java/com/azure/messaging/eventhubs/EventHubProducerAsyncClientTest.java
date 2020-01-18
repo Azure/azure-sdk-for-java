@@ -162,7 +162,7 @@ class EventHubProducerAsyncClientTest {
         final SendOptions options = new SendOptions();
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
@@ -189,7 +189,7 @@ class EventHubProducerAsyncClientTest {
         final SendOptions options = new SendOptions();
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
@@ -217,7 +217,7 @@ class EventHubProducerAsyncClientTest {
             new EventData(TEST_CONTENTS.getBytes(UTF_8)));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
@@ -254,7 +254,7 @@ class EventHubProducerAsyncClientTest {
             connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
 
         when(connection.createSendLink(
-            argThat(name -> name.startsWith("PS")), argThat(name -> name.endsWith(partitionId)), eq(retryOptions)))
+            argThat(name -> name.endsWith(partitionId)), argThat(name -> name.endsWith(partitionId)), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
@@ -316,7 +316,7 @@ class EventHubProducerAsyncClientTest {
             connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
 
         when(connection.createSendLink(
-            argThat(name -> name.startsWith("PS")), argThat(name -> name.endsWith(partitionId)), eq(retryOptions)))
+            argThat(name -> name.endsWith(partitionId)), argThat(name -> name.endsWith(partitionId)), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
@@ -356,7 +356,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(link));
 
         // We believe 20 events is enough for that EventDataBatch to be greater than max size.
@@ -390,7 +390,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -434,7 +434,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(link));
 
         when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
@@ -471,7 +471,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -500,7 +500,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -530,7 +530,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -605,7 +605,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(link));
 
         final String originalKey = "some-key";
@@ -633,7 +633,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -805,19 +805,19 @@ class EventHubProducerAsyncClientTest {
         final EventData testData2 = new EventData("test");
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
         when(connection2.getEndpointStates()).thenReturn(connectionState2);
-        when(connection2.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink2));
         when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
 
         final DirectProcessor<AmqpEndpointState> connectionState3 = DirectProcessor.create();
         when(connection3.getEndpointStates()).thenReturn(connectionState3);
-        when(connection3.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection3.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink3));
         when(sendLink3.send(anyList())).thenReturn(Mono.empty());
 
@@ -878,13 +878,13 @@ class EventHubProducerAsyncClientTest {
         final EventData testData2 = new EventData("test");
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
         when(connection2.getEndpointStates()).thenReturn(connectionState2);
-        when(connection2.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink2));
         when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
 
@@ -928,7 +928,7 @@ class EventHubProducerAsyncClientTest {
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
 
-        EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{connection, connection2 };
+        EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{connection, connection2};
         connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> {
             final AtomicInteger count = new AtomicInteger();
             sink.onRequest(request -> {
@@ -956,7 +956,7 @@ class EventHubProducerAsyncClientTest {
         testData2.getProperties().put(failureKey, "true");
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
@@ -974,7 +974,7 @@ class EventHubProducerAsyncClientTest {
 
         final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
         when(connection2.getEndpointStates()).thenReturn(connectionState2);
-        when(connection2.createSendLink(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink2));
         when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
 
@@ -994,9 +994,28 @@ class EventHubProducerAsyncClientTest {
         verifyZeroInteractions(sendLink3);
     }
 
-    private static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"
-        + "Ut sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id elit scelerisque, in elementum nulla pharetra. \n"
-        + "Aenean aliquet aliquet condimentum. Proin dapibus dui id libero tempus feugiat. Sed commodo ligula a lectus mattis, vitae tincidunt velit auctor. Fusce quis semper dui. Phasellus eu efficitur sem. Ut non sem sit amet enim condimentum venenatis id dictum massa. Nullam sagittis lacus a neque sodales, et ultrices arcu mattis. Aliquam erat volutpat. \n"
-        + "Aenean fringilla quam elit, id mattis purus vestibulum nec. Praesent porta eros in dapibus molestie. Vestibulum orci libero, tincidunt et turpis eget, condimentum lobortis enim. Fusce suscipit ante et mauris consequat cursus nec laoreet lorem. Maecenas in sollicitudin diam, non tincidunt purus. Nunc mauris purus, laoreet eget interdum vitae, placerat a sapien. In mi risus, blandit eu facilisis nec, molestie suscipit leo. Pellentesque molestie urna vitae dui faucibus bibendum. \n"
-        + "Donec quis ipsum ultricies, imperdiet ex vel, scelerisque eros. Ut at urna arcu. Vestibulum rutrum odio dolor, vitae cursus nunc pulvinar vel. Donec accumsan sapien in malesuada tempor. Maecenas in condimentum eros. Sed vestibulum facilisis massa a iaculis. Etiam et nibh felis. Donec maximus, sem quis vestibulum gravida, turpis risus congue dolor, pharetra tincidunt lectus nisi at velit.";
+    private static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec "
+        + "vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. "
+        + "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet "
+        + "urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus "
+        + "luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"
+        + "Ut sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, "
+        + "condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. "
+        + "Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. "
+        + "Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh "
+        + "euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id "
+        + "elit scelerisque, in elementum nulla pharetra. \n"
+        + "Aenean aliquet aliquet condimentum. Proin dapibus dui id libero tempus feugiat. Sed commodo ligula a "
+        + "lectus mattis, vitae tincidunt velit auctor. Fusce quis semper dui. Phasellus eu efficitur sem. Ut non sem"
+        + " sit amet enim condimentum venenatis id dictum massa. Nullam sagittis lacus a neque sodales, et ultrices "
+        + "arcu mattis. Aliquam erat volutpat. \n"
+        + "Aenean fringilla quam elit, id mattis purus vestibulum nec. Praesent porta eros in dapibus molestie. "
+        + "Vestibulum orci libero, tincidunt et turpis eget, condimentum lobortis enim. Fusce suscipit ante et mauris"
+        + " consequat cursus nec laoreet lorem. Maecenas in sollicitudin diam, non tincidunt purus. Nunc mauris "
+        + "purus, laoreet eget interdum vitae, placerat a sapien. In mi risus, blandit eu facilisis nec, molestie "
+        + "suscipit leo. Pellentesque molestie urna vitae dui faucibus bibendum. \n"
+        + "Donec quis ipsum ultricies, imperdiet ex vel, scelerisque eros. Ut at urna arcu. Vestibulum rutrum odio "
+        + "dolor, vitae cursus nunc pulvinar vel. Donec accumsan sapien in malesuada tempor. Maecenas in condimentum "
+        + "eros. Sed vestibulum facilisis massa a iaculis. Etiam et nibh felis. Donec maximus, sem quis vestibulum "
+        + "gravida, turpis risus congue dolor, pharetra tincidunt lectus nisi at velit.";
 }

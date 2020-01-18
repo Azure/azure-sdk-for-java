@@ -58,7 +58,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
                     logger.verbose("Connection state: {}", state);
                     endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
-                    logger.error("Error occurred in connection.", error);
+                    logger.error("linkName[{}] entityPath[{}] Error occurred in connection.", receiver.getName(),
+                        entityPath, error);
                     endpointStateSink.error(error);
                     dispose();
                 }, () -> {
