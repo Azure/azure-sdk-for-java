@@ -277,7 +277,6 @@ class ReactorSender implements AmqpSendLink {
             return;
         }
 
-        sender.close();
         subscriptions.dispose();
         endpointStateSink.complete();
         tokenManager.close();

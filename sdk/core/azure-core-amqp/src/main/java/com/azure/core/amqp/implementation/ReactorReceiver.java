@@ -136,7 +136,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
             return;
         }
 
-        receiver.close();
         subscriptions.dispose();
         endpointStateSink.complete();
         messageSink.complete();

@@ -457,57 +457,6 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             + "There are: " + expectedPartitions.size());
     }
 
-    /**
-     * Verifies that we can receive from the partition multiple times and when a subscription is cancelled, it also
-     * closes the upstreams source (partition consumer). We chose 8 so that we check that we don't hit the limit of 5
-     * concurrent receivers.
-     */
-    @Test
-    void receiveMultipleTimes() {
-        final String partitionId = "0";
-        final EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient();
-        final EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .buildAsyncProducerClient();
-        final SendOptions options = new SendOptions().setPartitionId(partitionId);
-
-        EventPosition currentEventPosition = EventPosition.earliest();
-        try {
-            Flux.interval(Duration.ofSeconds(1))
-                .flatMap(position -> producer.send(new EventData("test-data"), options).thenReturn(position))
-                .subscribe(position -> {
-                    if (position % 10 == 0) {
-                        logger.info("Sent {} events.", position);
-                    }
-                });
-
-            for (int i = 0; i < 7; i++) {
-                logger.info("Iteration: {}", i);
-                final List<PartitionEvent> events = consumer.receiveFromPartition(partitionId, currentEventPosition)
-                    .take(Duration.ofSeconds(3))
-                    .collectList()
-                    .block();
-
-                Assertions.assertNotNull(events);
-
-                if (events.size() > 0) {
-                    PartitionEvent lastEvent = events.get(events.size() - 1);
-                    EventData event = lastEvent.getData();
-                    logger.info("Count: {}. Last event: {}. Time: {}",
-                        events.size(), event.getSequenceNumber(), event.getEnqueuedTime());
-                    currentEventPosition = EventPosition.fromSequenceNumber(event.getSequenceNumber(), false);
-                }
-            }
-        } finally {
-            consumer.close();
-            producer.close();
-            producer.close();
-        }
-    }
-
     private static void assertPartitionEvent(PartitionEvent event, String eventHubName, Set<Integer> allPartitions,
         Set<Integer> expectedPartitions) {
         final PartitionContext context = event.getPartitionContext();
