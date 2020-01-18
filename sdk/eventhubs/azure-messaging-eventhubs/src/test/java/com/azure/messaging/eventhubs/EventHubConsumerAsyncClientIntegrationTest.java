@@ -476,7 +476,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
         EventPosition currentEventPosition = EventPosition.earliest();
         try {
-            Flux.interval(Duration.ofMillis(500))
+            Flux.interval(Duration.ofSeconds(1))
                 .flatMap(position -> producer.send(new EventData("test-data"), options).thenReturn(position))
                 .subscribe(position -> {
                     if (position % 20 == 0) {
@@ -485,9 +485,9 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                 });
 
             for (int i = 0; i < 8; i++) {
-                System.out.println("Iteration: " + i);
+                logger.info("Iteration: {}", i);
                 final List<PartitionEvent> events = consumer.receiveFromPartition(partitionId, currentEventPosition)
-                    .take(15)
+                    .take(Duration.ofSeconds(5))
                     .collectList()
                     .block();
 
