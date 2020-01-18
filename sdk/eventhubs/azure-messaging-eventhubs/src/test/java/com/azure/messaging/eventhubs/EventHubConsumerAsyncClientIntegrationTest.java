@@ -479,15 +479,15 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             Flux.interval(Duration.ofSeconds(1))
                 .flatMap(position -> producer.send(new EventData("test-data"), options).thenReturn(position))
                 .subscribe(position -> {
-                    if (position % 20 == 0) {
+                    if (position % 10 == 0) {
                         logger.info("Sent {} events.", position);
                     }
                 });
 
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 7; i++) {
                 logger.info("Iteration: {}", i);
                 final List<PartitionEvent> events = consumer.receiveFromPartition(partitionId, currentEventPosition)
-                    .take(Duration.ofSeconds(5))
+                    .take(Duration.ofSeconds(3))
                     .collectList()
                     .block();
 
