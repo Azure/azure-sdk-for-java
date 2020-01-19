@@ -38,6 +38,6 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
             new ManagedIdentityCredential(null, identityClientOptions),
             new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
                 identityClientOptions),
-            new CliCredential(identityClientOptions))));
+            new AzureCliCredential(identityClientOptions))));
     }
 }

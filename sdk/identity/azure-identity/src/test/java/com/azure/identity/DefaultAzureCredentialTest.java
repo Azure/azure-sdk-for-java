@@ -84,7 +84,7 @@ public class DefaultAzureCredentialTest {
     }
     
     @Test
-    public void testUseCliCredential() throws Exception {
+    public void testUseAzureCliCredential() throws Exception {
         // setup
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
