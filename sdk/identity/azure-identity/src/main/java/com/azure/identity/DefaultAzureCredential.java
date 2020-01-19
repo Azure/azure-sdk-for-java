@@ -17,6 +17,7 @@ import java.util.Arrays;
  * <li>{@link EnvironmentCredential}</li>
  * <li>{@link ManagedIdentityCredential}</li>
  * <li>{@link SharedTokenCacheCredential}</li>
+ * <li>{@link AzureCliCredential}</li>
  * <li>Fails if none of the credentials above could be created.</li>
  * </ol>
  */
