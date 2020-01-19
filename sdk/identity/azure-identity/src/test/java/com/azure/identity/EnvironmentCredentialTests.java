@@ -5,7 +5,6 @@ package com.azure.identity;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.implementation.serializer.jsonwrapper.api.Config;
 import com.azure.core.util.Configuration;
 import org.junit.Assert;
 import org.junit.Test;
