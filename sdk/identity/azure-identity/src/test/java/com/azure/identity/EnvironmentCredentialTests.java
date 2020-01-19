@@ -5,6 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.implementation.serializer.jsonwrapper.api.Config;
 import com.azure.core.util.Configuration;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,10 +19,10 @@ import static org.junit.Assert.fail;
 public class EnvironmentCredentialTests {
     @Test
     public void testCreateEnvironmentClientSecretCredential() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo");
-        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar");
-        configuration.put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
+        Configuration.getGlobalConfiguration()
+            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+            .put(Configuration.PROPERTY_AZURE_USERNAME, "bar")
+            .put(Configuration.PROPERTY_AZURE_PASSWORD, "baz");
 
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
@@ -39,10 +40,10 @@ public class EnvironmentCredentialTests {
 
     @Test
     public void testCreateEnvironmentClientCertificateCredential() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo");
-        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "bar");
-        configuration.put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
+        Configuration.getGlobalConfiguration()
+            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+            .put(Configuration.PROPERTY_AZURE_USERNAME, "bar")
+            .put(Configuration.PROPERTY_AZURE_PASSWORD, "baz");
 
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
@@ -60,10 +61,10 @@ public class EnvironmentCredentialTests {
 
     @Test
     public void testCreateEnvironmentUserPasswordCredential() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo");
-        configuration.put(Configuration.PROPERTY_AZURE_USERNAME, "bar");
-        configuration.put(Configuration.PROPERTY_AZURE_PASSWORD, "baz");
+        Configuration.getGlobalConfiguration()
+            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+            .put(Configuration.PROPERTY_AZURE_USERNAME, "bar")
+            .put(Configuration.PROPERTY_AZURE_PASSWORD, "baz");
 
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
