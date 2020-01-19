@@ -46,7 +46,7 @@ public class EnvironmentCredentialTests {
 
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
-        // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
+        // authentication will fail client-id=foo, but should be able to create ClientCertificateCredential
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default"))
             .doOnSuccess(s -> fail())
             .onErrorResume(t -> {
@@ -67,7 +67,7 @@ public class EnvironmentCredentialTests {
 
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
-        // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
+        // authentication will fail client-id=foo, but should be able to create UsernamePasswordCredential
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default"))
             .doOnSuccess(s -> fail())
             .onErrorResume(t -> {
