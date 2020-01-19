@@ -112,7 +112,7 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithAzureCli(TokenRequestContext request) {
-        String azCommand = "az account get-access-token --resource ";
+        String azCommand = "az account get-access-token --output json --resource ";
 
         StringBuilder command = new StringBuilder();
         command.append(azCommand);
