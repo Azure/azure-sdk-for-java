@@ -13,14 +13,15 @@ import java.net.URL;
  */
 final class FinalResult {
     @JsonIgnore
-    private static final ClientLogger logger = new ClientLogger(FinalResult.class);
+    private final ClientLogger logger = new ClientLogger(FinalResult.class);
 
     @JsonProperty(value = "resultUri")
     private URL resultUri;
     @JsonProperty(value = "result")
     private String result;
 
-    FinalResult() {}
+    FinalResult() {
+    }
     
     /**
      * Creates FinalResult.
@@ -30,7 +31,8 @@ final class FinalResult {
      */
     FinalResult(URL resultFetchUri, String result) {
         if (resultFetchUri == null && result == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Either resultFetchUri or result is required"));
+            throw 
+                logger.logExceptionAsError(new IllegalArgumentException("Either resultFetchUri or result is required"));
         }
         this.resultUri = resultFetchUri;
         this.result = result;

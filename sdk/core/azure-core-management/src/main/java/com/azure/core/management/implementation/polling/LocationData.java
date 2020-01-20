@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 final class LocationData {
     @JsonIgnore
-    private static final ClientLogger logger = new ClientLogger(LocationData.class);
+    private final ClientLogger logger = new ClientLogger(LocationData.class);
 
     @JsonProperty(value = "pollUrl", required = true)
     private URL pollUrl;

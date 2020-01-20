@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 public final class PollingState {
     @JsonIgnore
-    private static final ClientLogger logger = new ClientLogger(PollingState.class);
+    private final ClientLogger logger = new ClientLogger(PollingState.class);
     @JsonIgnore
     private static final String KEY = "3c7cac4f-acbb-4671-b6b4-edf2d3010041";
     @JsonIgnore
@@ -54,7 +54,8 @@ public final class PollingState {
     @JsonProperty(value = "lastResponseBody")
     private String lastResponseBody;
 
-    PollingState() {}
+    PollingState() {
+    }
 
     /**
      * Creates PollingState from the request-response of a long-running-operation api call.
@@ -76,8 +77,8 @@ public final class PollingState {
             && httpMethod != HttpMethod.PATCH
             && httpMethod != HttpMethod.POST
             && httpMethod != HttpMethod.DELETE) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Long-running-operation supported only"
-                + "for PUT, PATCH, POST or DELETE verb."));
+            throw new IllegalArgumentException("Long-running-operation supported only" 
+                + "for PUT, PATCH, POST or DELETE verb.");
         }
         PollingState pollingState = new PollingState(serializerAdapter,
             lroHttpRequest.getHttpMethod(),

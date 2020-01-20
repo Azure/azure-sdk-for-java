@@ -14,7 +14,8 @@ final class SynchronouslySucceededLroData {
     @JsonProperty(value = "finalResult")
     private FinalResult finalResult;
 
-    SynchronouslySucceededLroData() {}
+    SynchronouslySucceededLroData() {
+    }
 
     /**
      * Creates SynchronouslySucceededLroData.

@@ -24,7 +24,8 @@ final class ProvisioningStateData {
     @JsonProperty(value = "finalResult")
     private FinalResult finalResult;
 
-    ProvisioningStateData() {}
+    ProvisioningStateData() {
+    }
 
     /**
      * Creates ProvisioningStateData.

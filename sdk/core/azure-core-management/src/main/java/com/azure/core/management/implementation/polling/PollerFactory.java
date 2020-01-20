@@ -28,7 +28,7 @@ import java.util.function.Function;
  * Factory to create PollerFlux for Azure resource manager (ARM) long-running-operation (LRO).
  */
 public final class PollerFactory {
-    private static final ClientLogger logger = new ClientLogger(PollerFactory.class);
+    private final ClientLogger logger = new ClientLogger(PollerFactory.class);
     private static LongRunningOperationStatus LRO_CANCELLED = LongRunningOperationStatus.fromString("Cancelled",
         true);
 

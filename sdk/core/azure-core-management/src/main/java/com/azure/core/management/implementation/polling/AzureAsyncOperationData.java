@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 final class AzureAsyncOperationData {
     @JsonIgnore
-    private static final ClientLogger logger = new ClientLogger(AzureAsyncOperationData.class);
+    private final ClientLogger logger = new ClientLogger(AzureAsyncOperationData.class);
 
     @JsonProperty(value = "lroRequestMethod", required = true)
     private HttpMethod lroRequestMethod;

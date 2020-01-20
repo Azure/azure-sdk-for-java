@@ -8,7 +8,8 @@ package com.azure.core.management.implementation.polling;
  */
 final class SynchronouslyFailedLroData extends Error {
 
-    SynchronouslyFailedLroData() {}
+    SynchronouslyFailedLroData() {
+    }
 
     /**
      * Creates SynchronouslyFailedLroData.
