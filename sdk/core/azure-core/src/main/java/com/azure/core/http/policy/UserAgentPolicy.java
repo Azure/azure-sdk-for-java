@@ -134,7 +134,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /*
      * Builds the User-Agent header, at minimum this will create a User-Agent header with the DEFAULT_USER_AGENT_FORMAT.
      */
-    private static String buildUserAgent(String applicationId, String sdkName, String sdkVersion,
+    protected static String buildUserAgent(String applicationId, String sdkName, String sdkVersion,
         Configuration configuration) {
         StringBuilder userAgentBuilder = new StringBuilder();
 
