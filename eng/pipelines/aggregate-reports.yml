@@ -36,7 +36,7 @@ jobs:
         jdkVersionOption: '1.11'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'install site:site site:stage'
+        goals: 'site:site site:stage'
 
     - script: |
         git clone https://github.com/JonathanGiles/DependencyChecker.git
