@@ -144,7 +144,7 @@ public final class EventProcessorHost {
         this.partitionManager = pm;
     }
 
-    HostContext getHostContext() {
+    public HostContext getHostContext() {
         return this.hostContext;
     }
 
