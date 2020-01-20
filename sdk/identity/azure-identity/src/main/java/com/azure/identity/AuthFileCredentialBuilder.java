@@ -8,17 +8,17 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import java.util.HashMap;
 
 /**
- * Fluent credential builder for instantiating a {@link ClientSecretCredential}.
+ * Fluent credential builder for instantiating a {@link AuthFileCredential}.
  *
- * @see ClientSecretCredential
+ * @see AuthFileCredential
  */
 public class AuthFileCredentialBuilder extends AadCredentialBuilderBase<AuthFileCredentialBuilder> {
     private String filepath;
 
     /**
-     * Sets the client secret for the authentication.
-     * @param clientSecret the secret value of the AAD application.
-     * @return the ClientSecretCredentialBuilder itself
+     * Sets the file path for the authentication.
+     * @param filepath The path to the SDK Auth file.
+     * @return the AuthFileCredentialBuilder itself
      */
     public AuthFileCredentialBuilder filePath(String filepath) {
         this.filepath = filepath;
@@ -26,9 +26,9 @@ public class AuthFileCredentialBuilder extends AadCredentialBuilderBase<AuthFile
     }
 
     /**
-     * Creates a new {@link ClientCertificateCredential} with the current configurations.
+     * Creates a new {@link AuthFileCredential} with the current configurations.
      *
-     * @return a {@link ClientSecretCredentialBuilder} with the current configurations.
+     * @return a {@link AuthFileCredential} with the current configurations.
      */
     public AuthFileCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
