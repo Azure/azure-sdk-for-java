@@ -7,7 +7,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.polling.PollResult;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -252,6 +252,7 @@ public final class PollerFactory {
      * @param <U> the type to decode to
      * @return decoded value
      */
+    @SuppressWarnings("unchecked")
     private static <U> U deserialize(SerializerAdapter serializerAdapter, String value, Type type) {
         if (value == null || value.equalsIgnoreCase("")) {
             logger.info("Ignoring decoding of null or empty value to:" + type.getTypeName());

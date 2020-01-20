@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.polling;
+package com.azure.core.management.polling;
 
 import java.util.Objects;
 
