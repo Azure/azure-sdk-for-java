@@ -253,7 +253,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Start Jetty'
-        condition: and(succeeded(), ne(variables['SdkType'], 'client'))
+        condition: and(succeeded(), ne('${{ parameters.SDKType }}', 'client'))
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions)'
