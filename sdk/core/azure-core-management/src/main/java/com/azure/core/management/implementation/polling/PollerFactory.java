@@ -28,8 +28,8 @@ import java.util.function.Function;
  * Factory to create PollerFlux for Azure resource manager (ARM) long-running-operation (LRO).
  */
 public final class PollerFactory {
-    private final ClientLogger logger = new ClientLogger(PollerFactory.class);
-    private static LongRunningOperationStatus LRO_CANCELLED = LongRunningOperationStatus.fromString("Cancelled",
+    private static final ClientLogger LOGGER = new ClientLogger(PollerFactory.class);
+    private static final LongRunningOperationStatus LRO_CANCELLED = LongRunningOperationStatus.fromString("Cancelled",
         true);
 
     /**
@@ -101,8 +101,7 @@ public final class PollerFactory {
      * @param <T> the type of poll result type
      * @return the ARM poll function
      */
-    private static <T>
-    Function<PollingContext<PollResult<T>>, Mono<PollResponse<PollResult<T>>>> pollFunction(
+    private static <T> Function<PollingContext<PollResult<T>>, Mono<PollResponse<PollResult<T>>>> pollFunction(
         SerializerAdapter serializerAdapter,
         HttpPipeline pipeline,
         Type pollResultType) {
@@ -120,8 +119,8 @@ public final class PollerFactory {
                     if (pollError != null) {
                         return errorPollResponseMono(pollingState.getOperationStatus(), pollError);
                     }
-                    throw logger.logExceptionAsError(new IllegalStateException("Either LroError or PollError must"
-                        + "be set when OperationStatus is in Failed|Cancelled State."));
+                    throw new IllegalStateException("Either LroError or PollError must" 
+                        + "be set when OperationStatus is in Failed|Cancelled State.");
                 } else {
                     // Succeeded
                     return pollResponseMono(serializerAdapter,
@@ -149,7 +148,7 @@ public final class PollerFactory {
      * @return cancel Function
      */
     private static <T>
-    BiFunction<PollingContext<PollResult<T>>, PollResponse<PollResult<T>>, Mono<PollResult<T>>> cancelFunction() {
+        BiFunction<PollingContext<PollResult<T>>, PollResponse<PollResult<T>>, Mono<PollResult<T>>> cancelFunction() {
         return new BiFunction<PollingContext<PollResult<T>>, PollResponse<PollResult<T>>, Mono<PollResult<T>>>() {
             @Override
             public Mono<PollResult<T>> apply(PollingContext<PollResult<T>> context,
@@ -255,13 +254,13 @@ public final class PollerFactory {
     @SuppressWarnings("unchecked")
     private static <U> U deserialize(SerializerAdapter serializerAdapter, String value, Type type) {
         if (value == null || value.equalsIgnoreCase("")) {
-            logger.info("Ignoring decoding of null or empty value to:" + type.getTypeName());
+            LOGGER.info("Ignoring decoding of null or empty value to:" + type.getTypeName());
             return null;
         } else {
             try {
                 return (U) serializerAdapter.deserialize(value, type, SerializerEncoding.JSON);
             } catch (IOException ioe) {
-                logger.logExceptionAsWarning(new IllegalArgumentException("Unable to decode '" + value + "' to: "
+                LOGGER.logExceptionAsWarning(new IllegalArgumentException("Unable to decode '" + value + "' to: "
                     + type.getTypeName(), ioe));
                 return null;
             }

@@ -27,7 +27,8 @@ final class LocationData {
     @JsonProperty(value = "finalResult")
     private FinalResult finalResult;
 
-    LocationData() {}
+    LocationData() {
+    }
 
     /**
      * Creates LocationData.

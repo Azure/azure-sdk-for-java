@@ -37,7 +37,8 @@ final class AzureAsyncOperationData {
     @JsonProperty(value = "finalResult")
     private FinalResult finalResult;
 
-    AzureAsyncOperationData() {}
+    AzureAsyncOperationData() {
+    }
 
     /**
      * Creates AzureAsyncOperationData.
@@ -102,7 +103,7 @@ final class AzureAsyncOperationData {
                 String pollResponseBody,
                 SerializerAdapter adapter) {
         if (pollResponseStatusCode != 200) {
-            this.provisioningState = ProvisioningState.FAILED;;
+            this.provisioningState = ProvisioningState.FAILED;
             this.pollError = new Error("Polling failed with status code:" + pollResponseStatusCode,
                 pollResponseStatusCode,
                 pollResponseBody);

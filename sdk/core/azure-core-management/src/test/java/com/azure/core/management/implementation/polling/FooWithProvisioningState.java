@@ -1,12 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.management.implementation.polling;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FooWithProvisioningState {
     @JsonProperty(value = "properties")
-    public Properties properties;
+    private Properties properties;
 
-    public FooWithProvisioningState() {}
+    public FooWithProvisioningState() {
+    }
 
     FooWithProvisioningState(String state) {
         this.properties = new Properties();
@@ -24,21 +28,30 @@ public class FooWithProvisioningState {
     }
 
     public String getProvisioningState() {
-        return this.properties.provisioningState;
+        return this.properties.getProvisioningState();
     }
 
     public String getResourceId() {
-        return this.properties.resourceId;
+        return this.properties.getResourceId();
     }
 
     public class Properties {
         // Standard ProvisioningState property
         @JsonProperty(value = "provisioningState")
-        public String provisioningState;
+        private String provisioningState;
         // resourceId available when Foo is provisioned.
         @JsonProperty(value = "resourceId")
-        public String resourceId;
+        private String resourceId;
 
-        public Properties() {}
+        public Properties() {
+        }
+
+        public String getProvisioningState() {
+            return provisioningState;
+        }
+
+        public String getResourceId() {
+            return resourceId;
+        }
     }
 }

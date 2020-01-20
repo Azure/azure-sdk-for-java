@@ -83,7 +83,7 @@ public class LROPollerTests {
     public void lroBasedOnProvisioningState() {
         final String resourceEndpoint = "/resource/1";
         ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
-            private int [] getCallCount = new int[1];
+            private int[] getCallCount = new int[1];
 
             @Override
             public com.github.tomakehurst.wiremock.http.Response
@@ -134,7 +134,7 @@ public class LROPollerTests {
 
             Function<PollingContext<PollResult<FooWithProvisioningState>>, Mono<PollResult<FooWithProvisioningState>>>
                 lroInitFunction = context -> {
-                return client.startLro()
+                    return client.startLro()
                     .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
                         .map(bytes -> {
                             String content = new String(bytes, StandardCharsets.UTF_8);
@@ -150,7 +150,7 @@ public class LROPollerTests {
                                 = fromJson(content, FooWithProvisioningState.class);
                             return new PollResult<>(entity);
                         }));
-            };
+                };
 
             when(provisioningStateLroInitOperation.apply(any())).thenAnswer((Answer) in -> {
                 PollingContext<PollResult<FooWithProvisioningState>> context
@@ -158,36 +158,36 @@ public class LROPollerTests {
                 return lroInitFunction.apply(context);
             });
 
-           PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
-               = PollerFactory.create(SERIALIZER,
+            PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
+                = PollerFactory.create(SERIALIZER,
                     new HttpPipelineBuilder().build(),
                     FooWithProvisioningState.class,
                     FooWithProvisioningState.class,
                     Duration.ofMillis(100),
                     lroInitFunction);
 
-           int [] onNextCallCount = new int[1];
-           lroFlux.doOnNext(response -> {
-               PollResult<FooWithProvisioningState> pollResult = response.getValue();
-               Assertions.assertNotNull(pollResult);
-               Assertions.assertNotNull(pollResult.value());
-               onNextCallCount[0]++;
-               if (onNextCallCount[0] == 1) {
-                   Assertions.assertEquals(response.getStatus(),
-                       LongRunningOperationStatus.IN_PROGRESS);
-                   Assertions.assertNull(pollResult.value().getResourceId());
-               } else if (onNextCallCount[0] == 2) {
-                   Assertions.assertEquals(response.getStatus(),
-                       LongRunningOperationStatus.IN_PROGRESS);
-                   Assertions.assertNull(pollResult.value().getResourceId());
-               } else if (onNextCallCount[0] == 3) {
-                   Assertions.assertEquals(response.getStatus(),
-                       LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-                   Assertions.assertNotNull(pollResult.value().getResourceId());
-               } else {
-                throw new IllegalStateException("Poller emitted more than expected value.");
-               }
-           }).blockLast();
+            int[] onNextCallCount = new int[1];
+            lroFlux.doOnNext(response -> {
+                PollResult<FooWithProvisioningState> pollResult = response.getValue();
+                Assertions.assertNotNull(pollResult);
+                Assertions.assertNotNull(pollResult.value());
+                onNextCallCount[0]++;
+                if (onNextCallCount[0] == 1) {
+                    Assertions.assertEquals(response.getStatus(),
+                        LongRunningOperationStatus.IN_PROGRESS);
+                    Assertions.assertNull(pollResult.value().getResourceId());
+                } else if (onNextCallCount[0] == 2) {
+                    Assertions.assertEquals(response.getStatus(),
+                        LongRunningOperationStatus.IN_PROGRESS);
+                    Assertions.assertNull(pollResult.value().getResourceId());
+                } else if (onNextCallCount[0] == 3) {
+                    Assertions.assertEquals(response.getStatus(),
+                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+                    Assertions.assertNotNull(pollResult.value().getResourceId());
+                } else {
+                    throw new IllegalStateException("Poller emitted more than expected value.");
+                }
+            }).blockLast();
         } finally {
             if (lroServer.isRunning()) {
                 lroServer.shutdown();
