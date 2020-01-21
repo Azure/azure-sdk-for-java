@@ -22,7 +22,7 @@ public class CertificateUtilTests {
 
     @Test(expected = CertificateExpiredException.class)
     public void testPublicKey() throws Exception {
-        String pemPath = getClass().getClassLoader().getResource("certificate.pem").getPath();
+        String pemPath = getPath("certificate.pem");
         byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemPath));
         X509Certificate x509Certificate = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
         x509Certificate.checkValidity(Date.valueOf(LocalDate.of(2025, 12, 25)));
@@ -30,9 +30,18 @@ public class CertificateUtilTests {
 
     @Test
     public void testPrivateKey() throws Exception {
-        String pemPath = getClass().getClassLoader().getResource("key.pem").getPath();
+        String pemPath = getPath("key.pem");
         byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemPath));
         PrivateKey privateKey = CertificateUtil.privateKeyFromPem(pemCertificateBytes);
         Assert.assertEquals("RSA", privateKey.getAlgorithm());
+    }
+
+    private String getPath(String filename) {
+
+        String path =  getClass().getClassLoader().getResource(filename).getPath();
+        if (path.contains(":")) {
+            path = path.substring(1);
+        }
+        return path;
     }
 }

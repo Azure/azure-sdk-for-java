@@ -121,6 +121,9 @@ public class IdentityClientTests {
     public void testPemCertificate() throws Exception {
         // setup
         String pemPath = getClass().getClassLoader().getResource("certificate.pem").getPath();
+        if (pemPath.contains(":")) {
+            pemPath = pemPath.substring(1);
+        }
         String accessToken = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
