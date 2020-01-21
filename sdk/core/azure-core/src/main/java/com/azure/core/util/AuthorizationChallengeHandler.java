@@ -48,16 +48,16 @@ public class AuthorizationChallengeHandler {
      * a <algorithm> and <algorithm>-sess variant, if the '-sess' variant is sent the response nonce and generated
      * cnonce (client nonce) will be used to calculate HA1.
      */
-    private static final String _SESS = "-sess";
+    private static final String SESS = "-SESS";
 
     private static final String SHA_512_256 = "SHA-512-256";
-    private static final String SHA_512_256_SESS = SHA_512_256 + _SESS;
+    private static final String SHA_512_256_SESS = SHA_512_256 + SESS;
 
     private static final String SHA_256 = "SHA-256";
-    private static final String SHA_256_SESS = SHA_256 + _SESS;
+    private static final String SHA_256_SESS = SHA_256 + SESS;
 
     private static final String MD5 = "MD5";
-    private static final String MD5_SESS = MD5 + _SESS;
+    private static final String MD5_SESS = MD5 + SESS;
 
     // TODO: Prefer SESS based challenges?
     private static final String[] ALGORITHM_PREFERENCE_ORDER = {
@@ -161,7 +161,8 @@ public class AuthorizationChallengeHandler {
             Map<String, String> challenge = challengesByType.get(algorithm).get(0);
             lastChallenge.set(challenge);
 
-            return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier, digestFunction);
+            return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier,
+                digestFunction);
         }
 
         return null;
@@ -217,16 +218,24 @@ public class AuthorizationChallengeHandler {
         }
     }
 
-
-    public static Map<String, String> parseChallengeHeader(String authenticationInfoHeader) {
-        if (CoreUtils.isNullOrEmpty(authenticationInfoHeader)) {
+    /**
+     * Parses the {@code Authorization} or {@code Authentication} heaer into its key-value pairs.
+     * <p>
+     * This will remove quotes on quoted string values.
+     *
+     * @param header Authorization or Authentication header.
+     * @return The Authorization or Authentication header split into its key-value pairs.
+     */
+    public static Map<String, String> parseAuthenticationOrAuthorizationHeader(String header) {
+        if (CoreUtils.isNullOrEmpty(header)) {
             return Collections.emptyMap();
         }
 
-        return Stream.of(authenticationInfoHeader.split(","))
+        return Stream.of(header.split(","))
             .map(String::trim)
             .map(kvp -> kvp.split("=", 2))
-            .collect(Collectors.toMap(kvpPieces -> kvpPieces[0].toLowerCase(Locale.ROOT), kvpPieces -> kvpPieces[1]));
+            .collect(Collectors.toMap(kvpPieces -> kvpPieces[0].toLowerCase(Locale.ROOT),
+                kvpPieces -> kvpPieces[1].replace("\"", "")));
     }
 
     /*
@@ -249,11 +258,11 @@ public class AuthorizationChallengeHandler {
         if (AUTH.equals(qop) || AUTH_INT.equals(qop)) {
             clientNonce = generateNonce();
             nc = getNc(challenge);
-        } else if (algorithm.endsWith(_SESS)) {
+        } else if (algorithm.endsWith(SESS)) {
             clientNonce = generateNonce();
         }
 
-        String ha1 = algorithm.endsWith(_SESS)
+        String ha1 = algorithm.endsWith(SESS)
             ? calculateHa1Sess(digestFunction, realm, nonce, clientNonce)
             : calculateHa1NoSess(digestFunction, realm);
 
@@ -292,9 +301,9 @@ public class AuthorizationChallengeHandler {
     private String getQop(String qopHeader) {
         if (CoreUtils.isNullOrEmpty(qopHeader)) {
             return null;
-        } else if (qopHeader.contains(AUTH)) {
+        } else if (qopHeader.equalsIgnoreCase(AUTH)) {
             return AUTH;
-        } else if (qopHeader.contains(AUTH_INT)) {
+        } else if (qopHeader.equalsIgnoreCase(AUTH_INT)) {
             return AUTH_INT;
         } else {
             return null;
@@ -400,8 +409,8 @@ public class AuthorizationChallengeHandler {
      * Attempts to retrieve the digest function for the specified algorithm.
      */
     private static Function<byte[], byte[]> getDigestFunction(String algorithm) {
-        if (algorithm.endsWith(_SESS)) {
-            algorithm = algorithm.substring(0, algorithm.length() - _SESS.length());
+        if (algorithm.endsWith(SESS)) {
+            algorithm = algorithm.substring(0, algorithm.length() - SESS.length());
         }
 
         try {

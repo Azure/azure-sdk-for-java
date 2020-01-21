@@ -167,9 +167,9 @@ public final class ProxyAuthenticator implements Authenticator {
             String proxyAuthenticationInfoHeader = response.header(PROXY_AUTHENTICATION_INFO);
             if (!CoreUtils.isNullOrEmpty(proxyAuthenticationInfoHeader)) {
                 Map<String, String> headerPieces = AuthorizationChallengeHandler
-                    .parseChallengeHeader(proxyAuthenticationInfoHeader);
+                    .parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
                 Map<String, String> authorizationPieces = AuthorizationChallengeHandler
-                    .parseChallengeHeader(chain.request().header(PROXY_AUTHORIZATION));
+                    .parseAuthenticationOrAuthorizationHeader(chain.request().header(PROXY_AUTHORIZATION));
 
                 /*
                  * If the authentication info response contains a cnonce or nc value it MUST match the value sent in the

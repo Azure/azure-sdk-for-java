@@ -268,9 +268,9 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
         }
 
         Map<String, String> authenticationInfoPieces = AuthorizationChallengeHandler
-            .parseChallengeHeader(infoHeader);
+            .parseAuthenticationOrAuthorizationHeader(infoHeader);
         Map<String, String> authorizationPieces = AuthorizationChallengeHandler
-            .parseChallengeHeader(authorizationHeader);
+            .parseAuthenticationOrAuthorizationHeader(authorizationHeader);
 
         /*
          * If the authentication info response contains a cnonce or nc value it MUST match the value sent in the
