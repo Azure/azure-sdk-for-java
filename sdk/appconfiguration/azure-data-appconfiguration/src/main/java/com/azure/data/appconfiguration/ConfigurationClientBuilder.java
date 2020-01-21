@@ -198,7 +198,6 @@ public final class ConfigurationClientBuilder {
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
 
-
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);

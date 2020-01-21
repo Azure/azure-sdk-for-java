@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -22,9 +23,6 @@ import java.util.stream.Collectors;
  */
 public final class SyncTokenPolicy implements HttpPipelinePolicy {
     private static final String SYNC_TOKEN = "Sync-Token";
-
-    private final ClientLogger logger = new ClientLogger(SyncTokenPolicy.class);
-
     private final ConcurrentHashMap<String, SyncToken> syncTokenMap = new ConcurrentHashMap<>(); // key is sync-token id
 
     /**
@@ -53,37 +51,16 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
             final String[] syncTokens = syncTokenValue.split(",");
             for (final String syncTokenStr : syncTokens) {
                 final SyncToken syncToken = SyncToken.parseSyncToken(syncTokenStr);
-
-                // Cannot parse sync-token skip update this sync-token to concurrent map
-                if (syncToken == null) {
-                    logger.logExceptionAsWarning(
-                        new RuntimeException(String.format("Failed to parse sync token, %s.", syncTokenStr)));
-                    continue;
-                }
-
                 final String tokenId = syncToken.getId();
-                // Max time of trying replace an existing token is 4 times.
-                final AtomicInteger retryTimes = new AtomicInteger(0);
-                // Used atomic boolean with default value, false
-                AtomicBoolean isReplaced = new AtomicBoolean();
-
-                while (retryTimes.getAndAdd(1) < 4 && !isReplaced.get()) {
-                    // Get the latest sync token from map. If not exit, current one is latest.
-                    final SyncToken existSyncToken = syncTokenMap.getOrDefault(tokenId, syncToken);
-                    // A new sync token that not exists in the concurrent map
-                    if (existSyncToken == syncToken) {
-                        syncTokenMap.putIfAbsent(tokenId, syncToken);
-                        break;
-                    } else if (existSyncToken.getSequenceNumber() < syncToken.getSequenceNumber()) {
-                        // If replacement is successful, updated the 'isReplaced' to true,
-                        if (syncTokenMap.replace(tokenId, existSyncToken, syncToken)) {
-                            isReplaced.compareAndSet(false, true);
-                        }
-                    } else {
-                        // A sync token with outdated sequence number will be ignored
-                        break;
+                // If the value is not thread safe and must be updated inside the method with a remapping function
+                // to ensure the entire operation is atomic.
+                syncTokenMap.compute(tokenId, (s, existingSyncToken) -> {
+                    if (existingSyncToken == null
+                        || syncToken.getSequenceNumber() > existingSyncToken.getSequenceNumber()) {
+                        return syncToken;
                     }
-                }
+                    return existingSyncToken;
+                });
             }
 
             return Mono.just(httpResponse);

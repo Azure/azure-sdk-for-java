@@ -52,44 +52,36 @@ public final class SyncToken {
         if (CoreUtils.isNullOrEmpty(syncToken)) {
             return null;
         }
-        try {
-            final String[] syncTokenParts = syncToken.split(";", 2);
-            // Not a fully formatted sync-token
-            if (syncTokenParts.length != 2) {
-                LOGGER.logExceptionAsWarning(
-                    new RuntimeException("Failed to parse sync token, it cannot split to two parts by delimiter ';'."));
-                return null;
-            }
 
-            final String[] idParts = syncTokenParts[0].split("=", 2);
-            // Identifier is missing a section.
-            if (idParts.length != 2) {
-                LOGGER.logExceptionAsWarning(
-                    new RuntimeException("Failed to parse sync token, it cannot split 'id=value' into two parts."));
-                return null;
-            }
-
-            final String[] snParts = syncTokenParts[1].split("=", 2);
-            if (snParts.length != 2) {
-                LOGGER.logExceptionAsWarning(
-                    new RuntimeException("Failed to parse sync token, it cannot split 'sn=value' into two parts."));
-                return null;
-            }
-
-            final long sequenceNumber;
-            try {
-                sequenceNumber = Long.parseLong(snParts[1]);
-            } catch (NumberFormatException ex) {
-                LOGGER.logExceptionAsWarning(
-                    new RuntimeException("Cannot parse sequence number for invalid number format.", ex));
-                return null;
-            }
-
-            return new SyncToken(idParts[0], idParts[1], sequenceNumber);
-        } catch (IllegalArgumentException ex) {
-            LOGGER.logExceptionAsWarning(new RuntimeException("Cannot parse sync token for invalid format.", ex));
+        final String[] syncTokenParts = syncToken.split(";", 2);
+        // Not a fully formatted sync-token
+        if (syncTokenParts.length != 2) {
+            LOGGER.warning("Failed to parse sync token, it cannot split to two parts by delimiter ';'.");
             return null;
         }
+
+        final String[] idParts = syncTokenParts[0].split("=", 2);
+        // Identifier is missing a section.
+        if (idParts.length != 2) {
+            LOGGER.warning("Failed to parse sync token, it cannot split 'id=value' into two parts.");
+            return null;
+        }
+
+        final String[] snParts = syncTokenParts[1].split("=", 2);
+        if (snParts.length != 2) {
+            LOGGER.warning("Failed to parse sync token, it cannot split 'sn=value' into two parts.");
+            return null;
+        }
+
+        final long sequenceNumber;
+        try {
+            sequenceNumber = Long.parseLong(snParts[1]);
+        } catch (NumberFormatException ex) {
+            LOGGER.warning("Cannot parse sequence number for invalid number format.", ex);
+            return null;
+        }
+
+        return new SyncToken(idParts[0], idParts[1], sequenceNumber);
     }
 
     /**
