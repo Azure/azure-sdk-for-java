@@ -3,7 +3,7 @@
 
 package com.azure.core.http.netty;
 
-import com.azure.core.http.AuthorizationChallengeHandler;
+import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.ProxyAuthenticationHandler;

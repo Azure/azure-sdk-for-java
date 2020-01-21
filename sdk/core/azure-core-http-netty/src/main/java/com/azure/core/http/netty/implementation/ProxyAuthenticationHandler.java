@@ -3,7 +3,7 @@
 
 package com.azure.core.http.netty.implementation;
 
-import com.azure.core.http.AuthorizationChallengeHandler;
+import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHENTICATE;
-import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
-import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
+import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATE;
+import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
+import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
 
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.

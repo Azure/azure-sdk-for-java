@@ -3,7 +3,7 @@
 
 package com.azure.core.http.okhttp.implementation;
 
-import com.azure.core.http.AuthorizationChallengeHandler;
+import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.Authenticator;
@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
-import static com.azure.core.http.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
+import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
+import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
 
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.

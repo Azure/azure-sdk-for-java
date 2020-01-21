@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http;
-
-import com.azure.core.util.CoreUtils;
+package com.azure.core.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -138,8 +136,8 @@ public class AuthorizationChallengeHandler {
      * @param uri Relative URI for the request.
      * @param challenges List of challenges that the server returned for the client to choose from and use when creating
      * the authorization header.
-     * @param entityBodySupplier Supplies the request entity body, used to compute the hash of the body when using {@code
-     * "qop=auth-int"}.
+     * @param entityBodySupplier Supplies the request entity body, used to compute the hash of the body when using
+     * {@code "qop=auth-int"}.
      * @return Authorization header for Digest authentication challenges.
      */
     public final String handleDigest(String method, String uri, List<Map<String, String>> challenges,
@@ -215,9 +213,7 @@ public class AuthorizationChallengeHandler {
          * The nextnonce value indicates to the client which nonce value it should use to generate its response value.
          */
         if (authenticationInfoMap.containsKey(NEXT_NONCE)) {
-            synchronized (lastChallenge) {
-                lastChallenge.get().put(NONCE, authenticationInfoMap.get(NEXT_NONCE));
-            }
+            lastChallenge.get().put(NONCE, authenticationInfoMap.get(NEXT_NONCE));
         }
     }
 
@@ -230,7 +226,7 @@ public class AuthorizationChallengeHandler {
         return Stream.of(authenticationInfoHeader.split(","))
             .map(String::trim)
             .map(kvp -> kvp.split("=", 2))
-            .collect(Collectors.toMap(kvpPieces -> kvpPieces[0].toLowerCase(), kvpPieces -> kvpPieces[1]));
+            .collect(Collectors.toMap(kvpPieces -> kvpPieces[0].toLowerCase(Locale.ROOT), kvpPieces -> kvpPieces[1]));
     }
 
     /*
@@ -281,13 +277,11 @@ public class AuthorizationChallengeHandler {
      */
     private int getNc(Map<String, String> challenge) {
         String nonce = challenge.get(NONCE);
-        synchronized (nonceTracker) {
-            if (nonceTracker.containsKey(nonce)) {
-                return nonceTracker.get(nonce).incrementAndGet();
-            } else {
-                nonceTracker.put(nonce, new AtomicInteger(1));
-                return 1;
-            }
+        if (nonceTracker.containsKey(nonce)) {
+            return nonceTracker.get(nonce).incrementAndGet();
+        } else {
+            nonceTracker.put(nonce, new AtomicInteger(1));
+            return 1;
         }
     }
 
@@ -485,7 +479,7 @@ public class AuthorizationChallengeHandler {
         }
 
         if (userhash) {
-            authorizationBuilder.append(", ").append("userhash=").append(userhash);
+            authorizationBuilder.append(", ").append("userhash=").append(true);
         }
 
         return authorizationBuilder.toString();

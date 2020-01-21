@@ -3,7 +3,7 @@
 
 package com.azure.core.http.netty;
 
-import com.azure.core.http.AuthorizationChallengeHandler;
+import com.azure.core.util.AuthorizationChallengeHandler;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
