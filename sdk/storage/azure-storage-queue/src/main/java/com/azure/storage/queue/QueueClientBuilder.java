@@ -324,7 +324,7 @@ public final class QueueClientBuilder {
     /**
      * Sets the request retry options for all the requests made through the client.
      *
-     * @param retryOptions The options used to configure retry behavior.
+     * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated QueueClientBuilder object
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */

@@ -326,7 +326,7 @@ public final class BlobContainerClientBuilder {
     /**
      * Sets the request retry options for all the requests made through the client.
      *
-     * @param retryOptions The options used to configure retry behavior.
+     * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated BlobContainerClientBuilder object
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
