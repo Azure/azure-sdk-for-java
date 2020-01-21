@@ -2,7 +2,7 @@ parameters:
   SDKType: not-specified # Set a default that breaks in obvious ways.
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
-  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true'
+  TestOptions: '$(DefaultOptions)'
   TestGoals: verify
   TestMatrix:
     Linux - Java 8:
@@ -35,12 +35,6 @@ parameters:
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
       RunTitle: 'Windows on Java 1.11'
-    Windows From Source - Java 8:
-      OSName: 'Windows'
-      OSVmImage: 'windows-2019'
-      JavaVersion: '1.8'
-      RunTitle: 'From Source: Windows on Java 1.8'
-      TestFromSource: true
 
 jobs:
   - job: 'Build'
@@ -138,7 +132,7 @@ jobs:
 
       - script: |
           pip install setuptools wheel
-          pip install doc-warden==$(DocWardenVersion)
+          pip install doc-warden
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
@@ -150,6 +144,7 @@ jobs:
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+
       - template: ../steps/install-reporting-tools.yml
         parameters:
           Options: --batch-mode
@@ -191,36 +186,20 @@ jobs:
           Options: --batch-mode
           MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
-      - ${{ parameters.PreTestSteps }}
-
-      - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
+      - task: Maven@3
+        displayName: 'Start Jetty'
+        condition: and(succeeded())
         inputs:
-          versionSpec: '3.6'
-        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
+          mavenPomFile: pom.data.xml
+          options: '$(DefaultOptions)'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'jetty:run-forked'
 
-      - pwsh: |
-          python --version
-          python eng/versioning/set_versions.py --build-type client --pst
-          if ($LastExitCode -eq 5678) {
-            echo "##vso[task.setvariable variable=ShouldRunSourceTests]$true"
-            echo "Changes detected, return code from set_versions.py is $($LastExitCode)"
-            exit 0
-          } elseif ($LastExitCode -eq 0) {
-            echo "No changes detected, return code from set_versions.py is $($LastExitCode)"
-            exit 0
-          } else {
-            echo "Invalid return code from set_versions.py, return code is $($LastExitCode)"
-            exit 1
-          }
-        displayName: 'Set versions for source build'
-        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
-
-      - script: |
-          python --version
-          python eng/versioning/update_versions.py --update-type library --build-type client
-        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
-        displayName: 'Update versions for source build'
+      - ${{ parameters.PreTestSteps }}
 
       - task: Maven@3
         displayName: 'Run tests'
@@ -233,53 +212,11 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: ${{ parameters.TestGoals }}
-        # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set)
-        # OR when ShouldRunSourceTests is true
-        condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
+        condition: and(succeeded())
 
       - task: PublishTestResults@2
-        condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
+        condition: and(always())
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
 
-      # HACK: This has been disabled to unblock releases where aggregate code
-      #       coverage reporting was causing agent timeouts. We've got an issue
-      #       to discuss how to handle aggregate-style reporting across the repo
-      #       but at the moment this isn't going to work:
-      #
-      #         https://github.com/Azure/azure-sdk-for-java/issues/7271
-      #
-      #     # Generate JaCoCo code coverage report on Java 11, Linux builds if the build reason is not PR.
-      # - task: Maven@3
-      #   displayName: 'Generate aggregate code coverage report'
-      #   condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
-      #   inputs:
-      #       # Aggregate reports for non-PR builds will use pom.client.xml and include non-shipping modules
-      #       mavenPomFile: pom.client.xml
-      #       options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
-      #       mavenOptions: '-Xmx3072m $(LoggingOptions)'
-      #       javaHomeOption: 'JDKVersion'
-      #       jdkVersionOption: $(JavaVersion)
-      #       jdkArchitectureOption: 'x64'
-      #       publishJUnitResults: false
-      #       goals: 'verify'
-
-      #   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
-      #   # Code coverage reporting is setup only for Track 2 modules.
-      # - task: PublishCodeCoverageResults@1
-      #   condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
-      #   inputs:
-      #       codeCoverageTool: JaCoCo
-      #       summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
-      #       reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
-      #       failIfCoverageEmpty: true
-
-      #   # Publish code coverage to an artifact so it can be uploaded to the Maven site.
-      #   # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
-      # - task: PublishPipelineArtifact@0
-      #   displayName: 'Publish coverage artifact'
-      #   condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
-      #   inputs:
-      #       artifactName: coverage
-      #       targetPath: eng/jacoco-test-coverage/target/site/

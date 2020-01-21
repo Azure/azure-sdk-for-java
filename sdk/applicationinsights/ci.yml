@@ -37,7 +37,7 @@ pr:
       - sdk/applicationinsights/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: applicationinsights
       SDKType: data
