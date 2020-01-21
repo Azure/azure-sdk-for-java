@@ -15,7 +15,6 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
       - hotfix/*
       - release/*
   paths:
@@ -41,7 +40,9 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: authorization
+      SDKType: data
       Artifacts:
         - name: azure-authentication-msi-token-provider
+          groupId: com.microsoft.azure.msi_auth_token_provider
           safeName: azureauthenticationmsitokenprovider
           stagingProfileId: 534d15ee3800f4

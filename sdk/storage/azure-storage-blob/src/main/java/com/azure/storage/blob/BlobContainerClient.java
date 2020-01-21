@@ -458,7 +458,31 @@ public final class BlobContainerClient {
      * @return The listed blobs, flattened.
      */
     public PagedIterable<BlobItem> listBlobs(ListBlobsOptions options, Duration timeout) {
-        return new PagedIterable<>(client.listBlobsFlatWithOptionalTimeout(options, timeout));
+        return this.listBlobs(options, null, timeout);
+    }
+
+    /**
+     * Returns a lazy loaded list of blobs in this container, with folder structures flattened. The returned {@link
+     * PagedIterable} can be consumed through while new items are automatically retrieved as needed.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order.
+     *
+     * <p>
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-String-Duration}
+     *
+     * @param options {@link ListBlobsOptions}
+     * @param continuationToken Identifies the portion of the list to be returned with the next list operation.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The listed blobs, flattened.
+     */
+    public PagedIterable<BlobItem> listBlobs(ListBlobsOptions options, String continuationToken, Duration timeout) {
+        return new PagedIterable<>(client.listBlobsFlatWithOptionalTimeout(options, continuationToken, timeout));
     }
 
     /**

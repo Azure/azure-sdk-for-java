@@ -1,14 +1,19 @@
+---
+topic: sample
+languages:
+  - java
+products:
+  - azure
+  - azure-cognitive-service
+---
 
-## Azure Text Analytics client library for Java Samples
+# Azure Text Analytics client library for Java Samples
 
 Azure Text Analytics samples are a set of self-contained Java programs that demonstrate interacting with Azure Text Analytics service
 using the client library. Each sample focuses on a specific scenario and can be executed independently. 
 
 ## Key concepts
 Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
-
-# Samples Azure Text Analytics APIs
-This document describes how to use samples and what is done in each sample.
 
 ## Getting started
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].

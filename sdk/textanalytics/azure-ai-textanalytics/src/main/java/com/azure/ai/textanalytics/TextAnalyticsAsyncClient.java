@@ -110,6 +110,12 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language and a numeric score between zero and one. Scores close to one indicate 100%
      * certainty that the identified language is true.
      *
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects languages in a text. Subscribes to the call asynchronously and prints out the detected language
+     * details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string}
+     *
      * @param text The text to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DetectLanguageResult detected language} of the text.
@@ -128,6 +134,12 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a {@link Response} containing the detected language and a numeric score between zero and one. Scores
      * close to one indicate 100% certainty that the identified language is true.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects languages with http response in a text with a provided country hint. Subscribes to the call
+     * asynchronously and prints out the detected language details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#string-string}
      *
      * @param text The text to be analyzed.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
@@ -151,6 +163,12 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns the detected language for a batch of input.
      *
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects languages in a list of string inputs. Subscribes to the call asynchronously and prints out the
+     * detected language details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguages#List}
+     *
      * @param textInputs The list of texts to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -169,6 +187,12 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns the detected language for a batch of input with the provided country hint.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects languages in a list of string inputs with a provided country hint for the batch. Subscribes to the
+     * call asynchronously and prints out the detected language details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguagesWithResponse#List-String}
      *
      * @param textInputs The list of texts to be analyzed.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO
@@ -193,6 +217,12 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns the detected language for a batch of input.
      *
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects languages in a list of DetectLanguageInput. Subscribes to the call asynchronously and prints out
+     * the detected language details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectBatchLanguages#List}
+     *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -212,6 +242,12 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns the detected language for a batch of input.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects languages in a text. Subscribes to the call asynchronously and prints out the detected language
+     * details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectBatchLanguagesWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -239,6 +275,12 @@ public final class TextAnalyticsAsyncClient {
      * <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>
      *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a text. Subscribes to the call asynchronously and prints out the recognized entity
+     * details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string}
+     *
      * @param text the text to recognize entities for.
      *
      * @return A {@link Mono} containing the {@link RecognizeEntitiesResult named entity} of the text.
@@ -258,6 +300,12 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
      * <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a text with provided language hint. Subscribes to the call asynchronously and prints out
+     * the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#string-string}
      *
      * @param text the text to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
@@ -281,6 +329,12 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of general named entities for the provided list of texts.
      *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a text. Subscribes to the call asynchronously and prints out the entity details
+     * when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#List}
+     *
      * @param textInputs A list of texts to recognize entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -299,6 +353,12 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of general named entities for the provided list of texts.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a text with the provided language hint. Subscribes to the call asynchronously and
+     * prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#List-String}
      *
      * @param textInputs A list of texts to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
@@ -323,6 +383,12 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of general named entities for the provided list of text inputs.
      *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
+     * entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchEntities#List}
+     *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -342,6 +408,12 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of general named entities for the provided list of text inputs.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
+     * entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchEntitiesWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -369,6 +441,11 @@ public final class TextAnalyticsAsyncClient {
      * supported entity types, check <a href="https://aka.ms/tanerpii"></a>. See <a href="https://aka.ms/talangs"></a>
      * for the list of enabled languages.
      *
+     * <p>Recognize PII entities in a text. Subscribes to the call asynchronously and prints out the
+     * entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string}
+     *
      * @param text the text to recognize PII entities for.
      *
      * @return A {@link Mono} containing the {@link RecognizeEntitiesResult PII entity} of the text.
@@ -388,6 +465,11 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text. For the list of
      * supported entity types, check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>.
+     *
+     * <p>Recognize PII entities in a text with provided language hint. Subscribes to the call asynchronously and
+     * prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#string-string}
      *
      * @param text the text to recognize PII entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -413,6 +495,11 @@ public final class TextAnalyticsAsyncClient {
      * of supported entity types, check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
+     * <p>Recognize PII entities in a list of string inputs. Subscribes to the call asynchronously and prints out the
+     * entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list-string}
+     *
      * @param textInputs A list of text to recognize PII entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -434,6 +521,11 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts. For the list
      * of supported entity types, check <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>.
+     *
+     * <p>Recognize PII entities in a list of string inputs with provided language hint. Subscribes to the call
+     * asynchronously and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#List-String}
      *
      * @param textInputs A list of text to recognize PII entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -460,6 +552,11 @@ public final class TextAnalyticsAsyncClient {
      * the list of supported entity types, check: <a href="https://aka.ms/taner"></a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
      *
+     * <p>Recognize PII entities in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out
+     * the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchPiiEntities#List}
+     *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -481,6 +578,11 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs. For
      * the list of supported entity types,check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>.
+     *
+     * <p>Recognize PII entities in a list of TextDocumentInput with provided statistics options. Subscribes to the
+     * call asynchronously and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchPiiEntitiesWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -507,6 +609,11 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text. See
      * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
+     * <p>Recognize linked entities in a text. Subscribes to the call asynchronously and prints out the
+     * entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string}
+     *
      * @param text the text to recognize linked entities for.
      *
      * @return A {@link Mono} containing the {@link RecognizeLinkedEntitiesResult linked entity} of the text.
@@ -525,6 +632,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text. See
      * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     *
+     * <p>Recognize linked entities in a text with provided language hint. Subscribes to the call asynchronously
+     * and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#string-string}
      *
      * @param text the text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -550,6 +662,11 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts. See
      * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
+     * <p>Recognize linked entities in a list of string inputs. Subscribes to the call asynchronously and prints out the
+     * entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#list-string}
+     *
      * @param textInputs A list of text to recognize linked entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -571,6 +688,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts. See
      * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     *
+     * <p>Recognize linked entities in a list of string inputs with provided language hint. Subscribes to the call
+     * asynchronously and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#List-String}
      *
      * @param textInputs A list of text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -596,6 +718,11 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs. See
      * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
+     * <p>Recognize linked entities in a list of TextDocumentInput. Subscribes to the call asynchronously and
+     * prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchLinkedEntities#List}
+     *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -616,6 +743,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs. See
      * <a href="https://aka.ms/talangs"></a> supported languages in Text Analytics API.
+     *
+     * <p>Recognize linked  entities in a list of TextDocumentInput and provided reuqest options to show statistics.
+     * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeBatchLinkedEntitiesWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -642,6 +774,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      *
+     * <p>Extract key phrases in a text. Subscribes to the call asynchronously and prints out the
+     * key phrases when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string}
+     *
      * @param text the text to be analyzed.
      *
      * @return A {@link Mono} containing the {@link ExtractKeyPhraseResult key phrases} of the text.
@@ -660,6 +797,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text. See <a href="https://aka.ms/talangs"></a>
      * for the list of enabled languages.
+     *
+     * <p>Extract key phrases in a text with a provided language. Subscribes to the call asynchronously and prints
+     * out the key phrases when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesWithResponse#string-string}
      *
      * @param text the text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -683,6 +825,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      *
+     * <p>Extract key phrases in a list of string inputs. Subscribes to the call asynchronously and prints out the
+     * key phrases when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#list-string}
+     *
      * @param textInputs A list of text to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -702,6 +849,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text. See <a href="https://aka.ms/talangs"></a>
      * for the list of enabled languages.
+     *
+     * <p>Extract key phrases in a list of string inputs with a provided language. Subscribes to the call asynchronously
+     * and prints out the key phrases when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesWithResponse#List-String}
      *
      * @param textInputs A list of text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -726,6 +878,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      *
+     * <p>Extract key phrases in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
+     * key phrases when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractBatchKeyPhrases#List}
+     *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -746,6 +903,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text. See <a href="https://aka.ms/talangs"></a>
      * for the list of enabled languages.
+     *
+     * <p>Extract key phrases in a list of TextDocumentInput with request options. Subscribes to the call asynchronously
+     * and prints out the key phrases when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractBatchKeyPhrasesWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -772,6 +934,11 @@ public final class TextAnalyticsAsyncClient {
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
      * Neutral) for the document and each sentence within i
      *
+     * <p>Analyze sentiment in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
+     * sentiment details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string}
+     *
      * @param text the text to be analyzed.
      *
      * @return A {@link Mono} containing the {@link AnalyzeSentimentResult text sentiment} of the text.
@@ -790,6 +957,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
      * Neutral) for the document and each sentence within i
+     *
+     * <p>Analyze sentiment in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
+     * sentiment details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#string-string}
      *
      * @param text the text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -814,6 +986,11 @@ public final class TextAnalyticsAsyncClient {
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
+     * <p>Analyze sentiment in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
+     * sentiment details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#list-string}
+     *
      * @param textInputs A list of text to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -833,6 +1010,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
+     *
+     * <p>Analyze sentiment in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
+     * sentiment details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#List-String}
      *
      * @param textInputs A list of text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -858,6 +1040,11 @@ public final class TextAnalyticsAsyncClient {
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
+     * <p>Analyze sentiment in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
+     * sentiment details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeBatchSentiment#List}
+     *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -878,6 +1065,11 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
+     *
+     * <p>Analyze sentiment in a list of TextDocumentInput with provided request options. Subscribes to the call
+     * asynchronously and prints out the sentiment details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeBatchSentimentWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents

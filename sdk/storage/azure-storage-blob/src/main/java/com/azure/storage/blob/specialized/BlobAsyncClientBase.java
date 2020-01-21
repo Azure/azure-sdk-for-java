@@ -58,7 +58,6 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple3;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -702,9 +701,6 @@ public class BlobAsyncClientBase {
      * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
      * will be thrown.</p>
      *
-     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.</p>
-     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String}
@@ -712,7 +708,7 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @return A reactive response containing the blob properties and metadata.
      */
     public Mono<BlobProperties> downloadToFile(String filePath) {
@@ -725,9 +721,6 @@ public class BlobAsyncClientBase {
      * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
      * {@link FileAlreadyExistsException} will be thrown.</p>
      *
-     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.</p>
-     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-boolean}
@@ -735,7 +728,7 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param overwrite Whether or not to overwrite the file, should the file exist.
      * @return A reactive response containing the blob properties and metadata.
      */
@@ -763,9 +756,6 @@ public class BlobAsyncClientBase {
      * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
      * will be thrown.</p>
      *
-     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.</p>
-     *
      * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
      * call, provide the {@link BlobRange} parameter.</p>
      *
@@ -776,7 +766,7 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param range {@link BlobRange}
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
      * transfers parameter is ignored.
@@ -801,9 +791,6 @@ public class BlobAsyncClientBase {
      * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
      * {@link OpenOption OpenOptions} </p>
      *
-     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.</p>
-     *
      * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
      * call, provide the {@link BlobRange} parameter.</p>
      *
@@ -814,7 +801,7 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param range {@link BlobRange}
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
      * transfers parameter is ignored.
@@ -1014,15 +1001,31 @@ public class BlobAsyncClientBase {
         AtomicLong totalProgress) {
 
         // Extract the body.
-        Flux<ByteBuffer> data = response.getValue();
+        Flux<ByteBuffer> data = response.getValue()
+            .flatMap(buffer -> {
+                /*
+                 * Buffer the data contained in the 'ByteBuffer' as it passes through the stream. This resolves an issue
+                 * where Reactor Netty begins to release the underlying 'ByteBuf' after the on next operations have
+                 * completed, the release buffer may be overwritten before writing to file has completed which leads to
+                 * corrupted files.
+                 */
+                int offset = buffer.position();
+                int size = buffer.remaining();
+                byte[] duplicate = new byte[size];
+
+                for (int i = 0; i < size; i++) {
+                    duplicate[i] = buffer.get(i + offset);
+                }
+
+                return Mono.just(ByteBuffer.wrap(duplicate));
+            });
 
         // Report progress as necessary.
         data = ProgressReporter.addParallelProgressReporting(data,
             finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
 
         // Write to the file.
-        return FluxUtil.writeFile(data, file,
-            chunkNum * finalParallelTransferOptions.getBlockSize());
+        return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSize());
     }
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {

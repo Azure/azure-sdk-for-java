@@ -1,18 +1,20 @@
-
-## Azure Key Vault Keys Samples client library for Java
+---
+page_type: sample
+languages:
+  - java
+products:
+  - azure
+  - azure-key-vault
+urlFragment: keyvault-keys-samples
+---
+# Azure Key Vault Keys Samples client library for Java
 This document explains samples and how to use them.
 
 ## Key concepts
 Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 
-# Samples Azure Key Vault Keys APIs
-This document describes how to use samples and what is done in each sample.
-
 ## Getting started
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
-
-## How to run
-These sample can be run in your IDE with default JDK.
 
 ## Examples
    Following section document various examples.

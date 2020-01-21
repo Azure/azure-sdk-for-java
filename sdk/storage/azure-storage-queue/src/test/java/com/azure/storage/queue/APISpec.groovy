@@ -181,6 +181,7 @@ class APISpec extends Specification {
         return builder
     }
 
+
     private def refactorName(String text) {
         def fullName = text.split(" ").collect { it.capitalize() }.join("")
         def matcher = (fullName =~ /(.*)(\[)(.*)(\])/)

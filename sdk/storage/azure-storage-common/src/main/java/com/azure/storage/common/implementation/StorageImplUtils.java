@@ -286,4 +286,12 @@ public class StorageImplUtils {
                 + " in service version " + serviceVersion);
         }
     }
+
+    /** Returns an empty string if value is {@code null}, otherwise returns value
+     * @param value The value to check and return.
+     * @return The value or empty string.
+     */
+    public static String emptyIfNull(String value) {
+        return value == null ? "" : value;
+    }
 }
