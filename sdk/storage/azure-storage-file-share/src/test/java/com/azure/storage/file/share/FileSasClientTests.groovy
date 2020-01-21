@@ -1,6 +1,6 @@
 package com.azure.storage.file.share
 
-import com.azure.storage.common.StorageSharedKeyCredential
+
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
@@ -116,7 +116,11 @@ class FileSasClientTests extends APISpec {
             .setId("0000")
             .setAccessPolicy(new ShareAccessPolicy().setPermissions("rcwdl")
                 .setExpiresOn(getUTCNow().plusDays(1)))
+
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))
+
+        // Sleep 30 seconds if running against the live service as it may take ACLs that long to take effect.
+        sleepIfLive(30000)
 
         // Check shareSASPermissions
         ShareSasPermission permissions = new ShareSasPermission()

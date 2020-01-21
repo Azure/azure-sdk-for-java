@@ -1,4 +1,5 @@
 parameters:
+  SDKType: not-specified # Set a default that breaks in obvious ways.
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
   TestOptions: '$(DefaultOptions)'
@@ -60,7 +61,7 @@ jobs:
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
-        condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
+        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -72,16 +73,14 @@ jobs:
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
             python3 --version
-            python3 eng/versioning/set_versions.py --update-type all --build-type client --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
-            python3 eng/versioning/set_versions.py --update-type all --build-type data --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
-          condition: eq(variables['SetDevVersion'],'true')
+            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}} --group-id ${{artifact.groupId}}
+          condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
           displayName: Append dev package version suffix for ${{artifact.name}}
 
       - script: |
           python3 --version
-          python3 eng/versioning/update_versions.py --update-type all --build-type client
-          python3 eng/versioning/update_versions.py --update-type all --build-type data
-        condition: eq(variables['SetDevVersion'],'true')
+          python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}}
+        condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Apply version settings to repository
 
       - script: |
@@ -119,7 +118,7 @@ jobs:
         artifact: repository
 
   - job: 'Analyze'
-    condition: ne(variables['Skip.Analyze'], 'true')
+    condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
     variables:
       - template: ../variables/globals.yml
@@ -157,17 +156,17 @@ jobs:
           Options: --batch-mode
           MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
-      - task: Maven@3
-        displayName: 'Install azure-sdk-parent'
-        inputs:
-          mavenPomFile: parent/pom.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-          mavenOptions: '$(MemoryOptions)  $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
+      # - task: Maven@3
+      #   displayName: 'Install azure-sdk-parent'
+      #   inputs:
+      #     mavenPomFile: parent/pom.xml
+      #     options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+      #     mavenOptions: '$(MemoryOptions)  $(LoggingOptions)'
+      #     javaHomeOption: 'JDKVersion'
+      #     jdkVersionOption: '1.11'
+      #     jdkArchitectureOption: 'x64'
+      #     publishJUnitResults: false
+      #     goals: 'install'
 
       - task: Maven@3
         displayName: 'Install Module and Run SpotBugs, Checkstyle, RevApi, and Javadoc'
@@ -180,40 +179,6 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'
-
-      # Generate the Maven site report, including SpotBugs, JavaDoc, CheckStyle, Jacoco, etc only when we are not
-      # running as a PR check.
-      - task: Maven@3
-        displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
-        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install site:site site:stage'
-
-      - script: |
-          git clone https://github.com/JonathanGiles/DependencyChecker.git
-          mkdir input && cp dependencies.json input/
-        displayName: 'Download dependency checker'
-        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
-
-      - task: Maven@3
-        displayName: 'Analyze dependencies'
-        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
-        inputs:
-          mavenPomFile: 'DependencyChecker/pom.xml'
-          options: '-Dexec.args="-showall -dependencymanagement"'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'clean package exec:java'
 
       # We only copy artifacts into the staging in nightly builds, we don't bother with this for PR validation builds.
       - pwsh: |
@@ -229,7 +194,7 @@ jobs:
         artifact: reports
 
   - job: 'Test'
-    condition: ne(variables['Skip.Test'], 'true')
+    condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
     variables:
       - template: ../variables/globals.yml
@@ -254,7 +219,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Start Jetty'
-        condition: ne(variables['SdkType'], 'client')
+        condition: and(succeeded(), ne('${{ parameters.SDKType }}', 'client'))
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions)'
@@ -271,7 +236,7 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
-        condition: and(ne(variables['SdkType'], 'data'), eq(variables['TestFromSource'],'true'))
+        condition: and(succeeded(), eq('${{ parameters.SDKType }}', 'client'), eq(variables['TestFromSource'],'true'))
 
       - pwsh: |
           python --version
@@ -288,12 +253,12 @@ jobs:
             exit 1
           }
         displayName: 'Set versions for source build'
-        condition: and(ne(variables['SdkType'], 'data'), eq(variables['TestFromSource'],'true'))
+        condition: and(succeeded(), eq('${{ parameters.SDKType }}', 'client'), eq(variables['TestFromSource'],'true'))
 
       - script: |
           python --version
           python eng/versioning/update_versions.py --update-type library --build-type client
-        condition: eq(variables['ShouldRunSourceTests'],'true')
+        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
         displayName: 'Update versions for source build'
 
       - task: Maven@3

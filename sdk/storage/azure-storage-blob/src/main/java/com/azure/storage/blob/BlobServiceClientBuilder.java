@@ -86,10 +86,11 @@ public final class BlobServiceClientBuilder {
     public BlobServiceAsyncClient buildAsyncClient() {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
 
+        boolean anonymousAccess = false;
+
         if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
             && Objects.isNull(sasTokenCredential)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Blob Service Client cannot be accessed "
-                + "anonymously. Please provide a form of authentication"));
+            anonymousAccess = true;
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
@@ -97,7 +98,8 @@ public final class BlobServiceClientBuilder {
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
             httpClient, additionalPolicies, configuration, logger);
 
-        return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey);
+        return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
+            anonymousAccess);
     }
 
     /**

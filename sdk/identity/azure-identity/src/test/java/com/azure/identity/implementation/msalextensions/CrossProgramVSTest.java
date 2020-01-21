@@ -44,7 +44,7 @@ public class CrossProgramVSTest {
         accessAspect = new PersistentTokenCacheAccessAspect();
 
         confApp = ConfidentialClientApplication.builder(TestConfiguration.CONFIDENTIAL_CLIENT_ID,
-                ClientCredentialFactory.create(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET))
+                ClientCredentialFactory.createFromSecret(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET))
                 .authority(TestConfiguration.TENANT_SPECIFIC_AUTHORITY)
                 .setTokenCacheAccessAspect(accessAspect)
                 .build();

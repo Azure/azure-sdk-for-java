@@ -6,7 +6,7 @@ This repository is for active development of the Azure SDK for Java. For consume
 
 ### Important
 
-The Azure SDK team is pleased to make available the January 2020 client library General Availability (GA) release. We strongly recommend using the GA libraries in all production environments as these libraries are well tested and officially supported by Microsoft. More details, including installation instructions can be found here [here](https://azure.github.io/azure-sdk/releases/2019-11/java.html).
+The Azure SDK team is pleased to make available the January 2020 client library General Availability (GA) release. We strongly recommend using the GA libraries in all production environments as these libraries are well tested and officially supported by Microsoft. More details, including installation instructions can be found here [here](https://azure.github.io/azure-sdk/releases/2020-01/java.html).
 
 ## Getting started
 

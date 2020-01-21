@@ -171,7 +171,6 @@ public class EventHubConsumerClientTest {
 
         final int numberOfEvents = 10;
         sendMessages(sink, numberOfEvents, PARTITION_ID);
-        final int numberToReceive = 3;
 
         // Act
         final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, numberOfEvents,

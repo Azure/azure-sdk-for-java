@@ -23,7 +23,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -35,6 +34,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 import static com.azure.core.amqp.implementation.CbsAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
@@ -95,14 +95,14 @@ public class CBSChannelTest extends IntegrationTestBase {
         }
 
         if (connection != null) {
-            connection.close();
+            connection.dispose();
         }
     }
 
     @Test
     public void successfullyAuthorizes() {
         // Arrange
-        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
+        final String tokenAudience = azureTokenManagerProvider.getScopesFromResource(connectionString.getEntityPath());
 
         // Act & Assert
         StepVerifier.create(cbsChannel.authorize(tokenAudience, tokenAudience))
@@ -113,7 +113,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     @Test
     public void unsuccessfulAuthorize() {
         // Arrange
-        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
+        final String tokenAudience = azureTokenManagerProvider.getScopesFromResource(connectionString.getEntityPath());
 
         TokenCredential tokenProvider = new EventHubSharedKeyCredential(connectionString.getSharedAccessKeyName(),
             "Invalid shared access key.");

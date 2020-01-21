@@ -103,7 +103,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -319,7 +319,9 @@ managing the underlying consumer operations.
 
 In our example, we will focus on building the [`EventProcessorClient`][EventProcessorClient], use the
 [`InMemoryCheckpointStore`][InMemoryCheckpointStore] available in samples, and a callback function that processes events
-received from the Event Hub and writes to console.
+received from the Event Hub and writes to console. For production applications, it's recommended to use a durable 
+store like [Checkpoint Store with Azure Storage Blobs][BlobCheckpointStore].
+
 
 <!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L155-L176 -->
 ```java
@@ -470,5 +472,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [InMemoryCheckpointStore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryCheckpointStore.java
 [LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
+[BlobCheckpointStore]: ../azure-messaging-eventhubs-checkpointstore-blob/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)

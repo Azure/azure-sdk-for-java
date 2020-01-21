@@ -3,13 +3,16 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -18,12 +21,15 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.io.Closeable;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -320,15 +326,18 @@ public class EventHubConsumerAsyncClient implements Closeable {
                 return createPartitionConsumer(name, partitionId, startingPosition, receiveOptions);
             })
             .receive()
-            .doFinally(signalType -> {
-                logger.info("{}: Receiving completed. Partition: '{}'. Signal: '{}'", linkName, partitionId,
-                    signalType);
-                final EventHubPartitionAsyncConsumer consumer = openPartitionConsumers.remove(linkName);
+            .doOnCancel(() -> removeLink(linkName, partitionId, SignalType.CANCEL))
+            .doOnComplete(() -> removeLink(linkName, partitionId, SignalType.ON_COMPLETE))
+            .doOnError(error -> removeLink(linkName, partitionId, SignalType.ON_ERROR));
+    }
 
-                if (consumer != null) {
-                    consumer.close();
-                }
-            });
+    private void removeLink(String linkName, String partitionId, SignalType signalType) {
+        logger.info("{}: Receiving completed. Partition[{}]. Signal[{}]", linkName, partitionId, signalType);
+        final EventHubPartitionAsyncConsumer consumer = openPartitionConsumers.remove(linkName);
+
+        if (consumer != null) {
+            consumer.close();
+        }
     }
 
     private EventHubPartitionAsyncConsumer createPartitionConsumer(String linkName, String partitionId,
@@ -336,13 +345,19 @@ public class EventHubConsumerAsyncClient implements Closeable {
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT,
             getEventHubName(), consumerGroup, partitionId);
 
-        final Mono<AmqpReceiveLink> receiveLinkMono =
+        final AtomicReference<Supplier<EventPosition>> initialPosition = new AtomicReference<>(() -> startingPosition);
+        final Flux<AmqpReceiveLink> receiveLinkMono =
             connectionProcessor.flatMap(connection ->
-                connection.createReceiveLink(linkName, entityPath, startingPosition, receiveOptions))
-                .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
+                connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions))
+                .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()))
+            .repeat();
 
-        return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer, getFullyQualifiedNamespace(),
-            getEventHubName(), consumerGroup, partitionId, prefetchCount,
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
+        final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
+            new AmqpReceiveLinkProcessor(prefetchCount, retryPolicy, connectionProcessor));
+
+        return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
+            getEventHubName(), consumerGroup, partitionId, initialPosition,
             receiveOptions.getTrackLastEnqueuedEventProperties());
     }
 }
