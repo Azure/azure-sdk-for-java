@@ -191,7 +191,7 @@ public final class QueueClientBuilder {
     /**
      * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link StorageSharedKeyCredential}.
      * @return the updated QueueClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -205,7 +205,7 @@ public final class QueueClientBuilder {
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link TokenCredential}.
      * @return the updated QueueClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */

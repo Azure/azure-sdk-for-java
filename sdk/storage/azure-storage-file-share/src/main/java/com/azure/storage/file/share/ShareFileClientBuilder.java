@@ -300,7 +300,7 @@ public class ShareFileClientBuilder {
     /**
      * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link StorageSharedKeyCredential}.
      * @return the updated ShareFileClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
