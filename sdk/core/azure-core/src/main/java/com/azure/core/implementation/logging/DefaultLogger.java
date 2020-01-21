@@ -28,6 +28,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     private static final String MESSAGE_TEMPLATE = "%s [%s] [%s] %s - %s%n";
 
     private String classPath;
+    private final int configuredLogLevel;
 
     /**
      * Construct DefaultLogger for the given class.
@@ -50,6 +51,8 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         } catch (ClassNotFoundException e) {
             this.classPath = className;
         }
+        this.configuredLogLevel = LogLevel.fromString(Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL))
+            .getLogLevel();
     }
 
     /**
@@ -65,9 +68,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public boolean isTraceEnabled() {
-        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
-        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
-        return currentLogLevel.getLogLevel() < LogLevel.VERBOSE.getLogLevel();
+        return this.configuredLogLevel < LogLevel.VERBOSE.getLogLevel();
     }
 
     /**
@@ -301,9 +302,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     }
 
     private boolean isLogLevelEnabledFromEnv(LogLevel logLevel) {
-        String logLevelStr = Configuration.getGlobalConfiguration().get(AZURE_LOG_LEVEL);
-        LogLevel currentLogLevel = LogLevel.fromString(logLevelStr);
-        return logLevel.getLogLevel() >= currentLogLevel.getLogLevel();
+        return logLevel.getLogLevel() >= this.configuredLogLevel;
     }
 
     /**
