@@ -188,7 +188,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Start Jetty'
-        condition: and(succeeded())
+        condition: succeeded()
         inputs:
           mavenPomFile: pom.data.xml
           options: '$(DefaultOptions)'
@@ -212,10 +212,10 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: ${{ parameters.TestGoals }}
-        condition: and(succeeded())
+        condition: succeeded()
 
       - task: PublishTestResults@2
-        condition: and(always())
+        condition: always()
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
