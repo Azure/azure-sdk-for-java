@@ -154,7 +154,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         String replacedItemId = UUID.randomUUID().toString();
         itemSettingsToReplace.setId(replacedItemId);
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> replaceMono = createdContainer.replaceItem(itemSettingsToReplace,
-                                                                                 replacedItemId,
+                                                                                 createdItemId,
                                                                                  PartitionKey.NONE);
         validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
                 .withId(replacedItemId).build();

@@ -439,11 +439,10 @@ public class CosmosAsyncContainer {
             options = new CosmosItemRequestOptions();
         }
         options.setPartitionKey(partitionKey);
-        RequestOptions requestOptions = options.toRequestOptions();
         Class<T> itemType = (Class<T>) item.getClass();
         return this.getDatabase()
                    .getDocClientWrapper()
-                   .replaceDocument(getItemLink(itemId), doc, requestOptions)
+                   .replaceDocument(getItemLink(itemId), doc, options.toRequestOptions())
                    .map(response -> new CosmosAsyncItemResponse<T>(response, itemType))
                    .single();
     }

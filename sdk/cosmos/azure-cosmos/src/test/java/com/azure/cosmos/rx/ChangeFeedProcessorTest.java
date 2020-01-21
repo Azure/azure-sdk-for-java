@@ -268,7 +268,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                         .flatMap(doc -> {
                             BridgeInternal.setProperty(doc, "Owner", "TEMP_OWNER");
                             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-                            return createdLeaseCollection.replaceItem(doc, doc.getId(), new PartitionKey("/id"), options)
+                            return createdLeaseCollection.replaceItem(doc, doc.getId(), new PartitionKey(doc.getId()), options)
                                 .map(CosmosAsyncItemResponse::getProperties);
                         })
                         .map(ServiceItemLease::fromDocument)

@@ -11,6 +11,11 @@ public class CosmosItemResponse<T> extends CosmosResponse<CosmosItemProperties> 
         this.responseWrapper = response;
     }
 
+    @SuppressWarnings("unchecked")
+    public T getResource(){
+        return (T) responseWrapper.getResource();
+    }
+    
     /**
      * Gets the itemSettings
      *
