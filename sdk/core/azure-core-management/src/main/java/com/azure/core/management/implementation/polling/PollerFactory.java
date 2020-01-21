@@ -119,7 +119,7 @@ public final class PollerFactory {
                     if (pollError != null) {
                         return errorPollResponseMono(pollingState.getOperationStatus(), pollError);
                     }
-                    throw new IllegalStateException("Either LroError or PollError must" 
+                    throw new IllegalStateException("Either LroError or PollError must"
                         + "be set when OperationStatus is in Failed|Cancelled State.");
                 } else {
                     // Succeeded
@@ -180,7 +180,8 @@ public final class PollerFactory {
             } else {
                 String value = finalResult.getResult();
                 if (value != null) {
-                    return Mono.just(deserialize(serializerAdapter, value, finalResultType));
+                    U result = deserialize(serializerAdapter, value, finalResultType);
+                    return result != null ? Mono.just(result) : Mono.empty();
                 } else {
                     return pipeline.send(new HttpRequest(HttpMethod.GET, finalResult.getResultUri()))
                         .flatMap((Function<HttpResponse, Mono<String>>) response -> response.getBodyAsString())
