@@ -277,8 +277,8 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
          * authorization header. This is the server performing validation to the client that it received the
          * information.
          */
-        assert !authenticationInfoPieces.containsKey(CNONCE) ||
-            authenticationInfoPieces.get(CNONCE).equals(authorizationPieces.get(CNONCE));
+        assert !authenticationInfoPieces.containsKey(CNONCE)
+            || authenticationInfoPieces.get(CNONCE).equals(authorizationPieces.get(CNONCE));
         assert !authenticationInfoPieces.containsKey(NC)
             || authenticationInfoPieces.get(NC).equals(authorizationPieces.get(NC));
 
