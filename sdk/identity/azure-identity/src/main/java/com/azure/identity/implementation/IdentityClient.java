@@ -265,7 +265,6 @@ public class IdentityClient {
             .map(MsalToken::new);
     }
 
-
     /**
      * Asynchronously acquire a token from Active Directory by opening a browser and wait for the user to login. The
      * credential will run a minimal local HttpServer at the given port, so {@code http://localhost:{port}} must be
@@ -445,7 +444,7 @@ public class IdentityClient {
         }));
     }
 
-    Mono<Boolean> checkIMDSAvailable() {
+    private Mono<Boolean> checkIMDSAvailable() {
         StringBuilder payload = new StringBuilder();
 
         try {

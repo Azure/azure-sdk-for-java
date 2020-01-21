@@ -120,7 +120,7 @@ public class IdentityClientTests {
     @Test
     public void testPemCertificate() throws Exception {
         // setup
-        String pemPath = getClass().getResource("/certificate.pem").getPath();
+        String pemPath = getClass().getResource("certificate.pem").getPath();
         String accessToken = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
@@ -250,21 +250,7 @@ public class IdentityClientTests {
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        PublicClientApplication application = PowerMockito.mock(PublicClientApplication.class);
-        when(application.acquireTokenSilently(any()))
-            .thenAnswer(invocation -> {
-                SilentParameters argument = (SilentParameters) invocation.getArguments()[0];
-                if (argument.scopes().size() != 1 || request2.getScopes().get(0).equals(argument.scopes().iterator().next())) {
-                    return TestUtils.getMockAuthenticationResult(token2, expiresAt);
-                } else {
-                    throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
-                }
-            });
-        PublicClientApplication.Builder builder = PowerMockito.mock(PublicClientApplication.Builder.class);
-        when(builder.build()).thenReturn(application);
-        when(builder.authority(any())).thenReturn(builder);
-        when(builder.httpClient(any())).thenReturn(builder);
-        whenNew(PublicClientApplication.Builder.class).withArguments(clientId).thenReturn(builder);
+        mockForUserRefreshTokenFlow(token2, request2, expiresAt);
 
         // test
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
@@ -273,7 +259,6 @@ public class IdentityClientTests {
                                                   && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
-
 
     @Test
     public void testUsernamePasswordCodeFlow() throws Exception {
@@ -285,21 +270,7 @@ public class IdentityClientTests {
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        PublicClientApplication application = PowerMockito.mock(PublicClientApplication.class);
-        when(application.acquireToken(any(UserNamePasswordParameters.class)))
-            .thenAnswer(invocation -> {
-                UserNamePasswordParameters argument = (UserNamePasswordParameters) invocation.getArguments()[0];
-                if (argument.scopes().size() != 1 || request.getScopes().get(0).equals(argument.scopes().iterator().next())) {
-                    return TestUtils.getMockAuthenticationResult(token, expiresOn);
-                } else {
-                    throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
-                }
-            });
-        PublicClientApplication.Builder builder = PowerMockito.mock(PublicClientApplication.Builder.class);
-        when(builder.build()).thenReturn(application);
-        when(builder.authority(any())).thenReturn(builder);
-        when(builder.httpClient(any())).thenReturn(builder);
-        whenNew(PublicClientApplication.Builder.class).withArguments(clientId).thenReturn(builder);
+        mockForUsernamePasswordCodeFlow(token, request, expiresOn);
 
         // test
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
@@ -308,7 +279,6 @@ public class IdentityClientTests {
                                                   && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
-
 
     @Test
     public void testBrowserAuthenicationCodeFlow() throws Exception {
@@ -517,6 +487,42 @@ public class IdentityClientTests {
             cached.set(true);
             return TestUtils.getMockAuthenticationResult(token1, expiresAt);
         });
+        PublicClientApplication.Builder builder = PowerMockito.mock(PublicClientApplication.Builder.class);
+        when(builder.build()).thenReturn(application);
+        when(builder.authority(any())).thenReturn(builder);
+        when(builder.httpClient(any())).thenReturn(builder);
+        whenNew(PublicClientApplication.Builder.class).withArguments(clientId).thenReturn(builder);
+    }
+
+    private void mockForUsernamePasswordCodeFlow(String token, TokenRequestContext request, OffsetDateTime expiresOn) throws Exception {
+        PublicClientApplication application = PowerMockito.mock(PublicClientApplication.class);
+        when(application.acquireToken(any(UserNamePasswordParameters.class)))
+            .thenAnswer(invocation -> {
+                UserNamePasswordParameters argument = (UserNamePasswordParameters) invocation.getArguments()[0];
+                if (argument.scopes().size() != 1 || request.getScopes().get(0).equals(argument.scopes().iterator().next())) {
+                    return TestUtils.getMockAuthenticationResult(token, expiresOn);
+                } else {
+                    throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                }
+            });
+        PublicClientApplication.Builder builder = PowerMockito.mock(PublicClientApplication.Builder.class);
+        when(builder.build()).thenReturn(application);
+        when(builder.authority(any())).thenReturn(builder);
+        when(builder.httpClient(any())).thenReturn(builder);
+        whenNew(PublicClientApplication.Builder.class).withArguments(clientId).thenReturn(builder);
+    }
+
+    private void mockForUserRefreshTokenFlow(String token2, TokenRequestContext request2, OffsetDateTime expiresAt) throws Exception {
+        PublicClientApplication application = PowerMockito.mock(PublicClientApplication.class);
+        when(application.acquireTokenSilently(any()))
+            .thenAnswer(invocation -> {
+                SilentParameters argument = (SilentParameters) invocation.getArguments()[0];
+                if (argument.scopes().size() != 1 || request2.getScopes().get(0).equals(argument.scopes().iterator().next())) {
+                    return TestUtils.getMockAuthenticationResult(token2, expiresAt);
+                } else {
+                    throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                }
+            });
         PublicClientApplication.Builder builder = PowerMockito.mock(PublicClientApplication.Builder.class);
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);

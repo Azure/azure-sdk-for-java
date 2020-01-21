@@ -15,6 +15,8 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.core.publisher.Mono;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,31 +31,22 @@ public class HttpPipelineAdapterTests {
 
     @Test
     public void testSendRequest() throws Exception {
-
-        // test
+        Mono<String> bodyResponse = Mono.just("dummy-body");
         HttpPipeline pipeline = PowerMockito.mock(HttpPipeline.class);
         HttpPipelineAdapter pipelineAdapter = new HttpPipelineAdapter(pipeline);
-        HttpRequest req = PowerMockito.mock(HttpRequest.class);
-        HttpMethod method = HttpMethod.GET;
-        when(req.httpMethod()).thenReturn(method);
-        URL url = new URL("https://localhost.com/");
-        when(req.url()).thenReturn(url);
-        when(req.body()).thenReturn("");
-        Map<String, String> a = new HashMap<>();
-        when(req.headers()).thenReturn(a);
-        HttpResponse coreResponse = PowerMockito.mock(HttpResponse.class);
-        when(coreResponse.getBodyAsString()).thenReturn(Mono.just("dummy-body"));
-        when(coreResponse.getHeaders()).thenReturn(new HttpHeaders(a));
-        when(coreResponse.getStatusCode()).thenReturn(200);
-        when(pipeline.send(any(com.azure.core.http.HttpRequest.class))).thenReturn(Mono.just(coreResponse));
+        HttpRequest req = mockForSendRequest(bodyResponse, pipeline);
         pipelineAdapter.send(req);
     }
 
     @Test
     public void testSendRequestEmptyBody() throws Exception {
-        // test
         HttpPipeline pipeline = PowerMockito.mock(HttpPipeline.class);
         HttpPipelineAdapter pipelineAdapter = new HttpPipelineAdapter(pipeline);
+        HttpRequest req = mockForSendRequest(Mono.empty(), pipeline);
+        pipelineAdapter.send(req);
+    }
+
+    private HttpRequest mockForSendRequest(Mono<String> bodyResponse, HttpPipeline pipeline) throws MalformedURLException {
         HttpRequest req = PowerMockito.mock(HttpRequest.class);
         HttpMethod method = HttpMethod.GET;
         when(req.httpMethod()).thenReturn(method);
@@ -63,10 +56,10 @@ public class HttpPipelineAdapterTests {
         Map<String, String> a = new HashMap<>();
         when(req.headers()).thenReturn(a);
         HttpResponse coreResponse = PowerMockito.mock(HttpResponse.class);
-        when(coreResponse.getBodyAsString()).thenReturn(Mono.empty());
+        when(coreResponse.getBodyAsString()).thenReturn(bodyResponse);
         when(coreResponse.getHeaders()).thenReturn(new HttpHeaders(a));
         when(coreResponse.getStatusCode()).thenReturn(200);
         when(pipeline.send(any(com.azure.core.http.HttpRequest.class))).thenReturn(Mono.just(coreResponse));
-        pipelineAdapter.send(req);
+        return req;
     }
 }
