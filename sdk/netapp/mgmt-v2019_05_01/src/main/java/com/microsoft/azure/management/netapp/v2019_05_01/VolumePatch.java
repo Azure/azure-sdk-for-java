@@ -29,7 +29,7 @@ public class VolumePatch extends Resource {
      * usageThreshold.
      * Maximum storage quota allowed for a file system in bytes. This is a soft
      * quota used for alerting only. Minimum size is 100 GiB. Upper limit is
-     * 100TiB.
+     * 100TiB. Specified in bytes.
      */
     @JsonProperty(value = "properties.usageThreshold")
     private Long usageThreshold;
@@ -62,7 +62,7 @@ public class VolumePatch extends Resource {
     }
 
     /**
-     * Get maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
+     * Get maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
      *
      * @return the usageThreshold value
      */
@@ -71,7 +71,7 @@ public class VolumePatch extends Resource {
     }
 
     /**
-     * Set maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
+     * Set maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
      *
      * @param usageThreshold the usageThreshold value to set
      * @return the VolumePatch object itself.
