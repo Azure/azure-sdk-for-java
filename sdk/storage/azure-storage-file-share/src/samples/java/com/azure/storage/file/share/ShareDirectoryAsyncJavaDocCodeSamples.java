@@ -137,8 +137,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
      */
     public void createSubdirectoryAsyncMaxOverload() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient
-        // .createSubdirectoryWithResponse#String-FileSmbProperties-String-Map
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
@@ -148,8 +147,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
                     + response.getStatusCode()),
             error -> System.err.println(error.toString())
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient
-        // .createSubdirectoryWithResponse#String-FileSmbProperties-String-Map
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map
     }
 
     /**
@@ -173,8 +171,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
      */
     public void createFileWithResponse() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient
-        // .createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
@@ -194,8 +191,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
                 error -> System.err.println(error.toString()),
                 () -> System.out.println("Completed creating the file.")
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient
-        // .createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
     }
 
     /**
@@ -204,8 +200,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
      */
     public void createFileWithLease() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient
-        // .createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
@@ -228,8 +223,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
                 error -> System.err.println(error.toString()),
                 () -> System.out.println("Completed creating the file.")
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient
-        // .createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
     }
 
     /**
@@ -297,16 +291,14 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
      */
     public void deleteFileWithLease() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient
-        // .deleteFileWithResponse#string-ShareRequestConditions
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileWithResponse#string-ShareRequestConditions
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         shareDirectoryAsyncClient.deleteFileWithResponse("myfile", requestConditions).subscribe(
             response -> System.out.printf("Delete file completed with status code %d", response.getStatusCode()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the file.")
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient
-        // .deleteFileWithResponse#string-ShareRequestConditions
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileWithResponse#string-ShareRequestConditions
     }
 
     /**
@@ -411,15 +403,13 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
      */
     public void setPropertiesWithResponse() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient
-        // .setPropertiesWithResponse#FileSmbProperties-String
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#FileSmbProperties-String
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         shareDirectoryAsyncClient.setPropertiesWithResponse(smbProperties, filePermission).subscribe(properties -> {
             System.out.printf("Directory latest modified date is %s:", properties.getValue().getLastModified());
         });
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient
-        // .setPropertiesWithResponse#FileSmbProperties-String
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#FileSmbProperties-String
     }
 
     /**

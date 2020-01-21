@@ -29,7 +29,7 @@ import java.util.UUID;
  *
  * <p><strong>Instantiating LeaseAsyncClients</strong></p>
  *
- * {@codesnippet com.azure.storage.file.specialized.specialized.ShareLeaseClientBuilder.asyncInstantiationWithLeaseId}
+ * {@codesnippet com.azure.storage.file.specialized.ShareLeaseClientBuilder.asyncInstantiationWithLeaseId}
  *
  * @see ShareLeaseClient
  * @see ShareLeaseAsyncClient

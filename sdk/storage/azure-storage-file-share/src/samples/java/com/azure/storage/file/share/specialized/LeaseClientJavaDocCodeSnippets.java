@@ -90,12 +90,10 @@ public class LeaseClientJavaDocCodeSnippets {
      * Code snippets for {@link ShareLeaseClient#changeLeaseWithResponse(String, Duration, Context)}
      */
     public void changeLeaseWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient
-        // .changeLeaseWithResponse#String-Duration-Context
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.changeLeaseWithResponse#String-Duration-Context
         System.out.printf("Changed lease ID is %s%n",
             client.changeLeaseWithResponse("proposedId", timeout, new Context(key, value))
                 .getValue());
-        // END: com.azure.storage.file.share.specialized.ShareLeaseClient
-        // .changeLeaseWithResponse#String-Duration-Context
+        // END: com.azure.storage.file.share.specialized.ShareLeaseClient.changeLeaseWithResponse#String-Duration-Context
     }
 }
