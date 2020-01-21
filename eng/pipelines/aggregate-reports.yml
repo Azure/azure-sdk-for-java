@@ -1,0 +1,79 @@
+trigger: none
+pr: none
+
+
+jobs:
+  - job: Generate
+    variables:
+      - template: templates/variables/globals.yml
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - template: templates/steps/install-reporting-tools.yml
+      parameters:
+        Options: --batch-mode
+        MavenOptions: $(MemoryOptions) $(LoggingOptions)
+
+    - task: Maven@3
+      displayName: 'Install azure-sdk-parent'
+      inputs:
+        mavenPomFile: parent/pom.xml
+        options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+        mavenOptions: '$(MemoryOptions)  $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'install'
+
+    - task: Maven@3
+      displayName: 'Install Module and Run SpotBugs, Checkstyle, RevApi, and Javadoc'
+      inputs:
+        mavenPomFile: sdk/core/pom.service.xml
+        options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme'
+        mavenOptions: '$(MemoryOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'install'
+
+    - task: Maven@3
+      displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
+      inputs:
+        mavenPomFile: pom.client.xml
+        options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'install site:site site:stage'
+
+    - script: |
+        git clone https://github.com/JonathanGiles/DependencyChecker.git
+        mkdir input && cp dependencies.json input/
+      displayName: 'Download dependency checker'
+
+    - task: Maven@3
+      displayName: 'Analyze dependencies'
+      inputs:
+        mavenPomFile: 'DependencyChecker/pom.xml'
+        options: '-Dexec.args="-showall -dependencymanagement"'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'clean package exec:java'
+
+    - pwsh: |   
+        copy -r target/staging $(Build.ArtifactStagingDirectory)
+        copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
+        copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+      displayName: 'Copy reports to artifact staging'
+
+    - publish: $(Build.ArtifactStagingDirectory)
+      condition: succeededOrFailed()
+      displayName: 'Publish Report Artifacts'
+      artifact: reports

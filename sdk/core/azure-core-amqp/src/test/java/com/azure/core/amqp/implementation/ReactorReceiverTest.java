@@ -15,8 +15,10 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -34,7 +36,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ReactorReceiverTest {
+class ReactorReceiverTest {
     @Mock
     private Receiver receiver;
     @Mock
@@ -46,8 +48,18 @@ public class ReactorReceiverTest {
     private ActiveClientTokenManager tokenManager;
     private ReactorReceiver reactorReceiver;
 
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
+
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
         when(cbsNode.authorize(any(), any())).thenReturn(Mono.empty());
@@ -63,7 +75,7 @@ public class ReactorReceiverTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         Mockito.framework().clearInlineMocks();
 
         receiver = null;
@@ -75,7 +87,7 @@ public class ReactorReceiverTest {
      * Verify we can add credits to the link.
      */
     @Test
-    public void addCredits() {
+    void addCredits() {
         final int credits = 15;
         reactorReceiver.addCredits(credits);
 
@@ -86,14 +98,14 @@ public class ReactorReceiverTest {
      * Verifies EndpointStates are propagated.
      */
     @Test
-    public void updateEndpointState() {
+    void updateEndpointState() {
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> receiverHandler.close())
             .expectNext(AmqpEndpointState.CLOSED)
-            .then(() -> reactorReceiver.close())
+            .then(() -> reactorReceiver.dispose())
             .verifyComplete();
     }
 
@@ -101,7 +113,7 @@ public class ReactorReceiverTest {
      * Verifies on a non-transient AmqpException, closes link.
      */
     @Test
-    public void closesOnNonRetriableError() {
+    void closesOnNonRetriableError() {
         // Arrange
         final Link link = mock(Link.class);
         final Session session = mock(Session.class);
@@ -135,7 +147,7 @@ public class ReactorReceiverTest {
     }
 
     @Test
-    public void closesOnNonAmqpException() {
+    void closesOnNonAmqpException() {
         // Arrange
         final Link link = mock(Link.class);
         final Session session = mock(Session.class);

@@ -376,17 +376,22 @@ class EventHubConsumerAsyncClientTest {
     }
 
     /**
-     * Verify that the correct number of credits are returned when the link is empty, and there are subscribers.
+     * Verify that backpressure is respected.
      */
     @Test
     void suppliesCreditsWhenSubscribers() {
         // Arrange
         final int backPressure = 8;
+        final AtomicInteger counter = new AtomicInteger();
+        final FluxSink<Message> messageSink = messageProcessor.sink();
 
         when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
 
         final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).subscribe(
-            e -> logger.info("Event received"),
+            e -> {
+                logger.info("Event received");
+                counter.getAndIncrement();
+            },
             error -> Assertions.fail(error.toString()),
             () -> logger.info("Complete"), sub -> {
                 sub.request(backPressure);
@@ -394,98 +399,19 @@ class EventHubConsumerAsyncClientTest {
 
         try {
             // Act
+
             // Capturing the credit supplier that we set when the link was received.
+            sendMessages(messageSink, 11, PARTITION_ID);
+
             verify(amqpReceiveLink).setEmptyCreditListener(creditSupplier.capture());
             final Supplier<Integer> supplier = creditSupplier.getValue();
             final int actualCredits = supplier.get();
 
             // Assert
-            Assertions.assertEquals(backPressure, actualCredits);
+            Assertions.assertEquals(1, actualCredits);
+            Assertions.assertEquals(backPressure, counter.get());
         } finally {
             subscription.dispose();
-        }
-    }
-
-    /**
-     * Verify that 0 credits are returned when there are no subscribers for this link anymore.
-     */
-    @Test
-    void suppliesNoCreditsWhenNoSubscribers() {
-        // Arrange
-        final int backPressure = 8;
-
-        when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
-
-        final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).subscribe(
-            e -> logger.info("Event received"),
-            error -> Assertions.fail(error.toString()),
-            () -> logger.info("Complete"),
-            sub -> sub.request(backPressure));
-
-        // Capturing the credit supplier that we set when the link was received.
-        verify(amqpReceiveLink).setEmptyCreditListener(creditSupplier.capture());
-        final Supplier<Integer> supplier = creditSupplier.getValue();
-
-        // Disposing of the downstream listener we had.
-        subscription.dispose();
-
-        // Act
-        final int actualCredits = supplier.get();
-
-        // Assert
-        Assertions.assertEquals(0, actualCredits);
-    }
-
-    /**
-     * Verifies that the consumer closes and completes any listeners on a shutdown signal.
-     */
-    @Test
-    void listensToShutdownSignals() throws InterruptedException {
-        // Arrange
-        final int numberOfEvents = 7;
-        final CountDownLatch shutdownReceived = new CountDownLatch(3);
-
-        when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
-
-        final Disposable.Composite subscriptions = Disposables.composite(
-            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
-                .subscribe(
-                    event -> logger.verbose("1. Received: {}", event.getData().getSequenceNumber()),
-                    error -> Assertions.fail(error.toString()),
-                    () -> {
-                        logger.info("1. Shutdown received");
-                        shutdownReceived.countDown();
-                    }),
-            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
-                .subscribe(
-                    event -> logger.verbose("2. Received: {}", event.getData().getSequenceNumber()),
-                    error -> Assertions.fail(error.toString()),
-                    () -> {
-                        logger.info("2. Shutdown received");
-                        shutdownReceived.countDown();
-                    }),
-            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
-                .subscribe(
-                    event -> logger.verbose("3. Received: {}", event.getData().getSequenceNumber()),
-                    error -> Assertions.fail(error.toString()),
-                    () -> {
-                        logger.info("3. Shutdown received");
-                        shutdownReceived.countDown();
-                    }));
-
-        // Act
-        sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID);
-        endpointProcessor.onNext(AmqpEndpointState.CLOSED);
-        endpointProcessor.onComplete();
-
-        // Assert
-        try {
-            boolean successful = shutdownReceived.await(5, TimeUnit.SECONDS);
-            Assertions.assertTrue(successful);
-            Assertions.assertEquals(0, shutdownReceived.getCount());
-            verify(amqpReceiveLink, times(3)).close();
-        } finally {
-            subscriptions.dispose();
         }
     }
 
@@ -664,7 +590,7 @@ class EventHubConsumerAsyncClientTest {
 
         // Verify
         Assertions.assertFalse(eventHubConnection.isDisposed());
-        verify(connection1, never()).close();
+        verify(connection1, never()).dispose();
     }
 
     /**

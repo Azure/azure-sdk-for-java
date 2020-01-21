@@ -859,6 +859,42 @@ class ContainerAPITest extends APISpec {
         pagedResponse2.getContinuationToken() == null
     }
 
+    def "List blobs flat marker overload"() {
+        setup:
+        def NUM_BLOBS = 10
+        def PAGE_SIZE = 6
+        for (int i = 0; i < NUM_BLOBS; i++) {
+            def bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+            bc.create(512)
+        }
+
+        when: "list blobs with sync client"
+        def pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE), null)
+        def pagedSyncResponse1 = pagedIterable.iterableByPage().iterator().next()
+
+        pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE),
+            pagedSyncResponse1.getContinuationToken(), null)
+        def pagedSyncResponse2 = pagedIterable.iterableByPage().iterator().next()
+
+        then:
+        pagedSyncResponse1.getValue().size() == PAGE_SIZE
+        pagedSyncResponse2.getValue().size() == NUM_BLOBS - PAGE_SIZE
+        pagedSyncResponse2.getContinuationToken() == null
+
+
+        when: "list blobs with async client"
+        def pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE))
+        def pagedResponse1 = pagedFlux.byPage().blockFirst()
+        pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE),
+            pagedResponse1.getContinuationToken())
+        def pagedResponse2 = pagedFlux.byPage().blockFirst()
+
+        then:
+        pagedResponse1.getValue().size() == PAGE_SIZE
+        pagedResponse2.getValue().size() == NUM_BLOBS - PAGE_SIZE
+        pagedResponse2.getContinuationToken() == null
+    }
+
     def "List blobs flat error"() {
         setup:
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())

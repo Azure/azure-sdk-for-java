@@ -90,10 +90,11 @@ public final class BlobServiceClientBuilder {
     public BlobServiceAsyncClient buildAsyncClient() {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
 
+        boolean anonymousAccess = false;
+
         if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
             && Objects.isNull(sasTokenCredential)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Blob Service Client cannot be accessed "
-                + "anonymously. Please provide a form of authentication"));
+            anonymousAccess = true;
         }
 
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
@@ -107,7 +108,7 @@ public final class BlobServiceClientBuilder {
             httpClient, additionalPolicies, configuration, logger);
 
         return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
-            encryptionScope, blobContainerEncryptionScope);
+            encryptionScope, blobContainerEncryptionScope, anonymousAccess);
     }
 
     /**

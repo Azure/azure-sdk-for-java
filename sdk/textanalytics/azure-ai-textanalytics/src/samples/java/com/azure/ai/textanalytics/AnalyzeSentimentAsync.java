@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to asynchronously analyze the sentiment of an input text.
- * */
+ */
 public class AnalyzeSentimentAsync {
     /**
      * Main method to invoke this demo about how to analyze the sentiment of an input text.

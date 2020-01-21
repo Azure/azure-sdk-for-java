@@ -89,7 +89,7 @@ abstract class LinkHandler extends Handler {
             condition != null ? condition.getCondition() : ClientConstants.NOT_APPLICABLE,
             condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
 
-        if (condition != null) {
+        if (condition != null && condition.getCondition() != null) {
             final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
                 condition.getDescription(), getErrorContext(link));
 

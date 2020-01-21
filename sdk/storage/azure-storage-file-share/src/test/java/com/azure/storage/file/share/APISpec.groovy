@@ -440,4 +440,12 @@ class APISpec extends Specification {
     String getRandomUUID() {
         return testResourceName.randomUuid()
     }
+
+    void sleepIfLive(long milliseconds) {
+        if (testMode == TestMode.PLAYBACK) {
+            return
+        }
+
+        sleep(milliseconds)
+    }
 }

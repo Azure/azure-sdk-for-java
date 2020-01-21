@@ -12,8 +12,13 @@
   </parent>
 
   <groupId>com.azure</groupId>
+<<<<<<<< HEAD:sdk/textanalytics/azure-ai-textanalytics/pom.xml
   <artifactId>azure-ai-textanalytics</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+========
+  <artifactId>azure-core-tracing-opencensus</artifactId>
+  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
+>>>>>>>> master:sdk/core/azure-core-tracing-opencensus/pom.xml
 
   <name>Microsoft Azure client library for Text Analytics</name>
   <description>This package contains the Microsoft Azure Cognitive Services Text Analytics SDK.</description>
@@ -35,8 +40,18 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
+<<<<<<<< HEAD:sdk/textanalytics/azure-ai-textanalytics/pom.xml
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+========
+      <artifactId>azure-core</artifactId>
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opencensus</groupId>
+      <artifactId>opencensus-api</artifactId>
+      <version>0.24.0</version> <!-- {x-version-update;io.opencensus:opencensus-api;external_dependency} -->
+>>>>>>>> master:sdk/core/azure-core-tracing-opencensus/pom.xml
     </dependency>
 
     <!-- Test dependencies -->
@@ -61,7 +76,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.0.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -1,4 +1,11 @@
 ## Changelog
+### 3.6.0
+- GA release for fixes in 3.6.0-beta.1 and 3.6.0-beta.2
+
+### 3.6.0-beta.2
+- Takes advantage of Reactive Stream Concurrency for Query (Improves latency and fixes earlier issues): (https://github.com/Azure/azure-sdk-for-java/pull/7322)
+- API to retrieve min throughput for a CosmosContainer: (https://github.com/Azure/azure-sdk-for-java/pull/7259)
+
 ### 3.6.0-beta.1
 - Added the ability to select default Direct TCP options
 
@@ -25,21 +32,6 @@
    
 - Fixed Reactor Netty connection re-use issue: https://github.com/Azure/azure-sdk-for-java/issues/6973 
     
-### 3.5.0
-- Changefeed bug fixes (includes all the bug fixes released in 3.3.3) 
-- Disaster Recovery related bug fixes
-- Exception when Cosmos DB HTTP response header is larger than 8192 bytes: https://github.com/Azure/azure-sdk-for-java/issues/6069
-- Vulnerability through dependency in the SDK: https://github.com/Azure/azure-sdk-for-java/issues/6433
-- CosmosSyncScripts null pointer exception in azure-cosmos: https://github.com/Azure/azure-sdk-for-java/issues/6281
-- Default consistency level parsing for Bounded Staleness and Consistent Prefix: https://github.com/Azure/azure-sdk-for-java/issues/6707
-- Collection cache improvements: https://github.com/Azure/azure-sdk-for-java/issues/6307
-
-### 3.4.0
-- Added QueryPlan
-- Added OffsetLimit support
-- ChangeFeedProcessor; fixes and extra logging related to the creations of the lease documents.
-- Port consistency policy bug fix (see Azure/azure-cosmosdb-java#196)
-
 ### 3.5.0
 - Changefeed bug fixes (includes all the bug fixes released in 3.3.3) 
 - Disaster Recovery related bug fixes

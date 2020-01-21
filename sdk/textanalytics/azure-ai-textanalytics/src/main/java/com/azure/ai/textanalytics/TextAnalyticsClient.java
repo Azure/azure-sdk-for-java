@@ -51,34 +51,26 @@ public final class TextAnalyticsClient {
      * Returns the detected language and a numeric score between zero and one. Scores close to one indicate 100%
      * certainty that the identified language is true.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Detects the languages of single input text</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String}
+     *
      * @param text The text to be analyzed.
      * @return the {@link DetectLanguageResult detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectLanguageResult detectLanguage(String text) {
-        return detectLanguage(text, client.getDefaultCountryHint());
-    }
-
-    /**
-     * Returns the detected language and a numeric score between zero and one when the hint of country specified.
-     * Scores close to one indicate 100% certainty that the identified language is true.
-     *
-     * @param text The text to be analyzed.
-     * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
-     * specified.
-     *
-     * @return the {@link DetectLanguageResult detected language} of the text.
-     * @throws NullPointerException if {@code text} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectLanguageResult detectLanguage(String text, String countryHint) {
-        return detectLanguageWithResponse(text, countryHint, Context.NONE).getValue();
+        return detectLanguageWithResponse(text, client.getDefaultCountryHint(), Context.NONE).getValue();
     }
 
     /**
      * Returns a {@link Response} containing the detected language and a numeric score between zero and one.
      * Scores close to one indicate 100% certainty that the identified language is true.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Detects the languages with http response in a text with a provided country hint.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageWithResponse#String-String-Context}
      *
      * @param text The text to be analyzed.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
@@ -96,6 +88,10 @@ public final class TextAnalyticsClient {
     /**
      * Detects Language for a batch of input.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Detects the languages in a list of text.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguages#List}
+     *
      * @param textInputs The list of texts to be analyzed.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
@@ -109,6 +105,10 @@ public final class TextAnalyticsClient {
 
     /**
      * Detects Language for a batch of input with the provided country hint.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Detects the languages with http response in a list of text with a provided country hint.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguagesWithResponse#List-String-Context}
      *
      * @param textInputs The list of texts to be analyzed.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
@@ -128,6 +128,10 @@ public final class TextAnalyticsClient {
     /**
      * Detects Language for a batch of input.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Detects the languages in a list of {@link DetectLanguageInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectBatchLanguages#List}
+     *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      *
      * @return A {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
@@ -139,7 +143,11 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Detects Language for a batch of input.
+     * Detects Language for a batch of input with the provided {@link TextAnalyticsRequestOptions}.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Detects the languages with http response in a list of {@link DetectLanguageInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectBatchLanguagesWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -161,6 +169,10 @@ public final class TextAnalyticsClient {
      * Returns a list of general named entities in the provided text.
      * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognize the entities of single input text</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#String}
+     *
      * @param text the text to recognize entities for.
      *
      * @return the {@link RecognizeEntitiesResult named entity} of the text.
@@ -175,6 +187,10 @@ public final class TextAnalyticsClient {
      * Returns a list of general named entities in the provided text.
      * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the entities with http response in a text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesWithResponse#String-String-Context}
      *
      * @param text the text to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
@@ -192,6 +208,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of general named entities for the provided list of texts.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the entities in a list of text.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#List}
+     *
      * @param textInputs A list of texts to recognize entities for.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
@@ -205,6 +225,10 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of general named entities for the provided list of texts.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the entities with http response in a list of text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesWithResponse#List-String-Context}
      *
      * @param textInputs A list of texts to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
@@ -223,6 +247,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of general named entities for the provided list of text inputs.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the entities in a list of {@link TextDocumentInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchEntities#List}
+     *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
      *
      * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntitiesResult named entity}.
@@ -236,6 +264,10 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a list of general named entities for the provided list of text inputs.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the entities with http response in a list of {@link TextDocumentInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchEntitiesWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -259,6 +291,10 @@ public final class TextAnalyticsClient {
      * For the list of supported entity types, check <a href="https://aka.ms/taner"></a> pii.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognize the PII entities of single input text</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String}
+     *
      * @param text the text to recognize pii entities for.
      * @return A {@link RecognizePiiEntitiesResult PII entity} of the text.
      *
@@ -273,6 +309,10 @@ public final class TextAnalyticsClient {
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text.
      * For the list of supported entity types, check https://aka.ms/tanerpii.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the PII entities with http response in a text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#String-String-Context}
      *
      * @param text the text to recognize pii entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -294,6 +334,10 @@ public final class TextAnalyticsClient {
      * For the list of supported entity types, check https://aka.ms/tanerpii.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the PII entities in a list of text.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#List}
+     *
      * @param textInputs A list of text to recognize pii entities for.
      *
      * @return A {@link DocumentResultCollection batch} of the {@link RecognizePiiEntitiesResult named entity}
@@ -309,7 +353,11 @@ public final class TextAnalyticsClient {
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts.
      * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
-     * *
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the PII entities with http response in a list of text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#List-String-Context}
+     *
      * @param textInputs A list of text to recognize pii entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
@@ -331,6 +379,10 @@ public final class TextAnalyticsClient {
      * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the PII entities in a list of {@link TextDocumentInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchPiiEntities#List}
+     *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize pii entities for.
      *
      * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntitiesResult named entity}.
@@ -346,6 +398,10 @@ public final class TextAnalyticsClient {
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs.
      * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the PII entities with http response in a list of {@link TextDocumentInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchPiiEntitiesWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize pii entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -368,6 +424,10 @@ public final class TextAnalyticsClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognize the linked entities of single input text</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String}
+     *
      * @param text the text to recognize linked entities for.
      *
      * @return A {@link RecognizeLinkedEntitiesResult linked entity} of the text.
@@ -381,6 +441,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the linked entities with http response in a text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesWithResponse#String-String-Context}
      *
      * @param text the text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -402,6 +466,10 @@ public final class TextAnalyticsClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the linked entities in a list of text.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#List}
+     *
      * @param textInputs A list of text to recognize linked entities for.
      *
      * @return A {@link DocumentResultCollection batch} of the
@@ -416,6 +484,11 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the linked entities with http response in a list of text with a provided language representation.
+     * </p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesWithResponse#List-String-Context}
      *
      * @param textInputs A list of text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -437,6 +510,10 @@ public final class TextAnalyticsClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the linked entities in a list of {@link TextDocumentInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchLinkedEntities#List}
+     *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      *
      * @return A {@link DocumentResultCollection batch} of the {@link RecognizeLinkedEntitiesResult linked entity}.
@@ -451,6 +528,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs.
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the linked entities with http response in a list of {@link TextDocumentInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchLinkedEntitiesWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -472,6 +553,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Extracts key phrases of single input text</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String}
+     *
      * @param text the text to be analyzed.
      *
      * @return A {@link ExtractKeyPhraseResult key phrases} of the text.
@@ -485,6 +570,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Extracts key phrases with http response in a text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesWithResponse#String-String-Context}
      *
      * @param text the text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -504,6 +593,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Extracts key phrases in a list of text.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#List}
+     *
      * @param textInputs A list of text to be analyzed.
      * @return A {@link DocumentResultCollection batch} of the {@link ExtractKeyPhraseResult key phrases} of the text.
      *
@@ -517,6 +610,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Extracts key phrases with http response in a list of text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesWithResponse#List-String-Context}
      *
      * @param textInputs A list of text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -536,6 +633,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Extracts key phrases in a list of {@link TextDocumentInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractBatchKeyPhrases#List}
+     *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
      *
      * @return A {@link DocumentResultCollection batch} of the {@link ExtractKeyPhraseResult key phrases}.
@@ -549,6 +650,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Extracts key phrases with http response in a list of {@link TextDocumentInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractBatchKeyPhrasesWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -571,6 +676,10 @@ public final class TextAnalyticsClient {
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within i
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments of single input text</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String}
+     *
      * @param text the text to be analyzed.
      * @return the {@link AnalyzeSentimentResult text sentiments} of the text.
      *
@@ -578,12 +687,16 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResult analyzeSentiment(String text) {
-        return analyzeBatchSentimentWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
+        return analyzeSentimentWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within i
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments with http response in a text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentWithResponse#String-String-Context}
      *
      * @param text the text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -594,7 +707,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeSentimentResult> analyzeBatchSentimentWithResponse(
+    public Response<AnalyzeSentimentResult> analyzeSentimentWithResponse(
         String text, String language, Context context) {
         return client.analyzeSentimentAsyncClient.analyzeSentimentWithResponse(text, language, context).block();
     }
@@ -602,6 +715,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments in a list of text.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#List}
      *
      * @param textInputs A list of text to be analyzed.
      *
@@ -617,6 +734,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments with http response in a list of text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentWithResponse#List-String-Context}
      *
      * @param textInputs A list of text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -637,6 +758,10 @@ public final class TextAnalyticsClient {
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments in a list of {@link TextDocumentInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeBatchSentiment#List}
+     *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
      *
      * @return A {@link DocumentResultCollection batch} of {@link AnalyzeSentimentResult text sentiments}.
@@ -650,6 +775,10 @@ public final class TextAnalyticsClient {
     /**
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments with http response in a list of {@link TextDocumentInput}.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeBatchSentimentWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents

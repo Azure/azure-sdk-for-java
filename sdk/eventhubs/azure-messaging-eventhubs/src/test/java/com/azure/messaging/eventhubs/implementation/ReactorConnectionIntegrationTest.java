@@ -29,6 +29,7 @@ import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Map;
 
 import static com.azure.core.amqp.implementation.CbsAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
@@ -76,7 +77,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     @Override
     protected void afterTest() {
         if (connection != null) {
-            connection.close();
+            connection.dispose();
         }
     }
 
@@ -96,7 +97,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
             getConnectionStringProperties().getEndpoint().getHost(),
             ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
-        final String tokenAudience = provider.getResourceString(getConnectionStringProperties().getEntityPath());
+        final String tokenAudience = provider.getScopesFromResource(getConnectionStringProperties().getEntityPath());
 
         // Act & Assert
         StepVerifier.create(connection.getClaimsBasedSecurityNode().flatMap(node -> node.authorize(tokenAudience, tokenAudience)))
