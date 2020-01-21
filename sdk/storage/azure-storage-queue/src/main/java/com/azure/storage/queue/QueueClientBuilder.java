@@ -355,7 +355,9 @@ public final class QueueClientBuilder {
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * <p>
+     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
      * @param version {@link QueueServiceVersion} of the service to be used when making requests.
      * @return the updated QueueClientBuilder object
