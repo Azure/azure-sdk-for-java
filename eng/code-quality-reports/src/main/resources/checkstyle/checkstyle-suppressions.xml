@@ -222,7 +222,7 @@
   <!-- Suppress the check on any implementation code and codegen classes -->
   <suppress checks="LineLength" files=".*[/\\]storage[/\\].*implementation[/\\].*"/>
   <suppress checks="LineLength" files="com.azure.storage.blob.models.BlobErrorCode.java"/>
-  <suppress checks="LineLength" files="com.azure.storage.file.share.models.FileErrorCode.java"/>
+  <suppress checks="LineLength" files="com.azure.storage.file.share.models.ShareErrorCode.java"/>
   <suppress checks="LineLength" files="com.azure.storage.queue.models.QueueErrorCode.java"/>
 
   <!-- Suppress datalake for now as it is new development -->
@@ -237,6 +237,8 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.file.share.specialized.ShareLeaseClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.java"/>
 
   <!-- Suppress public/private constructor check since BlobClients need protected constructors to create EncryptedClients -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.BlobAsyncClient.java"/>
