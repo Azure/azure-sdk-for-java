@@ -19,6 +19,7 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
@@ -293,11 +294,11 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
     interface AzureNetAppFilesManagementClientService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.netapp.v2019_05_01.AzureNetAppFilesManagementClient checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkNameAvailability")
-        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Body Object body, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.netapp.v2019_05_01.AzureNetAppFilesManagementClient checkFilePathAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkFilePathAvailability")
-        Observable<Response<ResponseBody>> checkFilePathAvailability(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkFilePathAvailability(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Body Object body, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -306,13 +307,14 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a resource name is available.
      *
      * @param location The location
+     * @param body Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceNameAvailabilityInner object if successful.
      */
-    public ResourceNameAvailabilityInner checkNameAvailability(String location) {
-        return checkNameAvailabilityWithServiceResponseAsync(location).toBlocking().single().body();
+    public ResourceNameAvailabilityInner checkNameAvailability(String location, Object body) {
+        return checkNameAvailabilityWithServiceResponseAsync(location, body).toBlocking().single().body();
     }
 
     /**
@@ -320,12 +322,13 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a resource name is available.
      *
      * @param location The location
+     * @param body Name availability request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String location, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
-        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(location), serviceCallback);
+    public ServiceFuture<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String location, Object body, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(location, body), serviceCallback);
     }
 
     /**
@@ -333,11 +336,12 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a resource name is available.
      *
      * @param location The location
+     * @param body Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceNameAvailabilityInner object
      */
-    public Observable<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String location) {
-        return checkNameAvailabilityWithServiceResponseAsync(location).map(new Func1<ServiceResponse<ResourceNameAvailabilityInner>, ResourceNameAvailabilityInner>() {
+    public Observable<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String location, Object body) {
+        return checkNameAvailabilityWithServiceResponseAsync(location, body).map(new Func1<ServiceResponse<ResourceNameAvailabilityInner>, ResourceNameAvailabilityInner>() {
             @Override
             public ResourceNameAvailabilityInner call(ServiceResponse<ResourceNameAvailabilityInner> response) {
                 return response.body();
@@ -350,20 +354,24 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a resource name is available.
      *
      * @param location The location
+     * @param body Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceNameAvailabilityInner object
      */
-    public Observable<ServiceResponse<ResourceNameAvailabilityInner>> checkNameAvailabilityWithServiceResponseAsync(String location) {
+    public Observable<ServiceResponse<ResourceNameAvailabilityInner>> checkNameAvailabilityWithServiceResponseAsync(String location, Object body) {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
+        if (body == null) {
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
+        }
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        return service.checkNameAvailability(this.subscriptionId(), location, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        return service.checkNameAvailability(this.subscriptionId(), location, body, this.apiVersion(), this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ResourceNameAvailabilityInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ResourceNameAvailabilityInner>> call(Response<ResponseBody> response) {
@@ -389,13 +397,14 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a file path is available.
      *
      * @param location The location
+     * @param body File path availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceNameAvailabilityInner object if successful.
      */
-    public ResourceNameAvailabilityInner checkFilePathAvailability(String location) {
-        return checkFilePathAvailabilityWithServiceResponseAsync(location).toBlocking().single().body();
+    public ResourceNameAvailabilityInner checkFilePathAvailability(String location, Object body) {
+        return checkFilePathAvailabilityWithServiceResponseAsync(location, body).toBlocking().single().body();
     }
 
     /**
@@ -403,12 +412,13 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a file path is available.
      *
      * @param location The location
+     * @param body File path availability request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ResourceNameAvailabilityInner> checkFilePathAvailabilityAsync(String location, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
-        return ServiceFuture.fromResponse(checkFilePathAvailabilityWithServiceResponseAsync(location), serviceCallback);
+    public ServiceFuture<ResourceNameAvailabilityInner> checkFilePathAvailabilityAsync(String location, Object body, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkFilePathAvailabilityWithServiceResponseAsync(location, body), serviceCallback);
     }
 
     /**
@@ -416,11 +426,12 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a file path is available.
      *
      * @param location The location
+     * @param body File path availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceNameAvailabilityInner object
      */
-    public Observable<ResourceNameAvailabilityInner> checkFilePathAvailabilityAsync(String location) {
-        return checkFilePathAvailabilityWithServiceResponseAsync(location).map(new Func1<ServiceResponse<ResourceNameAvailabilityInner>, ResourceNameAvailabilityInner>() {
+    public Observable<ResourceNameAvailabilityInner> checkFilePathAvailabilityAsync(String location, Object body) {
+        return checkFilePathAvailabilityWithServiceResponseAsync(location, body).map(new Func1<ServiceResponse<ResourceNameAvailabilityInner>, ResourceNameAvailabilityInner>() {
             @Override
             public ResourceNameAvailabilityInner call(ServiceResponse<ResourceNameAvailabilityInner> response) {
                 return response.body();
@@ -433,20 +444,24 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a file path is available.
      *
      * @param location The location
+     * @param body File path availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceNameAvailabilityInner object
      */
-    public Observable<ServiceResponse<ResourceNameAvailabilityInner>> checkFilePathAvailabilityWithServiceResponseAsync(String location) {
+    public Observable<ServiceResponse<ResourceNameAvailabilityInner>> checkFilePathAvailabilityWithServiceResponseAsync(String location, Object body) {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
+        if (body == null) {
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
+        }
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        return service.checkFilePathAvailability(this.subscriptionId(), location, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        return service.checkFilePathAvailability(this.subscriptionId(), location, body, this.apiVersion(), this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ResourceNameAvailabilityInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ResourceNameAvailabilityInner>> call(Response<ResponseBody> response) {
