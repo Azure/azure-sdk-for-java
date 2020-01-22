@@ -80,8 +80,7 @@ public class ConfigurationClientCredentials {
      * @return a flux of headers to add for authorization
      * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
-    Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod,
-                                                                  Flux<ByteBuffer> contents) {
+    Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuffer> contents) {
         return contents
             .collect(() -> {
                 try {
@@ -212,7 +211,7 @@ public class ConfigurationClientCredentials {
             this.id = id;
             this.secret = secret;
 
-            if (this.baseUri == null || this.id == null || this.secret == null) {
+            if (this.baseUri == null || CoreUtils.isNullOrEmpty(this.id) || this.secret == null) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."
                     + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
             }

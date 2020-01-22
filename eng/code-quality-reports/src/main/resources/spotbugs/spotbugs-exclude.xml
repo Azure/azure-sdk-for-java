@@ -728,4 +728,14 @@
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
+  <Match>
+    <Or>
+      <Class name="com.azure.core.util.paging.PagedFluxCoreJavaDocCodeSnippets"/>
+    </Or>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,
+    SIC_INNER_SHOULD_BE_STATIC_ANON,
+    UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS,
+    NP_BOOLEAN_RETURN_NULL"/>
+  </Match>
+
 </FindBugsFilter>

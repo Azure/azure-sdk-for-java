@@ -31,6 +31,7 @@ import spock.lang.Specification
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
+import java.util.function.Supplier
 
 class APISpec extends Specification {
 
@@ -86,6 +87,13 @@ class APISpec extends Specification {
 
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
+
+    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
+        @Override
+        InputStream get() {
+            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
+        }
+    }
 
     public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
 

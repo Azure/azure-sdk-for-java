@@ -92,6 +92,12 @@
       },
       {
         "regex": true,
+        "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+        "new": "class com\\.azure\\.core\\.http\\.rest\\.((PagedFlux<T extends java\\.lang\\.Object>)|(PagedFluxBase<T extends java\\.lang\\.Object.*>)).*",
+        "justification": "azure.core 1.3.0 will introduce a new base type for GAed PagedFlux. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
+      },
+      {
+        "regex": true,
         "code": "java\\.missing\\.(oldClass|newClass)",
         "new": "missing\\-class com\\.azure\\.storage\\.blob\\.(BlobClient|BlobAsyncClient)",
         "exampleUseChainInNewApi": ".*com\\.azure\\.storage\\.blob\\.specialized\\.cryptography\\.EncryptedBlobClientBuilder.*",

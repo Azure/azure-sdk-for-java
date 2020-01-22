@@ -485,10 +485,10 @@
                 <title>Azure Storage Blobs - Cryptography</title>
                 <packages>com.azure.storage.blob.cryptography*</packages>
               </group>
-              <group>
+              <!--group>
                 <title>Azure Storage Blobs - NIO</title>
                 <packages>com.azure.storage.blob.nio*</packages>
-              </group>
+              </group-->
               <group>
                 <title>Azure Storage - Files</title>
                 <packages>com.azure.storage.file*</packages>
@@ -1275,7 +1275,7 @@
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
-    <module>sdk/storage/azure-storage-blob-nio</module>
+    <!--module>sdk/storage/azure-storage-blob-nio</module-->
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
