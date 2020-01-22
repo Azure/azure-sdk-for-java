@@ -3,12 +3,10 @@
 
 package com.azure.core.http.netty;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.ProxyOptions;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -25,7 +23,6 @@ import reactor.test.StepVerifierOptions;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -323,18 +320,5 @@ public class ReactorNettyClientTests {
     private ReactorNettyHttpResponse doRequest(NettyAsyncHttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return (ReactorNettyHttpResponse) client.send(request).block();
-    }
-
-    @Test
-    public void testWithProxy() {
-        HttpClient client = new NettyAsyncHttpClientBuilder()
-            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 3128))
-                .setCredentials("test", "password"))
-            .build();
-
-        StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, "https://google.com")))
-            .verifyErrorSatisfies(throwable -> {
-                assert throwable instanceof HttpResponseException;
-            });
     }
 }
