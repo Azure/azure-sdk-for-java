@@ -106,36 +106,43 @@ public class ProxyOptionsTests {
             Arguments.of(new Configuration().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY)
                 .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS), PROXY_HOST, 80, null, null, NON_PROXY_HOSTS),
 
+            /*
+             * Setting up tests for loading the Java environment proxy configurations takes additional work as each
+             * piece of the proxy configuration is a separate environment value. The non-proxy hosts will be checked
+             * against the global environment value when it is not being set by the configuration passed by the test
+             * as this value may be setup by the JVM.
+             */
+
             // Basic Java HTTPS proxy.
-            Arguments.of(createJavaConfiguration(PROXY_HOST, 443, null, null, null, true, true),
-                PROXY_HOST, 443, null, null, null),
+            Arguments.of(createJavaConfiguration(443, null, null, null, true, true),
+                PROXY_HOST, 443, null, null, getJavaNonProxyHosts()),
 
             // Username only Java HTTPS proxy.
-            Arguments.of(createJavaConfiguration(PROXY_HOST, 443, PROXY_USER, null, null, true, true),
-                PROXY_HOST, 443, null, null, null),
+            Arguments.of(createJavaConfiguration(443, PROXY_USER, null, null, true, true),
+                PROXY_HOST, 443, null, null, getJavaNonProxyHosts()),
 
             // Complete Java HTTPS proxy.
-            Arguments.of(createJavaConfiguration(PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, null, true, true),
-                PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, null),
+            Arguments.of(createJavaConfiguration(443, PROXY_USER, PROXY_PASSWORD, null, true, true),
+                PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, getJavaNonProxyHosts()),
 
             // Java HTTPS proxy with non-proxying hosts.
-            Arguments.of(createJavaConfiguration(PROXY_HOST, 443, null, null, NON_PROXY_HOSTS, true, true),
+            Arguments.of(createJavaConfiguration(443, null, null, NON_PROXY_HOSTS, true, true),
                 PROXY_HOST, 443, null, null, NON_PROXY_HOSTS),
 
             // Basic Java HTTP proxy.
-            Arguments.of(createJavaConfiguration(PROXY_HOST, 80, null, null, null, false, true),
-                PROXY_HOST, 80, null, null, null),
+            Arguments.of(createJavaConfiguration(80, null, null, null, false, true),
+                PROXY_HOST, 80, null, null, getJavaNonProxyHosts()),
 
             // Username only Java HTTP proxy.
-            Arguments.of(createJavaConfiguration(PROXY_HOST, 80, PROXY_USER, null, null, false, true),
-                PROXY_HOST, 80, null, null, null),
+            Arguments.of(createJavaConfiguration(80, PROXY_USER, null, null, false, true),
+                PROXY_HOST, 80, null, null, getJavaNonProxyHosts()),
 
             // Complete Java HTTP proxy.
-            Arguments.of(createJavaConfiguration(PROXY_HOST, 80, PROXY_USER, PROXY_PASSWORD, null, false, true),
-                PROXY_HOST, 80, PROXY_USER, PROXY_PASSWORD, null),
+            Arguments.of(createJavaConfiguration(80, PROXY_USER, PROXY_PASSWORD, null, false, true),
+                PROXY_HOST, 80, PROXY_USER, PROXY_PASSWORD, getJavaNonProxyHosts()),
 
             // Java HTTP proxy with non-proxying hosts.
-            Arguments.of(createJavaConfiguration(PROXY_HOST, 80, null, null, NON_PROXY_HOSTS, false, true),
+            Arguments.of(createJavaConfiguration(80, null, null, NON_PROXY_HOSTS, false, true),
                 PROXY_HOST, 80, null, null, NON_PROXY_HOSTS)
         );
     }
@@ -161,24 +168,24 @@ public class ProxyOptionsTests {
     private static Stream<Arguments> javaProxiesRequireUseSystemProxiesSupplier() {
         return Stream.of(
             // Java HTTPS configuration without 'java.net.useSystemProxies' set.
-            Arguments.of(createJavaConfiguration(PROXY_HOST, 443, null, null, null, true, false)),
+            Arguments.of(createJavaConfiguration(443, null, null, null, true, false)),
 
             // Java HTTP configuration without 'java.net.useSystemProxies' set.
-            Arguments.of(createJavaConfiguration(PROXY_HOST, 80, null, null, null, false, false))
+            Arguments.of(createJavaConfiguration(80, null, null, null, false, false))
         );
     }
 
-    private static Configuration createJavaConfiguration(String host, int port, String username, String password,
+    private static Configuration createJavaConfiguration(int port, String username, String password,
         String nonProxyHosts, boolean isHttps, boolean enabled) {
         Configuration configuration = new Configuration().put(JAVA_PROXY_PREREQUISITE, String.valueOf(enabled));
         putIfNotNull(configuration, JAVA_NON_PROXY_HOSTS, nonProxyHosts);
 
         if (isHttps) {
-            configuration.put(JAVA_HTTPS_PROXY_HOST, host).put(JAVA_HTTPS_PROXY_PORT, String.valueOf(port));
+            configuration.put(JAVA_HTTPS_PROXY_HOST, PROXY_HOST).put(JAVA_HTTPS_PROXY_PORT, String.valueOf(port));
             configuration = putIfNotNull(configuration, JAVA_HTTPS_PROXY_USER, username);
             configuration = putIfNotNull(configuration, JAVA_HTTPS_PROXY_PASSWORD, password);
         } else {
-            configuration.put(JAVA_HTTP_PROXY_HOST, host).put(JAVA_HTTP_PROXY_PORT, String.valueOf(port));
+            configuration.put(JAVA_HTTP_PROXY_HOST, PROXY_HOST).put(JAVA_HTTP_PROXY_PORT, String.valueOf(port));
             configuration = putIfNotNull(configuration, JAVA_HTTP_PROXY_USER, username);
             configuration = putIfNotNull(configuration, JAVA_HTTP_PROXY_PASSWORD, password);
         }
@@ -187,6 +194,20 @@ public class ProxyOptionsTests {
     }
 
     private static Configuration putIfNotNull(Configuration configuration, String name, String value) {
-        return CoreUtils.isNullOrEmpty(value) ? configuration.put(name, "") : configuration.put(name, value);
+        /*
+         * If the passed value is null attempt to use the global configuration value. This is done as the Configuration
+         * object will attempt to load the environment if it has no value for a given name.
+         */
+        if (value == null) {
+            value = Configuration.getGlobalConfiguration().get(name);
+        }
+
+        return CoreUtils.isNullOrEmpty(value)
+            ? configuration
+            : configuration.put(name, value);
+    }
+
+    private static String getJavaNonProxyHosts() {
+        return Configuration.getGlobalConfiguration().get(JAVA_NON_PROXY_HOSTS);
     }
 }
