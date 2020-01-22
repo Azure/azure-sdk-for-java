@@ -457,6 +457,49 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             + "There are: " + expectedPartitions.size());
     }
 
+    /**
+     * Verifies that we are properly closing the receiver after each receive operation that terminates the upstream
+     * flux.
+     */
+    @Test
+    void closesReceiver() throws InterruptedException {
+        // Arrange
+        final String partitionId = "1";
+        final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 1);
+        final int numberOfEvents = 5;
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final EventHubProducerAsyncClient producer = client.createProducer();
+        final PartitionProperties properties = producer.getPartitionProperties(partitionId).block(TIMEOUT);
+        final AtomicReference<EventPosition> startingPosition = new AtomicReference<>(
+            EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber()));
+        final Disposable producerEvents = getEvents(isActive)
+            .flatMap(event -> producer.send(event, sendOptions).thenReturn(Instant.now()))
+            .subscribe(time -> logger.verbose("Sent event at: {}", time),
+                error -> logger.error("Error sending event.", error),
+                () -> logger.info("Completed"));
+
+        // Act & Assert
+        try {
+            for (int i = 0; i < 7; i++) {
+                logger.info("[{}]: Starting iteration", i);
+
+                final List<PartitionEvent> events = consumer.receiveFromPartition(partitionId, startingPosition.get())
+                    .take(numberOfEvents)
+                    .collectList()
+                    .block(Duration.ofSeconds(15));
+
+                Thread.sleep(700);
+                Assertions.assertNotNull(events);
+                Assertions.assertEquals(numberOfEvents, events.size());
+            }
+        } finally {
+            isActive.set(false);
+            producerEvents.dispose();
+            consumer.close();
+        }
+    }
+
     private static void assertPartitionEvent(PartitionEvent event, String eventHubName, Set<Integer> allPartitions,
         Set<Integer> expectedPartitions) {
         final PartitionContext context = event.getPartitionContext();

@@ -356,8 +356,9 @@ public class ReactorSession implements AmqpSession {
 
         receiver.open();
 
-        final ReactorReceiver reactorReceiver =
-            new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager);
+        final ReactorReceiver reactorReceiver = new ReactorReceiver(entityPath, receiver, receiveLinkHandler,
+            tokenManager, provider.getReactorDispatcher());
+
         final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
         }, error -> {
                 logger.info(
