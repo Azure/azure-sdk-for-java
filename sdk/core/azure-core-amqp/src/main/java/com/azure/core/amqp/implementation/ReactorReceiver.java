@@ -140,6 +140,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
         endpointStateSink.complete();
         messageSink.complete();
         tokenManager.close();
+        receiver.close();
+        receiver.free();
         handler.close();
     }
 
