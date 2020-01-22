@@ -12,6 +12,7 @@ import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -547,5 +548,13 @@ public class Utils {
         // doesn't work for dictionary with null value
         holder.v = dictionary.remove(key);
         return holder.v != null;
+    }
+
+    public static <T> T parse(String itemResponseBodyAsString, Class<T> itemClassType) {
+        try {
+            return getSimpleObjectMapper().readValue(itemResponseBodyAsString, itemClassType);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to get POJO.", e);
+        }
     }
 }

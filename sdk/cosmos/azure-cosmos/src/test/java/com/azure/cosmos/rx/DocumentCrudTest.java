@@ -23,6 +23,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
@@ -343,6 +345,110 @@ public class DocumentCrudTest extends TestSuiteBase {
 
         validateSuccess(readObservable, validator);
     }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void typedItemsTest() throws Throwable {
+        String docId = "1234";
+        String partitionKey = UUID.randomUUID().toString();
+
+        List<List<Integer>> sgmts = new ArrayList<>();
+        List<Integer> sgmt1 = new ArrayList<>();
+        sgmt1.add(6519456);
+        sgmt1.add(1471916863);
+        sgmts.add(sgmt1);
+        List<Integer> sgmt2 = new ArrayList<>();
+        sgmt1.add(2498434);
+        sgmt1.add(1455671440);
+        sgmts.add(sgmt2);
+
+        TestObject newTestObject = new TestObject(docId, partitionKey, sgmts, "test string");
+
+        Mono<CosmosAsyncItemResponse<TestObject>> itemResponseMono = container.createItem(newTestObject);
+        TestObject resultObject = itemResponseMono.block().getResource();
+        compareTestObjs(newTestObject, resultObject);
+
+        Mono<CosmosAsyncItemResponse<TestObject>> readResponseMono = container.readItem(newTestObject.id,
+                                                                                        new PartitionKey(newTestObject
+                                                                                                             .getMypk()),
+                                                                                        TestObject.class);
+        resultObject = readResponseMono.block().getResource();
+        compareTestObjs(newTestObject, resultObject);
+
+        newTestObject.setStringProp("another string");
+        Mono<CosmosAsyncItemResponse<TestObject>> replaceMono = container.replaceItem(newTestObject,
+                                                                                      newTestObject.getId(),
+                                                                                      new PartitionKey(newTestObject
+                                                                                                           .getMypk()));
+        resultObject = replaceMono.block().getResource();
+        compareTestObjs(newTestObject, resultObject);
+    }
+
+    private void compareTestObjs(TestObject newTestObject, TestObject resultObject) {
+        assertThat(newTestObject.getId()).isEqualTo(resultObject.getId());
+        assertThat(newTestObject.getMypk()).isEqualTo(resultObject.getMypk());
+        assertThat(newTestObject.getSgmts().equals(resultObject.getSgmts())).isTrue();
+        assertThat(newTestObject.getStringProp()).isEqualTo(resultObject.getStringProp());
+    }
+
+    static class TestObject {
+        private String id;
+        private String mypk;
+        private List<List<Integer>> sgmts; 
+        private String stringProp;
+
+        public TestObject() {
+        }
+
+        public TestObject(String id, String mypk, List<List<Integer>> sgmts, String stringProp) {
+            this.id = id;
+            this.mypk = mypk;
+            this.sgmts = sgmts;
+            this.stringProp = stringProp;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getMypk() {
+            return mypk;
+        }
+
+        public void setMypk(String mypk) {
+            this.mypk = mypk;
+        }
+
+        public List<List<Integer>> getSgmts() {
+            return sgmts;
+        }
+
+        public void setSgmts(List<List<Integer>> sgmts) {
+            this.sgmts = sgmts;
+        }
+
+        /**
+         * Getter for property 'stringProp'.
+         *
+         * @return Value for property 'stringProp'.
+         */
+        public String getStringProp() {
+            return stringProp;
+        }
+
+        /**
+         * Setter for property 'stringProp'.
+         *
+         * @param stringProp Value to set for property 'stringProp'.
+         */
+        public void setStringProp(String stringProp) {
+            this.stringProp = stringProp;
+        }
+    }
+    
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_DocumentCrudTest() {

@@ -179,17 +179,28 @@ public class CosmosAsyncContainer {
      * successful completion will contain a single resource response with the
      * created cosmos item. In case of failure the {@link Mono} will error.
      *
+     * @param <T> the type parameter
      * @param item the cosmos item represented as a POJO or cosmos item object.
+     * @param partitionKey the partition key
      * @param options the request options.
-     * @return an {@link Mono} containing the single resource response with the
-     * created cosmos item or an error.
+     * @return an {@link Mono} containing the single resource response with the created cosmos item or an error.
      */
+    public <T> Mono<CosmosAsyncItemResponse<T>> createItem(T item,
+                                                           PartitionKey partitionKey,
+                                                           CosmosItemRequestOptions options) {
+        if (options == null) {
+            options = new CosmosItemRequestOptions();
+        }
+        options.setPartitionKey(partitionKey);
+        return createItem(item, options);
+    }
+
     public <T> Mono<CosmosAsyncItemResponse<T>> createItem(T item, CosmosItemRequestOptions options) {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
-        RequestOptions requestOptions = options.toRequestOptions();
         Class<T> itemType = (Class<T>) item.getClass();
+        RequestOptions requestOptions = options.toRequestOptions();
         return database.getDocClientWrapper()
                    .createDocument(getLink(),
                                    item,

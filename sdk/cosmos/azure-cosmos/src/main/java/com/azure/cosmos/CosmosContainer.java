@@ -145,13 +145,31 @@ public class CosmosContainer {
     }
 
     /**
-     * Create item cosmos sync item response.
+     * Create a cosmos item synchronously.
      *
+     * @param <T> the type parameter
      * @param item the item
+     * @param partitionKey the partition key
      * @param options the options
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
+    public <T> CosmosItemResponse<T> createItem(T item,
+                                                PartitionKey partitionKey,
+                                                CosmosItemRequestOptions options) throws CosmosClientException {
+        return this.mapItemResponseAndBlock(this.asyncContainer.createItem(item, partitionKey, options));
+    }
+
+    /**
+     * Create a cosmos item.
+     *
+     * @param <T> the type parameter
+     * @param item the item
+     * @param options the options
+     * @return the cosmos item response
+     * @throws CosmosClientException the cosmos client exception
+     */
+    
     public <T> CosmosItemResponse<T> createItem(T item, CosmosItemRequestOptions options) throws CosmosClientException {
         return this.mapItemResponseAndBlock(this.asyncContainer.createItem(item, options));
     }
@@ -176,7 +194,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
-        return (CosmosItemResponse<T>) this.mapItemResponseAndBlock(this.asyncContainer.createItem(item, options));
+        return (CosmosItemResponse<T>) this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
     }
 
     /**

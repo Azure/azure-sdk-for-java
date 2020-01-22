@@ -4,19 +4,21 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.Utils;
 import org.apache.commons.lang3.StringUtils;
 
 public class CosmosAsyncItemResponse<T> extends CosmosResponse<CosmosItemProperties> {
     private final Class<T> itemClassType;
+    private final String responseBodyString;
     
     CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> klass) {
         super(response);
         this.itemClassType = klass;
-        String bodyAsString = response.getBodyAsString();
-        if (StringUtils.isEmpty(bodyAsString)){
+        responseBodyString = response.getBodyAsString();
+        if (StringUtils.isEmpty(responseBodyString)){
             super.setProperties(null);
         } else {
-            CosmosItemProperties props = new CosmosItemProperties(bodyAsString);
+            CosmosItemProperties props = new CosmosItemProperties(responseBodyString);
             super.setProperties(props);
         }
     }
@@ -27,7 +29,7 @@ public class CosmosAsyncItemResponse<T> extends CosmosResponse<CosmosItemPropert
      * @return the resource
      */
     public T getResource(){
-        return super.getProperties().toObject(itemClassType);
+        return Utils.parse(responseBodyString, itemClassType);
     }
 
     /**
