@@ -179,8 +179,8 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
             databaseForTestObservable.single() // Single
                     .block(); // Blocks to get the result
             assertThat("Should not reach here", false);
-        } catch (Exception e) {
-            assertThat("Database already exists.", ((CosmosClientException) e.getCause()).getStatusCode(),
+        } catch (CosmosClientException e) {
+            assertThat("Database already exists.", e.getStatusCode(),
                        equalTo(409));
         }
     }

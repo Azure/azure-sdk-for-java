@@ -231,8 +231,8 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
             collectionForTestObservable.single() // Gets the single result
                     .block(); // Blocks
             assertThat("Should not reach here", false);
-        } catch (Exception e) {
-            assertThat("Collection already exists.", ((CosmosClientException) e.getCause()).getStatusCode(),
+        } catch (CosmosClientException e) {
+            assertThat("Collection already exists.", e.getStatusCode(),
                        equalTo(409));
         }
     }

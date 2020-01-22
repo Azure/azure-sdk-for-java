@@ -203,7 +203,7 @@ public class UniqueIndexTest extends TestSuiteBase {
     }
 
     private CosmosClientException getDocumentClientException(RuntimeException e) {
-        CosmosClientException dce = Utils.as(e.getCause(), CosmosClientException.class);
+        CosmosClientException dce = Utils.as(e, CosmosClientException.class);
         assertThat(dce).isNotNull();
         return dce;
     }
