@@ -12,14 +12,14 @@ import com.microsoft.azure.management.mysql.v2017_12_01_preview.NameAvailability
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class NameAvailabilityImpl extends WrapperImpl<NameAvailabilityInner> implements NameAvailability {
-    private final MySQLManager manager;
-    NameAvailabilityImpl(NameAvailabilityInner inner, MySQLManager manager) {
+    private final DBforMySQLManager manager;
+    NameAvailabilityImpl(NameAvailabilityInner inner, DBforMySQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public MySQLManager manager() {
+    public DBforMySQLManager manager() {
         return this.manager;
     }
 

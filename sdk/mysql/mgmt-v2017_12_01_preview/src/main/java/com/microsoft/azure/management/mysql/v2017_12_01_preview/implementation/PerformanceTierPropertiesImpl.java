@@ -15,15 +15,15 @@ import java.util.List;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.PerformanceTierServiceLevelObjectives;
 
 class PerformanceTierPropertiesImpl extends WrapperImpl<PerformanceTierPropertiesInner> implements PerformanceTierProperties {
-    private final MySQLManager manager;
+    private final DBforMySQLManager manager;
 
-    PerformanceTierPropertiesImpl(PerformanceTierPropertiesInner inner,  MySQLManager manager) {
+    PerformanceTierPropertiesImpl(PerformanceTierPropertiesInner inner,  DBforMySQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public MySQLManager manager() {
+    public DBforMySQLManager manager() {
         return this.manager;
     }
 
