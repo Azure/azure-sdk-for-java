@@ -503,12 +503,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         when:
         // Upload with v8
-
-
         v8EncryptBlob.upload(inputStream, defaultDataSize, null, uploadOptions, null)
 
         // Download with current version
-
         ByteArrayOutputStream stream = new ByteArrayOutputStream()
         decryptClient.download(stream)
 
