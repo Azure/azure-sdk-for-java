@@ -2,13 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.Duration;
 
 /**
  * This class represents response diagnostic statistics associated with a request to Azure Cosmos DB
  */
 public class CosmosResponseDiagnostics {
-
+    private static final Logger logger = LoggerFactory.getLogger(CosmosResponseDiagnostics.class);
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     private ClientSideRequestStatistics clientSideRequestStatistics;
 
     CosmosResponseDiagnostics() {
@@ -31,7 +38,12 @@ public class CosmosResponseDiagnostics {
      */
     @Override
     public String toString() {
-        return this.clientSideRequestStatistics.toString();
+        try {
+            return objectMapper.writeValueAsString(this.clientSideRequestStatistics);
+        }catch (JsonProcessingException e) {
+            logger.error("Error while parsing diagnostics " + e.getOriginalMessage());
+        }
+        return StringUtils.EMPTY;
     }
 
     /**

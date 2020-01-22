@@ -12,15 +12,11 @@ import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.sun.management.OperatingSystemMXBean;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -38,33 +34,25 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+@JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 class ClientSideRequestStatistics {
-    private final Logger logger = LoggerFactory.getLogger(ClientSideRequestStatistics.class);
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
-
     private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
         DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US);
-    private static final  OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private ConnectionMode connectionMode;
 
-    public ConnectionMode connectionMode;
-
-    public List<StoreResponseStatistics> responseStatisticsList;
-    public List<StoreResponseStatistics> supplementalResponseStatisticsList;
-    public Map<String, AddressResolutionStatistics> addressResolutionStatistics;
+    private List<StoreResponseStatistics> responseStatisticsList;
+    private List<StoreResponseStatistics> supplementalResponseStatisticsList;
+    private Map<String, AddressResolutionStatistics> addressResolutionStatistics;
 
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
-    public ZonedDateTime requestStartTime;
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
-    public ZonedDateTime requestEndTime;
-    public long requestLatency;
-    public Set<URI> regionsContacted;
-    public RetryContext retryContext;
-    public GatewayStatistics gatewayStatistics;
-    public SystemInformation systemInformation;
+    private ZonedDateTime requestStartTime;
+    private ZonedDateTime requestEndTime;
+    private Set<URI> regionsContacted;
+    private RetryContext retryContext;
+    private GatewayStatistics gatewayStatistics;
 
     ClientSideRequestStatistics() {
         this.requestStartTime = ZonedDateTime.now(ZoneOffset.UTC);
@@ -76,7 +64,6 @@ class ClientSideRequestStatistics {
         this.failedReplicas = new HashSet<>();
         this.regionsContacted = new HashSet<>();
         this.connectionMode = ConnectionMode.DIRECT;
-        this.systemInformation = new SystemInformation();
         this.retryContext = retryContext;
     }
 
@@ -183,31 +170,6 @@ class ClientSideRequestStatistics {
         }
     }
 
-    @Override
-    public String toString() {
-        //  need to lock in case of concurrent operations. this should be extremely rare since toString()
-        //  should only be called at the end of request.
-        synchronized (this) {
-            requestLatency= getRequestLatency().toMillis();
-            //  only take last 10 responses from this list - this has potential of having large number of entries.
-            //  since this is for establishing consistency, we can make do with the last responses to paint a
-            //  meaningful picture.
-            int supplementalResponseStatisticsListCount = this.supplementalResponseStatisticsList.size();
-            int initialIndex =
-                Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
-            if (initialIndex != 0) {
-                this.supplementalResponseStatisticsList.removeAll(this.supplementalResponseStatisticsList.subList(0, initialIndex));
-            }
-            try {
-                printSystemInformation();
-                return objectMapper.writeValueAsString(this);
-            } catch (JsonProcessingException e) {
-                logger.error("Error while parsing diagnostics " + e.getStackTrace());
-            }
-        }
-        return StringUtils.EMPTY;
-    }
-
     List<URI> getContactedReplicas() {
         return contactedReplicas;
     }
@@ -232,23 +194,6 @@ class ClientSideRequestStatistics {
         this.regionsContacted = regionsContacted;
     }
 
-    private void printSystemInformation() {
-        try {
-            long totalMemory = Runtime.getRuntime().totalMemory() / 1024;
-            long freeMemory = Runtime.getRuntime().freeMemory() / 1024;
-            long maxMemory = Runtime.getRuntime().maxMemory() / 1024;
-            this.systemInformation.usedMemory = totalMemory - freeMemory + " KB";
-            this.systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
-
-            OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)
-                ManagementFactory.getOperatingSystemMXBean();
-            this.systemInformation.processCpuLoad = mbean.getProcessCpuLoad()*100 +  " %";
-            this.systemInformation.systemCpuLoad = mbean.getSystemCpuLoad()*100 +  " %";
-        } catch (Exception e) {
-            // Error while evaluating system information, do nothing
-        }
-    }
-
     private static String formatDateTime(ZonedDateTime dateTime) {
         if (dateTime == null) {
             return null;
@@ -260,7 +205,7 @@ class ClientSideRequestStatistics {
         this.retryContext = new RetryContext(request.requestContext.retryContext);
     }
 
-    public static class StoreResponseStatistics {
+    static class StoreResponseStatistics {
         @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
         public StoreResult storeResult;
         @JsonSerialize(using = ZonedDateTimeSerializer.class)
@@ -285,7 +230,7 @@ class ClientSideRequestStatistics {
         public String requestCharge;
     }
 
-    private class SystemInformation {
+    private static class SystemInformation {
         public String usedMemory;
         public String availableMemory;
         public String processCpuLoad;
@@ -302,7 +247,57 @@ class ClientSideRequestStatistics {
         public void serialize(ZonedDateTime zonedDateTime,
                               JsonGenerator jsonGenerator,
                               SerializerProvider serializerProvider) throws IOException {
-            jsonGenerator.writeString(formatDateTime(zonedDateTime));
+            jsonGenerator.writeObject(formatDateTime(zonedDateTime));
+        }
+    }
+
+    public static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
+
+        public ClientSideRequestStatisticsSerializer(){
+            super(ClientSideRequestStatistics.class);
+        }
+
+        @Override
+        public void serialize(ClientSideRequestStatistics statistics, JsonGenerator generator, SerializerProvider provider) throws IOException {
+            generator.writeStartObject();
+            long requestLatency = statistics.getRequestLatency().toMillis();;
+            generator.writeNumberField("requestLatency", requestLatency);
+            generator.writeStringField("requestStartTime", formatDateTime(statistics.requestStartTime));
+            generator.writeStringField("requestEndTime", formatDateTime(statistics.requestEndTime));
+            generator.writeObjectField("connectionMode", statistics.connectionMode);
+            generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
+            int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();
+            int initialIndex =
+                Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
+            if (initialIndex != 0) {
+                List<StoreResponseStatistics> subList = statistics.supplementalResponseStatisticsList.subList(initialIndex, supplementalResponseStatisticsListCount);
+                generator.writeObjectField("supplementalResponseStatisticsList", subList);
+            } else{
+                generator.writeObjectField("supplementalResponseStatisticsList", statistics.supplementalResponseStatisticsList);
+            }
+
+            generator.writeObjectField("addressResolutionStatistics", statistics.addressResolutionStatistics);
+            generator.writeObjectField("regionsContacted", statistics.regionsContacted);
+            generator.writeObjectField("retryContext", statistics.retryContext);
+            generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
+            generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
+            try {
+                SystemInformation systemInformation = new SystemInformation();
+                long totalMemory = Runtime.getRuntime().totalMemory() / 1024;
+                long freeMemory = Runtime.getRuntime().freeMemory() / 1024;
+                long maxMemory = Runtime.getRuntime().maxMemory() / 1024;
+                systemInformation.usedMemory = totalMemory - freeMemory + " KB";
+                systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
+
+                OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)
+                    ManagementFactory.getOperatingSystemMXBean();
+                systemInformation.processCpuLoad = mbean.getProcessCpuLoad()*100 +  " %";
+                systemInformation.systemCpuLoad = mbean.getSystemCpuLoad()*100 +  " %";
+                generator.writeObjectField("systemInformation", systemInformation);
+            } catch (Exception e) {
+                // Error while evaluating system information, do nothing
+            }
+            generator.writeEndObject();
         }
     }
 }
