@@ -87,7 +87,7 @@ class APISpec extends Specification {
     static def BLOB_STORAGE = "BLOB_STORAGE_"
     static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
 
-    private TestResourceNamer resourceNamer
+    TestResourceNamer resourceNamer
     private InterceptorManager interceptorManager
     protected String testName
 

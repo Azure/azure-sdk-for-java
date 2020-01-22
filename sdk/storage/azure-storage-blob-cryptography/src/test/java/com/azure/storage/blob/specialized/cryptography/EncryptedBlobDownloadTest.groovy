@@ -148,27 +148,27 @@ class EncryptedBlobDownloadTest extends APISpec {
         then:
         result == defaultData.array()
     }
-//
-//    @Unroll
-//    def "Download range"() {
-//        setup:
-//        def range = (count == null) ? new BlobRange(offset) : new BlobRange(offset, count)
-//
-//        when:
-//        def outStream = new ByteArrayOutputStream()
-//        ebc.downloadWithResponse(outStream, range, null, null, false, null, null)
-//        String bodyStr = outStream.toString()
-//
-//        then:
-//        bodyStr == expectedData
-//
-//        where:
-//        offset | count || expectedData
-//        0      | null  || defaultText
-//        0      | 5L    || defaultText.substring(0, 5)
-//        3      | 2L    || defaultText.substring(3, 3 + 2)
-//    }
-//
+
+    @Unroll
+    def "Download range"() {
+        setup:
+        def range = (count == null) ? new BlobRange(offset) : new BlobRange(offset, count)
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        ebc.downloadWithResponse(outStream, range, null, null, false, null, null)
+        String bodyStr = outStream.toString()
+
+        then:
+        bodyStr == expectedData
+
+        where:
+        offset | count || expectedData
+        0      | null  || defaultText
+        0      | 5L    || defaultText.substring(0, 5)
+        3      | 2L    || defaultText.substring(3, 3 + 2)
+    }
+
     @Unroll
     def "Download AC"() {
         setup:
@@ -384,40 +384,40 @@ class EncryptedBlobDownloadTest extends APISpec {
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
-//    @Requires({ liveMode() })
-//    @Unroll
-//    def "Download file range"() {
-//        setup:
-//        def file = getRandomFile(defaultDataSize)
-//        ebc.uploadFromFile(file.toPath().toString(), true)
-//        def outFile = new File(resourceNamer.randomName(testName, 60))
-//        if (outFile.exists()) {
-//            assert outFile.delete()
-//        }
-//
-//        when:
-//        ebc.downloadToFileWithResponse(outFile.toPath().toString(), range, null, null, null, false, null, null)
-//
-//        then:
-//        compareFiles(file, outFile, range.getOffset(), range.getCount())
-//
-//        cleanup:
-//        outFile.delete()
-//        file.delete()
-//
-//        /*
-//        The last case is to test a range much much larger than the size of the file to ensure we don't accidentally
-//        send off parallel requests with invalid ranges.
-//         */
-//        where:
-//        range                                         | _
-//        new BlobRange(0, defaultDataSize)             | _ // Exact count
-//        new BlobRange(1, defaultDataSize - 1 as Long) | _ // Offset and exact count
-//        new BlobRange(3, 2)                           | _ // Narrow range in middle
-//        new BlobRange(0, defaultDataSize - 1 as Long) | _ // Count that is less than total
-//        new BlobRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
-//    }
-//
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file range"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        ebc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(resourceNamer.randomName(testName, 60))
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        ebc.downloadToFileWithResponse(outFile.toPath().toString(), range, null, null, null, false, null, null)
+
+        then:
+        compareFiles(file, outFile, range.getOffset(), range.getCount())
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+
+        /*
+        The last case is to test a range much much larger than the size of the file to ensure we don't accidentally
+        send off parallel requests with invalid ranges.
+         */
+        where:
+        range                                         | _
+        new BlobRange(0, defaultDataSize)             | _ // Exact count
+        new BlobRange(1, defaultDataSize - 1 as Long) | _ // Offset and exact count
+        new BlobRange(3, 2)                           | _ // Narrow range in middle
+        new BlobRange(0, defaultDataSize - 1 as Long) | _ // Count that is less than total
+        new BlobRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
+    }
+
     /*
     This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
      */
@@ -635,7 +635,7 @@ class EncryptedBlobDownloadTest extends APISpec {
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
         (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
-            if (!(bytesTransferred > prevCount)) {
+            if (!(bytesTransferred >= prevCount)) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
                 prevCount = bytesTransferred
