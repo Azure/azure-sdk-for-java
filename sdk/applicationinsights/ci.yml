@@ -40,7 +40,6 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: applicationinsights
-      SDKType: data
       Artifacts:
         - name: azure-applicationinsights-query
           groupId: com.microsoft.azure

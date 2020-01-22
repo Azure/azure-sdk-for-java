@@ -1,5 +1,5 @@
 parameters:
-  SDKType: not-specified # Set a default that breaks in obvious ways.
+  SDKType: client
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
   TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true'

@@ -36,7 +36,6 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: batch
-      SDKType: data
       Artifacts:
         - name: azure-batch
           groupId: com.microsoft.azure

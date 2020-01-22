@@ -40,7 +40,6 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: loganalytics
-      SDKType: data
       Artifacts:
         - name: azure-loganalytics
           groupId: com.microsoft.azure

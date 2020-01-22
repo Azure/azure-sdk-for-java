@@ -1,5 +1,5 @@
 parameters:
-  SDKType: not-specified # Set a default that breaks in obvious ways.
+  SDKType: data
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
   TestOptions: '$(DefaultOptions)'

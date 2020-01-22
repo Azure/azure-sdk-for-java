@@ -40,7 +40,6 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: eventgrid
-      SDKType: data
       Artifacts:
         - name: azure-eventgrid
           groupId: com.microsoft.azure
