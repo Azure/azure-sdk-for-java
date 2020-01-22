@@ -301,7 +301,12 @@ public class ReactorNettyClientTests {
     }
 
     private static String createLongBody() {
-        return "abcdefghijk".repeat(1000000);
+        StringBuilder builder = new StringBuilder("abcdefghijk".length() * 1000000);
+        for (int i = 0; i < 1000000; i++) {
+            builder.append("abcdefghijk");
+        }
+
+        return builder.toString();
     }
 
     private void checkBodyReceived(String expectedBody, String path) {

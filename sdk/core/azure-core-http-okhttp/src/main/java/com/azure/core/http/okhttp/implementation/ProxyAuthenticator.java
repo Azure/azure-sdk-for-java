@@ -176,8 +176,8 @@ public final class ProxyAuthenticator implements Authenticator {
                  * authorization header. This is the server performing validation to the client that it received the
                  * information.
                  */
-                assert !headerPieces.containsKey(CNONCE) ||
-                    headerPieces.get(CNONCE).equals(authorizationPieces.get(CNONCE));
+                assert !headerPieces.containsKey(CNONCE)
+                    || headerPieces.get(CNONCE).equals(authorizationPieces.get(CNONCE));
                 assert !headerPieces.containsKey(NC) || headerPieces.get(NC).equals(authorizationPieces.get(NC));
 
                 challengeHandler.consumeAuthenticationInfoHeader(headerPieces);
