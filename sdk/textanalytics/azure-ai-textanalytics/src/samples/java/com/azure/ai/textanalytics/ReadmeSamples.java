@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -43,7 +44,7 @@ public class ReadmeSamples {
      */
     public void useSubscriptionKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
+            .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
             .endpoint(ENDPOINT)
             .buildClient();
     }
@@ -53,7 +54,7 @@ public class ReadmeSamples {
      */
     public void useSubscriptionKeyAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
+            .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
             .endpoint(ENDPOINT)
             .buildAsyncClient();
     }

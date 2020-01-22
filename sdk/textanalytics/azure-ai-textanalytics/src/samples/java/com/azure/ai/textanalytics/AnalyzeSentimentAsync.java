@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
 import com.azure.ai.textanalytics.models.TextSentiment;
 
 import java.util.concurrent.TimeUnit;
@@ -19,7 +20,7 @@ public class AnalyzeSentimentAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
+            .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
             .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 

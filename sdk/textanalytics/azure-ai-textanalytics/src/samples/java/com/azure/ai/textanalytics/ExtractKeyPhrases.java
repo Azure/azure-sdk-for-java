@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
+
 /**
  * Sample demonstrates how to extract the key phrases of an input text.
  */
@@ -15,7 +17,7 @@ public class ExtractKeyPhrases {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
+            .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
             .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
 

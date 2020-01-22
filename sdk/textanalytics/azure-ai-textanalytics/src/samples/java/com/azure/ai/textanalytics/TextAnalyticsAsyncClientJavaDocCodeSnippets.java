@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
@@ -26,8 +27,6 @@ import java.util.List;
  * Code snippet for {@link TextAnalyticsAsyncClient}
  */
 public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
-    private static final String SUBSCRIPTION_KEY = null;
-    private static final String ENDPOINT = null;
     TextAnalyticsAsyncClient textAnalyticsAsyncClient = createTextAnalyticsAsyncClient();
 
     /**
@@ -38,8 +37,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public TextAnalyticsAsyncClient createTextAnalyticsAsyncClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
+            .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildAsyncClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         return textAnalyticsAsyncClient;
