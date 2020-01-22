@@ -5,10 +5,6 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.util.serializer.jsonwrapper.JsonWrapper;
-import com.azure.core.util.serializer.jsonwrapper.api.Config;
-import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
-import com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.core.util.Context;
 import com.azure.search.models.CoordinateSystem;
 import com.azure.search.models.FacetResult;
@@ -21,12 +17,16 @@ import com.azure.search.models.ValueFacetResult;
 import com.azure.search.test.environment.models.Bucket;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.NonNullableModel;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.unitils.reflectionassert.ReflectionAssert;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -184,11 +185,15 @@ public class SearchSyncTests extends SearchTestBase {
             });
         }
 
-        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-        jsonApi.configure(Config.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        jsonApi.configureTimezone();
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        df.setTimeZone(TimeZone.getDefault());
+        objectMapper.setDateFormat(df);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         List<Hotel> hotelsList = hotels.stream().map(hotel -> {
-            Hotel h = jsonApi.convertObjectToType(hotel, Hotel.class);
+            Hotel h = objectMapper.convertValue(hotel, Hotel.class);
             if (h.location() != null) {
                 h.location().setCoordinateSystem(CoordinateSystem.create());
             }

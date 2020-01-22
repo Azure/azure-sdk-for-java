@@ -3,25 +3,26 @@
 package com.azure.search;
 
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.util.serializer.jsonwrapper.JsonWrapper;
-import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
-import com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Hotel;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 public abstract class SuggestTestBase extends SearchIndexClientTestBase {
-    private JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
     static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
     static final String BOOKS_INDEX_NAME = "books";
 
@@ -65,8 +66,16 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
             .map(SuggestResult::getDocument)
             .collect(Collectors.toList());
         List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        df.setTimeZone(TimeZone.getDefault());
+        objectMapper.setDateFormat(df);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         List<Hotel> expectedHotelsList = expectedHotels.stream().map(hotel ->
-            jsonApi.convertObjectToType(hotel, Hotel.class))
+            objectMapper.convertValue(hotel, Hotel.class))
             .filter(h -> h.hotelId().equals("10") || h.hotelId().equals("8"))
             .sorted(Comparator.comparing(Hotel::hotelId)).collect(Collectors.toList());
 

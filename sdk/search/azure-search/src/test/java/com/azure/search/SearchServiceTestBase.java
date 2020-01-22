@@ -9,9 +9,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.serializer.jsonwrapper.JsonWrapper;
-import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
-import com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.search.models.AnalyzerName;
@@ -43,6 +40,9 @@ import com.azure.search.models.TagScoringParameters;
 import com.azure.search.models.TextWeights;
 import com.azure.search.test.environment.setup.AzureSearchResources;
 import com.azure.search.test.environment.setup.SearchIndexService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -56,6 +56,7 @@ import org.reactivestreams.Publisher;
 import org.unitils.reflectionassert.ReflectionAssert;
 import reactor.test.StepVerifier;
 
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,6 +65,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
 
 public abstract class SearchServiceTestBase extends TestBase {
@@ -93,10 +95,10 @@ public abstract class SearchServiceTestBase extends TestBase {
     SearchApiKeyCredential searchApiKeyCredential;
     SearchIndexService searchServiceHotelsIndex;
 
+    private ObjectMapper objectMapper;
+
     private static String testEnvironment;
     private static AzureSearchResources azureSearchResources;
-
-    private JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
 
     @Rule
     public TestName testName = new TestName();
@@ -123,7 +125,13 @@ public abstract class SearchServiceTestBase extends TestBase {
             searchApiKeyCredential = new SearchApiKeyCredential(azureSearchResources.getSearchAdminKey());
         }
         endpoint = String.format("https://%s.%s", searchServiceName, searchDnsSuffix);
-        jsonApi.configureTimezone();
+
+        objectMapper = new ObjectMapper();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        df.setTimeZone(TimeZone.getDefault());
+        objectMapper.setDateFormat(df);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     @Override
@@ -574,7 +582,7 @@ public abstract class SearchServiceTestBase extends TestBase {
      * @return an object of the request type
      */
     <T> T convertToType(Object document, Class<T> cls) {
-        return jsonApi.convertObjectToType(document, cls);
+        return objectMapper.convertValue(document, cls);
     }
 
     void addFieldToIndex(Index index, Field field) {

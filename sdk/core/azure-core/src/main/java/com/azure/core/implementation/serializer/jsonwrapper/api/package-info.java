@@ -4,4 +4,4 @@
 /**
  * Package containing jsonwrapper serialization tool
  */
-package com.azure.core.util.serializer.jsonwrapper;
+package com.azure.core.implementation.serializer.jsonwrapper.api;

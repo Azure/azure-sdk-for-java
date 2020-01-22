@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.util.serializer.jsonwrapper.spi;
+package com.azure.core.implementation.serializer.jsonwrapper.spi;
 
-import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
+import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 
 /**
  * Interface to be implemented by all JSON libraries

@@ -5,16 +5,19 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.serializer.jsonwrapper.JsonWrapper;
-import com.azure.core.util.serializer.jsonwrapper.api.JsonApi;
-import com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.Hotel;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 /**
  * This example shows how to convert a search result into a fully typed object.
  * In case that the searched document schema is known, the user can convert the result of the search query from a property bag into a fully typed object
- * Conversion to a well known type is done using azure-core jsonwrapper {@link JacksonDeserializer} utility with a Jackson implementation
+ * In this sample, the deserialization into well known type is done using Jackson ObjectMapper
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
  * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
@@ -37,16 +40,19 @@ public class SearchAsyncWithFullyTypedDocumentsExample {
             .indexName(INDEX_NAME)
             .buildAsyncClient();
 
-        // Create an instance of JsonAPI with Jackson deserializer
-        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-        jsonApi.configureTimezone();
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        df.setTimeZone(TimeZone.getDefault());
+        objectMapper.setDateFormat(df);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search("searchText");
         results
             .subscribe(item -> {
                 Document document = item.getDocument();
                 // Convert the property bag received from the search query to an object of type Hotel
-                Hotel hotel = jsonApi.convertObjectToType(document, Hotel.class);
+                Hotel hotel = objectMapper.convertValue(document, Hotel.class);
                 System.out.println("Hotel " + hotel.getHotelId());
             });
 

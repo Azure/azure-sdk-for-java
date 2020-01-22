@@ -48,7 +48,7 @@
         "regex": true,
         "code": "java\\.missing\\.(oldClass|newClass)",
         "new": "missing\\-class com\\.fasterxml\\.jackson\\.databind\\.JsonNode",
-        "justification": "We allow this in com.azure.core.util.serializer.jsonwrapper"
+        "justification": "We allow this in com.azure.core.implementation.serializer.jsonwrapper"
       },
       {
         "regex": true,

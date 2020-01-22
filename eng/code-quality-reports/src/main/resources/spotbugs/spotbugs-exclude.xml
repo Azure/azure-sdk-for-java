@@ -679,7 +679,7 @@
 
   <!-- Initial implementation of JacksonDeserializer is using an inline class-->
   <Match>
-    <Class name="com.azure.core.util.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
+    <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
