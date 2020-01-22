@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -15,7 +16,10 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.InvalidPathException;
+import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -33,57 +37,58 @@ import java.util.Objects;
 public class AuthFileCredential implements TokenCredential {
     /* The file path value. */
     private final String filepath;
-    private  IdentityClientOptions identityClientOptions;
-    private TokenCredential credential;
+    private final static ClientLogger logger = new ClientLogger(AuthFileCredential.class);
+    private IdentityClientOptions identityClientOptions;
+    TokenCredential credential;
     private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
-     *  Creates an instance of the SdkAuthFileCredential class based on information in given SDK Auth file.
-     *  If the file is not found or there are errors parsing it, <see cref="GetToken(TokenRequestContext)"/>
-     *  and <see cref="GetToken(TokenRequestContext)"/> will throw a <see cref="Exception"/>
-     *  with details on why the file could not be used.
+     * Creates an instance of the SdkAuthFileCredential class based on information
+     * in given SDK Auth file. If the file is not found or there are errors parsing
+     * it, <see cref="GetToken(TokenRequestContext)"/> and
+     * <see cref="GetToken(TokenRequestContext)"/> will throw a
+     * <see cref="Exception"/> with details on why the file could not be used.
      *
-     * @param filepath The path to the SDK Auth file.
+     * @param filepath              The path to the SDK Auth file.
      * @param identityClientOptions the options for configuring the identity client
      */
     AuthFileCredential(String filepath, IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(filepath, "'filepath' cannot be null.");
         Objects.requireNonNull(identityClientOptions, "'identityClientOptions' cannot be null.");
         this.filepath = filepath;
-        this.identityClientOptions=identityClientOptions;
+        this.identityClientOptions = identityClientOptions;
+        ensureCredential();
     }
 
     /**
-     * Obtains a token from the Azure Active Directory service, using the specified client detailed specified in the SDK Auth file.
-     * This method is called by Azure SDK clients. It isn't intended for use in application code.  
-     * If the SDK Auth file is missing or invalid, this method throws a <see cref="AuthenticationFailedException"/> exception.
-     * <param name="requestContext">The details of the authentication request</param>
-     * <returns>An <see cref="AccessToken"/> which can be used to authenticate service client calls.</returns>
+     * Obtains a token from the Azure Active Directory service, using the specified
+     * client detailed specified in the SDK Auth file. This method is called by
+     * Azure SDK clients. It isn't intended for use in application code. If the SDK
+     * Auth file is missing or invalid, this method throws a
+     * <see cref="AuthenticationFailedException"/> exception.
+     * <param name="requestContext">The details of the authentication
+     * request</param> <returns>An <see cref="AccessToken"/> which can be used to
+     * authenticate service client calls.</returns>
      */
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        try {
-            ensureCredential();
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
         return credential.getToken(request);
     }
-    
-    /**  
-     * Ensures that credential information is loaded from the SDK Auth file. This method should be called to initialize
-     * <code>_credential</code> before it is used. If the SDK Auth file is not found or invalid, this method will throw
-     * <see cref="AuthenticationFailedException"/>.
-     * <returns>A method that will ensure <code>credential</code> has been initialized</returns>
+
+    /**
+     * Ensures that credential information is loaded from the SDK Auth file. This
+     * method should be called to initialize <code>_credential</code> before it is
+     * used. If the SDK Auth file is not found or invalid, this method will throw
+     * <see cref="AuthenticationFailedException"/>. <returns>A method that will
+     * ensure <code>credential</code> has been initialized</returns>
      */
-    private void ensureCredential() throws Exception {
-        if(credential ==null){
-            try
-            {
+    private void ensureCredential() {
+        if (credential == null) {
+            try {
                 credential = BuildCredentialForCredentialsFile(ParseCredentialsFile(filepath));
-            } catch (Exception e){  
-                throw new Exception("Error parsing SDK Auth File", e);
-            } 
+            } catch (Exception e) {
+                throw logger.logExceptionAsError(new RuntimeException("Error parsing SDK Auth File", e));
+            }
         }
     }
 
@@ -91,16 +96,19 @@ public class AuthFileCredential implements TokenCredential {
     {
         File file = new File(filePath);
         if (!file.exists()) {
-            throw new Exception("Auth File doesn't exist");
+            throw logger.logExceptionAsError(new InvalidPathException(filePath,"Auth File doesn't exist"));
         }
-        FileInputStream inputStream = new FileInputStream(file);
-        int length = inputStream.available();
-        byte bytes[] = new byte[length];
-        inputStream.read(bytes);
-        inputStream.close();
-        String result = new String(bytes, StandardCharsets.UTF_8);
-        
-		return SERIALIZER_ADAPTER.deserialize(result,Map.class , SerializerEncoding.JSON);
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            int length = inputStream.available();
+            byte bytes[] = new byte[length];
+            inputStream.read(bytes);
+            inputStream.close();
+            String result = new String(bytes, StandardCharsets.UTF_8);
+            return SERIALIZER_ADAPTER.deserialize(result,Map.class , SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new IllegalStateException(e));
+        }
     }
 
     private TokenCredential BuildCredentialForCredentialsFile(Map<String, String> authData) throws Exception
@@ -112,7 +120,7 @@ public class AuthFileCredential implements TokenCredential {
 
         if (clientId == null || clientSecret == null || tenantId == null || activeDirectoryEndpointUrl == null)
         {
-            throw new Exception("Malformed Azure SDK Auth file. The file should contain 'clientId', 'clientSecret', 'tenentId' and 'activeDirectoryEndpointUrl' values.");
+            throw logger.logExceptionAsError(new InvalidParameterException("Malformed Azure SDK Auth file. The file should contain 'clientId', 'clientSecret', 'tenentId' and 'activeDirectoryEndpointUrl' values."));
         }
 
         return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions.setAuthorityHost(activeDirectoryEndpointUrl));
