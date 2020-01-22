@@ -6,8 +6,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
-import java.util.List;
-
 /**
  * The TextAnalyticsError model.
  */

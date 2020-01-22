@@ -12,6 +12,8 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.Response;
@@ -22,14 +24,16 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.Transforms.mapByIndex;
+import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
-import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 
 /**
  * Helper class for managing recognize entity endpoint.
@@ -54,7 +58,21 @@ class RecognizeEntityAsyncClient {
 
         return recognizeBatchEntitiesWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
+            .map(response -> {
+                Iterator<RecognizeEntitiesResult> entitiesResultIterator = response.getValue().iterator();
+                RecognizeEntitiesResult entitiesResult = null;
+                if (response.getStatusCode() == 200 && entitiesResultIterator.hasNext()) {
+                    entitiesResult = entitiesResultIterator.next();
+                    if (entitiesResult.isError()) {
+                        TextAnalyticsError error = entitiesResult.getError();
+                        String baseMessage = String.format(Locale.US, "%s: {%s}, %s",
+                            "Status Code", response.getStatusCode(), error.getMessage());
+                        throw logger.logExceptionAsError(new TextAnalyticsException(baseMessage, error.getCode(),
+                            error.getTarget()));
+                    }
+                }
+                return new SimpleResponse<>(response, entitiesResult);
+            });
     }
 
     Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(

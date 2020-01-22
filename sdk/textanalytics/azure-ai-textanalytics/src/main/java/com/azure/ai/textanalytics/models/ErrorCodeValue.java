@@ -6,7 +6,8 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Collection;
 
 /**
  * Defines values for ErrorCodeValue.
@@ -87,5 +88,4 @@ public final class ErrorCodeValue extends ExpandableStringEnum<ErrorCodeValue> {
     public static ErrorCodeValue fromString(String name) {
         return fromString(name, ErrorCodeValue.class);
     }
-
 }

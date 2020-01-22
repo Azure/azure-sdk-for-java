@@ -13,6 +13,8 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -22,7 +24,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -49,8 +53,22 @@ class DetectLanguageAsyncClient {
         Objects.requireNonNull(text, "'text' cannot be null.");
         List<DetectLanguageInput> languageInputs = Collections.singletonList(new DetectLanguageInput("0",
             text, countryHint));
-        return detectBatchLanguagesWithResponse(languageInputs, null, context).map(response ->
-            new SimpleResponse<>(response, response.getValue().iterator().next()));
+        return detectBatchLanguagesWithResponse(languageInputs, null, context)
+            .map(response -> {
+                Iterator<DetectLanguageResult> detectLanguageResultIterator = response.getValue().iterator();
+                DetectLanguageResult detectLanguageResult = null;
+                if (response.getStatusCode() == 200 && detectLanguageResultIterator.hasNext()) {
+                    detectLanguageResult = detectLanguageResultIterator.next();
+                    if (detectLanguageResult.isError()) {
+                        TextAnalyticsError error = detectLanguageResult.getError();
+                        String baseMessage = String.format(Locale.US, "%s: {%s}, %s",
+                            "Status Code", response.getStatusCode(), error.getMessage());
+                        throw logger.logExceptionAsError(new TextAnalyticsException(baseMessage, error.getCode(),
+                            error.getTarget()));
+                    }
+                }
+                return new SimpleResponse<>(response, detectLanguageResult);
+            });
     }
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> textInputs,
