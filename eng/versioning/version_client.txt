@@ -17,9 +17,9 @@ com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity;1.0.3;1.1.0-beta.1
 com.azure:azure-messaging-eventhubs;5.0.0-beta.6;5.0.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.0.0-beta.4;1.0.1
-com.azure:azure-security-keyvault-certificates;4.0.0-beta.7;4.0.0
-com.azure:azure-security-keyvault-keys;4.0.1;4.1.0
-com.azure:azure-security-keyvault-secrets;4.0.1;4.1.0
+com.azure:azure-security-keyvault-certificates;4.0.0;4.1.0-beta.1
+com.azure:azure-security-keyvault-keys;4.1.0;4.2.0-beta.1
+com.azure:azure-security-keyvault-secrets;4.1.0;4.2.0-beta.1
 com.azure:azure-sdk-template;1.0.4-beta.2;1.0.4-beta.2
 com.azure:azure-storage-blob;12.2.0;12.3.0
 com.azure:azure-storage-blob-batch;12.2.0;12.3.0
