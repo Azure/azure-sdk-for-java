@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -14,14 +13,13 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.validateDetectedLanguages;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TextAnalyticsClientBuilderTest extends TestBase {
-    static final String AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY = "AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY";
+    private static final String AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY = "AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY";
 
     @Test
     public void rotateSharedKeyCredentialAsyncClient() {
@@ -48,10 +46,10 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
 
         final TextAnalyticsAsyncClient client = clientBuilder.buildAsyncClient();
 
-        DetectedLanguage primaryLanguage = new DetectedLanguage("English", "en", 1.0);
-        List<DetectedLanguage> expectedLanguageList = Arrays.asList(primaryLanguage);
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response -> validateDetectedLanguages(expectedLanguageList, response.getDetectedLanguages()))
+            .assertNext(response -> validateDetectedLanguages(
+                Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
+                response.getDetectedLanguages()))
             .verifyComplete();
 
         credential.updateCredential("invalid key");
@@ -68,6 +66,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         final String subscriptionKey = Configuration.getGlobalConfiguration()
             .get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
         Objects.requireNonNull(subscriptionKey, "`AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY` expected to be set.");
+
         final TextAnalyticsSubscriptionKeyCredential credential =
             new TextAnalyticsSubscriptionKeyCredential(subscriptionKey);
 
@@ -83,12 +82,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         }
 
         final TextAnalyticsClient client = clientBuilder.buildClient();
-
-        DetectedLanguage primaryLanguage = new DetectedLanguage("English", "en", 1.0);
-        List<DetectedLanguage> expectedLanguageList = Arrays.asList(primaryLanguage);
-
-        DetectLanguageResult detectLanguageResult = client.detectLanguage("This is a test English Text");
-        validateDetectedLanguages(expectedLanguageList, detectLanguageResult.getDetectedLanguages());
+        validateDetectedLanguages(Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
+            client.detectLanguage("This is a test English Text").getDetectedLanguages());
 
         credential.updateCredential("invalid key");
 
