@@ -19,7 +19,7 @@ public interface Replicas extends HasInner<ReplicasInner> {
     /**
      * List all the replicas for a given server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
