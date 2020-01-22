@@ -2,7 +2,7 @@ parameters:
   SDKType: not-specified # Set a default that breaks in obvious ways.
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
-  TestOptions: '$(DefaultOptions)'
+  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip -Dspotbugs.skip -Dcheckstyle.skip'
   TestGoals: verify
   TestMatrix:
     Linux - Java 8:
@@ -266,7 +266,7 @@ jobs:
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           options: ${{ parameters.TestOptions }}
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions) -Dmaven.javadoc.skip -Dspotbugs.skip -Dcheckstyle.skip'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
