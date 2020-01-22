@@ -21,7 +21,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import org.junit.jupiter.api.Test;
@@ -163,7 +162,7 @@ public abstract class SecretClientTestBase extends TestBase {
     void updateDisabledSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
         final Map<String, String> tags = new HashMap<>();
 
-        String resourceId = generateResourceId( "testUpdateOfDisabledSecret");
+        String resourceId = generateResourceId("testUpdateOfDisabledSecret");
         final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretUpdateDisabledVal")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
@@ -238,7 +237,7 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void recoverDeletedSecret();
 
     void recoverDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        String resourceId = generateResourceId( "testSecretRecover");
+        String resourceId = generateResourceId("testSecretRecover");
         final KeyVaultSecret secretToDeleteAndRecover = new KeyVaultSecret(resourceId, "testSecretRecoverVal")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
