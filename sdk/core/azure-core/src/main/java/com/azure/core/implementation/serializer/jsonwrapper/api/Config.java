@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.core.implementation.serializer.jsonwrapper.api;
 
-/**
- * Configuration options for jsonwrapper
- */
 public enum Config {
     FAIL_ON_UNKNOWN_PROPERTIES,
     FAIL_ON_NULL_FOR_PRIMITIVES,

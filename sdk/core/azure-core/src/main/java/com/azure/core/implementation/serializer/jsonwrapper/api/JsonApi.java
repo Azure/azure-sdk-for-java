@@ -4,9 +4,6 @@ package com.azure.core.implementation.serializer.jsonwrapper.api;
 
 import java.util.List;
 
-/**
- * Jsonwrapper interface API
- */
 public interface JsonApi {
 
     /**

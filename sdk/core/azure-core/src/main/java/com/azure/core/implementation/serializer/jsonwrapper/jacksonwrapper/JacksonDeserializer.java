@@ -27,9 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-/**
- * Jackson implementation of the JsonApi
- */
+
 public class JacksonDeserializer implements JsonApi {
 
     private static final Map<Config, DeserializationFeature> CONFIG_MAP;
@@ -62,8 +60,6 @@ public class JacksonDeserializer implements JsonApi {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         df.setTimeZone(TimeZone.getDefault());
         objectMapper.setDateFormat(df);
-
-        objectMapper.registerModule(new JavaTimeModule());
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

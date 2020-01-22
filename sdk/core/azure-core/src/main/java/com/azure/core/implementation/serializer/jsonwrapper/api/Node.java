@@ -4,9 +4,6 @@ package com.azure.core.implementation.serializer.jsonwrapper.api;
 
 import java.util.List;
 
-/**
- * Representation of a generic node in a JSON tree model
- */
 public interface Node {
 
     /**

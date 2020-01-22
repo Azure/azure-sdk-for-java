@@ -9,9 +9,6 @@ import com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-/**
- * Utility class generating an instance of a JsonAPI
- */
 @SuppressWarnings("unchecked")
 public class JsonWrapper {
 

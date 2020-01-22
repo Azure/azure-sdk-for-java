@@ -8,9 +8,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Jackson implementation of the Node interface
- */
 public class JacksonNode implements Node {
     private final JsonNode node;
 
