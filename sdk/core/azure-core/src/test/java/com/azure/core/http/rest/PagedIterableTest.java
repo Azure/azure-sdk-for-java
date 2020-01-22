@@ -139,16 +139,8 @@ public class PagedIterableTest {
 
         assertEquals(pagedResponses.get(0), pagedIterable.streamByPage().limit(1).collect(Collectors.toList()).get(0));
 
-        /*
-         * The goal for this test would be that 0 next page retrieval calls are made but due to how Flux.concatWith
-         * works it needs to begin the next publisher to determine whether onNext or onComplete should trigger. This
-         * results in 2 next page retrieval calls for the following reason:
-         *
-         * - Makes the initial get first page call, then needs to validate that get next page emits. 1 call made.
-         * - Retrieving the first page in verification moves the stream iterator to the initial next page, Reactor then
-         *   needs to verify that the page after it emits. 2 calls made.
-         */
-        assertEquals(2, pagedFlux.getNextPageRetrievals());
+        // The goal for this test is that 0 next page retrieval calls are made.
+        assertEquals(0, pagedFlux.getNextPageRetrievals());
     }
 
     @Test
@@ -158,16 +150,8 @@ public class PagedIterableTest {
 
         assertEquals(pagedResponses.get(0), pagedIterable.iterableByPage().iterator().next());
 
-        /*
-         * The goal for this test would be that 0 next page retrieval calls are made but due to how Flux.concatWith
-         * works it needs to begin the next publisher to determine whether onNext or onComplete should trigger. This
-         * results in 2 next page retrieval calls for the following reason:
-         *
-         * - Makes the initial get first page call, then needs to validate that get next page emits. 1 call made.
-         * - Retrieving the first page in verification moves the stream iterator to the initial next page, Reactor then
-         *   needs to verify that the page after it emits. 2 calls made.
-         */
-        assertEquals(2, pagedFlux.getNextPageRetrievals());
+        // The goal for this test is that 0 next page retrieval calls are made.
+        assertEquals(0, pagedFlux.getNextPageRetrievals());
     }
 
     @Test
