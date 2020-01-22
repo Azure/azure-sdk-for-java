@@ -17,14 +17,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01.implementation.DBforMySQLManager;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.mysql.v2017_12_01.implementation.ServerInner;
 
 /**
  * Type representing Server.
  */
-public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<MySQLManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<MySQLManager> {
+public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<DBforMySQLManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<DBforMySQLManager> {
     /**
      * @return the administratorLogin value.
      */
@@ -210,7 +210,7 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
         interface WithVersion {
             /**
              * Specifies version.
-             * @param version The version of a server. Possible values include: '5.6', '5.7'
+             * @param version The version of a server. Possible values include: '5.6', '5.7', '8.0'
              * @return the next update stage
              */
             Update withVersion(ServerVersion version);

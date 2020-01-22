@@ -36,7 +36,7 @@ public class ServerUpdateParameters {
     private String administratorLoginPassword;
 
     /**
-     * The version of a server. Possible values include: '5.6', '5.7'.
+     * The version of a server. Possible values include: '5.6', '5.7', '8.0'.
      */
     @JsonProperty(value = "properties.version")
     private ServerVersion version;
@@ -121,7 +121,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Get the version of a server. Possible values include: '5.6', '5.7'.
+     * Get the version of a server. Possible values include: '5.6', '5.7', '8.0'.
      *
      * @return the version value
      */
@@ -130,7 +130,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Set the version of a server. Possible values include: '5.6', '5.7'.
+     * Set the version of a server. Possible values include: '5.6', '5.7', '8.0'.
      *
      * @param version the version value to set
      * @return the ServerUpdateParameters object itself.
