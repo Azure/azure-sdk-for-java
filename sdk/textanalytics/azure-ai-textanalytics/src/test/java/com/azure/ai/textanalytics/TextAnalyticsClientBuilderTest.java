@@ -23,11 +23,10 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
 
     @Test
     public void rotateSharedKeyCredentialAsyncClient() {
+        // Arrange
         final String endpoint = getEndpoint();
         Objects.requireNonNull(endpoint, "`endpoint` expected to be set.");
-
-        final String subscriptionKey = Configuration.getGlobalConfiguration()
-            .get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
+        final String subscriptionKey = getSubscriptionKey();
         Objects.requireNonNull(subscriptionKey, "`AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY` expected to be set.");
 
         final TextAnalyticsSubscriptionKeyCredential credential =
@@ -46,25 +45,27 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
 
         final TextAnalyticsAsyncClient client = clientBuilder.buildAsyncClient();
 
+        // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
             .assertNext(response -> validateDetectedLanguages(
                 Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
                 response.getDetectedLanguages()))
             .verifyComplete();
 
+        // Update to invalid subscription key
         credential.updateCredential("invalid key");
 
+        // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
             .verifyError(HttpResponseException.class);
     }
 
     @Test
     public void rotateSharedKeyCredentialSyncClient() {
+        // Arrange
         final String endpoint = getEndpoint();
         Objects.requireNonNull(endpoint, "`endpoint` expected to be set.");
-
-        final String subscriptionKey = Configuration.getGlobalConfiguration()
-            .get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
+        final String subscriptionKey = getSubscriptionKey();
         Objects.requireNonNull(subscriptionKey, "`AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY` expected to be set.");
 
         final TextAnalyticsSubscriptionKeyCredential credential =
@@ -82,11 +83,15 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         }
 
         final TextAnalyticsClient client = clientBuilder.buildClient();
+
+        // Action and Assert
         validateDetectedLanguages(Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
             client.detectLanguage("This is a test English Text").getDetectedLanguages());
 
+        // Update to invalid subscription key
         credential.updateCredential("invalid key");
 
+        // Action and Assert
         assertThrows(HttpResponseException.class, () -> client.detectLanguage("This is a test English Text"));
     }
 
@@ -94,5 +99,10 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         return interceptorManager.isPlaybackMode()
             ? "http://localhost:8080"
             : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
+    }
+
+    String getSubscriptionKey() {
+        return interceptorManager.isPlaybackMode() ? "subscriptionKeyInPlayback"
+            : Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
     }
 }
