@@ -4,7 +4,7 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.AsyncDocumentClient;
-import com.google.common.base.Strings;
+import com.azure.data.cosmos.internal.Utils;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -35,7 +35,7 @@ public abstract class DocumentClientTest implements ITest {
 
     @BeforeMethod(alwaysRun = true)
     public final void setTestName(Method method) {
-        String testClassAndMethodName = Strings.lenientFormat("%s::%s",
+        String testClassAndMethodName = Utils.lenientFormat("%s::%s",
                 method.getDeclaringClass().getSimpleName(),
                 method.getName());
 
@@ -44,7 +44,7 @@ public abstract class DocumentClientTest implements ITest {
                     ? "Direct " + this.clientBuilder.getConfigs().getProtocol()
                     : "Gateway";
 
-            this.testName = Strings.lenientFormat("%s[%s with %s consistency]",
+            this.testName = Utils.lenientFormat("%s[%s with %s consistency]",
                     testClassAndMethodName,
                     connectionMode,
                     clientBuilder.getDesiredConsistencyLevel());

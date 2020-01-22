@@ -5,12 +5,12 @@ package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.GoneException;
+import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.directconnectivity.RntbdTransportClient;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import io.micrometer.core.instrument.Tag;
 import io.netty.bootstrap.Bootstrap;
@@ -261,7 +261,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 final String reason = cause.getMessage();
 
                 final GoneException goneException = new GoneException(
-                    Strings.lenientFormat("failed to establish connection to %s: %s", this.remoteAddress, reason),
+                    Utils.lenientFormat("failed to establish connection to %s: %s", this.remoteAddress, reason),
                     cause instanceof Exception ? (Exception)cause : new IOException(reason, cause),
                     ImmutableMap.of(HttpHeaders.ACTIVITY_ID, activityId.toString()),
                     requestArgs.replicaPath()
