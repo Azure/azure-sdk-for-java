@@ -3,7 +3,7 @@ parameters:
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
   TestOptions: '$(DefaultOptions)'
-  TestGoals: test
+  TestGoals: verify
   TestMatrix:
     Linux - Java 8:
       OSName: 'Linux'
@@ -281,18 +281,6 @@ jobs:
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
-
-      - task: CheckCodeCoverage
-        displayName: 'Check code coverage'
-        inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: ${{ parameters.TestOptions }}
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: ${{ parameters.TestGoals }}
 
       # HACK: This has been disabled to unblock releases where aggregate code
       #       coverage reporting was causing agent timeouts. We've got an issue
