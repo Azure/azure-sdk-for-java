@@ -108,7 +108,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         DetectLanguageResult result = client.detectLanguage("");
         assertNotNull(result.getError());
         validateErrorDocument(expectedError, result.getError());
@@ -130,9 +130,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid Country Hint.", null, null);
-        validateErrorDocument(client.detectLanguageWithResponse("Este es un document escrito en Español.", "en", Context.NONE).getValue().getError(),
-            expectedError);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_COUNTRY_HINT, "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code.", null);
+        validateErrorDocument(client.detectLanguageWithResponse("Este es un document escrito en Español.", "en", Context.NONE).getValue()
+                                  .getError(), expectedError);
     }
 
     /**
@@ -158,7 +158,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         validateErrorDocument(expectedError, client.recognizeEntities("").getError());
     }
 
@@ -203,7 +203,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizePiiEntitiesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         validateErrorDocument(expectedError, client.recognizePiiEntities("").getError());
     }
 
@@ -250,7 +250,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         validateErrorDocument(expectedError, client.recognizeLinkedEntities("").getError());
     }
 
@@ -293,7 +293,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void extractKeyPhrasesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         validateErrorDocument(expectedError, client.extractKeyPhrases("").getError());
     }
 
@@ -351,7 +351,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         validateErrorDocument(expectedError, client.analyzeSentiment("").getError());
     }
 

@@ -4,68 +4,88 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for ErrorCodeValue.
  */
-public enum ErrorCodeValue {
+public final class ErrorCodeValue extends ExpandableStringEnum<ErrorCodeValue> {
     /**
      * Enum value invalidRequest.
      */
-    INVALID_REQUEST("invalidRequest"),
+    public static final ErrorCodeValue INVALID_REQUEST = fromString("invalidRequest");
 
     /**
      * Enum value invalidArgument.
      */
-    INVALID_ARGUMENT("invalidArgument"),
+    public static final ErrorCodeValue INVALID_ARGUMENT = fromString("invalidArgument");
 
     /**
      * Enum value internalServerError.
      */
-    INTERNAL_SERVER_ERROR("internalServerError"),
+    public static final ErrorCodeValue INTERNAL_SERVER_ERROR = fromString("internalServerError");
 
     /**
      * Enum value serviceUnavailable.
      */
-    SERVICE_UNAVAILABLE("serviceUnavailable");
+    public static final ErrorCodeValue SERVICE_UNAVAILABLE = fromString("serviceUnavailable");
 
     /**
-     * The actual serialized value for a ErrorCodeValue instance.
+     * Enum value invalidParameterValue.
      */
-    private final String value;
+    public static final ErrorCodeValue INVALID_PARAMETER_VALUE = fromString("invalidParameterValue");
 
     /**
-     * Creates a {@code ErrorCodeValue} model that describes error code value, 'invalidRequest', 'invalidArgument',
-     * 'internalServerError', or 'serviceUnavailable'.
-     *
-     * @param value the enum value for the error code value
+     * Enum value invalidRequestBodyFormat.
      */
-    ErrorCodeValue(String value) {
-        this.value = value;
-    }
+    public static final ErrorCodeValue INVALID_REQUEST_BODY_FORMAT = fromString("invalidRequestBodyFormat");
 
     /**
-     * Parses a serialized value to a ErrorCodeValue instance.
+     * Enum value emptyRequest.
+     */
+    public static final ErrorCodeValue EMPTY_REQUEST = fromString("emptyRequest");
+
+    /**
+     * Enum value missingInputRecords.
+     */
+    public static final ErrorCodeValue MISSING_INPUT_RECORDS = fromString("missingInputRecords");
+
+    /**
+     * Enum value invalidDocument.
+     */
+    public static final ErrorCodeValue INVALID_DOCUMENT = fromString("invalidDocument");
+
+    /**
+     * Enum value modelVersionIncorrect.
+     */
+    public static final ErrorCodeValue MODEL_VERSION_INCORRECT = fromString("modelVersionIncorrect");
+
+    /**
+     * Enum value invalidDocumentBatch.
+     */
+    public static final ErrorCodeValue INVALID_DOCUMENT_BATCH = fromString("invalidDocumentBatch");
+
+    /**
+     * Enum value unsupportedLanguageCode.
+     */
+    public static final ErrorCodeValue UNSUPPORTED_LANGUAGE_CODE = fromString("unsupportedLanguageCode");
+
+    /**
+     * Enum value invalidCountryHint.
+     */
+    public static final ErrorCodeValue INVALID_COUNTRY_HINT = fromString("invalidCountryHint");
+
+    /**
+     * Creates or finds a ErrorCodeValue from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ErrorCodeValue object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ErrorCodeValue.
      */
     @JsonCreator
-    public static ErrorCodeValue fromString(String value) {
-        ErrorCodeValue[] items = ErrorCodeValue.values();
-        for (ErrorCodeValue item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ErrorCodeValue fromString(String name) {
+        return fromString(name, ErrorCodeValue.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
-    }
 }

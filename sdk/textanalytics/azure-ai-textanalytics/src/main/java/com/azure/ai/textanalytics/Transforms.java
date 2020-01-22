@@ -67,9 +67,9 @@ class Transforms {
     static com.azure.ai.textanalytics.models.TextAnalyticsError toTextAnalyticsError(
         TextAnalyticsError textAnalyticsError) {
         return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-            ErrorCodeValue.fromString(textAnalyticsError.getCode().toString()), textAnalyticsError.getMessage(),
-            textAnalyticsError.getTarget(), textAnalyticsError.getDetails() == null ? null
-            : setErrors(textAnalyticsError.getDetails()));
+            ErrorCodeValue.fromString(textAnalyticsError.getInnerError().getCode().toString()),
+            textAnalyticsError.getInnerError().getMessage(),
+            textAnalyticsError.getInnerError().getTarget());
     }
 
     /**
@@ -85,23 +85,5 @@ class Transforms {
                 .setText(textDocumentInput.getText()).setLanguage(textDocumentInput.getLanguage()));
         }
         return multiLanguageInputs;
-    }
-
-    /**
-     * Helper method to set error details on {@link TextAnalyticsError}.
-     *
-     * @param details about specific errors that led to this reported error.
-     * @return the {@link TextAnalyticsError} returned by the SDK.
-     */
-    private static List<com.azure.ai.textanalytics.models.TextAnalyticsError> setErrors(
-        List<TextAnalyticsError> details) {
-        List<com.azure.ai.textanalytics.models.TextAnalyticsError> detailsList = new ArrayList<>();
-        for (TextAnalyticsError error : details) {
-            detailsList.add(new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                ErrorCodeValue.fromString(error.getCode().toString()),
-                error.getMessage(),
-                error.getTarget(), error.getDetails() == null ? null : setErrors(error.getDetails())));
-        }
-        return detailsList;
     }
 }

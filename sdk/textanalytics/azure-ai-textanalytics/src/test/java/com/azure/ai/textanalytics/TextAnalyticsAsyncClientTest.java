@@ -116,7 +116,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid Country Hint.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_COUNTRY_HINT, "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code.", null);
         StepVerifier.create(client.detectLanguageWithResponse("Este es un document escrito en Español.", "en"))
             .assertNext(response -> validateErrorDocument(expectedError, response.getValue().getError()))
             .verifyComplete();
@@ -127,7 +127,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         StepVerifier.create(client.detectLanguage(""))
             .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
             .verifyComplete();
@@ -167,7 +167,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         StepVerifier.create(client.recognizeEntities(""))
             .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
             .verifyComplete();
@@ -226,7 +226,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         StepVerifier.create(client.recognizeLinkedEntities(""))
             .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
             .verifyComplete();
@@ -284,7 +284,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizePiiEntitiesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         StepVerifier.create(client.recognizePiiEntities(""))
             .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
             .verifyComplete();
@@ -339,7 +339,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void extractKeyPhrasesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         StepVerifier.create(client.extractKeyPhrases(""))
             .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
             .verifyComplete();
@@ -409,7 +409,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
+        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_DOCUMENT, "Document text is empty.", null);
         StepVerifier.create(client.analyzeSentiment(""))
             .assertNext(response -> validateErrorDocument(expectedError, response.getError())).verifyComplete();
     }
