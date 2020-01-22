@@ -153,7 +153,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
             });
         } catch (IOException e) {
             logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
-            receiver.close();
             handler.close();
         }
     }
