@@ -187,6 +187,6 @@ public class ProxyOptionsTests {
     }
 
     private static Configuration putIfNotNull(Configuration configuration, String name, String value) {
-        return CoreUtils.isNullOrEmpty(value) ? configuration : configuration.put(name, value);
+        return CoreUtils.isNullOrEmpty(value) ? configuration.put(name, "") : configuration.put(name, value);
     }
 }
