@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics.models;
 
+import java.util.Objects;
+
 /**
  * Subscription key credential that shared across cognitive services, or restrict to single service.
  */
@@ -10,11 +12,12 @@ public final class TextAnalyticsSubscriptionKeyCredential {
     private String subscriptionKey;
 
     /**
-     * Creates a {@code SharedKeyCredential} model that describes subscription key.
+     * Creates a {@link TextAnalyticsSubscriptionKeyCredential} model that describes subscription key.
      *
      * @param subscriptionKey the subscription key
      */
     public TextAnalyticsSubscriptionKeyCredential(String subscriptionKey) {
+        Objects.requireNonNull(subscriptionKey, "`subscriptionKey` cannot be null.");
         this.subscriptionKey = subscriptionKey;
     }
 
@@ -33,8 +36,8 @@ public final class TextAnalyticsSubscriptionKeyCredential {
      * @param subscriptionKey the subscription key
      * @return the {@link TextAnalyticsSubscriptionKeyCredential} itself
      */
-    public TextAnalyticsSubscriptionKeyCredential updateCredential(String subscriptionKey) {
+    public void updateCredential(String subscriptionKey) {
+        Objects.requireNonNull(subscriptionKey, "`subscriptionKey` can not be null.");
         this.subscriptionKey = subscriptionKey;
-        return this;
     }
 }
