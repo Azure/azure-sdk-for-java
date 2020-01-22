@@ -12,6 +12,7 @@ import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerServer;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.ResourceIdentity;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.Sku;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.SslEnforcementEnum;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.StorageProfile;
@@ -20,15 +21,15 @@ import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerState;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.ServerVersion;
 
 class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer {
-    private final MySQLManager manager;
+    private final DBforMySQLManager manager;
 
-    ServerServerImpl(ServerInner inner,  MySQLManager manager) {
+    ServerServerImpl(ServerInner inner,  DBforMySQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public MySQLManager manager() {
+    public DBforMySQLManager manager() {
         return this.manager;
     }
 
@@ -52,6 +53,11 @@ class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer 
     @Override
     public String id() {
         return this.inner().id();
+    }
+
+    @Override
+    public ResourceIdentity identity() {
+        return this.inner().identity();
     }
 
     @Override

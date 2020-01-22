@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The properties used to create a new server.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "createMode")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "createMode", defaultImpl = ServerPropertiesForCreate.class)
 @JsonTypeName("ServerPropertiesForCreate")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Default", value = ServerPropertiesForDefaultCreate.class),
@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 })
 public class ServerPropertiesForCreate {
     /**
-     * Server version. Possible values include: '5.6', '5.7'.
+     * Server version. Possible values include: '5.6', '5.7', '8.0'.
      */
     @JsonProperty(value = "version")
     private ServerVersion version;
@@ -45,7 +45,7 @@ public class ServerPropertiesForCreate {
     private StorageProfile storageProfile;
 
     /**
-     * Get server version. Possible values include: '5.6', '5.7'.
+     * Get server version. Possible values include: '5.6', '5.7', '8.0'.
      *
      * @return the version value
      */
@@ -54,7 +54,7 @@ public class ServerPropertiesForCreate {
     }
 
     /**
-     * Set server version. Possible values include: '5.6', '5.7'.
+     * Set server version. Possible values include: '5.6', '5.7', '8.0'.
      *
      * @param version the version value to set
      * @return the ServerPropertiesForCreate object itself.

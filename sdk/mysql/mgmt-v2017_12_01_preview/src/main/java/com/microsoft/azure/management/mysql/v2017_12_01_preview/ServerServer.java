@@ -11,14 +11,14 @@ package com.microsoft.azure.management.mysql.v2017_12_01_preview;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.ServerInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.DBforMySQLManager;
 import org.joda.time.DateTime;
 import java.util.Map;
 
 /**
  * Type representing ServerServer.
  */
-public interface ServerServer extends HasInner<ServerInner>, HasManager<MySQLManager> {
+public interface ServerServer extends HasInner<ServerInner>, HasManager<DBforMySQLManager> {
     /**
      * @return the administratorLogin value.
      */
@@ -38,6 +38,11 @@ public interface ServerServer extends HasInner<ServerInner>, HasManager<MySQLMan
      * @return the id value.
      */
     String id();
+
+    /**
+     * @return the identity value.
+     */
+    ResourceIdentity identity();
 
     /**
      * @return the location value.
