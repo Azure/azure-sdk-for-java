@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @see AuthFileCredential
  */
-public class AuthFileCredentialBuilder extends AadCredentialBuilderBase<AuthFileCredentialBuilder> {
+public class AuthFileCredentialBuilder extends CredentialBuilderBase<AuthFileCredentialBuilder> {
     private String filepath;
 
     /**

@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -19,7 +20,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.InvalidPathException;
-import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -120,7 +120,7 @@ public class AuthFileCredential implements TokenCredential {
 
         if (clientId == null || clientSecret == null || tenantId == null || activeDirectoryEndpointUrl == null)
         {
-            throw logger.logExceptionAsError(new InvalidParameterException("Malformed Azure SDK Auth file. The file should contain 'clientId', 'clientSecret', 'tenentId' and 'activeDirectoryEndpointUrl' values."));
+            throw logger.logExceptionAsError(new ClientAuthenticationException("Malformed Azure SDK Auth file. The file should contain 'clientId', 'clientSecret', 'tenentId' and 'activeDirectoryEndpointUrl' values.",null));
         }
 
         return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions.setAuthorityHost(activeDirectoryEndpointUrl));
