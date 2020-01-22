@@ -251,7 +251,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyseSentimentForListLanguageHint();
 
     // Detect Language runner
-    static void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
+    void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
         final List<DetectLanguageInput> detectLanguageInputs = TestUtils.getDetectLanguageInputs();
 
@@ -259,37 +259,37 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(detectLanguageInputs, options);
     }
 
-    static void detectLanguageDuplicateIdRunner(BiConsumer<List<DetectLanguageInput>,
+    void detectLanguageDuplicateIdRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(TestUtils.getDetectLanguageInputs(), null);
     }
 
-    static void detectLanguagesCountryHintRunner(BiConsumer<List<String>, String> testRunner) {
+    void detectLanguagesCountryHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(DETECT_LANGUAGE_INPUTS, "en");
     }
 
-    static void detectLanguageStringInputRunner(Consumer<List<String>> testRunner) {
+    void detectLanguageStringInputRunner(Consumer<List<String>> testRunner) {
         testRunner.accept(DETECT_LANGUAGE_INPUTS);
     }
 
-    static void detectLanguageRunner(Consumer<List<DetectLanguageInput>> testRunner) {
+    void detectLanguageRunner(Consumer<List<DetectLanguageInput>> testRunner) {
         testRunner.accept(TestUtils.getDetectLanguageInputs());
     }
 
     // Named Entity runner
-    static void recognizeNamedEntityStringInputRunner(Consumer<List<String>> testRunner) {
+    void recognizeNamedEntityStringInputRunner(Consumer<List<String>> testRunner) {
         testRunner.accept(NAMED_ENTITY_INPUTS);
     }
 
-    static void recognizeNamedEntitiesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
+    void recognizeNamedEntitiesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(NAMED_ENTITY_INPUTS, "en");
     }
 
-    static void recognizeBatchNamedEntityRunner(Consumer<List<TextDocumentInput>> testRunner) {
+    void recognizeBatchNamedEntityRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(TestUtils.getTextDocumentNamedEntityInputs());
     }
 
-    static void recognizeBatchNamedEntitiesShowStatsRunner(
+    void recognizeBatchNamedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentNamedEntityInputs();
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
@@ -298,19 +298,19 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Pii Entity runner
-    static void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
+    void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS, "en");
     }
 
-    static void recognizePiiStringInputRunner(Consumer<List<String>> testRunner) {
+    void recognizePiiStringInputRunner(Consumer<List<String>> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS);
     }
 
-    static void recognizeBatchPiiRunner(Consumer<List<TextDocumentInput>> testRunner) {
+    void recognizeBatchPiiRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(TestUtils.getTextDocumentPiiInputs());
     }
 
-    static void recognizeBatchPiiEntitiesShowStatsRunner(
+    void recognizeBatchPiiEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentPiiInputs();
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
@@ -319,59 +319,59 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Linked Entity runner
-    static void recognizeBatchLinkedEntitiesShowStatsRunner(
+    void recognizeBatchLinkedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         testRunner.accept(TestUtils.getTextDocumentLinkedEntityInputs(), options);
     }
 
-    static void recognizeLinkedLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
+    void recognizeLinkedLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(LINKED_ENTITY_INPUTS, "en");
     }
 
-    static void recognizeLinkedStringInputRunner(Consumer<List<String>> testRunner) {
+    void recognizeLinkedStringInputRunner(Consumer<List<String>> testRunner) {
         testRunner.accept(LINKED_ENTITY_INPUTS);
     }
 
-    static void recognizeBatchLinkedEntityRunner(Consumer<List<TextDocumentInput>> testRunner) {
+    void recognizeBatchLinkedEntityRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(TestUtils.getTextDocumentLinkedEntityInputs());
     }
 
     // Key Phrases runner
-    static void extractBatchKeyPhrasesShowStatsRunner(
+    void extractBatchKeyPhrasesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentKeyPhraseInputs();
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
         testRunner.accept(textDocumentInputs, options);
     }
 
-    static void extractKeyPhrasesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
+    void extractKeyPhrasesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(KEY_PHRASE_INPUTS, "en");
     }
 
-    static void extractKeyPhrasesStringInputRunner(Consumer<List<String>> testRunner) {
+    void extractKeyPhrasesStringInputRunner(Consumer<List<String>> testRunner) {
         testRunner.accept(KEY_PHRASE_INPUTS);
     }
 
-    static void extractBatchKeyPhrasesRunner(Consumer<List<TextDocumentInput>> testRunner) {
+    void extractBatchKeyPhrasesRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(TestUtils.getTextDocumentKeyPhraseInputs());
     }
 
     // Sentiment Runner
-    static void analyseSentimentLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
+    void analyseSentimentLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(TestUtils.SENTIMENT_INPUTS, "en");
     }
 
-    static void analyseSentimentStringInputRunner(Consumer<List<String>> testRunner) {
+    void analyseSentimentStringInputRunner(Consumer<List<String>> testRunner) {
         testRunner.accept(TestUtils.SENTIMENT_INPUTS);
     }
 
-    static void analyseBatchSentimentRunner(Consumer<List<TextDocumentInput>> testRunner) {
+    void analyseBatchSentimentRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(TestUtils.getTextDocumentSentimentInputs());
     }
 
-    static void analyseBatchSentimentShowStatsRunner(
+    void analyseBatchSentimentShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentSentimentInputs();
 
