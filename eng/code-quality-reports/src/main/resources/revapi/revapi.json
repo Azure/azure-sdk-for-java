@@ -43,7 +43,7 @@
         "new": "missing\\-class com\\.fasterxml\\.jackson\\.databind\\.ObjectMapper",
         "exampleUseChainInNewApi": ".*com\\.azure\\.core\\.util\\.serializer\\.JacksonAdapter.*",
         "justification": "We allow this in com.azure.core.util.serializer.JacksonAdapter."
-      },      
+      },
       {
         "regex": true,
         "code": "java\\.missing\\.(oldClass|newClass)",
