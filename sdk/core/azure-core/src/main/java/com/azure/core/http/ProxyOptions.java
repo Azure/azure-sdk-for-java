@@ -80,6 +80,7 @@ public class ProxyOptions {
      * Sets the hosts which bypass the proxy.
      *
      * @param nonProxyHosts Hosts that bypass the proxy.
+     * @return the updated ProxyOptions object
      */
     public ProxyOptions setNonProxyHosts(String nonProxyHosts) {
         this.nonProxyHosts = nonProxyHosts;
