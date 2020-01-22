@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerServer;
 
 class ReplicasImpl extends WrapperImpl<ReplicasInner> implements Replicas {
-    private final PostgreSQLManager manager;
+    private final DBforPostgreSQLManager manager;
 
-    ReplicasImpl(PostgreSQLManager manager) {
+    ReplicasImpl(DBforPostgreSQLManager manager) {
         super(manager.inner().replicas());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 
