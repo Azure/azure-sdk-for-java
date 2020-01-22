@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
@@ -33,6 +32,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -56,7 +56,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.OCT;
 public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
     static final String SECRETS_COLLECTION = "secrets";
-    JsonWebKey key;
+    AtomicReference<JsonWebKey> key;
     private final CryptographyService service;
     private CryptographyServiceClient cryptographyServiceClient;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
@@ -85,7 +85,7 @@ public class CryptographyAsyncClient {
         if (key.getKeyType() == null) {
             throw new IllegalArgumentException("Json Web Key's key type property is not configured");
         }
-        this.key = jsonWebKey;
+        this.key = new AtomicReference<>(jsonWebKey);
         this.keyId = key.getId();
         service = RestProxy.create(CryptographyService.class, pipeline);
         if (!Strings.isNullOrEmpty(key.getId())) {
@@ -116,15 +116,15 @@ public class CryptographyAsyncClient {
         if (localKeyCryptographyClient != null) {
             return;
         }
-        if (key.getKeyType().equals(RSA) || key.getKeyType().equals(RSA_HSM)) {
-            localKeyCryptographyClient = new RsaKeyCryptographyClient(key, cryptographyServiceClient);
-        } else if (key.getKeyType().equals(EC) || key.getKeyType().equals(EC_HSM)) {
-            localKeyCryptographyClient = new EcKeyCryptographyClient(key, cryptographyServiceClient);
-        } else if (key.getKeyType().equals(OCT)) {
-            localKeyCryptographyClient = new SymmetricKeyCryptographyClient(key, cryptographyServiceClient);
+        if (key.get().getKeyType().equals(RSA) || key.get().getKeyType().equals(RSA_HSM)) {
+            localKeyCryptographyClient = new RsaKeyCryptographyClient(key.get(), cryptographyServiceClient);
+        } else if (key.get().getKeyType().equals(EC) || key.get().getKeyType().equals(EC_HSM)) {
+            localKeyCryptographyClient = new EcKeyCryptographyClient(key.get(), cryptographyServiceClient);
+        } else if (key.get().getKeyType().equals(OCT)) {
+            localKeyCryptographyClient = new SymmetricKeyCryptographyClient(key.get(), cryptographyServiceClient);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The Json Web Key Type: %s is not supported.", key.getKeyType().toString())));
+                "The Json Web Key Type: %s is not supported.", key.get().getKeyType().toString())));
         }
     }
 
@@ -230,17 +230,17 @@ public class CryptographyAsyncClient {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(plaintext, "Plain text content to be encrypted cannot be null.");
 
-        boolean keyAvailableLocally = ensureValidKeyAvailable();
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.encrypt(algorithm, plaintext, context);
+            }
 
-        if (!keyAvailableLocally) {
-            return cryptographyServiceClient.encrypt(algorithm, plaintext, context);
-        }
-
-        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
-            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Encrypt Operation is missing "
-                + "permission/not supported for key with id %s", key.getId()))));
-        }
-        return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, context, key);
+            if (!checkKeyPermissions(this.key.get().getKeyOps(), KeyOperation.ENCRYPT)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Encrypt Operation is missing "
+                                                                                                                 + "permission/not supported for key with id %s", key.get().getId()))));
+            }
+            return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, context, key.get());
+        });
     }
 
     /**
@@ -283,17 +283,17 @@ public class CryptographyAsyncClient {
     Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, Context context) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(cipherText, "Cipher text content to be decrypted cannot be null.");
-        boolean keyAvailableLocally = ensureValidKeyAvailable();
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.decrypt(algorithm, cipherText, context);
+            }
 
-        if (!keyAvailableLocally) {
-            return cryptographyServiceClient.decrypt(algorithm, cipherText, context);
-        }
-
-        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
-            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Decrypt Operation is not allowed for "
-                + "key with id %s", key.getId()))));
-        }
-        return localKeyCryptographyClient.decryptAsync(algorithm, cipherText, context, key);
+            if (!checkKeyPermissions(this.key.get().getKeyOps(), KeyOperation.DECRYPT)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Decrypt Operation is not allowed for "
+                                                                                                                 + "key with id %s", key.get().getId()))));
+            }
+            return localKeyCryptographyClient.decryptAsync(algorithm, cipherText, context, key.get());
+        });
     }
 
     /**
@@ -333,18 +333,18 @@ public class CryptographyAsyncClient {
     Mono<SignResult> sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content to be signed cannot be null.");
-        boolean keyAvailableLocally = ensureValidKeyAvailable();
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.sign(algorithm, digest, context);
+            }
 
-        if (!keyAvailableLocally) {
-            return cryptographyServiceClient.sign(algorithm, digest, context);
-        }
+            if (!checkKeyPermissions(this.key.get().getKeyOps(), KeyOperation.SIGN)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
+                                                                                                                 + "with id %s", key.get().getId()))));
+            }
 
-        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
-            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
-                + "with id %s", key.getId()))));
-        }
-
-        return localKeyCryptographyClient.signAsync(algorithm, digest, context, key);
+            return localKeyCryptographyClient.signAsync(algorithm, digest, context, key.get());
+        });
     }
 
     /**
@@ -385,17 +385,17 @@ public class CryptographyAsyncClient {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
-        boolean keyAvailableLocally = ensureValidKeyAvailable();
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.verify(algorithm, digest, signature, context);
+            }
 
-        if (!keyAvailableLocally) {
-            return cryptographyServiceClient.verify(algorithm, digest, signature, context);
-        }
-
-        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
-            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Verify Operation is not allowed for "
-                + "key with id %s", key.getId()))));
-        }
-        return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context, key);
+            if (!checkKeyPermissions(this.key.get().getKeyOps(), KeyOperation.VERIFY)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Verify Operation is not allowed for "
+                                                                                                                 + "key with id %s", key.get().getId()))));
+            }
+            return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context, key.get());
+        });
     }
 
     /**
@@ -432,18 +432,18 @@ public class CryptographyAsyncClient {
     Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         Objects.requireNonNull(algorithm, "Key Wrap algorithm cannot be null.");
         Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
-        boolean keyAvailableLocally = ensureValidKeyAvailable();
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.wrapKey(algorithm, key, context);
+            }
 
-        if (!keyAvailableLocally) {
-            return cryptographyServiceClient.wrapKey(algorithm, key, context);
-        }
+            if (!checkKeyPermissions(this.key.get().getKeyOps(), KeyOperation.WRAP_KEY)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Wrap Key Operation is not allowed for "
+                                                                                                                 + "key with id %s", this.key.get().getId()))));
+            }
 
-        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
-            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Wrap Key Operation is not allowed for "
-                + "key with id %s", this.key.getId()))));
-        }
-
-        return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key);
+            return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key.get());
+        });
     }
 
     /**
@@ -484,17 +484,17 @@ public class CryptographyAsyncClient {
         Objects.requireNonNull(algorithm, "Key Wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
-        boolean keyAvailableLocally = ensureValidKeyAvailable();
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.unwrapKey(algorithm, encryptedKey, context);
+            }
 
-        if (!keyAvailableLocally) {
-            return cryptographyServiceClient.unwrapKey(algorithm, encryptedKey, context);
-        }
-
-        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
-            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unwrap Key Operation is not allowed "
-                + "for key with id %s", this.key.getId()))));
-        }
-        return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
+            if (!checkKeyPermissions(this.key.get().getKeyOps(), KeyOperation.WRAP_KEY)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unwrap Key Operation is not allowed "
+                                                                                                                 + "for key with id %s", this.key.get().getId()))));
+            }
+            return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key.get());
+        });
     }
 
     /**
@@ -535,17 +535,17 @@ public class CryptographyAsyncClient {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(data, "Data to be signed cannot be null.");
 
-        boolean keyAvailableLocally = ensureValidKeyAvailable();
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.signData(algorithm, data, context);
+            }
 
-        if (!keyAvailableLocally) {
-            return cryptographyServiceClient.signData(algorithm, data, context);
-        }
-
-        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
-            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
-                + "with id %s", this.key.getId()))));
-        }
-        return localKeyCryptographyClient.signDataAsync(algorithm, data, context, key);
+            if (!checkKeyPermissions(this.key.get().getKeyOps(), KeyOperation.SIGN)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
+                                                                                                                 + "with id %s", this.key.get().getId()))));
+            }
+            return localKeyCryptographyClient.signDataAsync(algorithm, data, context, key.get());
+        });
     }
 
     /**
@@ -587,17 +587,17 @@ public class CryptographyAsyncClient {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(data, "Data cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
-        boolean keyAvailableLocally = ensureValidKeyAvailable();
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.verifyData(algorithm, data, signature, context);
+            }
 
-        if (!keyAvailableLocally) {
-            return cryptographyServiceClient.verifyData(algorithm, data, signature, context);
-        }
-
-        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
-            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
-                "Verify Operation is not allowed for key with id %s", this.key.getId()))));
-        }
-        return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key);
+            if (!checkKeyPermissions(this.key.get().getKeyOps(), KeyOperation.VERIFY)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                    "Verify Operation is not allowed for key with id %s", this.key.get().getId()))));
+            }
+            return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key.get());
+        });
     }
 
     private void unpackAndValidateId(String keyId) {
@@ -627,25 +627,25 @@ public class CryptographyAsyncClient {
         return operations.contains(keyOperation);
     }
 
-    private boolean ensureValidKeyAvailable() {
-        boolean keyAvailableLocally = true;
-        if (this.key == null && keyCollection != null) {
-            try {
-                if (keyCollection.equals(SECRETS_COLLECTION)) {
-                    this.key = getSecretKey().block();
-                } else {
-                    KeyVaultKey keyVaultKey = getKey().block();
-                    this.key = keyVaultKey.getKey();
-                }
-                keyAvailableLocally = this.key.isValid();
-                initializeCryptoClients();
-            } catch (HttpResponseException | NullPointerException e) {
-                logger.warning("Failed to retrieve key from key vault");
-                logger.logExceptionAsWarning(e);
-                keyAvailableLocally = false;
+    private Mono<Boolean> ensureValidKeyAvailable() {
+        boolean keyAvailable = !(this.key == null && keyCollection != null);
+        if (!keyAvailable) {
+            if (keyCollection.equals(SECRETS_COLLECTION)) {
+                return getSecretKey().flatMap(jwk -> {
+                    this.key = new AtomicReference<>(jwk);
+                    initializeCryptoClients();
+                    return Mono.just(this.key.get().isValid());
+                });
+            } else {
+                return getKey().flatMap(kvKey -> {
+                    this.key = new AtomicReference<>(kvKey.getKey());
+                    initializeCryptoClients();
+                    return Mono.just(key.get().isValid());
+                });
             }
+        } else {
+            return Mono.defer(() -> Mono.just(true));
         }
-        return keyAvailableLocally;
     }
 
     CryptographyServiceClient getCryptographyServiceClient() {
