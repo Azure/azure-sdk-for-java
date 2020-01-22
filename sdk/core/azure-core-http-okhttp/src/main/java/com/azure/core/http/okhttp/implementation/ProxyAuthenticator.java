@@ -26,7 +26,7 @@ import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZAT
 
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.
- */t
+ */
 public final class ProxyAuthenticator implements Authenticator {
     private static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
         + "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
