@@ -77,7 +77,7 @@ public final class PollingState {
             && httpMethod != HttpMethod.PATCH
             && httpMethod != HttpMethod.POST
             && httpMethod != HttpMethod.DELETE) {
-            throw new IllegalArgumentException("Long-running-operation supported only" 
+            throw new IllegalArgumentException("Long-running-operation supported only"
                 + "for PUT, PATCH, POST or DELETE verb.");
         }
         PollingState pollingState = new PollingState(serializerAdapter,
@@ -170,7 +170,7 @@ public final class PollingState {
     /**
      * @return the current status of the long-running-operation.
      */
-    LongRunningOperationStatus getOperationStatus() {
+    public LongRunningOperationStatus getOperationStatus() {
         switch (this.pollingType) {
             case AZURE_ASYNC_OPERATION_POLL:
                 return toLongRunningOperationStatus(this.azureAsyncOperationData.getProvisioningState());
@@ -253,7 +253,7 @@ public final class PollingState {
             case SYNCHRONOUSLY_SUCCEEDED_LRO_NO_POLL:
                 return this.synchronouslySucceededLroData.getFinalResult();
             default:
-                throw 
+                throw
                 LOGGER.logExceptionAsError(new IllegalStateException("FinalResult not available for the pollingType:"
                     + this.pollingType));
         }
