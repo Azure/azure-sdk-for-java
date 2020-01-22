@@ -32,6 +32,35 @@ public class KeyVaultKey {
     }
 
     /**
+     * Creates an instance of KeyVaultKey
+     * @param name the name of the key
+     */
+    public KeyVaultKey(String name) {
+        properties = new KeyProperties(name);
+    }
+
+    /**
+     * Creates an instance of KeyVaultKey
+     * @param name the name of the key
+     * @param jsonWebKey the json web key to be used for crypto operations
+     */
+    public KeyVaultKey(String name, JsonWebKey jsonWebKey) {
+        properties = new KeyProperties(name);
+        this.key = jsonWebKey;
+    }
+
+    /**
+     * Creates an instance of KeyVaultKey
+     * @param name the name of the key
+     * @param keyId the vault id name of the key
+     * @param jsonWebKey the json web key to be used for crypto operations
+     */
+    public KeyVaultKey(String name, String keyId, JsonWebKey jsonWebKey) {
+        properties = new KeyProperties(name, keyId);
+        this.key = jsonWebKey;
+    }
+
+    /**
      * Get the key value.
      *
      * @return the key value

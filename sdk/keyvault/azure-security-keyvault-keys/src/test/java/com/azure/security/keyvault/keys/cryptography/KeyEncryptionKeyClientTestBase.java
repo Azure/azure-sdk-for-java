@@ -107,7 +107,13 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     public abstract void wrapUnwrapSymmetricAK128();
 
     @Test
+    public abstract void wrapUnwrapLocalSymmetricAK128();
+
+    @Test
     public abstract void wrapUnwrapSymmetricAK192();
+
+    @Test
+    public abstract void wrapUnwrapLocalSymmetricAK192();
 
 
     public String getEndpoint() {

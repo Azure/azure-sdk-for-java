@@ -92,6 +92,17 @@ public class KeyProperties {
     @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean managed;
 
+    KeyProperties() { }
+
+    KeyProperties(String name) {
+        this.name = name;
+    }
+
+    KeyProperties(String name, String id) {
+        this.name = name;
+        this.id = id;
+    }
+
     /**
      * Get the recoveryLevel value.
      *
