@@ -313,7 +313,10 @@ public class CosmosContainer {
     /**
      * Replace cosmos sync item response.
      *
+     * @param <T> the type parameter
      * @param item the item
+     * @param itemId the item id
+     * @param partitionKey the partition key
      * @param options the options
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception

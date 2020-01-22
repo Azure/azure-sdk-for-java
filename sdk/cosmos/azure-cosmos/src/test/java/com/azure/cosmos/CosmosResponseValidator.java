@@ -210,8 +210,7 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 @Override
                 public void validate(T resourceResponse) {
                     assertThat(resourceResponse.getProperties()).isNotNull();
-                    //TODO: Uncomment this after checking getETag()
-//                    assertThat(resourceResponse.getETag()).isNotNull();
+                    assertThat(resourceResponse.getProperties().getETag()).isNotNull();
                 }
             });
             return this;

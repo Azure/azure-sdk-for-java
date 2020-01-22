@@ -244,7 +244,6 @@ public class DocumentCrudTest extends TestSuiteBase {
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(PartitionKey.NONE);
         Mono<CosmosAsyncItemResponse> deleteObservable = container.deleteItem(documentId,
                                                                               PartitionKey.NONE,
                                                                               options);
@@ -347,7 +346,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void typedItemsTest() throws Throwable {
+    public void typedItems() throws Throwable {
         String docId = "1234";
         String partitionKey = UUID.randomUUID().toString();
 

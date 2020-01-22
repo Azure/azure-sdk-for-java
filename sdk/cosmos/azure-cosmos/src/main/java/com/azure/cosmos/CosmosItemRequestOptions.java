@@ -161,7 +161,7 @@ public class CosmosItemRequestOptions {
      * @param partitionKey the partition key
      * @return the CosmosItemRequestOptions.
      */
-    public CosmosItemRequestOptions setPartitionKey(PartitionKey partitionKey) {
+    CosmosItemRequestOptions setPartitionKey(PartitionKey partitionKey) {
         this.partitionKey = partitionKey;
         return this;
     }

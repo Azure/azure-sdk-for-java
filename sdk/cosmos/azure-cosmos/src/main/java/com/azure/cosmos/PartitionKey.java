@@ -25,13 +25,7 @@ public class PartitionKey {
      */
     @SuppressWarnings("serial")
     public PartitionKey(final Object key) {
-        // Now that we are making partitionkey as one of the parameters for creating object, just making sure nothing
-        // wrong happens here when user does something like new PartitionKey(PartitionKey.None);
-        if (!(key instanceof PartitionKey)) {
-            this.internalPartitionKey = PartitionKeyInternal.fromObjectArray(new Object[] {key}, true);
-        } else{
-            this.internalPartitionKey = ((PartitionKey) key).internalPartitionKey;
-        }
+        this.internalPartitionKey = PartitionKeyInternal.fromObjectArray(new Object[] {key}, true);
     }
 
     /**

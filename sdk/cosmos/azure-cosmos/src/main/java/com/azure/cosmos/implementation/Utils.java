@@ -551,6 +551,9 @@ public class Utils {
     }
 
     public static <T> T parse(String itemResponseBodyAsString, Class<T> itemClassType) {
+        if (StringUtils.isEmpty(itemResponseBodyAsString)) {
+            return null;
+        }
         try {
             return getSimpleObjectMapper().readValue(itemResponseBodyAsString, itemClassType);
         } catch (IOException e) {

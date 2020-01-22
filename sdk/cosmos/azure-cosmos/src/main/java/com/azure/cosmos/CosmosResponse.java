@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 
 import java.time.Duration;
 import java.util.Map;
 
-public class CosmosResponse<T> {
+public class CosmosResponse<T extends Resource> {
     private T properties;
     final ResourceResponse resourceResponseWrapper;
 

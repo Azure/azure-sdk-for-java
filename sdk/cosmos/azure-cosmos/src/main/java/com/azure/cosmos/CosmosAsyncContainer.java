@@ -381,8 +381,10 @@ public class CosmosAsyncContainer {
      * The {@link Mono} upon successful completion will contain a cosmos item response with the read item
      * In case of failure the {@link Mono} will error.
      *
+     * @param <T> the type parameter
      * @param itemId the item id
      * @param partitionKey the partition key
+     * @param itemType the item type
      * @return an {@link Mono} containing the cosmos item response with the read item or an error
      */
     public <T> Mono<CosmosAsyncItemResponse<T>>  readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) {
