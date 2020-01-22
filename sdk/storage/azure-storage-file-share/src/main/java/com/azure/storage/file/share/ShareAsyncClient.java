@@ -15,6 +15,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.ShareCreateSnapshotHeaders;
@@ -1086,7 +1087,9 @@ public class ShareAsyncClient {
     }
 
     private Response<ShareStatistics> mapGetStatisticsResponse(SharesGetStatisticsResponse response) {
-        ShareStatistics shareStatistics = new ShareStatistics((int) (response.getValue().getShareUsageBytes() / 1024));
+        ShareStatistics shareStatistics =
+            new ShareStatistics((int) (response.getValue().getShareUsageBytes() / (Constants.GB)),
+                response.getValue().getShareUsageBytes());
 
         return new SimpleResponse<>(response, shareStatistics);
     }

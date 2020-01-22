@@ -8,6 +8,7 @@ package com.azure.storage.file.share.models;
  */
 public final class ShareStatistics {
     private final int shareUsageInGB;
+    private final long shareUsageInBytes;
 
     /**
      * Creates an instance of storage statistics for a Share.
@@ -16,6 +17,18 @@ public final class ShareStatistics {
      */
     public ShareStatistics(int shareUsageInGB) {
         this.shareUsageInGB = shareUsageInGB;
+        this.shareUsageInBytes = 0;
+    }
+
+    /**
+     * Creates an instance of storage statistics for a Share.
+     *
+     * @param shareUsageInGB Size in GB of the Share
+     * @param shareUsageInBytes Size in bytes of the Share
+     */
+    public ShareStatistics(int shareUsageInGB, long shareUsageInBytes) {
+        this.shareUsageInGB = shareUsageInGB;
+        this.shareUsageInBytes = shareUsageInBytes;
     }
 
     /**
@@ -23,5 +36,12 @@ public final class ShareStatistics {
      */
     public int getShareUsageInGB() {
         return shareUsageInGB;
+    }
+
+    /**
+     * @return the size in bytes of the Share
+     */
+    public long getShareUsageInBytes() {
+        return shareUsageInBytes;
     }
 }
