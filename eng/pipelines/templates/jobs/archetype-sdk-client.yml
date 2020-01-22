@@ -2,7 +2,7 @@ parameters:
   SDKType: not-specified # Set a default that breaks in obvious ways.
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
-  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip -Dspotbugs.skip -Dcheckstyle.skip'
+  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true'
   TestGoals: verify
   TestMatrix:
     Linux - Java 8:
