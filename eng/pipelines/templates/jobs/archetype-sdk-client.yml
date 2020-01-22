@@ -138,7 +138,7 @@ jobs:
 
       - script: |
           pip install setuptools wheel
-          pip install doc-warden
+          pip install doc-warden==$(DocWardenVersion)
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
