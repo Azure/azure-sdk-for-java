@@ -28,6 +28,13 @@ import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZAT
  * This class handles authorizing requests being sent through a proxy which require authentication.
  */
 public final class ProxyAuthenticator implements Authenticator {
+    private static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' " +
+        "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
+
+    private static final String BASIC = "basic";
+    private static final String DIGEST = "digest";
+    private static final String PREEMPTIVE_AUTHENTICATE = "Preemptive Authenticate";
+
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
 
@@ -76,7 +83,7 @@ public final class ProxyAuthenticator implements Authenticator {
         }
 
         // If this is a pre-emptive challenge quit now if pipelining doesn't produce anything.
-        if ("Preemptive Authenticate".equalsIgnoreCase(response.message())) {
+        if (PREEMPTIVE_AUTHENTICATE.equalsIgnoreCase(response.message())) {
             return response.request();
         }
 
@@ -84,9 +91,9 @@ public final class ProxyAuthenticator implements Authenticator {
         List<Map<String, String>> digestChallenges = new ArrayList<>();
 
         for (Challenge challenge : response.challenges()) {
-            if ("Basic".equalsIgnoreCase(challenge.scheme())) {
+            if (BASIC.equalsIgnoreCase(challenge.scheme())) {
                 hasBasicChallenge = true;
-            } else if ("Digest".equalsIgnoreCase(challenge.scheme())) {
+            } else if (DIGEST.equalsIgnoreCase(challenge.scheme())) {
                 digestChallenges.add(challenge.authParams());
             }
         }
@@ -137,7 +144,7 @@ public final class ProxyAuthenticator implements Authenticator {
     /**
      * This class handles intercepting the response returned from the server when proxying.
      */
-    private static class ProxyAuthenticationInfoInterceptor implements Interceptor {
+    private class ProxyAuthenticationInfoInterceptor implements Interceptor {
         private final AuthorizationChallengeHandler challengeHandler;
 
         /**
@@ -166,7 +173,7 @@ public final class ProxyAuthenticator implements Authenticator {
 
             String proxyAuthenticationInfoHeader = response.header(PROXY_AUTHENTICATION_INFO);
             if (!CoreUtils.isNullOrEmpty(proxyAuthenticationInfoHeader)) {
-                Map<String, String> headerPieces = AuthorizationChallengeHandler
+                Map<String, String> authenticationInfoPieces = AuthorizationChallengeHandler
                     .parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
                 Map<String, String> authorizationPieces = AuthorizationChallengeHandler
                     .parseAuthenticationOrAuthorizationHeader(chain.request().header(PROXY_AUTHORIZATION));
@@ -176,14 +183,31 @@ public final class ProxyAuthenticator implements Authenticator {
                  * authorization header. This is the server performing validation to the client that it received the
                  * information.
                  */
-                assert !headerPieces.containsKey(CNONCE)
-                    || headerPieces.get(CNONCE).equals(authorizationPieces.get(CNONCE));
-                assert !headerPieces.containsKey(NC) || headerPieces.get(NC).equals(authorizationPieces.get(NC));
+                validateProxyAuthenticationInfoValue(CNONCE, authenticationInfoPieces, authorizationPieces);
+                validateProxyAuthenticationInfoValue(NC, authenticationInfoPieces, authorizationPieces);
 
-                challengeHandler.consumeAuthenticationInfoHeader(headerPieces);
+                challengeHandler.consumeAuthenticationInfoHeader(authenticationInfoPieces);
             }
 
             return response;
+        }
+    }
+
+    /*
+     * Validates that the value received in the 'Proxy-Authentication-Info' matches the value sent in the
+     * 'Proxy-Authorization' header. If the values don't match an 'IllegalStateException' will be thrown with a message
+     * outlining that the values didn't match.
+     */
+    private void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
+        Map<String, String> authorizationPieces) {
+        if (authenticationInfoPieces.containsKey(name)) {
+            String sentValue = authorizationPieces.get(name);
+            String receivedValue = authenticationInfoPieces.get(name);
+
+            if (!receivedValue.equalsIgnoreCase(sentValue)) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
+            }
         }
     }
 }

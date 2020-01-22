@@ -3,12 +3,15 @@
 
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.List;
 import java.util.Map;
 
 /**
  * Model class that contains the authentication challenges returned by a server.
  */
+@Immutable
 public final class ChallengeHolder {
     private final boolean hasBasicChallenge;
     private final List<Map<String, String>> digestChallenges;

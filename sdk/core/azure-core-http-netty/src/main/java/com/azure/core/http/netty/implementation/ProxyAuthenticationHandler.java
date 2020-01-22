@@ -39,7 +39,13 @@ import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZAT
  * This class handles authorizing requests being sent through a proxy which require authentication.
  */
 public final class ProxyAuthenticationHandler extends ProxyHandler {
+    private static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' " +
+        "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
+
     private static final AttributeKey<String> PROXY_AUTHORIZATION_KEY = AttributeKey.newInstance("ProxyAuthorization");
+
+    private static final String NONE = "none";
+    private static final String HTTP = "http";
 
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
@@ -84,14 +90,14 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
 
     @Override
     public String protocol() {
-        return "http";
+        return HTTP;
     }
 
     @Override
     public String authScheme() {
         String scheme = authScheme.get();
 
-        return (scheme == null) ? "none" : scheme;
+        return (scheme == null) ? NONE : scheme;
     }
 
     @Override
@@ -112,9 +118,9 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
     @Override
     protected Object newInitialMessage(ChannelHandlerContext ctx) {
         // This needs to handle no authorization proxying.
-        InetSocketAddress raddr = this.destinationAddress();
-        String hostString = HttpUtil.formatHostnameForHttp(raddr);
-        int port = raddr.getPort();
+        InetSocketAddress destinationAddress = this.destinationAddress();
+        String hostString = HttpUtil.formatHostnameForHttp(destinationAddress);
+        int port = destinationAddress.getPort();
         String url = hostString + ":" + port;
         String hostHeader = (port != 80 && port != 443) ? url : hostString;
         FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.CONNECT, url,
@@ -277,11 +283,27 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
          * authorization header. This is the server performing validation to the client that it received the
          * information.
          */
-        assert !authenticationInfoPieces.containsKey(CNONCE)
-            || authenticationInfoPieces.get(CNONCE).equals(authorizationPieces.get(CNONCE));
-        assert !authenticationInfoPieces.containsKey(NC)
-            || authenticationInfoPieces.get(NC).equals(authorizationPieces.get(NC));
+        validateProxyAuthenticationInfoValue(CNONCE, authenticationInfoPieces, authorizationPieces);
+        validateProxyAuthenticationInfoValue(NC, authenticationInfoPieces, authorizationPieces);
 
         challengeHandler.consumeAuthenticationInfoHeader(authenticationInfoPieces);
+    }
+
+    /*
+     * Validates that the value received in the 'Proxy-Authentication-Info' matches the value sent in the
+     * 'Proxy-Authorization' header. If the values don't match an 'IllegalStateException' will be thrown with a message
+     * outlining that the values didn't match.
+     */
+    private void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
+        Map<String, String> authorizationPieces) {
+        if (authenticationInfoPieces.containsKey(name)) {
+            String sentValue = authorizationPieces.get(name);
+            String receivedValue = authenticationInfoPieces.get(name);
+
+            if (!receivedValue.equalsIgnoreCase(sentValue)) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
+            }
+        }
     }
 }

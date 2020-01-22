@@ -38,6 +38,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.http.netty.NettyAsyncHttpClient.ReactorNettyHttpResponse;
 import static java.time.Duration.ofMillis;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 public class ReactorNettyClientTests {
@@ -210,15 +212,15 @@ public class ReactorNettyClientTests {
                 HttpClient client = HttpClient.createDefault();
                 HttpRequest request = new HttpRequest(HttpMethod.GET,
                     new URL("http://localhost:" + ss.getLocalPort() + "/get"));
-                StepVerifier.create(client.send(request))
-                    .assertNext(response -> {
-                        Assertions.assertEquals(200, response.getStatusCode());
 
-                        System.out.println("reading body");
-                        StepVerifier.create(response.getBodyAsByteArray())
-                            .verifyError(IOException.class);
-                    })
-                    .verifyComplete();
+                HttpResponse response = client.send(request).block();
+
+                assertNotNull(response);
+                assertEquals(200, response.getStatusCode());
+
+                System.out.println("reading body");
+                StepVerifier.create(response.getBodyAsByteArray())
+                    .verifyError(IOException.class);
             }
         });
     }

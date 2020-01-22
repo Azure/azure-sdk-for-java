@@ -97,7 +97,7 @@ class NettyAsyncHttpClient implements HttpClient {
             tcpClient = tcpClient.runOn(eventLoopGroup);
         }
 
-        ProxyHandler proxyHandler = proxyHandlerSupplier.get();
+        ProxyHandler proxyHandler = (proxyHandlerSupplier == null) ? null : proxyHandlerSupplier.get();
         if (proxyHandler != null) {
             /*
              * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the first
