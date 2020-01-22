@@ -5,17 +5,12 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFactory;
 import io.netty.channel.nio.NioEventLoopGroup;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
-import reactor.netty.tcp.TcpClient;
 
-import java.net.InetSocketAddress;
 import java.util.Objects;
 
 /**
@@ -40,16 +35,16 @@ public class NettyAsyncHttpClientBuilder {
     private Configuration configuration;
 
     /**
-     * Creates a new builder instance, where a builder is capable of generating multiple instances of
-     * {@link NettyAsyncHttpClient}.
+     * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
+     * NettyAsyncHttpClient}.
      */
     public NettyAsyncHttpClientBuilder() {
         this.baseHttpClient = null;
     }
 
     /**
-     * Creates a new builder instance, where a builder is capable of generating multiple instances of
-     * {@link NettyAsyncHttpClient} based on the provided reactor netty HttpClient.
+     * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
+     * NettyAsyncHttpClient} based on the provided reactor netty HttpClient.
      *
      * {@codesnippet com.azure.core.http.netty.from-existing-http-client}
      *
@@ -60,8 +55,8 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Creates a new Netty-backed {@link com.azure.core.http.HttpClient} instance on every call, using the
-     * configuration set in the builder at the time of the build method call.
+     * Creates a new Netty-backed {@link com.azure.core.http.HttpClient} instance on every call, using the configuration
+     * set in the builder at the time of the build method call.
      *
      * @return A new Netty-backed {@link com.azure.core.http.HttpClient} instance.
      * @throws IllegalStateException If the builder is configured to use an unknown proxy type.
@@ -90,88 +85,23 @@ public class NettyAsyncHttpClientBuilder {
                     tcpConfig = tcpConfig.runOn(nioEventLoopGroup);
                 }
 
-                return setupProxy(tcpConfig, proxyOptions, buildConfiguration, logger);
+                ProxyOptions buildProxyOptions = (proxyOptions == null)
+                    ? ProxyOptions.loadFromEnvironment(buildConfiguration)
+                    : proxyOptions;
+
+                if (buildProxyOptions != null) {
+                    tcpConfig = tcpConfig.proxy(typeSpec ->
+                        typeSpec.type(mapProxyType(buildProxyOptions.getType(), logger))
+                            .address(proxyOptions.getAddress())
+                            .username(proxyOptions.getUsername())
+                            .password(user -> proxyOptions.getPassword())
+                            .nonProxyHosts(proxyOptions.getNonProxyHosts()));
+                }
+
+                return tcpConfig;
             });
-        return new NettyAsyncHttpClient(nettyHttpClient, nioEventLoopGroup, );
-    }
 
-    private static ProxyOptions setProxyOptions(ProxyOptions proxyOptions, Configuration configuration,
-        ClientLogger clientLogger) {
-        if (proxyOptions != null) {
-            ProxyOptions buildProxyOptions = new ProxyOptions(proxyOptions.getType(), proxyOptions.getAddress());
-
-            if (proxyOptions.getUsername() != null) {
-                buildProxyOptions.setCredentials(proxyOptions.getUsername(), proxyOptions.getPassword())
-                    .setNonProxyHosts(proxyOptions.getNonProxyHosts());
-            }
-
-            return buildProxyOptions;
-        }
-
-        for (NettyProxyConfiguration proxyConfiguration : NettyProxyConfiguration.PROXY_CONFIGURATIONS_LOAD_ORDER) {
-            // Proxy configuration doesn't meet the pre-requisites to be used.
-            if (!proxyConfiguration.canProxyConfigurationBeApplied(configuration)) {
-                continue;
-            }
-
-            String host = proxyConfiguration.getHost(configuration);
-
-            // No host listed for this proxy choice, check the next one.
-            if (CoreUtils.isNullOrEmpty(host)) {
-                continue;
-            }
-
-            return applyProxy(tcpClient, proxyConfiguration.getType(),
-                new InetSocketAddress(host, proxyConfiguration.getPort(configuration)),
-                proxyConfiguration.getUsername(configuration), proxyConfiguration.getPassword(configuration),
-                proxyConfiguration.getNonProxyHosts(configuration));
-        }
-    }
-
-    /*
-     * Configures a proxy to the passed 'TcpClient' if the passed 'ProxyOptions' isn't null or a configuration is
-     * loadable from the environment, otherwise no proxy will be applied.
-     */
-    private static TcpClient setupProxy(TcpClient tcpClient, ProxyOptions proxyOptions, Configuration configuration,
-        ClientLogger logger) {
-        // ProxyOptions is set, use it.
-        if (proxyOptions != null) {
-            return applyProxy(tcpClient, mapProxyType(proxyOptions.getType(), logger), proxyOptions.getAddress(),
-                proxyOptions.getUsername(), proxyOptions.getPassword(), null);
-        }
-
-        for (NettyProxyConfiguration proxyConfiguration : NettyProxyConfiguration.PROXY_CONFIGURATIONS_LOAD_ORDER) {
-            // Proxy configuration doesn't meet the pre-requisites to be used.
-            if (!proxyConfiguration.canProxyConfigurationBeApplied(configuration)) {
-                continue;
-            }
-
-            String host = proxyConfiguration.getHost(configuration);
-
-            // No host listed for this proxy choice, check the next one.
-            if (CoreUtils.isNullOrEmpty(host)) {
-                continue;
-            }
-
-            return applyProxy(tcpClient, proxyConfiguration.getType(),
-                new InetSocketAddress(host, proxyConfiguration.getPort(configuration)),
-                proxyConfiguration.getUsername(configuration), proxyConfiguration.getPassword(configuration),
-                proxyConfiguration.getNonProxyHosts(configuration));
-        }
-
-        return tcpClient;
-    }
-
-    /*
-     * Applies the proxy configuration to the 'TcpClient'.
-     */
-    private static TcpClient applyProxy(TcpClient tcpClient, ProxyProvider.Proxy type, InetSocketAddress address,
-        String username, String password, String nonProxyHosts) {
-        return tcpClient.proxy(typeSpec -> typeSpec.type(type)
-            .address(address)
-            .username(username)
-            .password(user -> password)
-            .nonProxyHosts(nonProxyHosts));
+        return new NettyAsyncHttpClient(nettyHttpClient);
     }
 
     /*
@@ -203,6 +133,7 @@ public class NettyAsyncHttpClientBuilder {
         this.connectionProvider = connectionProvider;
         return this;
     }
+
     /**
      * Sets the {@link ProxyOptions proxy options} that the client will use.
      *
@@ -258,7 +189,7 @@ public class NettyAsyncHttpClientBuilder {
 
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
-     *
+     * <p>
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *

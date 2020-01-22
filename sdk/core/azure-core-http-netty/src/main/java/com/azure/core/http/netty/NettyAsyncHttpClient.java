@@ -11,7 +11,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
 import org.reactivestreams.Publisher;
@@ -22,7 +21,6 @@ import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
-import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -46,7 +44,7 @@ class NettyAsyncHttpClient implements HttpClient {
      * Creates default NettyAsyncHttpClient.
      */
     NettyAsyncHttpClient() {
-        this(reactor.netty.http.client.HttpClient.create(), null, null, null);
+        this(reactor.netty.http.client.HttpClient.create());
     }
 
     /**
@@ -54,23 +52,8 @@ class NettyAsyncHttpClient implements HttpClient {
      *
      * @param nettyClient the reactor-netty http client
      */
-    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, EventLoopGroup eventLoopGroup,
-        ProxyProvider.Proxy proxyType, ProxyOptions proxyOptions) {
-        this.nettyClient = nettyClient.tcpConfiguration(tcpClient -> {
-            if (eventLoopGroup != null) {
-                tcpClient = tcpClient.runOn(eventLoopGroup);
-            }
-
-            if (proxyOptions != null) {
-                tcpClient = tcpClient.proxy(typeSpec -> typeSpec.type(proxyType)
-                    .address(proxyOptions.getAddress())
-                    .username(proxyOptions.getUsername())
-                    .password(username -> proxyOptions.getPassword())
-                    .nonProxyHosts(proxyOptions.getNonProxyHosts()));
-            }
-
-            return tcpClient;
-        });
+    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient) {
+        this.nettyClient = nettyClient;
     }
 
     /** {@inheritDoc} */

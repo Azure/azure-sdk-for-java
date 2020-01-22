@@ -125,7 +125,16 @@ public class ProxyOptions {
      * Attempts to load a proxy from the environment.
      *
      * <p>
-     * // Talk about load order
+     * Environment configurations are loaded in this oreder:
+     * <ol>
+     *     <li>Azure HTTPS</li>
+     *     <li>Azure HTTP</li>
+     *     <li>Java HTTPS</li>
+     *     <li>Java HTTP</li>
+     * </ol>
+     *
+     * Azure proxy configurations will be preferred over Java proxy configurations as they are more closely scoped to
+     * the purpose of the SDK. Additionally, more secure protocols, HTTPS vs HTTP, will be preferred.
      *
      * <p>
      * {@code null} will be returned if no proxy was found in the environment.

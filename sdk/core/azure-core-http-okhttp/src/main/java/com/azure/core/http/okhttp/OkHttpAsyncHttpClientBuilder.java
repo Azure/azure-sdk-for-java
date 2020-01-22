@@ -5,12 +5,16 @@ package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.okhttp.implementation.OkHttpProxySelector;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.ConnectionPool;
+import okhttp3.Credentials;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
+import java.net.Proxy;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,7 @@ public class OkHttpAsyncHttpClientBuilder {
     private ConnectionPool connectionPool;
     private Dispatcher dispatcher;
     private ProxyOptions proxyOptions;
+    private Configuration configuration;
 
     /**
      * Creates OkHttpAsyncHttpClientBuilder.
@@ -144,6 +149,20 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
+     * Sets the configuration store that is used during construction of the HTTP client.
+     * <p>
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
+     */
+    public OkHttpAsyncHttpClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /**
      * Build a HttpClient with current configurations.
      *
      * @return a {@link HttpClient}.
@@ -178,9 +197,47 @@ public class OkHttpAsyncHttpClientBuilder {
             httpClientBuilder = httpClientBuilder.dispatcher(dispatcher);
         }
 
-        // Set the proxy selector.
-        httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(proxyOptions));
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
+
+        ProxyOptions buildProxyOptions = (proxyOptions == null)
+            ? ProxyOptions.loadFromEnvironment(buildConfiguration)
+            : proxyOptions;
+
+        if (buildProxyOptions != null) {
+            httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(
+                mapProxyType(buildProxyOptions.getType(), logger), buildProxyOptions.getAddress(),
+                buildProxyOptions.getNonProxyHosts()));
+
+            if (proxyOptions.getUsername() != null) {
+                String basicAuthorizationHeader = Credentials.basic(buildProxyOptions.getUsername(),
+                    buildProxyOptions.getPassword());
+
+                httpClientBuilder = httpClientBuilder.proxyAuthenticator((route, response) ->
+                    response.request().newBuilder()
+                        .header("Proxy-Authorization", basicAuthorizationHeader)
+                        .build());
+            }
+        }
 
         return new OkHttpAsyncHttpClient(httpClientBuilder.build());
+    }
+
+    /*
+     * Maps a 'ProxyOptions.Type' to a 'ProxyProvider.Proxy', if the type is unknown or cannot be mapped an
+     * IllegalStateException will be thrown.
+     */
+    private static Proxy.Type mapProxyType(ProxyOptions.Type type, ClientLogger logger) {
+        switch (type) {
+            case HTTP:
+                return Proxy.Type.HTTP;
+            case SOCKS4:
+            case SOCKS5:
+                return Proxy.Type.SOCKS;
+            default:
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    String.format("Unknown Proxy type '%s' in use. Not configuring OkHttp proxy.", type)));
+        }
     }
 }
