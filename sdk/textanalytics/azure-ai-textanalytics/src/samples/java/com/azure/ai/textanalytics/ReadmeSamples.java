@@ -25,8 +25,6 @@ import java.util.List;
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
-    private static final String SUBSCRIPTION_KEY = null;
-    private static final String ENDPOINT = null;
     private TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder().buildClient();
 
     /**
@@ -45,7 +43,7 @@ public class ReadmeSamples {
     public void useSubscriptionKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-            .endpoint(ENDPOINT)
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
     }
 
@@ -55,7 +53,7 @@ public class ReadmeSamples {
     public void useSubscriptionKeyAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-            .endpoint(ENDPOINT)
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildAsyncClient();
     }
 
@@ -64,7 +62,7 @@ public class ReadmeSamples {
      */
     public void useAadAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .endpoint(ENDPOINT)
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
     }
