@@ -74,7 +74,7 @@ param(
         $path = [System.IO.Path]::GetTempFileName()
 
         Write-Host "git $Command"
-        Invoke-Expression "git $Command 2> $path"
+        Invoke-Expression "git $Command 2>&1 $path"
         $exit = $LASTEXITCODE
         if ( $exit -gt 0 )
         {
@@ -82,7 +82,7 @@ param(
         }
         else
         {
-            Write-Error (Get-Content $path).ToString()
+            Write-Host (Get-Content $path).ToString()
         }
         return $exit
     }
