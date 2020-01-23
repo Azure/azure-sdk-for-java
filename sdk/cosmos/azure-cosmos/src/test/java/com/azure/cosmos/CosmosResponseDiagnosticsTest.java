@@ -67,7 +67,9 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             cosmosItemRequestOptions.setPartitionKey(new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<CosmosItemProperties> readResponse =
-                this.container.readItem(createResponse.getProperties().getId(), null, CosmosItemProperties.class);
+                this.container.readItem(createResponse.getProperties().getId(), 
+                                        new PartitionKey("wrongPartitionKey"), 
+                                        CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosClientException exception) {
             String diagnostics = exception.getCosmosResponseDiagnostics().toString();
@@ -116,7 +118,9 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             cosmosItemRequestOptions.setPartitionKey(new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<CosmosItemProperties> readResponse =
-                this.container.readItem(createResponse.getProperties().getId(), null, CosmosItemProperties.class);
+                this.container.readItem(createResponse.getProperties().getId(), 
+                                        new PartitionKey("wrongPartitionKey"),
+                                        CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosClientException exception) {
             String diagnostics = exception.getCosmosResponseDiagnostics().toString();

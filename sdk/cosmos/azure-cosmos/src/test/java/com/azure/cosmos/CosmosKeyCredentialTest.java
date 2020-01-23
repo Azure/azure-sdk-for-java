@@ -202,7 +202,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.setPartitionKey(new PartitionKey(docDefinition.get("mypk")));
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(docDefinition.getId(),
-                                                                                                PartitionKey.NONE,
+                                                                                                new PartitionKey(docDefinition.get("mypk")),
                                                                                                 options,
                                                                                                 CosmosItemProperties.class);
 
