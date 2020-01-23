@@ -105,7 +105,6 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void setSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         final Map<String, String> tags = new HashMap<>();
-
         tags.put("foo", "baz");
         String resourceId = generateResourceId(SECRET_NAME);
         final KeyVaultSecret secret = new KeyVaultSecret(resourceId, SECRET_VALUE)
@@ -281,7 +280,7 @@ public abstract class SecretClientTestBase extends TestBase {
         String secretName;
         String secretVal;
         for (int i = 0; i < 2; i++) {
-            secretName = generateResourceId("");
+            secretName = generateResourceId("listSecret" + i);
             secretVal = "listSecretVal" + i;
             KeyVaultSecret secret =  new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
@@ -298,8 +297,8 @@ public abstract class SecretClientTestBase extends TestBase {
         HashMap<String, KeyVaultSecret> secrets = new HashMap<>();
         String secretName;
         String secretVal;
-        for (int i = 0; i < 4; i++) {
-            secretName = generateResourceId("");
+        for (int i = 0; i < 3; i++) {
+            secretName = generateResourceId("listDeletedSecretsTest" + i);
             secretVal = "listDeletedSecretVal" + i;
             secrets.put(secretName, new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
@@ -399,8 +398,12 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     String generateResourceId(String suffix) {
-        String id = UUID.randomUUID().toString();
-        return suffix.length() > 0 ? id + "-" + suffix : id;
+        return suffix;
+//        if (interceptorManager.isPlaybackMode()) {
+//            return suffix;
+//        }
+//        String id = UUID.randomUUID().toString();
+//        return suffix.length() > 0 ? id + "-" + suffix : id;
     }
 
     /**

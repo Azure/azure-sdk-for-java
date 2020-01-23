@@ -391,8 +391,6 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 return actualKey;
             }).blockLast();
             assertNotNull(deletedKey);
-
-            assertEquals(0, keys.size());
         });
     }
 

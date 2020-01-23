@@ -272,12 +272,11 @@ public abstract class CertificateClientTestBase extends TestBase {
         List<String> certificates = new ArrayList<>();
         String certificateName;
         for (int i = 0; i < 2; i++) {
-            certificateName = generateResourceId("");
+            certificateName = generateResourceId("listCertKey" + i);
             certificates.add(certificateName);
         }
         testRunner.accept(certificates);
     }
-
 
     @Test
     public abstract void createIssuer();
@@ -377,7 +376,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         List<String> certificates = new ArrayList<>();
         String certificateName;
         for (int i = 0; i < 3; i++) {
-            certificateName = generateResourceId("");
+            certificateName = generateResourceId("listDeletedCertificate" + i);
             certificates.add(certificateName);
         }
         testRunner.accept(certificates);
@@ -517,8 +516,12 @@ public abstract class CertificateClientTestBase extends TestBase {
     }
 
     String generateResourceId(String suffix) {
-        String id = UUID.randomUUID().toString();
-        return suffix.length() > 0 ? id + "-" + suffix : id;
+        return suffix;
+//        if (interceptorManager.isPlaybackMode()) {
+//            return suffix;
+//        }
+//        String id = UUID.randomUUID().toString();
+//        return suffix.length() > 0 ? id + "-" + suffix : id;
     }
 
     /**

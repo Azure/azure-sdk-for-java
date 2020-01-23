@@ -264,7 +264,7 @@ public abstract class KeyClientTestBase extends TestBase {
         HashMap<String, CreateKeyOptions> keys = new HashMap<>();
         String keyName;
         for (int i = 0; i < 2; i++) {
-            keyName = generateResourceId("");
+            keyName = generateResourceId("listKey" + i);
             CreateKeyOptions key =  new CreateKeyOptions(keyName, RSA_KEY_TYPE)
                     .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
             keys.put(keyName, key);
@@ -292,8 +292,8 @@ public abstract class KeyClientTestBase extends TestBase {
     void listDeletedKeysRunner(Consumer<HashMap<String, CreateKeyOptions>> testRunner) {
         HashMap<String, CreateKeyOptions> keys = new HashMap<>();
         String keyName;
-        for (int i = 0; i < 4; i++) {
-            keyName = generateResourceId("");
+        for (int i = 0; i < 3; i++) {
+            keyName = generateResourceId("listDeletedKeysTest" + i);
             keys.put(keyName, new CreateKeyOptions(keyName, RSA_KEY_TYPE)
                     .setExpiresOn(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         }
@@ -301,8 +301,12 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     String generateResourceId(String suffix) {
-        String id = UUID.randomUUID().toString();
-        return suffix.length() > 0 ? id + "-" + suffix : id;
+        return suffix;
+//        if (interceptorManager.isPlaybackMode()) {
+//            return suffix;
+//        }
+//        String id = UUID.randomUUID().toString();
+//        return suffix.length() > 0 ? id + "-" + suffix : id;
     }
 
     /**
