@@ -181,6 +181,19 @@ public class RequestResponseChannel implements Disposable {
                 "Cannot send a message when request response channel is disposed.")));
         }
 
+        if (!hasOpened.getAndSet(true)) {
+            // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
+            // encounter a race condition. So, we are forced to use the dispatcher.
+            try {
+                provider.getReactorDispatcher().invoke(() -> {
+                    sendLink.open();
+                    receiveLink.open();
+                });
+            } catch (IOException e) {
+                return Mono.error(new RuntimeException("Unable to open send and receive link.", e));
+            }
+        }
+
         if (message == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("message cannot be null"));
         }
@@ -205,14 +218,9 @@ public class RequestResponseChannel implements Disposable {
                         logger.verbose("Scheduling on dispatcher. Message Id {}", messageId);
                         unconfirmedSends.putIfAbsent(messageId, sink);
 
-                        // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
-                        // encounter a race condition. So, we are forced to use the dispatcher.
+                        // If we try to do proton-j API calls such as sending on AMQP links, it may encounter a race
+                        // condition. So, we are forced to use the dispatcher.
                         provider.getReactorDispatcher().invoke(() -> {
-                            if (!hasOpened.getAndSet(true)) {
-                                sendLink.open();
-                                receiveLink.open();
-                            }
-
                             sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
 
                             final int payloadSize = messageSerializer.getSize(message)
