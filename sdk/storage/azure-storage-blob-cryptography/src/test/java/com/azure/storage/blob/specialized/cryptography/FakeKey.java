@@ -23,10 +23,9 @@ public class FakeKey implements AsyncKeyEncryptionKey, IKey {
     private String keyId;
     private byte[] randomData;
 
-    FakeKey(String keyId, int keySize) {
+    FakeKey(String keyId, byte[] randomData) {
         this.keyId = keyId;
-        this.randomData = new byte[keySize];
-        new Random().nextBytes(this.randomData);
+        this.randomData = randomData;
     }
 
     @Override

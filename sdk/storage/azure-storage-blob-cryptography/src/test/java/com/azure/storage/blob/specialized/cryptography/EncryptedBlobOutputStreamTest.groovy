@@ -24,7 +24,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
 
     def setup() {
         keyId = "keyId"
-        fakeKey = new FakeKey(keyId, 256)
+        fakeKey = new FakeKey(keyId, resourceNamer.randomName("fakekey", 256).getBytes())
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
         cc = getServiceClientBuilder(primaryCredential,
