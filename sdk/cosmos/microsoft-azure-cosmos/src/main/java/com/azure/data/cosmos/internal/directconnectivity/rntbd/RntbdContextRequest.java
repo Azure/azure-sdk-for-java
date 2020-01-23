@@ -3,8 +3,8 @@
 
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
-import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.internal.UserAgentContainer;
+import com.azure.data.cosmos.internal.guava27.Strings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;

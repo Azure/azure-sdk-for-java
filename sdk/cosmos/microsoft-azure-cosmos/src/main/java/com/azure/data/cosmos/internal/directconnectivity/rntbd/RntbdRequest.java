@@ -4,7 +4,7 @@
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.Strings;
+import com.azure.data.cosmos.internal.guava27.Strings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.netty.buffer.ByteBuf;
 
