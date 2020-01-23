@@ -59,6 +59,9 @@ class APISpec extends Specification {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;" +
                 "EndpointSuffix=core.windows.net"
         }
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, testName)
     }
 
     /**

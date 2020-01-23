@@ -8,7 +8,9 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -40,7 +42,7 @@ public class EventProcessorClient {
     private final ClientLogger logger = new ClientLogger(EventProcessorClient.class);
 
     private final String identifier;
-    private final AtomicBoolean started = new AtomicBoolean(false);
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
     private final PartitionPumpManager partitionPumpManager;
     private final PartitionBasedLoadBalancer partitionBasedLoadBalancer;
     private final CheckpointStore checkpointStore;
@@ -55,13 +57,16 @@ public class EventProcessorClient {
      * @param consumerGroup The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param checkpointStore The store used for reading and updating partition ownership and checkpoints. information.
-     * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this
-     * EventProcessorClient will also include the last enqueued event properties for it's respective partitions.
+     * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this EventProcessorClient
+     * will also include the last enqueued event properties for it's respective partitions.
      * @param tracerProvider The tracer implementation.
+     * @param processError Error handler for any errors that occur outside the context of a partition.
+     * @param initialPartitionEventPosition Map of initial event positions for partition ids.
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
-        Supplier<PartitionProcessor> partitionProcessorFactory,  CheckpointStore checkpointStore,
-        boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider, Consumer<ErrorContext> processError) {
+        Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
+        boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider, Consumer<ErrorContext> processError,
+        Map<String, EventPosition> initialPartitionEventPosition) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
@@ -71,7 +76,7 @@ public class EventProcessorClient {
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
-            eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider);
+            eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition);
         EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
@@ -103,7 +108,7 @@ public class EventProcessorClient {
      * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclient.startstop}
      */
     public synchronized void start() {
-        if (!started.compareAndSet(false, true)) {
+        if (!isRunning.compareAndSet(false, true)) {
             logger.info("Event processor is already running");
             return;
         }
@@ -127,12 +132,22 @@ public class EventProcessorClient {
      * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclient.startstop}
      */
     public synchronized void stop() {
-        if (!started.compareAndSet(true, false)) {
+        if (!isRunning.compareAndSet(true, false)) {
             logger.info("Event processor has already stopped");
             return;
         }
         runner.get().dispose();
         scheduler.get().dispose();
         this.partitionPumpManager.stopAllPartitionPumps();
+    }
+
+    /**
+     * Returns {@code true} if the event processor is running. If the event processor is already running, calling
+     * {@link #start()} has no effect.
+     *
+     * @return {@code true} if the event processor is running.
+     */
+    public synchronized boolean isRunning() {
+        return isRunning.get();
     }
 }

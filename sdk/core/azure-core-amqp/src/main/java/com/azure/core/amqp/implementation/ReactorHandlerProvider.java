@@ -40,22 +40,26 @@ public class ReactorHandlerProvider {
      * @param connectionId Identifier associated with this connection.
      * @param hostname Host for the connection handler.
      * @param transportType Transport type used for the connection.
+     * @param proxyOptions The options to use for proxy.
+     * @param product The name of the product this connection handler is created for.
+     * @param clientVersion The version of the client library creating the connection handler.
      * @return A new {@link ConnectionHandler}.
      */
     public ConnectionHandler createConnectionHandler(String connectionId, String hostname,
-            AmqpTransportType transportType, ProxyOptions proxyOptions) {
+            AmqpTransportType transportType, ProxyOptions proxyOptions, String product, String clientVersion) {
         switch (transportType) {
             case AMQP:
-                return new ConnectionHandler(connectionId, hostname);
+                return new ConnectionHandler(connectionId, hostname, product, clientVersion);
             case AMQP_WEB_SOCKETS:
                 if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()) {
-                    return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyOptions);
+                    return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyOptions, product,
+                        clientVersion);
                 } else if (WebSocketsProxyConnectionHandler.shouldUseProxy(hostname)) {
                     logger.info("System default proxy configured for hostname '{}'. Using proxy.", hostname);
                     return new WebSocketsProxyConnectionHandler(connectionId, hostname,
-                        ProxyOptions.SYSTEM_DEFAULTS);
+                        ProxyOptions.SYSTEM_DEFAULTS, product, clientVersion);
                 } else {
-                    return new WebSocketsConnectionHandler(connectionId, hostname);
+                    return new WebSocketsConnectionHandler(connectionId, hostname, product, clientVersion);
                 }
             default:
                 throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,

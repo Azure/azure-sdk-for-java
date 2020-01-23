@@ -1,8 +1,9 @@
 parameters:
+  SDKType: client
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
-  TestOptions: '$(DefaultOptions)'
-  TestGoals: test
+  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true'
+  TestGoals: verify
   TestMatrix:
     Linux - Java 8:
       OSName: 'Linux'
@@ -60,7 +61,7 @@ jobs:
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
-        condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
+        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -72,16 +73,14 @@ jobs:
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
             python3 --version
-            python3 eng/versioning/set_versions.py --update-type all --build-type client --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
-            python3 eng/versioning/set_versions.py --update-type all --build-type data --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
-          condition: eq(variables['SetDevVersion'],'true')
+            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}} --group-id ${{artifact.groupId}}
+          condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
           displayName: Append dev package version suffix for ${{artifact.name}}
 
       - script: |
           python3 --version
-          python3 eng/versioning/update_versions.py --update-type all --build-type client
-          python3 eng/versioning/update_versions.py --update-type all --build-type data
-        condition: eq(variables['SetDevVersion'],'true')
+          python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}}
+        condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Apply version settings to repository
 
       - script: |
@@ -119,7 +118,7 @@ jobs:
         artifact: repository
 
   - job: 'Analyze'
-    condition: ne(variables['Skip.Analyze'], 'true')
+    condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
     variables:
       - template: ../variables/globals.yml
@@ -139,7 +138,7 @@ jobs:
 
       - script: |
           pip install setuptools wheel
-          pip install doc-warden
+          pip install doc-warden==$(DocWardenVersion)
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
@@ -151,112 +150,25 @@ jobs:
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-
       - template: ../steps/install-reporting-tools.yml
         parameters:
           Options: --batch-mode
           MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
       - task: Maven@3
-        displayName: 'Install azure-sdk-parent'
+        displayName: 'Install Module and Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
-          mavenPomFile: parent/pom.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-          mavenOptions: '$(MemoryOptions)  $(LoggingOptions)'
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme'
+          mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'
-
-      - task: Maven@3
-        displayName: 'Install all client libraries (for SpotBugs analysis)'
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dverify-readme'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
-
-      # Run SpotBugs, CheckStyle, Revapi, and JavaDoc tools to ensure high code quality - these will fail the build if issues are found
-      - task: Maven@3
-        displayName: 'Run SpotBugs, CheckStyle, Revapi, and JavaDoc'
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '-DskipTests -Dgpg.skip'
-          mavenOptions: ''
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'spotbugs:check checkstyle:checkstyle-aggregate revapi:check javadoc:aggregate'
-
-      # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module
-      - task: Maven@3
-        displayName: 'Run SpotBugs aggregate analysis'
-        inputs:
-          mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
-          options: '--batch-mode -DskipTests -Dgpg.skip'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
-
-      # Generate the Maven site report, including SpotBugs, JavaDoc, CheckStyle, Jacoco, etc only when we are not
-      # running as a PR check.
-      - task: Maven@3
-        displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
-        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install site:site site:stage'
-
-      - script: |
-          git clone https://github.com/JonathanGiles/DependencyChecker.git
-          mkdir input && cp dependencies.json input/
-        displayName: 'Download dependency checker'
-        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
-
-      - task: Maven@3
-        displayName: 'Analyze dependencies'
-        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
-        inputs:
-          mavenPomFile: 'DependencyChecker/pom.xml'
-          options: '-Dexec.args="-showall -dependencymanagement"'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'clean package exec:java'
-
-      # We only copy artifacts into the staging in nightly builds, we don't bother with this for PR validation builds.
-      - pwsh: |
-          copy -r target/staging $(Build.ArtifactStagingDirectory)
-          copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-          copy eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
-          copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
-        displayName: 'Copy reports to artifact staging'
-        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
-
-      - publish: $(Build.ArtifactStagingDirectory)
-        condition: succeededOrFailed()
-        displayName: 'Publish Report Artifacts'
-        artifact: reports
 
   - job: 'Test'
-    condition: ne(variables['Skip.Test'], 'true')
+    condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
     variables:
       - template: ../variables/globals.yml
@@ -274,18 +186,10 @@ jobs:
 
       - template: ../steps/cache-maven-repository.yml
 
-      - task: Maven@3
-        displayName: 'Start Jetty'
-        condition: ne(variables['SdkType'], 'client')
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions)'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'jetty:run-forked'
+      - template: ../steps/install-reporting-tools.yml
+        parameters:
+          Options: --batch-mode
+          MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
       - ${{ parameters.PreTestSteps }}
 
@@ -293,7 +197,7 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
-        condition: and(ne(variables['SdkType'], 'data'), eq(variables['TestFromSource'],'true'))
+        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
 
       - pwsh: |
           python --version
@@ -310,12 +214,12 @@ jobs:
             exit 1
           }
         displayName: 'Set versions for source build'
-        condition: and(ne(variables['SdkType'], 'data'), eq(variables['TestFromSource'],'true'))
+        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
 
       - script: |
           python --version
           python eng/versioning/update_versions.py --update-type library --build-type client
-        condition: eq(variables['ShouldRunSourceTests'],'true')
+        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
         displayName: 'Update versions for source build'
 
       - task: Maven@3
@@ -329,7 +233,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: ${{ parameters.TestGoals }}
-        # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set) 
+        # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set)
         # OR when ShouldRunSourceTests is true
         condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
@@ -338,3 +242,44 @@ jobs:
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
+
+      # HACK: This has been disabled to unblock releases where aggregate code
+      #       coverage reporting was causing agent timeouts. We've got an issue
+      #       to discuss how to handle aggregate-style reporting across the repo
+      #       but at the moment this isn't going to work:
+      #
+      #         https://github.com/Azure/azure-sdk-for-java/issues/7271
+      #
+      #     # Generate JaCoCo code coverage report on Java 11, Linux builds if the build reason is not PR.
+      # - task: Maven@3
+      #   displayName: 'Generate aggregate code coverage report'
+      #   condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
+      #   inputs:
+      #       # Aggregate reports for non-PR builds will use pom.client.xml and include non-shipping modules
+      #       mavenPomFile: pom.client.xml
+      #       options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+      #       mavenOptions: '-Xmx3072m $(LoggingOptions)'
+      #       javaHomeOption: 'JDKVersion'
+      #       jdkVersionOption: $(JavaVersion)
+      #       jdkArchitectureOption: 'x64'
+      #       publishJUnitResults: false
+      #       goals: 'verify'
+
+      #   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
+      #   # Code coverage reporting is setup only for Track 2 modules.
+      # - task: PublishCodeCoverageResults@1
+      #   condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
+      #   inputs:
+      #       codeCoverageTool: JaCoCo
+      #       summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
+      #       reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
+      #       failIfCoverageEmpty: true
+
+      #   # Publish code coverage to an artifact so it can be uploaded to the Maven site.
+      #   # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
+      # - task: PublishPipelineArtifact@0
+      #   displayName: 'Publish coverage artifact'
+      #   condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), ne(variables['Build.Reason'], 'PullRequest'))
+      #   inputs:
+      #       artifactName: coverage
+      #       targetPath: eng/jacoco-test-coverage/target/site/

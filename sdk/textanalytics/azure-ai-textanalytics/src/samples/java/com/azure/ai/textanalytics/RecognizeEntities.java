@@ -6,19 +6,19 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.NamedEntity;
 
 /**
- * Sample demonstrate how to recognize entities of a text input.
+ * Sample demonstrates how to recognize the entities of an input text.
  */
 public class RecognizeEntities {
     /**
-     * Main method to invoke this demo about how to recognize entities of a text input.
+     * Main method to invoke this demo about how to recognize the entities of an input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey("{subscription_key}")
+            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
             .buildClient();
 
         // The text that need be analysed.
@@ -26,7 +26,7 @@ public class RecognizeEntities {
 
         for (NamedEntity entity : client.recognizeEntities(text).getNamedEntities()) {
             System.out.printf(
-                "Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
+                "Recognized entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
                 entity.getText(),
                 entity.getType(),
                 entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),

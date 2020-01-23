@@ -1,6 +1,22 @@
 # Release History
 
-## 12.0.0-beta.9 (Unreleased)
+## 12.0.0-beta.11 (Unreleased)
+- Added ability to rename files and directories across file systems.
+- Added DataLakeFileSystem.getRootDirectory methods to get the root directory in a file system.
+
+## 12.0.0-beta.10 (2020-01-15)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.0-beta.10/sdk/storage/azure-storage-file-datalake/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.0-beta.10/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+
+- Upgraded to version 12.3.0 of Azure Storage Blob.
+
+## 12.0.0-beta.9 (2020-01-08)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.0-beta.9/sdk/storage/azure-storage-file-datalake/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.0-beta.9/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
 
 ## 12.0.0-beta.8 (2019-12-18)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas.

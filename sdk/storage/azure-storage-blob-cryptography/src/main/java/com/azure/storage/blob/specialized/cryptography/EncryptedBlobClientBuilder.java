@@ -21,6 +21,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
@@ -240,7 +242,7 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link StorageSharedKeyCredential}.
      * @return the updated EncryptedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -254,7 +256,7 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link TokenCredential}.
      * @return the updated EncryptedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -458,7 +460,7 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Sets the request retry options for all the requests made through the client.
      *
-     * @param retryOptions The options used to configure retry behavior.
+     * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated EncryptedBlobClientBuilder object
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
@@ -489,7 +491,9 @@ public final class EncryptedBlobClientBuilder {
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * <p>
+     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
      * @param version {@link BlobServiceVersion} of the service to be used when making requests.
      * @return the updated EncryptedBlobClientBuilder object
@@ -497,5 +501,74 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Configures the builder based on the passed {@link BlobClient}. This will set the {@link HttpPipeline},
+     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
+     *
+     * <p>Use this method after setting the key in {@link #key(AsyncKeyEncryptionKey, String) key} and keyResolver in
+     * {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}.</p>
+     *
+     * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
+     * {@link #serviceVersion(BlobServiceVersion) serviceVersion}.</p>
+     *
+     * @param blobClient BlobClient used to configure the builder.
+     * @return the updated EncryptedBlobClientBuilder object
+     * @throws NullPointerException If {@code containerClient} is {@code null}.
+     */
+    public EncryptedBlobClientBuilder blobClient(BlobClient blobClient) {
+        Objects.requireNonNull(blobClient);
+        return client(blobClient.getHttpPipeline(), blobClient.getBlobUrl(), blobClient.getServiceVersion());
+    }
+
+    /**
+     * Configures the builder based on the passed {@link BlobAsyncClient}. This will set the {@link HttpPipeline},
+     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
+     *
+     * <p>Use this method after setting the key in {@link #key(AsyncKeyEncryptionKey, String) key} and keyResolver in
+     * {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}.</p>
+     *
+     * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
+     * {@link #serviceVersion(BlobServiceVersion) serviceVersion}.</p>
+     *
+     * @param blobAsyncClient BlobAsyncClient used to configure the builder.
+     * @return the updated EncryptedBlobClientBuilder object
+     * @throws NullPointerException If {@code containerClient} is {@code null}.
+     */
+    public EncryptedBlobClientBuilder blobAsyncClient(BlobAsyncClient blobAsyncClient) {
+        Objects.requireNonNull(blobAsyncClient);
+        return client(blobAsyncClient.getHttpPipeline(), blobAsyncClient.getBlobUrl(),
+            blobAsyncClient.getServiceVersion());
+    }
+
+    /**
+     * Helper method to transform a regular client into an encrypted client
+     * @param httpPipeline {@link HttpPipeline}
+     * @param endpoint The endpoint.
+     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    private EncryptedBlobClientBuilder client(HttpPipeline httpPipeline, String endpoint, BlobServiceVersion version) {
+        this.endpoint(endpoint);
+        this.serviceVersion(version);
+
+        checkValidEncryptionParameters();
+
+        HttpPipeline pipeline = null;
+        if (httpPipeline != null) {
+            List<HttpPipelinePolicy> policies = new ArrayList<>();
+            policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
+            for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
+                HttpPipelinePolicy currPolicy = httpPipeline.getPolicy(i);
+                policies.add(currPolicy);
+
+            }
+            pipeline = new HttpPipelineBuilder()
+                .httpClient(httpPipeline.getHttpClient())
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
+        }
+        return this.pipeline(pipeline);
     }
 }

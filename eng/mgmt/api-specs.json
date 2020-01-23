@@ -78,6 +78,10 @@
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "args": "--multiapi=true --fluent=true"
   },
+  "deploymentmanager/resource-manager": {
+    "source": "specification/deploymentmanager/resource-manager/readme.md",
+    "args": "--multiapi=true --fluent=true"
+  },
   "datalakeanalytics/resource-manager": {
     "source": "specification/datalake-analytics/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -217,6 +221,10 @@
     "fconfig": {
       "\"moduleName\"": "\"PostgreSQL\""
     }
+  },
+  "powerbidedicated/resource-manager": {
+    "source": "specification/powerbidedicated/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "recoveryservices/resource-manager": {
     "source": "specification/recoveryservices/resource-manager/readme.md",

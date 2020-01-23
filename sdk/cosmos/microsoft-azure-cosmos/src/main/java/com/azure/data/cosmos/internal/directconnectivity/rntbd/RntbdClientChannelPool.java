@@ -657,9 +657,9 @@ public final class RntbdClientChannelPool extends SimpleChannelPool {
             generator.writeObjectFieldStart("configuration");
             generator.writeNumberField("maxChannels", value.maxChannels());
             generator.writeNumberField("maxRequestsPerChannel", value.maxRequestsPerChannel());
-            generator.writeNumberField("idleConnectionTimeout", healthChecker.idleConnectionTimeout());
-            generator.writeNumberField("readDelayLimit", healthChecker.readDelayLimit());
-            generator.writeNumberField("writeDelayLimit", healthChecker.writeDelayLimit());
+            generator.writeNumberField("idleConnectionTimeout", healthChecker.idleConnectionTimeoutInNanos());
+            generator.writeNumberField("readDelayLimit", healthChecker.readDelayLimitInNanos());
+            generator.writeNumberField("writeDelayLimit", healthChecker.writeDelayLimitInNanos());
             generator.writeEndObject();
             generator.writeObjectFieldStart("state");
             generator.writeNumberField("channelsAcquired", value.channelsAcquired());

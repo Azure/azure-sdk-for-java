@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -21,7 +22,6 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -462,6 +462,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             new TextDocumentInput("1", "The restaurant had amazing gnocchi. The hotel was dark and unclean.")
         );
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        showStatistics = true;
 
         testRunner.accept(textDocumentInputs, options);
     }
@@ -695,6 +696,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     /**
      * Helper method to verify the error document.
+     *
      *  @param expectedError the Error returned from the service.
      * @param actualError the Error returned from the API.
      */
@@ -890,7 +892,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, null, detectedLanguage2, detectedLanguageList2);
         DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, null, detectedLanguage3, detectedLanguageList3);
 
-        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 0, 3, 3);
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 3, 0, 3);
         List<DetectLanguageResult> detectLanguageResultList = Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3);
 
         return new DocumentResultCollection<>(detectLanguageResultList, MODEL_VERSION, textDocumentBatchStatistics);
@@ -910,7 +912,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         RecognizeEntitiesResult recognizeEntitiesResult1 = new RecognizeEntitiesResult("0", textDocumentStatistics1, null, namedEntityList1);
         RecognizeEntitiesResult recognizeEntitiesResult2 = new RecognizeEntitiesResult("1", textDocumentStatistics2, null, namedEntityList2);
 
-        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 0, 2, 2);
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<RecognizeEntitiesResult> recognizeEntitiesResultList = Arrays.asList(recognizeEntitiesResult1, recognizeEntitiesResult2);
 
         return new DocumentResultCollection<>(recognizeEntitiesResultList, MODEL_VERSION, textDocumentBatchStatistics);
@@ -929,7 +931,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         RecognizePiiEntitiesResult recognizeEntitiesResult1 = new RecognizePiiEntitiesResult("0", textDocumentStatistics1, null, namedEntityList1);
         RecognizePiiEntitiesResult recognizeEntitiesResult2 = new RecognizePiiEntitiesResult("1", textDocumentStatistics2, null, namedEntityList2);
 
-        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 0, 2, 2);
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<RecognizePiiEntitiesResult> recognizeEntitiesResultList = Arrays.asList(recognizeEntitiesResult1, recognizeEntitiesResult2);
 
         return new DocumentResultCollection<>(recognizeEntitiesResultList, MODEL_VERSION, textDocumentBatchStatistics);
@@ -958,7 +960,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult1 = new RecognizeLinkedEntitiesResult("0", textDocumentStatistics1, null, linkedEntityList1);
         RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult2 = new RecognizeLinkedEntitiesResult("1", textDocumentStatistics2, null, linkedEntityList2);
 
-        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 0, 2, 2);
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResultList = Arrays.asList(recognizeLinkedEntitiesResult1, recognizeLinkedEntitiesResult2);
 
         return new DocumentResultCollection<>(recognizeLinkedEntitiesResultList, MODEL_VERSION, textDocumentBatchStatistics);
@@ -974,7 +976,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         ExtractKeyPhraseResult extractKeyPhraseResult1 = new ExtractKeyPhraseResult("0", textDocumentStatistics1, null, keyPhrasesList1);
         ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResult("1", textDocumentStatistics2, null, keyPhrasesList2);
 
-        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 0, 2, 2);
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<ExtractKeyPhraseResult> extractKeyPhraseResultList = Arrays.asList(extractKeyPhraseResult1, extractKeyPhraseResult2);
 
         return new DocumentResultCollection<>(extractKeyPhraseResultList, MODEL_VERSION, textDocumentBatchStatistics);
@@ -1005,6 +1007,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
         return new DocumentResultCollection<>(Arrays.asList(analyzeSentimentResult1, analyzeSentimentResult2),
             MODEL_VERSION,
-            new TextDocumentBatchStatistics(2, 0, 2, 2));
+            new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 }

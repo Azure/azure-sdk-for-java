@@ -10,5 +10,5 @@ jobs:
         AZURE_TEST_MODE: RECORD
         ARM_CLIENTID: $(aad-azure-sdk-test-client-id)
         ARM_CLIENTKEY: $(aad-azure-sdk-test-client-secret)
-        AZURE_KEYVAULT_ENDPOINT: $(java-azure-keyvault-sdk-endpoint)
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+        AZURE_KEYVAULT_ENDPOINT: $(AZURE_KEYVAULT_ENDPOINT)

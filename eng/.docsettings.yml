@@ -2,6 +2,7 @@ omitted_paths:
   - archive/*
   - profiles/*
   - loganalytics/data-plane/samples/*
+  - sdk/*/azure-*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
@@ -48,13 +49,17 @@ known_presence_issues:
   - ['sdk/core/azure-core-auth', '#2847']
   - ['sdk/core/azure-core-management', '#2847']
   - ['sdk/cosmos/microsoft-azure-cosmos', '#2847']
+  - ['sdk/e2e', '#2847']
+  - ['sdk/eventhubs/microsoft-azure-eventhubs-extensions', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-core', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-cryptography', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-extensions', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-webkey', '#2847']
+  - ['sdk/keyvault/microsoft-azure-keyvault-test', '#2847']
+  - ['sdk/keyvault/microsoft-azure-keyvault-complete', '#2847']
   - ['sdk/mediaservices/microsoft-azure-media', '#2847']
-  - ['sdk/e2e', '#2847']
+  - ['sdk/servicebus/microsoft-azure-servicebus', '#2847']
   # Changelog List
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/CHANGELOG.md', '#2847']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/CHANGELOG.md', '#2847']
@@ -83,15 +88,23 @@ known_presence_issues:
   - ['sdk/core/azure-core-management/CHANGELOG.md', '#2847']
   - ['sdk/core/azure-core-test/CHANGELOG.md', '#2847']
   - ['sdk/cosmos/microsoft-azure-cosmos/CHANGELOG.md', '#2847']
+  - ['sdk/cosmos/CHANGELOG.md', '#2847']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/CHANGELOG.md', '#2847']
+  - ['sdk/eventhubs/microsoft-azure-eventhubs/CHANGELOG.md', '#2847']
+  - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/CHANGELOG.md', '#2847']
+  - ['sdk/eventhubs/microsoft-azure-eventhubs-extensions/CHANGELOG.md', '#2847']
+  - ['sdk/e2e/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-core/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-cryptography/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-extensions/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-webkey/CHANGELOG.md', '#2847']
+  - ['sdk/keyvault/microsoft-azure-keyvault-test/CHANGELOG.md', '#2847']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/CHANGELOG.md', '#2847']
   - ['sdk/mediaservices/microsoft-azure-media/CHANGELOG.md', '#2847']
-  - ['sdk/e2e/CHANGELOG.md', '#2847']
+  - ['sdk/servicebus/microsoft-azure-servicebus/CHANGELOG.md', '#2847']
+  - ['sdk/storage/microsoft-azure-storage-blob/CHANGELOG.md', '#2847']
+  - ['sdk/keyvault/microsoft-azure-keyvault-complete/CHANGELOG.md', '#2847']
 
 known_content_issues:
   - ['cosmosdb/data-plane/benchmark/README.md', '#3113']
@@ -108,8 +121,9 @@ known_content_issues:
   - ['sdk/cosmos/faq/README.md', '#3113']
   - ['sdk/cosmos/microsoft-azure-cosmos-benchmark/README.md', '#3113']
   - ['sdk/cosmos/README.md', '#3113']
+  - ['sdk/e2e/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
-  - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/Readme.md', '#3113']
+  - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/README.md', '#3113']
   - ['sdk/eventhubs/README.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
@@ -121,6 +135,7 @@ known_content_issues:
   - ['sdk/storage/azure-storage-queue/swagger/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/swagger/README.md', '#3113']
+  - ['sdk/storage/azure-storage-blob-nio/README.md', '#3113']
   - ['sdk/storage/README.md', '#3113']
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']

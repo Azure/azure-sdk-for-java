@@ -19,6 +19,8 @@ import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.function.Consumer;
@@ -30,24 +32,26 @@ import java.util.function.Supplier;
  * EventProcessorClient}.
  *
  * <p>
- * To create an instance of {@link EventProcessorClient} that processes events with user-provided callback, configure
- * the following fields:
+ * To create an instance of {@link EventProcessorClient}, the <b>following fields are required</b>:
  *
  * <ul>
  * <li>{@link #consumerGroup(String) Consumer group name}.</li>
  * <li>{@link CheckpointStore} - An implementation of CheckpointStore that stores checkpoint and
- * partition ownership information to enable load balancing.</li>
- * <li>{@link #processEvent(Consumer)} - A callback that processes events received from the Event Hub.</li>
+ * partition ownership information to enable load balancing and checkpointing processed events.</li>
+ * <li>{@link #processEvent(Consumer) processEvent} - A callback that processes events received from the Event Hub
+ * .</li>
+ * <li>{@link #processError(Consumer) processError} - A callback that handles errors that may occur while running the
+ * EventProcessorClient.</li>
  * <li>Credentials -
  *  <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
  *  one of the following methods:
  *  <ul>
- *  <li>{@link #connectionString(String) connectionString(String)} with a connection string to a specific Event Hub.
+ *  <li>{@link #connectionString(String)} with a connection string to a specific Event Hub.
  *  </li>
- *  <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
- *  connection string and the Event Hub name.</li>
- *  <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the
- *  fully qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
+ *  <li>{@link #connectionString(String, String)} with an Event Hub <i>namespace</i> connection string and the Event Hub
+ *  name.</li>
+ *  <li>{@link #credential(String, String, TokenCredential)} with the fully qualified namespace, Event Hub name, and a
+ *  set of credentials authorized to use the Event Hub.
  *  </li>
  *  </ul>
  *  </li>
@@ -73,6 +77,7 @@ public class EventProcessorClientBuilder {
     private Consumer<InitializationContext> processPartitionInitialization;
     private Consumer<CloseContext> processPartitionClose;
     private boolean trackLastEnqueuedEventProperties;
+    private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
 
     /**
      * Creates a new instance of {@link EventProcessorClientBuilder}.
@@ -289,11 +294,27 @@ public class EventProcessorClientBuilder {
      *
      * @param trackLastEnqueuedEventProperties {@code true} if the resulting events will keep track of the last
      *     enqueued information for that partition; {@code false} otherwise.
-     *
      * @return The updated {@link EventProcessorClientBuilder} instance.
      */
     public EventProcessorClientBuilder trackLastEnqueuedEventProperties(boolean trackLastEnqueuedEventProperties) {
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
+        return this;
+    }
+
+    /**
+     * Sets the map containing the event position to use for each partition if a checkpoint for the partition does not
+     * exist in {@link CheckpointStore}. This map is keyed off of the partition id. If there is no checkpoint in
+     * {@link CheckpointStore} and there is no entry in this map, the processing of the partition will start from
+     * {@link EventPosition#latest() latest} position.
+     *
+     * @param initialPartitionEventPosition Map of initial event positions for partition ids.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     */
+    public EventProcessorClientBuilder initialPartitionEventPosition(
+        Map<String, EventPosition> initialPartitionEventPosition) {
+
+        this.initialPartitionEventPosition = Objects.requireNonNull(initialPartitionEventPosition,
+            "'initialPartitionEventPosition' cannot be null.");
         return this;
     }
 
@@ -322,7 +343,7 @@ public class EventProcessorClientBuilder {
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         return new EventProcessorClient(eventHubClientBuilder, this.consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties, tracerProvider,
-            processError);
+            processError, initialPartitionEventPosition);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

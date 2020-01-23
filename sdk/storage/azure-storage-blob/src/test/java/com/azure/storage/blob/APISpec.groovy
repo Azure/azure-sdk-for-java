@@ -43,7 +43,6 @@ import spock.lang.Specification
 import spock.lang.Timeout
 
 import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.Duration
@@ -148,7 +147,6 @@ class APISpec extends Specification {
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", testMode))
     }
 
     def setup() {
@@ -159,6 +157,9 @@ class APISpec extends Specification {
         this.testName = fullTestName.substring(0, substringIndex)
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null
@@ -510,30 +511,30 @@ class APISpec extends Specification {
     def compareFiles(File file1, File file2, long offset, long count) {
         def pos = 0L
         def readBuffer = 8 * Constants.KB
-        def fileChannel1 = AsynchronousFileChannel.open(file1.toPath())
-        def fileChannel2 = AsynchronousFileChannel.open(file2.toPath())
+        def stream1 = new FileInputStream(file1)
+        stream1.skip(offset)
+        def stream2 = new FileInputStream(file2)
 
-        while (pos < count) {
-            def bufferSize = (int) Math.min(readBuffer, count - pos)
-            def buffer1 = ByteBuffer.allocate(bufferSize)
-            def buffer2 = ByteBuffer.allocate(bufferSize)
+        try {
+            while (pos < count) {
+                def bufferSize = (int) Math.min(readBuffer, count - pos)
+                def buffer1 = new byte[bufferSize]
+                def buffer2 = new byte[bufferSize]
 
-            def readCount1 = fileChannel1.read(buffer1, offset + pos).get()
-            def readCount2 = fileChannel2.read(buffer2, pos).get()
+                def readCount1 = stream1.read(buffer1)
+                def readCount2 = stream2.read(buffer2)
 
-            if (readCount1 != readCount2 || buffer1 != buffer2) {
-                return false
+                assert readCount1 == readCount2 && buffer1 == buffer2
+
+                pos += bufferSize
             }
 
-            pos += bufferSize
+            def verificationRead = stream2.read()
+            return pos == count && verificationRead == -1
+        } finally {
+            stream1.close()
+            stream2.close()
         }
-
-        def verificationRead = fileChannel2.read(ByteBuffer.allocate(1), pos).get()
-
-        fileChannel1.close()
-        fileChannel2.close()
-
-        return pos == count && verificationRead == -1
     }
 
     /**

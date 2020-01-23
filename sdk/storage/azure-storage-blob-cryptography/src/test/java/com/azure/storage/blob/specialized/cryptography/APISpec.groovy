@@ -31,6 +31,7 @@ import spock.lang.Specification
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
+import java.util.function.Supplier
 
 class APISpec extends Specification {
 
@@ -87,6 +88,13 @@ class APISpec extends Specification {
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
 
+    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
+        @Override
+        InputStream get() {
+            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
+        }
+    }
+
     public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
 
     static int defaultDataSize = defaultData.remaining()
@@ -114,6 +122,10 @@ class APISpec extends Specification {
         this.testName = fullTestName.substring(0, substringIndex)
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
         connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
@@ -361,5 +373,22 @@ class APISpec extends Specification {
             .blobClient(blobClient)
             .leaseId(leaseId)
             .buildClient()
+    }
+
+    def compareDataToFile(Flux<ByteBuffer> data, File file) {
+        FileInputStream fis = new FileInputStream(file)
+
+        for (ByteBuffer received : data.toIterable()) {
+            byte[] readBuffer = new byte[received.remaining()]
+            fis.read(readBuffer)
+            for (int i = 0; i < received.remaining(); i++) {
+                if (readBuffer[i] != received.get(i)) {
+                    return false
+                }
+            }
+        }
+
+        fis.close()
+        return true
     }
 }

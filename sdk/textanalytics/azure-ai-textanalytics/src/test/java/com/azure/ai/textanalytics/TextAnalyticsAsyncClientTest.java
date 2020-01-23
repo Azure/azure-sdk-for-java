@@ -14,7 +14,6 @@ import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -136,7 +135,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageDuplicateIdInput() {
         detectLanguageDuplicateIdRunner((inputs, options) -> {
-            StepVerifier.create(client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE))
+            StepVerifier.create(client.detectBatchLanguagesWithResponse(inputs, options))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 400));
         });
     }
@@ -421,8 +420,22 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             .assertNext(response -> validateErrorDocument(expectedError, response.getError())).verifyComplete();
     }
 
+    /**
+     * Test analyzing sentiment for a faulty input text.
+     */
+    @Test
     public void analyseSentimentForFaultyText() {
-        // TODO (shawn): add this case later
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 5, 0);
+        final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 1, 0),
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 4, 1));
+
+        StepVerifier
+            .create(client.analyzeSentiment("!@#%%"))
+            .assertNext(response -> {
+                validateAnalysedSentiment(expectedDocumentSentiment, response.getDocumentSentiment());
+                validateAnalysedSentenceSentiment(expectedSentenceSentiments, response.getSentenceSentiments());
+            }).verifyComplete();
     }
 
     /**

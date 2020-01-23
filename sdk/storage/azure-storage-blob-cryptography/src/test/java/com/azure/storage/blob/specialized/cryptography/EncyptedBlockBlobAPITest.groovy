@@ -363,7 +363,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Encrypted upload file"() {
         setup:
-        def file = getRandomFile(KB)
+        def file = getRandomFile(Constants.MB)
 
         when:
         beac.uploadFromFile(file.toPath().toString()).block()
@@ -503,12 +503,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         when:
         // Upload with v8
-
-
         v8EncryptBlob.upload(inputStream, defaultDataSize, null, uploadOptions, null)
 
         // Download with current version
-
         ByteArrayOutputStream stream = new ByteArrayOutputStream()
         decryptClient.download(stream)
 
@@ -629,22 +626,5 @@ class EncyptedBlockBlobAPITest extends APISpec {
             result.position(result.position() + buffer.remaining())
         }
         return result.remaining() == 0
-    }
-
-    def compareDataToFile(Flux<ByteBuffer> data, File file) {
-        FileInputStream fis = new FileInputStream(file)
-
-        for (ByteBuffer received : data.toIterable()) {
-            byte[] readBuffer = new byte[received.remaining()]
-            fis.read(readBuffer)
-            for (int i = 0; i < received.remaining(); i++) {
-                if (readBuffer[i] != received.get(i)) {
-                    return false
-                }
-            }
-        }
-
-        fis.close()
-        return true
     }
 }

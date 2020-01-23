@@ -28,11 +28,16 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -54,6 +59,9 @@ public final class ConfigurationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
 
     private static final String ETAG_ANY = "*";
+    private static final Supplier<Map<String, String>> APP_CONFIG_TRACING_PROPERTIES =
+        () -> Collections.unmodifiableMap(
+                new HashMap<String, String>() {{ put(AZ_TRACING_NAMESPACE_KEY, "Microsoft.AppConfiguration"); }});
 
     private final String serviceEndpoint;
     private final ConfigurationService service;
@@ -62,13 +70,12 @@ public final class ConfigurationAsyncClient {
     /**
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
      * Each service call goes through the {@code pipeline}.
-     *
      * @param serviceEndpoint The URL string for the App Configuration service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      * @param version {@link ConfigurationServiceVersion} of the service to be used when making requests.
      */
     ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ConfigurationServiceVersion version) {
-        this.service = RestProxy.create(ConfigurationService.class, pipeline);
+        this.service = RestProxy.create(ConfigurationService.class, pipeline, APP_CONFIG_TRACING_PROPERTIES);
         this.serviceEndpoint = serviceEndpoint;
     }
 
@@ -214,7 +221,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                       boolean ifUnchanged) {
+        boolean ifUnchanged) {
         try {
             return withContext(context -> setConfigurationSetting(setting, ifUnchanged, context));
         } catch (RuntimeException ex) {
@@ -223,7 +230,7 @@ public final class ConfigurationAsyncClient {
     }
 
     Mono<Response<ConfigurationSetting>> setConfigurationSetting(ConfigurationSetting setting, boolean ifUnchanged,
-                                                    Context context) {
+        Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -324,8 +331,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                       OffsetDateTime acceptDateTime,
-                                                                       boolean ifChanged) {
+        OffsetDateTime acceptDateTime, boolean ifChanged) {
         try {
             return withContext(context -> getConfigurationSetting(setting, acceptDateTime, ifChanged, context));
         } catch (RuntimeException ex) {
@@ -334,9 +340,7 @@ public final class ConfigurationAsyncClient {
     }
 
     Mono<Response<ConfigurationSetting>> getConfigurationSetting(ConfigurationSetting setting,
-                                                                 OffsetDateTime acceptDateTime,
-                                                                 boolean onlyIfChanged,
-                                                                 Context context) {
+        OffsetDateTime acceptDateTime, boolean onlyIfChanged, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -419,7 +423,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                          boolean ifUnchanged) {
+        boolean ifUnchanged) {
         try {
             return withContext(context -> deleteConfigurationSetting(setting, ifUnchanged, context));
         } catch (RuntimeException ex) {
@@ -428,7 +432,7 @@ public final class ConfigurationAsyncClient {
     }
 
     Mono<Response<ConfigurationSetting>> deleteConfigurationSetting(ConfigurationSetting setting, boolean ifUnchanged,
-                                                       Context context) {
+        Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
@@ -498,7 +502,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setReadOnlyWithResponse(ConfigurationSetting setting,
-                                                                        boolean isReadOnly) {
+        boolean isReadOnly) {
         try {
             return withContext(context -> setReadOnly(setting, isReadOnly, context));
         } catch (RuntimeException ex) {
@@ -507,7 +511,7 @@ public final class ConfigurationAsyncClient {
     }
 
     Mono<Response<ConfigurationSetting>> setReadOnly(ConfigurationSetting setting, boolean isReadOnly,
-                                                     Context context) {
+        Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
