@@ -3,6 +3,7 @@
 
 module com.azure.ai.textanalytics {
     requires transitive com.azure.core;
+
     requires com.fasterxml.jackson.annotation;
 
     exports com.azure.ai.textanalytics;
