@@ -51,7 +51,8 @@ public class EventHubDataConnection extends DataConnectionInner {
     /**
      * The data format of the message. Optionally the data format can be added
      * to each message. Possible values include: 'MULTIJSON', 'JSON', 'CSV',
-     * 'TSV', 'SCSV', 'SOHSV', 'PSV', 'TXT', 'RAW', 'SINGLEJSON', 'AVRO'.
+     * 'TSV', 'SCSV', 'SOHSV', 'PSV', 'TXT', 'RAW', 'SINGLEJSON', 'AVRO',
+     * 'TSVE'.
      */
     @JsonProperty(value = "properties.dataFormat")
     private DataFormat dataFormat;
@@ -143,7 +144,7 @@ public class EventHubDataConnection extends DataConnectionInner {
     }
 
     /**
-     * Get the data format of the message. Optionally the data format can be added to each message. Possible values include: 'MULTIJSON', 'JSON', 'CSV', 'TSV', 'SCSV', 'SOHSV', 'PSV', 'TXT', 'RAW', 'SINGLEJSON', 'AVRO'.
+     * Get the data format of the message. Optionally the data format can be added to each message. Possible values include: 'MULTIJSON', 'JSON', 'CSV', 'TSV', 'SCSV', 'SOHSV', 'PSV', 'TXT', 'RAW', 'SINGLEJSON', 'AVRO', 'TSVE'.
      *
      * @return the dataFormat value
      */
@@ -152,7 +153,7 @@ public class EventHubDataConnection extends DataConnectionInner {
     }
 
     /**
-     * Set the data format of the message. Optionally the data format can be added to each message. Possible values include: 'MULTIJSON', 'JSON', 'CSV', 'TSV', 'SCSV', 'SOHSV', 'PSV', 'TXT', 'RAW', 'SINGLEJSON', 'AVRO'.
+     * Set the data format of the message. Optionally the data format can be added to each message. Possible values include: 'MULTIJSON', 'JSON', 'CSV', 'TSV', 'SCSV', 'SOHSV', 'PSV', 'TXT', 'RAW', 'SINGLEJSON', 'AVRO', 'TSVE'.
      *
      * @param dataFormat the dataFormat value to set
      * @return the EventHubDataConnection object itself.
