@@ -261,7 +261,7 @@ class ShareAsyncAPITests extends APISpec {
         where:
         size                    || gigabytes
         0                       || 0
-        Constants.KB            || 0
+        Constants.KB            || 1
         Constants.GB            || 1
         (long) 3 * Constants.GB || 3
     }
