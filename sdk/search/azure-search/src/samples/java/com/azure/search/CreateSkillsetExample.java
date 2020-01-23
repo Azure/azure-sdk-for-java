@@ -36,33 +36,38 @@ public class CreateSkillsetExample {
     }
 
     private static void createOcrSkillset(SearchServiceClient searchServiceClient) {
-        List<InputFieldMappingEntry> inputs = Arrays.asList(
+        // Sample OCR definition
+        // https://docs.microsoft.com/en-us/azure/search/cognitive-search-skill-ocr#sample-definition
+
+        List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry()
-                .setName("url")
-                .setSource("/document/url"),
-            new InputFieldMappingEntry().setName("queryString")
-                .setSource("/document/queryString")
+                .setName("image")
+                .setSource("/document/normalized_images/*")
         );
 
-        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
+        List<OutputFieldMappingEntry> outputs = Arrays.asList(
             new OutputFieldMappingEntry()
                 .setName("text")
-                .setTargetName("mytext")
+                .setTargetName("mytext"),
+            new OutputFieldMappingEntry()
+                .setName("layoutText")
+                .setTargetName("myLayoutText")
         );
 
         List<Skill> skills = Collections.singletonList(
             new OcrSkill()
                 .setShouldDetectOrientation(true)
+                .setDefaultLanguageCode(null)
                 .setName("myocr")
-                .setDescription("Tested OCR skill")
-                .setContext("/document")
+                .setDescription("Extracts text (plain and structured) from image.")
+                .setContext("/document/normalized_images/*")
                 .setInputs(inputs)
                 .setOutputs(outputs)
         );
 
         Skillset skillset = new Skillset()
             .setName("ocr-skillset")
-            .setDescription("Skillset for testing default configuration")
+            .setDescription("Extracts text (plain and structured) from image.")
             .setSkills(skills);
 
         System.out.println(String.format("Creating OCR skillset '%s'", skillset.getName()));
