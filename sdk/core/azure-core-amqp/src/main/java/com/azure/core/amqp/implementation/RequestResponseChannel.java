@@ -181,11 +181,6 @@ public class RequestResponseChannel implements Disposable {
                 "Cannot send a message when request response channel is disposed.")));
         }
 
-        if (!hasOpened.getAndSet(true)) {
-            sendLink.open();
-            receiveLink.open();
-        }
-
         if (message == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("message cannot be null"));
         }
@@ -210,28 +205,29 @@ public class RequestResponseChannel implements Disposable {
                         logger.verbose("Scheduling on dispatcher. Message Id {}", messageId);
                         unconfirmedSends.putIfAbsent(messageId, sink);
 
+                        // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
+                        // encounter a race condition. So, we are forced to use the dispatcher.
                         provider.getReactorDispatcher().invoke(() -> {
-                            send(message);
+                            if (!hasOpened.getAndSet(true)) {
+                                sendLink.open();
+                                receiveLink.open();
+                            }
+
+                            sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
+
+                            final int payloadSize = messageSerializer.getSize(message)
+                                + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
+                            final byte[] bytes = new byte[payloadSize];
+                            final int encodedSize = message.encode(bytes, 0, payloadSize);
+
+                            receiveLink.flow(1);
+                            sendLink.send(bytes, 0, encodedSize);
+                            sendLink.advance();
                         });
                     } catch (IOException e) {
                         sink.error(e);
                     }
                 }));
-    }
-
-    // Not thread-safe This must be invoked from reactor/dispatcher thread. And assumes that this is run on a link
-    // that is open.
-    private void send(final Message message) {
-        sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
-
-        final int payloadSize = messageSerializer.getSize(message)
-            + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
-        final byte[] bytes = new byte[payloadSize];
-        final int encodedSize = message.encode(bytes, 0, payloadSize);
-
-        receiveLink.flow(1);
-        sendLink.send(bytes, 0, encodedSize);
-        sendLink.advance();
     }
 
     private Message decodeDelivery(Delivery delivery) {
