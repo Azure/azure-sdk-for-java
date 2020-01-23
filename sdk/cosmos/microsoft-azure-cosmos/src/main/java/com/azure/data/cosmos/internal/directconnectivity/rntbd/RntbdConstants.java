@@ -3,7 +3,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
-import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -619,7 +619,7 @@ final class RntbdConstants {
                 case 0x001D:
                     return RntbdResourceType.UserDefinedType;
             }
-            throw new IllegalArgumentException(Utils.lenientFormat("id: %s", id));
+            throw new IllegalArgumentException(Strings.lenientFormat("id: %s", id));
         }
 
         public short id() {

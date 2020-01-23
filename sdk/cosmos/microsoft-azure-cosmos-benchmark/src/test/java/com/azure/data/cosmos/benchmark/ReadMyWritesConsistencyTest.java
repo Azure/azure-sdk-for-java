@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static com.azure.data.cosmos.internal.Utils.lenientFormat;
+import static com.azure.data.cosmos.internal.Strings.lenientFormat;
 
 public class ReadMyWritesConsistencyTest {
 

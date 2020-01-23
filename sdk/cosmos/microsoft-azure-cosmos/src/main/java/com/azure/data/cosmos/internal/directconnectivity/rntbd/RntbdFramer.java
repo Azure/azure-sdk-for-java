@@ -3,7 +3,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
-import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.Strings;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
 
@@ -26,14 +26,14 @@ final class RntbdFramer {
         final long length = in.getUnsignedIntLE(start);
 
         if (length > Integer.MAX_VALUE) {
-            final String reason = Utils.lenientFormat("Head frame length exceeds Integer.MAX_VALUE, %s: %s",
+            final String reason = Strings.lenientFormat("Head frame length exceeds Integer.MAX_VALUE, %s: %s",
                 Integer.MAX_VALUE, length
             );
             throw new CorruptedFrameException(reason);
         }
 
         if (length < Integer.BYTES) {
-            final String reason = Utils.lenientFormat("Head frame length is less than size of length field, %s: %s",
+            final String reason = Strings.lenientFormat("Head frame length is less than size of length field, %s: %s",
                 Integer.BYTES, length
             );
             throw new CorruptedFrameException(reason);
@@ -61,7 +61,7 @@ final class RntbdFramer {
         final long length = in.getUnsignedIntLE(start);
 
         if (length > Integer.MAX_VALUE) {
-            final String reason = Utils.lenientFormat("Payload frame length exceeds Integer.MAX_VALUE, %s: %s",
+            final String reason = Strings.lenientFormat("Payload frame length exceeds Integer.MAX_VALUE, %s: %s",
                 Integer.MAX_VALUE, length
             );
             throw new CorruptedFrameException(reason);

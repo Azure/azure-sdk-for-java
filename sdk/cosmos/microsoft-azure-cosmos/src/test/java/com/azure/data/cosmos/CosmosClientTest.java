@@ -3,7 +3,7 @@
 
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.Strings;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -34,7 +34,7 @@ public abstract class CosmosClientTest implements ITest {
 
     @BeforeMethod(alwaysRun = true)
     public final void setTestName(Method method) {
-        String testClassAndMethodName = Utils.lenientFormat("%s::%s",
+        String testClassAndMethodName = Strings.lenientFormat("%s::%s",
                 method.getDeclaringClass().getSimpleName(),
                 method.getName());
 
@@ -43,7 +43,7 @@ public abstract class CosmosClientTest implements ITest {
                     ? "Direct " + this.clientBuilder.configs().getProtocol()
                     : "Gateway";
 
-            this.testName = Utils.lenientFormat("%s[%s with %s consistency]",
+            this.testName = Strings.lenientFormat("%s[%s with %s consistency]",
                     testClassAndMethodName,
                     connectionMode,
                     clientBuilder.consistencyLevel());

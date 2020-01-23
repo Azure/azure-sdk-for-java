@@ -3,6 +3,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
+import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.internal.Utils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -65,7 +66,7 @@ final class RntbdResponseStatus {
         final long length = in.readUnsignedIntLE();
 
         if (!(LENGTH <= length && length <= Integer.MAX_VALUE)) {
-            final String reason = Utils.lenientFormat("frame length: %s", length);
+            final String reason = Strings.lenientFormat("frame length: %s", length);
             throw new CorruptedFrameException(reason);
         }
 
@@ -73,7 +74,7 @@ final class RntbdResponseStatus {
         final HttpResponseStatus status = HttpResponseStatus.valueOf(code);
 
         if (status == null) {
-            final String reason = Utils.lenientFormat("status code: %s", code);
+            final String reason = Strings.lenientFormat("status code: %s", code);
             throw new CorruptedFrameException(reason);
         }
 

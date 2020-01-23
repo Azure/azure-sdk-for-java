@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.azure.data.cosmos.internal.Utils.lenientFormat;
+import static com.azure.data.cosmos.internal.Strings.lenientFormat;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class RntbdObjectMapper {

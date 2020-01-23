@@ -13,7 +13,7 @@ import java.util.stream.Collector;
 
 import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.azure.data.cosmos.internal.Utils.lenientFormat;
+import static com.azure.data.cosmos.internal.Strings.lenientFormat;
 
 @SuppressWarnings("UnstableApiUsage")
 abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {

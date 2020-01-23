@@ -4,7 +4,7 @@
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.Strings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.netty.buffer.ByteBuf;
 
@@ -64,7 +64,7 @@ public final class RntbdRequest {
         final int observedLength = in.readerIndex() - start;
 
         if (observedLength != expectedLength) {
-            final String reason = Utils.lenientFormat("expectedLength=%s, observedLength=%s", expectedLength, observedLength);
+            final String reason = Strings.lenientFormat("expectedLength=%s, observedLength=%s", expectedLength, observedLength);
             throw new IllegalStateException(reason);
         }
 
