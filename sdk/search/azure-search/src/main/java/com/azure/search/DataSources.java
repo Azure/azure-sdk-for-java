@@ -37,14 +37,24 @@ public class DataSources {
         String description,
         DataChangeDetectionPolicy changeDetectionPolicy,
         DataDeletionDetectionPolicy deletionDetectionPolicy) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            throw new IllegalArgumentException("name cannot be null or empty");
+        }
+        if (CoreUtils.isNullOrEmpty(sqlConnectionString)) {
+            throw new IllegalArgumentException("sqlConnectionString cannot be null or empty");
+        }
+        if (CoreUtils.isNullOrEmpty(tableOrViewName)) {
+            throw new IllegalArgumentException("tableOrViewName cannot be null or empty");
+        }
+
         return new DataSource()
             .setName(name)
             .setType(DataSourceType.AZURE_SQL)
             .setCredentials(new DataSourceCredentials().setConnectionString(sqlConnectionString))
             .setContainer(new DataContainer().setName(tableOrViewName))
             .setDescription(description)
-            .setDataDeletionDetectionPolicy(deletionDetectionPolicy)
-            .setDataChangeDetectionPolicy(changeDetectionPolicy);
+            .setDataChangeDetectionPolicy(changeDetectionPolicy)
+            .setDataDeletionDetectionPolicy(deletionDetectionPolicy);
     }
 
     /**
@@ -84,6 +94,15 @@ public class DataSources {
         String pathPrefix,
         String description,
         DataDeletionDetectionPolicy deletionDetectionPolicy) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            throw new IllegalArgumentException("name cannot be null or empty");
+        }
+        if (CoreUtils.isNullOrEmpty(storageConnectionString)) {
+            throw new IllegalArgumentException("storageConnectionString cannot be null or empty");
+        }
+        if (CoreUtils.isNullOrEmpty(containerName)) {
+            throw new IllegalArgumentException("containerName cannot be null or empty");
+        }
         return new DataSource()
             .setName(name)
             .setType(DataSourceType.AZURE_BLOB)
@@ -215,12 +234,12 @@ public class DataSources {
             .setContainer(new DataContainer()
                 .setName(collectionName)
                 .setQuery(query))
-            .setDescription(description)
-            .setDataDeletionDetectionPolicy(deletionDetectionPolicy)
             .setDataChangeDetectionPolicy(
                 useChangeDetection
                     ? new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts")
-                    : null);
+                    : null)
+            .setDescription(description)
+            .setDataDeletionDetectionPolicy(deletionDetectionPolicy);
     }
 
     /**
