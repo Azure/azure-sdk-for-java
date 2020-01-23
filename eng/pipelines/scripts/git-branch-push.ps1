@@ -100,8 +100,7 @@ param(
     }
 }
 
-#git remote add azure-sdk-fork https://$(azuresdk-github-pat)@github.com/${{ parameters.PROwner }}/${{ parameters.RepoName }}.git
-$exitCode = Invoke-Git "remote add azure-sdk-fork https://$($AuthToken)@github.com/$($PROwner)/$($RepoName).git" $ShowCommands
+$exitCode = Invoke-Git "remote add azure-sdk-fork https://github.com/Azure/azure-sdk-for-java.git" $ShowCommands
 if ($exitCode -ne 0)
 {
     Write-Error "Unable to add remote, see command output above."
