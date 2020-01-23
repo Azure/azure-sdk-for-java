@@ -82,7 +82,7 @@ param(
         }
         else
         {
-            Get-Content $path | Select-Object -First 1
+            Write-Error (Get-Content $path).ToString()
         }
         return $exit
     }
@@ -104,26 +104,30 @@ param(
 $exitCode = Invoke-Git "remote add azure-sdk-fork https://$($AuthToken)@github.com/$($PROwner)/$($RepoName).git" $ShowCommands
 if ($exitCode -ne 0)
 {
-    # report an error and exit
+    Write-Error "Unable to add remote, see command output above."
+    exit $exitCode
 }
 
 $exitCode = Invoke-Git "fetch azure-sdk-fork" $ShowCommands
 if ($exitCode -ne 0)
 {
-    # report an error and exit
+    Write-Error "Unable to fetch remote, see command output above."
+    exit $exitCode
 }
 
 $exitCode = Invoke-Git "checkout -b $PRBranchName" $ShowCommands
 if ($exitCode -ne 0)
 {
-    # report an error and exit
+    Write-Error "Unable to create branch, see command output above."
+    exit $exitCode
 }
 
 #echo "git -c user.name=""azure-sdk"" -c user.email=""azuresdk@microsoft.com"" commit -am ""${{ parameters.CommitMsg }}"""
 $exitCode = Invoke-Git "-c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`"" $ShowCommands
 if ($exitCode -ne 0)
 {
-    # report an error and exit
+    Write-Error "Unable to add files and create commit, see command output above."
+    exit $exitCode
 }
 
 # Number of times to try this operation, this should be equal or greater than the highest number
@@ -143,7 +147,21 @@ do
         $needsRetry = $true
         Write-Host "Need to fetch and rebase attempt number=$($tryNumber)"
         $exitCode = Invoke-Git "fetch azure-sdk-fork" $ShowCommands
+        if ($exitCode -ne 0)
+        {
+            Write-Error "Unable to fetch remote, see command output above."
+        }
         $exitCode = Invoke-Git "rebase azure-sdk-fork/$($PRBranchName)" $ShowCommands
+        if ($exitCode -ne 0)
+        {
+            Write-Error "Unable to rebase, see command output above."
+        }
     }
 
 } while($needsRetry -and $tryNumber -le $numberOfRetries) 
+
+if ($exitCode -ne 0)
+{
+    Write-Error "Unable to push commit after $($tryNumber) retries, see command output above."
+    exit $exitCode
+}
