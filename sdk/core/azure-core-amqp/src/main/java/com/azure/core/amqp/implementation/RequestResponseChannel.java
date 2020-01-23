@@ -26,6 +26,7 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -195,13 +196,16 @@ public class RequestResponseChannel implements Disposable {
         }
 
         if (message == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message cannot be null"));
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("message cannot be null")));
         }
         if (message.getMessageId() != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message.getMessageId() should be null"));
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("message.getMessageId() should be null")));
         }
         if (message.getReplyTo() != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message.getReplyTo() should be null"));
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("message.getReplyTo() should be null")));
         }
 
         final UnsignedLong messageId = UnsignedLong.valueOf(requestId.incrementAndGet());
