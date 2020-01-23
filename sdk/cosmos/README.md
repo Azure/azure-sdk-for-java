@@ -224,6 +224,47 @@ and add the following dependency to your project maven dependencies:
 
 For other platforms (Redhat, Windows, Mac, etc) please refer to these instructions https://netty.io/wiki/forked-tomcat-native.html
 
+### Using system properties to modify default Direct TCP options
+
+We have added the ability to modify the default Direct TCP options utilized by the SDK. In priority order we will take default Direct TCP options from:
+
+1. The JSON value of system property `azure.cosmos.directTcp.defaultOptions`.
+   Example: 
+   ```bash
+   java -Dazure.cosmos.directTcp.defaultOptions={\"idleEndpointTimeout\":\"PT24H\"} -jar target/cosmosdb-sdk-testing-1.0-jar-with-dependencies.jar Direct 10 0 Read
+   ```
+
+2. The contents of the JSON file located by system property `azure.cosmos.directTcp.defaultOptionsFile`.
+   Example: 
+   ```
+   java -Dazure.cosmos.directTcp.defaultOptionsFile=/path/to/default/options/file -jar Direct 10 0 Query
+   ```
+
+3. The contents of the JSON resource file named `azure.cosmos.directTcp.defaultOptions.json`.
+   Specifically, the resource file is read from this stream: 
+   ```java
+   RntbdTransportClient.class.getClassLoader().getResourceAsStream("azure.cosmos.directTcp.defaultOptions.json")
+   ```
+   Example: Contents of resource file `azure.cosmos.directTcp.defaultOptions.json`.
+   ```json
+   {
+     "bufferPageSize": 8192,
+     "connectionTimeout": "PT1M",
+     "idleChannelTimeout": "PT0S",
+     "idleEndpointTimeout": "PT1M10S",
+     "maxBufferCapacity": 8388608,
+     "maxChannelsPerEndpoint": 10,
+     "maxRequestsPerChannel": 30,
+     "receiveHangDetectionTime": "PT1M5S",
+     "requestExpiryInterval": "PT5S",
+     "requestTimeout": "PT1M",
+     "requestTimerResolution": "PT0.5S",
+     "sendHangDetectionTime": "PT10S",
+     "shutdownTimeout": "PT15S"
+   }
+
+Values that are in error are ignored.
+
 ### Common Perf Tips
 
 There is a set of common perf tips written for our Java SDK. It is available [here](https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-async-java).
