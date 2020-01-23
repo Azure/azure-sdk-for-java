@@ -74,6 +74,7 @@ param(
         $path = [System.IO.Path]::GetTempFileName()
 
         Write-Host "git $Command"
+        Write-Host "JRS git $Command 2>&1 $path"
         Invoke-Expression "git $Command 2>&1 $path"
         $exit = $LASTEXITCODE
         if ( $exit -gt 0 )
@@ -99,7 +100,7 @@ param(
         }
     }
 }
-
+# git remote add azure-sdk-fork https://github.com/Azure/azure-sdk-for-java
 $exitCode = Invoke-Git "remote add azure-sdk-fork https://github.com/Azure/azure-sdk-for-java.git" $ShowCommands
 if ($exitCode -ne 0)
 {
