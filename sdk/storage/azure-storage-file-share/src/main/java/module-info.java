@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 
 module com.azure.storage.file.share {
-    requires transitive com.azure.core;
     requires transitive com.azure.storage.common;
 
-    requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.dataformat.xml;
 
     exports com.azure.storage.file.share;
