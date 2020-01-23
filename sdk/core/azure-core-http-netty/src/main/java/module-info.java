@@ -10,7 +10,6 @@ module com.azure.http.netty {
     requires io.netty.handler;
     requires io.netty.codec;
     requires io.netty.codec.http;
-    requires org.reactivestreams;
     requires io.netty.handler.proxy;
 
     exports com.azure.core.http.netty;
