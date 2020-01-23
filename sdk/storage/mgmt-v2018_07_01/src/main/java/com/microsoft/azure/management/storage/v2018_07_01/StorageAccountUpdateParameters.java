@@ -21,7 +21,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 public class StorageAccountUpdateParameters {
     /**
      * Gets or sets the SKU name. Note that the SKU name cannot be updated to
-     * Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those sku
+     * Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU
      * names be updated to any other value.
      */
     @JsonProperty(value = "sku")
@@ -93,7 +93,7 @@ public class StorageAccountUpdateParameters {
     private Kind kind;
 
     /**
-     * Get gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those sku names be updated to any other value.
+     * Get gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
      *
      * @return the sku value
      */
@@ -102,7 +102,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those sku names be updated to any other value.
+     * Set gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
      *
      * @param sku the sku value to set
      * @return the StorageAccountUpdateParameters object itself.
