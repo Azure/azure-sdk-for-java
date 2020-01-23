@@ -3,23 +3,19 @@
 
 package com.azure.cosmos;
 
-public class CosmosItemResponse extends CosmosResponse<CosmosItemProperties> {
+public class CosmosItemResponse<T> extends CosmosResponse<CosmosItemProperties> {
     private final CosmosAsyncItemResponse responseWrapper;
-    private final CosmosItem item;
 
-
-    CosmosItemResponse(CosmosAsyncItemResponse response, PartitionKey partitionKey, CosmosContainer container) {
+    CosmosItemResponse(CosmosAsyncItemResponse response) {
         super(response.resourceResponseWrapper, response.getProperties());
         this.responseWrapper = response;
-        if (responseWrapper.getItem() != null) {
-            this.item = new CosmosItem(responseWrapper.getItem().getId(), partitionKey, container,
-                responseWrapper.getItem());
-        } else {
-            // Delete will have null container client in response
-            this.item = null;
-        }
     }
 
+    @SuppressWarnings("unchecked")
+    public T getResource(){
+        return (T) responseWrapper.getResource();
+    }
+    
     /**
      * Gets the itemSettings
      *
@@ -29,12 +25,4 @@ public class CosmosItemResponse extends CosmosResponse<CosmosItemProperties> {
         return responseWrapper.getProperties();
     }
 
-    /**
-     * Gets the CosmosAsyncItem
-     *
-     * @return the cosmos item
-     */
-    public CosmosItem getItem() {
-        return item;
-    }
 }

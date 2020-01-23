@@ -50,7 +50,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"simple"})
     public void gatewayDiagnostics() throws CosmosClientException {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
-        CosmosItemResponse createResponse = container.createItem(cosmosItemProperties);
+        CosmosItemResponse<CosmosItemProperties> createResponse = container.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
         assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.GATEWAY);
         assertThat(diagnostics).contains("Gateway statistics");
@@ -61,12 +61,15 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"simple"})
     public void gatewayDiagnosticsOnException() throws CosmosClientException {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
-        CosmosItemResponse createResponse = null;
+        CosmosItemResponse<CosmosItemProperties> createResponse = null;
         try {
             createResponse = this.container.createItem(cosmosItemProperties);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             cosmosItemRequestOptions.setPartitionKey(new PartitionKey("wrongPartitionKey"));
-            CosmosItemResponse readResponse = this.container.getItem(createResponse.getItem().getId(), null).read(cosmosItemRequestOptions);
+            CosmosItemResponse<CosmosItemProperties> readResponse =
+                this.container.readItem(createResponse.getProperties().getId(), 
+                                        new PartitionKey("wrongPartitionKey"), 
+                                        CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosClientException exception) {
             String diagnostics = exception.getCosmosResponseDiagnostics().toString();
@@ -82,7 +85,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"simple"})
     public void systemDiagnosticsForSystemStateInformation() throws CosmosClientException {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
-        CosmosItemResponse createResponse = this.container.createItem(cosmosItemProperties);
+        CosmosItemResponse<CosmosItemProperties> createResponse = this.container.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
         assertThat(diagnostics).contains("System State Information ------");
         assertThat(diagnostics).contains("Used Memory :");
@@ -96,7 +99,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     public void directDiagnostics() throws CosmosClientException {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
-        CosmosItemResponse createResponse = cosmosContainer.createItem(cosmosItemProperties);
+        CosmosItemResponse<CosmosItemProperties> createResponse = cosmosContainer.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
         assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.DIRECT);
         assertThat(diagnostics).contains("StoreResponseStatistics");
@@ -109,12 +112,15 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     public void directDiagnosticsOnException() throws CosmosClientException {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
-        CosmosItemResponse createResponse = null;
+        CosmosItemResponse<CosmosItemProperties> createResponse = null;
         try {
             createResponse = this.container.createItem(cosmosItemProperties);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             cosmosItemRequestOptions.setPartitionKey(new PartitionKey("wrongPartitionKey"));
-            CosmosItemResponse readResponse = cosmosContainer.getItem(createResponse.getItem().getId(), null).read(cosmosItemRequestOptions);
+            CosmosItemResponse<CosmosItemProperties> readResponse =
+                cosmosContainer.readItem(createResponse.getProperties().getId(), 
+                                        new PartitionKey("wrongPartitionKey"),
+                                        CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosClientException exception) {
             String diagnostics = exception.getCosmosResponseDiagnostics().toString();

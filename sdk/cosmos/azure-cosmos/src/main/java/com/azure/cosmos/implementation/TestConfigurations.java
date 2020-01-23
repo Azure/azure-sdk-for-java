@@ -32,7 +32,7 @@ public final class TestConfigurations {
         System.getProperty("SECONDARY_ACCOUNT_KEY",
             StringUtils.defaultString(Strings.emptyToNull(
                 System.getenv().get("SECONDARY_ACCOUNT_KEY")),
-                "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="));
+                "l0NsGbvw9aRc1ox4YEuuQwU1QFc0ZpmtMbgx9F7t5BRfuS8wZLxy8VW9VNVymVzZ4BHl02YErL55wRbLlQEChQ=="));
 
     public static String HOST =
             System.getProperty("ACCOUNT_HOST",
