@@ -12,6 +12,10 @@
  * the License.
  */
 
+/*
+ * Portions Copyright (c) Microsoft Corporation
+ */
+
 package com.azure.data.cosmos.internal.guava27;
 
 import org.slf4j.Logger;
@@ -102,7 +106,6 @@ public class Strings {
             // Default toString() behavior - see Object.toString()
             String objectToString =
                 o.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(o));
-            // Logger is created inline with fixed name to avoid forcing Proguard to create another class.
             logger.warn("Exception during lenientFormat for " + objectToString, e);
             return "<" + objectToString + " threw " + e.getClass().getName() + ">";
         }
