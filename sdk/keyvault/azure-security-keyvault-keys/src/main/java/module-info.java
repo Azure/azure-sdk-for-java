@@ -6,7 +6,6 @@ module com.azure.security.keyvault.keys {
 
     requires java.xml.crypto;
     requires com.fasterxml.jackson.annotation;
-    requires com.fasterxml.jackson.databind;
 
     exports com.azure.security.keyvault.keys.cryptography;
     exports com.azure.security.keyvault.keys.cryptography.models;

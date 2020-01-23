@@ -6,9 +6,10 @@ module com.azure.core {
     requires transitive org.reactivestreams;
     requires transitive org.slf4j;
 
-    requires com.fasterxml.jackson.core;
+    requires transitive com.fasterxml.jackson.core;
+    requires transitive com.fasterxml.jackson.databind;
+
     requires com.fasterxml.jackson.annotation;
-    requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.dataformat.xml;
     requires com.fasterxml.jackson.datatype.jsr310;
 
