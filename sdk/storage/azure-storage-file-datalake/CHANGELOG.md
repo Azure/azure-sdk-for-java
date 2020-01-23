@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.0.0-beta.11 (Unreleased)
+- Added ability to rename files and directories across file systems.
 - Added DataLakeFileSystem.getRootDirectory methods to get the root directory in a file system.
 
 ## 12.0.0-beta.10 (2020-01-15)
