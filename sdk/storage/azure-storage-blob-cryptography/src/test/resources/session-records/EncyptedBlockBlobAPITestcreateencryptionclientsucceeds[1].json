@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtccreateencryptionclientsucceeds02247593d54582036c?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e8ae4cd0-af84-4aa7-8458-21223dfc5d4e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7A0531A80E491",
+      "Last-Modified" : "Thu, 23 Jan 2020 22:25:08 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "cbb79fcf-001e-0016-383b-d264ec000000",
+      "Date" : "Thu, 23 Jan 2020 22:25:07 GMT",
+      "x-ms-client-request-id" : "e8ae4cd0-af84-4aa7-8458-21223dfc5d4e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtccreateencryptionclientsucceeds02247593d54582036c?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3df713d7-0f68-4873-9101-7c58d32816a2"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "cbb79fd1-001e-0016-393b-d264ec000000",
+      "Date" : "Thu, 23 Jan 2020 22:25:07 GMT",
+      "x-ms-client-request-id" : "3df713d7-0f68-4873-9101-7c58d32816a2"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "f0267e68-adfd-413e-aef5-e3d643d1e808", "jtccreateencryptionclientsucceeds02247593d54582036c", "javablobcreateencryptionclientsucceeds198492056001e8a", "javablobcreateencryptionclientsucceeds260238fd5513853", "javablobcreateencryptionclientsucceeds3539973ea6a1290", "javablobcreateencryptionclientsucceeds435107cca2f64bf" ]
+}

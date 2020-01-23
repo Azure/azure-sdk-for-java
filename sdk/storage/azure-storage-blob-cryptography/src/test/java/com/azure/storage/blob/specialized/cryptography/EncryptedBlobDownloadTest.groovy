@@ -49,7 +49,7 @@ class EncryptedBlobDownloadTest extends APISpec {
     def setup() {
 
         keyId = "keyId"
-        fakeKey = new FakeKey(keyId, resourceNamer.randomName("fakekey", 256).getBytes())
+        fakeKey = new FakeKey(keyId, getRandomByteArray(256))
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
         blobName = generateBlobName()
@@ -69,7 +69,6 @@ class EncryptedBlobDownloadTest extends APISpec {
         ebc = builder.buildEncryptedBlobClient()
     }
 
-    @Requires({ liveMode() })
     def "Download all null"() {
         when:
         def stream = new ByteArrayOutputStream()

@@ -43,7 +43,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def setup() {
         keyId = "keyId"
-        fakeKey = new FakeKey(keyId, resourceNamer.randomName("fakekey", 256).getBytes())
+        fakeKey = new FakeKey(keyId, getRandomByteArray(256))
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
         cc = getServiceClientBuilder(primaryCredential,
@@ -182,7 +182,35 @@ class EncyptedBlockBlobAPITest extends APISpec {
     // Tests upload and buffered upload with different bytebuffer sizes
     @Unroll
     def "Encryption"() {
-        when:
+        expect:
+        encryptionTestHelper(size, byteBufferCount)
+
+        where:
+        size              | byteBufferCount
+        5                 | 2                 // 0 Two buffers smaller than an encryption block.
+        8                 | 2                 // 1 Two buffers that equal an encryption block.
+        10                | 1                 // 2 One buffer smaller than an encryption block.
+        10                | 2                 // 3 A buffer that spans an encryption block.
+        16                | 1                 // 4 A buffer exactly the same size as an encryption block.
+        16                | 2                 // 5 Two buffers the same size as an encryption block.
+        20                | 1                 // 6 One buffer larger than an encryption block.
+        20                | 2                 // 7 Two buffers larger than an encryption block.
+        100               | 1                 // 8 One buffer containing multiple encryption blocks
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Encryption large"() {
+        expect:
+        encryptionTestHelper(size, byteBufferCount)
+
+        where:
+        size              | byteBufferCount
+        5 * Constants.KB  | Constants.KB      // 9 Large number of small buffers.
+        10 * Constants.MB | 2                 // 10 Small number of large buffers.
+    }
+
+    boolean encryptionTestHelper(int size, int byteBufferCount) {
         def byteBufferList = []
 
         /*
@@ -200,22 +228,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac.upload(flux, parallelTransferOptions).block()
         ByteBuffer outputByteBuffer = collectBytesInBuffer(beac.download()).block()
 
-        then:
-        compareListToBuffer(byteBufferList, outputByteBuffer)
-
-        where:
-        size              | byteBufferCount
-//        5                 | 2                 // 0 Two buffers smaller than an encryption block.
-//        8                 | 2                 // 1 Two buffers that equal an encryption block.
-//        10                | 1                 // 2 One buffer smaller than an encryption block.
-//        10                | 2                 // 3 A buffer that spans an encryption block.
-//        16                | 1                 // 4 A buffer exactly the same size as an encryption block.
-//        16                | 2                 // 5 Two buffers the same size as an encryption block.
-//        20                | 1                 // 6 One buffer larger than an encryption block.
-//        20                | 2                 // 7 Two buffers larger than an encryption block.
-//        100               | 1                 // 8 One buffer containing multiple encryption blocks
-        5 * Constants.KB  | Constants.KB      // 9 Large number of small buffers.
-        10 * Constants.MB | 2                 // 10 Small number of large buffers.
+        return compareListToBuffer(byteBufferList, outputByteBuffer)
     }
 
     // This test checks that HTTP headers are successfully set on the encrypted client
@@ -250,6 +263,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that metadata in encryption is successfully set
     @Unroll
+    @Requires({ liveMode() })
     def "Encryption metadata"() {
         setup:
         Map<String, String> metadata = new HashMap<>()
@@ -351,6 +365,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks the upload to file method on an encrypted client
+    @Requires({ liveMode() })
     def "Encrypted upload file"() {
         setup:
         def file = getRandomFile(Constants.MB)
@@ -419,7 +434,36 @@ class EncyptedBlockBlobAPITest extends APISpec {
     // Tests key resolver
     @Unroll
     def "Key resolver used to decrypt data"() {
-        setup:
+        expect:
+        keyResolverTestHelper(size, byteBufferCount)
+
+        where:
+        size              | byteBufferCount
+        5                 | 2                 // 0 Two buffers smaller than an encryption block.
+        8                 | 2                 // 1 Two buffers that equal an encryption block.
+        10                | 1                 // 2 One buffer smaller than an encryption block.
+        10                | 2                 // 3 A buffer that spans an encryption block.
+        16                | 1                 // 4 A buffer exactly the same size as an encryption block.
+        16                | 2                 // 5 Two buffers the same size as an encryption block.
+        20                | 1                 // 6 One buffer larger than an encryption block.
+        20                | 2                 // 7 Two buffers larger than an encryption block.
+        100               | 1                 // 8 One buffer containing multiple encryption blocks
+    }
+
+    // Tests key resolver
+    @Unroll
+    @Requires({ liveMode() })
+    def "Key resolver used to decrypt data large"() {
+        expect:
+        keyResolverTestHelper(size, byteBufferCount)
+
+        where:
+        size              | byteBufferCount
+        5 * Constants.KB  | Constants.KB      // 9 Large number of small buffers.
+        10 * Constants.MB | 2                 // 10 Small number of large buffers.
+    }
+
+    boolean keyResolverTestHelper(int size, int byteBufferCount) {
         def blobName = generateBlobName()
 
         EncryptedBlobAsyncClient decryptResolverClient =
@@ -432,7 +476,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, primaryCredential, cc.getBlobContainerUrl())
                 .blobName(blobName)
                 .buildEncryptedBlobAsyncClient()
-        when:
+
         def byteBufferList = []
 
         /*
@@ -449,25 +493,11 @@ class EncyptedBlockBlobAPITest extends APISpec {
         encryptClient.upload(flux, parallelTransferOptions).block()
         ByteBuffer outputByteBuffer = collectBytesInBuffer(decryptResolverClient.download()).block()
 
-        then:
-        compareListToBuffer(byteBufferList, outputByteBuffer)
-
-        where:
-        size              | byteBufferCount
-        5                 | 2                 // 0 Two buffers smaller than an encryption block.
-        8                 | 2                 // 1 Two buffers that equal an encryption block.
-        10                | 1                 // 2 One buffer smaller than an encryption block.
-        10                | 2                 // 3 A buffer that spans an encryption block.
-        16                | 1                 // 4 A buffer exactly the same size as an encryption block.
-        16                | 2                 // 5 Two buffers the same size as an encryption block.
-        20                | 1                 // 6 One buffer larger than an encryption block.
-        20                | 2                 // 7 Two buffers larger than an encryption block.
-        100               | 1                 // 8 One buffer containing multiple encryption blocks
-        5 * Constants.KB  | Constants.KB      // 9 Large number of small buffers.
-        10 * Constants.MB | 2                 // 10 Small number of large buffers.
+        return compareListToBuffer(byteBufferList, outputByteBuffer)
     }
 
     // Upload with old SDK download with new SDK.
+    @Requires({ liveMode() })
     def "Cross platform test upload old download new"() {
         setup:
         def blobName = generateBlobName()
@@ -500,6 +530,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with new SDK download with old SDK.
+    @Requires({ liveMode() })
     def "Cross platform test upload new download old"() {
         setup:
         def blobName = generateBlobName()

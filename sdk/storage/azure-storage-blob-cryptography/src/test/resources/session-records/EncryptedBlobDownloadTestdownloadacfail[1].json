@@ -1,0 +1,93 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtcdownloadacfail159081953cf8eb9b1747f5a5ae?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "05f33a98-7847-4692-b654-ed3f025896ea"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7A05317B91212",
+      "Last-Modified" : "Thu, 23 Jan 2020 22:25:03 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "cbb79f75-001e-0016-723b-d264ec000000",
+      "Date" : "Thu, 23 Jan 2020 22:25:03 GMT",
+      "x-ms-client-request-id" : "05f33a98-7847-4692-b654-ed3f025896ea"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtcdownloadacfail159081953cf8eb9b1747f5a5ae/javablobdownloadacfail020079f077da0bf983477aa",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9eee4510-9423-4fef-b984-3f5d489c3a8b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "x-ms-error-code" : "BlobNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "cbb79f77-001e-0016-733b-d264ec000000",
+      "Date" : "Thu, 23 Jan 2020 22:25:03 GMT",
+      "x-ms-client-request-id" : "9eee4510-9423-4fef-b984-3f5d489c3a8b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtcdownloadacfail159081953cf8eb9b1747f5a5ae/javablobdownloadacfail020079f077da0bf983477aa",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "364be5c7-35de-4a3e-b879-76f737aac54b",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "QwS1S3rJTRQ=",
+      "Last-Modified" : "Thu, 23 Jan 2020 22:25:03 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 23 Jan 2020 22:25:03 GMT",
+      "Content-MD5" : "D5r/7T6OGSAa8Oo9Jm01bg==",
+      "ETag" : "0x8D7A05317D3892F",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "cbb79f78-001e-0016-743b-d264ec000000",
+      "x-ms-client-request-id" : "364be5c7-35de-4a3e-b879-76f737aac54b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtcdownloadacfail159081953cf8eb9b1747f5a5ae/javablobdownloadacfail020079f077da0bf983477aa",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d649c999-3365-470d-a91f-2ef9ccb931fc"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "x-ms-error-code" : "ConditionNotMet",
+      "retry-after" : "0",
+      "Content-Length" : "252",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "cbb79f79-001e-0016-753b-d264ec000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:cbb79f79-001e-0016-753b-d264ec000000\nTime:2020-01-23T22:25:03.9569109Z</Message></Error>",
+      "Date" : "Thu, 23 Jan 2020 22:25:03 GMT",
+      "x-ms-client-request-id" : "d649c999-3365-470d-a91f-2ef9ccb931fc",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "ad2193f7-3364-4a98-b05d-57250925e41d", "javablobdownloadacfail020079f077da0bf983477aa", "jtcdownloadacfail159081953cf8eb9b1747f5a5ae" ]
+}

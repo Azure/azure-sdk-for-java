@@ -8,7 +8,7 @@ class BlobCryptographyBuilderTest extends APISpec {
 
     def setup() {
         def keyId = "keyId"
-        def fakeKey = new FakeKey(keyId, resourceNamer.randomName("fakekey", 256).getBytes())
+        def fakeKey = new FakeKey(keyId, getRandomByteArray(256))
         def fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
         def sc = getServiceClientBuilder(primaryCredential,

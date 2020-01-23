@@ -1,0 +1,121 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtckeyresolverusedtodecryptdata074837bfb3d72d85564?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "eaa5509f-4721-400d-a8df-cca3c400574b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7A053250DB682",
+      "Last-Modified" : "Thu, 23 Jan 2020 22:25:26 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "cbb7a168-001e-0016-0e3c-d264ec000000",
+      "Date" : "Thu, 23 Jan 2020 22:25:25 GMT",
+      "x-ms-client-request-id" : "eaa5509f-4721-400d-a8df-cca3c400574b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtckeyresolverusedtodecryptdata074837bfb3d72d85564/javablobkeyresolverusedtodecryptdata39834187c66109ae",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "927f2f0a-44f5-4e57-9d52-849deb8b2eb6"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "x-ms-error-code" : "BlobNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "cbb7a16e-001e-0016-113c-d264ec000000",
+      "Date" : "Thu, 23 Jan 2020 22:25:25 GMT",
+      "x-ms-client-request-id" : "927f2f0a-44f5-4e57-9d52-849deb8b2eb6"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtckeyresolverusedtodecryptdata074837bfb3d72d85564/javablobkeyresolverusedtodecryptdata39834187c66109ae",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e37f0586-ff25-4ac2-ad48-6a99420ff55e",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "PP0TAvhjJ7A=",
+      "Last-Modified" : "Thu, 23 Jan 2020 22:25:26 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 23 Jan 2020 22:25:25 GMT",
+      "Content-MD5" : "871Tvx0NDaQ+rJNWuVm5MA==",
+      "ETag" : "0x8D7A0532527EF87",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "cbb7a171-001e-0016-143c-d264ec000000",
+      "x-ms-client-request-id" : "e37f0586-ff25-4ac2-ad48-6a99420ff55e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtckeyresolverusedtodecryptdata074837bfb3d72d85564/javablobkeyresolverusedtodecryptdata39834187c66109ae",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "bda17aed-71e3-49c8-9793-6cf85ec0df66"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Thu, 23 Jan 2020 22:25:26 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 23 Jan 2020 22:25:25 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Content-MD5" : "871Tvx0NDaQ+rJNWuVm5MA==",
+      "Accept-Ranges" : "bytes",
+      "x-ms-meta-encryptiondata" : "{\"EncryptionMode\":\"FullBlob\",\"WrappedContentKey\":{\"KeyId\":\"keyId\",\"EncryptedKey\":\"30OmSMg+1cJLZritoQa09f0ppfOAsA17283pWfqMA40=\",\"Algorithm\":\"keyWrapAlgorithm\"},\"EncryptionAgent\":{\"Protocol\":\"1.0\",\"EncryptionAlgorithm\":\"AES_CBC_256\"},\"ContentEncryptionIV\":\"5PHBArFp3zerqRdrGQXXGg==\",\"KeyWrappingMetadata\":{\"EncryptionLibrary\":\"JavaTrack212.4.0-beta.1\"}}",
+      "x-ms-server-encrypted" : "true",
+      "ETag" : "0x8D7A0532527EF87",
+      "Vary" : "Origin",
+      "x-ms-creation-time" : "Thu, 23 Jan 2020 22:25:26 GMT",
+      "Content-Length" : "112",
+      "x-ms-request-id" : "cbb7a172-001e-0016-153c-d264ec000000",
+      "Body" : "[102, 56, -53, 67, -124, 63, -17, -7, 22, 93, 59, -49, -6, 80, 76, -80, 78, 89, -61, 81, 5, 16, -62, -75, 89, -127, 40, 87, 14, 12, -118, -9, 119, 15, 64, -68, 21, -114, 96, -93, -69, 40, 76, 2, 70, 101, 104, -31, -9, 99, -22, 69, 103, 63, 84, 23, 98, 0, 115, -70, -32, -119, -113, 80, -35, -29, -47, -127, -27, -109, 80, -12, -74, -34, 14, -128, 110, 111, 116, 109, 25, 75, -91, 104, -124, 87, 60, 87, 30, 68, -111, -27, -80, -10, 105, 122, 29, -21, 120, -35, -117, 99, -91, -13, 46, 116, -113, 54, 41, 24, 107, -32]",
+      "x-ms-client-request-id" : "bda17aed-71e3-49c8-9793-6cf85ec0df66",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtckeyresolverusedtodecryptdata074837bfb3d72d85564?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6101294b-266e-4d16-aa49-3713e7fb8c58"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "cbb7a176-001e-0016-193c-d264ec000000",
+      "Date" : "Thu, 23 Jan 2020 22:25:25 GMT",
+      "x-ms-client-request-id" : "6101294b-266e-4d16-aa49-3713e7fb8c58"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "a737dca6-995d-4601-9e55-ca4f3d48b56d", "jtckeyresolverusedtodecryptdata074837bfb3d72d85564", "javablobkeyresolverusedtodecryptdata172855c09f4ebeb3", "javablobkeyresolverusedtodecryptdata27572683e24c3710", "javablobkeyresolverusedtodecryptdata39834187c66109ae", "a47ba773-0598-420a-85a4-22f5d5e93bf6" ]
+}
