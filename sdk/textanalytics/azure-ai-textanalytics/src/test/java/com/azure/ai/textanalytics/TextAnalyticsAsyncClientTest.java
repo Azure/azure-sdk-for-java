@@ -44,6 +44,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     static void afterAll() {
         StepVerifier.resetDefaultTimeout();
     }
+
     @Override
     protected void beforeTest() {
         client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
