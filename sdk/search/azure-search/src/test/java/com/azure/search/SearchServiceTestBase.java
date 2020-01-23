@@ -480,8 +480,8 @@ public abstract class SearchServiceTestBase extends TestBase {
      * @return the created data source
      */
     DataSource createBlobDataSource() {
-        String storageConnString = "";
-        String blobContainerDatasourceName = "";
+        String storageConnString = "connectionString";
+        String blobContainerDatasourceName = "container";
         if (!interceptorManager.isPlaybackMode()) {
 
             // First, we create a storage account
