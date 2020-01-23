@@ -21,6 +21,7 @@ import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -28,8 +29,9 @@ import java.util.List;
 /**
  * Contains helper methods for generating inputs for test methods
  */
-public final class TestUtils {
+final class TestUtils {
     private static final String DEFAULT_MODEL_VERSION = "2019-10-01";
+    static final Duration TIMEOUT = Duration.ofSeconds(30);
 
     static final List<String> SENTIMENT_INPUTS = Arrays.asList("The hotel was dark and unclean. The restaurant had amazing gnocchi.",
         "The restaurant had amazing gnocchi. The hotel was dark and unclean.");

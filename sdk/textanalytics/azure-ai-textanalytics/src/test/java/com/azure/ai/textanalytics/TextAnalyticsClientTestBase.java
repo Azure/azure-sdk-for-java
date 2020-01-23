@@ -62,7 +62,6 @@ import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
@@ -579,8 +578,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
         expected.forEach((key, expectedValue) -> {
             T actualValue = actual.get(key);
-
-            assertTrue(actual.containsKey(key));
             assertNotNull(actualValue);
 
             if (showStatistics) {
