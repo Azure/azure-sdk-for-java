@@ -25,9 +25,13 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.storage.v2019_06_01.StorageAccountListKeysResult;
 import com.microsoft.azure.management.storage.v2019_06_01.ListAccountSasResponse;
 import com.microsoft.azure.management.storage.v2019_06_01.ListServiceSasResponse;
+import com.microsoft.azure.management.storage.v2019_06_01.BlobRestoreStatus;
 import com.microsoft.azure.management.storage.v2019_06_01.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.v2019_06_01.AccountSasParameters;
 import com.microsoft.azure.management.storage.v2019_06_01.ServiceSasParameters;
+import org.joda.time.DateTime;
+import java.util.List;
+import com.microsoft.azure.management.storage.v2019_06_01.BlobRestoreRange;
 
 class StorageAccountsImpl extends GroupableResourcesCoreImpl<StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsInner, StorageManager>  implements StorageAccounts {
     protected StorageAccountsImpl(StorageManager manager) {
@@ -183,6 +187,18 @@ class StorageAccountsImpl extends GroupableResourcesCoreImpl<StorageAccount, Sto
     public Completable failoverAsync(String resourceGroupName, String accountName) {
         StorageAccountsInner client = this.inner();
         return client.failoverAsync(resourceGroupName, accountName).toCompletable();
+    }
+
+    @Override
+    public Observable<BlobRestoreStatus> restoreBlobRangesAsync(String resourceGroupName, String accountName, DateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
+        StorageAccountsInner client = this.inner();
+        return client.restoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges)
+        .map(new Func1<BlobRestoreStatusInner, BlobRestoreStatus>() {
+            @Override
+            public BlobRestoreStatus call(BlobRestoreStatusInner inner) {
+                return new BlobRestoreStatusImpl(inner, manager());
+            }
+        });
     }
 
     @Override

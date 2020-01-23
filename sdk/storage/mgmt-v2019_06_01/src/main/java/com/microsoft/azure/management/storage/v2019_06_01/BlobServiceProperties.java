@@ -17,7 +17,6 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2019_06_01.implementation.StorageManager;
-import com.microsoft.azure.management.storage.v2019_06_01.implementation.SkuInner;
 
 /**
  * Type representing BlobServiceProperties.
@@ -57,6 +56,11 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the restorePolicy value.
+     */
+    RestorePolicyProperties restorePolicy();
 
     /**
      * @return the sku value.
@@ -158,17 +162,29 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
         }
 
         /**
+         * The stage of the blobserviceproperties definition allowing to specify RestorePolicy.
+         */
+        interface WithRestorePolicy {
+            /**
+             * Specifies restorePolicy.
+             * @param restorePolicy The blob service properties for blob restore policy
+             * @return the next definition stage
+             */
+            WithCreate withRestorePolicy(RestorePolicyProperties restorePolicy);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<BlobServiceProperties>, DefinitionStages.WithAutomaticSnapshotPolicyEnabled, DefinitionStages.WithChangeFeed, DefinitionStages.WithCors, DefinitionStages.WithDefaultServiceVersion, DefinitionStages.WithDeleteRetentionPolicy {
+        interface WithCreate extends Creatable<BlobServiceProperties>, DefinitionStages.WithAutomaticSnapshotPolicyEnabled, DefinitionStages.WithChangeFeed, DefinitionStages.WithCors, DefinitionStages.WithDefaultServiceVersion, DefinitionStages.WithDeleteRetentionPolicy, DefinitionStages.WithRestorePolicy {
         }
     }
     /**
      * The template for a BlobServiceProperties update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<BlobServiceProperties>, UpdateStages.WithAutomaticSnapshotPolicyEnabled, UpdateStages.WithChangeFeed, UpdateStages.WithCors, UpdateStages.WithDefaultServiceVersion, UpdateStages.WithDeleteRetentionPolicy {
+    interface Update extends Appliable<BlobServiceProperties>, UpdateStages.WithAutomaticSnapshotPolicyEnabled, UpdateStages.WithChangeFeed, UpdateStages.WithCors, UpdateStages.WithDefaultServiceVersion, UpdateStages.WithDeleteRetentionPolicy, UpdateStages.WithRestorePolicy {
     }
 
     /**
@@ -233,6 +249,18 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
              * @return the next update stage
              */
             Update withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy);
+        }
+
+        /**
+         * The stage of the blobserviceproperties update allowing to specify RestorePolicy.
+         */
+        interface WithRestorePolicy {
+            /**
+             * Specifies restorePolicy.
+             * @param restorePolicy The blob service properties for blob restore policy
+             * @return the next update stage
+             */
+            Update withRestorePolicy(RestorePolicyProperties restorePolicy);
         }
 
     }
