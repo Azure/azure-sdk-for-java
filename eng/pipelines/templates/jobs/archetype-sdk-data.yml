@@ -2,7 +2,7 @@ parameters:
   SDKType: data
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
-  TestOptions: '$(DefaultOptions)'
+  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true'
   TestGoals: verify
   TestMatrix:
     Linux - Java 8:
@@ -132,7 +132,7 @@ jobs:
 
       - script: |
           pip install setuptools wheel
-          pip install doc-warden
+          pip install doc-warden==$(DocWardenVersion)
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
