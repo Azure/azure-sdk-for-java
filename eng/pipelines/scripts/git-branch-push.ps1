@@ -69,29 +69,31 @@ param(
         return 0
     }
 
-    try {
+    try 
+    {
         $exit = 0
         $path = [System.IO.Path]::GetTempFileName()
 
         Write-Host "git $Command"
-        Write-Host "JRS git $Command 2>&1 $path"
-        Invoke-Expression "git $Command 2>&1 $path"
+        Invoke-Expression "git $Command 2>&1 > $path"
         $exit = $LASTEXITCODE
-        if ( $exit -gt 0 )
+        # Verify that there's actually something to write before trying
+        # to access the contents of the file
+        if ((Test-Path $path) -and ((Get-Item $path).length -gt 0))
         {
-            Write-Error (Get-Content $path).ToString()
-        }
-        else
-        {
-            Write-Host (Get-Content $path).ToString()
+            if ( $exit -gt 0 )
+            {
+                Write-Error (Get-Content $path).ToString()
+            }
+            else
+            {
+                Write-Host (Get-Content $path).ToString()
+            }
         }
         return $exit
     }
-# If something fails with an exception then let it bubble up
-#    catch
-#    {
-#        Write-Host "Error: $_`n$($_.ScriptStackTrace)"
-#    }
+    # Don't bother trying to catch anything here, if something fails let it bubble up
+    # and fail the script since there's not a lot we can actually do about it.
     finally
     {
         if ( Test-Path $path )
