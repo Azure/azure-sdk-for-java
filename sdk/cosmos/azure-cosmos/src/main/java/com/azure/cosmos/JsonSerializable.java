@@ -92,7 +92,7 @@ public class JsonSerializable {
                         return value.asLong();
                     } else if (value.isDouble()) {
                         return value.asDouble();
-                    } else{
+                    } else {
                         return value;
                     }
                 case STRING:
@@ -552,7 +552,6 @@ public class JsonSerializable {
         if (CosmosItemProperties.class.isAssignableFrom(c)) {
             return (T) new CosmosItemProperties(this.toJson());
         }
-
         if (JsonSerializable.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
                 || Number.class.isAssignableFrom(c) || Boolean.class.isAssignableFrom(c)) {
             return c.cast(this.get(Constants.Properties.VALUE));
@@ -576,7 +575,7 @@ public class JsonSerializable {
             // POJO
             JsonSerializable.checkForValidPOJO(c);
             try {
-                return this.getMapper().readValue(this.toJson(), c);
+                return this.getMapper().treeToValue(propertyBag, c);
             } catch (IOException e) {
                 throw new IllegalStateException("Failed to get POJO.", e);
             }
