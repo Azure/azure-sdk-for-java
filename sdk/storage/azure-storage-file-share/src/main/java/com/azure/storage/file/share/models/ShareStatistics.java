@@ -28,7 +28,7 @@ public final class ShareStatistics {
      * @param shareUsageInBytes Size in bytes of the Share
      */
     public ShareStatistics(long shareUsageInBytes) {
-        this.shareUsageInGB = (int) Math.ceil(shareUsageInBytes / Constants.GB);
+        this.shareUsageInGB = (int) Math.ceil((double) shareUsageInBytes / Constants.GB);
         this.shareUsageInBytes = shareUsageInBytes;
     }
 
