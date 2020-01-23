@@ -28,6 +28,7 @@ public class DataSources {
      * Note that only high watermark change detection
      * is allowed for Azure SQL when deletion detection is enabled.
      * @param deletionDetectionPolicy Optional. The data deletion detection policy for the data source.
+     * @throws IllegalArgumentException if name, tableName or ConnectionString are null or empty.
      * @return A new DataSource instance.
      */
     public static DataSource azureSql(
@@ -85,6 +86,7 @@ public class DataSources {
      * organized into "virtual folders", for example.
      * @param description Optional. Description of the data source
      * @param deletionDetectionPolicy Optional. The data deletion detection policy for the data source
+     * @throws IllegalArgumentException if name, containerName or storageConnectionString are null or empty.
      * @return A new Azure Blob DataSource instance.
      */
     public static DataSource azureBlobStorage(
