@@ -35,8 +35,7 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.credential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
-        this.cbsChannelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.")
-            .cache();
+        this.cbsChannelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
     }
 
     @Override
@@ -62,7 +61,7 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     public void close() {
         final RequestResponseChannel channel = cbsChannelMono.block(retryOptions.getTryTimeout());
         if (channel != null) {
-            channel.close();
+            channel.dispose();
         }
     }
 }

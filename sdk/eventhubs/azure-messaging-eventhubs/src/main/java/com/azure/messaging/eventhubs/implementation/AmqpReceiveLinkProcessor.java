@@ -297,7 +297,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     @Override
     public void request(long request) {
         if (isTerminated.get()) {
-            logger.warning("Cannot request more from AMQP link processor that is disposed.");
+            logger.info("Cannot request more from AMQP link processor that is disposed.");
             return;
         }
 
