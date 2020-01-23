@@ -301,12 +301,11 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     String generateResourceId(String suffix) {
-        return suffix;
-//        if (interceptorManager.isPlaybackMode()) {
-//            return suffix;
-//        }
-//        String id = UUID.randomUUID().toString();
-//        return suffix.length() > 0 ? id + "-" + suffix : id;
+        if (interceptorManager.isPlaybackMode()) {
+            return suffix;
+        }
+        String id = UUID.randomUUID().toString();
+        return suffix.length() > 0 ? id + "-" + suffix : id;
     }
 
     /**
