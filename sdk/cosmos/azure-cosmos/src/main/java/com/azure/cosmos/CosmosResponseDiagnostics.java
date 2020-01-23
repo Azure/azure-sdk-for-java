@@ -41,7 +41,7 @@ public class CosmosResponseDiagnostics {
         try {
             return objectMapper.writeValueAsString(this.clientSideRequestStatistics);
         }catch (JsonProcessingException e) {
-            logger.error("Error while parsing diagnostics " + e.getOriginalMessage());
+            logger.error("Error while parsing diagnostics " + e);
         }
         return StringUtils.EMPTY;
     }
