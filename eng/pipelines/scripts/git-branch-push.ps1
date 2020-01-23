@@ -94,6 +94,10 @@ param(
     }
     # Don't bother trying to catch anything here, if something fails let it bubble up
     # and fail the script since there's not a lot we can actually do about it.
+    catch
+    {
+        Write-Host "Error, unexpected exception: $_`n$($_.ScriptStackTrace)"
+    }    
     finally
     {
         if ( Test-Path $path )
