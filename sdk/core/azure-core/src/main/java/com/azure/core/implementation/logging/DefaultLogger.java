@@ -41,14 +41,9 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     public static final String INFO = "INFO";
     public static final String ERROR = "ERROR";
     public static final String TRACE = "TRACE";
-    private static final int QUEUE_SIZE = 1024;
 
     private String classPath;
     private int configuredLogLevel;
-    private PrintStream printStream;
-
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
-    private final BlockingQueue<String> messages = new ArrayBlockingQueue<>(QUEUE_SIZE);
 
     /**
      * Construct DefaultLogger for the given class.
@@ -74,11 +69,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         this.configuredLogLevel =
             LogLevel.fromString(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL))
                 .getLogLevel();
-//        executor.submit(() -> {
-//            while (true) {
-//                System.out.print(messages.take());
-//            }
-//        });
     }
 
     /**
