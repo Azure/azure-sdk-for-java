@@ -81,22 +81,27 @@ param(
         # to access the contents of the file
         if ((Test-Path $path) -and ((Get-Item $path).length -gt 0))
         {
+            # Q) Why do we need this janky processing to deal with git output?
+            # A) Git and powershell dont' quite place nice. Git 'kinda' writes to
+            #    std error with regular output and even successful commands could
+            #    cause a powershell script to bomb out. With that being said, we
+            #    are actually expecting push to fail in some cases in which we'll
+            #    rebase and try again.
             if ( $exit -gt 0 )
             {
-                Write-Error (Get-Content $path).ToString()
+                Write-Error (Get-Content $path -Raw)
             }
             else
             {
-                Write-Host (Get-Content $path).ToString()
+                Write-Host (Get-Content $path -Raw)
             }
         }
         return $exit
     }
-    # Don't bother trying to catch anything here, if something fails let it bubble up
-    # and fail the script since there's not a lot we can actually do about it.
     catch
     {
         Write-Host "Error, unexpected exception: $_`n$($_.ScriptStackTrace)"
+        return -1
     }    
     finally
     {
@@ -106,8 +111,8 @@ param(
         }
     }
 }
-# git remote add azure-sdk-fork https://github.com/Azure/azure-sdk-for-java
-$exitCode = Invoke-Git "remote add azure-sdk-fork https://github.com/Azure/azure-sdk-for-java.git" $ShowCommands
+
+$exitCode = Invoke-Git "remote add azure-sdk-fork https://$($AuthToken)@github.com/$($PROwner)/$($RepoName).git" $ShowCommands
 if ($exitCode -ne 0)
 {
     Write-Error "Unable to add remote, see command output above."
@@ -128,7 +133,6 @@ if ($exitCode -ne 0)
     exit $exitCode
 }
 
-#echo "git -c user.name=""azure-sdk"" -c user.email=""azuresdk@microsoft.com"" commit -am ""${{ parameters.CommitMsg }}"""
 $exitCode = Invoke-Git "-c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`"" $ShowCommands
 if ($exitCode -ne 0)
 {
@@ -136,10 +140,11 @@ if ($exitCode -ne 0)
     exit $exitCode
 }
 
-# Number of times to try this operation, this should be equal or greater than the highest number
-# of artifacts that can be released from a given pipeline but cognitive services has 18 so let's
-# try something smaller, like 10
-# 
+# The number of retries can be increased if necessary. In theory, the number of retries
+# should be the max number of libraries in the largest pipeline -1 as everything except 
+# the first commit could hit issues and need to rebase. The reason this isn't set to that
+# is because the largest pipeline is cognitive services which has 18 libraries in its
+# pipeline and that just seemed a bit too large and 5 seemed like a good starting value.
 $numberOfRetries = 5
 $needsRetry = $false
 $tryNumber = 0
@@ -151,7 +156,7 @@ do
     if ($exitCode -gt 0)
     {
         $needsRetry = $true
-        Write-Host "Need to fetch and rebase attempt number=$($tryNumber)"
+        Write-Host "Need to fetch and rebase: attempt number=$($tryNumber)"
         $exitCode = Invoke-Git "fetch azure-sdk-fork" $ShowCommands
         if ($exitCode -ne 0)
         {
