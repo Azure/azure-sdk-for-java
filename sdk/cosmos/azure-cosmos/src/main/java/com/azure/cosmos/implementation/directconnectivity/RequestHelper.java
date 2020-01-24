@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
-import org.apache.commons.lang3.EnumUtils;
 
 public class RequestHelper {
     public static ConsistencyLevel GetConsistencyLevelToUse(GatewayServiceConfigurationReader serviceConfigReader,
@@ -20,7 +19,7 @@ public class RequestHelper {
         String requestConsistencyLevelHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
 
         if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
-            ConsistencyLevel requestConsistencyLevel = EnumUtils.getEnum(ConsistencyLevel.class, Strings.fromCamelCaseToUpperCase(requestConsistencyLevelHeaderValue));
+            ConsistencyLevel requestConsistencyLevel = ConsistencyLevel.fromServiceSerializedFormat(requestConsistencyLevelHeaderValue);
             if (requestConsistencyLevel == null) {
                 throw new BadRequestException(
                         String.format(

@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Represents the consistency levels supported for Cosmos DB client operations in the Azure Cosmos DB database service.
  * <p>
@@ -51,5 +54,25 @@ public enum ConsistencyLevel {
     @Override
     public String toString() {
         return this.overWireValue;
+    }
+
+
+    static private Map<String, ConsistencyLevel> consistencyLevelHashMap = new HashMap<>();
+
+    static {
+        for(ConsistencyLevel cl: ConsistencyLevel.values()) {
+            consistencyLevelHashMap.put(cl.toString(), cl);
+        }
+    }
+
+    /**
+     * Given the over wire version of ConsistencyLevel gives the corresponding enum or return null
+     * @param consistencyLevel
+     * @return ConsistencyLevel
+     */
+    public static ConsistencyLevel fromServiceSerializedFormat(String consistencyLevel) {
+        // this is 100x faster than org.apache.commons.lang3.EnumUtils.getEnum(String)
+        // for more detail refer to https://github.com/moderakh/azure-cosmosdb-benchmark
+        return consistencyLevelHashMap.get(consistencyLevel);
     }
 }
