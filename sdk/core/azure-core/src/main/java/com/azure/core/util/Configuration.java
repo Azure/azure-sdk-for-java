@@ -3,8 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.util.logging.ClientLogger;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;

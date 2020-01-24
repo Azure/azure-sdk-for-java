@@ -5,16 +5,10 @@ package com.azure.core.implementation.logging;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
@@ -23,18 +17,15 @@ import org.slf4j.helpers.MessageFormatter;
  * This class is an internal implementation of slf4j logger.
  */
 public final class DefaultLogger extends MarkerIgnoringBase {
-
     private static final long serialVersionUID = -144261058636441630L;
-
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    // The template forms the log message in a format:
+    // The template for the log message:
     // YYYY-MM-DD HH:MM [thread] [level] classpath - message
-    // E.g: 2020-01-09 12:35 [main] [WARNING] com.azure.core.DefaultLogger - This is my log message.
-    private static final String MESSAGE_TEMPLATE = "%s [%s] [%s] %s - %s%n";
+    // E.g: 2020-01-09 12:35 [main] [WARN] com.azure.core.DefaultLogger - This is my log message.
     private static final String WHITESPACE = " ";
-    private static final String HYPHEN = "-";
-    private static final String OPEN_BRACKET = "[";
+    private static final String HYPHEN = " - ";
+    private static final String OPEN_BRACKET = " [";
     private static final String CLOSE_BRACKET = "]";
     public static final String WARN = "WARN";
     public static final String DEBUG = "DEBUG";
@@ -42,8 +33,8 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     public static final String ERROR = "ERROR";
     public static final String TRACE = "TRACE";
 
-    private String classPath;
-    private int configuredLogLevel;
+    private final String classPath;
+    private final int configuredLogLevel;
 
     /**
      * Construct DefaultLogger for the given class.
@@ -61,11 +52,13 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * class name passes in.
      */
     public DefaultLogger(String className) {
+        String classPath;
         try {
-            this.classPath = Class.forName(className).getCanonicalName();
+            classPath = Class.forName(className).getCanonicalName();
         } catch (ClassNotFoundException e) {
-            this.classPath = className;
+            classPath = className;
         }
+        this.classPath = classPath;
         this.configuredLogLevel =
             LogLevel.fromString(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL))
                 .getLogLevel();
@@ -342,19 +335,15 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder
             .append(dateTime)
-            .append(WHITESPACE)
             .append(OPEN_BRACKET)
             .append(threadName)
             .append(CLOSE_BRACKET)
-            .append(WHITESPACE)
             .append(OPEN_BRACKET)
             .append(levelName)
             .append(CLOSE_BRACKET)
             .append(WHITESPACE)
             .append(classPath)
-            .append(WHITESPACE)
             .append(HYPHEN)
-            .append(WHITESPACE)
             .append(message)
             .append(System.lineSeparator());
 
@@ -379,20 +368,12 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     void writeWithThrowable(StringBuilder stringBuilder, Throwable t) {
         if (t != null) {
-            stringBuilder.append(System.lineSeparator());
             StringWriter sw = new StringWriter();
             try (PrintWriter pw = new PrintWriter(sw)) {
                 t.printStackTrace(pw);
                 stringBuilder.append(sw.toString());
             }
         }
-
         System.out.print(stringBuilder.toString());
-//        System.out.flush();
-//        try {
-//            messages.put(stringBuilder.toString());
-//        } catch (InterruptedException ex) {
-//            throw new IllegalStateException(ex);
-//        }
     }
 }
