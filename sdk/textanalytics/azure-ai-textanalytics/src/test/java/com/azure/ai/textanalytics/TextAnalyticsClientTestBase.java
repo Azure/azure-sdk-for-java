@@ -62,6 +62,7 @@ import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
@@ -451,9 +452,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualNamedEntity namedEntity returned by the API.
      */
     static void validateNamedEntity(NamedEntity expectedNamedEntity, NamedEntity actualNamedEntity) {
-        assertEquals(expectedNamedEntity.getLength(), actualNamedEntity.getLength());
-        assertEquals(expectedNamedEntity.getOffset(), actualNamedEntity.getOffset());
-        assertEquals(expectedNamedEntity.getScore(), actualNamedEntity.getScore());
+        assertTrue(actualNamedEntity.getLength() > 0);
+        assertNotNull(actualNamedEntity.getOffset());
+        assertNotNull(actualNamedEntity.getScore());
         assertEquals(expectedNamedEntity.getSubtype(), actualNamedEntity.getSubtype());
         assertEquals(expectedNamedEntity.getText(), actualNamedEntity.getText());
         assertEquals(expectedNamedEntity.getType(), actualNamedEntity.getType());
@@ -551,13 +552,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualSentiment analyzed document sentiment returned by the API.
      */
     static void validateAnalysedSentiment(TextSentiment expectedSentiment, TextSentiment actualSentiment) {
-        assertEquals(expectedSentiment.getLength(), actualSentiment.getLength());
-        assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
         assertEquals(expectedSentiment.getTextSentimentClass(), actualSentiment.getTextSentimentClass());
-
-        assertEquals(expectedSentiment.getNegativeScore() > 0, actualSentiment.getNegativeScore() > 0);
-        assertEquals(expectedSentiment.getNeutralScore() > 0, actualSentiment.getNeutralScore() > 0);
-        assertEquals(expectedSentiment.getPositiveScore() > 0, actualSentiment.getPositiveScore() > 0);
+        assertTrue(actualSentiment.getLength() > 0);
+        assertNotNull(actualSentiment.getOffset());
+        assertNotNull(actualSentiment.getNegativeScore() > 0);
+        assertNotNull(actualSentiment.getNeutralScore() > 0);
+        assertNotNull(actualSentiment.getPositiveScore() > 0);
     }
 
     /**
@@ -637,10 +637,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         for (int i = 0; i < expectedLinkedEntityMatches.size(); i++) {
             LinkedEntityMatch expectedLinkedEntity = expectedLinkedEntityMatches.get(i);
             LinkedEntityMatch actualLinkedEntity = actualLinkedEntityMatches.get(i);
-            assertEquals(expectedLinkedEntity.getLength(), actualLinkedEntity.getLength());
-            assertEquals(expectedLinkedEntity.getOffset(), actualLinkedEntity.getOffset());
-            assertEquals(expectedLinkedEntity.getScore(), actualLinkedEntity.getScore());
             assertEquals(expectedLinkedEntity.getText(), actualLinkedEntity.getText());
+            assertTrue(actualLinkedEntity.getLength() > 0);
+            assertNotNull(actualLinkedEntity.getOffset());
+            assertNotNull(actualLinkedEntity.getScore());
         }
     }
 
@@ -665,6 +665,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
         assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
         assertEquals(expectedLanguage.getName(), actualLanguage.getName());
-        assertEquals(expectedLanguage.getScore(), actualLanguage.getScore());
+        assertNotNull(actualLanguage.getScore());
     }
 }
