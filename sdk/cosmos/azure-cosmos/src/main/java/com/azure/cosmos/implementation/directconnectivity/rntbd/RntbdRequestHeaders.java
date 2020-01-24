@@ -614,7 +614,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
         if (StringUtils.isNotEmpty(value)) {
 
-            final ConsistencyLevel level = EnumUtils.getEnumIgnoreCase(ConsistencyLevel.class, value);
+            final ConsistencyLevel level = ConsistencyLevel.fromServiceSerializedFormat(value);
 
             if (level == null) {
                 final String reason = String.format(Locale.ROOT, RMResources.InvalidRequestHeaderValue,
