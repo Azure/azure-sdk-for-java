@@ -138,8 +138,12 @@ class ShareAsyncAPITests extends APISpec {
     }
 
     def "Create snapshot metadata error"() {
+        given:
+        primaryShareAsyncClient.create().block()
+
         when:
         def createSnapshotErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(Collections.singletonMap("", "value")))
+
         then:
         createSnapshotErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY)

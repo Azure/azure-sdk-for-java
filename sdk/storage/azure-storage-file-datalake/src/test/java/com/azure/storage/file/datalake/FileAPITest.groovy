@@ -1023,12 +1023,32 @@ class FileAPITest extends APISpec {
 
     def "Rename min"() {
         expect:
-        fc.renameWithResponse(generatePathName(), null, null, null, null).getStatusCode() == 201
+        fc.renameWithResponse(null, generatePathName(), null, null, null, null).getStatusCode() == 201
     }
 
     def "Rename with response"() {
         when:
-        def resp = fc.renameWithResponse(generatePathName(), null, null, null, null)
+        def resp = fc.renameWithResponse(null, generatePathName(), null, null, null, null)
+
+        def renamedClient = resp.getValue()
+        renamedClient.getProperties()
+
+        then:
+        notThrown(DataLakeStorageException)
+
+        when:
+        fc.getProperties()
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    def "Rename filesystem with response"() {
+        setup:
+        def newFileSystem = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName())
+
+        when:
+        def resp = fc.renameWithResponse(newFileSystem.getFileSystemName(), generatePathName(), null, null, null, null)
 
         def renamedClient = resp.getValue()
         renamedClient.getProperties()
@@ -1048,7 +1068,7 @@ class FileAPITest extends APISpec {
         fc = fsc.getFileClient(generatePathName())
 
         when:
-        fc.renameWithResponse(generatePathName(), null, null, null, null)
+        fc.renameWithResponse(null, generatePathName(), null, null, null, null)
 
         then:
         thrown(DataLakeStorageException)
@@ -1067,7 +1087,7 @@ class FileAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fc.renameWithResponse(generatePathName(), drc, null, null, null).getStatusCode() == 201
+        fc.renameWithResponse(null, generatePathName(), drc, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1095,7 +1115,7 @@ class FileAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.renameWithResponse(generatePathName(), drc, null, null, null)
+        fc.renameWithResponse(null, generatePathName(), drc, null, null, null)
 
         then:
         thrown(DataLakeStorageException)
@@ -1125,7 +1145,7 @@ class FileAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fc.renameWithResponse(pathName, null, drc, null, null).getStatusCode() == 201
+        fc.renameWithResponse(null, pathName, null, drc, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1153,7 +1173,7 @@ class FileAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.renameWithResponse(pathName, null, drc, null, null)
+        fc.renameWithResponse(null, pathName, null, drc, null, null)
 
         then:
         thrown(DataLakeStorageException)

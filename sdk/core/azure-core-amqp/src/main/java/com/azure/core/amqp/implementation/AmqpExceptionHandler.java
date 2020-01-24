@@ -24,7 +24,7 @@ abstract class AmqpExceptionHandler {
      * @param exception The exception that caused the connection error.
      */
     void onConnectionError(Throwable exception) {
-        logger.warning("Connection exception encountered: " + exception.toString(), exception);
+        logger.warning("Connection exception encountered.", exception);
     }
 
     /**
