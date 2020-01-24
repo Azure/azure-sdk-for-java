@@ -73,6 +73,8 @@ public class DataLakeFileSystemAsyncClient {
 
     public static final String ROOT_FILESYSTEM_NAME = "$root";
 
+    private static final String ROOT_DIRECTORY_NAME = "";
+
 //    public static final String STATIC_WEBSITE_FILESYSTEM_NAME = "$web";
 
 //    public static final String LOG_FILESYSTEM_NAME = "$logs";
@@ -110,7 +112,7 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new DataLakeFileAsyncClient object by concatenating fileName to the end of
+     * Initializes a new DataLakeFileAsyncClient object by concatenating fileName to the end of
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeFileAsyncClient uses the same request policy pipeline as
      * the DataLakeFileSystemAsyncClient.
      *
@@ -135,7 +137,7 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new DataLakeDirectoryAsyncClient object by concatenating directoryName to the end of
+     * Initializes a new DataLakeDirectoryAsyncClient object by concatenating directoryName to the end of
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
      * as the DataLakeFileSystemAsyncClient.
      *
@@ -156,6 +158,22 @@ public class DataLakeFileSystemAsyncClient {
             StorageImplUtils.appendToUrlPath(getFileSystemUrl(), Utility.urlEncode(Utility.urlDecode(directoryName)))
                 .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), directoryName,
             blockBlobAsyncClient);
+    }
+
+    /**
+     * Initializes a new DataLakeDirectoryAsyncClient object by concatenating {@code ""} to the end of
+     * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
+     * as the DataLakeFileSystemAsyncClient.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient}
+     *
+     * @return A new {@link DataLakeDirectoryAsyncClient} object which references the root directory
+     * in this file system.
+     */
+    public DataLakeDirectoryAsyncClient getRootDirectoryAsyncClient() {
+        return getDirectoryAsyncClient(DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME);
     }
 
     /**
