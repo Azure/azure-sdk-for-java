@@ -7,7 +7,9 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -15,10 +17,13 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -31,6 +36,52 @@ public final class PollerFactory {
     private static final ClientLogger LOGGER = new ClientLogger(PollerFactory.class);
     private static final LongRunningOperationStatus LRO_CANCELLED = LongRunningOperationStatus.fromString("Cancelled",
         true);
+
+    /**
+     * Creates a PollerFlux with default ARM LRO init operation.
+     *
+     * @param serializerAdapter the serializer for any encoding and decoding
+     * @param pipeline the HttpPipeline for making any Http request (e.g. poll)
+     * @param pollResultType the type of the poll result, if no result is expecting then this should be Void.class
+     * @param finalResultType the type of the final result, if no result is expecting then this should be Void.class
+     * @param defaultPollInterval the default poll interval to use if service does not return retry-after
+     * @param lroInitMono the Mono on subscribe send the service request to initiate the long-running-operation
+     * @param <T> the type of poll result
+     * @param <U> the type of final result
+     * @return PollerFlux
+     */
+    public static <T, U> PollerFlux<PollResult<T>, U> create(
+        SerializerAdapter serializerAdapter,
+        HttpPipeline pipeline,
+        Type pollResultType,
+        Type finalResultType,
+        Duration defaultPollInterval,
+        Mono<Response<Flux<ByteBuffer>>> lroInitMono) {
+        Objects.requireNonNull(serializerAdapter, "'serializerAdapter' cannot be null.");
+        Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
+        Objects.requireNonNull(pollResultType, "'pollResultType' cannot be null.");
+        Objects.requireNonNull(finalResultType, "'finalResultType' cannot be null.");
+        Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+        Objects.requireNonNull(lroInitMono, "'lroInitMono' cannot be null.");
+        Function<PollingContext<PollResult<T>>, Mono<PollResult<T>>> defaultLroInitOperation = context -> lroInitMono
+            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                .map(contentBytes -> {
+                    String content = new String(contentBytes, StandardCharsets.UTF_8);
+                    PollingState state = PollingState.create(serializerAdapter,
+                        response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        content);
+                    state.store(context);
+                    T result = deserialize(serializerAdapter, content, pollResultType);
+                    return new PollResult<>(result);
+                }));
+        return new PollerFlux<>(defaultPollInterval,
+            defaultLroInitOperation,
+            pollFunction(serializerAdapter, pipeline, pollResultType),
+            cancelFunction(),
+            fetchResultFunction(serializerAdapter, pipeline, finalResultType));
+    }
 
     /**
      * Creates a PollerFlux.
