@@ -24,6 +24,8 @@ import com.azure.ai.textanalytics.models.TextSentimentClass;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Contains helper methods for generating inputs for test methods
@@ -59,47 +61,19 @@ final class TestUtils {
         );
     }
 
-    static List<TextDocumentInput> getTextDocumentNamedEntityInputs() {
-        return Arrays.asList(
-            new TextDocumentInput("0", NAMED_ENTITY_INPUTS.get(0)),
-            new TextDocumentInput("1", NAMED_ENTITY_INPUTS.get(1))
-        );
-    }
-
-    static List<TextDocumentInput> getTextDocumentPiiInputs() {
-        return Arrays.asList(
-            new TextDocumentInput("0", TestUtils.PII_ENTITY_INPUTS.get(0)),
-            new TextDocumentInput("1", TestUtils.PII_ENTITY_INPUTS.get(1))
-        );
-    }
-
-    static List<TextDocumentInput> getTextDocumentLinkedEntityInputs() {
-        return Arrays.asList(
-            new TextDocumentInput("0", TestUtils.LINKED_ENTITY_INPUTS.get(0)),
-            new TextDocumentInput("1", TestUtils.LINKED_ENTITY_INPUTS.get(1))
-        );
-    }
-
-    static List<TextDocumentInput> getTextDocumentKeyPhraseInputs() {
-        return Arrays.asList(
-            new TextDocumentInput("0", KEY_PHRASE_INPUTS.get(0)),
-            new TextDocumentInput("1", KEY_PHRASE_INPUTS.get(1))
-        );
-    }
-
-    static List<TextDocumentInput> getTextDocumentSentimentInputs() {
-        return Arrays.asList(
-            new TextDocumentInput("0", TestUtils.SENTIMENT_INPUTS.get(0)),
-            new TextDocumentInput("1", TestUtils.SENTIMENT_INPUTS.get(1))
-        );
+    static List<TextDocumentInput> getTextDocumentInputs(List<String> inputs) {
+        return IntStream.range(0, inputs.size())
+            .mapToObj(index ->
+                new TextDocumentInput(String.valueOf(index), inputs.get(index)))
+            .collect(Collectors.toList());
     }
 
     /**
      * Helper method to get the expected Batch Detected Languages
      */
     static DocumentResultCollection<DetectLanguageResult> getExpectedBatchDetectedLanguages() {
-        DetectedLanguage detectedLanguage1 = new DetectedLanguage("English", "en", 1.0);
-        DetectedLanguage detectedLanguage2 = new DetectedLanguage("Spanish", "es", 1.0);
+        DetectedLanguage detectedLanguage1 = new DetectedLanguage("English", "en", 0.0);
+        DetectedLanguage detectedLanguage2 = new DetectedLanguage("Spanish", "es", 0.0);
         DetectedLanguage detectedLanguage3 = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0);
         List<DetectedLanguage> detectedLanguageList1 = Collections.singletonList(detectedLanguage1);
         List<DetectedLanguage> detectedLanguageList2 = Collections.singletonList(detectedLanguage2);
@@ -123,9 +97,9 @@ final class TestUtils {
      * Helper method to get the expected Batch Named Entities
      */
     static DocumentResultCollection<RecognizeEntitiesResult> getExpectedBatchNamedEntities() {
-        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.80624294281005859);
-        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.8);
-        NamedEntity namedEntity3 = new NamedEntity("Microsoft", "Organization", null, 10, 9, 0.99983596801757812);
+        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.0);
+        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
+        NamedEntity namedEntity3 = new NamedEntity("Microsoft", "Organization", null, 10, 9, 0.0);
 
         List<NamedEntity> namedEntityList1 = Arrays.asList(namedEntity1, namedEntity2);
         List<NamedEntity> namedEntityList2 = Collections.singletonList(namedEntity3);
@@ -146,8 +120,8 @@ final class TestUtils {
      * Helper method to get the expected Batch PII Entities
      */
     static DocumentResultCollection<RecognizePiiEntitiesResult> getExpectedBatchPiiEntities() {
-        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.65);
-        NamedEntity namedEntity2 = new NamedEntity("111000025", "ABA Routing Number", "", 18, 9, 0.75);
+        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
+        NamedEntity namedEntity2 = new NamedEntity("111000025", "ABA Routing Number", "", 18, 9, 0.0);
 
         List<NamedEntity> namedEntityList1 = Collections.singletonList(namedEntity1);
         List<NamedEntity> namedEntityList2 = Collections.singletonList(namedEntity2);
@@ -168,8 +142,8 @@ final class TestUtils {
      * Helper method to get the expected Batch Linked Entities
      */
     static DocumentResultCollection<RecognizeLinkedEntitiesResult> getExpectedBatchLinkedEntities() {
-        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.11472424095537814, 7, 26);
-        LinkedEntityMatch linkedEntityMatch2 = new LinkedEntityMatch("Microsoft", 0.18693659716732069, 9, 10);
+        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
+        LinkedEntityMatch linkedEntityMatch2 = new LinkedEntityMatch("Microsoft", 0.0, 9, 10);
 
         LinkedEntity linkedEntity1 = new LinkedEntity(
             "Seattle", Collections.singletonList(linkedEntityMatch1),
@@ -222,22 +196,22 @@ final class TestUtils {
         final TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(67, 1);
 
         final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED,
-            0.1, 0.5, 0.4, 66, 0);
+            0.0, 0.0, 0.0, 66, 0);
 
         final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResult("0", textDocumentStatistics1,
             null,
             expectedDocumentSentiment,
             Arrays.asList(
-                new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.005, 0.005, 31, 0),
-                new TextSentiment(TextSentimentClass.POSITIVE, 0.005, 0.005, 0.99, 35, 32)
+                new TextSentiment(TextSentimentClass.NEGATIVE, 0.0, 0.0, 0.0, 31, 0),
+                new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.0, 35, 32)
             ));
 
         final AnalyzeSentimentResult analyzeSentimentResult2 = new AnalyzeSentimentResult("1", textDocumentStatistics2,
             null,
             expectedDocumentSentiment,
             Arrays.asList(
-                new TextSentiment(TextSentimentClass.POSITIVE, 0.005, 0.005, 0.99, 35, 0),
-                new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.005, 0.005, 31, 36)
+                new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.0, 35, 0),
+                new TextSentiment(TextSentimentClass.NEGATIVE, 0.0, 0.0, 0.0, 31, 36)
             ));
 
         return new DocumentResultCollection<>(Arrays.asList(analyzeSentimentResult1, analyzeSentimentResult2),
