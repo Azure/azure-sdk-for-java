@@ -17,12 +17,31 @@ public abstract class RetryPolicyWithDiagnostics implements IRetryPolicy{
      private volatile List<int[]> statusAndSubStatusCodes;
 
     @Override
+    public ZonedDateTime getStartTime() {
+        return retryStartTime;
+    }
+
+    @Override
+    public ZonedDateTime getEndTime() {
+        return retryEndTime;
+    }
+
+    @Override
     public void addStatusAndSubStatusCode(int statusCode, int subStatusCode) {
         if(statusAndSubStatusCodes == null) {
             statusAndSubStatusCodes = new ArrayList<>();
         }
         int[] statusAndSubStatusCode = {statusCode, subStatusCode};
         statusAndSubStatusCodes.add(statusAndSubStatusCode);
+    }
+
+    @Override
+    public void addStatusAndSubStatusCode(int index, int statusCode, int subStatusCode) {
+        if(statusAndSubStatusCodes == null) {
+            statusAndSubStatusCodes = new ArrayList<>();
+        }
+        int[] statusAndSubStatusCode = {statusCode, subStatusCode};
+        statusAndSubStatusCodes.add(index,statusAndSubStatusCode);
     }
 
     @Override

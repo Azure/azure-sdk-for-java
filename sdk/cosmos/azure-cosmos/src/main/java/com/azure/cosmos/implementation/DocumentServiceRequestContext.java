@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
-import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentServiceRequestContext implements Cloneable{
@@ -76,13 +76,42 @@ public class DocumentServiceRequestContext implements Cloneable{
         this.usePreferredLocations = null;
     }
 
-    public void updateRetryContext(IRetryPolicy retryPolicy) {
-        this.retryContext.retryCount = retryPolicy.getRetryCount();
-        Duration latency = retryPolicy.getRetryLatency();
-        if(latency != null) {
-            this.retryContext.totalTimeInRetry = latency.toMillis();
+    public void updateRetryContext(IRetryPolicy retryPolicy, boolean isGenericRetry) {
+        if (isGenericRetry) {
+            if (this.retryContext.directRetrySpecificStatusAndSubStatusCodes != null && this.retryContext.directRetrySpecificStatusAndSubStatusCodes.size() > 0) {
+                for (int i = this.retryContext.directRetrySpecificStatusAndSubStatusCodes.size() - 1; i >= 0; i--) {
+                    retryPolicy.incrementRetry();
+                    retryPolicy.addStatusAndSubStatusCode(0, this.retryContext.directRetrySpecificStatusAndSubStatusCodes.get(i)[0],
+                        this.retryContext.directRetrySpecificStatusAndSubStatusCodes.get(i)[1]);
+                }
+                this.retryContext.directRetrySpecificStatusAndSubStatusCodes.clear();
+            }
+
+            this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes());
+            this.retryContext.retryCount = retryPolicy.getRetryCount();
+            this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();
+            if (this.retryContext.retryStartTime == null) {
+                this.retryContext.retryStartTime = retryPolicy.getStartTime();
+            }
+            this.retryContext.retryEndTime = retryPolicy.getEndTime();
+        } else {
+            if (this.retryContext.genericRetrySpecificStatusAndSubStatusCodes != null && this.retryContext.genericRetrySpecificStatusAndSubStatusCodes.size() > 0) {
+                for (int i = this.retryContext.genericRetrySpecificStatusAndSubStatusCodes.size() - 1; i >= 0; i--) {
+                    retryPolicy.incrementRetry();
+                    retryPolicy.addStatusAndSubStatusCode(0, this.retryContext.genericRetrySpecificStatusAndSubStatusCodes.get(i)[0],
+                        this.retryContext.genericRetrySpecificStatusAndSubStatusCodes.get(i)[1]);
+                }
+                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes.clear();
+            }
+
+            this.retryContext.directRetrySpecificStatusAndSubStatusCodes = new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes());
+            this.retryContext.retryCount = retryPolicy.getRetryCount();
+            this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();
+            if (this.retryContext.retryStartTime == null) {
+                this.retryContext.retryStartTime = retryPolicy.getStartTime();
+            }
+            this.retryContext.retryEndTime = retryPolicy.getEndTime();
         }
-        this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();
     }
 
     @Override

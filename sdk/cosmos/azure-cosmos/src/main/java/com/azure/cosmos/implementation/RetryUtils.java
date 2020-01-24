@@ -65,7 +65,7 @@ public class RetryUtils {
         return throwable -> {
             if(rxDocumentServiceRequest.requestContext != null && retryPolicy.getRetryCount() > 0) {
                 retryPolicy.updateEndTime();
-                rxDocumentServiceRequest.requestContext.updateRetryContext(retryPolicy);
+                rxDocumentServiceRequest.requestContext.updateRetryContext(retryPolicy, false);
             }
 
             Exception e = Utils.as(throwable, Exception.class);
@@ -91,7 +91,7 @@ public class RetryUtils {
                 retryPolicy.incrementRetry();
                 if(rxDocumentServiceRequest.requestContext != null && retryPolicy.getRetryCount() > 0) {
                     retryPolicy.updateEndTime();
-                    rxDocumentServiceRequest.requestContext.updateRetryContext(retryPolicy);
+                    rxDocumentServiceRequest.requestContext.updateRetryContext(retryPolicy, false);
                 }
 
                 if (inBackoffAlternateCallbackMethod != null

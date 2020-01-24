@@ -115,7 +115,8 @@ class ClientSideRequestStatistics {
                 this.requestEndTime = responseTime;
             }
 
-            if(rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
+            if(rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null && rxDocumentServiceRequest.requestContext.retryContext != null) {
+                rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = ZonedDateTime.now(ZoneOffset.UTC);
                 this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
             }
 
@@ -202,7 +203,10 @@ class ClientSideRequestStatistics {
     }
 
     public void recordRetryContext(RxDocumentServiceRequest request) {
-        this.retryContext = new RetryContext(request.requestContext.retryContext);
+        if(request.requestContext.retryContext != null) {
+            request.requestContext.retryContext.retryEndTime =  ZonedDateTime.now(ZoneOffset.UTC);
+            this.retryContext = new RetryContext(request.requestContext.retryContext);
+        }
     }
 
     static class StoreResponseStatistics {

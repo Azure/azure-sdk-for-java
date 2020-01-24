@@ -48,11 +48,6 @@ public class BackoffRetryUtility {
             // TODO: is defer required?
             return callbackMethod.apply(InitialArgumentValuePolicyArg).onErrorResume(
                 RetryUtils.toRetryWithAlternateFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback, request));
-        }).doOnSuccess(res -> {
-            if(retryPolicy.getRetryCount() > 0) {
-                retryPolicy.updateEndTime();
-                request.requestContext.updateRetryContext(retryPolicy);
-            }
         });
     }
 
