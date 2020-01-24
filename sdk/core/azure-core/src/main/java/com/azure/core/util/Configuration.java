@@ -207,7 +207,7 @@ public class Configuration implements Cloneable {
     private String getOrLoad(String name) {
         loadBaseConfigurations();
 
-        // Special handling for tracing disabled and log level as they need to be updated instantly on
+        // Special handling for tracing disabled as it needs to be updated instantly on
         // configuration change.
         if (PROPERTY_AZURE_TRACING_DISABLED.equalsIgnoreCase(name)) {
             load(name);
