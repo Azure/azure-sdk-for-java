@@ -84,6 +84,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithScope {
            /**
             * Specifies scope.
+            * @param scope The scope of the policy assignment
+            * @return the next definition stage
             */
             WithCreate withScope(String scope);
         }
@@ -94,6 +96,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description This message will be part of response in case of policy violation
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -104,6 +108,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithDisplayName {
             /**
              * Specifies displayName.
+             * @param displayName The display name of the policy assignment
+             * @return the next definition stage
              */
             WithCreate withDisplayName(String displayName);
         }
@@ -114,6 +120,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithParameters {
             /**
              * Specifies parameters.
+             * @param parameters Required if a parameter is used in policy rule
+             * @return the next definition stage
              */
             WithCreate withParameters(Object parameters);
         }
@@ -124,6 +132,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithPolicyDefinitionId {
             /**
              * Specifies policyDefinitionId.
+             * @param policyDefinitionId The ID of the policy definition
+             * @return the next definition stage
              */
             WithCreate withPolicyDefinitionId(String policyDefinitionId);
         }
@@ -134,6 +144,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithScopeProperty {
             /**
              * Specifies scopeProperty.
+             * @param scopeProperty The scope for the policy assignment
+             * @return the next definition stage
              */
             WithCreate withScopeProperty(String scopeProperty);
         }
@@ -162,6 +174,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description This message will be part of response in case of policy violation
+             * @return the next update stage
              */
             Update withDescription(String description);
         }
@@ -172,6 +186,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithDisplayName {
             /**
              * Specifies displayName.
+             * @param displayName The display name of the policy assignment
+             * @return the next update stage
              */
             Update withDisplayName(String displayName);
         }
@@ -182,6 +198,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithParameters {
             /**
              * Specifies parameters.
+             * @param parameters Required if a parameter is used in policy rule
+             * @return the next update stage
              */
             Update withParameters(Object parameters);
         }
@@ -192,6 +210,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithPolicyDefinitionId {
             /**
              * Specifies policyDefinitionId.
+             * @param policyDefinitionId The ID of the policy definition
+             * @return the next update stage
              */
             Update withPolicyDefinitionId(String policyDefinitionId);
         }
@@ -202,6 +222,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithScopeProperty {
             /**
              * Specifies scopeProperty.
+             * @param scopeProperty The scope for the policy assignment
+             * @return the next update stage
              */
             Update withScopeProperty(String scopeProperty);
         }
