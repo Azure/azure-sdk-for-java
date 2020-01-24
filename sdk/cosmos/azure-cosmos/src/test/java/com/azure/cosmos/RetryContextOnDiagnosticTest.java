@@ -47,20 +47,11 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     private final static String containerSelfLink = "dbs/TestDB/colls/TestColl";
 
     private IRetryPolicy retryPolicy;
-    private Callable<Mono<StoreResponse>> callbackMethod;
-    private Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod;
-    private Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod;
     private RxDocumentServiceRequest serviceRequest;
-
-    @BeforeClass(groups = "unit")
-    public void RetryContextTest() {
-        callbackMethod = Mockito.mock(Callable.class);
-        parameterizedCallbackMethod = Mockito.mock(Function.class);
-        inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
-    }
 
     @Test(groups = {"simple"})
     public void backoffRetryUtilityExecuteRetry() throws Exception {
+        Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         CosmosClientException exception = new CosmosClientException(410, exceptionText);
@@ -76,6 +67,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void backoffRetryUtilityExecuteRetryWithFailure() throws Exception {
+        Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         CosmosClientException exception = new CosmosClientException(410, exceptionText);
@@ -93,6 +85,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void backoffRetryUtilityExecuteAsync() {
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         CosmosClientException exception = new CosmosClientException(410, exceptionText);
@@ -110,6 +104,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void backoffRetryUtilityExecuteAsyncWithFailure() {
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         CosmosClientException exception = new CosmosClientException(410, exceptionText);
