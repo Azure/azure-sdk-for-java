@@ -218,6 +218,9 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * ':' is only allowed in the root component. Root component will be validated against the list of
+     * file shares?
+     *
      * {@inheritDoc}
      */
     @Override
