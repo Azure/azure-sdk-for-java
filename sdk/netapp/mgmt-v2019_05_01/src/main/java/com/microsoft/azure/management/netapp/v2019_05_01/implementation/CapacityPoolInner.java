@@ -30,15 +30,15 @@ public class CapacityPoolInner extends Resource {
      * Provisioned size of the pool (in bytes). Allowed values are in 4TiB
      * chunks (value must be multiply of 4398046511104).
      */
-    @JsonProperty(value = "properties.size")
-    private Long size;
+    @JsonProperty(value = "properties.size", required = true)
+    private long size;
 
     /**
      * serviceLevel.
      * The service level of the file system. Possible values include:
      * 'Standard', 'Premium', 'Ultra'.
      */
-    @JsonProperty(value = "properties.serviceLevel")
+    @JsonProperty(value = "properties.serviceLevel", required = true)
     private ServiceLevel serviceLevel;
 
     /**
@@ -61,7 +61,7 @@ public class CapacityPoolInner extends Resource {
      *
      * @return the size value
      */
-    public Long size() {
+    public long size() {
         return this.size;
     }
 
@@ -71,7 +71,7 @@ public class CapacityPoolInner extends Resource {
      * @param size the size value to set
      * @return the CapacityPoolInner object itself.
      */
-    public CapacityPoolInner withSize(Long size) {
+    public CapacityPoolInner withSize(long size) {
         this.size = size;
         return this;
     }

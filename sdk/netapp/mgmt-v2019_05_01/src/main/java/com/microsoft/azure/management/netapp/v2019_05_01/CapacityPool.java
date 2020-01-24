@@ -56,7 +56,7 @@ public interface CapacityPool extends HasInner<CapacityPoolInner>, Indexable, Re
     /**
      * @return the size value.
      */
-    Long size();
+    long size();
 
     /**
      * @return the tags value.
@@ -71,7 +71,7 @@ public interface CapacityPool extends HasInner<CapacityPoolInner>, Indexable, Re
     /**
      * The entirety of the CapacityPool definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithNetAppAccount, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithNetAppAccount, DefinitionStages.WithLocation, DefinitionStages.WithServiceLevel, DefinitionStages.WithSize, DefinitionStages.WithCreate {
     }
 
     /**
@@ -106,31 +106,31 @@ public interface CapacityPool extends HasInner<CapacityPoolInner>, Indexable, Re
             * @param location the location parameter value
             * @return the next definition stage
             */
-            WithCreate withLocation(String location);
+            WithServiceLevel withLocation(String location);
         }
 
         /**
          * The stage of the capacitypool definition allowing to specify ServiceLevel.
          */
         interface WithServiceLevel {
-            /**
-             * Specifies serviceLevel.
-             * @param serviceLevel The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
-             * @return the next definition stage
-             */
-            WithCreate withServiceLevel(ServiceLevel serviceLevel);
+           /**
+            * Specifies serviceLevel.
+            * @param serviceLevel The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
+            * @return the next definition stage
+            */
+            WithSize withServiceLevel(ServiceLevel serviceLevel);
         }
 
         /**
          * The stage of the capacitypool definition allowing to specify Size.
          */
         interface WithSize {
-            /**
-             * Specifies size.
-             * @param size Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104)
-             * @return the next definition stage
-             */
-            WithCreate withSize(Long size);
+           /**
+            * Specifies size.
+            * @param size Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104)
+            * @return the next definition stage
+            */
+            WithCreate withSize(long size);
         }
 
         /**
@@ -150,7 +150,7 @@ public interface CapacityPool extends HasInner<CapacityPoolInner>, Indexable, Re
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<CapacityPool>, DefinitionStages.WithServiceLevel, DefinitionStages.WithSize, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<CapacityPool>, DefinitionStages.WithTags {
         }
     }
     /**
