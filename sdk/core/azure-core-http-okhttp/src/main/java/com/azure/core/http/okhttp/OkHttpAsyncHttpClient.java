@@ -39,7 +39,6 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private final OkHttpClient httpClient;
     //
     private static final Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
-    private static final MediaType MEDIA_TYPE_OCTET_STREAM = MediaType.parse("application/octet-stream");
 
     OkHttpAsyncHttpClient(OkHttpClient httpClient) {
         this.httpClient = httpClient;
@@ -118,7 +117,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         return bsMono.map(bs -> {
             String contentType = headers.getValue("Content-Type");
             if (contentType == null) {
-                return RequestBody.create(bs, MEDIA_TYPE_OCTET_STREAM);
+                return RequestBody.create(bs, null);
             } else {
                 return RequestBody.create(bs, MediaType.parse(contentType));
             }
