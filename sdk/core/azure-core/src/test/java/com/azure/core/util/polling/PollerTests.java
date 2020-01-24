@@ -347,7 +347,8 @@ public class PollerTests {
     public void syncPollerConstructorPollIntervalZero() {
         assertThrows(IllegalArgumentException.class, () -> new DefaultSyncPoller<>(
             Duration.ZERO,
-            activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
             pollOperation,
             cancelOperation,
             fetchResultOperation));
@@ -357,7 +358,8 @@ public class PollerTests {
     public void syncPollerConstructorPollIntervalNegative() {
         assertThrows(IllegalArgumentException.class, () -> new DefaultSyncPoller<>(
             Duration.ofSeconds(-1),
-            activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
             pollOperation,
             cancelOperation,
             fetchResultOperation));
@@ -367,7 +369,8 @@ public class PollerTests {
     public void syncPollerConstructorPollIntervalNull() {
         assertThrows(NullPointerException.class, () -> new DefaultSyncPoller<>(
             null,
-            activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
             pollOperation,
             cancelOperation,
             fetchResultOperation));
@@ -387,7 +390,8 @@ public class PollerTests {
     public void syncPollerConstructorPollOperationNull() {
         assertThrows(NullPointerException.class, () -> new DefaultSyncPoller<>(
             Duration.ofSeconds(1),
-            activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
             null,
             cancelOperation,
             fetchResultOperation));
@@ -397,7 +401,8 @@ public class PollerTests {
     public void syncPollerConstructorCancelOperationNull() {
         assertThrows(NullPointerException.class, () -> new DefaultSyncPoller<>(
             Duration.ofSeconds(1),
-            activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
             pollOperation,
             null,
             fetchResultOperation));
@@ -407,7 +412,8 @@ public class PollerTests {
     public void syncPollerConstructorFetchResultOperationNull() {
         assertThrows(NullPointerException.class, () -> new DefaultSyncPoller<>(
             Duration.ofSeconds(1),
-            activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
             pollOperation,
             cancelOperation,
             null));
@@ -424,7 +430,8 @@ public class PollerTests {
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
                 Duration.ofSeconds(1),
-                activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
                 pollOperation,
                 cancelOperation,
                 fetchResultOperation);
@@ -450,7 +457,8 @@ public class PollerTests {
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
                 Duration.ofSeconds(1),
-                activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
                 pollOperation,
                 cancelOperation,
                 fetchResultOperation);
@@ -498,7 +506,8 @@ public class PollerTests {
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
                 Duration.ofSeconds(1),
-                activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
                 pollOperation,
                 cancelOperation,
                 fetchResultOperation);
@@ -540,7 +549,8 @@ public class PollerTests {
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
                 Duration.ofSeconds(1),
-                activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
                 pollOperation,
                 cancelOperation,
                 fetchResultOperation);
@@ -576,7 +586,8 @@ public class PollerTests {
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
                 Duration.ofSeconds(1),
-                activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
                 pollOperation,
                 cancelOperation,
                 fetchResultOperation);
@@ -625,7 +636,8 @@ public class PollerTests {
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
                 Duration.ofSeconds(1),
-                activationOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
                 pollOperation,
                 cancelOperation,
                 fetchResultOperation);
