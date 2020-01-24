@@ -30,6 +30,9 @@ public class PollerTests {
     private Function<PollingContext<Response>, Mono<Response>> activationOperation;
 
     @Mock
+    private Function<PollingContext<Response>, Mono<PollResponse<Response>>> activationOperationWithResponse;
+
+    @Mock
     private Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation;
 
     @Mock
@@ -166,6 +169,82 @@ public class PollerTests {
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response3.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response4.getStatus())
             .verifyComplete();
+    }
+
+    @Test
+    public void noPollingForSynchronouslyCompletedActivationTest() {
+        int[] activationCallCount = new int[1];
+        activationCallCount[0] = 0;
+        when(activationOperationWithResponse.apply(any())).thenReturn(Mono.defer(() -> {
+            activationCallCount[0]++;
+            return Mono.just(new PollResponse<Response>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                new Response("ActivationDone")));
+        }));
+
+        PollerFlux<Response, CertificateOutput> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperationWithResponse,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
+
+        when(pollOperation.apply(any())).thenReturn(
+            Mono.error(new RuntimeException("Polling shouldn't happen for synchronously completed activation.")));
+
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus()
+                == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .verifyComplete();
+        Assertions.assertEquals(1, activationCallCount[0]);
+    }
+
+    @Test
+    public void ensurePollingForInProgressActivationResponseTest() {
+        final Duration retryAfter = Duration.ofMillis(100);
+
+        int[] activationCallCount = new int[1];
+        activationCallCount[0] = 0;
+        when(activationOperationWithResponse.apply(any())).thenReturn(Mono.defer(() -> {
+            activationCallCount[0]++;
+            return Mono.just(new PollResponse<Response>(LongRunningOperationStatus.IN_PROGRESS,
+                new Response("ActivationDone")));
+        }));
+
+        PollerFlux<Response, CertificateOutput> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperationWithResponse,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
+
+        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+            new Response("0"), retryAfter);
+
+        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+            new Response("1"), retryAfter);
+
+        PollResponse<Response> response2 = new PollResponse<>(
+            LongRunningOperationStatus.fromString("OTHER_1", false),
+            new Response("2"), retryAfter);
+
+        PollResponse<Response> response3 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            new Response("3"), retryAfter);
+
+        when(pollOperation.apply(any())).thenReturn(
+            Mono.just(response0),
+            Mono.just(response1),
+            Mono.just(response2),
+            Mono.just(response3));
+
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response0.getStatus())
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response1.getStatus())
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response3.getStatus())
+            .verifyComplete();
+        Assertions.assertEquals(1, activationCallCount[0]);
     }
 
     @Test
