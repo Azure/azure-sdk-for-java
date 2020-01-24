@@ -36,10 +36,10 @@ class ResourcesImpl extends WrapperImpl<ResourcesInner> implements Resources {
     }
 
     @Override
-    public Completable checkExistenceByIdAsync(String resourceId, String apiVersion) {
+    public Observable<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion) {
         ResourcesInner client = this.inner();
-        return client.checkExistenceByIdAsync(resourceId, apiVersion).toCompletable();
-    }
+        return client.checkExistenceByIdAsync(resourceId, apiVersion)
+    ;}
 
     @Override
     public Completable deleteByIdAsync(String resourceId, String apiVersion) {
@@ -108,10 +108,10 @@ class ResourcesImpl extends WrapperImpl<ResourcesInner> implements Resources {
     }
 
     @Override
-    public Completable checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
+    public Observable<Boolean> checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         ResourcesInner client = this.inner();
-        return client.checkExistenceAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toCompletable();
-    }
+        return client.checkExistenceAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion)
+    ;}
 
     @Override
     public Completable deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
