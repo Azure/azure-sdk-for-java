@@ -416,10 +416,11 @@ public class EventHubProducerAsyncClient implements Closeable {
         }
 
         final Context finalSharedContext = sharedContext != null ? sharedContext : Context.NONE;
-
         return withRetry(
             getSendLink(batch.getPartitionId()).flatMap(link -> {
-                if (isTracingEnabled) {
+                // if parent context already has send span context data (in case of retries),
+                // don't start a new send span
+                if (isTracingEnabled && !parentContext.get().getData(HOST_NAME_KEY).isPresent()) {
                     Context entityContext = finalSharedContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
                     // Start send span and store updated context
                     parentContext.set(tracerProvider.startSpan(
