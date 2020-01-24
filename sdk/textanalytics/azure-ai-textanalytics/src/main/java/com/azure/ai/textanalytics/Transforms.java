@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.ErrorCodeValue;
+import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
@@ -67,7 +67,7 @@ class Transforms {
     static com.azure.ai.textanalytics.models.TextAnalyticsError toTextAnalyticsError(
         TextAnalyticsError textAnalyticsError) {
         return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-            ErrorCodeValue.fromString(textAnalyticsError.getInnerError().getCode().toString()),
+            TextAnalyticsErrorCode.fromString(textAnalyticsError.getInnerError().getCode().toString()),
             textAnalyticsError.getInnerError().getMessage(),
             textAnalyticsError.getInnerError().getTarget());
     }

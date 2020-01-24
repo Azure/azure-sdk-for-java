@@ -9,22 +9,20 @@ import java.util.Locale;
 
 /**
  * General exception for Text Analytics related failures.
- *
- * @see ErrorCodeValue
  */
 public class TextAnalyticsException extends AzureException {
     private static final long serialVersionUID = 1L;
 
-    private final ErrorCodeValue errorCodeValue;
+    private final String errorCodeValue;
     private final String target;
 
     /**
      * Initializes a new instance of the AmqpException class.
-     *  @param message Text containing any supplementary details of the exception.
+     * @param message Text containing any supplementary details of the exception.
      * @param errorCodeValue The service returned error code value.
      * @param target The target for this exception.
      */
-    public TextAnalyticsException(String message, final ErrorCodeValue errorCodeValue, String target) {
+    public TextAnalyticsException(String message, String errorCodeValue, String target) {
         super(message);
         this.errorCodeValue = errorCodeValue;
         this.target = target;
@@ -37,8 +35,8 @@ public class TextAnalyticsException extends AzureException {
         if (this.errorCodeValue == null) {
             return super.getMessage();
         } else {
-            baseMessage = String.format(Locale.US, "%s %s: {%s}", baseMessage, "ErrorCodeValue",
-                errorCodeValue.toString());
+            baseMessage = String.format(Locale.US, "%s %s: {%s}", baseMessage, "TextAnalyticsErrorCode",
+                errorCodeValue);
         }
 
         if (this.target == null) {
@@ -60,11 +58,11 @@ public class TextAnalyticsException extends AzureException {
     }
 
     /**
-     * Gets the ErrorCodeValue for this exception.
+     * Gets the String value of TextAnalyticsErrorCode for this exception.
      *
-     * @return The ErrorCodeValue for this exception.
+     * @return The String value of TextAnalyticsErrorCode for this exception.
      */
-    public ErrorCodeValue getErrorCodeValue() {
+    public String getErrorCodeValue() {
         return errorCodeValue;
     }
 }

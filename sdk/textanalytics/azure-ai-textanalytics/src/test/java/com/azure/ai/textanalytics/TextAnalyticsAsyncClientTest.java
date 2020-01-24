@@ -53,7 +53,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     // Detected Languages
-
     /**
      * Verify that we can get statistics on the collection result when given a batch input with options.
      */

@@ -63,7 +63,8 @@ class DetectLanguageAsyncClient {
                         TextAnalyticsError error = detectLanguageResult.getError();
                         String baseMessage = String.format(Locale.US, "%s: {%s}, %s",
                             "Status Code", response.getStatusCode(), error.getMessage());
-                        throw logger.logExceptionAsError(new TextAnalyticsException(baseMessage, error.getCode(),
+                        throw logger.logExceptionAsError(new TextAnalyticsException(baseMessage,
+                            error.getCode().toString(),
                             error.getTarget()));
                     }
                 }
