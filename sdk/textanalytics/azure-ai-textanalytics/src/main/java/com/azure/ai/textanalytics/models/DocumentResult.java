@@ -3,6 +3,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * The DocumentResult model.
@@ -13,6 +14,7 @@ public class DocumentResult {
     private final TextDocumentStatistics textDocumentStatistics;
     private final TextAnalyticsError error;
     private final boolean isError;
+    private final ClientLogger logger = new ClientLogger(DocumentResult.class);
 
     /**
      * Create a {@code DocumentResult} model that maintains document id, information about the document payload,
@@ -63,5 +65,16 @@ public class DocumentResult {
      */
     public boolean isError() {
         return isError;
+    }
+
+    /**
+     * Throw a TextAnalyticsException if result has isError true and when a non-error property was accessed.
+     */
+    void throwExceptionIfError() {
+        if (this.isError()) {
+            throw logger.logExceptionAsError(new TextAnalyticsException(
+                String.format("Error in accessing the property when %s returned with an error.",
+                    this.getClass()), null, null));
+        }
     }
 }

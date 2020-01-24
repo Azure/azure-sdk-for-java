@@ -135,7 +135,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageDuplicateIdInput() {
         detectLanguageDuplicateIdRunner((inputs, options) -> {
-//            client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE);
             assertRestException(() -> client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE),
                 HttpResponseException.class, 400);
         });

@@ -35,7 +35,7 @@ public class TextAnalyticsException extends AzureException {
         if (this.errorCodeValue == null) {
             return super.getMessage();
         } else {
-            baseMessage = String.format(Locale.US, "%s %s: {%s}", baseMessage, "TextAnalyticsErrorCode",
+            baseMessage = String.format(Locale.US, "%s %s: {%s}", baseMessage, "ErrorCodeValue",
                 errorCodeValue);
         }
 

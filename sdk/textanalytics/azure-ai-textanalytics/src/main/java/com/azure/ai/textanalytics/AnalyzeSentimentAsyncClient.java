@@ -174,5 +174,4 @@ class AnalyzeSentimentAsyncClient {
                 sentenceSentimentTexts.stream().mapToInt(TextSentiment::getLength).sum(), 0),
             sentenceSentimentTexts);
     }
-
 }

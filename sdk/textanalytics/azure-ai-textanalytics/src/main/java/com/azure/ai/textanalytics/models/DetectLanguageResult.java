@@ -37,6 +37,7 @@ public final class DetectLanguageResult extends DocumentResult {
      * @return the detected language
      */
     public DetectedLanguage getPrimaryLanguage() {
+        throwExceptionIfError();
         return primaryLanguage;
     }
 
@@ -46,6 +47,7 @@ public final class DetectLanguageResult extends DocumentResult {
      * @return the list of detected language
      */
     public List<DetectedLanguage> getDetectedLanguages() {
+        throwExceptionIfError();
         return detectedLanguages;
     }
 }
