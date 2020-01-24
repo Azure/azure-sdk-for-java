@@ -12,32 +12,33 @@ public enum TriggerOperation {
     /**
      * ALL operations.
      */
-    ALL(0x0),
+    ALL(0x0, "All"),
 
     /**
      * CREATE operations only.
      */
-    CREATE(0x1),
+    CREATE(0x1, "Create"),
 
     /**
      * UPDATE operations only.
      */
-    UPDATE(0x2),
+    UPDATE(0x2, "Update"),
 
     /**
      * DELETE operations only.
      */
-    DELETE(0x3),
+    DELETE(0x3, "Delete"),
 
     /**
      * REPLACE operations only.
      */
-    REPLACE(0x4);
+    REPLACE(0x4, "Replace");
 
     private int value;
 
-    TriggerOperation(int value) {
+    TriggerOperation(int value, String overWireValue) {
         this.value = value;
+        this.overWireValue = overWireValue;
     }
 
     /**
@@ -49,8 +50,10 @@ public enum TriggerOperation {
         return value;
     }
 
+    private final String overWireValue;
+
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());
+        return this.overWireValue;
     }
 }

@@ -13,20 +13,26 @@ public enum IndexingDirective {
     /**
      * Use any pre-defined/pre-configured defaults.
      */
-    DEFAULT,
+    DEFAULT("Default"),
 
     /**
      * Index the resource.
      */
-    INCLUDE,
+    INCLUDE("Include"),
 
     /**
      * Do not index the resource.
      */
-    EXCLUDE;
+    EXCLUDE("Exclude");
+
+    IndexingDirective(String overWireValue) {
+        this.overWireValue = overWireValue;
+    }
+
+    private final String overWireValue;
 
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());
+        return this.overWireValue;
     }
 }
