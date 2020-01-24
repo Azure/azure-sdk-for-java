@@ -23,9 +23,11 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.Map;
 
 import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_AUDIENCE;
+import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_EXPIRY;
 import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_TYPE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -33,7 +35,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class CBSChannelTest {
+class ClaimsBasedSecurityChannelTest {
     private final AmqpRetryOptions options = new AmqpRetryOptions()
         .setMode(AmqpRetryMode.FIXED)
         .setTryTimeout(Duration.ofSeconds(45))
@@ -68,7 +70,11 @@ public class CBSChannelTest {
         // Arrange
         final String tokenAudience = "path.foo.bar";
         final String scopes = "scopes.cbs.foo";
-        final AccessToken accessToken = new AccessToken("an-access-token?", OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC));
+        final OffsetDateTime validUntil = OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC);
+
+        // Subtracting two minutes because the AccessToken does this internally.
+        final Date expectedDate = Date.from(validUntil.minusMinutes(2).toInstant());
+        final AccessToken accessToken = new AccessToken("an-access-token?", validUntil);
         final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel), tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
 
@@ -84,7 +90,6 @@ public class CBSChannelTest {
             .verify(Duration.ofSeconds(10));
 
         // Assert
-        verify(requestResponseChannel, times(1)).sendWithAck(any());
         verify(requestResponseChannel).sendWithAck(messageArgumentCaptor.capture());
         final Message message = messageArgumentCaptor.getValue();
 
@@ -92,6 +97,9 @@ public class CBSChannelTest {
         Assertions.assertTrue(properties.containsKey(PUT_TOKEN_AUDIENCE), "'PUT_TOKEN_AUDIENCE' should be there.");
         Assertions.assertEquals(tokenAudience, properties.get(PUT_TOKEN_AUDIENCE));
         Assertions.assertEquals("servicebus.windows.net:sastoken", properties.get(PUT_TOKEN_TYPE));
+
+        Assertions.assertTrue(properties.get(PUT_TOKEN_EXPIRY) instanceof Date);
+        Assertions.assertEquals(expectedDate, properties.get(PUT_TOKEN_EXPIRY));
     }
 
     /**
@@ -102,7 +110,12 @@ public class CBSChannelTest {
         // Arrange
         final String tokenAudience = "path.foo.bar";
         final String scopes = "scopes.cbs.foo";
-        final AccessToken accessToken = new AccessToken("an-access-token?", OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC));
+        final OffsetDateTime validUntil = OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC);
+
+        // Subtracting two minutes because the AccessToken does this internally.
+        final Date expectedDate = Date.from(validUntil.minusMinutes(2).toInstant());
+        final AccessToken accessToken = new AccessToken("an-access-token?", validUntil);
+
         final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel), tokenCredential,
             CbsAuthorizationType.JSON_WEB_TOKEN, options);
 
