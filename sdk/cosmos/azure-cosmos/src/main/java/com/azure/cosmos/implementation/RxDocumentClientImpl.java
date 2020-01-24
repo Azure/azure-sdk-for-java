@@ -913,7 +913,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private static String escapeNonAscii(String partitionKeyJson) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(partitionKeyJson.length());
         for (int i = 0; i < partitionKeyJson.length(); i++) {
             int val = partitionKeyJson.charAt(i);
             if (val > 127) {

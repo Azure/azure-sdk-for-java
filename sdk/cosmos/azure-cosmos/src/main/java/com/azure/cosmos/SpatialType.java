@@ -13,26 +13,32 @@ public enum SpatialType {
     /**
      * Represent a point data type.
      */
-    POINT,
+    POINT("Point"),
 
     /**
      * Represent a line string data type.
      */
-    LINE_STRING,
+    LINE_STRING("LineString"),
 
     /**
      * Represent a polygon data type.
      */
-    POLYGON,
+    POLYGON("Polygon"),
 
     /**
      * Represent a multi-polygon data type.
      */
-    MULTI_POLYGON;
+    MULTI_POLYGON("MultiPolygon");
+
+    SpatialType(String overWireValue) {
+        this.overWireValue = overWireValue;
+    }
+
+    private final String overWireValue;
 
     @Override
     public String toString() {
-        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');
+        return this.overWireValue;
     }
 }
 

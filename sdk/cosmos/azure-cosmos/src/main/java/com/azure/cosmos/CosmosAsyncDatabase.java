@@ -18,11 +18,13 @@ import static com.azure.cosmos.Resource.validateResource;
  */
 public class CosmosAsyncDatabase {
     private final CosmosAsyncClient client;
-    private String id;
+    private final String id;
+    private final String link;
 
     CosmosAsyncDatabase(String id, CosmosAsyncClient client) {
         this.id = id;
         this.client = client;
+        this.link = getParentLink() + "/" + getURIPathSegment() + "/" + getId();
     }
 
     /**
@@ -32,17 +34,6 @@ public class CosmosAsyncDatabase {
      */
     public String getId() {
         return id;
-    }
-
-    /**
-     * Set the id of the CosmosAsyncDatabase
-     *
-     * @param id the id of the CosmosAsyncDatabase
-     * @return the same CosmosAsyncConflict that had the id set
-     */
-    CosmosAsyncDatabase setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -644,12 +635,6 @@ public class CosmosAsyncDatabase {
     }
 
     String getLink() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(getParentLink());
-        builder.append("/");
-        builder.append(getURIPathSegment());
-        builder.append("/");
-        builder.append(getId());
-        return builder.toString();
+        return this.link;
     }
 }

@@ -3,9 +3,6 @@
 
 package com.azure.cosmos;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-
 /**
  * Data types in the Azure Cosmos DB database service.
  */
@@ -13,35 +10,41 @@ public enum DataType {
     /**
      * Represents a numeric data type.
      */
-    NUMBER,
+    NUMBER("Number"),
 
     /**
      * Represents a string data type.
      */
-    STRING,
+    STRING("String"),
 
     /**
      * Represent a point data type.
      */
-    POINT,
+    POINT("Point"),
 
     /**
      * Represents a line string data type.
      */
-    LINE_STRING,
+    LINE_STRING("LineString"),
 
     /**
      * Represent a polygon data type.
      */
-    POLYGON,
+    POLYGON("Polygon"),
 
     /**
      * Represent a multi-polygon data type.
      */
-    MULTI_POLYGON;
+    MULTI_POLYGON("MultiPolygon");
+
+    DataType(String overWireValue) {
+        this.overWireValue = overWireValue;
+    }
+
+    private final String overWireValue;
 
     @Override
     public String toString() {
-        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');
+        return this.overWireValue;
     }
 }
