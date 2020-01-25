@@ -3,7 +3,6 @@
 
 package com.azure.core.util.polling;
 import java.time.Duration;
-import java.util.concurrent.TimeoutException;
 
 /**
  * A type that offers API that simplifies the task of executing long-running operations against

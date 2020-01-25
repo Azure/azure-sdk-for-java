@@ -972,13 +972,6 @@
               <failOnWarnings>true</failOnWarnings>
               <failOnError>true</failOnError>
               <quiet>true</quiet>
-
-              <!-- For codesnippet4javadoc tool to work with JDK9+, it is recommended to add this additional option
-              https://github.com/jtulach/codesnippet4javadoc#use-with-jdk9 -->
-              <additionalJOptions>
-                <opt>-J--add-opens=jdk.javadoc/com.sun.tools.javadoc.main=ALL-UNNAMED</opt>
-              </additionalJOptions>
-
             </configuration>
             <executions>
               <execution>
