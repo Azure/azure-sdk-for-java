@@ -14,10 +14,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.CharBuffer;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -128,7 +128,7 @@ public class Utils {
      * @param link the link to analyze.
      * @return true or false
      */
-    public static boolean isDatabaseLink(String link) {
+    public static boolean isDatabaseLink(CharSequence link) {
         if (StringUtils.isEmpty(link)) {
             return false;
         }
@@ -137,7 +137,7 @@ public class Utils {
         link = trimBeginningAndEndingSlashes(link);
 
         // Splitting the link(separated by "/") into parts
-        String[] parts = StringUtils.split(link, "/");
+        String[] parts = StringUtils.split(link.toString(), "/");
 
         if (parts.length != 2) {
             return false;
@@ -165,15 +165,50 @@ public class Utils {
      * @return the concatenated path with '/'
      */
     public static String joinPath(String path1, String path2) {
-        path1 = trimBeginningAndEndingSlashes(path1);
-        String result = "/" + path1 + "/";
-
-        if (!StringUtils.isEmpty(path2)) {
-            path2 = trimBeginningAndEndingSlashes(path2);
-            result += path2 + "/";
+        if (StringUtils.isEmpty(path1)) {
+            throw new IllegalArgumentException("invalid path part");
+        }
+        StringBuilder result = new StringBuilder(path1.length() + (path2 == null? 0 : path2.length() + 3));
+        if (!startsWith(path1, '/')) {
+            result.append('/');
         }
 
-        return result;
+        result.append(path1);
+        if (!endsWith(path1, '/')) {
+            result.append('/');
+        }
+
+        if (StringUtils.isEmpty(path2)) {
+            return result.toString();
+        }
+
+        int startIndexPath2 = 0;
+        if (startsWith(path2, '/')) {
+            startIndexPath2 = 1;
+        }
+
+        result.append(path2, startIndexPath2, path2.length());
+        if (!endsWith(path2, '/')) {
+            result.append('/');
+        }
+
+        return result.toString();
+    }
+
+    public static boolean startsWith(CharSequence str, char expectedChar) {
+        if (str.length() == 0) {
+            return false;
+        }
+
+        return str.charAt(0) == expectedChar;
+    }
+
+    public static boolean endsWith(CharSequence str, char expectedChar) {
+        if (str.length() == 0) {
+            return false;
+        }
+
+        return str.charAt(str.length()-1) == expectedChar;
     }
 
     /**
@@ -182,20 +217,27 @@ public class Utils {
      * @param path the path to trim for beginning and ending slashes
      * @return the path without beginning and ending '/'
      */
-    public static String trimBeginningAndEndingSlashes(String path) {
-        if(path == null) {
+    public static CharBuffer trimBeginningAndEndingSlashes(CharSequence path) {
+        // this implementation is 100x faster than when doing substring(.)
+        if (path == null) {
             return null;
         }
 
-        if (path.startsWith("/")) {
-            path = path.substring(1);
+        int startIndex;
+        if (startsWith(path, '/')) {
+            startIndex = 1;
+        } else {
+            startIndex = 0;
         }
 
-        if (path.endsWith("/")) {
-            path = path.substring(0, path.length() - 1);
+        int endIndex;
+        if (endsWith(path, '/')) {
+            endIndex = path.length() - 1;
+        } else {
+            endIndex = path.length();
         }
 
-        return path;
+        return CharBuffer.wrap(path, startIndex, endIndex);
     }
 
     public static Map<String, String> paramEncode(Map<String, String> queryParams) {
@@ -256,14 +298,14 @@ public class Utils {
      */
     public static String getCollectionName(String resourceFullName) {
         if (resourceFullName != null) {
-            resourceFullName = Utils.trimBeginningAndEndingSlashes(resourceFullName);
+            CharSequence resourceFullNameTrimmed = Utils.trimBeginningAndEndingSlashes(resourceFullName);
 
             int slashCount = 0;
-            for (int i = 0; i < resourceFullName.length(); i++) {
-                if (resourceFullName.charAt(i) == '/') {
+            for (int i = 0; i < resourceFullNameTrimmed.length(); i++) {
+                if (resourceFullNameTrimmed.charAt(i) == '/') {
                     slashCount++;
                     if (slashCount == 4) {
-                        return resourceFullName.substring(0, i);
+                        return resourceFullNameTrimmed.subSequence(0, i).toString();
                     }
                 }
             }

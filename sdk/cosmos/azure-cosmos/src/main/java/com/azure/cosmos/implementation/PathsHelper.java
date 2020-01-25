@@ -11,6 +11,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,11 +110,11 @@ public class PathsHelper {
     }
 
     public static String generatePath(ResourceType resourceType, String ownerOrResourceId, boolean isFeed) {
-        if (isFeed && (ownerOrResourceId == null || ownerOrResourceId.isEmpty()) && 
-            resourceType != ResourceType.Database && 
-            resourceType != ResourceType.Offer && 
-            resourceType != ResourceType.MasterPartition && 
-            resourceType != ResourceType.ServerPartition && 
+        if (isFeed && (ownerOrResourceId == null || ownerOrResourceId.isEmpty()) &&
+            resourceType != ResourceType.Database &&
+            resourceType != ResourceType.Offer &&
+            resourceType != ResourceType.MasterPartition &&
+            resourceType != ResourceType.ServerPartition &&
             resourceType != ResourceType.DatabaseAccount &&
                 resourceType != ResourceType.Topology) {
             throw new IllegalStateException("INVALID resource type");
@@ -196,15 +197,15 @@ public class PathsHelper {
         } else if (isFeed && resourceType == ResourceType.PartitionKeyRange) {
             ResourceId documentCollectionId = ResourceId.parse(ownerOrResourceId);
 
-            return Paths.DATABASES_PATH_SEGMENT + "/" + documentCollectionId.getDatabaseId().toString() + "/" + 
-                    Paths.COLLECTIONS_PATH_SEGMENT + "/" + 
-                    documentCollectionId.getDocumentCollectionId().toString() + "/" + 
+            return Paths.DATABASES_PATH_SEGMENT + "/" + documentCollectionId.getDatabaseId().toString() + "/" +
+                    Paths.COLLECTIONS_PATH_SEGMENT + "/" +
+                    documentCollectionId.getDocumentCollectionId().toString() + "/" +
                     Paths.PARTITION_KEY_RANGES_PATH_SEGMENT;
         } else if (resourceType == ResourceType.PartitionKeyRange) {
             ResourceId partitionKeyRangeId = ResourceId.parse(ownerOrResourceId);
 
-            return Paths.DATABASES_PATH_SEGMENT + "/" + partitionKeyRangeId.getDatabaseId().toString() + "/" + 
-                    Paths.COLLECTIONS_PATH_SEGMENT + "/" + partitionKeyRangeId.getDocumentCollectionId().toString() + "/" + 
+            return Paths.DATABASES_PATH_SEGMENT + "/" + partitionKeyRangeId.getDatabaseId().toString() + "/" +
+                    Paths.COLLECTIONS_PATH_SEGMENT + "/" + partitionKeyRangeId.getDocumentCollectionId().toString() + "/" +
                     Paths.PARTITION_KEY_RANGES_PATH_SEGMENT + "/" + partitionKeyRangeId.getPartitionKeyRangeId().toString();
         } else if (isFeed && resourceType == ResourceType.Attachment) {
             ResourceId documentCollectionId = ResourceId.parse(ownerOrResourceId);
@@ -320,7 +321,7 @@ public class PathsHelper {
     /**
      * Method which will return boolean based on whether it is able to parse the
      * path and name segment from resource url , and fill info in PathInfo object
-     * @param resourceUrl  Complete ResourceLink 
+     * @param resourceUrl  Complete ResourceLink
      * @param pathInfo Path info object which will hold information
      * @param clientVersion The Client version
      * @return
@@ -382,7 +383,7 @@ public class PathsHelper {
                     String attachmentId = null;
                     byte storeIndex = 0;
                     // MEDIA Id parsing code  will come here , supported MediaIdHelper file missing in java sdk(Sync and Async both)
-                    //Below code from .net 
+                    //Below code from .net
                     // if (!MediaIdHelper.TryParseMediaId(resourceIdOrFullName, out attachmentId, out storeIndex))
                     //  {
                     //    return false;
@@ -459,12 +460,12 @@ public class PathsHelper {
 
         return null;
     }
-        
+
     private static boolean isResourceType(String resourcePathSegment) {
         if (StringUtils.isEmpty(resourcePathSegment)) {
             return false;
         }
-       
+
         switch (resourcePathSegment.toLowerCase()) {
             case Paths.ATTACHMENTS_PATH_SEGMENT:
             case Paths.COLLECTIONS_PATH_SEGMENT:
@@ -522,10 +523,10 @@ public class PathsHelper {
 
     public static String getCollectionPath(String resourceFullName) {
         if (resourceFullName != null) {
-            String trimmedResourceFullName = Utils.trimBeginningAndEndingSlashes(resourceFullName);
+            CharSequence trimmedResourceFullName = Utils.trimBeginningAndEndingSlashes(resourceFullName);
             int index = indexOfNth(trimmedResourceFullName, '/', 4);
             if (index > 0)
-                return trimmedResourceFullName.substring(0, index);
+                return trimmedResourceFullName.subSequence(0, index).toString();
         }
 
         return resourceFullName;
@@ -562,11 +563,10 @@ public class PathsHelper {
         return false;
     }
 
-    private static int indexOfNth(String str, char value, int nthOccurance) {
+    private static int indexOfNth(CharSequence str, char value, int nthOccurance) {
         int remaining = nthOccurance;
-        char[] characters = str.toCharArray();
-        for (int i = 0; i < characters.length; i++) {
-            if (characters[i] == value) {
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == value) {
                 remaining--;
                 if (remaining == 0) {
                     return i;
@@ -623,7 +623,7 @@ public class PathsHelper {
         String errorMessage = String.format(RMResources.UnknownResourceType, resourcePathSegment);
         throw new BadRequestException(errorMessage);
     }
-    
+
     public static String getResourcePath(ResourceType resourceType) throws BadRequestException {
         switch (resourceType) {
             case Database:
