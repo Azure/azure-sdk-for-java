@@ -44,7 +44,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     private final static String exceptionText = "TestException";
     private final static String responseText = "TestResponse";
     private final static String itemSelfLink = "dbs/TestDB/colls/TestColl/docs/TestDoc";
-    private final static String containerSelfLink = "dbs/TestDB/colls/TestColl";
 
     private IRetryPolicy retryPolicy;
     private RxDocumentServiceRequest serviceRequest;
@@ -125,13 +124,13 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void retryContextMockTestOnCRUDOperation() throws NoSuchFieldException, IllegalAccessException {
-        AsyncDocumentClient.Builder builder = new AsyncDocumentClient.Builder();
-        builder.withServiceEndpoint(TestConfigurations.HOST)
-               .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-               .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
-               .withConsistencyLevel(ConsistencyLevel.SESSION);
-        AsyncDocumentClient client = builder.build();
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl)client;
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .setEndpoint(TestConfigurations.HOST)
+            .setKey(TestConfigurations.MASTER_KEY);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        CosmosClient cosmosClient = cosmosClientBuilder.setConnectionPolicy(connectionPolicy).buildClient();
+        CosmosAsyncContainer cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl)cosmosClient.asyncClient().getContextClient();
         RxStoreModel mockStoreModel = Mockito.mock(RxStoreModel.class);
         RxDocumentServiceResponse mockRxDocumentServiceResponse = Mockito.mock(RxDocumentServiceResponse.class);
 
@@ -152,7 +151,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(mockRxDocumentServiceResponse.getResource(Document.class)).thenReturn(new Document());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setPartitionKey(new PartitionKey("TestPk"));
-        Flux<ResourceResponse<Document>>  responseFlux = rxDocumentClient.createDocument(containerSelfLink, new Document(), requestOptions, false);
+        Flux<ResourceResponse<Document>>  responseFlux = rxDocumentClient.createDocument(cosmosAsyncContainer.getLink(), new Document(), requestOptions, false);
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
@@ -194,7 +193,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
         Mockito.verify(retryPolicy, Mockito.times(2)).getStatusAndSubStatusCodes();
 
-        client.close();
+        cosmosClient.close();
     }
 
     private StoreResponse validateSuccess(Mono<StoreResponse> storeResponse) {
