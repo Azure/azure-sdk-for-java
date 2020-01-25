@@ -40,6 +40,7 @@ import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
+import com.azure.storage.file.datalake.models.ParallelTransferOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
@@ -425,5 +426,14 @@ class Transforms {
                 dataLakeServiceSasSignatureValues.getPermissions()));
         }
         return blobServiceSasSignatureValues;
+    }
+
+    static com.azure.storage.blob.models.ParallelTransferOptions toBlobParallelTransferOptions(
+        ParallelTransferOptions pto) {
+        if (pto == null) {
+            return null;
+        }
+        return new com.azure.storage.blob.models.ParallelTransferOptions(pto.getBlockSize(), pto.getNumBuffers(),
+            pto.getProgressReceiver(), pto.getMaxSingleUploadSize());
     }
 }

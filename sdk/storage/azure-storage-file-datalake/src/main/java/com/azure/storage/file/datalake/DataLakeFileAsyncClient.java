@@ -11,6 +11,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
@@ -21,12 +24,20 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
+import com.azure.storage.file.datalake.models.ParallelTransferOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
+import com.azure.storage.file.datalake.models.PathProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.fluxError;
@@ -366,6 +377,132 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Downloads the entire file into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFile#String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
+     * @return A reactive response containing the file properties and metadata.
+     */
+    public Mono<PathProperties> downloadToFile(String filePath) {
+        return downloadToFile(filePath, false);
+    }
+
+    /**
+     * Downloads the entire file into a file specified by the path.
+     *
+     * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFile#String-boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
+     * @param overwrite Whether or not to overwrite the file, should the file exist.
+     * @return A reactive response containing the file properties and metadata.
+     */
+    public Mono<PathProperties> downloadToFile(String filePath, boolean overwrite) {
+        Set<OpenOption> openOptions = null;
+        if (overwrite) {
+            openOptions = new HashSet<>();
+            openOptions.add(StandardOpenOption.CREATE);
+            openOptions.add(StandardOpenOption.TRUNCATE_EXISTING); // If the file already exists and it is opened
+            // for WRITE access, then its length is truncated to 0.
+            openOptions.add(StandardOpenOption.READ);
+            openOptions.add(StandardOpenOption.WRITE);
+        }
+        return downloadToFileWithResponse(filePath, null, null, null, null, false, openOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Downloads the entire file into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p>This method makes an extra HTTP call to get the length of the file in the beginning. To avoid this extra
+     * call, provide the {@link FileRange} parameter.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
+     * @param range {@link FileRange}
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
+     * transfers parameter is ignored.
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param rangeGetContentMd5 Whether the contentMD5 for the specified file range should be returned.
+     * @return A reactive response containing the file properties and metadata.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    public Mono<Response<PathProperties>> downloadToFileWithResponse(String filePath, FileRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
+        DataLakeRequestConditions requestConditions, boolean rangeGetContentMd5) {
+        return downloadToFileWithResponse(filePath, range, parallelTransferOptions, options, requestConditions,
+            rangeGetContentMd5, null);
+    }
+
+    /**
+     * Downloads the entire file into a file specified by the path.
+     *
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
+     *
+     * <p>This method makes an extra HTTP call to get the length of the file in the beginning. To avoid this extra
+     * call, provide the {@link FileRange} parameter.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
+     * @param range {@link FileRange}
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
+     * transfers parameter is ignored.
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param rangeGetContentMd5 Whether the contentMD5 for the specified file range should be returned.
+     * @param openOptions {@link OpenOption OpenOptions} to use to configure how to open or create the file.
+     * @return A reactive response containing the file properties and metadata.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    public Mono<Response<PathProperties>> downloadToFileWithResponse(String filePath, FileRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
+        DataLakeRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
+        return blockBlobAsyncClient.downloadToFileWithResponse(filePath, Transforms.toBlobRange(range),
+            Transforms.toBlobParallelTransferOptions(parallelTransferOptions),
+            Transforms.toBlobDownloadRetryOptions(options),
+            Transforms.toBlobRequestConditions(requestConditions), rangeGetContentMd5, openOptions)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
+
     }
 
     /**
