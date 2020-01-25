@@ -43,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     private final static String exceptionText = "TestException";
     private final static String responseText = "TestResponse";
-    private final static String itemSelfLink = "dbs/TestDB/colls/TestColl/docs/TestDoc";
 
     private IRetryPolicy retryPolicy;
     private RxDocumentServiceRequest serviceRequest;
@@ -151,6 +150,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(mockRxDocumentServiceResponse.getResource(Document.class)).thenReturn(new Document());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setPartitionKey(new PartitionKey("TestPk"));
+        String itemSelfLink = cosmosAsyncContainer.getLink()+"/docs/TestDoc";
         Flux<ResourceResponse<Document>>  responseFlux = rxDocumentClient.createDocument(cosmosAsyncContainer.getLink(), new Document(), requestOptions, false);
         validateServiceResponseSuccess(responseFlux);
 
