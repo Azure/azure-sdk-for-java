@@ -628,8 +628,8 @@ public class CryptographyAsyncClient {
     }
 
     private Mono<Boolean> ensureValidKeyAvailable() {
-        boolean keyAvailable = !(this.key == null && keyCollection != null);
-        if (!keyAvailable) {
+        boolean keyNotAvailable = (this.key == null && keyCollection != null);
+        if (keyNotAvailable) {
             if (keyCollection.equals(SECRETS_COLLECTION)) {
                 return getSecretKey().flatMap(jwk -> {
                     this.key.set(jwk);
