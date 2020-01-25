@@ -522,15 +522,15 @@
             <docletArtifact>
               <groupId>org.apidesign.javadoc</groupId>
               <artifactId>codesnippet-doclet</artifactId>
-              <version>0.32</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
+              <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
             </docletArtifact>
             <additionalOptions>
               <additionalOption>-maxLineLength 120</additionalOption>
               <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
               <additionalOption>-suppressMissingLinkWarnings</additionalOption>
             </additionalOptions>
-            <failOnError>false</failOnError>
-            <failOnWarnings>false</failOnWarnings>
+            <failOnError>true</failOnError>
+            <failOnWarnings>true</failOnWarnings>
             <doclint>all</doclint>
             <sourceFileExcludes>
               <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -969,7 +969,8 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
-              <failOnWarnings>false</failOnWarnings>
+              <failOnWarnings>true</failOnWarnings>
+              <failOnError>true</failOnError>
               <quiet>true</quiet>
 
               <!-- For codesnippet4javadoc tool to work with JDK9+, it is recommended to add this additional option
@@ -986,8 +987,8 @@
                   <goal>jar</goal>
                 </goals>
                 <configuration>
-                  <failOnError>false</failOnError>
-                  <failOnWarnings>false</failOnWarnings>
+                  <failOnError>true</failOnError>
+                  <failOnWarnings>true</failOnWarnings>
                 </configuration>
               </execution>
             </executions>

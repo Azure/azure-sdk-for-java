@@ -131,7 +131,7 @@ org.apache.maven.plugins:maven-resources-plugin;2.4.3
 org.apache.maven.plugins:maven-site-plugin;3.7.1
 org.apache.maven.plugins:maven-source-plugin;3.0.1
 org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M3
-org.apidesign.javadoc:codesnippet-doclet;0.32
+org.apidesign.javadoc:codesnippet-doclet;0.53
 org.codehaus.mojo:build-helper-maven-plugin;3.0.0
 org.codehaus.mojo:exec-maven-plugin;1.2.1
 org.codehaus.mojo:properties-maven-plugin;1.0.0
