@@ -4,9 +4,14 @@
 package com.azure.cosmos.implementation.routing;
 
 public class MurmurHash3_128 {
+    private static final UInt128 zeroSeed = new UInt128(0, 0);
 
     public static UInt128 hash128(byte[] bytes) {
-        return hash128(bytes, bytes.length, new UInt128(0, 0));
+        return hash128(bytes, bytes.length, zeroSeed);
+    }
+
+    public static UInt128 hash128(byte[] bytes, int length) {
+        return hash128(bytes, bytes.length, zeroSeed);
     }
 
     public static UInt128 hash128(byte[] bytes, int length, UInt128 seed) {
