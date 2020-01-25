@@ -109,7 +109,7 @@ public class CryptographyAsyncClient {
         this.keyId = keyId;
         service = RestProxy.create(CryptographyService.class, pipeline);
         cryptographyServiceClient = new CryptographyServiceClient(keyId, service);
-        this.key = null;
+        this.key = new AtomicReference<>();
     }
 
     private void initializeCryptoClients() {
@@ -489,7 +489,7 @@ public class CryptographyAsyncClient {
                 return cryptographyServiceClient.unwrapKey(algorithm, encryptedKey, context);
             }
 
-            if (!checkKeyPermissions(this.key.get().getKeyOps(), KeyOperation.WRAP_KEY)) {
+            if (!checkKeyPermissions(this.key.get().getKeyOps(), KeyOperation.UNWRAP_KEY)) {
                 return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unwrap Key Operation is not allowed "
                                                                                                                  + "for key with id %s", this.key.get().getId()))));
             }
@@ -632,13 +632,13 @@ public class CryptographyAsyncClient {
         if (!keyAvailable) {
             if (keyCollection.equals(SECRETS_COLLECTION)) {
                 return getSecretKey().flatMap(jwk -> {
-                    this.key = new AtomicReference<>(jwk);
+                    this.key.set(jwk);
                     initializeCryptoClients();
                     return Mono.just(this.key.get().isValid());
                 });
             } else {
                 return getKey().flatMap(kvKey -> {
-                    this.key = new AtomicReference<>(kvKey.getKey());
+                    this.key.set(kvKey.getKey());
                     initializeCryptoClients();
                     return Mono.just(key.get().isValid());
                 });
