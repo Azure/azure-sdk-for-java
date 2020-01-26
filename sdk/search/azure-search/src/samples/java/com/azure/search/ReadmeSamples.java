@@ -2,11 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.util.Context;
 import com.azure.search.models.Index;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.SearchResult;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -22,6 +25,7 @@ public class ReadmeSamples {
     private String apiKey = "api key";
     private String indexName = "index name";
     private SearchServiceClient searchClient = new SearchServiceClientBuilder().buildClient();
+    private SearchIndexClient indexClient = new SearchIndexClientBuilder().buildClient();
 
     public void createSearchClient() {
         SearchServiceClient client = new SearchServiceClientBuilder()
@@ -65,5 +69,17 @@ public class ReadmeSamples {
             new RequestOptions(),
             new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
         // Above three HttpHeader will be added in outgoing HttpRequest.
+    }
+
+    public void handleErrorsWithSyncClient() {
+        try {
+            Iterable<SearchResult> results = indexClient.search("hotel");
+        } catch (HttpResponseException ex) {
+            // The exception contains the HTTP status code and the detailed message
+            // returned from the search service
+            HttpResponse response = ex.getResponse();
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Message: " + response.getBodyAsString().block());
+        }
     }
 }

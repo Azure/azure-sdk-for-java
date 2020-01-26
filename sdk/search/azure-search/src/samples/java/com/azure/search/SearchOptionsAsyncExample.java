@@ -98,7 +98,7 @@ public class SearchOptionsAsyncExample {
         // Each page in the response of the search query holds the coverage value
         // Get Coverage property from the first page in the response
         PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
-            new SearchOptions().setMinimumCoverage(73.5),
+            new SearchOptions().setMinimumCoverage(80.0),
             new RequestOptions());
 
         System.out.println("Coverage = " + results
@@ -111,7 +111,7 @@ public class SearchOptionsAsyncExample {
         // Each page in the response of the search query holds the coverage value
         // Accessing Coverage property when iterating by page
         PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
-            new SearchOptions().setMinimumCoverage(73.5),
+            new SearchOptions().setMinimumCoverage(80.0),
             new RequestOptions());
 
         System.out.println("Coverage = " + results

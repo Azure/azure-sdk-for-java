@@ -104,7 +104,7 @@ public class CreateSkillsetExample {
             .setInputs(inputs)
             .setOutputs(outputs)
             .setName("webapi-skill")
-            .setDescription("A WebApi skill that can be used as a custom skillset");
+            .setDescription("A WebApiSkill that can be used to call a custom web api function");
 
         Skillset skillset = new Skillset()
             .setName("custom-skillset")

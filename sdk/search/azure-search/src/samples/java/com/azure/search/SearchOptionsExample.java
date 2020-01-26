@@ -90,7 +90,7 @@ public class SearchOptionsExample {
         // Each page in the response of the search query holds the coverage value
         // Get Coverage property from the first page in the response
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
-            new SearchOptions().setMinimumCoverage(73.5), new RequestOptions(), Context.NONE);
+            new SearchOptions().setMinimumCoverage(80.0), new RequestOptions(), Context.NONE);
 
         results.streamByPage().forEach(searchPagedResponse ->
             System.out.println("Coverage = " + searchPagedResponse.getCoverage())
@@ -101,7 +101,7 @@ public class SearchOptionsExample {
         // Each page in the response of the search query holds the coverage value
         // Accessing Coverage property when iterating by page
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
-            new SearchOptions().setMinimumCoverage(73.5), new RequestOptions(), Context.NONE);
+            new SearchOptions().setMinimumCoverage(80.0), new RequestOptions(), Context.NONE);
 
         results.iterableByPage().forEach(page ->
             System.out.println("Coverage = " + page.getCoverage())
