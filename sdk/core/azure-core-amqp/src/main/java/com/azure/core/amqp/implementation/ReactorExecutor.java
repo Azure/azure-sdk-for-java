@@ -40,18 +40,12 @@ class ReactorExecutor implements Closeable {
 
     ReactorExecutor(Reactor reactor, Scheduler scheduler, String connectionId, AmqpExceptionHandler exceptionHandler,
         Duration timeout, String hostname) {
-        Objects.requireNonNull(reactor);
-        Objects.requireNonNull(scheduler);
-        Objects.requireNonNull(connectionId);
-        Objects.requireNonNull(exceptionHandler);
-        Objects.requireNonNull(timeout);
-
-        this.reactor = reactor;
-        this.scheduler = scheduler;
-        this.connectionId = connectionId;
-        this.timeout = timeout;
-        this.exceptionHandler = exceptionHandler;
-        this.hostname = hostname;
+        this.reactor = Objects.requireNonNull(reactor, "'reactor' cannot be null.");
+        this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
+        this.connectionId = Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
+        this.timeout = Objects.requireNonNull(timeout, "'timeout' cannot be null.");
+        this.exceptionHandler = Objects.requireNonNull(exceptionHandler, "'exceptionHandler' cannot be null.");
+        this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
     }
 
     /**
@@ -59,18 +53,13 @@ class ReactorExecutor implements Closeable {
      * #close()} is called.
      */
     void start() {
-        if (hasStarted.get()) {
+        if (hasStarted.getAndSet(true)) {
             logger.warning("ReactorExecutor has already started.");
             return;
         }
 
         logger.info(LOG_MESSAGE, connectionId, "Starting reactor.");
-
-        hasStarted.set(true);
-        synchronized (lock) {
-            reactor.start();
-        }
-
+        reactor.start();
         scheduler.schedule(this::run);
     }
 
