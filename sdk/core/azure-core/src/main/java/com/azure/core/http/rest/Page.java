@@ -21,7 +21,7 @@ public interface Page<T> extends ContinuablePage<String, T> {
      *
      * @return the page elements
      *
-     * @deprecated use {@link this#getElements()}.
+     * @deprecated use {@link #getElements()}.
      */
     @Deprecated
     default List<T> getItems() {
