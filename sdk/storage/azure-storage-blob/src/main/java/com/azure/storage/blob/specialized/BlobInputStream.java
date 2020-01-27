@@ -4,6 +4,12 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.ArchiveStatus;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -26,6 +32,11 @@ public final class BlobInputStream extends StorageInputStream {
      * Holds the {@link BlobRequestConditions} object that represents the access conditions for the blob.
      */
     private final BlobRequestConditions accessCondition;
+
+    /**
+     * Holds the {@link BlobProperties} object that represents the blob's properties.
+     */
+    private BlobProperties properties;
 
     /**
      * Initializes a new instance of the BlobInputStream class.
@@ -60,8 +71,7 @@ public final class BlobInputStream extends StorageInputStream {
 
         this.blobClient = blobClient;
         this.accessCondition = accessCondition;
-
-
+        this.properties = null;
     }
 
     /**
@@ -76,7 +86,14 @@ public final class BlobInputStream extends StorageInputStream {
         try {
             ByteBuffer currentBuffer = this.blobClient.downloadWithResponse(new BlobRange(offset,
                 (long) readLength), null, this.accessCondition, false)
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
+                .flatMap(response -> {
+                    // Only populate properties if it has not been populated yet, this is ok since we etag lock on the
+                    // blob while downloading, so it is guaranteed to be the same.
+                    if (this.properties == null) {
+                        this.properties = buildBlobProperties(response.getDeserializedHeaders());
+                    }
+                    return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap);
+                })
                 .block();
 
             this.bufferSize = readLength;
@@ -87,6 +104,28 @@ public final class BlobInputStream extends StorageInputStream {
             this.lastError = new IOException(e);
             throw this.lastError;
         }
+    }
+
+    private static BlobProperties buildBlobProperties(BlobDownloadHeaders hd) {
+        if (hd == null) {
+            return null;
+        }
+        return new BlobProperties(null, hd.getLastModified(), hd.getETag(),
+            hd.getContentLength() == null ? 0 : hd.getContentLength(), hd.getContentType(), null,
+            hd.getContentEncoding(), hd.getContentDisposition(), hd.getContentLanguage(), hd.getCacheControl(),
+            hd.getBlobSequenceNumber(), hd.getBlobType(), hd.getLeaseStatus(), hd.getLeaseState(),
+            hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(), hd.getCopySource(), hd.getCopyProgress(),
+            hd.getCopyCompletionTime(), hd.getCopyStatusDescription(), hd.isServerEncrypted(),
+            null, null, null, null, null, hd.getEncryptionKeySha256(), null, hd.getMetadata(),
+            hd.getBlobCommittedBlockCount());
+    }
+
+    /**
+     *
+     * @return The blob's {@link BlobProperties properties} or {@code null} if no data has been read from the stream.
+     */
+    public BlobProperties getProperties() {
+        return this.properties;
     }
 
 }
