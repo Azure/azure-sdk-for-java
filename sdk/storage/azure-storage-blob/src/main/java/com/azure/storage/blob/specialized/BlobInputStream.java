@@ -4,11 +4,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
-import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
-import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
