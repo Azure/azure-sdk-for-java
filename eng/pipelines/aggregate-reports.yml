@@ -53,7 +53,7 @@ jobs:
     - task: Maven@3
       displayName: 'Generate aggregate code coverage report'
       inputs:
-        mavenPomFile: $(pomFile)
+        mavenPomFile: 'pom.client.xml'
         options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
         mavenOptions: '-Xmx3072m $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
