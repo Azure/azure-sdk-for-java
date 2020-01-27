@@ -30,7 +30,7 @@ public class RetryUtils {
             return shouldRetryResultFlux.flatMap(s -> {
                 CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
                 if(clientException != null) {
-                    policy.addStatusAndSubStatusCode(clientException.getStatusCode(), clientException.getSubStatusCode());
+                    policy.addStatusAndSubStatusCode(null, clientException.getStatusCode(), clientException.getSubStatusCode());
                 }
 
                 if (s.backOffTime != null) {
@@ -77,7 +77,7 @@ public class RetryUtils {
             return shouldRetryResultFlux.flatMap(shouldRetryResult -> {
                 CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
                 if(clientException != null) {
-                    retryPolicy.addStatusAndSubStatusCode(clientException.getStatusCode(), clientException.getSubStatusCode());
+                    retryPolicy.addStatusAndSubStatusCode(null, clientException.getStatusCode(), clientException.getSubStatusCode());
                 }
 
                 if (!shouldRetryResult.shouldRetry) {

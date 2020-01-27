@@ -26,7 +26,6 @@ public interface IRetryPolicy  {
     /// <returns>If the retry needs to be attempted or not</returns>
     Mono<ShouldRetryResult> shouldRetry(Exception e);
 
-
     int getRetryCount();
 
     void incrementRetry();
@@ -41,9 +40,7 @@ public interface IRetryPolicy  {
 
     ZonedDateTime getEndTime();
 
-    void addStatusAndSubStatusCode(int statusCode, int subStatusCode);
-
-    void addStatusAndSubStatusCode(int index, int statusCode, int subStatusCode);
+    void addStatusAndSubStatusCode(Integer index, int statusCode, int subStatusCode);
 
     List<int[]> getStatusAndSubStatusCodes();
 
