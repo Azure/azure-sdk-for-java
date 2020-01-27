@@ -502,7 +502,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             Transforms.toBlobRequestConditions(requestConditions), rangeGetContentMd5, openOptions)
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
-
     }
 
     /**

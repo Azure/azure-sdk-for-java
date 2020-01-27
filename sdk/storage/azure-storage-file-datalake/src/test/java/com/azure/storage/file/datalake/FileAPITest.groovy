@@ -10,6 +10,11 @@ import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
+import java.nio.file.FileAlreadyExistsException
+import java.nio.file.Files
+import java.nio.file.OpenOption
+import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 
 class FileAPITest extends APISpec {
@@ -1019,6 +1024,112 @@ class FileAPITest extends APISpec {
 
         then:
         thrown(NullPointerException)
+    }
+
+    def "Download to file exists"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (!testFile.exists()) {
+            assert testFile.createNewFile()
+        }
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
+        when:
+        // Default overwrite is false so this should fail
+        fc.downloadToFile(testFile.getPath())
+
+        then:
+        def ex = thrown(UncheckedIOException)
+        ex.getCause() instanceof FileAlreadyExistsException
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download to file exists succeeds"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (!testFile.exists()) {
+            assert testFile.createNewFile()
+        }
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
+        when:
+        fc.downloadToFile(testFile.getPath(), true)
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download to file does not exist"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (testFile.exists()) {
+            assert testFile.delete()
+        }
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
+        when:
+        fc.downloadToFile(testFile.getPath())
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download file does not exist open options"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (testFile.exists()) {
+            assert testFile.delete()
+        }
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
+        when:
+        Set<OpenOption> openOptions = new HashSet<>()
+        openOptions.add(StandardOpenOption.CREATE_NEW)
+        openOptions.add(StandardOpenOption.READ)
+        openOptions.add(StandardOpenOption.WRITE)
+        fc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download file exist open options"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (!testFile.exists()) {
+            assert testFile.createNewFile()
+        }
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
+        when:
+        Set<OpenOption> openOptions = new HashSet<>()
+        openOptions.add(StandardOpenOption.CREATE)
+        openOptions.add(StandardOpenOption.TRUNCATE_EXISTING)
+        openOptions.add(StandardOpenOption.READ)
+        openOptions.add(StandardOpenOption.WRITE)
+        fc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
     }
 
     def "Rename min"() {

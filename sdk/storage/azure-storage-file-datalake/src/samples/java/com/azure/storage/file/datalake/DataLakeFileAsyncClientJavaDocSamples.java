@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
+import com.azure.storage.file.datalake.models.ParallelTransferOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import reactor.core.publisher.Flux;
 
@@ -15,6 +16,11 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Code snippets for {@link DataLakeFileAsyncClient}
@@ -30,6 +36,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
     private long length = 4L;
     private long position = 4L;
     private long offset = 0L;
+    private String file = "file";
 
     /**
      * Code snippets for {@link DataLakeFileAsyncClient#delete()} and
@@ -103,6 +110,39 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             });
         });
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.readWithResponse#FileRange-DownloadRetryOptions-DataLakeRequestConditions-boolean
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileAsyncClient#downloadToFile(String)} and {@link DataLakeFileAsyncClient#downloadToFileWithResponse(String,
+     * FileRange, ParallelTransferOptions, DownloadRetryOptions, DataLakeRequestConditions, boolean)}
+     */
+    public void downloadToFileCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFile#String
+        client.downloadToFile(file).subscribe(response -> System.out.println("Completed download to file"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFile#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFile#String-boolean
+        boolean overwrite = false; // Default value
+        client.downloadToFile(file, overwrite).subscribe(response -> System.out.println("Completed download to file"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFile#String-boolean
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean
+        FileRange range = new FileRange(1024, 2048L);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+
+        client.downloadToFileWithResponse(file, range, null, options, null, false)
+            .subscribe(response -> System.out.println("Completed download to file"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set
+        FileRange FileRange = new FileRange(1024, 2048L);
+        DownloadRetryOptions downloadRetryOptions = new DownloadRetryOptions().setMaxRetryRequests(5);
+        Set<OpenOption> openOptions = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+            StandardOpenOption.WRITE, StandardOpenOption.READ)); // Default options
+
+        client.downloadToFileWithResponse(file, FileRange, null, downloadRetryOptions, null, false, openOptions)
+            .subscribe(response -> System.out.println("Completed download to file"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set
     }
 
     /**
