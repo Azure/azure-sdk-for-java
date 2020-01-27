@@ -38,113 +38,32 @@ param(
     [string] $PushArgs = ""
 )
 
-<#
-.Synopsis
-    Invoke git, handling its quirky stderr that isn't error
-
-.Outputs
-    Git messages, and lastly the exit code
-
-.Example
-    Invoke-Git push
-
-.Example
-    Invoke-Git "add ."
-#>
-function Invoke-Git
-{
-param(
-[Parameter(Mandatory)]
-[string] $Command)
-
-    try 
-    {
-        $exit = 0
-        $path = [System.IO.Path]::GetTempFileName()
-
-        Write-Host "git $Command"
-        Invoke-Expression "git $Command 2>&1 > $path"
-        $exit = $LASTEXITCODE
-        # Verify that there's actually something to write before trying
-        # to access the contents of the file
-        if ((Test-Path $path) -and ((Get-Item $path).length -gt 0))
-        {
-            # Q) Why do we need this janky processing to deal with git output?
-            # A) Git and DevOps powershell don't quite place nice. Git 'kinda' 
-            #    writes to std error with regular output and even successful
-            #    commands could cause a powershell script to bomb out. With that
-            #    being said, we are actually expecting push to fail in some cases
-            #    in which we'll rebase and try again.
-            if ( $exit -gt 0 )
-            {
-                Write-Error (Get-Content $path -Raw)
-            }
-            else
-            {
-                Write-Host (Get-Content $path -Raw)
-            }
-        }
-        return $exit
-    }
-    catch [System.Management.Automation.RemoteException]
-    {
-        $errorRecord = $_.Exception.ErrorRecord
-        Write-Host "Error, unexpected exception: $_`n$($_.ScriptStackTrace)"
-        Write-Host "Error, unexpected exception $($ex) caught."
-        Write-Host "ErrorRecord = $($errorRecord)"
-        Write-Host "ErrorRecord.ErrorDetails = $($errorRecord.ErrorDetails)"
-        Write-Host "ErrorRecord.Exception = $($errorRecord.Exception)"
-        Write-Host "ErrorRecord.PSMessageDetails = $($errorRecord.PSMessageDetails)"
-        Write-Host "ErrorRecord.FullyQualifiedErrorId = $($errorRecord.FullyQualifiedErrorId)"
-        Write-Host $_.ToString()
-        Write-Host $_.Exception.ToString()
-        return 253
-
-    }
-    catch
-    {
-        $msg = $_.Exception.Message
-        $ex = $_.Exception.GetType().FullName
-        Write-Host "Error, unexpected exception: $_`n$($_.ScriptStackTrace)"
-        Write-Host "Error, unexpected exception $($ex) caught."
-        Write-Host "Exception message = $($msg)"
-        return 254
-    }    
-    finally
-    {
-        if ( Test-Path $path )
-        {
-            Remove-Item $path
-        }
-    }
-}
-
-$exitCode = Invoke-Git "remote add azure-sdk-fork https://$($AuthToken)@github.com/$($PROwner)/$($RepoName).git"
-if ($exitCode -ne 0)
+git remote add azure-sdk-fork https://$($AuthToken)@github.com/$($PROwner)/$($RepoName).git
+if ($LASTEXITCODE -ne 0)
 {
     Write-Error "Unable to add remote, see command output above."
-    exit $exitCode
+    exit $LASTEXITCODE
 }
 
-$exitCode = Invoke-Git "fetch -q azure-sdk-fork"
-if ($exitCode -ne 0)
+git fetch azure-sdk-fork
+if ($LASTEXITCODE -ne 0)
 {
     Write-Error "Unable to fetch remote, see command output above."
-    exit $exitCode
+    exit $LASTEXITCODE
 }
 
-$exitCode = Invoke-Git "checkout -q -b $PRBranchName"
-if ($exitCode -ne 0)
+git checkout -b $PRBranchName
+if ($LASTEXITCODE -ne 0)
 {
     Write-Error "Unable to create branch, see command output above."
-    exit $exitCode
+    exit $LASTEXITCODE
 }
 
-$exitCode = Invoke-Git "-c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -q -am `"$($CommitMsg)`""
-if ($exitCode -ne 0)
+git -c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`"
+if ($LASTEXITCODE -ne 0)
 {
     Write-Error "Unable to add files and create commit, see command output above."
-    exit $exitCode
+    exit $LASTEXITCODE
 }
 
 # The number of retries can be increased if necessary. In theory, the number of retries
@@ -158,19 +77,19 @@ $tryNumber = 0
 do 
 { 
     $needsRetry = $false
-    $exitCode = Invoke-Git "push -q azure-sdk-fork $PRBranchName $PushArgs"
+    git push azure-sdk-fork $PRBranchName $PushArgs
     $tryNumber++
-    if ($exitCode -gt 0)
+    if ($LASTEXITCODE -gt 0)
     {
         $needsRetry = $true
         Write-Host "Need to fetch and rebase: attempt number=$($tryNumber)"
-        $exitCode = Invoke-Git "fetch -q azure-sdk-fork"
-        if ($exitCode -ne 0)
+        git fetch azure-sdk-fork
+        if ($LASTEXITCODE -ne 0)
         {
             Write-Error "Unable to fetch remote, see command output above."
         }
-        $exitCode = Invoke-Git "rebase -q azure-sdk-fork/$($PRBranchName)"
-        if ($exitCode -ne 0)
+        git rebase azure-sdk-fork/$($PRBranchName)
+        if ($LASTEXITCODE -ne 0)
         {
             Write-Error "Unable to rebase, see command output above."
         }
@@ -178,8 +97,8 @@ do
 
 } while($needsRetry -and $tryNumber -le $numberOfRetries) 
 
-if ($exitCode -ne 0)
+if ($LASTEXITCODE -ne 0)
 {
     Write-Error "Unable to push commit after $($tryNumber) retries, see command output above."
-    exit $exitCode
+    exit $LASTEXITCODE
 }
