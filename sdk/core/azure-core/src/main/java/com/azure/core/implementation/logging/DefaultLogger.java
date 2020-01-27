@@ -34,7 +34,11 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     public static final String TRACE = "TRACE";
 
     private final String classPath;
-    private final int configuredLogLevel;
+    private final boolean isTraceEnabled;
+    private final boolean isDebugEnabled;
+    private final boolean isInfoEnabled;
+    private final boolean isWarnEnabled;
+    private final boolean isErrorEnabled;
 
     /**
      * Construct DefaultLogger for the given class.
@@ -59,9 +63,16 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             classPath = className;
         }
         this.classPath = classPath;
-        this.configuredLogLevel =
+        int configuredLogLevel =
             LogLevel.fromString(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL))
                 .getLogLevel();
+
+        isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > configuredLogLevel;
+        isDebugEnabled = LogLevel.VERBOSE.getLogLevel() >= configuredLogLevel;
+        isInfoEnabled = LogLevel.INFORMATIONAL.getLogLevel() >= configuredLogLevel;
+        isWarnEnabled = LogLevel.WARNING.getLogLevel() >= configuredLogLevel;
+        isErrorEnabled = LogLevel.ERROR.getLogLevel() >= configuredLogLevel;
+
     }
 
     /**
@@ -77,7 +88,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public boolean isTraceEnabled() {
-        return this.configuredLogLevel < LogLevel.VERBOSE.getLogLevel();
+        return isTraceEnabled;
     }
 
     /**
@@ -125,7 +136,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public boolean isDebugEnabled() {
-        return LogLevel.VERBOSE.getLogLevel() >= this.configuredLogLevel;
+        return isDebugEnabled;
     }
 
     @Override
@@ -170,7 +181,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public boolean isInfoEnabled() {
-        return LogLevel.INFORMATIONAL.getLogLevel() >= this.configuredLogLevel;
+        return isInfoEnabled;
     }
 
 
@@ -219,7 +230,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public boolean isWarnEnabled() {
-        return LogLevel.WARNING.getLogLevel() >= this.configuredLogLevel;
+        return isWarnEnabled;
     }
 
     /**
@@ -267,7 +278,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     @Override
     public boolean isErrorEnabled() {
-        return LogLevel.ERROR.getLogLevel() >= this.configuredLogLevel;
+        return isErrorEnabled;
     }
 
     /**
