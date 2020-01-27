@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.secrets.implementation;
 
 import com.azure.core.http.rest.Page;
+import com.azure.core.util.IterableStream;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -38,12 +39,12 @@ public final class SecretPropertiesPage implements Page<SecretProperties> {
     }
 
     /**
-     * Gets the list of {@link SecretProperties SecretProperties} on this page.
+     * Gets the iterable stream of {@link SecretProperties SecretProperties} on this page.
      *
-     * @return The list of items in {@link List}.
+     * @return The iterable stream of items in {@link List}.
      */
     @Override
-    public List<SecretProperties> getItems() {
-        return items;
+    public IterableStream<SecretProperties> getElements() {
+        return IterableStream.of(items);
     }
 }

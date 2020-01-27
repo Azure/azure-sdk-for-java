@@ -5,9 +5,10 @@ parameters:
 stages:
   - stage: Build
     jobs:
-    - template: ../jobs/archetype-sdk-client.yml
+    - template: ../jobs/archetype-sdk-data.yml
       parameters:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
+        SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
         TestMatrix:
           Windows - java8:
@@ -114,6 +115,8 @@ stages:
     - template: pipelines/stages/archetype-java-release.yml@azure-sdk-build-tools
       parameters:
         DependsOn: Build
+        ServiceDirectory: ${{parameters.ServiceDirectory}}
+        SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
 

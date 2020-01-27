@@ -590,7 +590,7 @@ class EventHubConsumerAsyncClientTest {
 
         // Verify
         Assertions.assertFalse(eventHubConnection.isDisposed());
-        verify(connection1, never()).close();
+        verify(connection1, never()).dispose();
     }
 
     /**
