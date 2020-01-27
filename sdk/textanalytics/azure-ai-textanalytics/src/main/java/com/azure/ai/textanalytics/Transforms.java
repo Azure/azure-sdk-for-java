@@ -8,12 +8,15 @@ import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
+import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -85,5 +88,14 @@ class Transforms {
                 .setText(textDocumentInput.getText()).setLanguage(textDocumentInput.getLanguage()));
         }
         return multiLanguageInputs;
+    }
+
+    static void toTextAnalyticsException(com.azure.ai.textanalytics.models.TextAnalyticsError error,
+        ClientLogger logger) {
+        String baseMessage = String.format(Locale.US, "%s: {%s}, %s",
+            "Status Code", 200, error.getMessage());
+        throw logger.logExceptionAsError(new TextAnalyticsException(baseMessage,
+            error.getCode().toString(),
+            error.getTarget()));
     }
 }

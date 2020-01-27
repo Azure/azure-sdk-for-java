@@ -35,6 +35,7 @@ import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
@@ -65,17 +66,14 @@ class AnalyzeSentimentAsyncClient {
                 if (response.getStatusCode() == 200 && sentimentResultIterator.hasNext()) {
                     analyzeSentimentResult = sentimentResultIterator.next();
                     if (analyzeSentimentResult.isError()) {
-                        TextAnalyticsError error = analyzeSentimentResult.getError();
-                        String baseMessage = String.format(Locale.US, "%s: {%s}, %s",
-                            "Status Code", response.getStatusCode(), error.getMessage());
-                        throw logger.logExceptionAsError(new TextAnalyticsException(baseMessage,
-                            error.getCode().toString(),
-                            error.getTarget()));
+                        toTextAnalyticsException(analyzeSentimentResult.getError(), logger);
                     }
                 }
                 return new SimpleResponse<>(response, analyzeSentimentResult);
             });
     }
+
+
 
     Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentWithResponse(
         List<String> textInputs, String language, Context context) {

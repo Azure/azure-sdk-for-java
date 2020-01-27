@@ -33,6 +33,7 @@ import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
@@ -64,12 +65,7 @@ class RecognizePiiEntityAsyncClient {
                 if (response.getStatusCode() == 200 && piiEntitiesResultIterator.hasNext()) {
                     piiEntitiesResult = piiEntitiesResultIterator.next();
                     if (piiEntitiesResult.isError()) {
-                        TextAnalyticsError error = piiEntitiesResult.getError();
-                        String baseMessage = String.format(Locale.US, "%s: {%s}, %s",
-                            "Status Code", response.getStatusCode(), error.getMessage());
-                        throw logger.logExceptionAsError(new TextAnalyticsException(baseMessage,
-                            error.getCode().toString(),
-                            error.getTarget()));
+                        toTextAnalyticsException(piiEntitiesResult.getError(), logger);
                     }
                 }
                 return new SimpleResponse<>(response, piiEntitiesResult);

@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
@@ -64,12 +65,7 @@ class RecognizeEntityAsyncClient {
                 if (response.getStatusCode() == 200 && entitiesResultIterator.hasNext()) {
                     entitiesResult = entitiesResultIterator.next();
                     if (entitiesResult.isError()) {
-                        TextAnalyticsError error = entitiesResult.getError();
-                        String baseMessage = String.format(Locale.US, "%s: {%s}, %s",
-                            "Status Code", response.getStatusCode(), error.getMessage());
-                        throw logger.logExceptionAsError(new TextAnalyticsException(baseMessage,
-                            error.getCode().toString(),
-                            error.getTarget()));
+                        toTextAnalyticsException(entitiesResult.getError(), logger);
                     }
                 }
                 return new SimpleResponse<>(response, entitiesResult);

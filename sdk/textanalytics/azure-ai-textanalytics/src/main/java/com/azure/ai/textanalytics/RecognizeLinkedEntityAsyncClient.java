@@ -34,6 +34,7 @@ import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
@@ -65,12 +66,7 @@ class RecognizeLinkedEntityAsyncClient {
                 if (response.getStatusCode() == 200 && linkedEntitiesResultIterator.hasNext()) {
                     linkedEntitiesResult = linkedEntitiesResultIterator.next();
                     if (linkedEntitiesResult.isError()) {
-                        TextAnalyticsError error = linkedEntitiesResult.getError();
-                        String baseMessage = String.format(Locale.US, "%s: {%s}, %s",
-                            "Status Code", response.getStatusCode(), error.getMessage());
-                        throw logger.logExceptionAsError(new TextAnalyticsException(baseMessage,
-                            error.getCode().toString(),
-                            error.getTarget()));
+                        toTextAnalyticsException(linkedEntitiesResult.getError(), logger);
                     }
                 }
                 return new SimpleResponse<>(response, linkedEntitiesResult);
@@ -141,6 +137,4 @@ class RecognizeLinkedEntityAsyncClient {
             entityLinkingResult.getModelVersion(), entityLinkingResult.getStatistics() == null ? null
             : toBatchStatistics(entityLinkingResult.getStatistics()));
     }
-
-
 }

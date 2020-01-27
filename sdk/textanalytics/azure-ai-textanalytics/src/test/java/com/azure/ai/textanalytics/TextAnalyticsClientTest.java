@@ -4,7 +4,6 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
@@ -135,8 +134,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageDuplicateIdInput() {
         detectLanguageDuplicateIdRunner((inputs, options) -> {
-            assertRestException(() -> client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE),
-                HttpResponseException.class, 400);
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE));
+            assertEquals(400, response.getResponse().getStatusCode());
         });
     }
 
@@ -322,7 +322,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     // Sentiment
-
     /**
      * Test analyzing sentiment for a string input.
      */

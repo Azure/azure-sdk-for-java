@@ -76,15 +76,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-    private boolean showStatistics = false;
-    private HttpLogOptions httpLogOptions = new HttpLogOptions();
 
     static final String INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE = "Status Code: {200}, Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE = "Status Code: {200}, Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code. ErrorCodeValue: {invalidCountryHint}";
-
-    enum TestEndpoint {
-        LANGUAGE, NAMED_ENTITY, LINKED_ENTITY, KEY_PHRASES, SENTIMENT
-    }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         TokenCredential credential = null;

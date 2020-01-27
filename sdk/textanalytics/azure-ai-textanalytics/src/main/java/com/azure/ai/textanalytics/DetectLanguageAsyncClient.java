@@ -31,6 +31,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 
 /**
  * Helper class for managing detect language endpoint.
@@ -60,12 +61,7 @@ class DetectLanguageAsyncClient {
                 if (response.getStatusCode() == 200 && detectLanguageResultIterator.hasNext()) {
                     detectLanguageResult = detectLanguageResultIterator.next();
                     if (detectLanguageResult.isError()) {
-                        TextAnalyticsError error = detectLanguageResult.getError();
-                        String baseMessage = String.format(Locale.US, "%s: {%s}, %s",
-                            "Status Code", response.getStatusCode(), error.getMessage());
-                        throw logger.logExceptionAsError(new TextAnalyticsException(baseMessage,
-                            error.getCode().toString(),
-                            error.getTarget()));
+                        toTextAnalyticsException(detectLanguageResult.getError(), logger);
                     }
                 }
                 return new SimpleResponse<>(response, detectLanguageResult);
