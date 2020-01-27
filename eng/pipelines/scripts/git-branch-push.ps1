@@ -16,8 +16,6 @@ The message for this particular commit
 A personal access token
 .PARAMETER PushArgs
 Optional arguments to the push command
-.PARAMETER ShowCommands
-Optional Show the git commands that would be executed without actually executing them
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
@@ -37,10 +35,7 @@ param(
     [string] $AuthToken,
 
     [Parameter(Mandatory = $false)]
-    [string] $PushArgs = "",
-
-    [Parameter(Mandatory = $false)]
-    [boolean] $ShowCommands = $false
+    [string] $PushArgs = ""
 )
 
 <#
@@ -60,14 +55,7 @@ function Invoke-Git
 {
 param(
 [Parameter(Mandatory)]
-[string] $Command,
-[boolean] $ShowCommands )
-
-    if ($ShowCommands)
-    {
-        Write-Host "echo git $Command"
-        return 0
-    }
+[string] $Command)
 
     try 
     {
@@ -82,11 +70,11 @@ param(
         if ((Test-Path $path) -and ((Get-Item $path).length -gt 0))
         {
             # Q) Why do we need this janky processing to deal with git output?
-            # A) Git and powershell dont' quite place nice. Git 'kinda' writes to
-            #    std error with regular output and even successful commands could
-            #    cause a powershell script to bomb out. With that being said, we
-            #    are actually expecting push to fail in some cases in which we'll
-            #    rebase and try again.
+            # A) Git and DevOps powershell don't quite place nice. Git 'kinda' 
+            #    writes to std error with regular output and even successful
+            #    commands could cause a powershell script to bomb out. With that
+            #    being said, we are actually expecting push to fail in some cases
+            #    in which we'll rebase and try again.
             if ( $exit -gt 0 )
             {
                 Write-Error (Get-Content $path -Raw)
@@ -100,7 +88,11 @@ param(
     }
     catch
     {
-        Write-Host "Error, unexpected exception: $_`n$($_.ScriptStackTrace)"
+        $msg = $_.Exception.Message
+        $ex = $_.Exception.GetType().FullName
+        #Write-Host "Error, unexpected exception: $_`n$($_.ScriptStackTrace)"
+        Write-Host "Error, unexpected exception $($ex) caught."
+        Write-Host "Exception message = $($msg)"
         return -1
     }    
     finally
@@ -112,28 +104,28 @@ param(
     }
 }
 
-$exitCode = Invoke-Git "remote add azure-sdk-fork https://$($AuthToken)@github.com/$($PROwner)/$($RepoName).git" $ShowCommands
+$exitCode = Invoke-Git "remote add azure-sdk-fork https://$($AuthToken)@github.com/$($PROwner)/$($RepoName).git"
 if ($exitCode -ne 0)
 {
     Write-Error "Unable to add remote, see command output above."
     exit $exitCode
 }
 
-$exitCode = Invoke-Git "fetch azure-sdk-fork" $ShowCommands
+$exitCode = Invoke-Git "fetch azure-sdk-fork"
 if ($exitCode -ne 0)
 {
     Write-Error "Unable to fetch remote, see command output above."
     exit $exitCode
 }
 
-$exitCode = Invoke-Git "checkout -b $PRBranchName" $ShowCommands
+$exitCode = Invoke-Git "checkout -b $PRBranchName"
 if ($exitCode -ne 0)
 {
     Write-Error "Unable to create branch, see command output above."
     exit $exitCode
 }
 
-$exitCode = Invoke-Git "-c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`"" $ShowCommands
+$exitCode = Invoke-Git "-c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`""
 if ($exitCode -ne 0)
 {
     Write-Error "Unable to add files and create commit, see command output above."
@@ -151,18 +143,18 @@ $tryNumber = 0
 do 
 { 
     $needsRetry = $false
-    $exitCode = Invoke-Git "push azure-sdk-fork $PRBranchName $PushArgs" $ShowCommands
+    $exitCode = Invoke-Git "push azure-sdk-fork $PRBranchName $PushArgs"
     $tryNumber++
     if ($exitCode -gt 0)
     {
         $needsRetry = $true
         Write-Host "Need to fetch and rebase: attempt number=$($tryNumber)"
-        $exitCode = Invoke-Git "fetch azure-sdk-fork" $ShowCommands
+        $exitCode = Invoke-Git "fetch azure-sdk-fork"
         if ($exitCode -ne 0)
         {
             Write-Error "Unable to fetch remote, see command output above."
         }
-        $exitCode = Invoke-Git "rebase azure-sdk-fork/$($PRBranchName)" $ShowCommands
+        $exitCode = Invoke-Git "rebase azure-sdk-fork/$($PRBranchName)"
         if ($exitCode -ne 0)
         {
             Write-Error "Unable to rebase, see command output above."
