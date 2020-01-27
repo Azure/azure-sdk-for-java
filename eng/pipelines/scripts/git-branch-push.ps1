@@ -38,6 +38,7 @@ param(
     [string] $PushArgs = ""
 )
 
+Write-Host "git remote add azure-sdk-fork https://$($AuthToken)@github.com/$($PROwner)/$($RepoName).git"
 git remote add azure-sdk-fork https://$($AuthToken)@github.com/$($PROwner)/$($RepoName).git
 if ($LASTEXITCODE -ne 0)
 {
@@ -45,6 +46,7 @@ if ($LASTEXITCODE -ne 0)
     exit $LASTEXITCODE
 }
 
+Write-Host "git fetch azure-sdk-fork"
 git fetch azure-sdk-fork
 if ($LASTEXITCODE -ne 0)
 {
@@ -52,6 +54,7 @@ if ($LASTEXITCODE -ne 0)
     exit $LASTEXITCODE
 }
 
+Write-Host "git checkout -b $PRBranchName"
 git checkout -b $PRBranchName
 if ($LASTEXITCODE -ne 0)
 {
@@ -59,6 +62,7 @@ if ($LASTEXITCODE -ne 0)
     exit $LASTEXITCODE
 }
 
+Write-Host "git -c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`""
 git -c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`"
 if ($LASTEXITCODE -ne 0)
 {
@@ -83,11 +87,13 @@ do
     {
         $needsRetry = $true
         Write-Host "Need to fetch and rebase: attempt number=$($tryNumber)"
+        Write-Host "git fetch azure-sdk-fork"
         git fetch azure-sdk-fork
         if ($LASTEXITCODE -ne 0)
         {
             Write-Error "Unable to fetch remote, see command output above."
         }
+        Write-Host "git rebase azure-sdk-fork/$($PRBranchName)"
         git rebase azure-sdk-fork/$($PRBranchName)
         if ($LASTEXITCODE -ne 0)
         {
