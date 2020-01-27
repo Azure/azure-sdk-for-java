@@ -96,6 +96,9 @@ param(
         Write-Host "ErrorRecord.Exception = $($errorRecord.Exception)"
         Write-Host "ErrorRecord.PSMessageDetails = $($errorRecord.PSMessageDetails)"
         Write-Host "ErrorRecord.FullyQualifiedErrorId = $($errorRecord.FullyQualifiedErrorId)"
+        Write-Host $_.ToString()
+        Write-Host $_.Exception.ToString()
+        return 253
 
     }
     catch
@@ -105,7 +108,7 @@ param(
         Write-Host "Error, unexpected exception: $_`n$($_.ScriptStackTrace)"
         Write-Host "Error, unexpected exception $($ex) caught."
         Write-Host "Exception message = $($msg)"
-        return -1
+        return 254
     }    
     finally
     {
@@ -123,7 +126,7 @@ if ($exitCode -ne 0)
     exit $exitCode
 }
 
-$exitCode = Invoke-Git "fetch azure-sdk-fork"
+$exitCode = Invoke-Git "fetch -q azure-sdk-fork"
 if ($exitCode -ne 0)
 {
     Write-Error "Unable to fetch remote, see command output above."
@@ -161,7 +164,7 @@ do
     {
         $needsRetry = $true
         Write-Host "Need to fetch and rebase: attempt number=$($tryNumber)"
-        $exitCode = Invoke-Git "fetch azure-sdk-fork"
+        $exitCode = Invoke-Git "fetch -q azure-sdk-fork"
         if ($exitCode -ne 0)
         {
             Write-Error "Unable to fetch remote, see command output above."
