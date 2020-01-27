@@ -155,7 +155,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
-        Mockito.verify(retryPolicy, Mockito.times(2)).getStatusAndSubStatusCodes();
+        Mockito.verify(retryPolicy, Mockito.times(3)).getStatusAndSubStatusCodes();
 
         retryPolicy = Mockito.mock(TestRetryPolicy.class);
         Mockito.when(retryPolicy.getRetryCount()).thenReturn(1);
@@ -164,7 +164,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
-        Mockito.verify(retryPolicy, Mockito.times(2)).getStatusAndSubStatusCodes();
+        Mockito.verify(retryPolicy, Mockito.times(3)).getStatusAndSubStatusCodes();
 
         retryPolicy = Mockito.mock(TestRetryPolicy.class);
         Mockito.when(retryPolicy.getRetryCount()).thenReturn(1);
@@ -173,7 +173,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
-        Mockito.verify(retryPolicy, Mockito.times(2)).getStatusAndSubStatusCodes();
+        Mockito.verify(retryPolicy, Mockito.times(3)).getStatusAndSubStatusCodes();
 
         retryPolicy = Mockito.mock(TestRetryPolicy.class);
         Mockito.when(retryPolicy.getRetryCount()).thenReturn(1);
@@ -182,7 +182,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
-        Mockito.verify(retryPolicy, Mockito.times(2)).getStatusAndSubStatusCodes();
+        Mockito.verify(retryPolicy, Mockito.times(3)).getStatusAndSubStatusCodes();
 
         retryPolicy = Mockito.mock(TestRetryPolicy.class);
         Mockito.when(retryPolicy.getRetryCount()).thenReturn(1);
@@ -191,7 +191,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
-        Mockito.verify(retryPolicy, Mockito.times(2)).getStatusAndSubStatusCodes();
+        Mockito.verify(retryPolicy, Mockito.times(3)).getStatusAndSubStatusCodes();
 
         cosmosClient.close();
     }
