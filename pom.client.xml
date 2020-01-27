@@ -371,7 +371,7 @@
         <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
       </plugin>
 
-       Checks public surface area for breaking changes.
+      <!-- Checks public surface area for breaking changes. -->
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
