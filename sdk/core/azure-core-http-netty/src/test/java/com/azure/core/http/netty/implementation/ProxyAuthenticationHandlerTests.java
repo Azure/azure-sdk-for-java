@@ -52,11 +52,12 @@ import static org.mockito.Mockito.when;
  * Tests {@link ProxyAuthenticationHandler}.
  */
 public class ProxyAuthenticationHandlerTests {
-    private static String DIGEST_CHALLENGE = "Digest realm=\"test realm\", qop=\"auth\", algorithm=SHA-256, nonce=\""
-        + "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v\", opaque=\"FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS\"";
-    private static Map<String, String> PARSED_DIGEST_CHALLENGE = parseDigestChallenge(DIGEST_CHALLENGE);
-    private static String ORIGINAL_NONCE = "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v";
-    private static String UPDATED_NONCE = "FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS";
+    private static final String DIGEST_CHALLENGE = "Digest realm=\"test realm\", qop=\"auth\", algorithm=SHA-256, "
+        + "nonce=\"7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v\", "
+        + "opaque=\"FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS\"";
+    private static final Map<String, String> PARSED_DIGEST_CHALLENGE = parseDigestChallenge(DIGEST_CHALLENGE);
+    private static final String ORIGINAL_NONCE = "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v";
+    private static final String UPDATED_NONCE = "FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS";
 
     @AfterEach
     public void cleanupInlineMocks() {
