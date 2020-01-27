@@ -50,6 +50,41 @@ jobs:
         publishJUnitResults: false
         goals: 'install site:site site:stage'
 
+    - task: Maven@3
+      displayName: 'Generate aggregate code coverage report'
+      inputs:
+        mavenPomFile: $(pomFile)
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+        mavenOptions: '-Xmx3072m $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'verify'
+
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        mergeTestResults: true
+        testRunTitle: 'Linux on Java 1.11'
+
+    # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
+    # Code coverage reporting is setup only for Track 2 modules.
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: JaCoCo
+        summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
+        reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
+        failIfCoverageEmpty: true
+
+    # Publish code coverage to an artifact so it can be uploaded to the Maven site.
+    # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
+    - task: PublishPipelineArtifact@0
+      displayName: 'Publish coverage artifact'
+      inputs:
+        artifactName: coverage
+        targetPath: eng/jacoco-test-coverage/target/site/
+
     - script: |
         git clone https://github.com/JonathanGiles/DependencyChecker.git
         mkdir input && cp eng/DependencyChecker/client_dependencies.json input/dependencies.json
