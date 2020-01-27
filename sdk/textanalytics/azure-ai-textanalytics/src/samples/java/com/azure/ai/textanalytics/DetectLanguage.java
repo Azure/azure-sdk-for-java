@@ -20,7 +20,7 @@ public class DetectLanguage {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
             .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .endpoint("{endpoint}")
             .buildClient();
 
         // The text that need be analysed.

@@ -43,7 +43,7 @@ public class ReadmeSamples {
     public void useSubscriptionKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .endpoint("{endpoint}")
             .buildClient();
     }
 
@@ -53,7 +53,7 @@ public class ReadmeSamples {
     public void useSubscriptionKeyAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .endpoint("{endpoint}")
             .buildAsyncClient();
     }
 
@@ -62,7 +62,7 @@ public class ReadmeSamples {
      */
     public void useAadAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
     }
@@ -165,5 +165,18 @@ public class ReadmeSamples {
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Code snippet for rotating subscription key of the client
+     */
+    public void rotatingSubscriptionKey() {
+        TextAnalyticsSubscriptionKeyCredential credential = new TextAnalyticsSubscriptionKeyCredential("{expired_subscription_key}");
+        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+            .subscriptionKey(credential)
+            .endpoint("{endpoint}")
+            .buildClient();
+
+        credential.updateCredential("{new_subscription_key}");
     }
 }

@@ -77,7 +77,7 @@ cognitive services.
     ```java
     TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
         .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-        .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+        .endpoint("{endpoint}")
         .buildClient();
     ```
 
@@ -103,7 +103,7 @@ cognitive services.
    <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L64-L67 -->
     ```java
     TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-        .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+        .endpoint("{endpoint}")
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildAsyncClient();
     ```
@@ -118,10 +118,23 @@ your resource and a subscription key that allows you access:
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-    .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+    .endpoint("{endpoint}")
     .buildClient();
 ```
 
+#### Rotate existing subscription key
+The Azure Text Analytics client library provide a way to rotate the existing subscription key.
+
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L174-L180 -->
+```java
+TextAnalyticsSubscriptionKeyCredential credential = new TextAnalyticsSubscriptionKeyCredential("{expired_subscription_key}");
+TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+    .subscriptionKey(credential)
+    .endpoint("{endpoint}")
+    .buildClient();
+
+credential.updateCredential("{new_subscription_key}");
+```
 ## Key concepts
 
 ### Text Input
@@ -190,14 +203,14 @@ Text analytics support both synchronous and asynchronous client creation by usin
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-    .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+    .endpoint("{endpoint}")
     .buildClient();
 ```
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L54-L57 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-    .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+    .endpoint("{endpoint}")
     .buildAsyncClient();
 ```
 

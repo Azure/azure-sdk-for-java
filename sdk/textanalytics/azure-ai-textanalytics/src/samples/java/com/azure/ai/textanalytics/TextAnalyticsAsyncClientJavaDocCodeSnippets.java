@@ -38,10 +38,27 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
             .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         return textAnalyticsAsyncClient;
+    }
+
+    /**
+     * Code snippet for updating the existing subscription key.
+     */
+    public void rotateSubscriptionKey() {
+        // BEGIN: com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential
+        TextAnalyticsSubscriptionKeyCredential credential =
+            new TextAnalyticsSubscriptionKeyCredential("{subscription_key}");
+
+        TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
+            .subscriptionKey(credential)
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
+
+        credential.updateCredential("{new_subscription_key}");
+        // END: com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential
     }
 
     // Languages

@@ -43,7 +43,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .endpoint("{endpoint}")
             .pipeline(pipeline)
             .buildClient();
         // END:  com.azure.ai.textanalytics.TextAnalyticsClient.pipeline.instantiation
@@ -56,7 +56,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.instantiation
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .endpoint("{endpoint}")
             .buildClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.instantiation
     }

@@ -21,7 +21,7 @@ public class AnalyzeSentimentAsync {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
             .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The text that need be analysed.
