@@ -78,7 +78,7 @@ import java.util.concurrent.ConcurrentMap;
  *     <li>{@code AzureStorageBlockSize:}{@link Integer}</li>
  *     <li>{@code AzureStorageDownloadResumeRetries:}{@link Integer}</li>
  *     <li>{@code AzureStorageUseHttps:}{@link Boolean}</li>
- *     <li>{@code AzureStorageFileStores:}{@link Iterable<String>}</li>
+ *     <li>{@code AzureStorageFileStores:}{@link Iterable}&lt;String&gt;}</li>
  * </ul>
  * <p>
  * Either an account key or a sas token must be specified. If both are provided, the account key will be preferred. If
@@ -175,7 +175,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * {@inheritDoc}
      */
     @Override
-    public DirectoryStream<Path> newDirectoryStream(Path path, DirectoryStream.Filter<? super Path> filter) throws IOException {
+    public DirectoryStream<Path> newDirectoryStream(Path path, DirectoryStream.Filter<? super Path> filter)
+        throws IOException {
         return null;
     }
 
@@ -255,7 +256,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * {@inheritDoc}
      */
     @Override
-    public <A extends BasicFileAttributes> A readAttributes(Path path, Class<A> aClass, LinkOption... linkOptions) throws IOException {
+    public <A extends BasicFileAttributes> A readAttributes(Path path, Class<A> aClass, LinkOption... linkOptions)
+        throws IOException {
         return null;
     }
 
@@ -285,15 +287,15 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 "URI scheme does not match this provider"));
         }
         if (CoreUtils.isNullOrEmpty(uri.getQuery())) {
-            throw Utility.logError(this.logger, new IllegalArgumentException("URI does not contain a query " +
-                "component. FileSystems require a URI of the format \"azb://?account=<account_name>\"."));
+            throw Utility.logError(this.logger, new IllegalArgumentException("URI does not contain a query "
+                + "component. FileSystems require a URI of the format \"azb://?account=<account_name>\"."));
         }
 
         String accountName = Flux.fromArray(uri.getQuery().split("&"))
                 .filter(s -> s.startsWith(ACCOUNT_QUERY_KEY + "="))
                 .switchIfEmpty(Mono.error(Utility.logError(this.logger, new IllegalArgumentException(
-                        "URI does not contain an \"" + ACCOUNT_QUERY_KEY + "=\" parameter. FileSystems require a URI " +
-                                "of the format \"azb://?account=<account_name>\""))))
+                        "URI does not contain an \"" + ACCOUNT_QUERY_KEY + "=\" parameter. FileSystems require a URI "
+                            + "of the format \"azb://?account=<account_name>\""))))
                 .map(s -> s.substring(ACCOUNT_QUERY_KEY.length() + 1))
                 .blockLast();
 

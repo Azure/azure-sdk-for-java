@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.Stack;
 
 /**
  * The root component, if it is present, is the first element of the path and is denoted by a {@code ':'} as the last
@@ -69,15 +68,15 @@ public final class AzurePath implements Path {
         // No element but the first may contain ":"
         elementFlux.skip(1)
             .flatMap(str -> str.contains(ROOT_DIR_SUFFIX)
-                ? Mono.error(Utility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX +
-            " is an invalid character except to identify the root element of this path if there is one.")))
+                ? Mono.error(Utility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX
+                + " is an invalid character except to identify the root element of this path if there is one.")))
             : Mono.just(str)).blockLast();
 
         // There may only be at most one instance of ":" in the root component, and it must be the last character.
         elementFlux.take(1)
             .flatMap(str -> str.contains(ROOT_DIR_SUFFIX) && str.indexOf(ROOT_DIR_SUFFIX) < str.length() - 1
-            ? Mono.error(Utility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX + " may" +
-                " only be used as the last character in the root component of a path")))
+            ? Mono.error(Utility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX + " may"
+                + " only be used as the last character in the root component of a path")))
             : Mono.just(str)).blockLast();
     }
 
@@ -361,7 +360,7 @@ public final class AzurePath implements Path {
                 new IllegalArgumentException("Both paths must be absolute or neither can be"));
         }
 
-        AzurePath thisNormalized = (AzurePath)this.normalize();
+        AzurePath thisNormalized = (AzurePath) this.normalize();
         Path otherNormalized = path.normalize();
 
         Deque<String> deque = new ArrayDeque<>(
@@ -432,7 +431,8 @@ public final class AzurePath implements Path {
      * {@inheritDoc}
      */
     @Override
-    public WatchKey register(WatchService watchService, WatchEvent.Kind<?>[] kinds, WatchEvent.Modifier... modifiers) throws IOException {
+    public WatchKey register(WatchService watchService, WatchEvent.Kind<?>[] kinds, WatchEvent.Modifier... modifiers)
+        throws IOException {
         throw new UnsupportedOperationException();
     }
 
@@ -487,8 +487,12 @@ public final class AzurePath implements Path {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         AzurePath paths = (AzurePath) o;
         return Objects.equals(parentFileSystem, paths.parentFileSystem)
             && Objects.equals(pathString, paths.pathString);
