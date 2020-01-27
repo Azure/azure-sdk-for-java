@@ -22,7 +22,7 @@ definition, such as text or binary data.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.2.0</version>
+    <version>12.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -126,8 +126,16 @@ Create a `BlobServiceClient` using the [`sasToken`](#get-credentials) generated 
 
 ```java
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-        .endpoint("<your-storage-blob-url>")
+        .endpoint("<your-storage-account-url>")
         .sasToken("<your-sasToken>")
+        .buildClient();
+```
+
+or
+
+```java
+BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+        .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
         .buildClient();
 ```
 
@@ -139,15 +147,21 @@ Create a `BlobContainerClient` using a `BlobServiceClient`.
 BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient("mycontainer");
 ```
 
-or
-
 Create a `BlobContainerClient` from the builder [`sasToken`](#get-credentials) generated above.
 
 ```java
 BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
-        .endpoint("<your-storage-blob-url>")
+        .endpoint("<your-storage-account-url>")
         .sasToken("<your-sasToken>")
         .containerName("mycontainer")
+        .buildClient();
+```
+
+or
+
+```java
+BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
+        .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "?" + "<your-sasToken>")
         .buildClient();
 ```
 
@@ -165,10 +179,18 @@ Create a `BlobClient` from the builder [`sasToken`](#get-credentials) generated 
 
 ```java
 BlobClient blobClient = new BlobClientBuilder()
-        .endpoint("<your-storage-blob-url>")
+        .endpoint("<your-storage-account-url>")
         .sasToken("<your-sasToken>")
         .containerName("mycontainer")
         .blobName("myblob")
+        .buildClient();
+```
+
+or
+
+```java
+BlobClient blobClient = new BlobClientBuilder()
+        .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" +"?" + "<your-sasToken>")
         .buildClient();
 ```
 
@@ -232,10 +254,10 @@ blobClient.downloadToFile("downloaded-file.jpg");
 Enumerating all blobs using a `BlobContainerClient`.
 
 ```java
-blobContainerClient.listBlobs()
-        .forEach(
-            blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
-        );
+Iterator<BlobItem> it = blobContainerClient.listBlobs().iterator();
+it.forEachRemaining(
+    { blobItem -> System.out.println("This is the blob name: " + blobItem.getName()) }
+   );
 ```
 
 ### Authenticate with Azure Identity

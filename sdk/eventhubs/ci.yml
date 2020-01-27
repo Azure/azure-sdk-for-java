@@ -44,8 +44,10 @@ stages:
       ServiceDirectory: eventhubs
       Artifacts:
         - name: azure-messaging-eventhubs
+          groupId: com.azure
           safeName: azuremessagingeventhubs
           stagingProfileId: 88192f04117501
         - name: azure-messaging-eventhubs-checkpointstore-blob
+          groupId: com.azure
           safeName: azuremessagingeventhubscheckpointstoreblob
           stagingProfileId: 88192f04117501

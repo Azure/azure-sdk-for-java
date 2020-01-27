@@ -3,67 +3,41 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for DocumentSentimentValue.
+ * Defines values for TextSentimentClass.
  */
-public enum TextSentimentClass {
+public final class TextSentimentClass extends ExpandableStringEnum<TextSentimentClass> {
     /**
-     * Enum value positive.
+     * Static value Positive for TextSentimentClass.
      */
-    POSITIVE("positive"),
+    public static final TextSentimentClass POSITIVE = fromString("positive");
 
     /**
-     * Enum value neutral.
+     * Static value Neutral for TextSentimentClass.
      */
-    NEUTRAL("neutral"),
+    public static final TextSentimentClass NEUTRAL = fromString("neutral");
 
     /**
-     * Enum value negative.
+     * Static value Negative for TextSentimentClass.
      */
-    NEGATIVE("negative"),
+    public static final TextSentimentClass NEGATIVE = fromString("negative");
 
     /**
-     * Enum value mixed.
+     * Static value Mixed for TextSentimentClass.
      */
-    MIXED("mixed");
+    public static final TextSentimentClass MIXED = fromString("mixed");
 
     /**
-     * The actual serialized value for a DocumentSentimentValue instance.
-     */
-    private final String value;
-
-    /**
-     * Creates a {@code TextSentimentClass} enum model that describes the sentiment class of text
+     * Creates or finds a TextSentimentClass from its string representation.
      *
-     * @param value an enum value, could be positive, neutral, negative, or mixed
-     */
-    TextSentimentClass(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a DocumentSentimentValue instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed DocumentSentimentValue object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding TextSentimentClass.
      */
     @JsonCreator
-    public static TextSentimentClass fromString(String value) {
-        TextSentimentClass[] items = TextSentimentClass.values();
-        for (TextSentimentClass item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static TextSentimentClass fromString(String name) {
+        return fromString(name, TextSentimentClass.class);
     }
 }

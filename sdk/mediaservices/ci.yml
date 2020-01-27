@@ -37,10 +37,11 @@ pr:
       - sdk/mediaservices/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: mediaservices
       Artifacts:
         - name: azure-media
+          groupId: com.microsoft.azure
           safeName: azuremedia
           stagingProfileId: 534d15ee3800f4

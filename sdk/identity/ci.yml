@@ -38,5 +38,6 @@ stages:
       ServiceDirectory: identity
       Artifacts:
         - name: azure-identity
+          groupId: com.azure
           safeName: azureidentity
           stagingProfileId: 88192f04117501

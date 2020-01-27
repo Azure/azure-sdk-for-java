@@ -672,7 +672,41 @@ public final class BlobContainerAsyncClient {
      */
     public PagedFlux<BlobItem> listBlobs(ListBlobsOptions options) {
         try {
-            return listBlobsFlatWithOptionalTimeout(options, null);
+            return listBlobsFlatWithOptionalTimeout(options, null, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the blobs in this container lazily as needed. The directories are
+     * flattened and only actual blobs and no directories are returned.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob on the
+     * root level 'bar', will return
+     *
+     * <ul>
+     * <li>foo/foo1
+     * <li>foo/foo2
+     * <li>bar
+     * </ul>
+     *
+     *
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.listBlobs#ListBlobsOptions-String}
+     *
+     * @param options {@link ListBlobsOptions}
+     * @param continuationToken Identifies the portion of the list to be returned with the next list operation.
+     * @return A reactive response emitting the listed blobs, flattened.
+     */
+    public PagedFlux<BlobItem> listBlobs(ListBlobsOptions options, String continuationToken) {
+        try {
+            return listBlobsFlatWithOptionalTimeout(options, continuationToken, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -687,7 +721,8 @@ public final class BlobContainerAsyncClient {
      * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return A reactive response emitting the listed blobs, flattened.
      */
-    PagedFlux<BlobItem> listBlobsFlatWithOptionalTimeout(ListBlobsOptions options, Duration timeout) {
+    PagedFlux<BlobItem> listBlobsFlatWithOptionalTimeout(ListBlobsOptions options, String continuationToken,
+        Duration timeout) {
         Function<String, Mono<PagedResponse<BlobItem>>> func =
             marker -> listBlobsFlatSegment(marker, options, timeout)
                 .map(response -> {
@@ -704,7 +739,7 @@ public final class BlobContainerAsyncClient {
                         response.getDeserializedHeaders());
                 });
 
-        return new PagedFlux<>(() -> func.apply(null), func);
+        return new PagedFlux<>(() -> func.apply(continuationToken), func);
     }
 
     /*

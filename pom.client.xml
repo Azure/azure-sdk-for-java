@@ -310,7 +310,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.4</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <executions>
         <execution>
           <id>default-instrument</id>
@@ -485,10 +485,10 @@
                 <title>Azure Storage Blobs - Cryptography</title>
                 <packages>com.azure.storage.blob.cryptography*</packages>
               </group>
-              <group>
+              <!--group>
                 <title>Azure Storage Blobs - NIO</title>
                 <packages>com.azure.storage.blob.nio*</packages>
-              </group>
+              </group-->
               <group>
                 <title>Azure Storage - Files</title>
                 <packages>com.azure.storage.file*</packages>
@@ -594,7 +594,7 @@
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
-      <version>0.8.4</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <version>0.8.5</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -929,6 +929,7 @@
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
 
                 <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
                 --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
@@ -1274,7 +1275,7 @@
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
-    <module>sdk/storage/azure-storage-blob-nio</module>
+    <!--module>sdk/storage/azure-storage-blob-nio</module-->
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>

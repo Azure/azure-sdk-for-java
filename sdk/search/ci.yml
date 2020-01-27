@@ -42,4 +42,5 @@ stages:
       ServiceDirectory: search
       Artifacts:
         - name: azure-search
+          groupId: com.azure
           safeName: azuresearch

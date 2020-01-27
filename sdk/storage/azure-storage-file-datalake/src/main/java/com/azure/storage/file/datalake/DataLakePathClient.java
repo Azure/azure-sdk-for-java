@@ -466,14 +466,16 @@ public class DataLakePathClient {
     /**
      * Package-private rename method for use by {@link DataLakeFileClient} and {@link DataLakeDirectoryClient}
      *
-     * @param destinationPath The path of the destination relative to the file system name
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
+     * @param destinationPath The path of the destination relative to the file system name.
      * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
      * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakePathClient} used to interact with the path created.
      */
-    Mono<Response<DataLakePathClient>> renameWithResponse(String destinationPath,
+    Mono<Response<DataLakePathClient>> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Context context) {
 
@@ -497,7 +499,7 @@ public class DataLakePathClient {
             .setIfModifiedSince(destinationRequestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(destinationRequestConditions.getIfUnmodifiedSince());
 
-        DataLakePathClient dataLakePathClient = getPathClient(destinationPath);
+        DataLakePathClient dataLakePathClient = getPathClient(destinationFileSystem, destinationPath);
 
         String renameSource = "/" + dataLakePathAsyncClient.getFileSystemName() + "/"
             + dataLakePathAsyncClient.getObjectPath();
@@ -509,9 +511,16 @@ public class DataLakePathClient {
             .map(response -> new SimpleResponse<>(response, dataLakePathClient));
     }
 
-    private DataLakePathClient getPathClient(String destinationPath) {
-        return new DataLakePathClient(dataLakePathAsyncClient.getPathAsyncClient(destinationPath),
-            dataLakePathAsyncClient.prepareBuilderReplacePath(destinationPath).buildBlockBlobClient());
+    private DataLakePathClient getPathClient(String destinationFileSystem, String destinationPath) {
+
+        if (destinationFileSystem == null) {
+            destinationFileSystem = dataLakePathAsyncClient.getFileSystemName();
+        }
+
+        return new DataLakePathClient(
+            dataLakePathAsyncClient.getPathAsyncClient(destinationFileSystem, destinationPath),
+            dataLakePathAsyncClient.prepareBuilderReplacePath(destinationFileSystem, destinationPath)
+                .buildBlockBlobClient());
     }
 
     BlockBlobClient getBlockBlobClient() {

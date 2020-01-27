@@ -42,5 +42,6 @@ stages:
       ServiceDirectory: appconfiguration
       Artifacts:
         - name: azure-data-appconfiguration
+          groupId: com.azure
           safeName: azuredataappconfiguration
           stagingProfileId: 88192f04117501
