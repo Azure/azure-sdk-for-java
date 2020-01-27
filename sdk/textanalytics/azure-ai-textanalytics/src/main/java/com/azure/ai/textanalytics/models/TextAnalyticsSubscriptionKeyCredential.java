@@ -13,7 +13,7 @@ import java.util.Objects;
  *
  */
 public final class TextAnalyticsSubscriptionKeyCredential {
-    private String subscriptionKey;
+    private volatile String subscriptionKey;
 
     /**
      * Creates a {@link TextAnalyticsSubscriptionKeyCredential} model that describes subscription key for
