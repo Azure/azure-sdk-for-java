@@ -4,16 +4,12 @@
 .DESCRIPTION
 Create local branch of the given repo and attempt to push changes. The push may fail if
 there has been other changes pushed to the same branch, if so, fetch, rebase and try again.
-.PARAMETER RepoOwner
-The local branch name 
-.PARAMETER RepoName
-The GitHub repository name to create the pull request against.
-.PARAMETER PROwner
-The owner of the branch we want to create a pull request for.
+.PARAMETER PRBranchName
+The name of the github branch the changes are being put into
 .PARAMETER CommitMsg
 The message for this particular commit
-.PARAMETER AuthToken
-A personal access token
+.PARAMETER GitUrl
+The GitHub repository URL
 .PARAMETER PushArgs
 Optional arguments to the push command
 #>
@@ -23,23 +19,22 @@ param(
     [string] $PRBranchName,
 
     [Parameter(Mandatory = $true)]
-    [string] $RepoName,
-
-    [Parameter(Mandatory = $true)]
-    [string] $PROwner,
-
-    [Parameter(Mandatory = $true)]
     [string] $CommitMsg,
 
     [Parameter(Mandatory = $true)]
-    [string] $AuthToken,
+    [string] $GitUrl,
 
     [Parameter(Mandatory = $false)]
     [string] $PushArgs = ""
 )
 
-Write-Host "git remote add azure-sdk-fork https://$($AuthToken)@github.com/$($PROwner)/$($RepoName).git"
-git remote add azure-sdk-fork https://$($AuthToken)@github.com/$($PROwner)/$($RepoName).git
+# This is necessay because of the janky git command output writing to stderr.
+# Without explicitly setting the 
+$ErrorActionPreference = "Continue"
+
+
+Write-Host "git remote add azure-sdk-fork $RemoteUrl"
+git remote add azure-sdk-fork $RemoteUrl
 if ($LASTEXITCODE -ne 0)
 {
     Write-Error "Unable to add remote, see command output above."
@@ -54,40 +49,20 @@ if ($LASTEXITCODE -ne 0)
     exit $LASTEXITCODE
 }
 
-try 
+Write-Host "git checkout -b $PRBranchName"
+git checkout -b $PRBranchName
+if ($LASTEXITCODE -ne 0)
 {
-    Write-Host "git checkout -b $PRBranchName"
-    git checkout -b $PRBranchName
-    if ($LASTEXITCODE -ne 0)
-    {
-        Write-Error "Unable to create branch, see command output above."
-        exit $LASTEXITCODE
-    }
-}
-catch 
-{
-    Write-Host "ExceptionToString = $($_.ToString())"
-    Write-Host "ErrorDetails.ToString = $($_.ErrorDetails.ToString())"
-    Write-Host "ScriptStackTrace = $($_.ScriptStackTrace)"
-    Write-Host "ScriptStackTrace = $($_.FullyQualifiedErrorId)"
+    Write-Error "Unable to create branch, see command output above."
+    exit $LASTEXITCODE
 }
 
-try 
+Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`""
+git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`"
+if ($LASTEXITCODE -ne 0)
 {
-    Write-Host "git -c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`""
-    git -c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`"
-    if ($LASTEXITCODE -ne 0)
-    {
-        Write-Error "Unable to add files and create commit, see command output above."
-        exit $LASTEXITCODE
-    }
-}
-catch 
-{
-    Write-Host "ExceptionToString = $($_.ToString())"
-    Write-Host "ErrorDetails.ToString = $($_.ErrorDetails.ToString())"
-    Write-Host "ScriptStackTrace = $($_.ScriptStackTrace)"
-    Write-Host "ScriptStackTrace = $($_.FullyQualifiedErrorId)"
+    Write-Error "Unable to add files and create commit, see command output above."
+    exit $LASTEXITCODE
 }
 
 # The number of retries can be increased if necessary. In theory, the number of retries
@@ -106,38 +81,18 @@ do
     if ($LASTEXITCODE -gt 0)
     {
         $needsRetry = $true
-        try 
+        Write-Host "Need to fetch and rebase: attempt number=$($tryNumber)"
+        Write-Host "git fetch azure-sdk-fork"
+        git fetch azure-sdk-fork
+        if ($LASTEXITCODE -ne 0)
         {
-            Write-Host "Need to fetch and rebase: attempt number=$($tryNumber)"
-            Write-Host "git fetch azure-sdk-fork"
-            git fetch azure-sdk-fork
-            if ($LASTEXITCODE -ne 0)
-            {
-                Write-Error "Unable to fetch remote, see command output above."
-            }
+            Write-Error "Unable to fetch remote, see command output above."
         }
-        catch 
+        Write-Host "git rebase azure-sdk-fork/$($PRBranchName)"
+        git rebase azure-sdk-fork/$($PRBranchName)
+        if ($LASTEXITCODE -ne 0)
         {
-            Write-Host "ExceptionToString = $($_.ToString())"
-            Write-Host "ErrorDetails.ToString = $($_.ErrorDetails.ToString())"
-            Write-Host "ScriptStackTrace = $($_.ScriptStackTrace)"
-            Write-Host "ScriptStackTrace = $($_.FullyQualifiedErrorId)"
-        }
-        try 
-        {
-            Write-Host "git rebase azure-sdk-fork/$($PRBranchName)"
-            git rebase azure-sdk-fork/$($PRBranchName)
-            if ($LASTEXITCODE -ne 0)
-            {
-                Write-Error "Unable to rebase, see command output above."
-            }
-        }
-        catch 
-        {
-            Write-Host "ExceptionToString = $($_.ToString())"
-            Write-Host "ErrorDetails.ToString = $($_.ErrorDetails.ToString())"
-            Write-Host "ScriptStackTrace = $($_.ScriptStackTrace)"
-            Write-Host "ScriptStackTrace = $($_.FullyQualifiedErrorId)"
+            Write-Error "Unable to rebase, see command output above."
         }
     }
 
