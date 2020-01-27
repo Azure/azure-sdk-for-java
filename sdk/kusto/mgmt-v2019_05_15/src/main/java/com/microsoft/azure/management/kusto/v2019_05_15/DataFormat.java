@@ -49,6 +49,9 @@ public final class DataFormat extends ExpandableStringEnum<DataFormat> {
     /** Static value AVRO for DataFormat. */
     public static final DataFormat AVRO = fromString("AVRO");
 
+    /** Static value TSVE for DataFormat. */
+    public static final DataFormat TSVE = fromString("TSVE");
+
     /**
      * Creates or finds a DataFormat from its string representation.
      * @param name a name to look for
