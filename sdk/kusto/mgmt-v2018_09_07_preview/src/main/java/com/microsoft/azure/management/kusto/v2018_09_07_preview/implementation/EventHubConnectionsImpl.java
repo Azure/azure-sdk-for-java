@@ -66,10 +66,14 @@ class EventHubConnectionsImpl extends WrapperImpl<EventHubConnectionsInner> impl
     public Observable<EventHubConnection> getAsync(String resourceGroupName, String clusterName, String databaseName, String eventHubConnectionName) {
         EventHubConnectionsInner client = this.inner();
         return client.getAsync(resourceGroupName, clusterName, databaseName, eventHubConnectionName)
-        .map(new Func1<EventHubConnectionInner, EventHubConnection>() {
+        .flatMap(new Func1<EventHubConnectionInner, Observable<EventHubConnection>>() {
             @Override
-            public EventHubConnection call(EventHubConnectionInner inner) {
-                return wrapModel(inner);
+            public Observable<EventHubConnection> call(EventHubConnectionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((EventHubConnection)wrapModel(inner));
+                }
             }
        });
     }
