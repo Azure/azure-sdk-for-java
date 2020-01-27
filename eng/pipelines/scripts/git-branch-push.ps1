@@ -86,11 +86,23 @@ param(
         }
         return $exit
     }
+    catch [System.Management.Automation.RemoteException]
+    {
+        $errorRecord = $_.Exception.ErrorRecord
+        Write-Host "Error, unexpected exception: $_`n$($_.ScriptStackTrace)"
+        Write-Host "Error, unexpected exception $($ex) caught."
+        Write-Host "ErrorRecord = $($errorRecord)"
+        Write-Host "ErrorRecord.ErrorDetails = $($errorRecord.ErrorDetails)"
+        Write-Host "ErrorRecord.Exception = $($errorRecord.Exception)"
+        Write-Host "ErrorRecord.PSMessageDetails = $($errorRecord.PSMessageDetails)"
+        Write-Host "ErrorRecord.FullyQualifiedErrorId = $($errorRecord.FullyQualifiedErrorId)"
+
+    }
     catch
     {
         $msg = $_.Exception.Message
         $ex = $_.Exception.GetType().FullName
-        #Write-Host "Error, unexpected exception: $_`n$($_.ScriptStackTrace)"
+        Write-Host "Error, unexpected exception: $_`n$($_.ScriptStackTrace)"
         Write-Host "Error, unexpected exception $($ex) caught."
         Write-Host "Exception message = $($msg)"
         return -1
