@@ -133,14 +133,14 @@ if ($exitCode -ne 0)
     exit $exitCode
 }
 
-$exitCode = Invoke-Git "checkout -b $PRBranchName"
+$exitCode = Invoke-Git "checkout -q -b $PRBranchName"
 if ($exitCode -ne 0)
 {
     Write-Error "Unable to create branch, see command output above."
     exit $exitCode
 }
 
-$exitCode = Invoke-Git "-c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -am `"$($CommitMsg)`""
+$exitCode = Invoke-Git "-c user.name=`"$($PROwner)`" -c user.email=`"azuresdk@microsoft.com`" commit -q -am `"$($CommitMsg)`""
 if ($exitCode -ne 0)
 {
     Write-Error "Unable to add files and create commit, see command output above."
@@ -158,7 +158,7 @@ $tryNumber = 0
 do 
 { 
     $needsRetry = $false
-    $exitCode = Invoke-Git "push azure-sdk-fork $PRBranchName $PushArgs"
+    $exitCode = Invoke-Git "push -q azure-sdk-fork $PRBranchName $PushArgs"
     $tryNumber++
     if ($exitCode -gt 0)
     {
@@ -169,7 +169,7 @@ do
         {
             Write-Error "Unable to fetch remote, see command output above."
         }
-        $exitCode = Invoke-Git "rebase azure-sdk-fork/$($PRBranchName)"
+        $exitCode = Invoke-Git "rebase -q azure-sdk-fork/$($PRBranchName)"
         if ($exitCode -ne 0)
         {
             Write-Error "Unable to rebase, see command output above."
