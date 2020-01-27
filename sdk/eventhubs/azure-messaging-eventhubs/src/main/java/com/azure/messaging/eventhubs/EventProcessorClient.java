@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -163,11 +164,13 @@ public class EventProcessorClient {
 
     private void stopProcessing() {
         partitionPumpManager.stopAllPartitionPumps();
+
+        // finally, remove ownerid from checkpointstore as the processor is shutting down
         checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
             .filter(ownership -> identifier.equals(ownership.getOwnerId()))
             .map(ownership -> ownership.setOwnerId(""))
             .collect(Collectors.toList())
             .map(checkpointStore::claimOwnership)
-            .block(); // block until the checkpoint store is updated.
+            .block(Duration.ofSeconds(10)); // block until the checkpoint store is updated
     }
 }
