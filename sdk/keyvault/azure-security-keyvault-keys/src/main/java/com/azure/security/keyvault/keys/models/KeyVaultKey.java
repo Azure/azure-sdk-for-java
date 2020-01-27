@@ -101,6 +101,7 @@ public class KeyVaultKey {
      * Creates an instance of KeyVaultKey
      * @param keyId the identifier of the key
      * @param jsonWebKey the json web key to be used for crypto operations
+     * @return The Key Vault Key object.
      */
     public static KeyVaultKey fromKeyId(String keyId, JsonWebKey jsonWebKey) {
         KeyProperties properties = new KeyProperties();
@@ -112,6 +113,7 @@ public class KeyVaultKey {
      * Creates an instance of KeyVaultKey
      * @param name the name of the key
      * @param jsonWebKey the json web key to be used for crypto operations
+     * @return The Key Vault Key object.
      */
     public static KeyVaultKey fromName(String name, JsonWebKey jsonWebKey) {
         KeyProperties properties = new KeyProperties();

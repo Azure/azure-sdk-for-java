@@ -118,7 +118,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         builder.keyIdentifier(keyId);
         if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "key identifier is required to create key encryption key async client"));
+                "key identifier parameter cannot be null and is required to create key encryption key async client."));
         }
         CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
 
@@ -128,7 +128,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
 
         if (builder.getCredential() == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Key Vault credentials are required to build the key encryption key async client"));
+                "Key Vault credentials cannot be null and are required to build the key encryption key async client"));
         }
 
         HttpPipeline pipeline = builder.setupPipeline();
@@ -157,12 +157,12 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         builder.key(key);
         if (key == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Key is required to create key encryption key async client"));
+                "Key Vault Key parameter cannot be null and is required to create key encryption key async client."));
         }
 
         if (key.getKey() == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Json Web key is required to create key encryption key async client"));
+                "Json Web key value on the Key Vault Key object cannot be null and is required to create key encryption key async client."));
         }
         CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
 
@@ -172,7 +172,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
 
         if (builder.getCredential() == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Key Vault credentials are required to build the key encryption key async client"));
+                "Key Vault credentials cannot be null and are required to build the key encryption key async client"));
         }
 
         HttpPipeline pipeline = builder.setupPipeline();
