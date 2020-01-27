@@ -133,12 +133,12 @@ public class DataLakeFileClientJavaDocSamples {
         // END: com.azure.storage.file.datalake.DataLakeFileClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Duration-Context
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set-Duration-Context
-        FileRange FileRange = new FileRange(1024, 2048L);
+        FileRange fileRange = new FileRange(1024, 2048L);
         DownloadRetryOptions downloadRetryOptions = new DownloadRetryOptions().setMaxRetryRequests(5);
         Set<OpenOption> openOptions = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
             StandardOpenOption.WRITE, StandardOpenOption.READ)); // Default options
 
-        client.downloadToFileWithResponse(file, FileRange, new ParallelTransferOptions(4 * Constants.MB, null, null),
+        client.downloadToFileWithResponse(file, fileRange, new ParallelTransferOptions(4 * Constants.MB, null, null),
             downloadRetryOptions, null, false, openOptions, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.file.datalake.DataLakeFileClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set-Duration-Context
