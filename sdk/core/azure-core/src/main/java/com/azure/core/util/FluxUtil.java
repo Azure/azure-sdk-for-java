@@ -131,6 +131,34 @@ public final class FluxUtil {
     }
 
     /**
+     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * Context} to {@link Context Azure Context}, adds the specified tracing attributes and calls the given lambda
+     * function with this context and returns a single entity of type {@code T}
+     * <p>
+     * If the reactor context is empty, {@link Context#NONE} will be used to call the lambda function
+     * </p>
+     *
+     * @param serviceCall serviceCall The lambda function that makes the service call into which azure context
+     * will be passed
+     * @param contextAttributes The map of attributes to be set on the tracer spans.
+     * @param  <T> The type of response returned from the service call
+     * @return The response from service call
+     */
+    public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
+        Map<String, String> contextAttributes) {
+        return Mono.subscriberContext()
+            .map(context -> {
+                Map<Object, Object> keyValues = context.stream()
+                    .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+                if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
+                    keyValues.putAll(contextAttributes);
+                }
+                return CoreUtils.isNullOrEmpty(keyValues) ? Context.NONE : Context.of(keyValues);
+            })
+            .flatMap(serviceCall);
+    }
+
+    /**
      * Converts the incoming content to Mono.
      *
      * @param <T> The type of the Response, which will be returned in the Mono.

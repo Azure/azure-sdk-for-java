@@ -191,7 +191,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, contentMd5,
+            return FluxUtil.withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, contentMd5,
                 requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
