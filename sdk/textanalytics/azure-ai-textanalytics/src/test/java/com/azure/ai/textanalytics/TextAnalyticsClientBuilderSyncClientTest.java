@@ -74,6 +74,7 @@ public class TextAnalyticsClientBuilderSyncClientTest extends TestUtil {
         validateDetectedLanguages(Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
             client.detectLanguage("This is a test English Text").getDetectedLanguages());
     }
+
     @Test
     public void missingEndpoint() {
         assertThrows(NullPointerException.class, () -> {

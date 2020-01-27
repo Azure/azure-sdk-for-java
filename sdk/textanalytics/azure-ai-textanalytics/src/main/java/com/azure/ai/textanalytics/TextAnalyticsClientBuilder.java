@@ -44,7 +44,8 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Text Analytics to access the resource service.
- * {@link #subscriptionKey(TextAnalyticsSubscriptionKeyCredential) subscriptionKey(String)} or
+ * {@link #subscriptionKey(TextAnalyticsSubscriptionKeyCredential)
+ * subscriptionKey(TextAnalyticsSubscriptionKeyCredential)} or
  * {@link #credential(TokenCredential) credential(TokenCredential)} give the builder access credential.
  * </p>
  *
@@ -88,7 +89,7 @@ public final class TextAnalyticsClientBuilder {
     private final String clientVersion;
 
     private String endpoint;
-    private TextAnalyticsSubscriptionKeyCredential subscriptionKey;
+    private TextAnalyticsSubscriptionKeyCredential credential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -171,8 +172,8 @@ public final class TextAnalyticsClientBuilder {
             if (tokenCredential != null) {
                 // User token based policy
                 policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-            } else if (subscriptionKey != null) {
-                policies.add(new SubscriptionKeyCredentialPolicy(subscriptionKey));
+            } else if (credential != null) {
+                policies.add(new SubscriptionKeyCredentialPolicy(credential));
             } else {
                 // Throw exception that credential and tokenCredential cannot be null
                 throw logger.logExceptionAsError(
@@ -243,14 +244,15 @@ public final class TextAnalyticsClientBuilder {
     /**
      * Sets the credential to use when authenticating HTTP requests for this TextAnalyticsClientBuilder.
      *
-     * @param subscriptionKey subscription key
+     * @param subscriptionKeyCredential subscription key credential
      *
      * @return The updated TextAnalyticsClientBuilder object.
-     * @throws NullPointerException If {@code subscriptionKey} is {@code null}
+     * @throws NullPointerException If {@code subscriptionKeyCredential} is {@code null}
      */
-    public TextAnalyticsClientBuilder subscriptionKey(TextAnalyticsSubscriptionKeyCredential subscriptionKey) {
-        Objects.requireNonNull(subscriptionKey, "'subscriptionKey' cannot be null.");
-        this.subscriptionKey = subscriptionKey;
+    public TextAnalyticsClientBuilder subscriptionKey(
+        TextAnalyticsSubscriptionKeyCredential subscriptionKeyCredential) {
+        Objects.requireNonNull(subscriptionKeyCredential, "'subscriptionKeyCredential' cannot be null.");
+        this.credential = subscriptionKeyCredential;
         return this;
     }
 
