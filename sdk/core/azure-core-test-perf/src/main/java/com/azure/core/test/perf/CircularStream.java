@@ -1,4 +1,7 @@
-package com.azure.perfstress;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.test.perf;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -8,7 +11,16 @@ import java.util.Vector;
 
 import reactor.core.publisher.Flux;
 
+/**
+ * Represents a stream with repeated values.
+ */
 public class CircularStream {
+    /**
+     * Creates a stream of {@code size}with repeated values of {@code byteArray}.
+     * @param byteArray the array to create stream from.
+     * @param size the size of the stream to create.
+     * @return The created {@link InputStream}
+     */
     public static InputStream create(byte[] byteArray, long size) {
         int remaining = byteArray.length;
         

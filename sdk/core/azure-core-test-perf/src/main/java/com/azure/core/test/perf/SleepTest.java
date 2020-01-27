@@ -1,40 +1,47 @@
-package com.azure.perfstress;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.core.test.perf;
+
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SleepTest extends PerfStressTest<PerfStressOptions> {
-    private static final AtomicInteger _instanceCount = new AtomicInteger();
-    private final int _secondsPerOperation;
+
+class SleepTest extends PerfStressTest<PerfStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(SleepTest.class);
+    private static final AtomicInteger INSTANCE_COUNT = new AtomicInteger();
+    private final int secondsPerOperation;
+
 
     public SleepTest(PerfStressOptions options) {
         super(options);
 
-        int instanceCount = _instanceCount.incrementAndGet();
-        _secondsPerOperation = Pow(2, instanceCount);
+        int instanceCount = SleepTest.INSTANCE_COUNT.incrementAndGet();
+        secondsPerOperation = pow(2, instanceCount);
     }
 
-    private static int Pow(int value, int exponent) {
+    private static int pow(int value, int exponent) {
         int power = 1;
-        for (int i=0; i < exponent; i++) {
+        for (int i = 0; i < exponent; i++) {
             power *= value;
         }
         return power;
     }
 
     @Override
-    public void Run() {
+    public void run() {
         try {
-            Thread.sleep(_secondsPerOperation * 1000);
+            Thread.sleep(secondsPerOperation * 1000);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
     @Override
-    public Mono<Void> RunAsync() {
-        return Mono.delay(Duration.ofSeconds(_secondsPerOperation)).then();
+    public Mono<Void> runAsync() {
+        return Mono.delay(Duration.ofSeconds(secondsPerOperation)).then();
     }
 }

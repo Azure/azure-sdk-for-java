@@ -22,8 +22,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-perfstress</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <artifactId>azure-core-test-perf</artifactId>
+      <version>1.0.0-beta.1</version>
     </dependency>
   </dependencies>
 
@@ -42,7 +42,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                        com.azure.storage.blob.perfstress.App
+                    com.azure.storage.blob.perf.App
                   </mainClass>
                 </manifest>
               </archive>

@@ -1,4 +1,7 @@
-package com.azure.perfstress;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.test.perf;
 
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
@@ -13,16 +16,24 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * Represents the Http Client used to run performance tests.
+ */
 public class PerfStressHttpClient {
+    /**
+     * Creates an instance of the http client
+     * @param options the configuration to create the http client with.
+     * @return The Http client.
+     */
     public static HttpClient create(PerfStressOptions options) {
         HttpClient httpClient = HttpClient.createDefault();
 
-        if (options.Insecure) {
+        if (options.isInsecure()) {
             makeInsecure(httpClient);
         }
 
-        if (options.Host != null && options.Host.length() > 0) {
-            httpClient = new ChangeUriHttpClient(httpClient, options.Host, options.Port);
+        if (options.getHost() != null && options.getHost().length() > 0) {
+            httpClient = new ChangeUriHttpClient(httpClient, options.getHost(), options.getPort());
         }
 
         return httpClient;
@@ -55,14 +66,14 @@ public class PerfStressHttpClient {
     }
 
     private static class ChangeUriHttpClient implements HttpClient {
-        private final HttpClient _httpClient;
-        private final String _host;
-        private final int _port;
+        private final HttpClient httpClient;
+        private final String host;
+        private final int port;
     
-        public ChangeUriHttpClient(HttpClient httpClient, String host, int port) {
-            _httpClient = httpClient;
-            _host = host;
-            _port = port;
+        ChangeUriHttpClient(HttpClient httpClient, String host, int port) {
+            this.httpClient = httpClient;
+            this.host = host;
+            this.port = port;
         }
     
         @Override
@@ -70,8 +81,8 @@ public class PerfStressHttpClient {
             request.getHeaders().put("Host", request.getUrl().getHost());
     
             String protocol = request.getUrl().getProtocol();
-            String host = _host;
-            int port = _port;
+            String host = this.host;
+            int port = this.port;
             String file = request.getUrl().getFile();
     
             try {
@@ -80,7 +91,7 @@ public class PerfStressHttpClient {
                 throw new RuntimeException(e);
             }
     
-            return _httpClient.send(request);
+            return httpClient.send(request);
         }
     }    
 }

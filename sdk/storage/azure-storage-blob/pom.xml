@@ -294,4 +294,8 @@
       </build>
     </profile>
   </profiles>
+
+  <modules>
+    <module>perf-test</module>
+  </modules>
 </project>

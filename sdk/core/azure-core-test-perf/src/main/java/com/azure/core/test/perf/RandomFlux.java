@@ -1,21 +1,32 @@
-package com.azure.perfstress;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.test.perf;
 
 import java.nio.ByteBuffer;
 import java.util.Random;
 
 import reactor.core.publisher.Flux;
 
+/**
+ * Represents a Random Flux to be used in performance tests.
+ */
 public class RandomFlux {
-    private static final byte[] _randomBytes;
-    private static final ByteBuffer _randomByteBuffer;
+    private static final byte[] RANDOM_BYTES;
+    private static final ByteBuffer RANDOM_BYTE_BUFFER;
 
     static {
-        _randomBytes = new byte[1024 * 1024];
-        (new Random(0)).nextBytes(_randomBytes);
-        _randomByteBuffer = ByteBuffer.wrap(_randomBytes).asReadOnlyBuffer();
+        RANDOM_BYTES = new byte[1024 * 1024];
+        (new Random(0)).nextBytes(RANDOM_BYTES);
+        RANDOM_BYTE_BUFFER = ByteBuffer.wrap(RANDOM_BYTES).asReadOnlyBuffer();
     }
-    
+
+    /**
+     * Creates a random flux of specified size.
+     * @param size the size of the stream
+     * @return the {@link Flux} of {@code size}
+     */
     public static Flux<ByteBuffer> create(long size) {
-        return CircularFlux.create(_randomByteBuffer, size);
+        return CircularFlux.create(RANDOM_BYTE_BUFFER, size);
     }
 }

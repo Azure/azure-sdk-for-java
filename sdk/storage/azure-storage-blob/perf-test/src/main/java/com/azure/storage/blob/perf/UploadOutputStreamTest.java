@@ -1,11 +1,14 @@
-package com.azure.storage.blob.perfstress;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.storage.blob.perf;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.azure.perfstress.RandomStream;
-import com.azure.perfstress.SizeOptions;
-import com.azure.storage.blob.perfstress.core.RandomBlobTest;
+import com.azure.core.test.perf.RandomStream;
+import com.azure.core.test.perf.SizeOptions;
+import com.azure.storage.blob.perf.core.RandomBlobTest;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 
 import reactor.core.publisher.Mono;
@@ -17,10 +20,10 @@ public class UploadOutputStreamTest extends RandomBlobTest<SizeOptions> {
     }
 
     @Override
-    public void Run() {
+    public void run() {
         try {
-            InputStream inputStream = RandomStream.create(Options.Size);
-            BlobOutputStream blobOutputStream = _blockBlobClient.getBlobOutputStream();
+            InputStream inputStream = RandomStream.create(options.getSize());
+            BlobOutputStream blobOutputStream = blockBlobClient.getBlobOutputStream();
             copyStream(inputStream, blobOutputStream);
             blobOutputStream.close();
         } catch (IOException e) {
@@ -29,7 +32,7 @@ public class UploadOutputStreamTest extends RandomBlobTest<SizeOptions> {
     }
 
     @Override
-    public Mono<Void> RunAsync() {
+    public Mono<Void> runAsync() {
         throw new UnsupportedOperationException();
     }
 }

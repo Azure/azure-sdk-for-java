@@ -1,4 +1,7 @@
-package com.azure.storage.blob.perfstress;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.storage.blob.perf;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,10 +10,9 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import com.azure.perfstress.RandomStream;
-import com.azure.perfstress.SizeOptions;
-import com.azure.storage.blob.perfstress.core.RandomBlobTest;
-
+import com.azure.core.test.perf.RandomStream;
+import com.azure.core.test.perf.SizeOptions;
+import com.azure.storage.blob.perf.core.RandomBlobTest;
 import reactor.core.publisher.Mono;
 
 public class UploadFromFileTest extends RandomBlobTest<SizeOptions> {
@@ -22,20 +24,20 @@ public class UploadFromFileTest extends RandomBlobTest<SizeOptions> {
     }
 
     @Override
-    public Mono<Void> GlobalSetupAsync() {
-        return super.GlobalSetupAsync().then(CreateTempFile());
+    public Mono<Void> globalSetupAsync() {
+        return super.globalSetupAsync().then(CreateTempFile());
     }
 
     @Override
-    public Mono<Void> GlobalCleanupAsync() {
-        return DeleteTempFile().then(super.GlobalCleanupAsync());
+    public Mono<Void> globalCleanupAsync() {
+        return DeleteTempFile().then(super.globalCleanupAsync());
     }
 
     private Mono<Void> CreateTempFile() {
         try {
             tempFile = Files.createTempFile(null, null);
             
-            InputStream inputStream = RandomStream.create(Options.Size);
+            InputStream inputStream = RandomStream.create(options.getSize());
             OutputStream outputStream = new FileOutputStream(tempFile.toString());
             copyStream(inputStream, outputStream);
             outputStream.close();
@@ -56,12 +58,12 @@ public class UploadFromFileTest extends RandomBlobTest<SizeOptions> {
     }
 
     @Override
-    public void Run() {
-        _blobClient.uploadFromFile(tempFile.toString(), true);
+    public void run() {
+        blobClient.uploadFromFile(tempFile.toString(), true);
     }
 
     @Override
-    public Mono<Void> RunAsync() {
-        return _blobAsyncClient.uploadFromFile(tempFile.toString(), true);
+    public Mono<Void> runAsync() {
+        return blobAsyncClient.uploadFromFile(tempFile.toString(), true);
     }
 }

@@ -1,12 +1,14 @@
-package com.azure.storage.blob.perfstress.core;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.storage.blob.perf.core;
+
+import com.azure.core.test.perf.PerfStressHttpClient;
+import com.azure.core.test.perf.PerfStressOptions;
+import com.azure.core.test.perf.PerfStressTest;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-
-import com.azure.perfstress.PerfStressHttpClient;
-import com.azure.perfstress.PerfStressOptions;
-import com.azure.perfstress.PerfStressTest;
 
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
 

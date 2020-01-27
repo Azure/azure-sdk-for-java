@@ -1,18 +1,26 @@
-package com.azure.perfstress;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.test.perf;
 
 import reactor.core.publisher.Mono;
 
-public class NoOpTest extends PerfStressTest<PerfStressOptions> {
+class NoOpTest extends PerfStressTest<PerfStressOptions> {
+
+    /**
+     * Sets up the No op test.
+     * @param options the options to setup the test with.
+     */
     public NoOpTest(PerfStressOptions options) {
         super(options);
     }
 
     @Override
-    public void Run() {
+    public void run() {
     }
 
     @Override
-    public Mono<Void> RunAsync() {
+    public Mono<Void> runAsync() {
         return Mono.empty();
     }
 }

@@ -1,26 +1,39 @@
-package com.azure.perfstress;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.test.perf;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Random;
 
+/**
+ * Represents a Random Stream to be used in performance tests.
+ */
 public class RandomStream {
-    private static final int _size = (1024 * 1024 * 1024) + 1;
-    private static final byte[] _randomBytes;
+    private static final int SIZE = (1024 * 1024 * 1024) + 1;
+    private static final byte[] RANDOM_BYTES;
 
     static {
         // _randomBytes = new byte[1024 * 1024];
-        _randomBytes = new byte[_size];
-        (new Random(0)).nextBytes(_randomBytes);
+        RANDOM_BYTES = new byte[SIZE];
+        (new Random(0)).nextBytes(RANDOM_BYTES);
     }
-    
+
+    /**
+     * Creates a random stream of specified size.
+     * @param size the size of the stream
+     *
+     * @throws IllegalArgumentException if {@code size} is more than {@link RandomStream#SIZE}
+     * @return the {@link InputStream} of {@code size}
+     */
     public static InputStream create(long size) {
-        if (size > _size) {
-            throw new RuntimeException("size must be <= " + _size);
+        if (size > RandomStream.SIZE) {
+            throw new IllegalArgumentException("size must be <= " + RandomStream.SIZE);
         }
 
         // Workaround for Azure/azure-sdk-for-java#6020
         // return CircularStream.create(_randomBytes, size);
-        return new ByteArrayInputStream(_randomBytes, 0, (int)size);
+        return new ByteArrayInputStream(RANDOM_BYTES, 0, (int) size);
     }
 }
