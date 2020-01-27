@@ -237,7 +237,13 @@ public final class TextAnalyticsClientBuilder {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
-        this.endpoint = endpoint;
+
+        if (endpoint.endsWith("/")) {
+            this.endpoint = endpoint.substring(0, endpoint.length() - 1);
+        } else {
+            this.endpoint = endpoint;
+        }
+
         return this;
     }
 
