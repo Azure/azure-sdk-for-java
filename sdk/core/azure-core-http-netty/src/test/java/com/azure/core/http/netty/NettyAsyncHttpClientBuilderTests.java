@@ -5,22 +5,37 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.ProxyAuthenticationHandler;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
 import io.netty.channel.nio.NioEventLoop;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.cookie.DefaultCookie;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.proxy.ProxyHandler;
+import io.netty.handler.proxy.Socks4ProxyHandler;
+import io.netty.handler.proxy.Socks5ProxyHandler;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
 import reactor.test.StepVerifier;
+
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link NettyAsyncHttpClientBuilder}.
@@ -30,6 +45,7 @@ public class NettyAsyncHttpClientBuilderTests {
     private static final String PORT_CONFIGURED_PATH = "/portConfiguredClient";
     private static final String WIRETAP_PATH = "/wiretap";
     private static final String EVENT_LOOP_PATH = "/eventLoopPath";
+    private static final String PROXY_PATH = "/proxyPath";
 
     private static final String COOKIE_NAME = "test";
     private static final String COOKIE_VALUE = "success";
@@ -86,6 +102,56 @@ public class NettyAsyncHttpClientBuilderTests {
     @Test
     public void startWithNullClientThrows() {
         assertThrows(NullPointerException.class, () -> new NettyAsyncHttpClientBuilder(null));
+    }
+
+    @ParameterizedTest
+    @EnumSource(ProxyOptions.Type.class)
+    public void buildWithProxy(ProxyOptions.Type proxyType) {
+        HttpClient validatorClient = HttpClient.create().tcpConfiguration(tcpClient -> tcpClient
+            .bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap, "TestProxyHandler",
+                (connectionObserver, channel) ->
+                    channel.pipeline().addFirst("TestProxyHandler", new TestProxyValidator(proxyType)))));
+
+        ProxyOptions proxyOptions = new ProxyOptions(proxyType, new InetSocketAddress("localhost", 12345));
+
+        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
+            .proxy(proxyOptions)
+            .build();
+
+        String url = "http://localhost:" + server.port() + PROXY_PATH;
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, url)))
+            .verifyError();
+    }
+
+    private static class TestProxyValidator extends ChannelDuplexHandler {
+        private final ProxyOptions.Type proxyType;
+
+        private TestProxyValidator(ProxyOptions.Type proxyType) {
+            this.proxyType = proxyType;
+        }
+
+        @Override
+        public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress,
+            ChannelPromise promise) {
+            ProxyHandler proxyHandler = ctx.pipeline().get(ProxyHandler.class);
+            assertNotNull(proxyHandler);
+
+            switch (proxyType) {
+                case HTTP:
+                    assertTrue(proxyHandler instanceof ProxyAuthenticationHandler);
+                    break;
+
+                case SOCKS5:
+                    assertTrue(proxyHandler instanceof Socks5ProxyHandler);
+                    break;
+
+                case SOCKS4:
+                    assertTrue(proxyHandler instanceof Socks4ProxyHandler);
+                    break;
+            }
+
+            ctx.connect(remoteAddress, localAddress, promise);
+        }
     }
 
     /**

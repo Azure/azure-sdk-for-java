@@ -231,7 +231,7 @@ public class ProxyAuthenticationHandlerTests {
         assertIterableEquals(expected.getDigestChallenges(), capturedChallenges.getDigestChallenges());
     }
 
-    private static Stream<Arguments> challengeIsCapturedSupplier() {
+    public static Stream<Arguments> challengeIsCapturedSupplier() {
         String basicChallenge = "Basic realm\"test realm\"";
         String anotherDigestChallenge = "Digest realm=\"test realm\", qop=\"auth\", algorithm=MD5, nonce=\""
             + "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v\", opaque=\"FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS\"";
@@ -299,7 +299,7 @@ public class ProxyAuthenticationHandlerTests {
         assertTrue(expectedPredicate.test(setCapture.getValue()));
     }
 
-    private static Stream<Arguments> authorizationIsAppliedSupplier() {
+    public static Stream<Arguments> authorizationIsAppliedSupplier() {
         Predicate<String> basicPredicate = "Basic MTox"::equals;
         Predicate<String> digestPredicate = (authHeader) -> authHeader.startsWith("Digest");
 
@@ -345,7 +345,7 @@ public class ProxyAuthenticationHandlerTests {
         assertTrue(expectedPredicate.test(setCapture.getValue()));
     }
 
-    private static Stream<Arguments> authorizationCanBePipelinedSupplier() {
+    public static Stream<Arguments> authorizationCanBePipelinedSupplier() {
         AuthorizationChallengeHandler basicChallengeHandler = new AuthorizationChallengeHandler("1", "1");
         basicChallengeHandler.handleBasic();
         Predicate<String> basicPredicate = "Basic MTox"::equals;
