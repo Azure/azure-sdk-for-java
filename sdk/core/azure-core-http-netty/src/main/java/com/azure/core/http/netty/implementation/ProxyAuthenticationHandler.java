@@ -215,8 +215,12 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
         }
 
         boolean responseComplete = o instanceof LastHttpContent;
-        if (responseComplete && status.code() != 200) {
-            throw new ProxyConnectException("Failed to connect to proxy.");
+        if (responseComplete) {
+            if (status == null) {
+                throw new ProxyConnectException("Never received response for CONNECT request.");
+            } else if (status.code() != 200) {
+                throw new ProxyConnectException("Failed to connect to proxy.");
+            }
         }
 
         return responseComplete;

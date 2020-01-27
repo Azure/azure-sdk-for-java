@@ -219,7 +219,7 @@ public class AuthorizationChallengeHandler {
     }
 
     /**
-     * Parses the {@code Authorization} or {@code Authentication} heaer into its key-value pairs.
+     * Parses the {@code Authorization} or {@code Authentication} header into its key-value pairs.
      * <p>
      * This will remove quotes on quoted string values.
      *
@@ -229,6 +229,10 @@ public class AuthorizationChallengeHandler {
     public static Map<String, String> parseAuthenticationOrAuthorizationHeader(String header) {
         if (CoreUtils.isNullOrEmpty(header)) {
             return Collections.emptyMap();
+        }
+
+        if (header.startsWith(BASIC) || header.startsWith(DIGEST)) {
+            header = header.split(" ", 2)[1];
         }
 
         return Stream.of(header.split(","))

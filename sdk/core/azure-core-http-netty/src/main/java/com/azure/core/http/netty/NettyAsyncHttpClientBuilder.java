@@ -68,13 +68,14 @@ public class NettyAsyncHttpClientBuilder {
      * @throws IllegalStateException If the builder is configured to use an unknown proxy type.
      */
     public com.azure.core.http.HttpClient build() {
+        HttpClient nettyHttpClient;
         if (this.baseHttpClient != null) {
-            return new NettyAsyncHttpClient(baseHttpClient, null, null);
+            nettyHttpClient = baseHttpClient;
+        } else if (this.connectionProvider != null) {
+            nettyHttpClient = HttpClient.create(this.connectionProvider);
+        } else {
+            nettyHttpClient = HttpClient.create();
         }
-
-        HttpClient nettyHttpClient = (this.connectionProvider != null)
-            ? HttpClient.create(this.connectionProvider)
-            : HttpClient.create();
 
         nettyHttpClient = nettyHttpClient
             .port(port)
