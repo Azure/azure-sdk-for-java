@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.ReplayProcessor;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -33,6 +34,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
     private final TokenManager tokenManager;
+    private final ReactorDispatcher dispatcher;
     private final Disposable.Composite subscriptions;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final EmitterProcessor<Message> messagesProcessor = EmitterProcessor.create();
@@ -44,11 +46,13 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     private volatile Supplier<Integer> creditSupplier;
 
-    ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, TokenManager tokenManager) {
+    ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, TokenManager tokenManager,
+        ReactorDispatcher dispatcher) {
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
         this.tokenManager = tokenManager;
+        this.dispatcher = dispatcher;
 
         this.subscriptions = Disposables.composite(
             this.handler.getDeliveredMessages().subscribe(this::decodeDelivery),
@@ -58,18 +62,19 @@ public class ReactorReceiver implements AmqpReceiveLink {
                     logger.verbose("Connection state: {}", state);
                     endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
-                    logger.error("Error occurred in connection.", error);
+                    logger.error("linkName[{}] entityPath[{}] Error occurred in connection.", receiver.getName(),
+                        entityPath, error);
                     endpointStateSink.error(error);
-                    close();
+                    dispose();
                 }, () -> {
                     endpointStateSink.next(AmqpEndpointState.CLOSED);
-                    close();
+                    dispose();
                 }),
 
             this.handler.getErrors().subscribe(error -> {
                 logger.error("Error occurred in link.", error);
                 endpointStateSink.error(error);
-                close();
+                dispose();
             }),
 
             this.tokenManager.getAuthorizationResults().subscribe(
@@ -125,7 +130,12 @@ public class ReactorReceiver implements AmqpReceiveLink {
     }
 
     @Override
-    public void close() {
+    public boolean isDisposed() {
+        return isDisposed.get();
+    }
+
+    @Override
+    public void dispose() {
         if (isDisposed.getAndSet(true)) {
             return;
         }
@@ -134,7 +144,17 @@ public class ReactorReceiver implements AmqpReceiveLink {
         endpointStateSink.complete();
         messageSink.complete();
         tokenManager.close();
-        handler.close();
+        receiver.close();
+
+        try {
+            dispatcher.invoke(() -> {
+                receiver.free();
+                handler.close();
+            });
+        } catch (IOException e) {
+            logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
+            handler.close();
+        }
     }
 
     private void decodeDelivery(Delivery delivery) {

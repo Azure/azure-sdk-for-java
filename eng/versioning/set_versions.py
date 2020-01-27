@@ -56,6 +56,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
     version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
     print('version_file=' + version_file)
     library_to_update = group_id + ':' + artifact_id
+    unreleased_library_to_update = "unreleased_" + library_to_update
     print('adding build_qualifier({}) to {}'.format(build_qualifier, library_to_update))
     version_map = {}
     newlines = []
@@ -72,7 +73,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                 if module.name in items_we_should_not_update:
                     newlines.append(module.string_for_version_file())
                     continue
-                if library_to_update == module.name:
+                if library_to_update == module.name or unreleased_library_to_update == module.name:
                     artifact_found = True
                     if hasattr(module, 'current'):
                         set_both = False
@@ -94,6 +95,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                             raise ValueError('{}\'s current version + build qualifier {} is not a valid semver version'.format(module.name, module.current + build_qualifier))
                         if set_both:
                             module.dependency = module.current
+
                     # we need to handle the unreleased dependency which should have the same version as the "current" dependency
                     # of the non-unreleased artifact
                     else:

@@ -222,6 +222,10 @@
       "\"moduleName\"": "\"PostgreSQL\""
     }
   },
+  "powerbidedicated/resource-manager": {
+    "source": "specification/powerbidedicated/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "recoveryservices/resource-manager": {
     "source": "specification/recoveryservices/resource-manager/readme.md",
     "args": "--multiapi --fluent"

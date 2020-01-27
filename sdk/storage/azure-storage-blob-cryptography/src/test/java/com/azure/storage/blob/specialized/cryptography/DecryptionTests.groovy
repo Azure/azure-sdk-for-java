@@ -28,7 +28,7 @@ class DecryptionTests extends APISpec {
 
     def setup() {
         keyId = "keyId"
-        fakeKey = new FakeKey(keyId, 256)
+        fakeKey = new FakeKey(keyId, getRandomByteArray(256))
 
         blobDecryptionPolicy = new BlobDecryptionPolicy(fakeKey, null)
 
@@ -36,7 +36,6 @@ class DecryptionTests extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
     def "Decryption"() {
         setup:
         def flow = new EncryptedFlux(testCase, fakeKey, this)

@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -18,6 +19,8 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
+import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -74,8 +77,7 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
-     * will be overwritten.
+     * Creates and opens an output stream to write data to the block blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
@@ -85,8 +87,7 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
-     * will be overwritten.
+     * Creates and opens an output stream to write data to the block blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
@@ -137,8 +138,26 @@ public final class BlockBlobClient extends BlobClientBase {
     public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return BlobOutputStream.blockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier,
+
+        BlobAsyncClient blobClient = prepareBuilder().buildAsyncClient();
+
+        return BlobOutputStream.blockBlobOutputStream(blobClient, parallelTransferOptions, headers, metadata, tier,
             requestConditions);
+    }
+
+    private BlobClientBuilder prepareBuilder() {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .pipeline(getHttpPipeline())
+            .endpoint(getBlobUrl())
+            .snapshot(getSnapshotId())
+            .serviceVersion(getServiceVersion());
+
+        CpkInfo cpk = getCustomerProvidedKey();
+        if (cpk != null) {
+            builder.customerProvidedKey(new CustomerProvidedKey(cpk.getEncryptionKey()));
+        }
+
+        return builder;
     }
 
     /**

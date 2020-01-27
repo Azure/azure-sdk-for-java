@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 module com.azure.security.keyvault.certificates {
-
     requires transitive com.azure.core;
 
     exports com.azure.security.keyvault.certificates.models;

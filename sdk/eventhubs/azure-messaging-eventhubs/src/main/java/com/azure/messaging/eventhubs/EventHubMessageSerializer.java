@@ -423,6 +423,10 @@ class EventHubMessageSerializer implements MessageSerializer {
             return Double.BYTES;
         }
 
+        if (obj instanceof Date) {
+            return 32;
+        }
+
         throw new IllegalArgumentException(String.format(Messages.ENCODING_TYPE_NOT_SUPPORTED,
             obj.getClass()));
     }

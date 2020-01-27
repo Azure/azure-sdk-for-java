@@ -372,7 +372,8 @@ final class PartitionBasedLoadBalancer {
                 .warning(Messages.FAILED_TO_CLAIM_OWNERSHIP, ownershipRequest.getPartitionId(),
                     ex.getMessage(), ex))
             .collectList()
-            .zipWith(checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName, consumerGroupName)
+            .zipWhen(ownershipList -> checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName,
+                consumerGroupName)
                 .collectMap(checkpoint -> checkpoint.getPartitionId(), Function.identity()))
             .subscribe(ownedPartitionCheckpointsTuple -> {
                 ownedPartitionCheckpointsTuple.getT1()
@@ -381,7 +382,10 @@ final class PartitionBasedLoadBalancer {
                         ownedPartitionCheckpointsTuple.getT2().get(po.getPartitionId())));
             },
                 ex -> {
-                    throw logger.logExceptionAsError(new RuntimeException("Error while listing checkpoints", ex));
+                    logger.warning("Error while listing checkpoints", ex);
+                    ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
+                    processError.accept(errorContext);
+                    throw logger.logExceptionAsError(new IllegalStateException("Error while listing checkpoints", ex));
                 });
     }
 
