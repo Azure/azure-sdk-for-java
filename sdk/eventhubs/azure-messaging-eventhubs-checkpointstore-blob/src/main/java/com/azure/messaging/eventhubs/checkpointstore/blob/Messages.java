@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public enum Messages {
     ;
-    private static final String PATH = "messages.properties";
+    private static final String PATH = "eventhubs-checkpointstore-blob-messages.properties";
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties(PATH);
 
     public static final String NO_METADATA_AVAILABLE_FOR_BLOB = getMessage("NO_METADATA_AVAILABLE_FOR_BLOB");

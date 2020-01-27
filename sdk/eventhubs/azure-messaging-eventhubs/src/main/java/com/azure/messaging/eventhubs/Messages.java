@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public enum Messages {
     ;
-    private static final String MESSAGES_PROPERTIES_PATH = "messages.properties";
+    private static final String MESSAGES_PROPERTIES_PATH = "eventhubs-messages.properties";
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties(MESSAGES_PROPERTIES_PATH);
 
     public static final String CLASS_NOT_A_SUPPORTED_TYPE = getMessage("CLASS_NOT_A_SUPPORTED_TYPE");
