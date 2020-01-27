@@ -87,7 +87,11 @@ public class DocumentServiceRequestContext implements Cloneable{
                 this.retryContext.directRetrySpecificStatusAndSubStatusCodes.clear();
             }
 
-            this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes());
+            if (retryPolicy.getStatusAndSubStatusCodes() != null) {
+                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes());
+            } else {
+                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = new ArrayList<>();
+            }
             this.retryContext.retryCount = retryPolicy.getRetryCount();
             this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();
             if (this.retryContext.retryStartTime == null) {
@@ -104,7 +108,11 @@ public class DocumentServiceRequestContext implements Cloneable{
                 this.retryContext.genericRetrySpecificStatusAndSubStatusCodes.clear();
             }
 
-            this.retryContext.directRetrySpecificStatusAndSubStatusCodes = new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes());
+            if (retryPolicy.getStatusAndSubStatusCodes() != null) {
+                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes());
+            } else {
+                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = new ArrayList<>();
+            }
             this.retryContext.retryCount = retryPolicy.getRetryCount();
             this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();
             if (this.retryContext.retryStartTime == null) {
