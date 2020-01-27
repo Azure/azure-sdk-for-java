@@ -396,7 +396,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage());
             validateDetectedLanguages(expectedItem.getDetectedLanguages(), actualItem.getDetectedLanguages());
         });
-    }
+    }   
 
     static void validateNamedEntity(boolean showStatistics, DocumentResultCollection<RecognizeEntitiesResult> expected,
         DocumentResultCollection<RecognizeEntitiesResult> actual) {
