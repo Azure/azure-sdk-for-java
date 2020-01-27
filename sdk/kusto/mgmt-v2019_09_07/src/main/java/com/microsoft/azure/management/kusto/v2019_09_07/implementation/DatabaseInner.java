@@ -8,8 +8,6 @@
 
 package com.microsoft.azure.management.kusto.v2019_09_07.implementation;
 
-import com.microsoft.azure.management.kusto.v2019_09_07.ReadWriteDatabase;
-import com.microsoft.azure.management.kusto.v2019_09_07.ReadOnlyFollowingDatabase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
