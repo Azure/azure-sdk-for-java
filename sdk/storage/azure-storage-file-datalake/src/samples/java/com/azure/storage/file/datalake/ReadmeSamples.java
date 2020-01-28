@@ -1,14 +1,8 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -102,8 +96,9 @@ public class ReadmeSamples {
     }
 
     public void enumeratePaths() {
-        for (PathItem pathItem : dataLakeFileSystemClient.listPaths())
+        for (PathItem pathItem : dataLakeFileSystemClient.listPaths()) {
             System.out.println("This is the path name: " + pathItem.getName());
+        }
     }
 
     public void renameFile() {
