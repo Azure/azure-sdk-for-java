@@ -237,7 +237,6 @@ public final class AccountSasSignatureValues {
      * requests.
      *
      * <p><strong>Notes on SAS generation</strong></p>
-     * <p>
      * <ul>
      * <li>If {@link #setVersion(String) version} is not set, the latest service version is used.</li>
      * <li>The following parameters are required to generate a SAS:

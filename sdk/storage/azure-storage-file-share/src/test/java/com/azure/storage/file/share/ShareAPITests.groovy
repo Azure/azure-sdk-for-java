@@ -4,6 +4,8 @@
 package com.azure.storage.file.share
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.rest.Response
+import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.NtfsFileAttributes
@@ -417,6 +419,16 @@ class ShareAPITests extends APISpec {
         "fileName"  | -1      | null                                                  | testMetadata                          | ShareErrorCode.OUT_OF_RANGE_INPUT
         "fileName"  | 1024    | new ShareFileHttpHeaders().setContentMd5(new byte[0]) | testMetadata                          | ShareErrorCode.INVALID_HEADER_VALUE
         "fileName"  | 1024    | null                                                  | Collections.singletonMap("", "value") | ShareErrorCode.EMPTY_METADATA_KEY
+    }
+
+    def "Create file in root directory"() {
+        given:
+        primaryShareClient.create()
+        def directoryClient = primaryShareClient.getRootDirectoryClient()
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            directoryClient.createFileWithResponse("testCreateFile", 1024, null,  null, null, null, null, null), 201)
     }
 
     def "Delete directory"() {
