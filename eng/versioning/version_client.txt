@@ -25,7 +25,7 @@ com.azure:azure-storage-blob;12.4.0-beta.1;12.4.0-beta.2
 com.azure:azure-storage-blob-batch;12.3.0;12.4.0-beta.1
 com.azure:azure-storage-blob-cryptography;12.3.0;12.4.0-beta.1
 com.azure:azure-storage-blob-nio;12.0.0-beta.1;12.0.0-beta.1
-com.azure:azure-storage-common;12.3.0;12.4.0-beta.1
+com.azure:azure-storage-common;12.4.0-beta.1;12.4.0-beta.2
 com.azure:azure-storage-file-share;12.1.0;12.2.0-beta.1
 com.azure:azure-storage-file-datalake;12.0.0-beta.10;12.0.0-beta.11
 com.azure:azure-storage-queue;12.2.0;12.3.0-beta.1
