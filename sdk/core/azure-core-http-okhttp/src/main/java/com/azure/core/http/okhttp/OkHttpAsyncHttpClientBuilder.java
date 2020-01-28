@@ -202,7 +202,7 @@ public class OkHttpAsyncHttpClientBuilder {
             : configuration;
 
         ProxyOptions buildProxyOptions = (proxyOptions == null)
-            ? ProxyOptions.loadFromEnvironment(buildConfiguration)
+            ? ProxyOptions.loadFromConfiguration(buildConfiguration)
             : proxyOptions;
 
         if (buildProxyOptions != null) {

@@ -5,6 +5,7 @@ package com.azure.core.http;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -21,6 +22,11 @@ import java.util.function.Function;
  * This represents proxy configuration to be used in http clients..
  */
 public class ProxyOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
+
+    private static final String INVALID_CONFIGURATION_MESSAGE = "'configuration' cannot be 'Configuration.NONE'.";
+    private static final String INVALID_AZURE_PROXY_URL = "Configuration {} is an invalid URL and is being ignored.";
+
     /*
      * This indicates whether Java environment proxy configurations are allowed to be used.
      */
@@ -37,7 +43,10 @@ public class ProxyOptions {
     private static final String JAVA_NON_PROXY_HOSTS = "http.nonProxyHosts";
 
     private static final String HTTPS = "https";
+    private static final int DEFAULT_HTTPS_PORT = 443;
+
     private static final String HTTP = "http";
+    private static final int DEFAULT_HTTP_PORT = 80;
 
     private static final List<Function<Configuration, ProxyOptions>> ENVIRONMENT_LOAD_ORDER = Arrays.asList(
         configuration -> attemptToLoadAzureProxy(configuration, Configuration.PROPERTY_HTTPS_PROXY),
@@ -126,7 +135,7 @@ public class ProxyOptions {
      * Attempts to load a proxy from the environment.
      *
      * <p>
-     * Environment configurations are loaded in this oreder:
+     * Environment configurations are loaded in this order:
      * <ol>
      *     <li>Azure HTTPS</li>
      *     <li>Azure HTTP</li>
@@ -147,9 +156,9 @@ public class ProxyOptions {
      * will be returned.
      * @throws IllegalArgumentException If {@code configuration} is {@link Configuration#NONE}.
      */
-    public static ProxyOptions loadFromEnvironment(Configuration configuration) {
+    public static ProxyOptions loadFromConfiguration(Configuration configuration) {
         if (configuration == Configuration.NONE) {
-            throw new IllegalArgumentException("'configuration' cannot be 'Configuration.NONE'.");
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(INVALID_CONFIGURATION_MESSAGE));
         }
 
         Configuration proxyConfiguration = (configuration == null)
@@ -197,6 +206,7 @@ public class ProxyOptions {
 
             return proxyOptions;
         } catch (MalformedURLException ex) {
+            LOGGER.warning(INVALID_AZURE_PROXY_URL, proxyProperty);
             return null;
         }
     }
@@ -218,7 +228,7 @@ public class ProxyOptions {
         try {
             port = Integer.parseInt(configuration.get(type + "." + JAVA_PROXY_PORT));
         } catch (NumberFormatException ex) {
-            port = HTTPS.equals(type) ? 443 : 80;
+            port = HTTPS.equals(type) ? DEFAULT_HTTPS_PORT : DEFAULT_HTTP_PORT;
         }
 
         ProxyOptions proxyOptions = new ProxyOptions(Type.HTTP, new InetSocketAddress(host, port))

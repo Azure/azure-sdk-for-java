@@ -86,7 +86,7 @@ public class NettyAsyncHttpClientBuilder {
                 }
 
                 ProxyOptions buildProxyOptions = (proxyOptions == null)
-                    ? ProxyOptions.loadFromEnvironment(buildConfiguration)
+                    ? ProxyOptions.loadFromConfiguration(buildConfiguration)
                     : proxyOptions;
 
                 if (buildProxyOptions != null) {
