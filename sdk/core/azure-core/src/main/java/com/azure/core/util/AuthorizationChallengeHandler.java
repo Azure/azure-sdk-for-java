@@ -190,7 +190,7 @@ public class AuthorizationChallengeHandler {
         if (DIGEST.equals(pipeliningType)) {
             Map<String, String> challenge;
             synchronized (lastChallenge) {
-                 challenge = new HashMap<>(lastChallenge.get());
+                challenge = new HashMap<>(lastChallenge.get());
             }
 
             String algorithm = challenge.get(ALGORITHM);
