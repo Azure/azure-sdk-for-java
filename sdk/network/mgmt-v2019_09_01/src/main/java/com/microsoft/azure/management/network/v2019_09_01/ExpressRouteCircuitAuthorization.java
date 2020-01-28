@@ -87,6 +87,30 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         }
 
         /**
+         * The stage of the expressroutecircuitauthorization definition allowing to specify AuthorizationKey.
+         */
+        interface WithAuthorizationKey {
+            /**
+             * Specifies authorizationKey.
+             * @param authorizationKey The authorization key
+             * @return the next definition stage
+             */
+            WithCreate withAuthorizationKey(String authorizationKey);
+        }
+
+        /**
+         * The stage of the expressroutecircuitauthorization definition allowing to specify AuthorizationUseStatus.
+         */
+        interface WithAuthorizationUseStatus {
+            /**
+             * Specifies authorizationUseStatus.
+             * @param authorizationUseStatus The authorization use status. Possible values include: 'Available', 'InUse'
+             * @return the next definition stage
+             */
+            WithCreate withAuthorizationUseStatus(AuthorizationUseStatus authorizationUseStatus);
+        }
+
+        /**
          * The stage of the expressroutecircuitauthorization definition allowing to specify Id.
          */
         interface WithId {
@@ -115,19 +139,43 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ExpressRouteCircuitAuthorization>, DefinitionStages.WithId, DefinitionStages.WithName {
+        interface WithCreate extends Creatable<ExpressRouteCircuitAuthorization>, DefinitionStages.WithAuthorizationKey, DefinitionStages.WithAuthorizationUseStatus, DefinitionStages.WithId, DefinitionStages.WithName {
         }
     }
     /**
      * The template for a ExpressRouteCircuitAuthorization update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ExpressRouteCircuitAuthorization>, UpdateStages.WithId, UpdateStages.WithName {
+    interface Update extends Appliable<ExpressRouteCircuitAuthorization>, UpdateStages.WithAuthorizationKey, UpdateStages.WithAuthorizationUseStatus, UpdateStages.WithId, UpdateStages.WithName {
     }
 
     /**
      * Grouping of ExpressRouteCircuitAuthorization update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the expressroutecircuitauthorization update allowing to specify AuthorizationKey.
+         */
+        interface WithAuthorizationKey {
+            /**
+             * Specifies authorizationKey.
+             * @param authorizationKey The authorization key
+             * @return the next update stage
+             */
+            Update withAuthorizationKey(String authorizationKey);
+        }
+
+        /**
+         * The stage of the expressroutecircuitauthorization update allowing to specify AuthorizationUseStatus.
+         */
+        interface WithAuthorizationUseStatus {
+            /**
+             * Specifies authorizationUseStatus.
+             * @param authorizationUseStatus The authorization use status. Possible values include: 'Available', 'InUse'
+             * @return the next update stage
+             */
+            Update withAuthorizationUseStatus(AuthorizationUseStatus authorizationUseStatus);
+        }
+
         /**
          * The stage of the expressroutecircuitauthorization update allowing to specify Id.
          */
