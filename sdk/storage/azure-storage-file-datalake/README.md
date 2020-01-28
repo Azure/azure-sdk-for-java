@@ -151,9 +151,9 @@ Create a `DataLakeServiceClient` using the [`sasToken`](#get-credentials) genera
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L22-L25 -->
 ```java
 DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
-        .endpoint("<your-storage-account-url>")
-        .sasToken("<your-sasToken>")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .buildClient();
 ```
 
 or
@@ -161,8 +161,8 @@ or
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L29-L31 -->
 ```java
 DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
-        .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
-        .buildClient();
+    .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
+    .buildClient();
 ```
 
 ### Create a `DataLakeFileSystemClient`
@@ -181,10 +181,10 @@ Create a `DataLakeFileSystemClient` from the builder [`sasToken`](#get-credentia
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L39-L43 -->
 ```java
 DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
-        .endpoint("<your-storage-account-url>")
-        .sasToken("<your-sasToken>")
-        .fileSystemName("myfilesystem")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .fileSystemName("myfilesystem")
+    .buildClient();
 ```
 
 or
@@ -192,8 +192,8 @@ or
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L47-L49 -->
 ```java
 DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
-        .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "?" + "<your-sasToken>")
-        .buildClient();
+    .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "?" + "<your-sasToken>")
+    .buildClient();
 ```
 
 ### Create a `DataLakeFileClient`
@@ -212,11 +212,11 @@ Create a `FileClient` from the builder [`sasToken`](#get-credentials) generated 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L57-L62 -->
 ```java
 DataLakeFileClient fileClient = new DataLakePathClientBuilder()
-        .endpoint("<your-storage-account-url>")
-        .sasToken("<your-sasToken>")
-        .fileSystemName("myfilesystem")
-        .pathName("myfile")
-        .buildFileClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .fileSystemName("myfilesystem")
+    .pathName("myfile")
+    .buildFileClient();
 ```
 
 or
@@ -224,8 +224,8 @@ or
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L66-L68 -->
 ```java
 DataLakeFileClient fileClient = new DataLakePathClientBuilder()
-        .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "myfile" +"?" + "<your-sasToken>")
-        .buildFileClient();
+    .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "myfile" +"?" + "<your-sasToken>")
+    .buildFileClient();
 ```
 
 ### Create a `DataLakeDirectoryClient`
@@ -244,11 +244,11 @@ Create a `DirectoryClient` from the builder [`sasToken`](#get-credentials) gener
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L76-L81 -->
 ```java
 DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
-        .endpoint("<your-storage-account-url>")
-        .sasToken("<your-sasToken>")
-        .fileSystemName("myfilesystem")
-        .pathName("mydir")
-        .buildDirectoryClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .fileSystemName("myfilesystem")
+    .pathName("mydir")
+    .buildDirectoryClient();
 ```
 
 or
@@ -256,8 +256,8 @@ or
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L85-L87 -->
 ```java
 DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
-        .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "mydir" +"?" + "<your-sasToken>")
-        .buildDirectoryClient();
+    .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "mydir" +"?" + "<your-sasToken>")
+    .buildDirectoryClient();
 ```
 
 ### Create a file system
