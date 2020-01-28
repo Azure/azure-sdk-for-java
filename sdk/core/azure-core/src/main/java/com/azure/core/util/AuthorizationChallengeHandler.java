@@ -158,7 +158,7 @@ public class AuthorizationChallengeHandler {
                 continue;
             }
 
-            Map<String, String> challenge = challengesByType.get(algorithm).get(0);
+            Map<String, String> challenge = new ConcurrentHashMap<>(challengesByType.get(algorithm).get(0));
             lastChallenge.set(challenge);
 
             return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier,

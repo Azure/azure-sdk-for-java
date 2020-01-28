@@ -100,7 +100,7 @@ public class NettyAsyncHttpClientBuilderTests {
      * NullPointerException}.
      */
     @Test
-    public void startWithNullClientThrows() {
+    public void startingWithNullClientThrows() {
         assertThrows(NullPointerException.class, () -> new NettyAsyncHttpClientBuilder(null));
     }
 

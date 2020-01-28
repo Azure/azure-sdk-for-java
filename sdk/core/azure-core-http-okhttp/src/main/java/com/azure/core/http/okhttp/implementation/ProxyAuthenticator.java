@@ -3,6 +3,7 @@
 
 package com.azure.core.http.okhttp.implementation;
 
+import com.azure.core.http.HttpMethod;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -10,16 +11,14 @@ import okhttp3.Authenticator;
 import okhttp3.Challenge;
 import okhttp3.Interceptor;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.Route;
-import okio.Buffer;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
@@ -34,6 +33,21 @@ public final class ProxyAuthenticator implements Authenticator {
     private static final String BASIC = "basic";
     private static final String DIGEST = "digest";
     private static final String PREEMPTIVE_AUTHENTICATE = "Preemptive Authenticate";
+
+    /*
+     * Proxies use 'CONNECT' as the HTTP method.
+     */
+    private static final String PROXY_METHOD = HttpMethod.CONNECT.name();
+
+    /*
+     * Proxies are always the root path.
+     */
+    private static final String PROXY_URI_PATH = "/";
+
+    /*
+     * Digest authentication to a proxy uses the 'CONNECT' method, these can't have a request body.
+     */
+    private static final Supplier<byte[]> PROXY_ENTITY_BODY = () -> new byte[0];
 
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
@@ -69,11 +83,8 @@ public final class ProxyAuthenticator implements Authenticator {
      */
     @Override
     public Request authenticate(Route route, Response response) {
-        String method = response.request().method();
-        String uri = response.request().url().encodedPath();
-
-        String authorizationHeader = challengeHandler.attemptToPipelineAuthorization(method, uri,
-            () -> entitySupplier(response.request()));
+        String authorizationHeader = challengeHandler
+            .attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, PROXY_ENTITY_BODY);
 
         // Pipelining was successful, use the generated authorization header.
         if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
@@ -100,8 +111,8 @@ public final class ProxyAuthenticator implements Authenticator {
 
         // Prefer digest challenges over basic.
         if (digestChallenges.size() > 0) {
-            authorizationHeader = challengeHandler.handleDigest(method, uri, digestChallenges,
-                () -> entitySupplier(response.request()));
+            authorizationHeader = challengeHandler
+                .handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, PROXY_ENTITY_BODY);
         }
 
         /*
@@ -119,26 +130,6 @@ public final class ProxyAuthenticator implements Authenticator {
         }
 
         return requestBuilder.build();
-    }
-
-    /*
-     * Retrieves the HTTP entity for the given request. A HTTP entity consists of the entity headers and the body, if
-     * present.
-     */
-    private byte[] entitySupplier(Request request) {
-        RequestBody requestBody = request.body();
-
-        if (requestBody == null) {
-            return new byte[0];
-        }
-
-        try {
-            Buffer bodyBuffer = new Buffer();
-            requestBody.writeTo(bodyBuffer);
-            return bodyBuffer.readByteArray();
-        } catch (IOException e) {
-            throw logger.logExceptionAsWarning(new UncheckedIOException(e));
-        }
     }
 
     /**
