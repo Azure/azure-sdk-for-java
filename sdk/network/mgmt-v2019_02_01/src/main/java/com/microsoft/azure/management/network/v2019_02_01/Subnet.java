@@ -20,7 +20,9 @@ import com.microsoft.azure.management.network.v2019_02_01.implementation.Network
 import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2019_02_01.implementation.NetworkSecurityGroupInner;
+import com.microsoft.azure.management.network.v2019_02_01.implementation.ResourceNavigationLinkInner;
 import com.microsoft.azure.management.network.v2019_02_01.implementation.RouteTableInner;
+import com.microsoft.azure.management.network.v2019_02_01.implementation.ServiceAssociationLinkInner;
 import com.microsoft.azure.management.network.v2019_02_01.implementation.ServiceEndpointPolicyInner;
 
 /**
@@ -95,7 +97,7 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
     /**
      * @return the resourceNavigationLinks value.
      */
-    List<ResourceNavigationLink> resourceNavigationLinks();
+    List<ResourceNavigationLinkInner> resourceNavigationLinks();
 
     /**
      * @return the routeTable value.
@@ -105,7 +107,7 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
     /**
      * @return the serviceAssociationLinks value.
      */
-    List<ServiceAssociationLink> serviceAssociationLinks();
+    List<ServiceAssociationLinkInner> serviceAssociationLinks();
 
     /**
      * @return the serviceEndpointPolicies value.
@@ -263,7 +265,7 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
              * @param resourceNavigationLinks Gets an array of references to the external resources using subnet
              * @return the next definition stage
              */
-            WithCreate withResourceNavigationLinks(List<ResourceNavigationLink> resourceNavigationLinks);
+            WithCreate withResourceNavigationLinks(List<ResourceNavigationLinkInner> resourceNavigationLinks);
         }
 
         /**
@@ -287,7 +289,7 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
              * @param serviceAssociationLinks Gets an array of references to services injecting into this subnet
              * @return the next definition stage
              */
-            WithCreate withServiceAssociationLinks(List<ServiceAssociationLink> serviceAssociationLinks);
+            WithCreate withServiceAssociationLinks(List<ServiceAssociationLinkInner> serviceAssociationLinks);
         }
 
         /**
@@ -449,7 +451,7 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
              * @param resourceNavigationLinks Gets an array of references to the external resources using subnet
              * @return the next update stage
              */
-            Update withResourceNavigationLinks(List<ResourceNavigationLink> resourceNavigationLinks);
+            Update withResourceNavigationLinks(List<ResourceNavigationLinkInner> resourceNavigationLinks);
         }
 
         /**
@@ -473,7 +475,7 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
              * @param serviceAssociationLinks Gets an array of references to services injecting into this subnet
              * @return the next update stage
              */
-            Update withServiceAssociationLinks(List<ServiceAssociationLink> serviceAssociationLinks);
+            Update withServiceAssociationLinks(List<ServiceAssociationLinkInner> serviceAssociationLinks);
         }
 
         /**
