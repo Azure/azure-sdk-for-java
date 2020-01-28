@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "baseName": {
-            "type": "String"
+            "type": "string"
         },
         "storageEndpointSuffix": {
             "type": "string",
@@ -11,29 +11,29 @@
         },
         "eventHubName": {
             "type": "string",
-            "defaultValue": "javaeventhub"
+            "defaultValue": "java-eventhub"
         },
         "eventHubNamespaceHostNameSuffix": {
             "type": "string",
             "defaultValue": "servicebus.windows.net"
         },
-        "testApplicationOid": {
-            "type": "string",
-            "metadata": {
-                "description": "The principal to assign the role to. This is application object id."
-            }
-        },
         "tenantId": {
             "type": "string",
             "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
             "metadata": {
-                "description": "The tenant ID to which the application and resources belong."
+                "description": "The tenant id to which the application and resources belong."
             }
         },
         "testApplicationId": {
             "type": "string",
             "metadata": {
-                "description": "The application client ID used to run tests."
+                "description": "The client id of the service principal used to run tests."
+            }
+        },
+        "testApplicationOid": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the object id of the service principal used to run tests."
             }
         },
         "testApplicationSecret": {
@@ -49,7 +49,7 @@
         "authorizationApiVersion": "2018-09-01-preview",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-        "AuthorizationRulesName": "[concat('authr', parameters('baseName'))]",
+        "authorizationRulesName": "[concat('authr', parameters('baseName'))]",
         "primaryAccountName": "[concat('prim', parameters('baseName'))]",
         "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
         "premiumAccountName": "[concat('prem', parameters('baseName'))]",
@@ -72,92 +72,8 @@
             "properties": {
                 "zoneRedundant": false,
                 "isAutoInflateEnabled": false,
-                "maximumThroughputUnits": 0,
-                "cors": {
-                    "corsRules": [
-                        {
-                            "allowedOrigins": [
-                                "example.com"
-                            ],
-                            "allowedMethods": [
-                                "GET"
-                            ],
-                            "maxAgeInSeconds": 8888,
-                            "exposedHeaders": [
-                                "*"
-                            ],
-                            "allowedHeaders": [
-                                "*"
-                            ]
-                        },
-                        {
-                            "allowedOrigins": [
-                                "*"
-                            ],
-                            "allowedMethods": [
-                                "DELETE",
-                                "GET",
-                                "HEAD",
-                                "MERGE",
-                                "POST",
-                                "OPTIONS",
-                                "PUT"
-                            ],
-                            "maxAgeInSeconds": 86400,
-                            "exposedHeaders": [
-                                "*"
-                            ],
-                            "allowedHeaders": [
-                                "*"
-                            ]
-                        },
-                        {
-                            "allowedOrigins": [
-                                "example.com"
-                            ],
-                            "allowedMethods": [
-                                "GET"
-                            ],
-                            "maxAgeInSeconds": 8888,
-                            "exposedHeaders": [
-                                "*"
-                            ],
-                            "allowedHeaders": [
-                                "*"
-                            ]
-                        },
-                        {
-                            "allowedOrigins": [
-                                "example.com"
-                            ],
-                            "allowedMethods": [
-                                "GET"
-                            ],
-                            "maxAgeInSeconds": 8888,
-                            "exposedHeaders": [
-                                "*"
-                            ],
-                            "allowedHeaders": [
-                                "*"
-                            ]
-                        },
-                        {
-                            "allowedOrigins": [
-                                "example.com"
-                            ],
-                            "allowedMethods": [
-                                "GET"
-                            ],
-                            "maxAgeInSeconds": 8888,
-                            "exposedHeaders": [
-                                "*"
-                            ],
-                            "allowedHeaders": [
-                                "*"
-                            ]
-                        }
-                    ]
-                }
+                "maximumThroughputUnits": 2,
+                "kafkaEnabled": true
             }
         },
         {
@@ -170,7 +86,8 @@
             ],
             "properties": {
                 "messageRetentionInDays": 1,
-                "partitionCount": 2
+                "partitionCount": 2,
+                "status": "Active"
             }
         },
         {
@@ -184,6 +101,21 @@
                 "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
                 "principalId": "[parameters('testApplicationOid')]",
                 "scope": "[resourceGroup().id]"
+            }
+        },
+        {
+            "apiVersion": "[variables('authorizationApiVersion')]",
+            "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
+            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Send",
+                    "Listen",
+                    "Manage"
+                ]
             }
         },
         {
@@ -210,21 +142,6 @@
                 "roleDefinitionId": "[variables('contributorRoleId')]",
                 "principalId": "[parameters('testApplicationOid')]",
                 "scope": "[resourceGroup().id]"
-            }
-        },
-        {
-            "apiVersion": "2017-04-01",
-            "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
-            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
-            "dependsOn": [
-                "[concat('Microsoft.EventHub/namespaces/', variables('eventHubsNamespaceName'))]"
-            ],
-            "properties": {
-                "rights": [
-                    "Send",
-                    "Listen",
-                    "Manage"
-                ]
             }
         },
         {
