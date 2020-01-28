@@ -19,6 +19,7 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.Iterator;
@@ -58,7 +59,7 @@ public final class AzurePath implements Path {
         Break all strings into their respective elements and remove empty elements. This has the effect of stripping
         any trailing, leading, or internal delimiters so there are no duplicates/empty elements when we join.
          */
-        List<String> elements = Arrays.asList(first.split(parentFileSystem.getSeparator()));
+        List<String> elements = new ArrayList<>(Arrays.asList(first.split(parentFileSystem.getSeparator())));
         if (more != null) {
             for (String next : more) {
                 elements.addAll(Arrays.asList(next.split(parentFileSystem.getSeparator())));
@@ -306,7 +307,7 @@ public final class AzurePath implements Path {
             }
         }
 
-        return this.parentFileSystem.getPath("", stack.toArray(String[]::new));
+        return this.parentFileSystem.getPath("", stack.toArray(new String[0]));
     }
 
     /**
@@ -383,7 +384,7 @@ public final class AzurePath implements Path {
             i++;
         }
 
-        return this.parentFileSystem.getPath("", deque.toArray(String[]::new));
+        return this.parentFileSystem.getPath("", deque.toArray(new String[0]));
     }
 
     /**
