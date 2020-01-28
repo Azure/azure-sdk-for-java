@@ -88,6 +88,10 @@ public class ProxyOptions {
     /**
      * Sets the hosts which bypass the proxy.
      *
+     * <p>
+     * The expected format of the passed string is a {@code '|'} delimited list of hosts which should bypass the proxy.
+     * Individual host strings may contain regex characters such as {@code '*'}.
+     *
      * @param nonProxyHosts Hosts that bypass the proxy.
      * @return the updated ProxyOptions object
      */
