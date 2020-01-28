@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 
@@ -27,8 +28,8 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The texts that need be analysed.

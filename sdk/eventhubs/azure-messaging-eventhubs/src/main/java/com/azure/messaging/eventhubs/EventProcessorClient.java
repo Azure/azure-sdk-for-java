@@ -170,7 +170,7 @@ public class EventProcessorClient {
             .filter(ownership -> identifier.equals(ownership.getOwnerId()))
             .map(ownership -> ownership.setOwnerId(""))
             .collect(Collectors.toList())
-            .map(checkpointStore::claimOwnership)
-            .block(Duration.ofSeconds(10)); // block until the checkpoint store is updated
+            .flatMapMany(checkpointStore::claimOwnership)
+            .blockLast(Duration.ofSeconds(10)); // block until the checkpoint store is updated
     }
 }

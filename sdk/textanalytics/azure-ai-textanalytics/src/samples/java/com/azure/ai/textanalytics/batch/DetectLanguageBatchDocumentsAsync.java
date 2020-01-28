@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 
 import java.util.Arrays;
@@ -28,8 +29,8 @@ public class DetectLanguageBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The texts that need be analysed.

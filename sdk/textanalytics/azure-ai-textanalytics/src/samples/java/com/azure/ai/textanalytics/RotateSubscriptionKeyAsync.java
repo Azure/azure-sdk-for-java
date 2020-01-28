@@ -8,23 +8,36 @@ import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously extract the key phrases of an input text.
+ * Sample demonstrates how to rotate the existing subscription key of text analytics client
  */
-public class ExtractKeyPhrasesAsync {
+public class RotateSubscriptionKeyAsync {
+
     /**
-     * Main method to invoke this demo about how to extract the key phrases of an input text.
+     * Main method to invoke this demo about how to rotate the existing subscription key of text analytics client.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        // Instantiate a client that will be used to call the service.
+        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{invalid_subscription_key}");
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .subscriptionKey(credential)
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The text that need be analysed.
         String text = "My cat might need to see a veterinarian.";
+
+        client.extractKeyPhrases(text).subscribe(
+            result -> {
+                for (String keyPhrase : result.getKeyPhrases()) {
+                    System.out.printf("Recognized phrases: %s.%n", keyPhrase);
+                }
+            },
+            error -> System.err.println("There was an error extracting key phrases of the text." + error),
+            () -> System.out.println("Key phrases extracted."));
+
+        // Update the subscription key
+        credential.updateCredential("{valid_subscription_key}");
 
         client.extractKeyPhrases(text).subscribe(
             result -> {
