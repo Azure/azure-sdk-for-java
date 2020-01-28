@@ -26,7 +26,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
 
         then:
         def inputStream = bc.openInputStream()
-        !inputStream.getProperties() // before reading properties should be null
+        def propertiesBefore = inputStream.getProperties()
         int b
         def outputStream = new ByteArrayOutputStream()
         try {
@@ -36,9 +36,10 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         } catch (IOException ex) {
             throw new UncheckedIOException(ex)
         }
-        inputStream.getProperties() // after reading properties should be populated
-        inputStream.getProperties().getBlobType() == BlobType.BLOCK_BLOB
-        inputStream.getProperties().getBlobSize() == 4 * Constants.MB
+        def propertiesAfter = inputStream.getProperties()
+        propertiesAfter.getBlobType() == BlobType.BLOCK_BLOB
+        propertiesAfter.getBlobSize() == 5 * Constants.MB
+        propertiesBefore.getETag() == propertiesAfter.getETag()
         byte[] randomBytes2 = outputStream.toByteArray()
         assert randomBytes2 == Arrays.copyOfRange(randomBytes, 1 * Constants.MB, 6 * Constants.MB)
     }
