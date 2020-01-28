@@ -8,7 +8,6 @@ class EncryptedBlobRangeTest extends APISpec {
 
     // This test checks that the EncryptedBlobRange cna be properly constructed from a BlobRange
     @Unroll
-    @Requires({ liveMode() })
     def "Test constructor"() {
         setup:
         BlobRange range
@@ -42,7 +41,6 @@ class EncryptedBlobRangeTest extends APISpec {
 
     // This test checks that the encrypted blob range can be correctly constructed from a BlobRange header string
     @Unroll
-    @Requires({ liveMode() })
     def "Test from blob range header"() {
         setup:
         BlobRange range

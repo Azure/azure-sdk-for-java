@@ -43,7 +43,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  * {@link DataLakeFileSystemAsyncClient#getFileAsyncClient(String)}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure
  * Docs</a> for more information.
  */
 public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
@@ -376,16 +378,18 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.rename#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.rename#String-String}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
      * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
      * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the new file created.
      */
-    public Mono<DataLakeFileAsyncClient> rename(String destinationPath) {
+    public Mono<DataLakeFileAsyncClient> rename(String destinationFileSystem, String destinationPath) {
         try {
-            return renameWithResponse(destinationPath, null, null).flatMap(FluxUtil::toMono);
+            return renameWithResponse(destinationFileSystem, destinationPath, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -397,8 +401,10 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
      * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
      * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
@@ -407,11 +413,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeFileAsyncClient} used to interact with the file created.
      */
-    public Mono<Response<DataLakeFileAsyncClient>> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions) {
+    public Mono<Response<DataLakeFileAsyncClient>> renameWithResponse(String destinationFileSystem,
+        String destinationPath, DataLakeRequestConditions sourceRequestConditions,
+        DataLakeRequestConditions destinationRequestConditions) {
         try {
-            return withContext(context -> renameWithResponse(destinationPath, sourceRequestConditions,
-                destinationRequestConditions, context)).map(response -> new SimpleResponse<>(response,
+            return withContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
+                sourceRequestConditions, destinationRequestConditions, context))
+                .map(response -> new SimpleResponse<>(response,
                     new DataLakeFileAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

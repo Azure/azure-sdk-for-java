@@ -37,10 +37,9 @@ pr:
       - sdk/cognitiveservices/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: cognitiveservices
-      SDKType: data
       Artifacts:
         - name: azure-cognitiveservices-autosuggest
           groupId: com.microsoft.azure.cognitiveservices

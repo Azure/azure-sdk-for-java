@@ -150,8 +150,16 @@ Create a `DataLakeServiceClient` using the [`sasToken`](#get-credentials) genera
 
 ```java
 DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
-        .endpoint("<your-storage-dfs-url>")
+        .endpoint("<your-storage-account-url>")
         .sasToken("<your-sasToken>")
+        .buildClient();
+```
+
+or
+
+```java
+DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
+        .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
         .buildClient();
 ```
 
@@ -169,9 +177,17 @@ Create a `DataLakeFileSystemClient` from the builder [`sasToken`](#get-credentia
 
 ```java
 DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
-        .endpoint("<your-storage-dfs-url>")
+        .endpoint("<your-storage-account-url>")
         .sasToken("<your-sasToken>")
-        .containerName("myfilesystem")
+        .fileSystemName("myfilesystem")
+        .buildClient();
+```
+
+or
+
+```java
+DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
+        .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "?" + "<your-sasToken>")
         .buildClient();
 ```
 
@@ -189,10 +205,18 @@ Create a `FileClient` from the builder [`sasToken`](#get-credentials) generated 
 
 ```java
 DataLakeFileClient fileClient = new DataLakePathClientBuilder()
-        .endpoint("<your-storage-dfs-url>")
+        .endpoint("<your-storage-account-url>")
         .sasToken("<your-sasToken>")
         .fileSystemName("myfilesystem")
         .pathName("myfile")
+        .buildClient();
+```
+
+or
+
+```java
+DataLakeFileClient fileClient = new DataLakePathClientBuilder()
+        .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "myfile" +"?" + "<your-sasToken>")
         .buildClient();
 ```
 
@@ -210,10 +234,18 @@ Create a `DirectoryClient` from the builder [`sasToken`](#get-credentials) gener
 
 ```java
 DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
-        .endpoint("<your-storage-dfs-url>")
+        .endpoint("<your-storage-account-url>")
         .sasToken("<your-sasToken>")
         .fileSystemName("myfilesystem")
         .pathName("mydir")
+        .buildClient();
+```
+
+or
+
+```java
+DataLakeFileClient fileClient = new DataLakePathClientBuilder()
+        .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "mydir" +"?" + "<your-sasToken>")
         .buildClient();
 ```
 
@@ -233,39 +265,15 @@ Create a file system using a `DataLakeFileSystemClient`.
 dataLakeFileSystemClient.create();
 ```
 
-### Upload a file from a stream
-
-Upload from an `InputStream` to a blob using a `DataLakeFileClient` generated from a `DataLakeFileSystemClient`.
-
-```java
-DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
-fileClient.create();
-String dataSample = "samples";
-try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
-    fileClient.append(dataStream, 0, dataSample.length());
-}
-fileClient.flush(dataSample.length());
-```
-
-### Download a file to a stream
-
-Download a file to an `OutputStream` using a `DataLakeFileClient`.
-
-```java
-try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-    fileClient.read(outputStream);
-}
-```
-
 ### Enumerate paths
 
 Enumerating all paths using a `DataLakeFileSystemClient`.
 
 ```java
-dataLakeFileSystemClient.listPaths()
-        .forEach(
-            pathItem -> System.out.println("This is the path name: " + pathItem.getName())
-        );
+Iterator<PathItem> it = dataLakeFileSystemClient.listPaths().iterator();
+it.forEachRemaining(
+    { pathItem -> System.out.println("This is the path name: " + pathItem.getName()) }
+   );
 ```
 
 ### Rename a file

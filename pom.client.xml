@@ -310,7 +310,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.4</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <executions>
         <execution>
           <id>default-instrument</id>
@@ -522,15 +522,15 @@
             <docletArtifact>
               <groupId>org.apidesign.javadoc</groupId>
               <artifactId>codesnippet-doclet</artifactId>
-              <version>0.32</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
+              <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
             </docletArtifact>
             <additionalOptions>
               <additionalOption>-maxLineLength 120</additionalOption>
               <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
               <additionalOption>-suppressMissingLinkWarnings</additionalOption>
             </additionalOptions>
-            <failOnError>false</failOnError>
-            <failOnWarnings>false</failOnWarnings>
+            <failOnError>true</failOnError>
+            <failOnWarnings>true</failOnWarnings>
             <doclint>all</doclint>
             <sourceFileExcludes>
               <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -594,7 +594,7 @@
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
-      <version>0.8.4</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <version>0.8.5</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -930,6 +930,7 @@
                 --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
 
                 <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
                 --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
@@ -970,15 +971,9 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
-              <failOnWarnings>false</failOnWarnings>
+              <failOnWarnings>true</failOnWarnings>
+              <failOnError>true</failOnError>
               <quiet>true</quiet>
-
-              <!-- For codesnippet4javadoc tool to work with JDK9+, it is recommended to add this additional option
-              https://github.com/jtulach/codesnippet4javadoc#use-with-jdk9 -->
-              <additionalJOptions>
-                <opt>-J--add-opens=jdk.javadoc/com.sun.tools.javadoc.main=ALL-UNNAMED</opt>
-              </additionalJOptions>
-
             </configuration>
             <executions>
               <execution>
@@ -987,8 +982,8 @@
                   <goal>jar</goal>
                 </goals>
                 <configuration>
-                  <failOnError>false</failOnError>
-                  <failOnWarnings>false</failOnWarnings>
+                  <failOnError>true</failOnError>
+                  <failOnWarnings>true</failOnWarnings>
                 </configuration>
               </execution>
             </executions>

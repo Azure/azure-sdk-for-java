@@ -42,7 +42,9 @@ import java.util.Objects;
  * {@link DataLakeFileSystemClient#getFileClient(String) getFileClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure
  * Docs</a> for more information.
  */
 public class DataLakeFileClient extends DataLakePathClient {
@@ -320,15 +322,17 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String-String}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
      * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
      * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
      * @return A {@link DataLakeFileClient} used to interact with the new file created.
      */
-    public DataLakeFileClient rename(String destinationPath) {
-        return renameWithResponse(destinationPath, null, null, null, null).getValue();
+    public DataLakeFileClient rename(String destinationFileSystem, String destinationPath) {
+        return renameWithResponse(destinationFileSystem, destinationPath, null, null, null, null).getValue();
     }
 
     /**
@@ -338,8 +342,10 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
      * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
      * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
@@ -351,12 +357,12 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return A {@link Response} whose {@link Response#getValue() value} that contains a {@link DataLakeFileClient}
      * used to interact with the file created.
      */
-    public Response<DataLakeFileClient> renameWithResponse(String destinationPath,
+    public Response<DataLakeFileClient> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Duration timeout, Context context) {
 
-        Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationPath, sourceRequestConditions,
-            destinationRequestConditions, context);
+        Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationFileSystem, destinationPath,
+            sourceRequestConditions, destinationRequestConditions, context);
 
         Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
