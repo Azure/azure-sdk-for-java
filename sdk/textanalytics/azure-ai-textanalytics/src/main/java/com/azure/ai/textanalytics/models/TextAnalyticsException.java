@@ -5,19 +5,20 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.exception.AzureException;
 
-import java.util.Locale;
-
 /**
  * General exception for Text Analytics related failures.
  */
 public class TextAnalyticsException extends AzureException {
     private static final long serialVersionUID = 21436310107606058L;
+    private static final String ERROR_CODE = "ErrorCodeValue";
+    private static final String TARGET = "target";
 
     private final String errorCodeValue;
     private final String target;
 
     /**
      * Initializes a new instance of the TextAnalyticsException class.
+     *
      * @param message Text containing any additional details of the exception.
      * @param errorCodeValue The service returned error code value.
      * @param target The target for this exception.
@@ -30,22 +31,14 @@ public class TextAnalyticsException extends AzureException {
 
     @Override
     public String getMessage() {
-        String baseMessage = super.getMessage();
-
-        if (this.errorCodeValue == null) {
-            return super.getMessage();
-        } else {
-            baseMessage = String.format(Locale.ROOT, "%s %s: {%s}", baseMessage, "ErrorCodeValue",
-                errorCodeValue);
-        }
+        StringBuilder baseMessage = new StringBuilder().append(super.getMessage()).append(" ").append(ERROR_CODE)
+            .append(": {").append(errorCodeValue).append("}");
 
         if (this.target == null) {
-            return baseMessage;
+            return baseMessage.toString();
         } else {
-            baseMessage = String.format(Locale.ROOT, "%s %s: {%s}", baseMessage, "target", target);
+            return baseMessage.append(", ").append(TARGET).append(": {").append(target).append("}").toString();
         }
-
-        return baseMessage;
     }
 
     /**
@@ -58,11 +51,11 @@ public class TextAnalyticsException extends AzureException {
     }
 
     /**
-     * Gets the String value of TextAnalyticsErrorCode for this exception.
+     * Gets the TextAnalyticsErrorCode for this exception.
      *
-     * @return The String value of TextAnalyticsErrorCode for this exception.
+     * @return The TextAnalyticsErrorCode for this exception.
      */
-    public String getErrorCodeValue() {
-        return errorCodeValue;
+    public TextAnalyticsErrorCode getErrorCodeValue() {
+        return TextAnalyticsErrorCode.fromString(errorCodeValue);
     }
 }

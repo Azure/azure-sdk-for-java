@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Immutable
 public final class RecognizePiiEntitiesResult extends DocumentResult {
     private final List<NamedEntity> namedEntities;
+    private final ClientLogger logger = new ClientLogger(RecognizePiiEntitiesResult.class);
 
     /**
      * Creates a {@code RecognizePiiEntitiesResult} model that describes recognized entities result
@@ -35,7 +37,7 @@ public final class RecognizePiiEntitiesResult extends DocumentResult {
      * @return a list of {@link NamedEntity}
      */
     public List<NamedEntity> getNamedEntities() {
-        throwExceptionIfError();
+        throwExceptionIfError(logger);
         return namedEntities;
     }
 }

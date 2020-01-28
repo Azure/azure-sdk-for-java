@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for TextAnalyticsErrorCode.
+ * Defines values for ErrorCodeValue.
  */
 public enum ErrorCodeValue {
     /**
@@ -32,7 +32,7 @@ public enum ErrorCodeValue {
     SERVICE_UNAVAILABLE("serviceUnavailable");
 
     /**
-     * The actual serialized value for a TextAnalyticsErrorCode instance.
+     * The actual serialized value for a ErrorCodeValue instance.
      */
     private final String value;
 
@@ -41,10 +41,10 @@ public enum ErrorCodeValue {
     }
 
     /**
-     * Parses a serialized value to a TextAnalyticsErrorCode instance.
+     * Parses a serialized value to a ErrorCodeValue instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed TextAnalyticsErrorCode object, or null if unable to parse.
+     * @return the parsed ErrorCodeValue object, or null if unable to parse.
      */
     @JsonCreator
     public static ErrorCodeValue fromString(String value) {

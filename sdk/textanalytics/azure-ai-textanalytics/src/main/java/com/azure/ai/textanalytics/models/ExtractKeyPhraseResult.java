@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Immutable
 public final class ExtractKeyPhraseResult extends DocumentResult {
     private final List<String> keyPhrases;
+    private final ClientLogger logger = new ClientLogger(ExtractKeyPhraseResult.class);
 
     /**
      * Create a {@code KeyPhraseResult} model that describes extracted key phrases result
@@ -35,7 +37,7 @@ public final class ExtractKeyPhraseResult extends DocumentResult {
      * @return a list of key phrase string
      */
     public List<String> getKeyPhrases() {
-        throwExceptionIfError();
+        throwExceptionIfError(logger);
         return keyPhrases;
     }
 }

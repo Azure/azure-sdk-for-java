@@ -3,6 +3,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 public final class DetectLanguageResult extends DocumentResult {
     private final DetectedLanguage primaryLanguage;
     private final List<DetectedLanguage> detectedLanguages;
+    private final ClientLogger logger = new ClientLogger(DetectLanguageResult.class);
 
     /**
      * Create a {@code DetectedLanguageResult} model that describes detected languages result
@@ -37,7 +39,7 @@ public final class DetectLanguageResult extends DocumentResult {
      * @return the detected language
      */
     public DetectedLanguage getPrimaryLanguage() {
-        throwExceptionIfError();
+        throwExceptionIfError(logger);
         return primaryLanguage;
     }
 
@@ -47,7 +49,7 @@ public final class DetectLanguageResult extends DocumentResult {
      * @return the list of detected language
      */
     public List<DetectedLanguage> getDetectedLanguages() {
-        throwExceptionIfError();
+        throwExceptionIfError(logger);
         return detectedLanguages;
     }
 }
