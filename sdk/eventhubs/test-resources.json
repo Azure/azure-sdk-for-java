@@ -55,13 +55,14 @@
         "premiumAccountName": "[concat('prem', parameters('baseName'))]",
         "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
         "location": "[resourceGroup().location]",
-        "eventHubNamespaceName": "[parameters('baseName')]"
+        "eventHubsNamespaceName": "[parameters('baseName')]",
+        "eventHubsDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec')]"
     },
     "resources": [
         {
             "type": "Microsoft.EventHub/namespaces",
             "apiVersion": "[variables('eventHubsApiVersion')]",
-            "name": "[variables('eventHubNamespaceName')]",
+            "name": "[variables('eventHubsNamespaceName')]",
             "location": "[variables('location')]",
             "sku": {
                 "name": "Standard",
@@ -165,11 +166,23 @@
             "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
             "location": "[variables('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
+                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
             ],
             "properties": {
                 "messageRetentionInDays": 7,
                 "partitionCount": 2
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "[variables('authorizationApiVersion')]",
+            "name": "[guid(concat('dataContributorRoleId', variables('primaryAccountName')))]",
+            "dependsOn": [
+                "[variables('primaryAccountName')]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[variables('blobDataContributorRoleId')]",
+                "principalId": "[parameters('testApplicationOid')]"
             }
         },
         {
@@ -201,7 +214,7 @@
             "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
             "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
             "dependsOn": [
-                "[concat('Microsoft.EventHub/namespaces/', variables('eventHubNamespaceName'))]"
+                "[concat('Microsoft.EventHub/namespaces/', variables('eventHubsNamespaceName'))]"
             ],
             "properties": {
                 "rights": [
@@ -364,7 +377,7 @@
         },
         "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME": {
             "type": "string",
-            "value": "[concat(variables('eventHubNamespaceName'), '.', parameters('eventHubNamespaceHostNameSuffix'))]"
+            "value": "[concat(variables('eventHubsNamespaceName'), '.', parameters('eventHubNamespaceHostNameSuffix'))]"
         },
         "BLOB_STORAGE_ACCOUNT_NAME": {
             "type": "string",
