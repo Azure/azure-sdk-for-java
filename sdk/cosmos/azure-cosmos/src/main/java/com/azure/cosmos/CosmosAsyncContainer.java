@@ -288,7 +288,7 @@ public class CosmosAsyncContainer {
      * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     public <T> Flux<FeedResponse<T>> queryItems(String query, Class<T> klass) {
-        return queryItems(new SqlQuerySpec(query), null);
+        return queryItems(new SqlQuerySpec(query), klass);
     }
 
     /**
@@ -321,7 +321,7 @@ public class CosmosAsyncContainer {
      * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     public <T> Flux<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, Class<T> klass) {
-        return queryItems(querySpec, klass);
+        return queryItems(querySpec, new FeedOptions(), klass);
     }
 
     /**
@@ -394,7 +394,7 @@ public class CosmosAsyncContainer {
      * @param options the request cosmosItemRequestOptions
      * @return an {@link Mono} containing the cosmos item response with the read item or an error
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>>  readItem(String itemId, PartitionKey partitionKey, 
+    public <T> Mono<CosmosAsyncItemResponse<T>>  readItem(String itemId, PartitionKey partitionKey,
                                                   CosmosItemRequestOptions options, Class<T> itemType) {
         if (options == null) {
             options = new CosmosItemRequestOptions();
@@ -436,7 +436,7 @@ public class CosmosAsyncContainer {
      * @param options the request comosItemRequestOptions
      * @return an {@link Mono} containing the  cosmos item resource response with the replaced item or an error.
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(T item, String itemId, PartitionKey partitionKey, 
+    public <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(T item, String itemId, PartitionKey partitionKey,
                                                      CosmosItemRequestOptions options){
         Document doc = CosmosItemProperties.fromObject(item);
         if (options == null) {
@@ -450,7 +450,7 @@ public class CosmosAsyncContainer {
                    .map(response -> new CosmosAsyncItemResponse<T>(response, itemType))
                    .single();
     }
-    
+
     /**
      * Deletes the item.
      * <p>
@@ -478,7 +478,7 @@ public class CosmosAsyncContainer {
      * @param options the request options
      * @return an {@link Mono} containing the  cosmos item resource response.
      */
-    public Mono<CosmosAsyncItemResponse> deleteItem(String itemId, PartitionKey partitionKey, 
+    public Mono<CosmosAsyncItemResponse> deleteItem(String itemId, PartitionKey partitionKey,
                                                     CosmosItemRequestOptions options){
         if (options == null) {
             options = new CosmosItemRequestOptions();
