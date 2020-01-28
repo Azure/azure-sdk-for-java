@@ -215,8 +215,12 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
-     * ':' is only allowed in the root component. Root component will be validated against the list of
-     * file shares?
+     * Each name element will be {@code String}-joined to the other elements by this file system's path separator.
+     * Naming conventions and allowed characters are as
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Naming-and-Referencing-Containers--Blobs--and-Metadata">defined</a>
+     * by the Azure Blob Storage service. The root component is interpreted as the container name and all name elements
+     * are interpreted as a part of the blob name. The character {@code ':'} is only allowed in the root component and
+     * must be the last character of the root component.
      *
      * {@inheritDoc}
      */

@@ -32,8 +32,7 @@ import java.util.Objects;
  * of the first element in the path. The root component is used to identify which container a path belongs to.
  * <p>
  * Constructing a syntactically valid path does not ensure a resource exists at the given path. An error will
- * only be thrown for an invalid root when trying to access a file in that root if it does not exist and for an
- * nonexistent path when trying to access the resource at that location if it does not exist or is inaccessible.
+ * not be thrown until trying to access an invalid resource, e.g. trying to access a resource that does not exist.
  * <p>
  * Path names are case sensitive.
  * <p>
@@ -51,15 +50,15 @@ public final class AzurePath implements Path {
     private final AzureFileSystem parentFileSystem;
     private final String pathString;
 
-    AzurePath(AzureFileSystem parentFileSystem, String s, String... strings) {
-        if (strings == null) {
-            strings = new String[0]; // Just to make processing easier later. This wont affect the result.
+    AzurePath(AzureFileSystem parentFileSystem, String first, String... more) {
+        if (more == null) {
+            more = new String[0]; // Just to make processing easier later. This wont affect the result.
         }
         this.parentFileSystem = parentFileSystem;
         Flux<String> elementFlux =
             // Strip any trailing, leading, or internal delimiters so there are no duplicates when we join.
-            Flux.fromArray(s.split(this.parentFileSystem.getSeparator()))
-                .concatWith(Flux.fromArray(strings)
+            Flux.fromArray(first.split(this.parentFileSystem.getSeparator()))
+                .concatWith(Flux.fromArray(more)
                     .flatMap(str -> Flux.fromArray(str.split(this.parentFileSystem.getSeparator()))))
                 .filter(str -> !str.isEmpty());
 
@@ -108,7 +107,7 @@ public final class AzurePath implements Path {
     @Override
     public Path getRoot() {
         // Check if the first element of the path is formatted like a root directory.
-        String firstElement = pathString.split(parentFileSystem.getSeparator())[0];
+        String firstElement = this.splitToElements()[0];
         if (firstElement.endsWith(ROOT_DIR_SUFFIX)) {
             return this.parentFileSystem.getPath(firstElement);
         }
@@ -158,7 +157,7 @@ public final class AzurePath implements Path {
     @Override
     public Path getName(int i) {
         if (i < 0 || i >= this.getNameCount()) {
-            throw new IllegalArgumentException();
+            throw Utility.logError(logger, new IllegalArgumentException(String.format("Index %d is out of bounds", i)));
         }
         return this.parentFileSystem.getPath(this.splitToElements(this.withoutRoot())[i]);
     }
@@ -170,8 +169,8 @@ public final class AzurePath implements Path {
     public Path subpath(int begin, int end) {
         if (begin < 0 || begin >= this.getNameCount()
             || end <= begin || end > this.getNameCount()) {
-            throw new IllegalArgumentException(String.format("Values of begin: %d and end: %d are invalid",
-                begin, end));
+            throw Utility.logError(logger,
+                new IllegalArgumentException(String.format("Values of begin: %d and end: %d are invalid", begin, end)));
         }
 
         Iterable<String> subnames = Flux.fromArray(this.splitToElements(this.withoutRoot()))
@@ -190,11 +189,7 @@ public final class AzurePath implements Path {
      */
     @Override
     public boolean startsWith(Path path) {
-        /*
-        There can only be one instance of a file system with a given id, so comparing object identity is equivalent
-        to checking ids here.
-         */
-        if (path.getFileSystem() != this.parentFileSystem) {
+        if (!path.getFileSystem().equals(this.parentFileSystem)) {
             return false;
         }
 
@@ -271,7 +266,7 @@ public final class AzurePath implements Path {
     public Path normalize() {
         Deque<String> stack = new ArrayDeque<>();
         String[] pathElements = this.splitToElements();
-        Path root = this.getRoot(); // Refactor so this doesn't access the fs per docs
+        Path root = this.getRoot();
         String rootStr = root == null ? null : root.toString();
         for (String element : pathElements) {
             if (element.equals(".")) {
@@ -414,7 +409,7 @@ public final class AzurePath implements Path {
      */
     @Override
     public Path toRealPath(LinkOption... linkOptions) throws IOException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Symbolic links are not supported.");
     }
 
     /**
@@ -433,7 +428,7 @@ public final class AzurePath implements Path {
     @Override
     public WatchKey register(WatchService watchService, WatchEvent.Kind<?>[] kinds, WatchEvent.Modifier... modifiers)
         throws IOException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("WatchEvents are not supported.");
     }
 
     /**
@@ -443,10 +438,12 @@ public final class AzurePath implements Path {
      */
     @Override
     public WatchKey register(WatchService watchService, WatchEvent.Kind<?>... kinds) throws IOException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("WatchEvents are not supported.");
     }
 
     /**
+     * Unsupported
+     * <p>
      * {@inheritDoc}
      */
     @Override
@@ -531,6 +528,10 @@ public final class AzurePath implements Path {
 
     private String[] splitToElements(String str) {
         String[] arr = str.split(this.parentFileSystem.getSeparator());
+        /*
+        This is a special case where we split after removing the root from a path that is just the root. Or otherwise
+        have an empty path.
+         */
         if (arr.length == 1 && arr[0].isEmpty()) {
             return new String[0];
         }

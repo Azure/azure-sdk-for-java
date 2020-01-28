@@ -59,6 +59,7 @@ stages:
           stagingProfileId: 88192f04117501
         - name: azure-storage-blob-nio
           safeName: azurestorageblobnio
+          groupId: com.azure
           stagingProfileId: 88192f04117501
         - name: azure-storage-file-share
           groupId: com.azure
