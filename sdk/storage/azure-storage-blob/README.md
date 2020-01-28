@@ -198,7 +198,7 @@ or
 <!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L72-L74 -->
 ```java
 BlobClient blobClient = new BlobClientBuilder()
-    .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" +"?" + "<your-sasToken>")
+    .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
     .buildClient();
 ```
 
@@ -251,7 +251,7 @@ Download a blob to an `OutputStream` using a `BlobClient`.
 
 <!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L101-L105 -->
 ```java
-try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
     blobClient.download(outputStream);
 } catch (IOException e) {
     e.printStackTrace();
@@ -271,17 +271,18 @@ blobClient.downloadToFile("downloaded-file.jpg");
 
 Enumerating all blobs using a `BlobContainerClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L113-L114 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L112-L114 -->
 ```java
-for (BlobItem blobItem : blobContainerClient.listBlobs())
+for (BlobItem blobItem : blobContainerClient.listBlobs()) {
     System.out.println("This is the blob name: " + blobItem.getName());
+}
 ```
 
 ### Authenticate with Azure Identity
 
 The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L118-L121 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L118-L122 -->
 ```java
 BlobServiceClient blobStorageClient = new BlobServiceClientBuilder()
     .endpoint("<your-storage-account-url>")

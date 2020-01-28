@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.blob;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -7,9 +9,6 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -70,7 +69,7 @@ public class ReadmeSamples {
 
     public void getBlobClient3() {
         BlobClient blobClient = new BlobClientBuilder()
-            .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" +"?" + "<your-sasToken>")
+            .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
             .buildClient();
     }
 
@@ -98,7 +97,7 @@ public class ReadmeSamples {
     }
 
     public void downloadBlobToStream() {
-        try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             blobClient.download(outputStream);
         } catch (IOException e) {
             e.printStackTrace();
@@ -110,8 +109,9 @@ public class ReadmeSamples {
     }
 
     public void enumerateBlobs() {
-        for (BlobItem blobItem : blobContainerClient.listBlobs())
+        for (BlobItem blobItem : blobContainerClient.listBlobs()) {
             System.out.println("This is the blob name: " + blobItem.getName());
+        }
     }
 
     public void authWithIdentity() {
