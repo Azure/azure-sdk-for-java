@@ -20,6 +20,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -55,10 +56,10 @@ class DetectLanguageAsyncClient {
             .map(response -> {
                 Iterator<DetectLanguageResult> detectLanguageResultIterator = response.getValue().iterator();
                 DetectLanguageResult detectLanguageResult = null;
-                if (response.getStatusCode() == 200 && detectLanguageResultIterator.hasNext()) {
+                if (response.getStatusCode() == HttpURLConnection.HTTP_OK && detectLanguageResultIterator.hasNext()) {
                     detectLanguageResult = detectLanguageResultIterator.next();
                     if (detectLanguageResult.isError()) {
-                        toTextAnalyticsException(detectLanguageResult.getError(), logger);
+                        throw logger.logExceptionAsError(toTextAnalyticsException(detectLanguageResult.getError()));
                     }
                 }
                 return new SimpleResponse<>(response, detectLanguageResult);

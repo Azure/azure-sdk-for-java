@@ -21,6 +21,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -60,10 +61,10 @@ class AnalyzeSentimentAsyncClient {
             .map(response -> {
                 Iterator<AnalyzeSentimentResult> sentimentResultIterator = response.getValue().iterator();
                 AnalyzeSentimentResult analyzeSentimentResult = null;
-                if (response.getStatusCode() == 200 && sentimentResultIterator.hasNext()) {
+                if (response.getStatusCode() == HttpURLConnection.HTTP_OK && sentimentResultIterator.hasNext()) {
                     analyzeSentimentResult = sentimentResultIterator.next();
                     if (analyzeSentimentResult.isError()) {
-                        toTextAnalyticsException(analyzeSentimentResult.getError(), logger);
+                        throw logger.logExceptionAsError(toTextAnalyticsException(analyzeSentimentResult.getError()));
                     }
                 }
                 return new SimpleResponse<>(response, analyzeSentimentResult);

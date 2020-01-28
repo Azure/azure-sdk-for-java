@@ -19,6 +19,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -59,10 +60,10 @@ class RecognizePiiEntityAsyncClient {
             .map(response -> {
                 Iterator<RecognizePiiEntitiesResult> piiEntitiesResultIterator = response.getValue().iterator();
                 RecognizePiiEntitiesResult piiEntitiesResult = null;
-                if (response.getStatusCode() == 200 && piiEntitiesResultIterator.hasNext()) {
+                if (response.getStatusCode() == HttpURLConnection.HTTP_OK && piiEntitiesResultIterator.hasNext()) {
                     piiEntitiesResult = piiEntitiesResultIterator.next();
                     if (piiEntitiesResult.isError()) {
-                        toTextAnalyticsException(piiEntitiesResult.getError(), logger);
+                        throw logger.logExceptionAsError(toTextAnalyticsException(piiEntitiesResult.getError()));
                     }
                 }
                 return new SimpleResponse<>(response, piiEntitiesResult);

@@ -20,6 +20,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -59,10 +60,10 @@ class RecognizeEntityAsyncClient {
             .map(response -> {
                 Iterator<RecognizeEntitiesResult> entitiesResultIterator = response.getValue().iterator();
                 RecognizeEntitiesResult entitiesResult = null;
-                if (response.getStatusCode() == 200 && entitiesResultIterator.hasNext()) {
+                if (response.getStatusCode() == HttpURLConnection.HTTP_OK && entitiesResultIterator.hasNext()) {
                     entitiesResult = entitiesResultIterator.next();
                     if (entitiesResult.isError()) {
-                        toTextAnalyticsException(entitiesResult.getError(), logger);
+                        throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
                     }
                 }
                 return new SimpleResponse<>(response, entitiesResult);

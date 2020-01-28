@@ -115,7 +115,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageInvalidCountryHint() {
         StepVerifier.create(client.detectLanguageWithResponse("Este es un document escrito en Español.", "en"))
             .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
+                && throwable.getMessage().equals(INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     /**
@@ -152,8 +152,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Entities
     @Test
     public void recognizeEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.80624294281005859);
-        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.8);
+        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.0);
+        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
         RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(namedEntity1, namedEntity2));
         StepVerifier.create(client.recognizeEntities("I had a wonderful trip to Seattle last week."))
             .assertNext(response -> validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(), response.getNamedEntities()))
@@ -267,7 +267,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Pii Entities
     @Test
     public void recognizePiiEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.65);
+        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
         RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Collections.singletonList(namedEntity1));
 
         StepVerifier.create(client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's."))
@@ -383,10 +383,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForTextInput() {
-        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED, 0.1, 0.5, 0.4, 66, 0);
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED, 0.0, 0.0, 0.0, 66, 0);
         final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-            new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.005, 0.005, 31, 0),
-            new TextSentiment(TextSentimentClass.POSITIVE, 0.005, 0.005, 0.99, 35, 32));
+            new TextSentiment(TextSentimentClass.NEGATIVE, 0.0, 0.0, 0.0, 31, 0),
+            new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.0, 35, 32));
 
         StepVerifier
             .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
@@ -411,10 +411,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForFaultyText() {
-        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 5, 0);
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 5, 0);
         final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 1, 0),
-            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 4, 1));
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 1, 0),
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 4, 1));
 
         StepVerifier
             .create(client.analyzeSentiment("!@#%%"))

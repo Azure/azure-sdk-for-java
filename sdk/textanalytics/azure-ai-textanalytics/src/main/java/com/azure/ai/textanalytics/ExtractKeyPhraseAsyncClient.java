@@ -18,6 +18,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -57,10 +58,10 @@ class ExtractKeyPhraseAsyncClient {
             .map(response -> {
                 Iterator<ExtractKeyPhraseResult> keyPhraseResultIterator = response.getValue().iterator();
                 ExtractKeyPhraseResult keyPhraseResult = null;
-                if (response.getStatusCode() == 200 && keyPhraseResultIterator.hasNext()) {
+                if (response.getStatusCode() == HttpURLConnection.HTTP_OK && keyPhraseResultIterator.hasNext()) {
                     keyPhraseResult = keyPhraseResultIterator.next();
                     if (keyPhraseResult.isError()) {
-                        toTextAnalyticsException(keyPhraseResult.getError(), logger);
+                        throw logger.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
                     }
                 }
                 return new SimpleResponse<>(response, keyPhraseResult);

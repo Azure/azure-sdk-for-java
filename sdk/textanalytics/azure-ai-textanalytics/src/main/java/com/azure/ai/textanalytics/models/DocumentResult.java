@@ -68,13 +68,13 @@ public class DocumentResult {
     }
 
     /**
-     * Throw a TextAnalyticsException if result has isError true and when a non-error property was accessed.
+     * Throw a {@link TextAnalyticsException} if result has isError true and when a non-error property was accessed.
      */
     void throwExceptionIfError() {
         if (this.isError()) {
             throw logger.logExceptionAsError(new TextAnalyticsException(
-                String.format("Error in accessing the property when %s returned with an error.",
-                    this.getClass()), null, null));
+                String.format("Error in accessing the property on document id: %s when %s returned with an error %s.",
+                    this.id, this.getClass(), this.error), this.error.getCode().toString(), null));
         }
     }
 }

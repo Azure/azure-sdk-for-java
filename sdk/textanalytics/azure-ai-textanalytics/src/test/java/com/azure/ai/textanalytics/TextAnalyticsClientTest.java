@@ -17,6 +17,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -86,7 +87,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectSingleTextLanguage() {
-        DetectedLanguage primaryLanguage = new DetectedLanguage("English", "en", 1.0);
+        DetectedLanguage primaryLanguage = new DetectedLanguage("English", "en", 0.0);
         List<DetectedLanguage> expectedLanguageList = Collections.singletonList(primaryLanguage);
         validateDetectedLanguages(
             client.detectLanguage("This is a test English Text").getDetectedLanguages(), expectedLanguageList);
@@ -124,7 +125,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
-        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.detectLanguage(""));
+        Exception exception = assertThrows(TextAnalyticsException.class, () ->
+            client.detectLanguageWithResponse("Este es un document escrito en Español.", "en", Context.NONE));
         assertTrue(exception.getMessage().equals(INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
@@ -136,14 +138,14 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         detectLanguageDuplicateIdRunner((inputs, options) -> {
             HttpResponseException response = assertThrows(HttpResponseException.class,
                 () -> client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE));
-            assertEquals(400, response.getResponse().getStatusCode());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
         });
     }
 
     @Test
     public void recognizeEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.80624294281005859);
-        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.8);
+        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.0);
+        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
         RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(namedEntity1, namedEntity2));
         validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(),
             client.recognizeEntities("I had a wonderful trip to Seattle last week.").getNamedEntities());
@@ -188,7 +190,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizePiiEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.65);
+        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
         RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Collections.singletonList(namedEntity1));
         validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(),
             client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.").getNamedEntities());
@@ -234,7 +236,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.11472424095537814, 7, 26);
+        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
         LinkedEntity linkedEntity1 = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch1), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
         RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResultList = new RecognizeLinkedEntitiesResult("0", null, null, Collections.singletonList(linkedEntity1));
 
@@ -327,10 +329,10 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForTextInput() {
-        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED, 0.1, 0.5, 0.4, 66, 0);
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED, 0.0, 0.0, 0.0, 66, 0);
         final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-            new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.005, 0.005, 31, 0),
-            new TextSentiment(TextSentimentClass.POSITIVE, 0.005, 0.005, 0.99, 35, 32));
+            new TextSentiment(TextSentimentClass.NEGATIVE, 0.0, 0.0, 0.0, 31, 0),
+            new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.0, 35, 32));
 
         AnalyzeSentimentResult analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
@@ -353,10 +355,10 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForFaultyText() {
-        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 5, 0);
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 5, 0);
         final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 1, 0),
-            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 4, 1));
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 1, 0),
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 4, 1));
 
         AnalyzeSentimentResult analyzeSentimentResult = client.analyzeSentiment("!@#%%");
 

@@ -12,8 +12,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.core.util.logging.ClientLogger;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -63,12 +63,20 @@ class Transforms {
 
     /**
      * Convert {@link TextAnalyticsError} to {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
+     * This function maps the service returned {@link TextAnalyticsError inner error} to the top level
+     * {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}, if inner error present.
      *
      * @param textAnalyticsError the {@link TextAnalyticsError} returned by the service.
      * @return the {@link com.azure.ai.textanalytics.models.TextAnalyticsError} returned by the SDK.
      */
     static com.azure.ai.textanalytics.models.TextAnalyticsError toTextAnalyticsError(
         TextAnalyticsError textAnalyticsError) {
+        if (textAnalyticsError.getInnerError() == null) {
+            return new com.azure.ai.textanalytics.models.TextAnalyticsError(
+                TextAnalyticsErrorCode.fromString(textAnalyticsError.getCode().toString()),
+                textAnalyticsError.getMessage(),
+                textAnalyticsError.getTarget());
+        }
         return new com.azure.ai.textanalytics.models.TextAnalyticsError(
             TextAnalyticsErrorCode.fromString(textAnalyticsError.getInnerError().getCode().toString()),
             textAnalyticsError.getInnerError().getMessage(),
@@ -90,12 +98,19 @@ class Transforms {
         return multiLanguageInputs;
     }
 
-    static void toTextAnalyticsException(com.azure.ai.textanalytics.models.TextAnalyticsError error,
-        ClientLogger logger) {
+    /**
+     * Convert the incoming input {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
+     * to a {@link TextAnalyticsException}.
+     *
+     * @param error the {@link com.azure.ai.textanalytics.models.TextAnalyticsError}.
+     * @return the {@link TextAnalyticsException} to be thrown.
+     */
+    static TextAnalyticsException toTextAnalyticsException(com.azure.ai.textanalytics.models.TextAnalyticsError error) {
         String baseMessage = String.format(Locale.US, "%s: {%s}, %s",
-            "Status Code", 200, error.getMessage());
-        throw logger.logExceptionAsError(new TextAnalyticsException(baseMessage,
+            "Status Code", HttpURLConnection.HTTP_OK, error.getMessage());
+
+        return new TextAnalyticsException(baseMessage,
             error.getCode().toString(),
-            error.getTarget()));
+            error.getTarget());
     }
 }

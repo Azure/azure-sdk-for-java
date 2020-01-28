@@ -70,7 +70,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
-    private static final String MODEL_VERSION = "2019-10-01";
 
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
@@ -396,7 +395,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage());
             validateDetectedLanguages(expectedItem.getDetectedLanguages(), actualItem.getDetectedLanguages());
         });
-    }   
+    }
 
     static void validateNamedEntity(boolean showStatistics, DocumentResultCollection<RecognizeEntitiesResult> expected,
         DocumentResultCollection<RecognizeEntitiesResult> actual) {

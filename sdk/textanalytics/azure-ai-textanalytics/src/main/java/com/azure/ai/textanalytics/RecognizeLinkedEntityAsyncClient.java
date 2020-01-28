@@ -20,6 +20,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -60,10 +61,10 @@ class RecognizeLinkedEntityAsyncClient {
             .map(response -> {
                 Iterator<RecognizeLinkedEntitiesResult> linkedEntitiesResultIterator = response.getValue().iterator();
                 RecognizeLinkedEntitiesResult linkedEntitiesResult = null;
-                if (response.getStatusCode() == 200 && linkedEntitiesResultIterator.hasNext()) {
+                if (response.getStatusCode() == HttpURLConnection.HTTP_OK && linkedEntitiesResultIterator.hasNext()) {
                     linkedEntitiesResult = linkedEntitiesResultIterator.next();
                     if (linkedEntitiesResult.isError()) {
-                        toTextAnalyticsException(linkedEntitiesResult.getError(), logger);
+                        throw logger.logExceptionAsError(toTextAnalyticsException(linkedEntitiesResult.getError()));
                     }
                 }
                 return new SimpleResponse<>(response, linkedEntitiesResult);
