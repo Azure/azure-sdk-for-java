@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +18,7 @@ public class RotateSubscriptionKeyAsync {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsSubscriptionKeyCredential credential = new TextAnalyticsSubscriptionKeyCredential("{invalid_subscription_key}");
+        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{invalid_subscription_key}");
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
             .subscriptionKey(credential)
             .endpoint("{endpoint}")

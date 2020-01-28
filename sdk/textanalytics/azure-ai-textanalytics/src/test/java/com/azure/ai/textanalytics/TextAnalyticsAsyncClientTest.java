@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
@@ -490,7 +490,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void validKey() {
         // Arrange
         final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsSubscriptionKeyCredential(getSubscriptionKey())).buildAsyncClient();
+            new TextAnalyticsApiKeyCredential(getSubscriptionKey())).buildAsyncClient();
 
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
@@ -507,7 +507,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void invalidKey() {
         // Arrange
         final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsSubscriptionKeyCredential(INVALID_KEY)).buildAsyncClient();
+            new TextAnalyticsApiKeyCredential(INVALID_KEY)).buildAsyncClient();
 
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
@@ -520,8 +520,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void updateToInvalidKey() {
         // Arrange
-        final TextAnalyticsSubscriptionKeyCredential credential =
-            new TextAnalyticsSubscriptionKeyCredential(getSubscriptionKey());
+        final TextAnalyticsApiKeyCredential credential =
+            new TextAnalyticsApiKeyCredential(getSubscriptionKey());
 
         final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
 
@@ -539,8 +539,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void updateToValidKey() {
         // Arrange
-        final TextAnalyticsSubscriptionKeyCredential credential =
-            new TextAnalyticsSubscriptionKeyCredential(INVALID_KEY);
+        final TextAnalyticsApiKeyCredential credential =
+            new TextAnalyticsApiKeyCredential(INVALID_KEY);
 
         final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
 
@@ -596,7 +596,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         // Arrange
         final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint())
-            .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential(getSubscriptionKey()))
+            .subscriptionKey(new TextAnalyticsApiKeyCredential(getSubscriptionKey()))
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(null);
@@ -624,7 +624,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         // Arrange
         final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint())
-            .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential(getSubscriptionKey()))
+            .subscriptionKey(new TextAnalyticsApiKeyCredential(getSubscriptionKey()))
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 

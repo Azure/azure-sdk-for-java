@@ -7,24 +7,24 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import reactor.core.publisher.Mono;
 
 /**
- * Policy that adds the {@link TextAnalyticsSubscriptionKeyCredential} into the request's `Ocp-Apim-Subscription-Key`
+ * Policy that adds the {@link TextAnalyticsApiKeyCredential} into the request's `Ocp-Apim-Subscription-Key`
  * header.
  */
 public final class SubscriptionKeyCredentialPolicy implements HttpPipelinePolicy {
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
-    private final TextAnalyticsSubscriptionKeyCredential credential;
+    private final TextAnalyticsApiKeyCredential credential;
 
     /**
      * Creates a {@link SubscriptionKeyCredentialPolicy} pipeline policy that adds the
-     * {@link TextAnalyticsSubscriptionKeyCredential} into the request's `Ocp-Apim-Subscription-Key` header.
+     * {@link TextAnalyticsApiKeyCredential} into the request's `Ocp-Apim-Subscription-Key` header.
      *
-     * @param credential the {@link TextAnalyticsSubscriptionKeyCredential} credential used to create the policy.
+     * @param credential the {@link TextAnalyticsApiKeyCredential} credential used to create the policy.
      */
-    public SubscriptionKeyCredentialPolicy(TextAnalyticsSubscriptionKeyCredential credential) {
+    public SubscriptionKeyCredentialPolicy(TextAnalyticsApiKeyCredential credential) {
         this.credential = credential;
     }
 

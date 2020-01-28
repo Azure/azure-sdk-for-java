@@ -15,7 +15,7 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
@@ -37,7 +37,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public TextAnalyticsAsyncClient createTextAnalyticsAsyncClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
+            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
@@ -48,9 +48,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      * Code snippet for updating the existing subscription key.
      */
     public void rotateSubscriptionKey() {
-        // BEGIN: com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential
-        TextAnalyticsSubscriptionKeyCredential credential =
-            new TextAnalyticsSubscriptionKeyCredential("{subscription_key}");
+        // BEGIN: com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential
+        TextAnalyticsApiKeyCredential credential =
+            new TextAnalyticsApiKeyCredential("{subscription_key}");
 
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
             .subscriptionKey(credential)
@@ -58,7 +58,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .buildAsyncClient();
 
         credential.updateCredential("{new_subscription_key}");
-        // END: com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential
+        // END: com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential
     }
 
     // Languages

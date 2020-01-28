@@ -76,7 +76,7 @@ cognitive services.
     <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L44-L47 -->
     ```java
     TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-        .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
+        .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
         .endpoint("{endpoint}")
         .buildClient();
     ```
@@ -117,7 +117,7 @@ your resource and a subscription key that allows you access:
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L44-L47 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
+    .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
@@ -127,7 +127,7 @@ The Azure Text Analytics client library provide a way to rotate the existing sub
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L174-L180 -->
 ```java
-TextAnalyticsSubscriptionKeyCredential credential = new TextAnalyticsSubscriptionKeyCredential("{expired_subscription_key}");
+TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{expired_subscription_key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .subscriptionKey(credential)
     .endpoint("{endpoint}")
@@ -202,14 +202,14 @@ Text analytics support both synchronous and asynchronous client creation by usin
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L44-L47 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
+    .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L54-L57 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
+    .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
     .endpoint("{endpoint}")
     .buildAsyncClient();
 ```

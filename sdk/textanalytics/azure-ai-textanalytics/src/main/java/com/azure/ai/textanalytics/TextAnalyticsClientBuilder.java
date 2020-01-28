@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.SubscriptionKeyCredentialPolicy;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
-import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsClientOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -44,8 +44,8 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Text Analytics to access the resource service.
- * {@link #subscriptionKey(TextAnalyticsSubscriptionKeyCredential)
- * subscriptionKey(TextAnalyticsSubscriptionKeyCredential)} or
+ * {@link #subscriptionKey(TextAnalyticsApiKeyCredential)
+ * subscriptionKey(TextAnalyticsApiKeyCredential)} or
  * {@link #credential(TokenCredential) credential(TokenCredential)} give the builder access credential.
  * </p>
  *
@@ -89,7 +89,7 @@ public final class TextAnalyticsClientBuilder {
     private final String clientVersion;
 
     private String endpoint;
-    private TextAnalyticsSubscriptionKeyCredential credential;
+    private TextAnalyticsApiKeyCredential credential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -128,7 +128,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @return A TextAnalyticsClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #subscriptionKey(TextAnalyticsSubscriptionKeyCredential) subscriptionKey} has not been set.
+     * {@link #subscriptionKey(TextAnalyticsApiKeyCredential) subscriptionKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsClient buildClient() {
@@ -148,7 +148,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @return A TextAnalyticsAsyncClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #subscriptionKey(TextAnalyticsSubscriptionKeyCredential) subscriptionKey} has not been set.
+     * {@link #subscriptionKey(TextAnalyticsApiKeyCredential) subscriptionKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsAsyncClient buildAsyncClient() {
@@ -256,7 +256,7 @@ public final class TextAnalyticsClientBuilder {
      * @throws NullPointerException If {@code subscriptionKeyCredential} is {@code null}
      */
     public TextAnalyticsClientBuilder subscriptionKey(
-        TextAnalyticsSubscriptionKeyCredential subscriptionKeyCredential) {
+        TextAnalyticsApiKeyCredential subscriptionKeyCredential) {
         Objects.requireNonNull(subscriptionKeyCredential, "'subscriptionKeyCredential' cannot be null.");
         this.credential = subscriptionKeyCredential;
         return this;

@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.NamedEntity;
-import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -42,7 +42,7 @@ public class ReadmeSamples {
      */
     public void useSubscriptionKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
+            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
@@ -52,7 +52,7 @@ public class ReadmeSamples {
      */
     public void useSubscriptionKeyAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
+            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
     }
@@ -171,7 +171,7 @@ public class ReadmeSamples {
      * Code snippet for rotating subscription key of the client
      */
     public void rotatingSubscriptionKey() {
-        TextAnalyticsSubscriptionKeyCredential credential = new TextAnalyticsSubscriptionKeyCredential("{expired_subscription_key}");
+        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{expired_subscription_key}");
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .subscriptionKey(credential)
             .endpoint("{endpoint}")

@@ -9,19 +9,19 @@ import java.util.Objects;
  * Subscription key credential that shared across cognitive services, or restrict to single service.
  *
  * <p>Be able to rotate an existing subscription key</p>
- * {@codesnippet com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential}
+ * {@codesnippet com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential}
  *
  */
-public final class TextAnalyticsSubscriptionKeyCredential {
+public final class TextAnalyticsApiKeyCredential {
     private volatile String subscriptionKey;
 
     /**
-     * Creates a {@link TextAnalyticsSubscriptionKeyCredential} model that describes subscription key for
+     * Creates a {@link TextAnalyticsApiKeyCredential} model that describes subscription key for
      * authentication.
      *
      * @param subscriptionKey the subscription key for authentication
      */
-    public TextAnalyticsSubscriptionKeyCredential(String subscriptionKey) {
+    public TextAnalyticsApiKeyCredential(String subscriptionKey) {
         this.subscriptionKey = Objects.requireNonNull(subscriptionKey, "`subscriptionKey` cannot be null.");
     }
 

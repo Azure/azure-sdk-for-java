@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 
@@ -19,7 +19,7 @@ public class AnalyzeSentiment {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsSubscriptionKeyCredential("{subscription_key}"))
+            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
