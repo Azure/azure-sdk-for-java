@@ -62,7 +62,7 @@ public class ProxyOptionsTests {
     @MethodSource("loadFromEnvironmentSupplier")
     public void loadFromEnvironment(Configuration configuration, String expectedHost, int expectedPort,
         String expectedUsername, String expectedPassword, String expectedNonProxyHosts) {
-        ProxyOptions proxyOptions = ProxyOptions.loadFromConfiguration(configuration);
+        ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(configuration);
 
         assertNotNull(proxyOptions);
         assertEquals(expectedHost, proxyOptions.getAddress().getHostName());
@@ -148,12 +148,12 @@ public class ProxyOptionsTests {
     }
 
     /**
-     * Tests that passing {@link Configuration#NONE} into {@link ProxyOptions#loadFromConfiguration(Configuration)}
+     * Tests that passing {@link Configuration#NONE} into {@link ProxyOptions#fromConfiguration(Configuration)}
      * will throw an {@link IllegalArgumentException}.
      */
     @Test
     public void loadFromEnvironmentThrowsWhenPassedConfigurationNone() {
-        assertThrows(IllegalArgumentException.class, () -> ProxyOptions.loadFromConfiguration(Configuration.NONE));
+        assertThrows(IllegalArgumentException.class, () -> ProxyOptions.fromConfiguration(Configuration.NONE));
     }
 
     /**
@@ -162,7 +162,7 @@ public class ProxyOptionsTests {
     @ParameterizedTest
     @MethodSource("javaProxiesRequireUseSystemProxiesSupplier")
     public void javaProxiesRequireUseSystemProxies(Configuration configuration) {
-        assertNull(ProxyOptions.loadFromConfiguration(configuration));
+        assertNull(ProxyOptions.fromConfiguration(configuration));
     }
 
     private static Stream<Arguments> javaProxiesRequireUseSystemProxiesSupplier() {

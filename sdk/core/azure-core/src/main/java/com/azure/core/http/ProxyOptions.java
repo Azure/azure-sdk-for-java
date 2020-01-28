@@ -156,7 +156,7 @@ public class ProxyOptions {
      * will be returned.
      * @throws IllegalArgumentException If {@code configuration} is {@link Configuration#NONE}.
      */
-    public static ProxyOptions loadFromConfiguration(Configuration configuration) {
+    public static ProxyOptions fromConfiguration(Configuration configuration) {
         if (configuration == Configuration.NONE) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(INVALID_CONFIGURATION_MESSAGE));
         }

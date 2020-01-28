@@ -16,13 +16,13 @@ import java.util.regex.Pattern;
  * This class handles selecting the proxy during a request.
  */
 public final class OkHttpProxySelector extends ProxySelector {
-    private final Proxy.Type type;
-    private final SocketAddress address;
+    private final Proxy.Type proxyType;
+    private final SocketAddress proxyAddress;
     private final Pattern nonProxyHostsPattern;
 
-    public OkHttpProxySelector(Proxy.Type type, SocketAddress address, String nonProxyHosts) {
-        this.type = type;
-        this.address = address;
+    public OkHttpProxySelector(Proxy.Type proxyType, SocketAddress proxyAddress, String nonProxyHosts) {
+        this.proxyType = proxyType;
+        this.proxyAddress = proxyAddress;
         this.nonProxyHostsPattern = Pattern.compile(nonProxyHosts);
     }
 
@@ -34,7 +34,7 @@ public final class OkHttpProxySelector extends ProxySelector {
          */
         return nonProxyHostsPattern.matcher(uri.toString()).find()
             ? null
-            : Collections.singletonList(new Proxy(type, address));
+            : Collections.singletonList(new Proxy(proxyType, proxyAddress));
     }
 
     @Override

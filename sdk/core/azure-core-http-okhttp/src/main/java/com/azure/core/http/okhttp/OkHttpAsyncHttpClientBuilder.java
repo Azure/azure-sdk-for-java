@@ -178,9 +178,7 @@ public class OkHttpAsyncHttpClientBuilder {
         }
 
         // Use the configured read timeout if set, otherwise use the default (120s).
-        httpClientBuilder = (this.readTimeout != null)
-            ? httpClientBuilder.readTimeout(this.readTimeout)
-            : httpClientBuilder.readTimeout(DEFAULT_READ_TIMEOUT);
+        httpClientBuilder = httpClientBuilder.readTimeout((readTimeout != null) ? readTimeout : DEFAULT_READ_TIMEOUT);
 
         // Use the configured connection timeout if set, otherwise use the default (60s).
         httpClientBuilder = (this.connectionTimeout != null)
@@ -202,7 +200,7 @@ public class OkHttpAsyncHttpClientBuilder {
             : configuration;
 
         ProxyOptions buildProxyOptions = (proxyOptions == null)
-            ? ProxyOptions.loadFromConfiguration(buildConfiguration)
+            ? ProxyOptions.fromConfiguration(buildConfiguration)
             : proxyOptions;
 
         if (buildProxyOptions != null) {
@@ -229,6 +227,8 @@ public class OkHttpAsyncHttpClientBuilder {
      * IllegalStateException will be thrown.
      */
     private static Proxy.Type mapProxyType(ProxyOptions.Type type, ClientLogger logger) {
+        Objects.requireNonNull(type, "'ProxyOptions.getType()' cannot be null.");
+
         switch (type) {
             case HTTP:
                 return Proxy.Type.HTTP;
@@ -237,7 +237,7 @@ public class OkHttpAsyncHttpClientBuilder {
                 return Proxy.Type.SOCKS;
             default:
                 throw logger.logExceptionAsError(new IllegalStateException(
-                    String.format("Unknown Proxy type '%s' in use. Not configuring OkHttp proxy.", type)));
+                    String.format("Unknown proxy type '%s' in use. Use a proxy type from 'ProxyOptions.Type'.", type)));
         }
     }
 }
