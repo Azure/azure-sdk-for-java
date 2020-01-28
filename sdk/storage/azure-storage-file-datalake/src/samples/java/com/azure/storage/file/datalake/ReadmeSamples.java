@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.datalake;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -64,7 +67,7 @@ public class ReadmeSamples {
 
     public void getFileClient3() {
         DataLakeFileClient fileClient = new DataLakePathClientBuilder()
-            .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "myfile" +"?" + "<your-sasToken>")
+            .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "myfile" + "?" + "<your-sasToken>")
             .buildFileClient();
     }
 
@@ -83,7 +86,7 @@ public class ReadmeSamples {
 
     public void getDirClient3() {
         DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
-            .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "mydir" +"?" + "<your-sasToken>")
+            .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "mydir" + "?" + "<your-sasToken>")
             .buildDirectoryClient();
     }
 
