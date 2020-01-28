@@ -5,8 +5,6 @@ package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.nio.implementation.util.Utility;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +22,10 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * The root component, if it is present, is the first element of the path and is denoted by a {@code ':'} as the last
@@ -51,32 +52,41 @@ public final class AzurePath implements Path {
     private final String pathString;
 
     AzurePath(AzureFileSystem parentFileSystem, String first, String... more) {
-        if (more == null) {
-            more = new String[0]; // Just to make processing easier later. This wont affect the result.
-        }
         this.parentFileSystem = parentFileSystem;
-        Flux<String> elementFlux =
-            // Strip any trailing, leading, or internal delimiters so there are no duplicates when we join.
-            Flux.fromArray(first.split(this.parentFileSystem.getSeparator()))
-                .concatWith(Flux.fromArray(more)
-                    .flatMap(str -> Flux.fromArray(str.split(this.parentFileSystem.getSeparator()))))
-                .filter(str -> !str.isEmpty());
 
-        this.pathString = String.join(this.parentFileSystem.getSeparator(), elementFlux.toIterable());
+        /*
+        Break all strings into their respective elements and remove empty elements. This has the effect of stripping
+        any trailing, leading, or internal delimiters so there are no duplicates/empty elements when we join.
+         */
+        List<String> elements = Arrays.asList(first.split(parentFileSystem.getSeparator()));
+        if (more != null) {
+            for (String next : more) {
+                elements.addAll(Arrays.asList(next.split(parentFileSystem.getSeparator())));
+            }
+        }
+        elements.removeIf(String::isEmpty);
 
-        // No element but the first may contain ":"
-        elementFlux.skip(1)
-            .flatMap(str -> str.contains(ROOT_DIR_SUFFIX)
-                ? Mono.error(Utility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX
-                + " is an invalid character except to identify the root element of this path if there is one.")))
-            : Mono.just(str)).blockLast();
+        this.pathString = String.join(this.parentFileSystem.getSeparator(), elements);
 
-        // There may only be at most one instance of ":" in the root component, and it must be the last character.
-        elementFlux.take(1)
-            .flatMap(str -> str.contains(ROOT_DIR_SUFFIX) && str.indexOf(ROOT_DIR_SUFFIX) < str.length() - 1
-            ? Mono.error(Utility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX + " may"
-                + " only be used as the last character in the root component of a path")))
-            : Mono.just(str)).blockLast();
+        // Validate the path string by checking usage of the reserved character ROOT_DIR_SUFFIX.
+        for (int i = 0; i < elements.size(); i++) {
+            String element = elements.get(i);
+            /*
+            If there is a root component, it must be the first element. A root component takes the format of
+            "<fileStoreName>:". The ':', or ROOT_DIR_SUFFIX, if present, can only appear once, and can only be the last
+            character of the first element.
+             */
+            if (i == 0) {
+                if (element.contains(ROOT_DIR_SUFFIX) && element.indexOf(ROOT_DIR_SUFFIX) < element.length() - 1) {
+                    throw Utility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX + " may"
+                        + " only be used as the last character in the root component of a path"));
+                }
+            // No element besides the first may contain the ROOT_DIR_SUFFIX, as only the first element may be the root.
+            } else if (element.contains(ROOT_DIR_SUFFIX)) {
+                throw Utility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX + " is an "
+                    + "invalid character except to identify the root element of this path if there is one."));
+            }
+        }
     }
 
     /**
@@ -122,7 +132,8 @@ public final class AzurePath implements Path {
         if (this.withoutRoot().isEmpty()) {
             return null;
         } else {
-            return this.parentFileSystem.getPath(Flux.fromArray(this.splitToElements()).last().block());
+            List<String> elements = Arrays.asList(this.splitToElements());
+            return this.parentFileSystem.getPath(elements.get(elements.size() - 1));
         }
     }
 
@@ -173,10 +184,10 @@ public final class AzurePath implements Path {
                 new IllegalArgumentException(String.format("Values of begin: %d and end: %d are invalid", begin, end)));
         }
 
-        Iterable<String> subnames = Flux.fromArray(this.splitToElements(this.withoutRoot()))
+        String[] subnames = Stream.of(this.splitToElements(this.withoutRoot()))
             .skip(begin)
-            .take(end - begin)
-            .toIterable();
+            .limit(end - begin)
+            .toArray(String[]::new);
 
         return this.parentFileSystem.getPath(String.join(this.parentFileSystem.getSeparator(), subnames));
     }
@@ -295,7 +306,7 @@ public final class AzurePath implements Path {
             }
         }
 
-        return this.parentFileSystem.getPath("", Arrays.copyOf(stack.toArray(), stack.size(), String[].class));
+        return this.parentFileSystem.getPath("", stack.toArray(String[]::new));
     }
 
     /**
@@ -372,7 +383,7 @@ public final class AzurePath implements Path {
             i++;
         }
 
-        return this.parentFileSystem.getPath("", Arrays.copyOf(deque.toArray(), deque.size(), String[].class));
+        return this.parentFileSystem.getPath("", deque.toArray(String[]::new));
     }
 
     /**
@@ -448,9 +459,9 @@ public final class AzurePath implements Path {
      */
     @Override
     public Iterator<Path> iterator() {
-        return Flux.fromArray(this.splitToElements(this.withoutRoot()))
+        return Arrays.asList(Stream.of(this.splitToElements(this.withoutRoot()))
             .map(s -> this.parentFileSystem.getPath(s))
-            .toIterable()
+            .toArray(Path[]::new))
             .iterator();
     }
 
@@ -502,11 +513,9 @@ public final class AzurePath implements Path {
 
     // Used to ensure we only try to access containers that are mounted.
     boolean validRoot(String fileStoreName) {
-        Boolean validRootName = Flux.fromIterable(parentFileSystem.getFileStores())
+        return StreamSupport.stream(parentFileSystem.getFileStores().spliterator(), false)
             .map(FileStore::name)
-            .hasElement(fileStoreName)
-            .block();
-        return validRootName != null && validRootName;
+            .anyMatch(fileStoreName::equals);
     }
 
     private String withoutRoot() {
