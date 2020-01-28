@@ -49,7 +49,7 @@ com.azure:azure-storage-blob-cryptography;12.3.0;12.4.0-beta.1
 #
 com.azure:azure-storage-blob-nio;12.0.0-beta.1;12.0.0-beta.1
 #
-com.azure:azure-storage-common;12.3.0;12.4.0-beta.1
+com.azure:azure-storage-common;12.4.0-beta.1;12.4.0-beta.2
 #
 com.azure:azure-storage-file-share;12.1.0;12.2.0-beta.1
 #
