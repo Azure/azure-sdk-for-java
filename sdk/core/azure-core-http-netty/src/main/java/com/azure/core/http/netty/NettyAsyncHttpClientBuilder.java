@@ -6,7 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
-import com.azure.core.http.netty.implementation.ProxyAuthenticationHandler;
+import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.proxy.ProxyHandler;
@@ -81,7 +81,7 @@ public class NettyAsyncHttpClientBuilder {
             .port(port)
             .wiretap(enableWiretap);
 
-        AuthorizationChallengeHandler challengeHandler = (proxyOptions == null)
+        AuthorizationChallengeHandler challengeHandler = (proxyOptions == null || proxyOptions.getUsername() == null)
             ? null
             : new AuthorizationChallengeHandler(proxyOptions.getUsername(), proxyOptions.getPassword());
         AtomicReference<ChallengeHolder> proxyChallengeHolder = new AtomicReference<>();
@@ -166,7 +166,7 @@ public class NettyAsyncHttpClientBuilder {
 
         switch (proxyOptions.getType()) {
             case HTTP:
-                return new ProxyAuthenticationHandler(proxyOptions.getAddress(), challengeHandler,
+                return new HttpProxyHandler(proxyOptions.getAddress(), challengeHandler,
                     proxyChallengeHolder);
             case SOCKS4:
                 return new Socks4ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername());

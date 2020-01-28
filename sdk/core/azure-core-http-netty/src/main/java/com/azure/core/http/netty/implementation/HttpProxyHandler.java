@@ -1,5 +1,22 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+/*
+ * Copyright 2014 The Netty Project
+ *
+ * The Netty Project licenses this file to you under the Apache License,
+ * version 2.0 (the "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at:
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+/*
+ * Portions Copyright (c) Microsoft Corporation
+ */
 
 package com.azure.core.http.netty.implementation;
 
@@ -30,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATE;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
@@ -38,7 +56,7 @@ import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZAT
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.
  */
-public final class ProxyAuthenticationHandler extends ProxyHandler {
+public final class HttpProxyHandler extends ProxyHandler {
     private static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
         + "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
 
@@ -53,6 +71,8 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
     private static final String AUTH_BASIC = "basic";
     private static final String AUTH_DIGEST = "digest";
 
+    private static final Pattern AUTH_SCHEME_PATTERN = Pattern.compile("^" + AUTH_DIGEST, Pattern.CASE_INSENSITIVE);
+
     /*
      * Proxies use 'CONNECT' as the HTTP method.
      */
@@ -66,18 +86,18 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
     /*
      * Digest authentication to a proxy uses the 'CONNECT' method, these can't have a request body.
      */
-    private static final Supplier<byte[]> PROXY_ENTITY_BODY = () -> new byte[0];
+    private static final Supplier<byte[]> NO_BODY = () -> new byte[0];
 
-    private final ClientLogger logger = new ClientLogger(ProxyAuthenticationHandler.class);
+    private final ClientLogger logger = new ClientLogger(HttpProxyHandler.class);
 
     private final AuthorizationChallengeHandler challengeHandler;
     private final AtomicReference<ChallengeHolder> proxyChallengeHolderReference;
     private final HttpClientCodec codec;
-    private final AtomicReference<String> authScheme;
 
+    private String authScheme = null;
     private HttpResponseStatus status;
 
-    public ProxyAuthenticationHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
+    public HttpProxyHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
         AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
         super(proxyAddress);
 
@@ -85,7 +105,6 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
         this.proxyChallengeHolderReference = proxyChallengeHolderReference;
 
         this.codec = new HttpClientCodec();
-        this.authScheme = new AtomicReference<>();
     }
 
     @Override
@@ -95,9 +114,7 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
 
     @Override
     public String authScheme() {
-        String scheme = authScheme.get();
-
-        return (scheme == null) ? NONE : scheme;
+        return (authScheme == null) ? NONE : authScheme;
     }
 
     @Override
@@ -133,6 +150,7 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
             String authorizationHeader = createAuthorizationHeader();
 
             if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
+                authScheme = AUTH_SCHEME_PATTERN.matcher(authorizationHeader).find() ? AUTH_DIGEST : AUTH_BASIC;
                 request.headers().set(PROXY_AUTHORIZATION, authorizationHeader);
                 ctx.channel().attr(PROXY_AUTHORIZATION_KEY).set(authorizationHeader);
             }
@@ -155,7 +173,7 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
          * challenge.
          */
         String authorizationHeader = challengeHandler.attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH,
-            PROXY_ENTITY_BODY);
+            NO_BODY);
 
         if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
             return authorizationHeader;
@@ -173,7 +191,7 @@ public final class ProxyAuthenticationHandler extends ProxyHandler {
             List<Map<String, String>> digestChallenges = proxyChallengeHolder.getDigestChallenges();
             if (!CoreUtils.isNullOrEmpty(digestChallenges)) {
                 authorizationHeader = challengeHandler.handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges,
-                    PROXY_ENTITY_BODY);
+                    NO_BODY);
             }
 
             // If digest challenges exist or all failed attempt to use basic authorization.

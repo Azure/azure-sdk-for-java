@@ -47,7 +47,7 @@ public final class ProxyAuthenticator implements Authenticator {
     /*
      * Digest authentication to a proxy uses the 'CONNECT' method, these can't have a request body.
      */
-    private static final Supplier<byte[]> PROXY_ENTITY_BODY = () -> new byte[0];
+    private static final Supplier<byte[]> NO_BODY = () -> new byte[0];
 
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
@@ -84,7 +84,7 @@ public final class ProxyAuthenticator implements Authenticator {
     @Override
     public Request authenticate(Route route, Response response) {
         String authorizationHeader = challengeHandler
-            .attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, PROXY_ENTITY_BODY);
+            .attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, NO_BODY);
 
         // Pipelining was successful, use the generated authorization header.
         if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
@@ -112,7 +112,7 @@ public final class ProxyAuthenticator implements Authenticator {
         // Prefer digest challenges over basic.
         if (digestChallenges.size() > 0) {
             authorizationHeader = challengeHandler
-                .handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, PROXY_ENTITY_BODY);
+                .handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, NO_BODY);
         }
 
         /*

@@ -6,7 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.implementation.ProxyAuthenticationHandler;
+import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -138,7 +138,7 @@ public class NettyAsyncHttpClientBuilderTests {
 
             switch (proxyType) {
                 case HTTP:
-                    assertTrue(proxyHandler instanceof ProxyAuthenticationHandler);
+                    assertTrue(proxyHandler instanceof HttpProxyHandler);
                     break;
 
                 case SOCKS5:

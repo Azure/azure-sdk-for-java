@@ -15,15 +15,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
- * Tests {@link ProxyExceptionHandler}.
+ * Tests {@link HttpProxyExceptionHandler}.
  */
-public class ProxyExceptionHandlerTests {
+public class HttpProxyExceptionHandlerTests {
     /**
      * Tests that when a non {@link SSLException} is thrown in the pipeline it isn't unboxed.
      */
     @Test
     public void nonSslExceptionIsIgnored() {
-        ProxyExceptionHandler proxyExceptionHandler = new ProxyExceptionHandler();
+        HttpProxyExceptionHandler proxyExceptionHandler = new HttpProxyExceptionHandler();
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         ArgumentCaptor<Throwable> exceptionCaptor = ArgumentCaptor.forClass(Throwable.class);
@@ -39,7 +39,7 @@ public class ProxyExceptionHandlerTests {
      */
     @Test
     public void sslExceptionNotCausedByProxyConnectExceptionIsNotUnboxed() {
-        ProxyExceptionHandler proxyExceptionHandler = new ProxyExceptionHandler();
+        HttpProxyExceptionHandler proxyExceptionHandler = new HttpProxyExceptionHandler();
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         ArgumentCaptor<Throwable> exceptionCaptor = ArgumentCaptor.forClass(Throwable.class);
@@ -55,7 +55,7 @@ public class ProxyExceptionHandlerTests {
      */
     @Test
     public void sslExceptionCauseByProxyConnectExceptionIsUnboxed() {
-        ProxyExceptionHandler proxyExceptionHandler = new ProxyExceptionHandler();
+        HttpProxyExceptionHandler proxyExceptionHandler = new HttpProxyExceptionHandler();
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         ArgumentCaptor<Throwable> exceptionCaptor = ArgumentCaptor.forClass(Throwable.class);

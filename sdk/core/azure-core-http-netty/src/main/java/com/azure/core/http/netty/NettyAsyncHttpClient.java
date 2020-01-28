@@ -9,7 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.implementation.ProxyExceptionHandler;
+import com.azure.core.http.netty.implementation.HttpProxyExceptionHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -107,7 +107,7 @@ class NettyAsyncHttpClient implements HttpClient {
             tcpClient = tcpClient.bootstrap(bootstrap -> BootstrapHandlers
                 .updateConfiguration(bootstrap, NettyPipeline.ProxyHandler, (connectionObserver, channel) ->
                     channel.pipeline().addFirst(NettyPipeline.ProxyHandler, proxyHandler)
-                        .addLast("azure.proxy.exceptionHandler", new ProxyExceptionHandler())));
+                        .addLast("azure.proxy.exceptionHandler", new HttpProxyExceptionHandler())));
         }
 
         return tcpClient;

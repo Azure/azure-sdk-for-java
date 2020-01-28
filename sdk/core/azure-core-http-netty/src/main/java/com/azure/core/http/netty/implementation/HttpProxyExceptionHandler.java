@@ -20,7 +20,7 @@ import javax.net.ssl.SSLException;
  * will remove the {@link SSLException} if its cause is a {@link ProxyConnectException}, if this happens the
  * {@link ProxyConnectException} will be bubbled up instead.
  */
-public final class ProxyExceptionHandler extends ChannelDuplexHandler {
+public final class HttpProxyExceptionHandler extends ChannelDuplexHandler {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         if (cause instanceof SSLException) {

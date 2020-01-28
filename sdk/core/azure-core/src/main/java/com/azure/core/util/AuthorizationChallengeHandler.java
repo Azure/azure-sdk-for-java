@@ -112,6 +112,7 @@ public class AuthorizationChallengeHandler {
      *
      * @param username Username used to response to authorization challenges.
      * @param password Password used to respond to authorization challenges.
+     * @throws NullPointerException If {@code username} or {@code password} are {@code null}.
      */
     public AuthorizationChallengeHandler(String username, String password) {
         this.username = Objects.requireNonNull(username, "'username' cannot be null.");

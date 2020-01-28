@@ -49,9 +49,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link ProxyAuthenticationHandler}.
+ * Tests {@link HttpProxyHandler}.
  */
-public class ProxyAuthenticationHandlerTests {
+public class HttpProxyHandlerTests {
+    private static final String BASIC = "basic";
+    private static final String DIGEST = "digest";
+
     private static final String DIGEST_CHALLENGE = "Digest realm=\"test realm\", qop=\"auth\", algorithm=SHA-256, "
         + "nonce=\"7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v\", "
         + "opaque=\"FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS\"";
@@ -65,46 +68,82 @@ public class ProxyAuthenticationHandlerTests {
     }
 
     /**
-     * Tests that constructing {@link ProxyAuthenticationHandler} throws a {@link NullPointerException} when passed a
+     * Tests that constructing {@link HttpProxyHandler} throws a {@link NullPointerException} when passed a
      * {@code null} proxy.
      */
     @Test
     public void nullProxyThrows() {
-        assertThrows(NullPointerException.class, () -> new ProxyAuthenticationHandler(null, null, null));
+        assertThrows(NullPointerException.class, () -> new HttpProxyHandler(null, null, null));
     }
 
     /**
-     * Tests that {@link ProxyAuthenticationHandler#protocol()} returns {@code "http"}.
+     * Tests that {@link HttpProxyHandler#protocol()} returns {@code "http"}.
      */
     @Test
     public void protocolIsHttp() {
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), null, null);
 
         assertEquals("http", proxyAuthenticationHandler.protocol());
     }
 
     /**
-     * Tests that {@link ProxyAuthenticationHandler#authScheme()} is {@code "none"} before applying any authorizations.
+     * Tests that {@link HttpProxyHandler#authScheme()} is {@code "none"} before applying any authorizations.
      */
     @Test
     public void authSchemeIsNoneBeforeHandlingChallenge() {
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), null, null);
 
         assertEquals("none", proxyAuthenticationHandler.authScheme());
     }
 
+    @ParameterizedTest
+    @MethodSource("authSchemeIsDeterminedByAuthorizationTypeSupplier")
+    @SuppressWarnings("unchecked")
+    public void authSchemeIsDeterminedByAuthorizationType(ChallengeHolder challengeHolder, String expectedAuthScheme)
+        throws Exception {
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
+            new InetSocketAddress("localhost", 8888), new AuthorizationChallengeHandler("1", "1"),
+            new AtomicReference<>(challengeHolder));
+
+        Attribute<String> attribute = mock(Attribute.class);
+
+        Channel channel = mock(Channel.class);
+        when(channel.attr(any(AttributeKey.class))).thenReturn(attribute);
+
+        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
+        when(ctx.connect(any(), any(), any())).thenReturn(null);
+        when(ctx.channel()).thenReturn(channel);
+
+        proxyAuthenticationHandler.connect(ctx, new InetSocketAddress("localhost", 80), null, null);
+        proxyAuthenticationHandler.newInitialMessage(ctx);
+        assertEquals(expectedAuthScheme, proxyAuthenticationHandler.authScheme());
+    }
+
+    public static Stream<Arguments> authSchemeIsDeterminedByAuthorizationTypeSupplier() {
+        return Stream.of(
+            // ChallengeHolder only containing Basic challenge.
+            Arguments.of(new ChallengeHolder(true, null), BASIC),
+
+            // ChallengeHolder only containing Digest challenge.
+            Arguments.of(new ChallengeHolder(false, Collections.singletonList(PARSED_DIGEST_CHALLENGE)), DIGEST),
+
+            // ChallengeHolder containing both Basic and Digest challenge.
+            Arguments.of(new ChallengeHolder(true, Collections.singletonList(PARSED_DIGEST_CHALLENGE)), DIGEST)
+        );
+    }
+
     /**
      * Tests that a {@code Proxy-Authorization} isn't applied to a {@code CONNECT} request when {@link
-     * ProxyAuthenticationHandler} is constructed with a {@code null} {@link AuthorizationChallengeHandler}.
+     * HttpProxyHandler} is constructed with a {@code null} {@link AuthorizationChallengeHandler}.
      *
      * <p>
      * A {@code null} {@link AuthorizationChallengeHandler} indicates that the proxy will be connected to anonymously.
      */
     @Test
     public void connectMessageDoesNotHaveAuthorizationWhenUsingAnonymousProxy() throws Exception {
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), null, null);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
@@ -121,7 +160,7 @@ public class ProxyAuthenticationHandlerTests {
      */
     @Test
     public void connectMessageDoesNotHaveAuthorizationBeforeHandlingChallenge() throws Exception {
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), new AuthorizationChallengeHandler("1", "1"),
             new AtomicReference<>());
 
@@ -138,7 +177,7 @@ public class ProxyAuthenticationHandlerTests {
      */
     @Test
     public void nonHttpResponseIsIgnoredInResponseHandler() throws ProxyConnectException {
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), null, null);
 
         assertFalse(proxyAuthenticationHandler.handleResponse(mock(ChannelHandlerContext.class), "random"));
@@ -151,7 +190,7 @@ public class ProxyAuthenticationHandlerTests {
     @Test
     @SuppressWarnings("unchecked")
     public void multipleHttpResponsesThrowsException() throws ProxyConnectException {
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), null, null);
 
         Attribute<String> attribute = mock(Attribute.class);
@@ -177,7 +216,7 @@ public class ProxyAuthenticationHandlerTests {
      */
     @Test
     public void lastHttpContentWithoutResponseThrows() {
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), null, null);
 
         assertThrows(ProxyConnectException.class, () -> proxyAuthenticationHandler
@@ -190,7 +229,7 @@ public class ProxyAuthenticationHandlerTests {
      */
     @Test
     public void lastHttpContentWithoutValidStatusThrows() throws ProxyConnectException {
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), null, null);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
@@ -212,7 +251,7 @@ public class ProxyAuthenticationHandlerTests {
     public void challengeIsCaptured(List<String> proxyAuthenticateChallenges, ChallengeHolder expected)
         throws ProxyConnectException {
         AtomicReference<ChallengeHolder> proxyChallengeHolder = new AtomicReference<>();
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), new AuthorizationChallengeHandler("1", "1"),
             proxyChallengeHolder);
 
@@ -270,7 +309,7 @@ public class ProxyAuthenticationHandlerTests {
     }
 
     /**
-     * Tests that when {@link ProxyAuthenticationHandler} has a {@link ChallengeHolder} a {@code Proxy-Authorization}
+     * Tests that when {@link HttpProxyHandler} has a {@link ChallengeHolder} a {@code Proxy-Authorization}
      * header will be applied to the {@code CONNECT} requests, this is determined by the challenges in the holder.
      */
     @ParameterizedTest
@@ -278,7 +317,7 @@ public class ProxyAuthenticationHandlerTests {
     @SuppressWarnings("unchecked")
     public void authorizationIsApplied(ChallengeHolder challengeHolder, Predicate<String> expectedPredicate)
         throws Exception {
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), new AuthorizationChallengeHandler("1", "1"),
             new AtomicReference<>(challengeHolder));
 
@@ -325,7 +364,7 @@ public class ProxyAuthenticationHandlerTests {
     @SuppressWarnings("unchecked")
     public void authorizationCanBePipelined(AuthorizationChallengeHandler challengeHandler,
         Predicate<String> expectedPredicate) throws Exception {
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>());
 
         Attribute<String> attribute = mock(Attribute.class);
@@ -375,7 +414,7 @@ public class ProxyAuthenticationHandlerTests {
         challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
             Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
 
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>());
 
         HttpResponse response = mock(HttpResponse.class);
@@ -413,7 +452,7 @@ public class ProxyAuthenticationHandlerTests {
         String cnonce = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(authorizationHeader)
             .get("cnonce");
 
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>());
 
         HttpHeaders headers = mock(HttpHeaders.class);
@@ -452,7 +491,7 @@ public class ProxyAuthenticationHandlerTests {
         String authorizationHeader = challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
             Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
 
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>());
 
         HttpHeaders headers = mock(HttpHeaders.class);
@@ -486,7 +525,7 @@ public class ProxyAuthenticationHandlerTests {
         challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/", Collections.singletonList(challengeCopy),
             () -> new byte[0]);
 
-        ProxyAuthenticationHandler proxyAuthenticationHandler = new ProxyAuthenticationHandler(
+        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(
             new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>());
 
         HttpHeaders headers = mock(HttpHeaders.class);
