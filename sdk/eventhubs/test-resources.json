@@ -176,12 +176,12 @@
         {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[guid(concat('dataContributorRoleId', variables('primaryAccountName')))]",
+            "name": "[guid(concat('eventHubsDataOwnerRoleId', variables('eventHubsNamespaceName')))]",
             "dependsOn": [
-                "[variables('primaryAccountName')]"
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubName'))]"
             ],
             "properties": {
-                "roleDefinitionId": "[variables('blobDataContributorRoleId')]",
+                "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
                 "principalId": "[parameters('testApplicationOid')]"
             }
         },
