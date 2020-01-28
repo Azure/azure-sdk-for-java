@@ -5,13 +5,12 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.exception.AzureException;
 
-import java.io.Serializable;
 import java.util.Locale;
 
 /**
  * General exception for Text Analytics related failures.
  */
-public class TextAnalyticsException extends AzureException implements Serializable {
+public class TextAnalyticsException extends AzureException {
     private static final long serialVersionUID = 21436310107606058L;
 
     private final String errorCodeValue;

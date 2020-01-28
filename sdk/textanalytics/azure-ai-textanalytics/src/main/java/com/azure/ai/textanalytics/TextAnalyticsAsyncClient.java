@@ -121,6 +121,8 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} containing the {@link DetectLanguageResult detected language} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectLanguageResult> detectLanguage(String text) {
@@ -149,6 +151,8 @@ public final class TextAnalyticsAsyncClient {
      * {@link DetectLanguageResult detected language} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint) {
@@ -286,6 +290,8 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} containing the {@link RecognizeEntitiesResult named entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecognizeEntitiesResult> recognizeEntities(String text) {
@@ -315,6 +321,8 @@ public final class TextAnalyticsAsyncClient {
      * {@link RecognizeEntitiesResult named entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language) {
@@ -451,6 +459,8 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} containing the {@link RecognizeEntitiesResult PII entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecognizePiiEntitiesResult> recognizePiiEntities(String text) {
@@ -479,6 +489,8 @@ public final class TextAnalyticsAsyncClient {
      * {@link RecognizeEntitiesResult named entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language) {
@@ -619,6 +631,8 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} containing the {@link RecognizeLinkedEntitiesResult linked entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecognizeLinkedEntitiesResult> recognizeLinkedEntities(String text) {
@@ -646,6 +660,8 @@ public final class TextAnalyticsAsyncClient {
      * {@link RecognizeLinkedEntitiesResult named entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(String text,
@@ -784,6 +800,8 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} containing the {@link ExtractKeyPhraseResult key phrases} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExtractKeyPhraseResult> extractKeyPhrases(String text) {
@@ -811,6 +829,8 @@ public final class TextAnalyticsAsyncClient {
      * {@link ExtractKeyPhraseResult key phrases} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language) {
@@ -944,6 +964,8 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} containing the {@link AnalyzeSentimentResult text sentiment} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeSentimentResult> analyzeSentiment(String text) {
@@ -971,6 +993,8 @@ public final class TextAnalyticsAsyncClient {
      * {@link AnalyzeSentimentResult text sentiment} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeSentimentResult>> analyzeSentimentWithResponse(String text, String language) {

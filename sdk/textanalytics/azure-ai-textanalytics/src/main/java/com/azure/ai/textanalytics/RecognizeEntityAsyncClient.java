@@ -20,18 +20,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
+import static com.azure.ai.textanalytics.Transforms.processSingleResponseErrorResult;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
@@ -57,17 +55,7 @@ class RecognizeEntityAsyncClient {
 
         return recognizeBatchEntitiesWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> {
-                Iterator<RecognizeEntitiesResult> entitiesResultIterator = response.getValue().iterator();
-                RecognizeEntitiesResult entitiesResult = null;
-                if (response.getStatusCode() == HttpURLConnection.HTTP_OK && entitiesResultIterator.hasNext()) {
-                    entitiesResult = entitiesResultIterator.next();
-                    if (entitiesResult.isError()) {
-                        throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
-                    }
-                }
-                return new SimpleResponse<>(response, entitiesResult);
-            });
+            .map(response -> processSingleResponseErrorResult(response, logger));
     }
 
     Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(

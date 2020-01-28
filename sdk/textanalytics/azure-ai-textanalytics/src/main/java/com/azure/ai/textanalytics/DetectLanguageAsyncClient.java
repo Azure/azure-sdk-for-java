@@ -20,16 +20,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
+import static com.azure.ai.textanalytics.Transforms.processSingleResponseErrorResult;
 
 /**
  * Helper class for managing detect language endpoint.
@@ -53,17 +51,7 @@ class DetectLanguageAsyncClient {
         List<DetectLanguageInput> languageInputs = Collections.singletonList(new DetectLanguageInput("0",
             text, countryHint));
         return detectBatchLanguagesWithResponse(languageInputs, null, context)
-            .map(response -> {
-                Iterator<DetectLanguageResult> detectLanguageResultIterator = response.getValue().iterator();
-                DetectLanguageResult detectLanguageResult = null;
-                if (response.getStatusCode() == HttpURLConnection.HTTP_OK && detectLanguageResultIterator.hasNext()) {
-                    detectLanguageResult = detectLanguageResultIterator.next();
-                    if (detectLanguageResult.isError()) {
-                        throw logger.logExceptionAsError(toTextAnalyticsException(detectLanguageResult.getError()));
-                    }
-                }
-                return new SimpleResponse<>(response, detectLanguageResult);
-            });
+            .map(response -> processSingleResponseErrorResult(response, logger));
     }
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> textInputs,

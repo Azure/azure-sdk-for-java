@@ -20,10 +20,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -31,8 +29,8 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.Transforms.processSingleResponseErrorResult;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
@@ -58,17 +56,7 @@ class RecognizeLinkedEntityAsyncClient {
 
         return recognizeBatchLinkedEntitiesWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> {
-                Iterator<RecognizeLinkedEntitiesResult> linkedEntitiesResultIterator = response.getValue().iterator();
-                RecognizeLinkedEntitiesResult linkedEntitiesResult = null;
-                if (response.getStatusCode() == HttpURLConnection.HTTP_OK && linkedEntitiesResultIterator.hasNext()) {
-                    linkedEntitiesResult = linkedEntitiesResultIterator.next();
-                    if (linkedEntitiesResult.isError()) {
-                        throw logger.logExceptionAsError(toTextAnalyticsException(linkedEntitiesResult.getError()));
-                    }
-                }
-                return new SimpleResponse<>(response, linkedEntitiesResult);
-            });
+            .map(response -> processSingleResponseErrorResult(response, logger));
     }
 
     Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(

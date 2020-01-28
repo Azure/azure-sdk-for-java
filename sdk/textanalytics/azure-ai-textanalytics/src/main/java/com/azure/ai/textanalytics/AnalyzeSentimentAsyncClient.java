@@ -21,10 +21,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -32,8 +30,8 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.Transforms.processSingleResponseErrorResult;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
@@ -58,17 +56,7 @@ class AnalyzeSentimentAsyncClient {
 
         return analyzeBatchSentimentWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> {
-                Iterator<AnalyzeSentimentResult> sentimentResultIterator = response.getValue().iterator();
-                AnalyzeSentimentResult analyzeSentimentResult = null;
-                if (response.getStatusCode() == HttpURLConnection.HTTP_OK && sentimentResultIterator.hasNext()) {
-                    analyzeSentimentResult = sentimentResultIterator.next();
-                    if (analyzeSentimentResult.isError()) {
-                        throw logger.logExceptionAsError(toTextAnalyticsException(analyzeSentimentResult.getError()));
-                    }
-                }
-                return new SimpleResponse<>(response, analyzeSentimentResult);
-            });
+            .map(response -> processSingleResponseErrorResult(response, logger));
     }
 
     Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentWithResponse(

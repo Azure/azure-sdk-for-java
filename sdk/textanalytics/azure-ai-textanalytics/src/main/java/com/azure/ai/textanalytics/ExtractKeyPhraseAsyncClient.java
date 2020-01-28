@@ -18,18 +18,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.Transforms.processSingleResponseErrorResult;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
@@ -55,17 +53,7 @@ class ExtractKeyPhraseAsyncClient {
 
         return extractBatchKeyPhrasesWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> {
-                Iterator<ExtractKeyPhraseResult> keyPhraseResultIterator = response.getValue().iterator();
-                ExtractKeyPhraseResult keyPhraseResult = null;
-                if (response.getStatusCode() == HttpURLConnection.HTTP_OK && keyPhraseResultIterator.hasNext()) {
-                    keyPhraseResult = keyPhraseResultIterator.next();
-                    if (keyPhraseResult.isError()) {
-                        throw logger.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
-                    }
-                }
-                return new SimpleResponse<>(response, keyPhraseResult);
-            });
+            .map(response -> processSingleResponseErrorResult(response, logger));
     }
 
     Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
