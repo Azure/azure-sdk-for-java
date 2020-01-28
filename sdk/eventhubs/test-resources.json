@@ -169,7 +169,7 @@
                 "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
             ],
             "properties": {
-                "messageRetentionInDays": 7,
+                "messageRetentionInDays": 1,
                 "partitionCount": 2
             }
         },
@@ -182,7 +182,8 @@
             ],
             "properties": {
                 "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
-                "principalId": "[parameters('testApplicationOid')]"
+                "principalId": "[parameters('testApplicationOid')]",
+                "scope": "[resourceGroup().id]"
             }
         },
         {
@@ -194,7 +195,8 @@
             ],
             "properties": {
                 "roleDefinitionId": "[variables('blobDataContributorRoleId')]",
-                "principalId": "[parameters('testApplicationOid')]"
+                "principalId": "[parameters('testApplicationOid')]",
+                "scope": "[resourceGroup().id]"
             }
         },
         {
@@ -206,7 +208,8 @@
             ],
             "properties": {
                 "roleDefinitionId": "[variables('contributorRoleId')]",
-                "principalId": "[parameters('testApplicationOid')]"
+                "principalId": "[parameters('testApplicationOid')]",
+                "scope": "[resourceGroup().id]"
             }
         },
         {
