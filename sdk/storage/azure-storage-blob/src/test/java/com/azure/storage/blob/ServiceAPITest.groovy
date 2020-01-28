@@ -83,7 +83,7 @@ class ServiceAPITest extends APISpec {
             c.getProperties().getPublicAccess() == null
             !c.getProperties().isHasLegalHold()
             !c.getProperties().isHasImmutabilityPolicy()
-            c.getProperties().isDenyEncryptionScopeOverride() != null
+            c.getProperties().preventEncryptionScopeOverride() != null
             c.getProperties().getDefaultEncryptionScope()
         }
     }

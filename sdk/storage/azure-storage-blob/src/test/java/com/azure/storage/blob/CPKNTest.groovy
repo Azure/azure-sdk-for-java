@@ -36,7 +36,7 @@ class CPKNTest extends APISpec {
 
     def setup() {
         es = new EncryptionScope().setEncryptionScope(scope1)
-        ces = new BlobContainerEncryptionScope().setDefaultEncryptionScope(scope2).setDenyEncryptionScopeOverride(true)
+        ces = new BlobContainerEncryptionScope().setDefaultEncryptionScope(scope2).preventEncryptionScopeOverride(true)
 
         builder = new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl().toString())

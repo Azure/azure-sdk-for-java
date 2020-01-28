@@ -72,10 +72,10 @@ public final class BlobContainerItemProperties {
     private String defaultEncryptionScope;
 
     /*
-     * The denyEncryptionScopeOverride property.
+     * The preventEncryptionScopeOverride property.
      */
     @JsonProperty(value = "DenyEncryptionScopeOverride")
-    private Boolean denyEncryptionScopeOverride;
+    private boolean preventEncryptionScopeOverride;
 
     /**
      * Get the lastModified property: The lastModified property.
@@ -277,25 +277,25 @@ public final class BlobContainerItemProperties {
     }
 
     /**
-     * Get the denyEncryptionScopeOverride property: The
-     * denyEncryptionScopeOverride property.
+     * Get the preventEncryptionScopeOverride property: The
+     * preventEncryptionScopeOverride property.
      *
-     * @return the denyEncryptionScopeOverride value.
+     * @return the preventEncryptionScopeOverride value.
      */
-    public Boolean isDenyEncryptionScopeOverride() {
-        return this.denyEncryptionScopeOverride;
+    public boolean preventEncryptionScopeOverride() {
+        return this.preventEncryptionScopeOverride;
     }
 
     /**
-     * Set the denyEncryptionScopeOverride property: The
-     * denyEncryptionScopeOverride property.
+     * Set the preventEncryptionScopeOverride property: The
+     * preventEncryptionScopeOverride property.
      *
-     * @param denyEncryptionScopeOverride the denyEncryptionScopeOverride value
-     * to set.
+     * @param preventEncryptionScopeOverride the preventEncryptionScopeOverride
+     * value to set.
      * @return the BlobContainerItemProperties object itself.
      */
-    public BlobContainerItemProperties setDenyEncryptionScopeOverride(Boolean denyEncryptionScopeOverride) {
-        this.denyEncryptionScopeOverride = denyEncryptionScopeOverride;
+    public BlobContainerItemProperties preventEncryptionScopeOverride(boolean preventEncryptionScopeOverride) {
+        this.preventEncryptionScopeOverride = preventEncryptionScopeOverride;
         return this;
     }
 }

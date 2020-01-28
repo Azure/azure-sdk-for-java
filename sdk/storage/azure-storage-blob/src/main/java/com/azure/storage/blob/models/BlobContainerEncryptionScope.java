@@ -15,22 +15,22 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class BlobContainerEncryptionScope {
     /*
-     * Optional.  Version 2019-02-02 and later.  Specifies the default
+     * Optional.  Version 2019-07-07 and later.  Specifies the default
      * encryption scope to set on the container and use for all future writes.
      */
     @JsonProperty(value = "defaultEncryptionScope")
     private String defaultEncryptionScope;
 
     /*
-     * Optional.  Version 2019-02-02 and newer.  If true, prevents any request
+     * Optional.  Version 2019-07-07 and newer.  If true, prevents any request
      * from specifying a different encryption scope than the scope set on the
      * container.
      */
-    @JsonProperty(value = "denyEncryptionScopeOverride")
-    private boolean denyEncryptionScopeOverride;
+    @JsonProperty(value = "preventEncryptionScopeOverride")
+    private boolean preventEncryptionScopeOverride;
 
     /**
-     * Get the defaultEncryptionScope property: Optional.  Version 2019-02-02
+     * Get the defaultEncryptionScope property: Optional.  Version 2019-07-07
      * and later.  Specifies the default encryption scope to set on the
      * container and use for all future writes.
      *
@@ -41,7 +41,7 @@ public final class BlobContainerEncryptionScope {
     }
 
     /**
-     * Set the defaultEncryptionScope property: Optional.  Version 2019-02-02
+     * Set the defaultEncryptionScope property: Optional.  Version 2019-07-07
      * and later.  Specifies the default encryption scope to set on the
      * container and use for all future writes.
      *
@@ -54,27 +54,27 @@ public final class BlobContainerEncryptionScope {
     }
 
     /**
-     * Get the denyEncryptionScopeOverride property: Optional.  Version
-     * 2019-02-02 and newer.  If true, prevents any request from specifying a
+     * Get the preventEncryptionScopeOverride property: Optional.  Version
+     * 2019-07-07 and newer.  If true, prevents any request from specifying a
      * different encryption scope than the scope set on the container.
      *
-     * @return the denyEncryptionScopeOverride value.
+     * @return the preventEncryptionScopeOverride value.
      */
-    public boolean isDenyEncryptionScopeOverride() {
-        return this.denyEncryptionScopeOverride;
+    public boolean preventEncryptionScopeOverride() {
+        return this.preventEncryptionScopeOverride;
     }
 
     /**
-     * Set the denyEncryptionScopeOverride property: Optional.  Version
-     * 2019-02-02 and newer.  If true, prevents any request from specifying a
+     * Set the preventEncryptionScopeOverride property: Optional.  Version
+     * 2019-07-07 and newer.  If true, prevents any request from specifying a
      * different encryption scope than the scope set on the container.
      *
-     * @param denyEncryptionScopeOverride the denyEncryptionScopeOverride value
-     * to set.
+     * @param preventEncryptionScopeOverride the preventEncryptionScopeOverride
+     * value to set.
      * @return the BlobContainerEncryptionScope object itself.
      */
-    public BlobContainerEncryptionScope setDenyEncryptionScopeOverride(Boolean denyEncryptionScopeOverride) {
-        this.denyEncryptionScopeOverride = denyEncryptionScopeOverride;
+    public BlobContainerEncryptionScope preventEncryptionScopeOverride(boolean preventEncryptionScopeOverride) {
+        this.preventEncryptionScopeOverride = preventEncryptionScopeOverride;
         return this;
     }
 }

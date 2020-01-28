@@ -111,6 +111,7 @@ class ContainerAPITest extends APISpec {
         e.getServiceMessage().contains("The specified container already exists.")
     }
 
+
     def "Get properties null"() {
         when:
         def response = cc.getPropertiesWithResponse(null, null, null)
@@ -124,8 +125,7 @@ class ContainerAPITest extends APISpec {
         response.getValue().getLeaseState() == LeaseStateType.AVAILABLE
         response.getValue().getLeaseStatus() == LeaseStatusType.UNLOCKED
         response.getValue().getMetadata().size() == 0
-        response.getValue().getDefaultEncryptionScope()
-        response.getValue().hasDenyEncryptionScopeOverride() != null
+        response.getValue().getBlobContainerEncryptionScope()
     }
 
     def "Get properties min"() {

@@ -39,7 +39,7 @@ class BlobServiceVersionPolicyTest extends APISpec {
         when:
         ces = new BlobContainerEncryptionScope()
             .setDefaultEncryptionScope("testscope2")
-            .setDenyEncryptionScopeOverride(true)
+            .preventEncryptionScopeOverride(true)
         BlobContainerClient cpkncesContainer = containerBuilder.blobContainerEncryptionScope(ces).encryptionScope(null)
             .containerName(generateContainerName()).buildClient()
         cpkncesContainer.createWithResponse(null, null, null, null)
@@ -53,7 +53,7 @@ class BlobServiceVersionPolicyTest extends APISpec {
         setup:
         ces = new BlobContainerEncryptionScope()
             .setDefaultEncryptionScope(null)
-            .setDenyEncryptionScopeOverride(true)
+            .preventEncryptionScopeOverride(true)
         BlobContainerClient cpkncesContainer = containerBuilder.blobContainerEncryptionScope(ces)
             .containerName(generateContainerName()).buildClient()
 

@@ -1290,8 +1290,29 @@ directive:
 - from: BlobContainerEncryptionScope.java
   where: $
   transform: >
-    return $.replace('private Boolean denyEncryptionScopeOverride;', 'private boolean denyEncryptionScopeOverride;').
-      replace('public Boolean isDenyEncryptionScopeOverride() {', 'public boolean isDenyEncryptionScopeOverride() {');
+    return $.replace('private Boolean preventEncryptionScopeOverride;', 'private boolean preventEncryptionScopeOverride;').
+      replace('public Boolean isPreventEncryptionScopeOverride() {', 'public boolean preventEncryptionScopeOverride() {').
+      replace('public BlobContainerEncryptionScope setPreventEncryptionScopeOverride(Boolean preventEncryptionScopeOverride) {', 'public BlobContainerEncryptionScope preventEncryptionScopeOverride(boolean preventEncryptionScopeOverride) {');
+```
+
+### ContainersImpl Boolean Fix
+``` yaml
+directive:
+- from: ContainersImpl.java
+  where: $
+  transform: >
+    return $.replace('preventEncryptionScopeOverride = blobContainerEncryptionScope.isPreventEncryptionScopeOverride();', 'preventEncryptionScopeOverride = blobContainerEncryptionScope.preventEncryptionScopeOverride();');
+```
+
+### BlobContainerItemProperties Boolean Fix
+``` yaml
+directive:
+- from: BlobContainerItemProperties.java
+  where: $
+  transform: >
+    return $.replace('private Boolean preventEncryptionScopeOverride;', 'private boolean preventEncryptionScopeOverride;').
+      replace('public Boolean isPreventEncryptionScopeOverride() {', 'public boolean preventEncryptionScopeOverride() {').
+      replace('public BlobContainerItemProperties setPreventEncryptionScopeOverride(Boolean preventEncryptionScopeOverride) {', 'public BlobContainerItemProperties preventEncryptionScopeOverride(boolean preventEncryptionScopeOverride) {');
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

@@ -23,8 +23,7 @@ public final class BlobContainerProperties {
     private final PublicAccessType blobPublicAccess;
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
-    private final String defaultEncryptionScope;
-    private final Boolean denyEncryptionScopeOverride;
+    private final BlobContainerEncryptionScope blobContainerEncryptionScope;
 
     /**
      * Constructs a {@link BlobContainerProperties}.
@@ -75,8 +74,9 @@ public final class BlobContainerProperties {
         this.blobPublicAccess = blobPublicAccess;
         this.hasImmutabilityPolicy = hasImmutabilityPolicy;
         this.hasLegalHold = hasLegalHold;
-        this.defaultEncryptionScope = defaultEncryptionScope;
-        this.denyEncryptionScopeOverride = denyEncryptionScopeOverride;
+        this.blobContainerEncryptionScope = new BlobContainerEncryptionScope()
+            .setDefaultEncryptionScope(defaultEncryptionScope)
+            .preventEncryptionScopeOverride(denyEncryptionScopeOverride);
     }
 
     /**
@@ -143,16 +143,9 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * @return the default encryption scope for the container
+     * @return the container's encryption scope
      */
-    public String getDefaultEncryptionScope() {
-        return defaultEncryptionScope;
-    }
-
-    /**
-     * @return Whether or not a container's default encryption scope can be overriden
-     */
-    public Boolean hasDenyEncryptionScopeOverride() {
-        return denyEncryptionScopeOverride;
+    public BlobContainerEncryptionScope getBlobContainerEncryptionScope() {
+        return blobContainerEncryptionScope;
     }
 }
