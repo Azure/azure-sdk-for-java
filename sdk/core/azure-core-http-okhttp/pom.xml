@@ -120,11 +120,5 @@
       <version>3.0.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-handler-proxy</artifactId>
-      <version>4.1.42.Final</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 </project>

@@ -373,8 +373,7 @@ public class AuthorizationChallengeHandlerTests {
         String nextNonce = "5ccc069c403ebaf9f0171e9517f40e41";
         challengeHandler.consumeAuthenticationInfoHeader(Collections.singletonMap(NEXT_NONCE, nextNonce));
 
-        authorizationHeader = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> new byte[0]);
+        authorizationHeader = challengeHandler.attemptToPipelineAuthorization(method, uri, () -> new byte[0]);
 
         assertNotNull(authorizationHeader);
         assertEquals(nextNonce, extractValue(authorizationHeader, NONCE));

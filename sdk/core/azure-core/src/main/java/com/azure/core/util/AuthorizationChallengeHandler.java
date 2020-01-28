@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -101,9 +102,9 @@ public class AuthorizationChallengeHandler {
 
     private final String username;
     private final String password;
-    private final Map<String, AtomicInteger> nonceTracker;
+    private final Map<String, AtomicInteger> nonceTracker = new ConcurrentHashMap<>();
     private final AtomicReference<String> authorizationPipeliningType = new AtomicReference<>();
-    private final AtomicReference<Map<String, String>> lastChallenge = new AtomicReference<>();
+    private final AtomicReference<ConcurrentHashMap<String, String>> lastChallenge = new AtomicReference<>();
 
     /**
      * Creates an {@link AuthorizationChallengeHandler} using the {@code username} and {@code password} to respond to
@@ -113,9 +114,8 @@ public class AuthorizationChallengeHandler {
      * @param password Password used to respond to authorization challenges.
      */
     public AuthorizationChallengeHandler(String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.nonceTracker = new ConcurrentHashMap<>();
+        this.username = Objects.requireNonNull(username, "'username' cannot be null.");
+        this.password = Objects.requireNonNull(password, "'password' cannot be null.");
     }
 
     /**
@@ -158,7 +158,8 @@ public class AuthorizationChallengeHandler {
                 continue;
             }
 
-            Map<String, String> challenge = new ConcurrentHashMap<>(challengesByType.get(algorithm).get(0));
+            ConcurrentHashMap<String, String> challenge = new ConcurrentHashMap<>(challengesByType.get(algorithm)
+                .get(0));
             lastChallenge.set(challenge);
 
             return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier,
