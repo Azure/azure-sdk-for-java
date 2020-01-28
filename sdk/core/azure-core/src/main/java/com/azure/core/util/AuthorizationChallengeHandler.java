@@ -10,6 +10,7 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -161,7 +162,10 @@ public class AuthorizationChallengeHandler {
 
             ConcurrentHashMap<String, String> challenge = new ConcurrentHashMap<>(challengesByType.get(algorithm)
                 .get(0));
-            lastChallenge.set(challenge);
+
+            synchronized (lastChallenge) {
+                lastChallenge.set(challenge);
+            }
 
             return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier,
                 digestFunction);
@@ -184,7 +188,11 @@ public class AuthorizationChallengeHandler {
         String pipeliningType = authorizationPipeliningType.get();
 
         if (DIGEST.equals(pipeliningType)) {
-            Map<String, String> challenge = lastChallenge.get();
+            Map<String, String> challenge;
+            synchronized (lastChallenge) {
+                 challenge = new HashMap<>(lastChallenge.get());
+            }
+
             String algorithm = challenge.get(ALGORITHM);
 
             return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier,
@@ -216,7 +224,9 @@ public class AuthorizationChallengeHandler {
          * The nextnonce value indicates to the client which nonce value it should use to generate its response value.
          */
         if (authenticationInfoMap.containsKey(NEXT_NONCE)) {
-            lastChallenge.get().put(NONCE, authenticationInfoMap.get(NEXT_NONCE));
+            synchronized (lastChallenge) {
+                lastChallenge.get().put(NONCE, authenticationInfoMap.get(NEXT_NONCE));
+            }
         }
     }
 

@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests {@link NettyAsyncHttpClientBuilder}.
@@ -123,7 +124,7 @@ public class NettyAsyncHttpClientBuilderTests {
             .verifyError();
     }
 
-    private static class TestProxyValidator extends ChannelDuplexHandler {
+    private static final class TestProxyValidator extends ChannelDuplexHandler {
         private final ProxyOptions.Type proxyType;
 
         private TestProxyValidator(ProxyOptions.Type proxyType) {
@@ -147,6 +148,10 @@ public class NettyAsyncHttpClientBuilderTests {
 
                 case SOCKS4:
                     assertTrue(proxyHandler instanceof Socks4ProxyHandler);
+                    break;
+
+                default:
+                    fail("Unknown proxy type, failing test");
                     break;
             }
 
