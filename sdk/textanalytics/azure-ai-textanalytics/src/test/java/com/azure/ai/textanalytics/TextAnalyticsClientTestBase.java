@@ -18,6 +18,7 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsSubscriptionKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
@@ -664,5 +665,40 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
         assertEquals(expectedLanguage.getName(), actualLanguage.getName());
         assertNotNull(actualLanguage.getScore());
+    }
+
+    private static final String AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY = "AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY";
+    static final String INVALID_KEY = "invalid key";
+
+    /**
+     * Create a client builder with endpoint and subscription key credential.
+     *
+     * @param endpoint the given endpoint
+     * @param credential the given {@link TextAnalyticsSubscriptionKeyCredential} credential
+     * @return {@link TextAnalyticsClientBuilder}
+     */
+    TextAnalyticsClientBuilder createClientBuilder(String endpoint, TextAnalyticsSubscriptionKeyCredential credential) {
+        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
+            .subscriptionKey(credential)
+            .endpoint(endpoint);
+
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return clientBuilder;
+    }
+
+    /**
+     * Get the string of subscription key value based on what running mode is on.
+     *
+     * @return the subscription key string
+     */
+    String getSubscriptionKey() {
+        return interceptorManager.isPlaybackMode() ? "subscriptionKeyInPlayback"
+            : Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
     }
 }
