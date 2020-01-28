@@ -49,7 +49,7 @@ if ($LASTEXITCODE -ne 0)
     exit $LASTEXITCODE
 }
 
-Write-Host "git checkout -b $PRBranchName"
+Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" checkout -b $PRBranchName"
 git checkout -b $PRBranchName
 if ($LASTEXITCODE -ne 0)
 {
@@ -76,19 +76,20 @@ $tryNumber = 0
 do 
 { 
     $needsRetry = $false
+    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" push azure-sdk-fork $PRBranchName $PushArgs"
     git push azure-sdk-fork $PRBranchName $PushArgs
     $tryNumber++
     if ($LASTEXITCODE -gt 0)
     {
         $needsRetry = $true
         Write-Host "Need to fetch and rebase: attempt number=$($tryNumber)"
-        Write-Host "git fetch azure-sdk-fork"
+        Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" fetch azure-sdk-fork"
         git fetch azure-sdk-fork
         if ($LASTEXITCODE -ne 0)
         {
             Write-Error "Unable to fetch remote, see command output above."
         }
-        Write-Host "git rebase azure-sdk-fork/$($PRBranchName)"
+        Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" rebase azure-sdk-fork/$($PRBranchName)"
         git rebase azure-sdk-fork/$($PRBranchName)
         if ($LASTEXITCODE -ne 0)
         {
