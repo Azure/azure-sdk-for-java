@@ -55,13 +55,13 @@
             "premiumAccountName": "[concat('prem', parameters('baseName'))]",
             "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
             "location": "[resourceGroup().location]",
-            "eventHubNameSpaceName": "[parameters('baseName')]"
+            "eventHubNamespaceName": "[parameters('baseName')]"
     },
     "resources": [
             {
                 "type": "Microsoft.EventHub/namespaces",
                 "apiVersion": "[variables('eventHubsApiVersion')]",
-                "name": "[variables('eventHubNameSpaceName')]",
+                "name": "[variables('eventHubNamespaceName')]",
                 "location": "[variables('location')]",
                 "sku": {
                     "name": "Standard",
@@ -165,7 +165,7 @@
                 "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
                 "location": "[variables('location')]",
                 "dependsOn": [
-                    "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNameSpaceName'))]"
+                    "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
                 ],
                 "properties": {
                     "messageRetentionInDays": 7,
@@ -201,7 +201,7 @@
                 "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
                 "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
                 "dependsOn": [
-                    "[concat('Microsoft.EventHub/namespaces/', variables('eventHubNameSpaceName'))]"
+                    "[concat('Microsoft.EventHub/namespaces/', variables('eventHubNamespaceName'))]"
                 ],
                 "properties": {
                     "rights": [
@@ -364,7 +364,7 @@
             },
             "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME": {
                 "type": "string",
-                "value": "[concat(variables('eventHubNameSpaceName'), '.', parameters('eventHubNamespaceHostNameSuffix'))]"
+                "value": "[concat(variables('eventHubNamespaceName'), '.', parameters('eventHubNamespaceHostNameSuffix'))]"
             },
             "BLOB_STORAGE_ACCOUNT_NAME": {
                 "type": "string",
