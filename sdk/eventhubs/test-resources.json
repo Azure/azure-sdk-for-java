@@ -11,7 +11,7 @@
         },
         "eventHubName": {
             "type": "string",
-            "defaultValue": "java-eventhub"
+            "defaultValue": "javaeventhub"
         },
         "eventHubNamespaceHostNameSuffix": {
             "type": "string",
@@ -72,17 +72,17 @@
             "properties": {
                 "zoneRedundant": false,
                 "isAutoInflateEnabled": false,
-                "maximumThroughputUnits": 2,
+                "maximumThroughputUnits": 0,
                 "kafkaEnabled": true
             }
         },
         {
             "apiVersion": "[variables('eventHubsApiVersion')]",
             "type": "Microsoft.EventHub/namespaces/eventhubs",
-            "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
+            "name": "[concat(variables('eventHubsNamespaceName'), '/', parameters('eventHubName'))]",
             "location": "[variables('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+                "[variables('eventHubsNamespaceName')]"
             ],
             "properties": {
                 "messageRetentionInDays": 1,
@@ -95,7 +95,7 @@
             "apiVersion": "[variables('authorizationApiVersion')]",
             "name": "[guid(concat('eventHubsDataOwnerRoleId', variables('eventHubsNamespaceName')))]",
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubName'))]"
+                "[variables('eventHubsNamespaceName')]"
             ],
             "properties": {
                 "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
@@ -104,11 +104,11 @@
             }
         },
         {
+            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
             "apiVersion": "[variables('authorizationApiVersion')]",
             "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
-            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+                "[variables('eventHubsNamespaceName')]"
             ],
             "properties": {
                 "rights": [
