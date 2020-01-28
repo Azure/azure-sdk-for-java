@@ -112,7 +112,7 @@ class Transforms {
      * @return the {@link TextAnalyticsException} to be thrown.
      */
     static TextAnalyticsException toTextAnalyticsException(com.azure.ai.textanalytics.models.TextAnalyticsError error) {
-        String baseMessage = String.format(Locale.US, "%s: {%s}, %s",
+        String baseMessage = String.format(Locale.ROOT, "%s: {%s}, %s",
             "Status Code", HttpURLConnection.HTTP_OK, error.getMessage());
 
         return new TextAnalyticsException(baseMessage,
