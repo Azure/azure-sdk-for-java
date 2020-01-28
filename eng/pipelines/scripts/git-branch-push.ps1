@@ -33,8 +33,8 @@ param(
 $ErrorActionPreference = "Continue"
 
 
-Write-Host "git remote add azure-sdk-fork $RemoteUrl"
-git remote add azure-sdk-fork $RemoteUrl
+Write-Host "git remote add azure-sdk-fork $GitUrl"
+git remote add azure-sdk-fork $GitUrl
 if ($LASTEXITCODE -ne 0)
 {
     Write-Error "Unable to add remote, see command output above."
