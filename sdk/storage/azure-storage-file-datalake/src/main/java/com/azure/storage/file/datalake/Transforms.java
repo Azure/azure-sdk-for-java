@@ -254,8 +254,9 @@ class Transforms {
         }
         return new PathItem(path.getETag(),
             OffsetDateTime.parse(path.getLastModified(), DateTimeFormatter.RFC_1123_DATE_TIME),
-            path.getContentLength(), path.getGroup(), path.isDirectory() == null ? false : path.isDirectory(),
-            path.getName(), path.getOwner(), path.getPermissions());
+            path.getContentLength() == null ? 0 : path.getContentLength(), path.getGroup(),
+            path.isDirectory() == null ? false : path.isDirectory(), path.getName(), path.getOwner(),
+            path.getPermissions());
     }
 
     static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions requestConditions) {

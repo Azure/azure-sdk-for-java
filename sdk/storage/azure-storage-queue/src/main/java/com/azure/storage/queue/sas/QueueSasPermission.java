@@ -18,7 +18,7 @@ import java.util.Locale;
  * particular and this class guarantees correctness.
  * </p>
  *
- * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-service-sas#permissions-for-a-queue>
+ * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-service-sas#permissions-for-a-queue">
  *     Permissions for a queue</a>
  * @see QueueServiceSasSignatureValues
  */

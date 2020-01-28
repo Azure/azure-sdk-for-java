@@ -138,8 +138,6 @@ public abstract class StorageInputStream extends InputStream {
 
     /**
      * Closes this input stream and releases any system resources associated with the stream.
-     *
-     * @throws IOException If an I/O error occurs.
      */
     @Override
     public synchronized void close() {

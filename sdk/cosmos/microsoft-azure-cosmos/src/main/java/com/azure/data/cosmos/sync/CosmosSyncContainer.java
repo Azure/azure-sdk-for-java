@@ -186,7 +186,7 @@ public class CosmosSyncContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public CosmosSyncItemResponse upsertItem(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
-        return this.mapItemResponseAndBlock(this.containerWrapper.createItem(item, options));
+        return this.mapItemResponseAndBlock(this.containerWrapper.upsertItem(item, options));
     }
 
     /**

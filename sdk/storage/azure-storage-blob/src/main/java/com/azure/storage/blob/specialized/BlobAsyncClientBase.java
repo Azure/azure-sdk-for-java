@@ -48,7 +48,6 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -90,9 +89,6 @@ import static java.lang.StrictMath.toIntExact;
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
 public class BlobAsyncClientBase {
-
-    private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
-    private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
     private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
 

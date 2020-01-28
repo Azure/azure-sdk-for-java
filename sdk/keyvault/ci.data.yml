@@ -40,10 +40,9 @@ pr:
       - sdk/keyvault/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: keyvault
-      SDKType: data
       Artifacts:
         - name: azure-keyvault
           groupId: com.microsoft.azure
