@@ -567,28 +567,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test for null subscription key
-     */
-    @Test
-    public void nullSubscriptionKey() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(getEndpoint()).subscriptionKey(null).buildAsyncClient();
-        });
-    }
-
-    /**
-     * Test for null AAD credential
-     */
-    @Test
-    public void nullAADCredential() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(getEndpoint()).credential(null).buildAsyncClient();
-        });
-    }
-
-    /**
      * Test for null service version, which would take take the default service version by default
      */
     @Test

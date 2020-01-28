@@ -497,7 +497,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void nullSubscriptionKey() {
         assertThrows(NullPointerException.class, () -> {
             final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(getEndpoint()).subscriptionKey(null).buildClient();
+            builder.endpoint(getEndpoint()).subscriptionKey(null);
         });
     }
 
@@ -508,7 +508,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void nullAADCredential() {
         assertThrows(NullPointerException.class, () -> {
             final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(getEndpoint()).credential(null).buildClient();
+            builder.endpoint(getEndpoint()).credential(null);
         });
     }
 
