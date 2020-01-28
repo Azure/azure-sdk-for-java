@@ -171,7 +171,7 @@ public class ReadmeSamples {
      * Code snippet for rotating subscription key of the client
      */
     public void rotatingSubscriptionKey() {
-        TextAnalyticsSubscriptionKeyCredential credential = new TextAnalyticsSubscriptionKeyCredential("{expired_subscription_key}");
+        TextAnalyticsSubscriptionKeyCredential credential = new TextAnalyticsSubscriptionKeyCredential("{subscription_key}");
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .subscriptionKey(credential)
             .endpoint("{endpoint}")
