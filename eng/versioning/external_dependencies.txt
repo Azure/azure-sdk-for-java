@@ -1,10 +1,10 @@
 # Format;
 # groupId:artifactId;dependency-version
-com.fasterxml.jackson.core:jackson-annotations;2.10.0
-com.fasterxml.jackson.core:jackson-core;2.10.0
-com.fasterxml.jackson.core:jackson-databind;2.10.0
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.10.0
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.0
+com.fasterxml.jackson.core:jackson-annotations;2.10.1
+com.fasterxml.jackson.core:jackson-core;2.10.1
+com.fasterxml.jackson.core:jackson-databind;2.10.1
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.10.1
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.1
 com.fasterxml.uuid:java-uuid-generator;3.2.0
 com.github.spotbugs:spotbugs;4.0.0-beta3
 com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
@@ -131,15 +131,15 @@ org.apache.maven.plugins:maven-resources-plugin;2.4.3
 org.apache.maven.plugins:maven-site-plugin;3.7.1
 org.apache.maven.plugins:maven-source-plugin;3.0.1
 org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M3
-org.apidesign.javadoc:codesnippet-doclet;0.32
+org.apidesign.javadoc:codesnippet-doclet;0.53
 org.codehaus.mojo:build-helper-maven-plugin;3.0.0
 org.codehaus.mojo:exec-maven-plugin;1.2.1
 org.codehaus.mojo:properties-maven-plugin;1.0.0
 org.codehaus.mojo:xml-maven-plugin;1.0
 org.eclipse.jetty:jetty-maven-plugin;9.3.22.v20171030
 org.eclipse.m2e:lifecycle-mapping;1.0.0
-org.jacoco:jacoco-maven-plugin;0.8.4
-org.jacoco:org.jacoco.agent;0.8.4
+org.jacoco:jacoco-maven-plugin;0.8.5
+org.jacoco:org.jacoco.agent;0.8.5
 org.mockito:mockito-core;3.0.0
 org.nanohttpd:nanohttpd;2.3.1
 org.revapi:revapi-java;0.20.0
