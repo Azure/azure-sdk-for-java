@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -24,8 +25,6 @@ import java.util.List;
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
-    private static final String SUBSCRIPTION_KEY = null;
-    private static final String ENDPOINT = null;
     private TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder().buildClient();
 
     /**
@@ -43,8 +42,8 @@ public class ReadmeSamples {
      */
     public void useSubscriptionKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
+            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .endpoint("{endpoint}")
             .buildClient();
     }
 
@@ -53,8 +52,8 @@ public class ReadmeSamples {
      */
     public void useSubscriptionKeyAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
+            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
     }
 
@@ -63,7 +62,7 @@ public class ReadmeSamples {
      */
     public void useAadAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .endpoint(ENDPOINT)
+            .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
     }
@@ -166,5 +165,18 @@ public class ReadmeSamples {
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Code snippet for rotating subscription key of the client
+     */
+    public void rotatingSubscriptionKey() {
+        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{expired_subscription_key}");
+        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+            .subscriptionKey(credential)
+            .endpoint("{endpoint}")
+            .buildClient();
+
+        credential.updateCredential("{new_subscription_key}");
     }
 }
