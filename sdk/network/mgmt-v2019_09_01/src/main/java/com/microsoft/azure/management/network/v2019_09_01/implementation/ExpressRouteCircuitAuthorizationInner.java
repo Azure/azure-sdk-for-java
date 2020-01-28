@@ -22,14 +22,14 @@ public class ExpressRouteCircuitAuthorizationInner extends SubResource {
     /**
      * The authorization key.
      */
-    @JsonProperty(value = "properties.authorizationKey", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.authorizationKey")
     private String authorizationKey;
 
     /**
      * The authorization use status. Possible values include: 'Available',
      * 'InUse'.
      */
-    @JsonProperty(value = "properties.authorizationUseStatus", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.authorizationUseStatus")
     private AuthorizationUseStatus authorizationUseStatus;
 
     /**
@@ -68,12 +68,34 @@ public class ExpressRouteCircuitAuthorizationInner extends SubResource {
     }
 
     /**
+     * Set the authorization key.
+     *
+     * @param authorizationKey the authorizationKey value to set
+     * @return the ExpressRouteCircuitAuthorizationInner object itself.
+     */
+    public ExpressRouteCircuitAuthorizationInner withAuthorizationKey(String authorizationKey) {
+        this.authorizationKey = authorizationKey;
+        return this;
+    }
+
+    /**
      * Get the authorization use status. Possible values include: 'Available', 'InUse'.
      *
      * @return the authorizationUseStatus value
      */
     public AuthorizationUseStatus authorizationUseStatus() {
         return this.authorizationUseStatus;
+    }
+
+    /**
+     * Set the authorization use status. Possible values include: 'Available', 'InUse'.
+     *
+     * @param authorizationUseStatus the authorizationUseStatus value to set
+     * @return the ExpressRouteCircuitAuthorizationInner object itself.
+     */
+    public ExpressRouteCircuitAuthorizationInner withAuthorizationUseStatus(AuthorizationUseStatus authorizationUseStatus) {
+        this.authorizationUseStatus = authorizationUseStatus;
+        return this;
     }
 
     /**
