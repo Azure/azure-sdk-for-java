@@ -35,6 +35,7 @@ public final class ExtractKeyPhraseResult extends DocumentResult {
      * @return a list of key phrase string
      */
     public List<String> getKeyPhrases() {
+        throwExceptionIfError();
         return keyPhrases;
     }
 }

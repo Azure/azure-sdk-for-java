@@ -175,6 +175,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
+    public void recognizeEntitiesBatchInputSingleError() {
+        recognizeBatchNamedEntitySingleErrorRunner((inputs) ->
+            StepVerifier.create(client.recognizeBatchEntities(inputs))
+                .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                    && throwable.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE)));
+    }
+
+    @Test
     public void recognizeEntitiesForBatchInput() {
         recognizeBatchNamedEntityRunner((inputs) ->
             StepVerifier.create(client.recognizeBatchEntities(inputs))
@@ -209,7 +217,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Linked Entities
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.11472424095537814, 7, 26);
+        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
         LinkedEntity linkedEntity = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
         RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResultList = new RecognizeLinkedEntitiesResult("0", null, null, Collections.singletonList(linkedEntity));
 

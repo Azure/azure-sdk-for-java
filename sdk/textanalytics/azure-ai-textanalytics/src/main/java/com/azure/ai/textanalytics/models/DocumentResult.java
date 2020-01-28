@@ -46,6 +46,7 @@ public class DocumentResult {
      * @return the {@link TextDocumentStatistics} statistics of the text document
      */
     public TextDocumentStatistics getStatistics() {
+        throwExceptionIfError();
         return textDocumentStatistics;
     }
 
@@ -73,8 +74,9 @@ public class DocumentResult {
     void throwExceptionIfError() {
         if (this.isError()) {
             throw logger.logExceptionAsError(new TextAnalyticsException(
-                String.format("Error in accessing the property on document id: %s when %s returned with an error %s.",
-                    this.id, this.getClass(), this.error), this.error.getCode().toString(), null));
+                String.format("Error in accessing the property on document id: %s, when %s returned with an error: %s",
+                    this.id, this.getClass().getSimpleName(), this.error.getMessage()),
+                this.error.getCode().toString(), null));
         }
     }
 }

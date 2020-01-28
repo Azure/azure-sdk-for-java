@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.NamedEntity;
@@ -160,6 +161,17 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForFaultyText() {
         assertEquals(client.recognizeEntities("!@#%%").getNamedEntities().size(), 0);
+    }
+
+    @Test
+    public void recognizeEntitiesBatchInputSingleError() {
+        recognizeBatchNamedEntitySingleErrorRunner((inputs) -> {
+            DocumentResultCollection<RecognizeEntitiesResult> l = client.recognizeBatchEntities(inputs);
+            for (RecognizeEntitiesResult recognizeEntitiesResult : l) {
+                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getNamedEntities());
+                assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
+            }
+        });
     }
 
     @Test
