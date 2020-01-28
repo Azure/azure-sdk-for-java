@@ -50,7 +50,7 @@ try
     git remote add azure-sdk-fork $GitUrl
     if ($LASTEXITCODE -ne 0)
     {
-        Write-Error "Unable to add remote, see command output above."
+        Write-Error "Unable to add remote LASTEXITCODE=$($LASTEXITCODE), see command output above."
         exit $LASTEXITCODE
     }
 
@@ -58,7 +58,7 @@ try
     git fetch azure-sdk-fork
     if ($LASTEXITCODE -ne 0)
     {
-        Write-Error "Unable to fetch remote, see command output above."
+        Write-Error "Unable to fetch remote LASTEXITCODE=$($LASTEXITCODE), see command output above."
         exit $LASTEXITCODE
     }
 
@@ -66,7 +66,7 @@ try
     git checkout -b $PRBranchName
     if ($LASTEXITCODE -ne 0)
     {
-        Write-Error "Unable to create branch, see command output above."
+        Write-Error "Unable to create branch LASTEXITCODE=$($LASTEXITCODE), see command output above."
         exit $LASTEXITCODE
     }
 
@@ -76,7 +76,7 @@ try
     git commit -am "$($CommitMsg)"
     if ($LASTEXITCODE -ne 0)
     {
-        Write-Error "Unable to add files and create commit, see command output above."
+        Write-Error "Unable to add files and create commit LASTEXITCODE=$($LASTEXITCODE), see command output above."
         exit $LASTEXITCODE
     }
 
@@ -94,21 +94,21 @@ try
         Write-Host "git push azure-sdk-fork $PRBranchName $PushArgs"
         git push azure-sdk-fork $PRBranchName $PushArgs
         $tryNumber++
-        if ($LASTEXITCODE -gt 0)
+        if ($LASTEXITCODE -ne 0)
         {
             $needsRetry = $true
-            Write-Host "Need to fetch and rebase: attempt number=$($tryNumber)"
+            Write-Host "Git push failed with LASTEXITCODE=$($LASTEXITCODE) Need to fetch and rebase: attempt number=$($tryNumber)"
             Write-Host "git fetch azure-sdk-fork"
             git fetch azure-sdk-fork
             if ($LASTEXITCODE -ne 0)
             {
-                Write-Error "Unable to fetch remote, see command output above."
+                Write-Error "Unable to fetch remote LASTEXITCODE=$($LASTEXITCODE), see command output above."
             }
             Write-Host "git rebase azure-sdk-fork/$($PRBranchName)"
             git rebase azure-sdk-fork/$($PRBranchName)
             if ($LASTEXITCODE -ne 0)
             {
-                Write-Error "Unable to rebase, see command output above."
+                Write-Error "Unable to rebase LASTEXITCODE=$($LASTEXITCODE), see command output above."
             }
         }
 
@@ -116,7 +116,7 @@ try
 
     if ($LASTEXITCODE -ne 0)
     {
-        Write-Error "Unable to push commit after $($tryNumber) retries, see command output above."
+        Write-Error "Unable to push commit after $($tryNumber) retries LASTEXITCODE=$($LASTEXITCODE), see command output above."
         exit $LASTEXITCODE
     }
 }
