@@ -99,8 +99,7 @@
             ],
             "properties": {
                 "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
-                "principalId": "[parameters('testApplicationOid')]",
-                "scope": "[resourceGroup().id]"
+                "principalId": "[parameters('testApplicationOid')]"
             }
         },
         {
@@ -127,8 +126,7 @@
             ],
             "properties": {
                 "roleDefinitionId": "[variables('blobDataContributorRoleId')]",
-                "principalId": "[parameters('testApplicationOid')]",
-                "scope": "[resourceGroup().id]"
+                "principalId": "[parameters('testApplicationOid')]"
             }
         },
         {
@@ -140,8 +138,7 @@
             ],
             "properties": {
                 "roleDefinitionId": "[variables('contributorRoleId')]",
-                "principalId": "[parameters('testApplicationOid')]",
-                "scope": "[resourceGroup().id]"
+                "principalId": "[parameters('testApplicationOid')]"
             }
         },
         {
