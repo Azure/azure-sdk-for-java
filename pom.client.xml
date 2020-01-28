@@ -1280,6 +1280,7 @@
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
+    <module>sdk/storage/perf-test</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
 </project>

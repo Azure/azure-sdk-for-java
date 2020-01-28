@@ -126,6 +126,11 @@
       <version>3.2.7</version> <!-- {x-version-update;cglib:cglib-nodep;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test-perf</artifactId>
+      <version>1.0.0-beta.1</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -294,8 +299,4 @@
       </build>
     </profile>
   </profiles>
-
-  <modules>
-    <module>perf-test</module>
-  </modules>
 </project>
