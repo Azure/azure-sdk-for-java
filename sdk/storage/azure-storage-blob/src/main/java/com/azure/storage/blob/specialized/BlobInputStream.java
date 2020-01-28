@@ -117,10 +117,17 @@ public final class BlobInputStream extends StorageInputStream {
     }
 
     /**
+     * Gets the blob properties.
+     * <p>
+     * If no data has been read from the stream, a network call is made to get properties. Otherwise, the blob
+     * properties obtained from the download are stored.
      *
-     * @return The blob's {@link BlobProperties properties} or {@code null} if no data has been read from the stream.
+     * @return {@link BlobProperties}
      */
     public BlobProperties getProperties() {
+        if (this.properties == null) {
+            this.properties = blobClient.getPropertiesWithResponse(accessCondition).block().getValue();
+        }
         return this.properties;
     }
 
