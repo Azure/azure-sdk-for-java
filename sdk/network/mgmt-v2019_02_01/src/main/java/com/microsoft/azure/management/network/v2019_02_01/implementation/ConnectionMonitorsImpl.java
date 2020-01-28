@@ -89,10 +89,14 @@ class ConnectionMonitorsImpl extends WrapperImpl<ConnectionMonitorsInner> implem
     public Observable<ConnectionMonitorResult> getAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         ConnectionMonitorsInner client = this.inner();
         return client.getAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
-        .map(new Func1<ConnectionMonitorResultInner, ConnectionMonitorResult>() {
+        .flatMap(new Func1<ConnectionMonitorResultInner, Observable<ConnectionMonitorResult>>() {
             @Override
-            public ConnectionMonitorResult call(ConnectionMonitorResultInner inner) {
-                return wrapModel(inner);
+            public Observable<ConnectionMonitorResult> call(ConnectionMonitorResultInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ConnectionMonitorResult)wrapModel(inner));
+                }
             }
        });
     }
