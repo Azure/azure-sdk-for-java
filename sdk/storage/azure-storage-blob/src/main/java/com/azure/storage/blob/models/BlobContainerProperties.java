@@ -43,7 +43,7 @@ public final class BlobContainerProperties {
         final LeaseStatusType leaseStatus, final PublicAccessType blobPublicAccess, final boolean hasImmutabilityPolicy,
         final boolean hasLegalHold) {
         this(metadata, eTag, lastModified, leaseDuration, leaseState, leaseStatus, blobPublicAccess,
-            hasImmutabilityPolicy, hasLegalHold, null, null);
+            hasImmutabilityPolicy, hasLegalHold, null, false);
     }
 
     /**

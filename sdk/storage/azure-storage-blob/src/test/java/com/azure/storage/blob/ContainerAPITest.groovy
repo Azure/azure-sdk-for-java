@@ -125,7 +125,9 @@ class ContainerAPITest extends APISpec {
         response.getValue().getLeaseState() == LeaseStateType.AVAILABLE
         response.getValue().getLeaseStatus() == LeaseStatusType.UNLOCKED
         response.getValue().getMetadata().size() == 0
-        response.getValue().getBlobContainerEncryptionScope()
+        !response.getValue().getBlobContainerEncryptionScope().preventEncryptionScopeOverride()
+        response.getValue().getBlobContainerEncryptionScope().getDefaultEncryptionScope()
+
     }
 
     def "Get properties min"() {
