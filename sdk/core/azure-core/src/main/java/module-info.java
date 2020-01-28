@@ -33,6 +33,7 @@ module com.azure.core {
     opens com.azure.core.util.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.util.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
+    opens com.azure.core.implementation.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer.jsonwrapper to com.fasterxml.jackson.databind;
 
