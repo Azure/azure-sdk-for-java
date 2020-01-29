@@ -5,12 +5,20 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,9 +60,9 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = container.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
-        assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.GATEWAY);
-        assertThat(diagnostics).contains("Gateway statistics");
-        assertThat(diagnostics).contains("Operation Type : " + OperationType.Create);
+        assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
+        assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+        assertThat(diagnostics).contains("\"operationType\":\"Create\"");
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
     }
 
@@ -74,10 +82,10 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         } catch (CosmosClientException exception) {
             String diagnostics = exception.getCosmosResponseDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
-            assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.GATEWAY);
-            assertThat(diagnostics).contains("Gateway statistics");
-            assertThat(diagnostics).contains("Status Code : 404");
-            assertThat(diagnostics).contains("Operation Type : " + OperationType.Read);
+            assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
+            assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+            assertThat(diagnostics).contains("\"statusCode\":404");
+            assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
         }
     }
@@ -87,11 +95,11 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = this.container.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
-        assertThat(diagnostics).contains("System State Information ------");
-        assertThat(diagnostics).contains("Used Memory :");
-        assertThat(diagnostics).contains("Available Memory :");
-        assertThat(diagnostics).contains("CPU Process Load :");
-        assertThat(diagnostics).contains("CPU System Load :");
+        assertThat(diagnostics).contains("systemInformation");
+        assertThat(diagnostics).contains("usedMemory");
+        assertThat(diagnostics).contains("availableMemory");
+        assertThat(diagnostics).contains("processCpuLoad");
+        assertThat(diagnostics).contains("systemCpuLoad");
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
     }
 
@@ -101,10 +109,10 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = cosmosContainer.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
-        assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.DIRECT);
-        assertThat(diagnostics).contains("StoreResponseStatistics");
-        assertThat(diagnostics).doesNotContain("Gateway request URI :");
-        assertThat(diagnostics).contains("AddressResolutionStatistics");
+        assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
+        assertThat(diagnostics).contains("supplementalResponseStatisticsList");
+        assertThat(diagnostics).contains("\"gatewayStatistics\":null");
+        assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
     }
 
@@ -125,9 +133,40 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         } catch (CosmosClientException exception) {
             String diagnostics = exception.getCosmosResponseDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
-            assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.DIRECT);
+            assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
             assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
         }
+    }
+
+    @Test(groups = {"simple"})
+    public void supplementalResponseStatisticsList() throws Exception {
+        ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics();
+        for (int i = 0; i < 15; i++) {
+            RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(OperationType.Head, ResourceType.Document);
+            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null);
+        }
+        List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String diagnostics = objectMapper.writeValueAsString(clientSideRequestStatistics);
+        JsonNode jsonNode = objectMapper.readTree(diagnostics);
+        ArrayNode supplementalResponseStatisticsListNode = (ArrayNode) jsonNode.get("supplementalResponseStatisticsList");
+        assertThat(storeResponseStatistics.size()).isEqualTo(15);
+        assertThat(supplementalResponseStatisticsListNode.size()).isEqualTo(10);
+
+        clearStoreResponseStatistics(clientSideRequestStatistics);
+        storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
+        assertThat(storeResponseStatistics.size()).isEqualTo(0);
+        for (int i = 0; i < 7; i++) {
+            RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(OperationType.Head, ResourceType.Document);
+            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null);
+        }
+        storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
+        objectMapper = new ObjectMapper();
+        diagnostics = objectMapper.writeValueAsString(clientSideRequestStatistics);
+        jsonNode = objectMapper.readTree(diagnostics);
+        supplementalResponseStatisticsListNode = (ArrayNode) jsonNode.get("supplementalResponseStatisticsList");
+        assertThat(storeResponseStatistics.size()).isEqualTo(7);
+        assertThat(supplementalResponseStatisticsListNode.size()).isEqualTo(7);
     }
 
     private CosmosItemProperties getCosmosItemProperties() {
@@ -135,5 +174,17 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         cosmosItemProperties.setId(UUID.randomUUID().toString());
         cosmosItemProperties.set("mypk", "test");
         return cosmosItemProperties;
+    }
+
+    private List<ClientSideRequestStatistics.StoreResponseStatistics> getStoreResponseStatistics(ClientSideRequestStatistics requestStatistics) throws Exception {
+        Field storeResponseStatisticsField = ClientSideRequestStatistics.class.getDeclaredField("supplementalResponseStatisticsList");
+        storeResponseStatisticsField.setAccessible(true);
+        return (List<ClientSideRequestStatistics.StoreResponseStatistics>) storeResponseStatisticsField.get(requestStatistics);
+    }
+
+    private void clearStoreResponseStatistics(ClientSideRequestStatistics requestStatistics) throws Exception {
+        Field storeResponseStatisticsField = ClientSideRequestStatistics.class.getDeclaredField("supplementalResponseStatisticsList");
+        storeResponseStatisticsField.setAccessible(true);
+        storeResponseStatisticsField.set(requestStatistics, new ArrayList<ClientSideRequestStatistics.StoreResponseStatistics>());
     }
 }

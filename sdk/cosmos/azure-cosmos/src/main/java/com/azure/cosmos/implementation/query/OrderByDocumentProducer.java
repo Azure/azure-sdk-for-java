@@ -9,7 +9,7 @@ import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IDocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
@@ -37,11 +37,11 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
             Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
             String collectionLink,
-            Callable<IDocumentClientRetryPolicy> createRetryPolicyFunc,
-            Class<T> resourceType, 
+            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
+            Class<T> resourceType,
             UUID correlatedActivityId,
-            int initialPageSize, 
-            String initialContinuationToken, 
+            int initialPageSize,
+            String initialContinuationToken,
             int top,
             Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap) {
         super(client, collectionResourceId, feedOptions, createRequestFunc, executeRequestFunc, targetRange, collectionLink,

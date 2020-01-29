@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-public class WebExceptionRetryPolicy implements IRetryPolicy {
+public class WebExceptionRetryPolicy extends RetryPolicyWithDiagnostics {
     private final static Logger logger = LoggerFactory.getLogger(WebExceptionRetryPolicy.class);
 
     // total wait time in seconds to retry. should be max of primary reconfigrations/replication wait duration etc
