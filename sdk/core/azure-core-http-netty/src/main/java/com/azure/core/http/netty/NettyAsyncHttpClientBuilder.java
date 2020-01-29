@@ -7,11 +7,14 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.handler.timeout.IdleStateHandler;
+import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
@@ -98,7 +101,9 @@ public class NettyAsyncHttpClientBuilder {
                             .nonProxyHosts(proxyOptions.getNonProxyHosts()));
                 }
 
-                return tcpConfig;
+                return tcpConfig.bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap,
+                    "azure.idleHandler", (connectionObserver, channel) -> channel.pipeline()
+                        .addFirst("azure.idleHandler", new IdleStateHandler(true, 30, 30, 60, TimeUnit.SECONDS))));
             });
 
         return new NettyAsyncHttpClient(nettyHttpClient);
