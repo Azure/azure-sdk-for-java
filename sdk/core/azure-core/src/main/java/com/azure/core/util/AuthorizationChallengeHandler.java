@@ -162,10 +162,7 @@ public class AuthorizationChallengeHandler {
 
             ConcurrentHashMap<String, String> challenge = new ConcurrentHashMap<>(challengesByType.get(algorithm)
                 .get(0));
-
-            synchronized (lastChallenge) {
-                lastChallenge.set(challenge);
-            }
+            lastChallenge.set(challenge);
 
             return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier,
                 digestFunction);
@@ -188,11 +185,7 @@ public class AuthorizationChallengeHandler {
         String pipeliningType = authorizationPipeliningType.get();
 
         if (DIGEST.equals(pipeliningType)) {
-            Map<String, String> challenge;
-            synchronized (lastChallenge) {
-                challenge = new HashMap<>(lastChallenge.get());
-            }
-
+            Map<String, String> challenge = new HashMap<>(lastChallenge.get());
             String algorithm = challenge.get(ALGORITHM);
 
             return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier,
@@ -224,9 +217,7 @@ public class AuthorizationChallengeHandler {
          * The nextnonce value indicates to the client which nonce value it should use to generate its response value.
          */
         if (authenticationInfoMap.containsKey(NEXT_NONCE)) {
-            synchronized (lastChallenge) {
-                lastChallenge.get().put(NONCE, authenticationInfoMap.get(NEXT_NONCE));
-            }
+            lastChallenge.get().put(NONCE, authenticationInfoMap.get(NEXT_NONCE));
         }
     }
 
