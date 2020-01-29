@@ -111,7 +111,7 @@ class BlobServiceVersionPolicyTest extends APISpec {
         def snapUrl = managedDiskBlob.createSnapshot().getBlobUrl()
 
         when:
-        managedDiskBlob.getManagedDiskRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapUrl, null, null, null)
+        managedDiskBlob.getManagedDiskPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapUrl, null, null, null)
 
         then:
         def e = thrown(IllegalStateException)

@@ -616,7 +616,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskRangesDiff#BlobRange-String}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskPageRangesDiff#BlobRange-String}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
@@ -626,9 +626,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response emitting all the different page ranges.
      */
-    public Mono<PageList> getManagedDiskRangesDiff(BlobRange blobRange, String prevSnapshotUrl) {
+    public Mono<PageList> getManagedDiskPageRangesDiff(BlobRange blobRange, String prevSnapshotUrl) {
         try {
-            return getManagedDiskRangesDiffWithResponse(blobRange, prevSnapshotUrl, null).flatMap(FluxUtil::toMono);
+            return getManagedDiskPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -642,7 +642,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskRangesDiffWithResponse#BlobRange-String-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
@@ -654,8 +654,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
-    public Mono<Response<PageList>> getManagedDiskRangesDiffWithResponse(BlobRange blobRange, String prevSnapshotUrl,
-        BlobRequestConditions requestConditions) {
+    public Mono<Response<PageList>> getManagedDiskPageRangesDiffWithResponse(BlobRange blobRange,
+        String prevSnapshotUrl, BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->
                 getPageRangesDiffWithResponse(blobRange, null, prevSnapshotUrl, requestConditions, context));
@@ -670,11 +670,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         URL url = null;
-        if (prevSnapshotUrl == null) {
-            if (prevSnapshot == null) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
-            }
-        } else {
+        if (prevSnapshotUrl == null && prevSnapshot == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
+        }
+        if (prevSnapshotUrl != null) {
             try {
                 url = new URL(prevSnapshotUrl);
             } catch (MalformedURLException ex) {

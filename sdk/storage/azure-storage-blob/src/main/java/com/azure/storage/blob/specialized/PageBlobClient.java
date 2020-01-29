@@ -413,7 +413,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskRangesDiff#BlobRange-String}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiff#BlobRange-String}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
@@ -422,8 +422,9 @@ public final class PageBlobClient extends BlobClientBase {
      * prevsnapshot is the older of the two.
      * @return All the different page ranges.
      */
-    public PageList getManagedDiskRangesDiff(BlobRange blobRange, String prevSnapshotUrl) {
-        return getManagedDiskRangesDiffWithResponse(blobRange, prevSnapshotUrl, null, null, Context.NONE).getValue();
+    public PageList getManagedDiskPageRangesDiff(BlobRange blobRange, String prevSnapshotUrl) {
+        return getManagedDiskPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, null, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -434,7 +435,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
@@ -446,7 +447,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the different page ranges.
      */
-    public Response<PageList> getManagedDiskRangesDiffWithResponse(BlobRange blobRange, String prevSnapshotUrl,
+    public Response<PageList> getManagedDiskPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshotUrl,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
                 .getPageRangesDiffWithResponse(blobRange, null, prevSnapshotUrl, requestConditions, context),
