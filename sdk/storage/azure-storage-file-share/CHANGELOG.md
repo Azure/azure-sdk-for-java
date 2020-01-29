@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.2.0-beta.1 (Unreleased)
+- Fixed bug in ShareClient.getStatistics where shareUsageInGB was not properly converted. Added parameter to ShareStatistics to include a shareUsageInBytes parameter.
 - Fixed bug where ShareDirectoryAsyncClient.getFileClient appended an extra / for files in the root directory.
 
 ## 12.1.0 (2020-01-08)
