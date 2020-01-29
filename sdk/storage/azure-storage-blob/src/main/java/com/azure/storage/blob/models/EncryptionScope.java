@@ -15,7 +15,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class EncryptionScope {
     /*
-     * Optional. Version 2019-02-02 and later.  Specifies the name of the
+     * Optional. Version 2019-07-07 and later.  Specifies the name of the
      * encryption scope to use to encrypt the data provided in the request. If
      * not specified, encryption is performed with the default account
      * encryption scope.  For more information, see Encryption at Rest for
@@ -25,7 +25,7 @@ public final class EncryptionScope {
     private String encryptionScope;
 
     /**
-     * Get the encryptionScope property: Optional. Version 2019-02-02 and
+     * Get the encryptionScope property: Optional. Version 2019-07-07 and
      * later.  Specifies the name of the encryption scope to use to encrypt the
      * data provided in the request. If not specified, encryption is performed
      * with the default account encryption scope.  For more information, see
@@ -38,7 +38,7 @@ public final class EncryptionScope {
     }
 
     /**
-     * Set the encryptionScope property: Optional. Version 2019-02-02 and
+     * Set the encryptionScope property: Optional. Version 2019-07-07 and
      * later.  Specifies the name of the encryption scope to use to encrypt the
      * data provided in the request. If not specified, encryption is performed
      * with the default account encryption scope.  For more information, see

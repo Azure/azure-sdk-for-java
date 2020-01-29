@@ -82,7 +82,7 @@ public final class ContainersImpl {
         @Put("{containerName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<ContainersCreateResponse> create(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @HeaderParam("x-ms-default-encryption-scope") String defaultEncryptionScope, @HeaderParam("x-ms-deny-encryption-scope-override") Boolean denyEncryptionScopeOverride, Context context);
+        Mono<ContainersCreateResponse> create(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @HeaderParam("x-ms-default-encryption-scope") String defaultEncryptionScope, @HeaderParam("x-ms-deny-encryption-scope-override") Boolean preventEncryptionScopeOverride, Context context);
 
         @Get("{containerName}")
         @ExpectedResponses({200})
@@ -166,8 +166,8 @@ public final class ContainersImpl {
         final String requestId = null;
         final String restype = "container";
         final String defaultEncryptionScope = null;
-        final Boolean denyEncryptionScopeOverride = null;
-        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, defaultEncryptionScope, denyEncryptionScopeOverride, context);
+        final Boolean preventEncryptionScopeOverride = null;
+        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, defaultEncryptionScope, preventEncryptionScopeOverride, context);
     }
 
     /**
@@ -190,11 +190,11 @@ public final class ContainersImpl {
         if (blobContainerEncryptionScope != null) {
             defaultEncryptionScope = blobContainerEncryptionScope.getDefaultEncryptionScope();
         }
-        Boolean denyEncryptionScopeOverride = null;
+        Boolean preventEncryptionScopeOverride = null;
         if (blobContainerEncryptionScope != null) {
-            denyEncryptionScopeOverride = blobContainerEncryptionScope.isDenyEncryptionScopeOverride();
+            preventEncryptionScopeOverride = blobContainerEncryptionScope.preventEncryptionScopeOverride();
         }
-        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, defaultEncryptionScope, denyEncryptionScopeOverride, context);
+        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, defaultEncryptionScope, preventEncryptionScopeOverride, context);
     }
 
     /**
