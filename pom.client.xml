@@ -184,6 +184,8 @@
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
+          <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+          <includeTests>false</includeTests>
           <fork>true</fork>
         </configuration>
         <executions>
@@ -563,6 +565,8 @@
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
             <failOnError>true</failOnError>
             <fork>true</fork>
+            <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+            <includeTests>false</includeTests>
           </configuration>
         </plugin>
 
@@ -647,6 +651,8 @@
           </excludeFilterFile>
           <failOnError>true</failOnError>
           <fork>true</fork>
+          <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+          <includeTests>false</includeTests>
         </configuration>
       </plugin>
       <plugin>
