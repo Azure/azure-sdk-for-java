@@ -16,7 +16,40 @@
 
   <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
   <suppress checks="Javadoc" files="src[/\\]test[/\\]java[/\\].*.java"/>
+  <suppress checks="Javadoc" files="EventPosition.java"/>
+  <suppress checks="Javadoc" files="ManagementChannel.java"/>
+  <suppress checks="Javadoc" files="EventHubAmqpConnection.java"/>
+  <suppress checks="Javadoc" files="EventData.java"/>
+  <suppress checks="Javadoc" files="AmqpSharedAccessKeyCredential.java"/>
+  <suppress checks="Javadoc" files="AmqpSharedAccessKeyCredential.java"/>
+  <suppress checks="Javadoc" files="AmqpSharedAccessKeyCredential.java"/>
+  <suppress checks="Javadoc" files="AmqpSharedAccessKeyCredential.java"/>
+  <suppress checks="Header" files="EventHubAmqpConnection.java"/>
+  <suppress checks="Header" files="EventHubManagementNode.java"/>
+  <suppress checks="Header" files="EventHubSession.java"/>
+  <suppress checks="Header" files="EventHubReactorAmqpConnection.java"/>
+  <suppress checks="Header" files="EventHubAmqpConnection.java"/>
+  <suppress checks="Header" files="EventHubProperties.java"/>
+  <suppress checks="Header" files="EventHubReactorSession.java"/>
+  <suppress checks="Header" files="EventPosition.java"/>
+  <suppress checks="Header" files="EventHubAmqpConnection.java"/>
+  <suppress checks="Header" files="ReceiveOptions.java"/>
+  <suppress checks="Header" files="SendOptions.java"/>
+  <suppress checks="Header" files="PartitionProperties.java"/>
+  <suppress checks="Header" files="ManagementChannel.java"/>
+  <suppress checks="LineLength" files="EventHubReactorSession.java"/>
+  <suppress checks="LineLength" files="EventHubReactorAmqpConnection.java"/>
 
+
+
+  <suppress checks="AvoidStarImport" files="EventData.java"/>
+  <suppress checks="WhitespaceAround" files="EventData.java"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(AvoidStarImport|Header|ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
+            files=".*[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]messaging[/\\]servicebus[/\\].*\.java"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(AvoidStarImport|Header|ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
+            files=".*[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]core[/\\]amqp[/\\].*\.java"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(AvoidStarImport|Header|ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
+            files=".*[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]core[/\\]amqp[/\\]implementation[/\\].*\.java"/>
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
@@ -62,6 +95,7 @@
   <suppress checks="ConstantName" files="RsaKey.java"/>
   <suppress checks="ConstantName" files="SymmetricKey.java"/>
   <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
+
 
   <!-- Public API already released with incorrect static variable naming -->
   <suppress checks="StaticVariableName" files="EventHubClientImpl.java"/>

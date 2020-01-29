@@ -3,10 +3,13 @@
 
 package com.azure.core.amqp.implementation;
 
+import java.time.Duration;
+
 public final class ClientConstants {
     public static final String NOT_APPLICABLE = "n/a";
     public static final String PLATFORM_INFO = getOSInformation();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
+    public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
 
     /**
      * Gets the USER AGENT string as defined in:

@@ -586,6 +586,15 @@
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
+  <Match>
+    <Or>
+      <Class name="com.azure.messaging.servicebus.ServiceBusMessageSerializer"/>
+      <Class name="com.azure.messaging.servicebus.EventData"/>
+      <Class name="com.azure.messaging.servicebus.SenderAsyncClient"/>
+      <Class name="com.azure.messaging.servicebus.SenderClient"/>
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
   <!-- Names defined in the service. -->
   <Match>
     <Class name="com.azure.data.appconfiguration.models.ConfigurationSetting"/>
