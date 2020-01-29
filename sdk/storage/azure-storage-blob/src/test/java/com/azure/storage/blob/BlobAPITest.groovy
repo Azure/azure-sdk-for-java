@@ -30,6 +30,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
+import com.ctc.wstx.shaded.msv_core.verifier.jarv.Const
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
@@ -54,6 +55,43 @@ class BlobAPITest extends APISpec {
         blobName = generateBlobName()
         bc = cc.getBlobClient(blobName)
         bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+    }
+
+    def "Upload input stream overwrite fails"() {
+        when:
+        bc.upload(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Upload input stream overwrite"() {
+        setup:
+        def randomData = getRandomByteArray(Constants.KB)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        bc.upload(input, Constants.KB, true)
+
+        then:
+        def stream = new ByteArrayOutputStream()
+        bc.downloadWithResponse(stream, null, null, null, false, null, null)
+        stream.toByteArray() == randomData
+    }
+
+    @Requires( { liveMode() } )
+    def "Upload input stream large data"() {
+        setup:
+        def randomData = getRandomByteArray(20 * Constants.MB)
+        def input = new ByteArrayInputStream(randomData)
+
+        def pto = new ParallelTransferOptions(null, null, null, Constants.MB)
+
+        when:
+        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
     }
 
     def "Download all null"() {
