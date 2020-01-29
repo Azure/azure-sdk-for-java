@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtcpathcomparetoequals&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "692af3e5-0d9e-44f4-adef-a7b7a435dc50"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1ee1faab-401e-0093-5fee-d28756000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcpathcomparetoequals</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 24 Jan 2020 19:41:03 GMT",
+      "x-ms-client-request-id" : "692af3e5-0d9e-44f4-adef-a7b7a435dc50",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcpathcomparetoequals010049b13be6e3aadb4fc29" ]
+}

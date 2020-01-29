@@ -20,6 +20,7 @@
     <module>azure-storage-blob</module>
     <module>azure-storage-blob-batch</module>
     <module>azure-storage-blob-cryptography</module>
+    <module>azure-storage-blob-nio</module>
     <module>azure-storage-file-share</module>
     <module>azure-storage-file-datalake</module>
     <module>azure-storage-queue</module>

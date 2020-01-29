@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtcpathresolve&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ef97290a-5d27-4749-8a38-142c115acf9e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "c5db9076-c01e-0067-2a50-d2a2ba000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcpathresolve</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 24 Jan 2020 00:49:02 GMT",
+      "x-ms-client-request-id" : "ef97290a-5d27-4749-8a38-142c115acf9e",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcpathresolve0azurepathspecpathresolve1a602402ce907c7c" ]
+}

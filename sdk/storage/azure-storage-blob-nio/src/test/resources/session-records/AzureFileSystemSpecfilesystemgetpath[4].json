@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtcfilesystemgetpath&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "60823bfa-70a7-4590-bab9-691ace32022d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "9560b2ed-a01e-0137-5a11-d3fbe7000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcfilesystemgetpath</Prefix><Containers><Container><Name>jtcfilesystemgetpath104093a6879a3d8d7046b884</Name><Properties><Last-Modified>Fri, 24 Jan 2020 23:55:46 GMT</Last-Modified><Etag>\"0x8D7A128EE8BCF94\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 24 Jan 2020 23:55:46 GMT",
+      "x-ms-client-request-id" : "60823bfa-70a7-4590-bab9-691ace32022d",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemgetpath104093a6879a3d8d7046b884?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "831ed914-d20e-49c0-8cc3-788fa70e8120"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "9560b2f4-a01e-0137-6011-d3fbe7000000",
+      "Date" : "Fri, 24 Jan 2020 23:55:46 GMT",
+      "x-ms-client-request-id" : "831ed914-d20e-49c0-8cc3-788fa70e8120"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcfilesystemgetpath027692fbb3c83b83d84ceeb1", "jtcfilesystemgetpath104093a6879a3d8d7046b884" ]
+}

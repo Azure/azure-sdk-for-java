@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtcpathgetfilenamegetparent&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "80c12c93-67a5-4105-a7ea-56855f71e8fa"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "2e925111-401e-00f5-4cb0-d0350c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcpathgetfilenamegetparent</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 21 Jan 2020 23:11:07 GMT",
+      "x-ms-client-request-id" : "80c12c93-67a5-4105-a7ea-56855f71e8fa",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcpathgetfilenamegetparent041606228543c2cacb4c4" ]
+}
