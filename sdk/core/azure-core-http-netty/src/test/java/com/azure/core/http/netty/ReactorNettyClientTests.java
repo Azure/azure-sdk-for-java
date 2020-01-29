@@ -37,6 +37,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.http.netty.NettyAsyncHttpClient.ReactorNettyHttpResponse;
 import static java.time.Duration.ofMillis;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 public class ReactorNettyClientTests {
@@ -179,8 +181,7 @@ public class ReactorNettyClientTests {
         assertTimeout(ofMillis(5000), () -> {
             CountDownLatch latch = new CountDownLatch(1);
             AtomicReference<Socket> sock = new AtomicReference<>();
-            ServerSocket ss = new ServerSocket(0);
-            try {
+            try (ServerSocket ss = new ServerSocket(0)) {
                 Mono.fromCallable(() -> {
                     latch.countDown();
                     Socket socket = ss.accept();
@@ -210,15 +211,13 @@ public class ReactorNettyClientTests {
                 HttpClient client = HttpClient.createDefault();
                 HttpRequest request = new HttpRequest(HttpMethod.GET,
                     new URL("http://localhost:" + ss.getLocalPort() + "/get"));
+
                 HttpResponse response = client.send(request).block();
-                Assertions.assertEquals(200, response.getStatusCode());
-                System.out.println("reading body");
-                //
+                assertNotNull(response);
+                assertEquals(200, response.getStatusCode());
+
                 StepVerifier.create(response.getBodyAsByteArray())
-                    // .awaitDone(20, TimeUnit.SECONDS)
                     .verifyError(IOException.class);
-            } finally {
-                ss.close();
             }
         });
     }
@@ -291,10 +290,7 @@ public class ReactorNettyClientTests {
     }
 
     private static byte[] digest(String s) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(s.getBytes(StandardCharsets.UTF_8));
-        byte[] expectedDigest = md.digest();
-        return expectedDigest;
+        return MessageDigest.getInstance("MD5").digest(s.getBytes(StandardCharsets.UTF_8));
     }
 
     private static final class NumberedByteBuf {
@@ -326,24 +322,22 @@ public class ReactorNettyClientTests {
     }
 
     private static String createLongBody() {
-        StringBuilder s = new StringBuilder(10000000);
+        StringBuilder builder = new StringBuilder("abcdefghijk".length() * 1000000);
         for (int i = 0; i < 1000000; i++) {
-            s.append("abcdefghijk");
+            builder.append("abcdefghijk");
         }
-        return s.toString();
+
+        return builder.toString();
     }
 
     private void checkBodyReceived(String expectedBody, String path) {
-        NettyAsyncHttpClient client = new NettyAsyncHttpClient();
-        HttpResponse response = doRequest(client, path);
-        String s = new String(response.getBodyAsByteArray().block(),
-                StandardCharsets.UTF_8);
-        Assertions.assertEquals(expectedBody, s);
+        StepVerifier.create(doRequest(new NettyAsyncHttpClient(), path).getBodyAsByteArray())
+            .assertNext(bytes -> assertEquals(expectedBody, new String(bytes, StandardCharsets.UTF_8)))
+            .verifyComplete();
     }
 
     private ReactorNettyHttpResponse doRequest(NettyAsyncHttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        ReactorNettyHttpResponse response = (ReactorNettyHttpResponse) client.send(request).block();
-        return response;
+        return (ReactorNettyHttpResponse) client.send(request).block();
     }
 }
