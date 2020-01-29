@@ -42,7 +42,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
-            logger.verbose("onLinkLocalOpen receiverName[{}], linkName[{}], localSource[{}]",
+            logger.info("onLinkLocalOpen receiverName[{}], linkName[{}], localSource[{}]",
                 receiverName, link.getName(), link.getSource());
         }
     }

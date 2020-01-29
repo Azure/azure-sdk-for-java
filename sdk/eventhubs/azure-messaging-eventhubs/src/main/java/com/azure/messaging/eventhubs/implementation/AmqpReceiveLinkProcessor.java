@@ -276,7 +276,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     }
 
     /**
-     * Terminates the
+     * When the upstream publisher has no more items to emit.
      */
     @Override
     public void onComplete() {
