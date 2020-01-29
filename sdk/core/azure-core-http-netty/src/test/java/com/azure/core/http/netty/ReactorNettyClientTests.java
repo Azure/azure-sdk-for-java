@@ -29,7 +29,6 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -216,6 +215,7 @@ public class ReactorNettyClientTests {
                 assertEquals(200, response.getStatusCode());
 
                 System.out.println("reading body");
+
                 StepVerifier.create(response.getBodyAsByteArray())
                     .verifyError(IOException.class);
             }
@@ -224,7 +224,7 @@ public class ReactorNettyClientTests {
 
     @Disabled("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
     @Test
-    public void testConcurrentRequests() throws NoSuchAlgorithmException {
+    public void testConcurrentRequests() {
 //        long t = System.currentTimeMillis();
 //        int numRequests = 100; // 100 = 1GB of data read
 //        long timeoutSeconds = 60;
@@ -309,11 +309,8 @@ public class ReactorNettyClientTests {
     }
 
     private void checkBodyReceived(String expectedBody, String path) {
-        NettyAsyncHttpClient client = new NettyAsyncHttpClient();
-        HttpResponse response = doRequest(client, path);
-
-        StepVerifier.create(response.getBodyAsByteArray())
-            .assertNext(bytes -> Assertions.assertEquals(expectedBody, new String(bytes, StandardCharsets.UTF_8)))
+        StepVerifier.create(doRequest(new NettyAsyncHttpClient(), path).getBodyAsByteArray())
+            .assertNext(bytes -> assertEquals(expectedBody, new String(bytes, StandardCharsets.UTF_8)))
             .verifyComplete();
     }
 

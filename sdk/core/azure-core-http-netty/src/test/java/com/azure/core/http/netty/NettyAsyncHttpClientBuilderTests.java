@@ -6,7 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.implementation.HttpProxyHandler;
+import com.azure.core.util.Configuration;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -17,6 +17,7 @@ import io.netty.channel.nio.NioEventLoop;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.cookie.DefaultCookie;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.proxy.Socks4ProxyHandler;
 import io.netty.handler.proxy.Socks5ProxyHandler;
@@ -27,6 +28,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
@@ -42,16 +44,15 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Tests {@link NettyAsyncHttpClientBuilder}.
  */
 public class NettyAsyncHttpClientBuilderTests {
+    private static final String DEFAULT_PATH = "/default";
     private static final String PREBUILT_CLIENT_PATH = "/prebuiltClient";
-    private static final String PORT_CONFIGURED_PATH = "/portConfiguredClient";
-    private static final String WIRETAP_PATH = "/wiretap";
-    private static final String EVENT_LOOP_PATH = "/eventLoopPath";
-    private static final String PROXY_PATH = "/proxyPath";
 
     private static final String COOKIE_NAME = "test";
     private static final String COOKIE_VALUE = "success";
 
     private static WireMockServer server;
+    private static String defaultUrl;
+    private static String prebuiltClientUrl;
 
     @BeforeAll
     public static void setupWireMock() {
@@ -62,15 +63,12 @@ public class NettyAsyncHttpClientBuilderTests {
             .willReturn(WireMock.aResponse().withStatus(200)));
 
         // Mocked endpoint to test building a client with a set port.
-        server.stubFor(WireMock.get(PORT_CONFIGURED_PATH).willReturn(WireMock.aResponse().withStatus(200)));
-
-        // Mocked endpoint to test building a client with wiretapping.
-        server.stubFor(WireMock.get(WIRETAP_PATH).willReturn(WireMock.aResponse().withStatus(200)));
-
-        // Mocked endpoint to test building a client with a custom EventLoopGroup.
-        server.stubFor(WireMock.get(EVENT_LOOP_PATH).willReturn(WireMock.aResponse().withStatus(200)));
+        server.stubFor(WireMock.get(DEFAULT_PATH).willReturn(WireMock.aResponse().withStatus(200)));
 
         server.start();
+
+        defaultUrl = "http://localhost:" + server.port() + DEFAULT_PATH;
+        prebuiltClientUrl = "http://localhost:" + server.port() + PREBUILT_CLIENT_PATH;
     }
 
     @AfterAll
@@ -90,8 +88,7 @@ public class NettyAsyncHttpClientBuilderTests {
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(expectedClient)
             .build();
 
-        String url = "http://localhost:" + server.port() + PREBUILT_CLIENT_PATH;
-        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, url)))
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, prebuiltClientUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -105,6 +102,26 @@ public class NettyAsyncHttpClientBuilderTests {
         assertThrows(NullPointerException.class, () -> new NettyAsyncHttpClientBuilder(null));
     }
 
+    /**
+     * Tests that creating a client with a {@link ConnectionProvider} will use it to create connections to a server.
+     */
+    @Test
+    public void buildWithConnectionProvider() {
+        ConnectionProvider connectionProvider = bootstrap -> {
+            throw new UnsupportedOperationException("Bad connection provider");
+        };
+
+        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+            .connectionProvider(connectionProvider)
+            .build();
+
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .verifyError(UnsupportedOperationException.class);
+    }
+
+    /**
+     * Tests that building a client with a proxy will send the request through the proxy server.
+     */
     @ParameterizedTest
     @EnumSource(ProxyOptions.Type.class)
     public void buildWithProxy(ProxyOptions.Type proxyType) {
@@ -119,9 +136,52 @@ public class NettyAsyncHttpClientBuilderTests {
             .proxy(proxyOptions)
             .build();
 
-        String url = "http://localhost:" + server.port() + PROXY_PATH;
-        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, url)))
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .verifyError();
+    }
+
+    @Test
+    public void buildWithConfigurationNone() {
+        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+            .configuration(Configuration.NONE)
+            .build();
+
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void buildWithConfigurationProxy() {
+        Configuration configuration = new Configuration()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888");
+
+        HttpClient validatorClient = HttpClient.create().tcpConfiguration(tcpClient -> tcpClient
+            .bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap, "TestProxyHandler",
+                (connectionObserver, channel) ->
+                    channel.pipeline().addFirst("TestProxyHandler", new TestProxyValidator(ProxyOptions.Type.HTTP)))));
+
+        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
+            .configuration(configuration)
+            .build();
+
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .verifyError();
+    }
+
+    @Test
+    public void buildWithNonProxyConfigurationProxy() {
+        Configuration configuration = new Configuration()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
+            .put(Configuration.PROPERTY_NO_PROXY, "localhost");
+
+        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+            .configuration(configuration)
+            .build();
+
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     private static final class TestProxyValidator extends ChannelDuplexHandler {
@@ -171,8 +231,7 @@ public class NettyAsyncHttpClientBuilderTests {
             .wiretap(true)
             .build();
 
-        String url = "http://localhost:" + server.port() + WIRETAP_PATH;
-        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, url)))
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -186,7 +245,7 @@ public class NettyAsyncHttpClientBuilderTests {
             .port(server.port())
             .build();
 
-        StepVerifier.create(nettyClient.nettyClient.get().uri(PORT_CONFIGURED_PATH).response())
+        StepVerifier.create(nettyClient.nettyClient.get().uri(DEFAULT_PATH).response())
             .assertNext(response -> assertEquals(200, response.status().code()))
             .verifyComplete();
     }
@@ -212,8 +271,7 @@ public class NettyAsyncHttpClientBuilderTests {
             .nioEventLoopGroup(eventLoopGroup)
             .build();
 
-        String url = "http://localhost:" + server.port() + WIRETAP_PATH;
-        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, url)))
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }

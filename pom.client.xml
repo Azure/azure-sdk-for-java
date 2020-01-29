@@ -184,6 +184,8 @@
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
+          <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+          <includeTests>false</includeTests>
           <fork>true</fork>
         </configuration>
         <executions>
@@ -485,10 +487,10 @@
                 <title>Azure Storage Blobs - Cryptography</title>
                 <packages>com.azure.storage.blob.cryptography*</packages>
               </group>
-              <!--group>
+              <group>
                 <title>Azure Storage Blobs - NIO</title>
                 <packages>com.azure.storage.blob.nio*</packages>
-              </group-->
+              </group>
               <group>
                 <title>Azure Storage - Files</title>
                 <packages>com.azure.storage.file*</packages>
@@ -563,6 +565,8 @@
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
             <failOnError>true</failOnError>
             <fork>true</fork>
+            <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+            <includeTests>false</includeTests>
           </configuration>
         </plugin>
 
@@ -647,6 +651,8 @@
           </excludeFilterFile>
           <failOnError>true</failOnError>
           <fork>true</fork>
+          <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+          <includeTests>false</includeTests>
         </configuration>
       </plugin>
       <plugin>
@@ -927,6 +933,7 @@
                 <!-- JUnit5 and Mockito use reflection to create objects. -->
                 --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
@@ -950,42 +957,6 @@
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
             </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Due to the codesnippet4javadoc tool using backward incompatible javadoc classes, build has
-      javadoc warnings. Build failures on javadoc warnings are disabled on JDK 9+ for now.
-      Here's the github issue - https://github.com/jtulach/codesnippet4javadoc/issues/14 -->
-    <profile>
-      <id>javadoc-doclet-compatibility</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-            <configuration>
-              <failOnWarnings>true</failOnWarnings>
-              <failOnError>true</failOnError>
-              <quiet>true</quiet>
-            </configuration>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-                <configuration>
-                  <failOnError>true</failOnError>
-                  <failOnWarnings>true</failOnWarnings>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -1269,7 +1240,7 @@
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
-    <!--module>sdk/storage/azure-storage-blob-nio</module-->
+    <module>sdk/storage/azure-storage-blob-nio</module>
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
