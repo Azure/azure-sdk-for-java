@@ -201,7 +201,7 @@ public class BlobCheckpointStore implements CheckpointStore {
      */
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
-        if (checkpoint.getSequenceNumber() == null && checkpoint.getOffset() == null) {
+        if (checkpoint == null || (checkpoint.getSequenceNumber() == null && checkpoint.getOffset() == null)) {
             throw logger.logExceptionAsWarning(Exceptions
                 .propagate(new IllegalStateException(
                     "Both sequence number and offset cannot be null when updating a checkpoint")));
@@ -260,13 +260,19 @@ public class BlobCheckpointStore implements CheckpointStore {
                 .info(Messages.BLOB_OWNER_INFO, blobItem.getName(), blobItem.getMetadata().getOrDefault(OWNER_ID, ""));
 
             BlobItemProperties blobProperties = blobItem.getProperties();
+
+            String ownerId = blobItem.getMetadata().getOrDefault(OWNER_ID, "");
+            if (ownerId == null) {
+                return Mono.empty();
+            }
+
             PartitionOwnership partitionOwnership = new PartitionOwnership()
                 .setFullyQualifiedNamespace(names[0])
                 .setEventHubName(names[1])
                 .setConsumerGroup(names[2])
                 // names[3] is "ownership"
                 .setPartitionId(names[4])
-                .setOwnerId(blobItem.getMetadata().getOrDefault(OWNER_ID, ""))
+                .setOwnerId(ownerId)
                 .setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli())
                 .setETag(blobProperties.getETag());
             return Mono.just(partitionOwnership);
