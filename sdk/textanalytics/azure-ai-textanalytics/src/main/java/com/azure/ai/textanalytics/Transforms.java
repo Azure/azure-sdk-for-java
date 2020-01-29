@@ -22,7 +22,6 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -112,10 +111,7 @@ class Transforms {
      * @return the {@link TextAnalyticsException} to be thrown.
      */
     static TextAnalyticsException toTextAnalyticsException(com.azure.ai.textanalytics.models.TextAnalyticsError error) {
-        String baseMessage = String.format(Locale.ROOT, "%s: {%s}, %s",
-            "Status Code", HttpURLConnection.HTTP_OK, error.getMessage());
-
-        return new TextAnalyticsException(baseMessage,
+        return new TextAnalyticsException(error.getMessage(),
             error.getCode().toString(),
             error.getTarget());
     }
