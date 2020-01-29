@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  * Represents the consistency levels supported for Cosmos DB client operations in the Azure Cosmos DB database service.
  * <p>
