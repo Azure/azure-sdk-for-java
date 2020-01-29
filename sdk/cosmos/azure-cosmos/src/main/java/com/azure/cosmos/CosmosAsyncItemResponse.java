@@ -10,17 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 public class CosmosAsyncItemResponse<T> extends CosmosResponse<CosmosItemProperties> {
     private final Class<T> itemClassType;
     private final String responseBodyString;
-    
+    private T item;
+
     CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> klass) {
         super(response);
         this.itemClassType = klass;
-        responseBodyString = response.getBodyAsString();
-        if (StringUtils.isEmpty(responseBodyString)){
-            super.setProperties(null);
-        } else {
-            CosmosItemProperties props = new CosmosItemProperties(responseBodyString);
-            super.setProperties(props);
-        }
+        this.responseBodyString = response.getBodyAsString();
     }
 
     /**
@@ -29,7 +24,24 @@ public class CosmosAsyncItemResponse<T> extends CosmosResponse<CosmosItemPropert
      * @return the resource
      */
     public T getResource(){
-        return Utils.parse(responseBodyString, itemClassType);
+        if (item != null) {
+            return item;
+        }
+
+        if (this.itemClassType == CosmosItemProperties.class) {
+            item = (T) getProperties();
+            return item;
+        }
+
+        if (item == null) {
+            synchronized (this) {
+                if (item == null && !StringUtils.isEmpty(responseBodyString)) {
+                    item = Utils.parse(responseBodyString, itemClassType);
+                }
+            }
+        }
+
+        return item;
     }
 
     /**
@@ -38,7 +50,22 @@ public class CosmosAsyncItemResponse<T> extends CosmosResponse<CosmosItemPropert
      * @return the itemProperties
      */
     public CosmosItemProperties getProperties() {
+        ensureCosmosItemPropertiesInitialized();
         return super.getProperties();
     }
-    
+
+    private void ensureCosmosItemPropertiesInitialized() {
+        if (super.getProperties() == null) {
+            synchronized (this) {
+                if (super.getProperties() == null) {
+                    if (StringUtils.isEmpty(responseBodyString)){
+                        super.setProperties(null);
+                    } else {
+                        CosmosItemProperties props = new CosmosItemProperties(responseBodyString);
+                        super.setProperties(props);
+                    }
+                }
+            }
+        }
+    }
 }
