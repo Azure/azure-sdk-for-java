@@ -726,7 +726,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context")
+    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
@@ -752,7 +752,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context")
+    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
@@ -783,7 +783,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         assertEquals(numberExpected, configurationSettingList2.size());
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context")
+    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
@@ -814,7 +814,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         assertEquals(numberExpected, configurationSettingList2.size());
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context")
+    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.
