@@ -5,30 +5,27 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DatabaseAccount;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
-import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.SpyClientUnderTestFactory;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpResponse;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.ByteBufUtil;
 import io.reactivex.subscribers.TestSubscriber;
-import org.apache.commons.io.IOUtils;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
@@ -37,42 +34,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
 
     private static final int TIMEOUT = 8000;
-    private HttpClient mockHttpClient;
-    private BaseAuthorizationTokenProvider baseAuthorizationTokenProvider;
-    private ConnectionPolicy connectionPolicy;
-    private GatewayServiceConfigurationReader mockGatewayServiceConfigurationReader;
-    private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
     private AsyncDocumentClient client;
-    private String databaseAccountJson;
-    private DatabaseAccount expectedDatabaseAccount;
 
     @Factory(dataProvider = "clientBuilders")
     public GatewayServiceConfigurationReaderTest(Builder clientBuilder) {
         super(clientBuilder);
-    }
-
-    @BeforeClass(groups = "simple")
-    public void before_GatewayServiceConfigurationReaderTest() throws Exception {
-        client = clientBuilder().build();
-        SpyClientUnderTestFactory.ClientUnderTest clientUnderTest = SpyClientUnderTestFactory.createClientUnderTest(this.clientBuilder());
-        HttpClient httpClient = clientUnderTest.getSpyHttpClient();
-        baseAuthorizationTokenProvider = new BaseAuthorizationTokenProvider(new CosmosKeyCredential(TestConfigurations.MASTER_KEY));
-        connectionPolicy = ConnectionPolicy.getDefaultPolicy();
-        mockHttpClient = Mockito.mock(HttpClient.class);
-        mockGatewayServiceConfigurationReader = new GatewayServiceConfigurationReader(new URI(TestConfigurations.HOST),
-                false, TestConfigurations.MASTER_KEY, connectionPolicy, baseAuthorizationTokenProvider, mockHttpClient);
-
-        gatewayServiceConfigurationReader = new GatewayServiceConfigurationReader(new URI(TestConfigurations.HOST),
-                                                                                  false,
-                                                                                  TestConfigurations.MASTER_KEY,
-                                                                                  connectionPolicy,
-                                                                                  baseAuthorizationTokenProvider,
-                                                                                  httpClient);
-        databaseAccountJson = IOUtils
-                .toString(getClass().getClassLoader().getResourceAsStream("databaseAccount.json"), "UTF-8");
-        expectedDatabaseAccount = new DatabaseAccount(databaseAccountJson);
-        HttpResponse mockResponse = getMockResponse(databaseAccountJson);
-        Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class))).thenReturn(Mono.just(mockResponse));
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -81,27 +47,56 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
     }
 
     @Test(groups = "simple")
-    public void mockInitializeReaderAsync() {
-        Mono<DatabaseAccount> databaseAccount = mockGatewayServiceConfigurationReader.initializeReaderAsync();
-        validateSuccess(databaseAccount, expectedDatabaseAccount);
+    public void clientInitialization() throws Exception {
+        client = this.clientBuilder().build();
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) client;
+        GatewayServiceConfigurationReader serviceConfigurationReader = getServiceConfigurationReader(rxDocumentClient);
+        GlobalEndpointManager globalEndpointManager = this.getGlobalEndpointManager(serviceConfigurationReader);
+        Mono<DatabaseAccount> databaseAccountMono = globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST));
+        validateSuccess(databaseAccountMono);
+        assertThat(serviceConfigurationReader.getDefaultConsistencyLevel()).isNotNull();
+        assertThat(serviceConfigurationReader.getQueryEngineConfiguration()).isNotNull();
+        assertThat(serviceConfigurationReader.getSystemReplicationPolicy()).isNotNull();
+        assertThat(serviceConfigurationReader.getSystemReplicationPolicy()).isNotNull();
     }
 
     @Test(groups = "simple")
-    public void mockInitializeReaderAsyncWithResourceToken() throws Exception {
-        HttpResponse mockResponse = getMockResponse(databaseAccountJson);
-        Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class))).thenReturn(Mono.just(mockResponse));
+    public void configurationPropertyReads() throws Exception {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        connectionPolicy.setUsingMultipleWriteLocations(true);
+        DatabaseAccountManagerInternal databaseAccountManagerInternal = Mockito.mock(DatabaseAccountManagerInternal.class);
+        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson1)));
+        GlobalEndpointManager globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
+        setBackgroundRefreshLocationTimeIntervalInMS(globalEndpointManager, 1000);
+        globalEndpointManager.init();
 
-        mockGatewayServiceConfigurationReader = new GatewayServiceConfigurationReader(new URI(TestConfigurations.HOST),
-                true, "SampleResourceToken", connectionPolicy, baseAuthorizationTokenProvider, mockHttpClient);
+        GatewayServiceConfigurationReader configurationReader = new GatewayServiceConfigurationReader(new URI(TestConfigurations.HOST), globalEndpointManager);
+        assertThat(configurationReader.getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
+        assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();
+        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
 
-        Mono<DatabaseAccount> databaseAccount = mockGatewayServiceConfigurationReader.initializeReaderAsync();
-        validateSuccess(databaseAccount, expectedDatabaseAccount);
-    }
+        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson2)));
+        Thread.sleep(2000);
+        assertThat(configurationReader.getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.EVENTUAL);
+        assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isFalse();
+        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(5);
+        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(5);
 
-    @Test(groups = "simple")
-    public void initializeReaderAsync() {
-        Mono<DatabaseAccount> databaseAccount = gatewayServiceConfigurationReader.initializeReaderAsync();
-        validateSuccess(databaseAccount);
+        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson3)));
+        Thread.sleep(2000);
+        assertThat(configurationReader.getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
+        assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();
+        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
+
+        //Testing scenario of scheduled cache refresh with error
+        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenThrow(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.FORBIDDEN));
+        Thread.sleep(2000);
+        assertThat(configurationReader.getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
+        assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();
+        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
     }
 
     public static void validateSuccess(Mono<DatabaseAccount> observable) {
@@ -118,37 +113,21 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         assertThat(BridgeInternal.getSystemReplicationPolicy(databaseAccount)).isNotNull();
     }
 
-    public static void validateSuccess(Mono<DatabaseAccount> observable, DatabaseAccount expectedDatabaseAccount) {
-        TestSubscriber<DatabaseAccount> testSubscriber = new TestSubscriber<DatabaseAccount>();
-
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        DatabaseAccount databaseAccount = testSubscriber.values().get(0);
-        assertThat(databaseAccount.getId()).isEqualTo(expectedDatabaseAccount.getId());
-        assertThat(BridgeInternal.getAddressesLink(databaseAccount))
-                .isEqualTo(BridgeInternal.getAddressesLink(expectedDatabaseAccount));
-        assertThat(databaseAccount.getWritableLocations().iterator().next().getEndpoint())
-                .isEqualTo(expectedDatabaseAccount.getWritableLocations().iterator().next().getEndpoint());
-        assertThat(BridgeInternal.getSystemReplicationPolicy(databaseAccount).getMaxReplicaSetSize())
-                .isEqualTo(BridgeInternal.getSystemReplicationPolicy(expectedDatabaseAccount).getMaxReplicaSetSize());
-        assertThat(BridgeInternal.getSystemReplicationPolicy(databaseAccount).getMaxReplicaSetSize())
-                .isEqualTo(BridgeInternal.getSystemReplicationPolicy(expectedDatabaseAccount).getMaxReplicaSetSize());
-        assertThat(BridgeInternal.getQueryEngineConfiuration(databaseAccount))
-                .isEqualTo(BridgeInternal.getQueryEngineConfiuration(expectedDatabaseAccount));
+    private void setBackgroundRefreshLocationTimeIntervalInMS(GlobalEndpointManager globalEndPointManager, int millSec) throws Exception {
+        Field backgroundRefreshLocationTimeIntervalInMSField = GlobalEndpointManager.class.getDeclaredField("backgroundRefreshLocationTimeIntervalInMS");
+        backgroundRefreshLocationTimeIntervalInMSField.setAccessible(true);
+        backgroundRefreshLocationTimeIntervalInMSField.setInt(globalEndPointManager, millSec);
     }
 
-    private HttpResponse getMockResponse(String databaseAccountJson) {
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        Mockito.doReturn(200).when(httpResponse).statusCode();
-        Mockito.doReturn(Flux.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT, databaseAccountJson)))
-                .when(httpResponse).body();
-        Mockito.doReturn(Mono.just(databaseAccountJson))
-                .when(httpResponse).bodyAsString();
+    private GatewayServiceConfigurationReader getServiceConfigurationReader(RxDocumentClientImpl rxDocumentClient) throws Exception {
+        Field serviceConfigurationReaderField = RxDocumentClientImpl.class.getDeclaredField("gatewayConfigurationReader");
+        serviceConfigurationReaderField.setAccessible(true);
+        return (GatewayServiceConfigurationReader) serviceConfigurationReaderField.get(rxDocumentClient);
+    }
 
-        Mockito.doReturn(new HttpHeaders()).when(httpResponse).headers();
-        return httpResponse;
+    private GlobalEndpointManager getGlobalEndpointManager(GatewayServiceConfigurationReader serviceConfigurationReader) throws Exception {
+        Field globalEndpointManagerField = GatewayServiceConfigurationReader.class.getDeclaredField("globalEndpointManager");
+        globalEndpointManagerField.setAccessible(true);
+        return (GlobalEndpointManager) globalEndpointManagerField.get(serviceConfigurationReader);
     }
 }

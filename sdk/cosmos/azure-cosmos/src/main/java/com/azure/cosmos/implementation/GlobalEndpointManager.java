@@ -3,12 +3,14 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.routing.LocationCache;
-import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.DatabaseAccount;
+import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.implementation.routing.LocationHelper;
 import org.apache.commons.collections4.list.UnmodifiableList;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -16,13 +18,13 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.net.URISyntaxException;
 import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -45,6 +47,8 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Scheduler scheduler = Schedulers.fromExecutor(executor);
     private volatile boolean isClosed;
+    private final AsyncCache<String, DatabaseAccount> databaseAccountAsyncCache;
+    private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
 
     public GlobalEndpointManager(DatabaseAccountManagerInternal owner, ConnectionPolicy connectionPolicy, Configs configs)  {
         this.backgroundRefreshLocationTimeIntervalInMS = configs.getUnavailableLocationsExpirationTimeInSeconds() * 1000;
@@ -69,6 +73,7 @@ public class GlobalEndpointManager implements AutoCloseable {
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
+        databaseAccountAsyncCache = new AsyncCache<>();
     }
 
     public void init() {
@@ -87,7 +92,7 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.getWriteEndpoints();
     }
 
-    public static Mono<DatabaseAccount> getDatabaseAccountFromAnyLocationsAsync(
+    public Mono<DatabaseAccount> getDatabaseAccountFromAnyLocationsAsync(
             URI defaultEndpoint, List<String> locations, Function<URI, Mono<DatabaseAccount>> getDatabaseAccountFn) {
 
         return getDatabaseAccountFn.apply(defaultEndpoint).onErrorResume(
@@ -157,6 +162,12 @@ public class GlobalEndpointManager implements AutoCloseable {
             logger.debug("will refresh");
             return this.refreshLocationPrivateAsync(databaseAccount).doOnError(e -> this.isRefreshing.set(false));
         });
+    }
+
+    public Mono<DatabaseAccount> getDatabaseAccountFromCache(URI defaultEndpoint) {
+        return this.databaseAccountAsyncCache.getAsync(StringUtils.EMPTY, null, () -> this.owner.getDatabaseAccountFromEndpoint(defaultEndpoint).single().doOnSuccess(databaseAccount -> {
+            this.refreshLocationAsync(databaseAccount, false);
+        }));
     }
 
     private Mono<Void> refreshLocationPrivateAsync(DatabaseAccount databaseAccount) {
@@ -236,7 +247,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             }
 
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
-                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.connectionPolicy.getPreferredLocations()),
+                            Mono<DatabaseAccount> databaseAccountObs = this.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.connectionPolicy.getPreferredLocations()),
                                     this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {
@@ -253,8 +264,23 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
-        return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
-            .doOnNext(i -> logger.debug("account retrieved: {}", i)).single();
+        final GlobalEndpointManager that = this;
+        Callable<Mono<DatabaseAccount>> fetchDatabaseAccount = () -> {
+            return that.owner.getDatabaseAccountFromEndpoint(serviceEndpoint).doOnNext(i -> {
+                logger.debug("account retrieved: {}", i);
+            }).single();
+        };
+
+        Mono<DatabaseAccount> obsoleteValueMono = databaseAccountAsyncCache.getAsync(StringUtils.EMPTY, null, fetchDatabaseAccount);
+        return obsoleteValueMono.flatMap(obsoleteValue -> {
+            if (firstTimeDatabaseAccountInitialization.compareAndSet(true, false)) {
+                return Mono.just(obsoleteValue);
+            }
+            return databaseAccountAsyncCache.getAsync(StringUtils.EMPTY, obsoleteValue, fetchDatabaseAccount).doOnError(t -> {
+                //Putting back the old value in cache, this will avoid cache corruption
+                databaseAccountAsyncCache.set(StringUtils.EMPTY, obsoleteValue);
+            });
+        });
     }
 
     public boolean isClosed() {
