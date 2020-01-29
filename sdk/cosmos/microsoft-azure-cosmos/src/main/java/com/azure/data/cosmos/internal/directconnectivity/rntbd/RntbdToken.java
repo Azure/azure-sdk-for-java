@@ -17,7 +17,7 @@ import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdConst
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.base.Strings.lenientFormat;
+import static com.azure.data.cosmos.internal.guava27.Strings.lenientFormat;
 
 @JsonPropertyOrder({ "id", "name", "type", "present", "required", "value" })
 final class RntbdToken {
