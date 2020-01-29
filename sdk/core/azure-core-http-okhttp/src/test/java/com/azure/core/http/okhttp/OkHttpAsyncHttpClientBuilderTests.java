@@ -6,6 +6,7 @@ package com.azure.core.http.okhttp;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -39,13 +40,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class OkHttpAsyncHttpClientBuilderTests {
     private static final String COOKIE_VALIDATOR_PATH = "/cookieValidator";
-    private static final String TIMEOUT_PATH = "/timeout";
+    private static final String DEFAULT_PATH = "/default";
     private static final String DISPATCHER_PATH = "/dispatcher";
 
     private static WireMockServer server;
 
     private static String cookieValidatorUrl;
-    private static String timeoutUrl;
+    private static String defaultUrl;
     private static String dispatcherUrl;
 
     @BeforeAll
@@ -57,7 +58,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
             .willReturn(WireMock.aResponse().withStatus(200)));
 
         // Mocked endpoint to test building a client with a timeout.
-        server.stubFor(WireMock.get(TIMEOUT_PATH).willReturn(WireMock.aResponse().withStatus(200)));
+        server.stubFor(WireMock.get(DEFAULT_PATH).willReturn(WireMock.aResponse().withStatus(200)));
 
         // Mocked endpoint to test building a client with a dispatcher and uses a delayed response.
         server.stubFor(WireMock.get(DISPATCHER_PATH).willReturn(WireMock.aResponse().withStatus(200)
@@ -66,7 +67,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
         server.start();
 
         cookieValidatorUrl = "http://localhost:" + server.port() + COOKIE_VALIDATOR_PATH;
-        timeoutUrl = "http://localhost:" + server.port() + TIMEOUT_PATH;
+        defaultUrl = "http://localhost:" + server.port() + DEFAULT_PATH;
         dispatcherUrl = "http://localhost:" + server.port() + DISPATCHER_PATH;
     }
 
@@ -175,7 +176,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
             .connectionTimeout(Duration.ofSeconds(3600))
             .build();
 
-        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, timeoutUrl)))
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -196,7 +197,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
             .readTimeout(Duration.ofSeconds(3600))
             .build();
 
-        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, timeoutUrl)))
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -212,7 +213,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
             .connectionPool(connectionPool)
             .build();
 
-        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, timeoutUrl)))
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 
@@ -278,22 +279,80 @@ public class OkHttpAsyncHttpClientBuilderTests {
         ProxyOptions proxyOptions = new ProxyOptions(proxyType,
             new InetSocketAddress(expectedProxyHost, expectedProxyPort)).setCredentials("1", "1");
 
-        OkHttpClient validatorClient = new OkHttpClient.Builder().eventListener(new EventListener() {
-            @Override
-            public void connectStart(Call call, InetSocketAddress inetSocketAddress, Proxy proxy) {
-                InetSocketAddress proxyAddress = (InetSocketAddress) proxy.address();
-                assertNotNull(proxyAddress);
-                assertEquals(expectedProxyHost, proxyAddress.getHostName());
-                assertEquals(expectedProxyPort, proxyAddress.getPort());
-                super.connectStart(call, inetSocketAddress, proxy);
-            }
-        }).build();
+        OkHttpClient validatorClient = new OkHttpClient.Builder()
+            .eventListener(new TestEventListenerValidator(expectedProxyHost, expectedProxyPort))
+            .build();
 
         OkHttpAsyncHttpClient okClient = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder(validatorClient)
             .proxy(proxyOptions)
             .build();
 
-        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, timeoutUrl)))
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .verifyError();
+    }
+
+    @Test
+    public void buildWithConfigurationNone() {
+        OkHttpAsyncHttpClient okClient = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder()
+            .configuration(Configuration.NONE)
+            .build();
+
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void buildWithConfigurationProxy() {
+        Configuration configuration = new Configuration()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888");
+
+        String expectedProxyHost = "localhost";
+        int expectedProxyPort = 8888;
+
+        OkHttpClient validatorClient = new OkHttpClient.Builder()
+            .eventListener(new TestEventListenerValidator(expectedProxyHost, expectedProxyPort))
+            .build();
+
+        OkHttpAsyncHttpClient okClient = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder(validatorClient)
+            .configuration(configuration)
+            .build();
+
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .verifyError();
+    }
+
+    @Test
+    public void buildWithNonProxyConfigurationProxy() {
+        Configuration configuration = new Configuration()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
+            .put(Configuration.PROPERTY_NO_PROXY, "localhost");
+
+        OkHttpAsyncHttpClient okClient = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder()
+            .configuration(configuration)
+            .build();
+
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    private static final class TestEventListenerValidator extends EventListener {
+        private final String expectedProxyHost;
+        private final int expectedProxyPort;
+
+        private TestEventListenerValidator(String expectedProxyHost, int expectedProxyPort) {
+            this.expectedProxyHost = expectedProxyHost;
+            this.expectedProxyPort = expectedProxyPort;
+        }
+
+        @Override
+        public void connectStart(Call call, InetSocketAddress inetSocketAddress, Proxy proxy) {
+            InetSocketAddress proxyAddress = (InetSocketAddress) proxy.address();
+            assertNotNull(proxyAddress);
+            assertEquals(expectedProxyHost, proxyAddress.getHostName());
+            assertEquals(expectedProxyPort, proxyAddress.getPort());
+            super.connectStart(call, inetSocketAddress, proxy);
+        }
     }
 }
