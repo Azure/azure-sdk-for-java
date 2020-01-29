@@ -73,7 +73,7 @@ public class VMwareCbtProtectedDiskDetails {
      * 'StandardSSD_LRS'.
      */
     @JsonProperty(value = "diskType")
-    private DiskType diskType;
+    private DiskAccountType diskType;
 
     /**
      * Get the disk id.
@@ -161,7 +161,7 @@ public class VMwareCbtProtectedDiskDetails {
      *
      * @return the diskType value
      */
-    public DiskType diskType() {
+    public DiskAccountType diskType() {
         return this.diskType;
     }
 
@@ -171,7 +171,7 @@ public class VMwareCbtProtectedDiskDetails {
      * @param diskType the diskType value to set
      * @return the VMwareCbtProtectedDiskDetails object itself.
      */
-    public VMwareCbtProtectedDiskDetails withDiskType(DiskType diskType) {
+    public VMwareCbtProtectedDiskDetails withDiskType(DiskAccountType diskType) {
         this.diskType = diskType;
         return this;
     }

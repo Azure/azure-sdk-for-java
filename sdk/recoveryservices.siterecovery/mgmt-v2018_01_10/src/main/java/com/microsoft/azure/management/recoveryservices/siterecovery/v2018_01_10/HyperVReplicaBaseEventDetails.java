@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Abstract model class for event details of a HyperVReplica E2E event.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = HyperVReplicaBaseEventDetails.class)
 @JsonTypeName("HyperVReplicaBaseEventDetails")
 public class HyperVReplicaBaseEventDetails extends EventProviderSpecificDetails {
     /**

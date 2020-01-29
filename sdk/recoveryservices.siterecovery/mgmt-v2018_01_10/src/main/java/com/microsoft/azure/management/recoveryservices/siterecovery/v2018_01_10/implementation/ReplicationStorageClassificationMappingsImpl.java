@@ -82,10 +82,14 @@ class ReplicationStorageClassificationMappingsImpl extends WrapperImpl<Replicati
     public Observable<StorageClassificationMapping> getAsync(String fabricName, String storageClassificationName, String storageClassificationMappingName) {
         ReplicationStorageClassificationMappingsInner client = this.inner();
         return client.getAsync(fabricName, storageClassificationName, storageClassificationMappingName)
-        .map(new Func1<StorageClassificationMappingInner, StorageClassificationMapping>() {
+        .flatMap(new Func1<StorageClassificationMappingInner, Observable<StorageClassificationMapping>>() {
             @Override
-            public StorageClassificationMapping call(StorageClassificationMappingInner inner) {
-                return wrapModel(inner);
+            public Observable<StorageClassificationMapping> call(StorageClassificationMappingInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((StorageClassificationMapping)wrapModel(inner));
+                }
             }
        });
     }
