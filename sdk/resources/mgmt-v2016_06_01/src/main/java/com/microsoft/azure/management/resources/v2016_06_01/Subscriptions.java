@@ -8,10 +8,10 @@
 
 package com.microsoft.azure.management.resources.v2016_06_01;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.resources.v2016_06_01.implementation.SubscriptionsInner;
 import rx.Observable;
+import com.microsoft.azure.management.resources.v2016_06_01.implementation.SubscriptionsInner;
+import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.resources.v2016_06_01.Location;
 
 /**
  * Type representing Subscriptions.
@@ -25,14 +25,6 @@ public interface Subscriptions extends HasInner<SubscriptionsInner> {
      * @return the observable for the request
      */
     Observable<Subscription> getAsync(String subscriptionId);
-
-    /**
-     * Gets all subscriptions for a tenant.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    PagedList<Subscription> list();
 
     /**
      * Gets all subscriptions for a tenant.
