@@ -77,6 +77,11 @@ class AzureFileStoreSpec extends APISpec {
 
         expect:
         store.getFileStoreAttributeView(FileStoreAttributeView.class) == null
+
+        when:
         store.getAttribute("basic:size")
+
+        then:
+        thrown(UnsupportedOperationException)
     }
 }
