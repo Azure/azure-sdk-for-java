@@ -3,7 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "baseName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "Base name to append to Azure resources."
+            }
         },
         "storageEndpointSuffix": {
             "type": "string",
@@ -44,19 +47,18 @@
         }
     },
     "variables": {
-        "storageApiVersion": "2019-04-01",
-        "eventHubsApiVersion": "2017-04-01",
         "authorizationApiVersion": "2018-09-01-preview",
+        "authorizationRulesName": "[concat('authr', parameters('baseName'))]",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-        "authorizationRulesName": "[concat('authr', parameters('baseName'))]",
+        "eventHubsApiVersion": "2017-04-01",
+        "eventHubsDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec')]",
+        "eventHubsNamespaceName": "[concat('eventhub', parameters('baseName'))]",
+        "location": "[resourceGroup().location]",
+        "premiumAccountName": "[concat('prem', parameters('baseName'))]",
         "primaryAccountName": "[concat('prim', parameters('baseName'))]",
         "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
-        "premiumAccountName": "[concat('prem', parameters('baseName'))]",
-        "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
-        "location": "[resourceGroup().location]",
-        "eventHubsNamespaceName": "[parameters('baseName')]",
-        "eventHubsDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec')]"
+        "storageApiVersion": "2019-04-01"
     },
     "resources": [
         {
@@ -77,12 +79,12 @@
             }
         },
         {
-            "apiVersion": "[variables('eventHubsApiVersion')]",
             "type": "Microsoft.EventHub/namespaces/eventhubs",
+            "apiVersion": "[variables('eventHubsApiVersion')]",
             "name": "[concat(variables('eventHubsNamespaceName'), '/', parameters('eventHubName'))]",
             "location": "[variables('location')]",
             "dependsOn": [
-                "[variables('eventHubsNamespaceName')]"
+                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
             ],
             "properties": {
                 "messageRetentionInDays": 1,
@@ -91,23 +93,12 @@
             }
         },
         {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[guid(concat('eventHubsDataOwnerRoleId', variables('eventHubsNamespaceName')))]",
-            "dependsOn": [
-                "[variables('eventHubsNamespaceName')]"
-            ],
-            "properties": {
-                "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
-                "principalId": "[parameters('testApplicationOid')]"
-            }
-        },
-        {
             "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
-            "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
+            "apiVersion": "[variables('eventHubsApiVersion')]",
+            "name": "[concat(variables('eventHubsNamespaceName'), '/RootManageSharedAccessKey')]",
+            "location": "[variables('location')]",
             "dependsOn": [
-                "[variables('eventHubsNamespaceName')]"
+                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
             ],
             "properties": {
                 "rights": [
@@ -120,24 +111,12 @@
         {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[guid(concat('dataContributorRoleId', variables('primaryAccountName')))]",
+            "name": "[guid(concat('eventHubsDataOwnerRoleId', variables('eventHubsNamespaceName')))]",
             "dependsOn": [
-                "[variables('primaryAccountName')]"
+                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
             ],
             "properties": {
-                "roleDefinitionId": "[variables('blobDataContributorRoleId')]",
-                "principalId": "[parameters('testApplicationOid')]"
-            }
-        },
-        {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[guid(concat('contributorRoleId', variables('primaryAccountName')))]",
-            "dependsOn": [
-                "[variables('primaryAccountName')]"
-            ],
-            "properties": {
-                "roleDefinitionId": "[variables('contributorRoleId')]",
+                "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
                 "principalId": "[parameters('testApplicationOid')]"
             }
         },
@@ -236,39 +215,6 @@
                 },
                 "accessTier": "Hot"
             }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "[variables('storageApiVersion')]",
-            "name": "[variables('dataLakeAccountName')]",
-            "location": "[variables('location')]",
-            "sku": {
-                "name": "Standard_RAGRS",
-                "tier": "Standard"
-            },
-            "kind": "StorageV2",
-            "properties": {
-                "isHnsEnabled": true,
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": true,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                },
-                "accessTier": "Hot"
-            }
         }
     ],
     "outputs": {
@@ -286,7 +232,7 @@
         },
         "AZURE_EVENTHUBS_CONNECTION_STRING": {
             "type": "string",
-            "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('baseName'), 'RootManageSharedAccessKey'), variables('eventHubsApiVersion')).primaryConnectionString, ';EntityPath=', parameters('eventHubName') )]"
+            "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('baseName'), 'RootManageSharedAccessKey'), variables('eventHubsApiVersion')).primaryConnectionString, ';EntityPath=', parameters('eventHubName'))]"
         },
         "AZURE_EVENTHUBS_EVENT_HUB_NAME": {
             "type": "string",
@@ -316,22 +262,6 @@
             "type": "string",
             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
         },
-        "AZURE_STORAGE_FILE_CONNECTION_STRING": {
-            "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
-        },
-        "AZURE_STORAGE_FILE_ENDPOINT": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.file]"
-        },
-        "AZURE_STORAGE_QUEUE_CONNECTION_STRING": {
-            "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
-        },
-        "AZURE_STORAGE_QUEUE_ENDPOINT": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.queue]"
-        },
         "PRIMARY_STORAGE_ACCOUNT_NAME": {
             "type": "string",
             "value": "[variables('primaryAccountName')]"
@@ -339,14 +269,6 @@
         "PRIMARY_STORAGE_ACCOUNT_KEY": {
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-        "STORAGE_DATA_LAKE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-        "STORAGE_DATA_LAKE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('dataLakeAccountName')]"
         },
         "SECONDARY_STORAGE_ACCOUNT_NAME": {
             "type": "string",
