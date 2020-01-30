@@ -53,6 +53,7 @@
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
         "eventHubsApiVersion": "2017-04-01",
         "eventHubsDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec')]",
+        "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
         "eventHubsNamespaceName": "[concat('eventhub', parameters('baseName'))]",
         "location": "[resourceGroup().location]",
         "premiumAccountName": "[concat('prem', parameters('baseName'))]",
@@ -95,7 +96,7 @@
         {
             "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
             "apiVersion": "[variables('eventHubsApiVersion')]",
-            "name": "[concat(variables('eventHubsNamespaceName'), '/RootManageSharedAccessKey')]",
+            "name": "[concat(variables('eventHubsNamespaceName'), '/', variables('eventHubsNamespaceKeyName'))]",
             "location": "[variables('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
@@ -232,7 +233,7 @@
         },
         "AZURE_EVENTHUBS_CONNECTION_STRING": {
             "type": "string",
-            "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), 'RootManageSharedAccessKey'), variables('eventHubsApiVersion')).primaryConnectionString, ';EntityPath=', parameters('eventHubName'))]"
+            "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), variables('eventHubsNamespaceKeyName')), variables('eventHubsApiVersion')).primaryConnectionString, ';EntityPath=', parameters('eventHubName'))]"
         },
         "AZURE_EVENTHUBS_EVENT_HUB_NAME": {
             "type": "string",
