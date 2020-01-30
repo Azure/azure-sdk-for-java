@@ -14,23 +14,23 @@ import reactor.core.publisher.Mono;
  * Policy that adds the {@link TextAnalyticsApiKeyCredential} into the request's `Ocp-Apim-Subscription-Key`
  * header.
  */
-public final class SubscriptionKeyCredentialPolicy implements HttpPipelinePolicy {
+public final class ApiKeyCredentialPolicy implements HttpPipelinePolicy {
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private final TextAnalyticsApiKeyCredential credential;
 
     /**
-     * Creates a {@link SubscriptionKeyCredentialPolicy} pipeline policy that adds the
+     * Creates a {@link ApiKeyCredentialPolicy} pipeline policy that adds the
      * {@link TextAnalyticsApiKeyCredential} into the request's `Ocp-Apim-Subscription-Key` header.
      *
      * @param credential the {@link TextAnalyticsApiKeyCredential} credential used to create the policy.
      */
-    public SubscriptionKeyCredentialPolicy(TextAnalyticsApiKeyCredential credential) {
+    public ApiKeyCredentialPolicy(TextAnalyticsApiKeyCredential credential) {
         this.credential = credential;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        context.getHttpRequest().setHeader(OCP_APIM_SUBSCRIPTION_KEY, credential.getSubscriptionKey());
+        context.getHttpRequest().setHeader(OCP_APIM_SUBSCRIPTION_KEY, credential.getApiKey());
         return next.process();
     }
 }

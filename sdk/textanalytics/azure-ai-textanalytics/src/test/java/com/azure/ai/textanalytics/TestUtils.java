@@ -32,6 +32,10 @@ import java.util.stream.IntStream;
  */
 final class TestUtils {
     private static final String DEFAULT_MODEL_VERSION = "2019-10-01";
+
+    static final String INVALID_URL = "htttttttps://localhost:8080";
+    static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
+
     static final List<String> SENTIMENT_INPUTS = Arrays.asList("The hotel was dark and unclean. The restaurant had amazing gnocchi.",
         "The restaurant had amazing gnocchi. The hotel was dark and unclean.");
 

@@ -67,15 +67,18 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
-    private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
+    private static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+    private static final String NAME = "name";
+    private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
+    private static final String VERSION = "version";
 
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+
+    static final String INVALID_KEY = "invalid key";
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         TokenCredential credential = null;
@@ -667,11 +670,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertNotNull(actualLanguage.getScore());
     }
 
-    private static final String AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY = "AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY";
-    static final String INVALID_KEY = "invalid key";
-
     /**
-     * Create a client builder with endpoint and subscription key credential.
+     * Create a client builder with endpoint and API key credential.
      *
      * @param endpoint the given endpoint
      * @param credential the given {@link TextAnalyticsApiKeyCredential} credential
@@ -679,7 +679,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      */
     TextAnalyticsClientBuilder createClientBuilder(String endpoint, TextAnalyticsApiKeyCredential credential) {
         final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .subscriptionKey(credential)
+            .apiKey(credential)
             .endpoint(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
@@ -693,12 +693,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Get the string of subscription key value based on what running mode is on.
+     * Get the string of API key value based on what running mode is on.
      *
-     * @return the subscription key string
+     * @return the API key string
      */
-    String getSubscriptionKey() {
-        return interceptorManager.isPlaybackMode() ? "subscriptionKeyInPlayback"
-            : Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
+    String getApiKey() {
+        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
+            : Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_API_KEY);
     }
 }

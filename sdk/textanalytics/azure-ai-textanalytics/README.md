@@ -56,15 +56,16 @@ az cognitiveservices account create \
     --yes
 ```
 ### Authenticate the client
-In order to interact with the Text Analytics service, you'll need to create an instance of the [TextAnalyticsClient](#create-a-client) class. You would need an **endpoint** and **subscription key** to instantiate a client object.
+In order to interact with the Text Analytics service, you'll need to create an instance of the 
+`TextAnalyticsClient` class. You would need an **endpoint** and **API key** to instantiate a client object.
 
 #### Get credentials
 ##### Types of credentials
-The `subscriptionKey` parameter may be provided as the subscription key to your resource or as a token from Azure Active Directory.
+The authentication credential may be provided as the API key to your resource or as a token from Azure Active Directory.
 See the full details regarding [authentication](https://docs.microsoft.com/azure/cognitive-services/authentication) of 
 cognitive services.
 
-1. To use a [subscription key](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource), 
+1. To use a [API key](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource), 
    provide the key as a string. This can be found in the Azure Portal under the "Quickstart" 
    section or by running the following Azure CLI command:
 
@@ -76,7 +77,7 @@ cognitive services.
     <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L44-L47 -->
     ```java
     TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-        .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+        .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
         .endpoint("{endpoint}")
         .buildClient();
     ```
@@ -112,28 +113,28 @@ cognitive services.
 The Azure Text Analytics client library for Java allows you to engage with the Text Analytics service to 
 analyze sentiment, recognize entities, detect language, and extract key phrases from text.
 To create a client object, you will need the cognitive services or text analytics endpoint to 
-your resource and a subscription key that allows you access:
+your resource and a API key that allows you access:
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L44-L47 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+    .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
 
-#### Rotate existing subscription key
-The Azure Text Analytics client library provide a way to rotate the existing subscription key.
+#### Rotate existing API key
+The Azure Text Analytics client library provide a way to rotate the existing API key.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L174-L180 -->
 ```java
-TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{expired_subscription_key}");
+TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(credential)
+    .apiKey(credential)
     .endpoint("{endpoint}")
     .buildClient();
 
-credential.updateCredential("{new_subscription_key}");
+credential.updateCredential("{new_api_key}");
 ```
 ## Key concepts
 
@@ -202,14 +203,14 @@ Text analytics support both synchronous and asynchronous client creation by usin
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L44-L47 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+    .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L54-L57 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+    .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildAsyncClient();
 ```
@@ -347,6 +348,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-textanalytics
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview
 [samples_readme]: src/samples/README.md
 [source_code]: src

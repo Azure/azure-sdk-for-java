@@ -12,8 +12,8 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
@@ -416,13 +416,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test client builder with valid subscription key
+     * Test client builder with valid API key
      */
     @Test
     public void validKey() {
         // Arrange
         final TextAnalyticsClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsApiKeyCredential(getSubscriptionKey())).buildClient();
+            new TextAnalyticsApiKeyCredential(getApiKey())).buildClient();
 
         // Action and Assert
         validateDetectedLanguages(Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
@@ -430,7 +430,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test client builder with invalid subscription key
+     * Test client builder with invalid API key
      */
     @Test
     public void invalidKey() {
@@ -443,13 +443,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test client with valid subscription key but update to invalid key and make call to server.
+     * Test client with valid API key but update to invalid key and make call to server.
      */
     @Test
     public void updateToInvalidKey() {
         // Arrange
         final TextAnalyticsApiKeyCredential credential =
-            new TextAnalyticsApiKeyCredential(getSubscriptionKey());
+            new TextAnalyticsApiKeyCredential(getApiKey());
 
         final TextAnalyticsClient client = createClientBuilder(getEndpoint(), credential).buildClient();
 
@@ -461,7 +461,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test client with invalid subscription key but update to valid key and make call to server.
+     * Test client with invalid API key but update to valid key and make call to server.
      */
     @Test
     public void updateToValidKey() {
@@ -472,44 +472,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         final TextAnalyticsClient client = createClientBuilder(getEndpoint(), credential).buildClient();
 
         // Update to valid key
-        credential.updateCredential(getSubscriptionKey());
+        credential.updateCredential(getApiKey());
 
         // Action and Assert
         validateDetectedLanguages(Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
             client.detectLanguage("This is a test English Text").getDetectedLanguages());
-    }
-
-    /**
-     * Test for missing endpoint
-     */
-    @Test
-    public void missingEndpoint() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.buildClient();
-        });
-    }
-
-    /**
-     * Test for null subscription key
-     */
-    @Test
-    public void nullSubscriptionKey() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(getEndpoint()).subscriptionKey(null);
-        });
-    }
-
-    /**
-     * Test for null AAD credential
-     */
-    @Test
-    public void nullAADCredential() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(getEndpoint()).credential(null);
-        });
     }
 
     /**
@@ -520,7 +487,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         // Arrange
         final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint())
-            .subscriptionKey(new TextAnalyticsApiKeyCredential(getSubscriptionKey()))
+            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(null);
@@ -545,7 +512,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         // Arrange
         final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint())
-            .subscriptionKey(new TextAnalyticsApiKeyCredential(getSubscriptionKey()))
+            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
