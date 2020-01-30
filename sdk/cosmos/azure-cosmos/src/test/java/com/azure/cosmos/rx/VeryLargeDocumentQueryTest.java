@@ -75,7 +75,8 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         int size = (int) (ONE_MB * 1.999);
         BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
 
-        Mono<CosmosAsyncItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
+        Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = 
+            createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
 
         StepVerifier.create(createObservable.subscribeOn(Schedulers.single()))
                     .expectNextMatches(cosmosItemResponse -> cosmosItemResponse.getProperties().getId().equals(docDefinition.getId()))

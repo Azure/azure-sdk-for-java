@@ -15,7 +15,7 @@ import java.util.Iterator;
  */
 public class CosmosContainer {
 
-    private final CosmosAsyncContainer containerWrapper;
+    private final CosmosAsyncContainer asyncContainer;
     private final CosmosDatabase database;
     private final String id;
     private CosmosScripts scripts;
@@ -30,7 +30,7 @@ public class CosmosContainer {
     CosmosContainer(String id, CosmosDatabase database, CosmosAsyncContainer container) {
         this.id = id;
         this.database = database;
-        this.containerWrapper = container;
+        this.asyncContainer = container;
     }
 
     /**
@@ -49,7 +49,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public CosmosContainerResponse read() throws CosmosClientException {
-        return database.mapContainerResponseAndBlock(this.containerWrapper.read());
+        return database.mapContainerResponseAndBlock(this.asyncContainer.read());
     }
 
     /**
@@ -60,7 +60,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public CosmosContainerResponse read(CosmosContainerRequestOptions options) throws CosmosClientException {
-        return database.mapContainerResponseAndBlock(this.containerWrapper.read(options));
+        return database.mapContainerResponseAndBlock(this.asyncContainer.read(options));
     }
 
     /**
@@ -71,7 +71,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public CosmosContainerResponse delete(CosmosContainerRequestOptions options) throws CosmosClientException {
-        return database.mapContainerResponseAndBlock(this.containerWrapper.delete(options));
+        return database.mapContainerResponseAndBlock(this.asyncContainer.delete(options));
     }
 
     /**
@@ -81,7 +81,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public CosmosContainerResponse delete() throws CosmosClientException {
-        return database.mapContainerResponseAndBlock(this.containerWrapper.delete());
+        return database.mapContainerResponseAndBlock(this.asyncContainer.delete());
     }
 
     /**
@@ -92,7 +92,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public CosmosContainerResponse replace(CosmosContainerProperties containerProperties) throws CosmosClientException {
-        return database.mapContainerResponseAndBlock(this.containerWrapper.replace(containerProperties));
+        return database.mapContainerResponseAndBlock(this.asyncContainer.replace(containerProperties));
     }
 
     /**
@@ -105,7 +105,7 @@ public class CosmosContainer {
      */
     public CosmosContainerResponse replace(CosmosContainerProperties containerProperties,
                                            CosmosContainerRequestOptions options) throws CosmosClientException {
-        return database.mapContainerResponseAndBlock(this.containerWrapper.replace(containerProperties, options));
+        return database.mapContainerResponseAndBlock(this.asyncContainer.replace(containerProperties, options));
     }
 
     /**
@@ -115,7 +115,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer readProvisionedThroughput() throws CosmosClientException {
-        return database.throughputResponseToBlock(this.containerWrapper.readProvisionedThroughput());
+        return database.throughputResponseToBlock(this.asyncContainer.readProvisionedThroughput());
     }
 
     /**
@@ -126,7 +126,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) throws CosmosClientException {
-        return database.throughputResponseToBlock(this.containerWrapper
+        return database.throughputResponseToBlock(this.asyncContainer
                                                       .replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
@@ -140,20 +140,38 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse createItem(Object item) throws CosmosClientException {
-        return this.mapItemResponseAndBlock(this.containerWrapper.createItem(item));
+    public <T> CosmosItemResponse<T> createItem(T item) throws CosmosClientException {
+        return this.mapItemResponseAndBlock(this.asyncContainer.createItem(item));
     }
 
     /**
-     * Create item cosmos sync item response.
+     * Create a cosmos item synchronously.
      *
+     * @param <T> the type parameter
      * @param item the item
+     * @param partitionKey the partition key
      * @param options the options
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse createItem(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
-        return this.mapItemResponseAndBlock(this.containerWrapper.createItem(item, options));
+    public <T> CosmosItemResponse<T> createItem(T item,
+                                                PartitionKey partitionKey,
+                                                CosmosItemRequestOptions options) throws CosmosClientException {
+        return this.mapItemResponseAndBlock(this.asyncContainer.createItem(item, partitionKey, options));
+    }
+
+    /**
+     * Create a cosmos item.
+     *
+     * @param <T> the type parameter
+     * @param item the item
+     * @param options the options
+     * @return the cosmos item response
+     * @throws CosmosClientException the cosmos client exception
+     */
+    
+    public <T> CosmosItemResponse<T> createItem(T item, CosmosItemRequestOptions options) throws CosmosClientException {
+        return this.mapItemResponseAndBlock(this.asyncContainer.createItem(item, options));
     }
 
     /**
@@ -163,8 +181,8 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse upsertItem(Object item) throws CosmosClientException {
-        return this.mapItemResponseAndBlock(this.containerWrapper.upsertItem(item));
+    public <T> CosmosItemResponse<T> upsertItem(T item) throws CosmosClientException {
+        return this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item));
     }
 
     /**
@@ -175,8 +193,8 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse upsertItem(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
-        return this.mapItemResponseAndBlock(this.containerWrapper.createItem(item, options));
+    public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
+        return (CosmosItemResponse<T>) this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
     }
 
     /**
@@ -186,9 +204,25 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    CosmosItemResponse mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse> itemMono) throws CosmosClientException {
+    <T> CosmosItemResponse<T> mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse<T>> itemMono) throws CosmosClientException {
         try {
-            return itemMono
+            return (CosmosItemResponse<T>) itemMono
+                       .map(this::convertResponse)
+                       .block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosClientException) {
+                throw (CosmosClientException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    private CosmosItemResponse mapDeleteItemResponseAndBlock(Mono<CosmosAsyncItemResponse> deleteItemMono) throws
+        CosmosClientException {
+        try {
+            return deleteItemMono
                        .map(this::convertResponse)
                        .block();
         } catch (Exception ex) {
@@ -210,7 +244,7 @@ public class CosmosContainer {
      * @return the iterator
      */
     public <T> Iterator<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.containerWrapper.readAllItems(options, klass));
+        return getFeedIterator(this.asyncContainer.readAllItems(options, klass));
     }
 
     /**
@@ -223,7 +257,7 @@ public class CosmosContainer {
      * @return the iterator
      */
     public <T> Iterator<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.containerWrapper.queryItems(query, options, klass));
+        return getFeedIterator(this.asyncContainer.queryItems(query, options, klass));
     }
 
     /**
@@ -236,7 +270,7 @@ public class CosmosContainer {
      * @return the iterator
      */
     public <T> Iterator<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.containerWrapper.queryItems(querySpec, options, klass));
+        return getFeedIterator(this.asyncContainer.queryItems(querySpec, options, klass));
     }
 
     /**
@@ -246,21 +280,64 @@ public class CosmosContainer {
      * @return the iterator
      */
     public Iterator<FeedResponse<CosmosItemProperties>> queryChangeFeedItems(ChangeFeedOptions changeFeedOptions) {
-        return getFeedIterator(this.containerWrapper.queryChangeFeedItems(changeFeedOptions));
+        return getFeedIterator(this.asyncContainer.queryChangeFeedItems(changeFeedOptions));
     }
 
     /**
-     * Gets item.
+     * Read cosmos sync item response.
      *
-     * @param id the id
+     * @param itemId the item id
      * @param partitionKey the partition key
-     * @return the item
+     * @return the cosmos sync item response
+     * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItem getItem(String id, Object partitionKey) {
-        return new CosmosItem(id,
-            partitionKey,
-            this,
-            containerWrapper.getItem(id, partitionKey));
+    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) throws CosmosClientException {
+        return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId,
+                                                                    partitionKey,
+                                                                    new CosmosItemRequestOptions(),
+                                                                    itemType));
+    }
+
+    /**
+     * Read cosmos sync item response.
+     *
+     * @param options the options
+     * @return the cosmos sync item response
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey,
+                                          CosmosItemRequestOptions options, Class<T> itemType) throws CosmosClientException {
+        return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId, partitionKey, options, itemType));
+    }
+
+    /**
+     * Replace cosmos sync item response.
+     *
+     * @param <T> the type parameter
+     * @param item the item
+     * @param itemId the item id
+     * @param partitionKey the partition key
+     * @param options the options
+     * @return the cosmos sync item response
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public <T> CosmosItemResponse<T> replaceItem(T item,
+                                             String itemId,
+                                             PartitionKey partitionKey,
+                                             CosmosItemRequestOptions options) throws CosmosClientException {
+        return this.mapItemResponseAndBlock(asyncContainer.replaceItem(item, itemId, partitionKey, options));
+    }
+
+    /**
+     * Delete cosmos sync item response.
+     *
+     * @param options the options
+     * @return the cosmos sync item response
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public CosmosItemResponse deleteItem(String itemId, PartitionKey partitionKey,
+                                            CosmosItemRequestOptions options) throws CosmosClientException {
+        return  this.mapDeleteItemResponseAndBlock(asyncContainer.deleteItem(itemId, partitionKey, options));
     }
 
     /**
@@ -270,7 +347,7 @@ public class CosmosContainer {
      */
     public CosmosScripts getScripts() {
         if (this.scripts == null) {
-            this.scripts = new CosmosScripts(this, containerWrapper.getScripts());
+            this.scripts = new CosmosScripts(this, asyncContainer.getScripts());
         }
         return this.scripts;
     }
@@ -283,8 +360,8 @@ public class CosmosContainer {
      * @param response the cosmos item response
      * @return the cosmos sync item response
      */
-    private CosmosItemResponse convertResponse(CosmosAsyncItemResponse response) {
-        return new CosmosItemResponse(response, null, this);
+    private <T> CosmosItemResponse<T> convertResponse(CosmosAsyncItemResponse response) {
+        return new CosmosItemResponse<T>(response);
     }
 
     private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {

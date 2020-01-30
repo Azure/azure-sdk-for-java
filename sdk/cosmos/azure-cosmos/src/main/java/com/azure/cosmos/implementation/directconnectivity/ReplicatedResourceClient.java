@@ -5,11 +5,11 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -48,7 +49,7 @@ public class ReplicatedResourceClient {
             ISessionContainer sessionContainer,
             TransportClient transportClient,
             GatewayServiceConfigurationReader serviceConfigReader,
-            IAuthorizationTokenProvider authorizationTokenProvider, 
+            IAuthorizationTokenProvider authorizationTokenProvider,
             boolean enableReadRequestsFallback,
             boolean useMultipleWriteLocations) {
         this.configs = configs;
@@ -84,7 +85,7 @@ public class ReplicatedResourceClient {
     public static boolean isMasterResource(ResourceType resourceType) {
         return ReplicatedResourceClientUtils.isMasterResource(resourceType);
     }
-    
+
     public static boolean isGlobalStrongEnabled() {
         return true;
     }
@@ -151,7 +152,7 @@ public class ReplicatedResourceClient {
 
         return BackoffRetryUtility.executeAsync(funcDelegate, new GoneAndRetryWithRetryPolicy(request, retryTimeout),
                                                 inBackoffFuncDelegate, Duration.ofSeconds(
-                        ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS));
+                        ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS), request);
     }
 
     private Mono<StoreResponse> invokeAsync(RxDocumentServiceRequest request, TimeoutHelper timeout,

@@ -3,10 +3,10 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncItem;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.SqlParameter;
 import com.azure.cosmos.SqlParameterList;
 import com.azure.cosmos.SqlQuerySpec;
@@ -204,10 +204,9 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             throw new IllegalArgumentException("lease");
         }
 
-        CosmosAsyncItem itemForLease = this.createItemForLease(lease.getId());
-
         return this.leaseDocumentClient
-            .deleteItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
+            .deleteItem(lease.getId(), new PartitionKey(lease.getId()),
+                        this.requestOptionsFactory.createRequestOptions(lease))
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) ex;
@@ -234,7 +233,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         return this.leaseUpdater.updateLease(
             lease,
-            this.createItemForLease(lease.getId()),
+            lease.getId(), 
+            new PartitionKey(lease.getId()),
             this.requestOptionsFactory.createRequestOptions(lease),
             serverLease -> {
                 if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(oldOwner)) {
@@ -254,9 +254,10 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             throw new IllegalArgumentException("lease");
         }
 
-        CosmosAsyncItem itemForLease = this.createItemForLease(lease.getId());
-
-        return this.leaseDocumentClient.readItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
+        return this.leaseDocumentClient.readItem(lease.getId(),
+                                                 new PartitionKey(lease.getId()),
+                                                 this.requestOptionsFactory.createRequestOptions(lease),
+                                                 CosmosItemProperties.class)
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) ex;
@@ -271,7 +272,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(documentResourceResponse.getProperties()))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
-                this.createItemForLease(refreshedLease.getId()),
+                lease.getId(), 
+                new PartitionKey(lease.getId()),
                 this.requestOptionsFactory.createRequestOptions(lease),
                 serverLease ->
                 {
@@ -297,9 +299,11 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         // Get fresh lease. The assumption here is that check-pointing is done with higher frequency than lease renewal so almost
         // certainly the lease was updated in between.
-        CosmosAsyncItem itemForLease = this.createItemForLease(lease.getId());
 
-        return this.leaseDocumentClient.readItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
+        return this.leaseDocumentClient.readItem(lease.getId(),
+                                                 new PartitionKey(lease.getId()),
+                                                 this.requestOptionsFactory.createRequestOptions(lease),
+                                                 CosmosItemProperties.class)
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) ex;
@@ -314,7 +318,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(documentResourceResponse.getProperties()))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
-                this.createItemForLease(refreshedLease.getId()),
+                lease.getId(), 
+                new PartitionKey(lease.getId()),
                 this.requestOptionsFactory.createRequestOptions(lease),
                 serverLease ->
                 {
@@ -341,7 +346,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         return this.leaseUpdater.updateLease(
             lease,
-            this.createItemForLease(lease.getId()),
+            lease.getId(), 
+            new PartitionKey(lease.getId()),
             this.requestOptionsFactory.createRequestOptions(lease),
             serverLease -> {
                 if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
@@ -363,13 +369,14 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             throw new IllegalArgumentException("continuationToken must be a non-empty string");
         }
 
-        CosmosAsyncItem itemForLease = this.createItemForLease(lease.getId());
-
-        return this.leaseDocumentClient.readItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
+        return this.leaseDocumentClient.readItem(lease.getId(),
+                                                 new PartitionKey(lease.getId()),
+                                                 this.requestOptionsFactory.createRequestOptions(lease),
+                                                 CosmosItemProperties.class)
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(documentResourceResponse.getProperties()))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
-                this.createItemForLease(lease.getId()),
+                lease.getId(), new PartitionKey(lease.getId()),
                 this.requestOptionsFactory.createRequestOptions(lease),
                 serverLease -> {
                     if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
@@ -407,9 +414,11 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     private Mono<ServiceItemLease> tryGetLease(Lease lease) {
-        CosmosAsyncItem itemForLease = this.createItemForLease(lease.getId());
 
-        return this.leaseDocumentClient.readItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
+        return this.leaseDocumentClient.readItem(lease.getId(),
+                                                 new PartitionKey(lease.getId()),
+                                                 this.requestOptionsFactory.createRequestOptions(lease),
+                                                 CosmosItemProperties.class)
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) ex;
@@ -456,8 +465,5 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     private String getPartitionLeasePrefix() {
         return this.settings.getContainerNamePrefix() + LEASE_STORE_MANAGER_LEASE_SUFFIX;
     }
-
-    private CosmosAsyncItem createItemForLease(String leaseId) {
-        return this.leaseDocumentClient.getContainerClient().getItem(leaseId, leaseId);
-    }
+    
 }

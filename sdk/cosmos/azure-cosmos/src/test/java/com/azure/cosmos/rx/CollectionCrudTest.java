@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncItem;
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProperties;
@@ -323,10 +322,10 @@ public class CollectionCrudTest extends TestSuiteBase {
             document.setId("doc");
             BridgeInternal.setProperty(document, "name", "New Document");
             BridgeInternal.setProperty(document, "mypk", "mypkValue");
-            CosmosAsyncItem item = createDocument(collection, document);
+            createDocument(collection, document);
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-            options.setPartitionKey(new PartitionKey("mypkValue"));
-            CosmosAsyncItemResponse readDocumentResponse = item.read(options).block();
+            CosmosAsyncItemResponse<CosmosItemProperties> readDocumentResponse =
+                collection.readItem(document.getId(), new PartitionKey("mypkValue"), options, CosmosItemProperties.class).block();
             logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnostics());
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
@@ -346,7 +345,12 @@ public class CollectionCrudTest extends TestSuiteBase {
             BridgeInternal.setProperty(newDocument, "mypk", "mypk");
             createDocument(collection2, newDocument);
 
-            readDocumentResponse = client1.getDatabase(dbId).getContainer(collectionId).getItem(newDocument.getId(), newDocument.get("mypk")).read().block();
+            readDocumentResponse = client1.getDatabase(dbId)
+                                       .getContainer(collectionId)
+                                       .readItem(newDocument.getId(),
+                                                 new PartitionKey(newDocument.get("mypk")), 
+                                                 CosmosItemProperties.class)
+                                       .block();
             logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnostics());
             logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 

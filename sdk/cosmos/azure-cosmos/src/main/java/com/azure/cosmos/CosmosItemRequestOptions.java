@@ -30,13 +30,9 @@ public class CosmosItemRequestOptions {
      *
      * @param partitionKey the partition key
      */
-    public CosmosItemRequestOptions(Object partitionKey) {
+    CosmosItemRequestOptions(PartitionKey partitionKey){
         super();
-        if (partitionKey instanceof PartitionKey) {
-            setPartitionKey((PartitionKey) partitionKey);
-        } else {
-            setPartitionKey(new PartitionKey(partitionKey));
-        }
+        setPartitionKey(partitionKey);
     }
 
     /**
@@ -165,7 +161,7 @@ public class CosmosItemRequestOptions {
      * @param partitionKey the partition key
      * @return the CosmosItemRequestOptions.
      */
-    public CosmosItemRequestOptions setPartitionKey(PartitionKey partitionKey) {
+    CosmosItemRequestOptions setPartitionKey(PartitionKey partitionKey) {
         this.partitionKey = partitionKey;
         return this;
     }
@@ -175,7 +171,7 @@ public class CosmosItemRequestOptions {
      *
      * @return the partition key
      */
-    public PartitionKey getPartitionKey() {
+    PartitionKey getPartitionKey() {
         return partitionKey;
     }
 

@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import org.apache.commons.text.WordUtils;
-
 /**
  * Enumeration specifying applicability of permission in the Azure Cosmos DB database service.
  */
@@ -12,17 +10,18 @@ public enum PermissionMode {
     /**
      * Permission applicable for read operations only.
      */
-    READ(0x1),
+    READ(0x1, "Read"),
 
     /**
      * Permission applicable for all operations.
      */
-    ALL(0x2);
+    ALL(0x2, "All");
 
     private int value;
 
-    PermissionMode(int value) {
+    PermissionMode(int value, String overWireValue) {
         this.value = value;
+        this.overWireValue = overWireValue;
     }
 
     /**
@@ -34,8 +33,10 @@ public enum PermissionMode {
         return value;
     }
 
+    private final String overWireValue;
+
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());
+        return this.overWireValue;
     }
 }

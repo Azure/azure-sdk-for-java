@@ -22,8 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosItemTest extends TestSuiteBase {
 
-    private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
-    private List<String> databases = new ArrayList<>();
     private CosmosClient client;
     private CosmosContainer container;
 
@@ -31,7 +29,6 @@ public class CosmosItemTest extends TestSuiteBase {
     public CosmosItemTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
-
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
@@ -50,12 +47,12 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createItem() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse itemResponse = container.createItem(properties);
+        CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         validateItemResponse(properties, itemResponse);
 
         properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
+        CosmosItemResponse<CosmosItemProperties> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
         validateItemResponse(properties, itemResponse1);
 
     }
@@ -63,11 +60,11 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void createItem_alreadyExists() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse itemResponse = container.createItem(properties);
+        CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         validateItemResponse(properties, itemResponse);
 
         properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
+        CosmosItemResponse<CosmosItemProperties> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
         validateItemResponse(properties, itemResponse1);
 
         // Test for conflict
@@ -82,11 +79,12 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readItem() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse itemResponse = container.createItem(properties);
+        CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
-        CosmosItemResponse readResponse1 = itemResponse.getItem()
-                                                       .read(new CosmosItemRequestOptions()
-                                                                     .setPartitionKey(new PartitionKey(properties.get("mypk"))));
+        CosmosItemResponse<CosmosItemProperties> readResponse1 = container.readItem(properties.getId(),
+                                                                 new PartitionKey(properties.get("mypk")),
+                                                                 new CosmosItemRequestOptions(),
+                                                                 CosmosItemProperties.class);
         validateItemResponse(properties, readResponse1);
 
     }
@@ -94,7 +92,7 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void replaceItem() throws Exception{
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse itemResponse = container.createItem(properties);
+        CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
         validateItemResponse(properties, itemResponse);
         String newPropValue = UUID.randomUUID().toString();
@@ -102,30 +100,33 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.setPartitionKey(new PartitionKey(properties.get("mypk")));
         // replace document
-        CosmosItemResponse replace = itemResponse.getItem().replace(properties, options);
+        CosmosItemResponse<CosmosItemProperties> replace = container.replaceItem(properties,
+                                                              properties.getId(),
+                                                              new PartitionKey(properties.get("mypk")),
+                                                              options);
         assertThat(replace.getProperties().get("newProp")).isEqualTo(newPropValue);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteItem() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse itemResponse = container.createItem(properties);
+        CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(new PartitionKey(properties.get("mypk")));
 
-        CosmosItemResponse deleteResponse = itemResponse.getItem().delete(options);
-        assertThat(deleteResponse.getItem()).isNull();
-
+        CosmosItemResponse<CosmosItemProperties> deleteResponse = container.deleteItem(properties.getId(),
+                                                                    new PartitionKey(properties.get("mypk")),
+                                                                    options);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
     }
 
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readAllItems() throws Exception{
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse itemResponse = container.createItem(properties);
+        CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
         FeedOptions feedOptions = new FeedOptions();
-        
+
         Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
                 container.readAllItems(feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.hasNext()).isTrue();
@@ -135,7 +136,7 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryItems() throws Exception{
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse itemResponse = container.createItem(properties);
+        CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
@@ -165,7 +166,7 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     private void validateItemResponse(CosmosItemProperties containerProperties,
-                                      CosmosItemResponse createResponse) {
+                                      CosmosItemResponse<CosmosItemProperties> createResponse) {
         // Basic validation
         assertThat(createResponse.getProperties().getId()).isNotNull();
         assertThat(createResponse.getProperties().getId())

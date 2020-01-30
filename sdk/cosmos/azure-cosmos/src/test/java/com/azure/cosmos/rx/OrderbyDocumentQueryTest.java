@@ -423,8 +423,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             p.put("propScopedPartitionInt", i);
             CosmosItemProperties doc = getDocumentDefinition("duplicateParitionKeyValue", UUID.randomUUID().toString(), p);
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-            options.setPartitionKey(new PartitionKey(doc.get("mypk")));
-            createdDocuments.add(createDocument(createdCollection, doc).read(options).block().getProperties());
+            createdDocuments.add(createDocument(createdCollection, doc));
 
         }
 

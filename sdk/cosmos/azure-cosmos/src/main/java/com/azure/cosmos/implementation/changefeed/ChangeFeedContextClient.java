@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.CosmosAsyncItem;
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
@@ -16,6 +15,7 @@ import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import reactor.core.publisher.Flux;
@@ -64,7 +64,7 @@ public interface ChangeFeedContextClient {
     Mono<CosmosAsyncContainerResponse> readContainer(CosmosAsyncContainer containerLink, CosmosContainerRequestOptions options);
 
     /**
-     * Creates a {@link CosmosAsyncItem}.
+     * Creates a cosmos item.
      *
      * @param containerLink                the reference to the parent container.
      * @param document                     the document represented as a POJO or Document object.
@@ -72,36 +72,40 @@ public interface ChangeFeedContextClient {
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
      * @return an {@link Mono} containing the single resource response with the created cosmos item or an error.
      */
-    Mono<CosmosAsyncItemResponse> createItem(CosmosAsyncContainer containerLink, Object document, CosmosItemRequestOptions options,
+    <T> Mono<CosmosAsyncItemResponse<T>> createItem(CosmosAsyncContainer containerLink, T document,
+                                              CosmosItemRequestOptions options,
                                              boolean disableAutomaticIdGeneration);
 
     /**
-     * DELETE a {@link CosmosAsyncItem}.
+     * DELETE a cosmos item.
      *
-     * @param itemLink  the item reference.
+     * @param itemId  the item id.
      * @param options   the request options.
      * @return an {@link Mono} containing the  cosmos item resource response with the deleted item or an error.
      */
-    Mono<CosmosAsyncItemResponse> deleteItem(CosmosAsyncItem itemLink, CosmosItemRequestOptions options);
+    Mono<CosmosAsyncItemResponse> deleteItem(String itemId, PartitionKey partitionKey, 
+                                             CosmosItemRequestOptions options);
 
     /**
-     * Replaces a {@link CosmosAsyncItem}.
+     * Replaces a cosmos item.
      *
-     * @param itemLink     the item reference.
+     * @param itemId     the item id.
      * @param document     the document represented as a POJO or Document object.
      * @param options      the request options.
      * @return an {@link Mono} containing the  cosmos item resource response with the replaced item or an error.
      */
-    Mono<CosmosAsyncItemResponse> replaceItem(CosmosAsyncItem itemLink, Object document, CosmosItemRequestOptions options);
+    <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(String itemId, PartitionKey partitionKey, T document,
+                                              CosmosItemRequestOptions options);
 
     /**
-     * Reads a {@link CosmosAsyncItem}
+     * Reads a cosmos item
      *
-     * @param itemLink     the item reference.
+     * @param itemId     the item id.
      * @param options      the request options.
      * @return an {@link Mono} containing the  cosmos item resource response with the read item or an error.
      */
-    Mono<CosmosAsyncItemResponse> readItem(CosmosAsyncItem itemLink, CosmosItemRequestOptions options);
+    <T> Mono<CosmosAsyncItemResponse<T>> readItem(String itemId, PartitionKey partitionKey,
+                                             CosmosItemRequestOptions options, Class<T> itemType);
 
     /**
      * Query for items in a document container.

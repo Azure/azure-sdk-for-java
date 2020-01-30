@@ -3,8 +3,10 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.CosmosItemResponse;
+import com.azure.cosmos.PartitionKey;
 
 class SyncReadBenchmark extends SyncBenchmark<CosmosItemResponse> {
 
@@ -18,6 +20,7 @@ class SyncReadBenchmark extends SyncBenchmark<CosmosItemResponse> {
         PojoizedJson doc = docsToRead.get(index);
 
         String partitionKeyValue = doc.getId();
-        return cosmosContainer.getItem(doc.getId(), partitionKeyValue).read(new CosmosItemRequestOptions(partitionKeyValue));
+        return cosmosContainer.readItem(doc.getId(), new PartitionKey(partitionKeyValue),
+                                        new CosmosItemRequestOptions(), CosmosItemProperties.class);
     }
 }

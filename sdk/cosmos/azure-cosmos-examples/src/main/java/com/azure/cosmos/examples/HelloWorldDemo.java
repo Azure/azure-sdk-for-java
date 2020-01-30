@@ -5,6 +5,8 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.PartitionKey;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -36,7 +38,9 @@ public class HelloWorldDemo {
             .flatMap(response -> {
                 System.out.println("Created item: " + response.getProperties().toJson());
                 // Read that item 👓
-                return response.getItem().read();
+                return container.readItem(response.getProperties().getId(),
+                                          new PartitionKey(response.getProperties().getId()),
+                                          CosmosItemProperties.class);
             })
             .flatMap(response -> {
                 System.out.println("Read item: " + response.getProperties().toJson());
@@ -44,14 +48,17 @@ public class HelloWorldDemo {
                 try {
                     Passenger p = response.getProperties().getObject(Passenger.class);
                     p.setDestination("SFO");
-                    return response.getItem().replace(p);
+                    return container.replaceItem(p,
+                                                 response.getProperties().getId(),
+                                                 new PartitionKey(response.getProperties().getId()));
                 } catch (IOException e) {
                     System.err.println(e);
                     return Mono.error(e);
                 }
             })
             // delete that item 💣
-            .flatMap(response -> response.getItem().delete())
+            .flatMap(response -> container.deleteItem(response.getProperties().getId(),
+                                                      new PartitionKey(response.getProperties().getId())))
             .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
     }
 

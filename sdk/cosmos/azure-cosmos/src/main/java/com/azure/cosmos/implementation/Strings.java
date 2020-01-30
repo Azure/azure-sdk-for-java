@@ -42,14 +42,6 @@ public class Strings {
         return StringUtils.compare(str1, str2);
     }
 
-    public static String toCamelCase(String str) {
-        if (isNullOrEmpty(str)) {
-            return str;
-        }
-
-        return str.substring(0, 1).toUpperCase() + str.substring(1, str.length()).toLowerCase();
-    }
-    
     public static String fromCamelCaseToUpperCase(String str) {
         if (str == null) {
             return null;

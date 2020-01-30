@@ -12,6 +12,7 @@ import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -154,36 +155,6 @@ public class Utils {
         }
 
         return true;
-    }
-
-    /**
-     * Checks whether the specified path segment is a resource type
-     *
-     * @param resourcePathSegment the path segment to analyze.
-     * @return true or false
-     */
-    public static boolean IsResourceType(String resourcePathSegment) {
-        if (StringUtils.isEmpty(resourcePathSegment)) {
-            return false;
-        }
-
-        switch (resourcePathSegment.toLowerCase()) {
-            case Paths.ATTACHMENTS_PATH_SEGMENT:
-            case Paths.COLLECTIONS_PATH_SEGMENT:
-            case Paths.DATABASES_PATH_SEGMENT:
-            case Paths.PERMISSIONS_PATH_SEGMENT:
-            case Paths.USERS_PATH_SEGMENT:
-            case Paths.DOCUMENTS_PATH_SEGMENT:
-            case Paths.STORED_PROCEDURES_PATH_SEGMENT:
-            case Paths.TRIGGERS_PATH_SEGMENT:
-            case Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT:
-            case Paths.CONFLICTS_PATH_SEGMENT:
-            case Paths.PARTITION_KEY_RANGES_PATH_SEGMENT:
-                return true;
-
-            default:
-                return false;
-        }
     }
 
     /**
@@ -547,5 +518,16 @@ public class Utils {
         // doesn't work for dictionary with null value
         holder.v = dictionary.remove(key);
         return holder.v != null;
+    }
+
+    public static <T> T parse(String itemResponseBodyAsString, Class<T> itemClassType) {
+        if (StringUtils.isEmpty(itemResponseBodyAsString)) {
+            return null;
+        }
+        try {
+            return getSimpleObjectMapper().readValue(itemResponseBodyAsString, itemClassType);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to get POJO.", e);
+        }
     }
 }

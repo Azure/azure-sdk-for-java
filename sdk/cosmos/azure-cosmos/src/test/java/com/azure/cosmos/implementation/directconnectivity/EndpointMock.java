@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.google.common.collect.ImmutableList;
-import org.apache.commons.collections.map.HashedMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,7 +113,7 @@ abstract public class EndpointMock {
 
         class QuorumNotMetSecondaryReplicasDisappear {
             Uri primary;
-            Map<Uri, Function2WithCheckedException<Integer, RxDocumentServiceRequest, Boolean>> disappearDictionary = new HashedMap();
+            Map<Uri, Function2WithCheckedException<Integer, RxDocumentServiceRequest, Boolean>> disappearDictionary = new HashMap<>();
             public QuorumNotMetSecondaryReplicasDisappear primaryReplica(Uri primaryReplica) {
                 this.primary = primaryReplica;
                 return this;

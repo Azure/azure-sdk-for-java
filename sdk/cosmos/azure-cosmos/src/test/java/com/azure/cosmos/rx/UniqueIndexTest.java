@@ -7,7 +7,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncItem;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
@@ -94,11 +93,11 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         collection = database.createContainer(collectionDefinition).block().getContainer();
 
-        CosmosAsyncItem item = collection.createItem(doc1).block().getItem();
+        CosmosItemProperties properties = collection.createItem(doc1).block().getProperties();
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(PartitionKey.NONE);
-        CosmosItemProperties itemSettings = item.read(options).block().getProperties();
+        CosmosItemProperties itemSettings =
+            collection.readItem(properties.getId(), PartitionKey.NONE, options, CosmosItemProperties.class).block().getProperties();
         assertThat(itemSettings.getId()).isEqualTo(doc1.get("id").textValue());
 
         try {
@@ -136,14 +135,17 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosItemProperties doc1Inserted = collection.createItem(doc1, new CosmosItemRequestOptions()).block().getProperties();
 
-        collection.getItem(doc1.get("id").asText(), PartitionKey.NONE).replace(doc1Inserted, new CosmosItemRequestOptions()).block().getProperties();     // REPLACE with same values -- OK.
+        collection.replaceItem(doc1Inserted, doc1.get("id").asText(), PartitionKey.NONE, new CosmosItemRequestOptions())
+            .block()
+            .getProperties();     // REPLACE with same values -- OK.
 
         CosmosItemProperties doc2Inserted =  collection.createItem(doc2, new CosmosItemRequestOptions()).block().getProperties();
         CosmosItemProperties doc2Replacement = new CosmosItemProperties(doc1Inserted.toJson());
         doc2Replacement.setId( doc2Inserted.getId());
 
         try {
-            collection.getItem(doc2Inserted.getId(), PartitionKey.NONE).replace(doc2Replacement, new CosmosItemRequestOptions()).block(); // REPLACE doc2 with values from doc1 -- Conflict.
+            collection.replaceItem(doc2Replacement, doc2Inserted.getId(), PartitionKey.NONE, 
+                               new CosmosItemRequestOptions()).block(); // REPLACE doc2 with values from doc1 -- Conflict.
             fail("Did not throw due to unique constraint");
         }
         catch (RuntimeException ex) {
@@ -151,9 +153,9 @@ public class UniqueIndexTest extends TestSuiteBase {
         }
 
         doc3.put("id", doc1Inserted.getId());
-        collection.getItem(doc1Inserted.getId(), PartitionKey.NONE).replace(doc3).block();             // REPLACE with values from doc3 -- OK.
+        collection.replaceItem(doc3, doc1Inserted.getId(), PartitionKey.NONE).block();             // REPLACE with values from doc3 -- OK.
 
-        collection.getItem(doc1Inserted.getId(), PartitionKey.NONE).delete().block();
+        collection.deleteItem(doc1Inserted.getId(), PartitionKey.NONE).block();
         collection.createItem(doc1, new CosmosItemRequestOptions()).block();
     }
 
