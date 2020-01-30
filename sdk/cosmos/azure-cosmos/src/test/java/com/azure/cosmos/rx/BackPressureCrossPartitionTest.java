@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.DataType;
 import com.azure.cosmos.FeedOptions;
@@ -97,7 +98,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     private void warmUp() {
         FeedOptions options = new FeedOptions();
         // ensure collection is cached
-        createdCollection.queryItems("SELECT * FROM r", options, CosmosItemProperties.class).blockFirst();
+        createdCollection.queryItems("SELECT * FROM r", options, CosmosItemProperties.class).byPage().blockFirst();
     }
 
     @DataProvider(name = "queryProvider")
@@ -118,14 +119,14 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(maxItemCount);
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
 
         log.info("instantiating subscriber ...");
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>(1);
-        queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        queryObservable.byPage().publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
         int sleepTimeInMillis = 10000;
         int i = 0;
 

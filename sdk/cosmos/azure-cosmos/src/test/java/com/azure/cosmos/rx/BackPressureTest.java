@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -114,7 +115,7 @@ public class BackPressureTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(1);
         
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
@@ -122,7 +123,7 @@ public class BackPressureTest extends TestSuiteBase {
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
         AtomicInteger valueCount = new AtomicInteger();
 
-        queryObservable.doOnNext(cosmosItemPropertiesFeedResponse -> {
+        queryObservable.byPage().doOnNext(cosmosItemPropertiesFeedResponse -> {
             if (!cosmosItemPropertiesFeedResponse.getResults().isEmpty()) {
                 valueCount.incrementAndGet();
             }
@@ -191,7 +192,7 @@ public class BackPressureTest extends TestSuiteBase {
         // ensure collection is cached
         FeedOptions options = new FeedOptions();
         
-        createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class).blockFirst();
+        createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class).byPage().blockFirst();
     }
 
     @AfterClass(groups = { "long" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)

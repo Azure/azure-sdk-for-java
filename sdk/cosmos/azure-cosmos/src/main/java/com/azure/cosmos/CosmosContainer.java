@@ -257,7 +257,8 @@ public class CosmosContainer {
      * @return the iterator
      */
     public <T> Iterator<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.asyncContainer.queryItems(query, options, klass));
+        //  TODO: Temporary change for testing, remove byPage() once all APIs are migrated and change getFeedIterator() method to accept com.azure.cosmos.CosmosContinuablePagedFlux
+        return getFeedIterator(this.asyncContainer.queryItems(query, options, klass).byPage());
     }
 
     /**
@@ -270,7 +271,7 @@ public class CosmosContainer {
      * @return the iterator
      */
     public <T> Iterator<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.asyncContainer.queryItems(querySpec, options, klass));
+        return getFeedIterator(this.asyncContainer.queryItems(querySpec, options, klass).byPage());
     }
 
     /**

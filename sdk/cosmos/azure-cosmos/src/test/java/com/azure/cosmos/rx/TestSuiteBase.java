@@ -221,6 +221,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
 
         cosmosContainer.queryItems("SELECT * FROM root", options, CosmosItemProperties.class)
+                       .byPage()
                        .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                         .flatMap(doc -> {
@@ -552,6 +553,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         
         List<CosmosItemProperties> res = cosmosContainer
                 .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options, CosmosItemProperties.class)
+                .byPage()
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .collectList().block();
 

@@ -41,7 +41,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
             options.maxItemCount(10);
 
             String sqlQuery = "Select top 100 * from c order by c._ts";
-            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class);
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else {
 
             int index = r.nextInt(1000);

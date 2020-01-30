@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static com.azure.cosmos.Resource.validateResource;
 
@@ -278,50 +279,50 @@ public class CosmosAsyncContainer {
     /**
      * Query for documents in a items in a container
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param <T> the type parameter
      * @param query the query.
      * @param klass the class type
-     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> Flux<FeedResponse<T>> queryItems(String query, Class<T> klass) {
-        return queryItems(new SqlQuerySpec(query), null);
+    public <T> CosmosContinuablePagedFlux<T> queryItems(String query, Class<T> klass) {
+        return queryItems(new SqlQuerySpec(query), klass);
     }
 
     /**
      * Query for documents in a items in a container
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param <T> the type parameter
      * @param query the query.
      * @param options the feed options.
      * @param klass the class type
-     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> Flux<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
+    public <T> CosmosContinuablePagedFlux<T> queryItems(String query, FeedOptions options, Class<T> klass) {
         return queryItems(new SqlQuerySpec(query), options, klass);
     }
 
     /**
      * Query for documents in a items in a container
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param <T> the type parameter
      * @param querySpec the SQL query specification.
      * @param klass the class type
-     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> Flux<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, Class<T> klass) {
-        return queryItems(querySpec, klass);
+    public <T> CosmosContinuablePagedFlux<T> queryItems(SqlQuerySpec querySpec, Class<T> klass) {
+        return queryItems(querySpec, new FeedOptions(), klass);
     }
 
     /**
@@ -329,22 +330,33 @@ public class CosmosAsyncContainer {
      * <p>
      * After subscription the operation will be performed. The {@link Flux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param <T> the type parameter
      * @param querySpec the SQL query specification.
      * @param options the feed options.
      * @param klass the class type
-     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> Flux<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return getDatabase().getDocClientWrapper().queryDocuments(getLink(),
-                                                                  querySpec, options)
-                   .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                       (CosmosItemProperties
-                            .getTypedResultsFromV2Results((List<Document>) (Object) response.getResults(),
-                                                          klass)), response.getResponseHeaders(),
-                       response.queryMetrics()));
+    public <T> CosmosContinuablePagedFlux<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
+        return queryItemsInternal(querySpec, options, klass);
+    }
+
+    private <T> CosmosContinuablePagedFlux<T> queryItemsInternal(SqlQuerySpec sqlQuerySpec, FeedOptions feedOptions, Class<T> klass) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+            if (pagedFluxOptions.getRequestContinuation() != null) {
+                feedOptions.requestContinuation(pagedFluxOptions.getRequestContinuation());
+            }
+            if (pagedFluxOptions.getMaxItemCount() != null) {
+                feedOptions.maxItemCount(pagedFluxOptions.getMaxItemCount());
+            }
+            return getDatabase().getDocClientWrapper().queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, feedOptions)
+                                            .map(response ->
+                                                BridgeInternal.createFeedResponseWithQueryMetrics((
+                                                    CosmosItemProperties.getTypedResultsFromV2Results((List<Document>)(Object)response.getResults(), klass)),
+                                                    response.getResponseHeaders(),
+                                                    response.queryMetrics()));
+        });
     }
 
     /**
@@ -394,7 +406,7 @@ public class CosmosAsyncContainer {
      * @param options the request cosmosItemRequestOptions
      * @return an {@link Mono} containing the cosmos item response with the read item or an error
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>>  readItem(String itemId, PartitionKey partitionKey, 
+    public <T> Mono<CosmosAsyncItemResponse<T>>  readItem(String itemId, PartitionKey partitionKey,
                                                   CosmosItemRequestOptions options, Class<T> itemType) {
         if (options == null) {
             options = new CosmosItemRequestOptions();
@@ -436,7 +448,7 @@ public class CosmosAsyncContainer {
      * @param options the request comosItemRequestOptions
      * @return an {@link Mono} containing the  cosmos item resource response with the replaced item or an error.
      */
-    public <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(T item, String itemId, PartitionKey partitionKey, 
+    public <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(T item, String itemId, PartitionKey partitionKey,
                                                      CosmosItemRequestOptions options){
         Document doc = CosmosItemProperties.fromObject(item);
         if (options == null) {
@@ -450,7 +462,7 @@ public class CosmosAsyncContainer {
                    .map(response -> new CosmosAsyncItemResponse<T>(response, itemType))
                    .single();
     }
-    
+
     /**
      * Deletes the item.
      * <p>
@@ -478,7 +490,7 @@ public class CosmosAsyncContainer {
      * @param options the request options
      * @return an {@link Mono} containing the  cosmos item resource response.
      */
-    public Mono<CosmosAsyncItemResponse> deleteItem(String itemId, PartitionKey partitionKey, 
+    public Mono<CosmosAsyncItemResponse> deleteItem(String itemId, PartitionKey partitionKey,
                                                     CosmosItemRequestOptions options){
         if (options == null) {
             options = new CosmosItemRequestOptions();

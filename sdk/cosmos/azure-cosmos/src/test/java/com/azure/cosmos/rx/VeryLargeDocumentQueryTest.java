@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.FeedOptions;
@@ -54,11 +55,11 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         
-        Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
+        CosmosContinuablePagedFlux<CosmosItemProperties> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
             options, CosmosItemProperties.class);
 
         AtomicInteger totalCount = new AtomicInteger();
-        StepVerifier.create(feedResponseFlux.subscribeOn(Schedulers.single()))
+        StepVerifier.create(feedResponseFlux.byPage().subscribeOn(Schedulers.single()))
                     .thenConsumeWhile(feedResponse -> {
                         int size = feedResponse.getResults().size();
                         totalCount.addAndGet(size);

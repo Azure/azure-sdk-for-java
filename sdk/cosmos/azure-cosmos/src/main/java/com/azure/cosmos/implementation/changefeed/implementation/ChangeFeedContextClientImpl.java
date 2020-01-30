@@ -132,7 +132,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     public <T> Flux<FeedResponse<T>> queryItems(CosmosAsyncContainer containerLink, SqlQuerySpec querySpec,
                                                 FeedOptions options, Class<T> klass) {
         return containerLink.queryItems(querySpec, options, klass)
-            .publishOn(this.rxScheduler);
+                            .byPage()
+                            .publishOn(this.rxScheduler);
     }
 
     @Override
