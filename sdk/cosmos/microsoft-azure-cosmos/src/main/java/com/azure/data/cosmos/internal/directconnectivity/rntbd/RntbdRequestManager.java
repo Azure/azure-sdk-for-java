@@ -64,9 +64,9 @@ import static com.azure.data.cosmos.internal.HttpConstants.StatusCodes;
 import static com.azure.data.cosmos.internal.HttpConstants.SubStatusCodes;
 import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdClientChannelHealthChecker.Timestamps;
 import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
+import static com.azure.data.cosmos.internal.guava27.Strings.lenientFormat;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.lenientFormat;
 
 public final class RntbdRequestManager implements ChannelHandler, ChannelInboundHandler, ChannelOutboundHandler {
 

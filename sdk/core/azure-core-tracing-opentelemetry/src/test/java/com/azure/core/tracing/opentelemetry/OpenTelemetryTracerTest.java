@@ -29,7 +29,6 @@ import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESP
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.COMPONENT;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_BUS_DESTINATION;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.PEER_ENDPOINT;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
@@ -94,8 +93,9 @@ public class OpenTelemetryTracerTest {
         final SpanId parentSpanId = parentSpan.getContext().getSpanId();
 
         // Act
+        // TODO (savaity): replace with the AZ_TRACING_NAMESPACE_KEY
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME,
-            tracingContext.addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE));
+            tracingContext.addData("az.tracing.namespace", AZ_NAMESPACE_VALUE));
 
         // Assert
         assertSpanWithExplicitParent(updatedContext, parentSpanId);

@@ -135,6 +135,7 @@ public class ReactorSession implements AmqpSession {
             return;
         }
 
+        session.close();
         subscriptions.dispose();
 
         openReceiveLinks.forEach((key, link) -> link.dispose());
