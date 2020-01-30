@@ -35,14 +35,10 @@ import java.util.Objects;
  * Call {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct
  * an instance of the desired client.
  *
- * <p>
  * The following information must be provided on this builder:
- *     <ul>
- *         <li>the Azure Cognitive Search service endpoint through {@code .endpoint()}
- *         <li>the index name through {@code .indexName()}
- *         <li>the API key through {@code .credential()}</li>
- *     </ul>
- * </p>
+ *         the Azure Cognitive Search service endpoint through {@code .endpoint()}
+ *         the index name through {@code .indexName()}
+ *         the API key through {@code .credential()}
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
 public class SearchIndexClientBuilder {
