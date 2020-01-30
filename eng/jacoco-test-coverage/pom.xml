@@ -132,6 +132,12 @@
       <artifactId>azure-storage-blob-cryptography</artifactId>
       <version>12.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
+    <!-- Uncomment this when blob-nio is added to sdk/storage/pom.service.xml -->
+<!--    <dependency>-->
+<!--      <groupId>com.azure</groupId>-->
+<!--      <artifactId>azure-storage-blob-nio</artifactId>-->
+<!--      <version>12.0.0-beta.1</version> &lt;!&ndash; {x-version-update;com.azure:azure-storage-blob-nio;current} &ndash;&gt;-->
+<!--    </dependency>-->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
