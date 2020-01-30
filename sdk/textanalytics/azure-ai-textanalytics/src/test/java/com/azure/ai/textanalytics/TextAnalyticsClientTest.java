@@ -110,7 +110,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that  an TextAnalyticsException is thrown when empty text is passed.
+     * Verifies that a TextAnalyticsException is thrown for an empty text input.
      */
     @Test
     public void detectLanguageEmptyText() {
@@ -128,7 +128,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that an TextAnalyticsException is thrown for a text input with invalid country hint.
+     * Verifies that a TextAnalyticsException is thrown for a text input with invalid country hint.
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
@@ -360,7 +360,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that an TextAnalyticsException is thrown for a empty text input.
+     * Verifies that a TextAnalyticsException is thrown for an empty text input.
      */
     @Test
     public void analyseSentimentForEmptyText() {

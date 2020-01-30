@@ -12,11 +12,12 @@ import java.util.Locale;
  */
 @Immutable
 public class DocumentResult {
+    private final ClientLogger logger = new ClientLogger(DocumentResult.class);
+
     private final String id;
     private final TextDocumentStatistics textDocumentStatistics;
     private final TextAnalyticsError error;
     private final boolean isError;
-    private final ClientLogger logger = new ClientLogger(DocumentResult.class);
 
     /**
      * Create a {@code DocumentResult} model that maintains document id, information about the document payload,
@@ -48,7 +49,7 @@ public class DocumentResult {
      * @return the {@link TextDocumentStatistics} statistics of the text document
      */
     public TextDocumentStatistics getStatistics() {
-        throwExceptionIfError(logger);
+        throwExceptionIfError();
         return textDocumentStatistics;
     }
 
@@ -73,9 +74,8 @@ public class DocumentResult {
     /**
      * Throw a {@link TextAnalyticsException} if result has isError true and when a non-error property was accessed.
      *
-     * @param logger the {@link ClientLogger} used to log the exception.
      */
-    void throwExceptionIfError(ClientLogger logger) {
+    void throwExceptionIfError() {
         if (this.isError()) {
             throw logger.logExceptionAsError(new TextAnalyticsException(
                 String.format(Locale.ROOT,

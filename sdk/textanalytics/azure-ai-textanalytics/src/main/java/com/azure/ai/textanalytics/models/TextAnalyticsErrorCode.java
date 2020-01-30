@@ -78,7 +78,7 @@ public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnaly
     /**
      * Creates or finds a TextAnalyticsErrorCode from its string representation.
      *
-     * @param name a name to look for.
+     * @param name the string name to look for.
      * @return the corresponding TextAnalyticsErrorCode.
      */
     @JsonCreator

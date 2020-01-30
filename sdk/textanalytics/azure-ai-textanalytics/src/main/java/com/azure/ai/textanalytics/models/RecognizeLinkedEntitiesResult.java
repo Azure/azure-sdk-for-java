@@ -4,7 +4,6 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.List;
 @Immutable
 public final class RecognizeLinkedEntitiesResult extends DocumentResult {
     private final List<LinkedEntity> linkedEntities;
-    private final ClientLogger logger = new ClientLogger(RecognizeLinkedEntitiesResult.class);
 
     /**
      * Creates a {@code RecognizeLinkedEntitiesResult} model that describes recognized linked entities result
@@ -37,7 +35,7 @@ public final class RecognizeLinkedEntitiesResult extends DocumentResult {
      * @return a list of linked entities.
      */
     public List<LinkedEntity> getLinkedEntities() {
-        throwExceptionIfError(logger);
+        throwExceptionIfError();
         return linkedEntities;
     }
 }

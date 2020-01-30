@@ -135,7 +135,6 @@ public final class TextAnalyticsClientBuilder {
         return new TextAnalyticsClient(buildAsyncClient());
     }
 
-
     /**
      * Creates a {@link TextAnalyticsAsyncClient} based on options set in the builder. Every time
      * {@code buildAsyncClient()} is called a new instance of {@link TextAnalyticsAsyncClient} is created.

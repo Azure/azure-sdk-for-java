@@ -51,7 +51,7 @@ class DetectLanguageAsyncClient {
         List<DetectLanguageInput> languageInputs = Collections.singletonList(new DetectLanguageInput("0",
             text, countryHint));
         return detectBatchLanguagesWithResponse(languageInputs, null, context)
-            .map(response -> processSingleResponseErrorResult(response, logger));
+            .map(response -> processSingleResponseErrorResult(response));
     }
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> textInputs,

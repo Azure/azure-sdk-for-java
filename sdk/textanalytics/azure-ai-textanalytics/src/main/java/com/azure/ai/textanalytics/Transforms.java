@@ -29,7 +29,8 @@ import java.util.stream.IntStream;
 /**
  * Helper class to convert service level models to SDK exposes models.
  */
-class Transforms {
+final class Transforms {
+    private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
 
     /**
      * Given a list of inputs will apply the indexing function to it and return the updated list.
@@ -104,40 +105,37 @@ class Transforms {
     }
 
     /**
-     * Convert the incoming input {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
-     * to a {@link TextAnalyticsException}.
-     *
-     * @param error the {@link com.azure.ai.textanalytics.models.TextAnalyticsError}.
-     * @return the {@link TextAnalyticsException} to be thrown.
-     */
-    static TextAnalyticsException toTextAnalyticsException(com.azure.ai.textanalytics.models.TextAnalyticsError error) {
-        return new TextAnalyticsException(error.getMessage(),
-            error.getCode().toString(),
-            error.getTarget());
-    }
-
-    /**
      * Convert the service returned model response {@link DocumentResultCollection} to a {@link SimpleResponse}.
      * If the response returned with an error, a {@link TextAnalyticsException} is thrown.
      *
      * @param response the {@link com.azure.ai.textanalytics.models.TextAnalyticsError}.
-     * @param logger the {@link ClientLogger} used to log any exception.
-     *
      * @return the {@link SimpleResponse}.
      *
      * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
      * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     static <T extends DocumentResult> Response<T> processSingleResponseErrorResult(
-        Response<DocumentResultCollection<T>> response, ClientLogger logger) {
+        Response<DocumentResultCollection<T>> response) {
         Iterator<T> responseIterator = response.getValue().iterator();
         T result = null;
         if (response.getStatusCode() == HttpURLConnection.HTTP_OK && responseIterator.hasNext()) {
             result = responseIterator.next();
             if (result.isError()) {
-                throw logger.logExceptionAsError(toTextAnalyticsException(result.getError()));
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(result.getError()));
             }
         }
         return new SimpleResponse<>(response, result);
+    }
+
+    /**
+     * Convert the incoming input {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
+     * to a {@link TextAnalyticsException}.
+     *
+     * @param error the {@link com.azure.ai.textanalytics.models.TextAnalyticsError}.
+     * @return the {@link TextAnalyticsException} to be thrown.
+     */
+    private static TextAnalyticsException toTextAnalyticsException(
+        com.azure.ai.textanalytics.models.TextAnalyticsError error) {
+        return new TextAnalyticsException(error.getMessage(), error.getCode().toString(), error.getTarget());
     }
 }

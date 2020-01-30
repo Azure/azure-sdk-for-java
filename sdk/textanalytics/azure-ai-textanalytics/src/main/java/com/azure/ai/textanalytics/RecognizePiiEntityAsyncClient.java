@@ -55,7 +55,7 @@ class RecognizePiiEntityAsyncClient {
 
         return recognizeBatchPiiEntitiesWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> processSingleResponseErrorResult(response, logger));
+            .map(response -> processSingleResponseErrorResult(response));
     }
 
     Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(

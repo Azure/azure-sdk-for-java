@@ -40,7 +40,7 @@ public final class AnalyzeSentimentResult extends DocumentResult {
      * @return the document sentiment
      */
     public TextSentiment getDocumentSentiment() {
-        throwExceptionIfError(logger);
+        throwExceptionIfError();
         return documentSentiment;
     }
 
@@ -50,7 +50,7 @@ public final class AnalyzeSentimentResult extends DocumentResult {
      * @return a list of sentence sentiments
      */
     public List<TextSentiment> getSentenceSentiments() {
-        throwExceptionIfError(logger);
+        throwExceptionIfError();
         return sentenceSentiments;
     }
 }
