@@ -10,26 +10,26 @@
             "type": "String"
         },
         "testApplicationOid": {
-            "type": "string",
+            "type": "String",
             "metadata": {
                 "description": "The principal to assign the role to. This is application object id."
             }
         },
         "tenantId": {
-            "type": "string",
             "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "type": "String",
             "metadata": {
                 "description": "The tenant ID to which the application and resources belong."
             }
         },
         "testApplicationId": {
-            "type": "string",
+            "type": "String",
             "metadata": {
                 "description": "The application client ID used to run tests."
             }
         },
         "testApplicationSecret": {
-            "type": "string",
+            "type": "String",
             "metadata": {
                 "description": "The application client secret used to run tests."
             }
@@ -40,10 +40,8 @@
         "authorizationApiVersion": "2018-09-01-preview",
         "cognitiveServicesUserRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]",
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-        "primaryAccountName": "[concat('prim', parameters('baseName'))]",
         "azureTextAnalyticsUrl": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]",
         "textAnalyticsApiVersion": "2017-04-18"
-
     },
     "resources": [
         {
@@ -63,9 +61,9 @@
         {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[guid(concat('cognitiveServicesUserRoleId', variables('primaryAccountName')))]",
+            "name": "[guid(concat('cognitiveServicesUserRoleId', parameters('baseName')))]",
             "dependsOn": [
-                "[variables('primaryAccountName')]"
+                "[parameters('baseName')]"
             ],
             "properties": {
                 "roleDefinitionId": "[variables('cognitiveServicesUserRoleId')]",
@@ -75,9 +73,9 @@
         {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[guid(concat('contributorRoleId', variables('primaryAccountName')))]",
+            "name": "[guid(concat('contributorRoleId', parameters('baseName')))]",
             "dependsOn": [
-                "[variables('primaryAccountName')]"
+                "[parameters('baseName')]"
             ],
             "properties": {
                 "roleDefinitionId": "[variables('contributorRoleId')]",
@@ -87,15 +85,15 @@
     ],
     "outputs": {
         "AZURE_TENANT_ID": {
-            "type": "string",
+            "type": "String",
             "value": "[parameters('tenantId')]"
         },
         "AZURE_CLIENT_ID": {
-            "type": "string",
+            "type": "String",
             "value": "[parameters('testApplicationId')]"
         },
         "AZURE_CLIENT_SECRET": {
-            "type": "string",
+            "type": "String",
             "value": "[parameters('testApplicationSecret')]"
         },
         "AZURE_TEXT_ANALYTICS_ENDPOINT": {
@@ -103,7 +101,7 @@
             "value": "[variables('azureTextAnalyticsUrl')]"
         },
         "AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY": {
-            "type": "string",
+            "type": "String",
             "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName')), variables('textAnalyticsApiVersion')).key1]"
         }
     }
