@@ -6,14 +6,11 @@ package com.azure.storage.common;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -243,28 +240,5 @@ public final class Utility {
                         + e.getMessage()));
                 }
             });
-    }
-
-    /**
-     * Reads data from an input stream and writes it to an output stream.
-     * @param source {@link InputStream source}
-     * @param writeLength The length of data to write.
-     * @param destination {@link OutputStream destination}
-     * @throws IOException If an I/O error occurs.
-     */
-    public static void copyToOutputStream(InputStream source, long writeLength, OutputStream destination)
-        throws IOException {
-        StorageImplUtils.assertNotNull("source", source);
-        StorageImplUtils.assertNotNull("destination", destination);
-
-        final byte[] retrievedBuff = new byte[Constants.BUFFER_COPY_LENGTH];
-        int nextCopy = (int) Math.min(retrievedBuff.length, writeLength);
-        int count = source.read(retrievedBuff, 0, nextCopy);
-
-        while (nextCopy > 0 && count != -1) {
-            destination.write(retrievedBuff, 0, count);
-            nextCopy = (int) Math.min(retrievedBuff.length, writeLength);
-            count = source.read(retrievedBuff, 0, nextCopy);
-        }
     }
 }

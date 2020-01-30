@@ -17,7 +17,6 @@ import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
@@ -177,7 +176,7 @@ public class BlobClient extends BlobClientBase {
             BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(client,
                 validatedParallelTransferOptions, headers, metadata, tier, requestConditions);
             try {
-                Utility.copyToOutputStream(data, length, blobOutputStream);
+                StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
                 blobOutputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
