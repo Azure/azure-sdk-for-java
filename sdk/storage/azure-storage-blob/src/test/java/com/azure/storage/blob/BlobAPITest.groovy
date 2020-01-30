@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
@@ -15,6 +16,7 @@ import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
+import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
@@ -88,10 +90,34 @@ class BlobAPITest extends APISpec {
         def pto = new ParallelTransferOptions(null, null, null, Constants.MB)
 
         when:
+        // Uses blob output stream under the hood.
         bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null, null)
 
         then:
         notThrown(BlobStorageException)
+    }
+
+    @Unroll
+    def "Upload numBlocks"() {
+        setup:
+        def randomData = getRandomByteArray(size)
+        def input = new ByteArrayInputStream(randomData)
+
+        def pto = new ParallelTransferOptions((Integer) maxUploadSize, null, null, (Integer) maxUploadSize)
+
+        when:
+        bc.uploadWithResponse(input, size, pto, null, null, null, null, null, null)
+
+        then:
+        def blocksUploaded = bc.getBlockBlobClient().listBlocks(BlockListType.ALL).getCommittedBlocks()
+        blocksUploaded.size() == (int) numBlocks
+
+        where:
+        size            | maxUploadSize || numBlocks
+        0               | null          || 0
+        Constants.KB    | null          || 0 // default is MAX_UPLOAD_BYTES
+        Constants.MB    | null          || 0 // default is MAX_UPLOAD_BYTES
+        3 * Constants.MB| Constants.MB  || 3
     }
 
     def "Download all null"() {
