@@ -29,7 +29,7 @@ public final class BufferedHttpResponse extends HttpResponse {
         super(innerHttpResponse.getRequest());
         this.innerHttpResponse = innerHttpResponse;
         this.cachedBody = FluxUtil.collectBytesInByteBufferStream(innerHttpResponse.getBody())
-            .map(bytes -> ByteBuffer.wrap(bytes))
+            .map(ByteBuffer::wrap)
             .flux()
             .cache();
     }
