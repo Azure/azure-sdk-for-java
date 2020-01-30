@@ -6,38 +6,33 @@ package com.azure.data.appconfiguration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.ResourceExistsException;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingFields;
-import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingSelector;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -59,10 +54,6 @@ public final class ConfigurationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
 
     private static final String ETAG_ANY = "*";
-    private static final Supplier<Map<String, String>> APP_CONFIG_TRACING_PROPERTIES =
-        () -> Collections.unmodifiableMap(
-                new HashMap<String, String>() {{ put(AZ_TRACING_NAMESPACE_KEY, "Microsoft.AppConfiguration"); }});
-
     private final String serviceEndpoint;
     private final ConfigurationService service;
     private final String apiVersion = ConfigurationServiceVersion.getLatest().getVersion();
@@ -75,7 +66,7 @@ public final class ConfigurationAsyncClient {
      * @param version {@link ConfigurationServiceVersion} of the service to be used when making requests.
      */
     ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ConfigurationServiceVersion version) {
-        this.service = RestProxy.create(ConfigurationService.class, pipeline, APP_CONFIG_TRACING_PROPERTIES);
+        this.service = RestProxy.create(ConfigurationService.class, pipeline);
         this.serviceEndpoint = serviceEndpoint;
     }
 
