@@ -169,7 +169,7 @@ class APISpec extends Specification {
     }
 
     static boolean liveMode() {
-        return testMode == TestMode.LIVE
+        return testMode != TestMode.PLAYBACK
     }
 
     def generateShareName() {
@@ -254,7 +254,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (!liveMode()) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 

@@ -13,9 +13,15 @@ import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
@@ -407,5 +413,151 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         analyseBatchSentimentShowStatsRunner((inputs, options) ->
             validateSentiment(true, getExpectedBatchTextSentiment(),
                 client.analyzeBatchSentimentWithResponse(inputs, options, Context.NONE).getValue()));
+    }
+
+    /**
+     * Test client builder with valid subscription key
+     */
+    @Test
+    public void validKey() {
+        // Arrange
+        final TextAnalyticsClient client = createClientBuilder(getEndpoint(),
+            new TextAnalyticsApiKeyCredential(getSubscriptionKey())).buildClient();
+
+        // Action and Assert
+        validateDetectedLanguages(Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
+            client.detectLanguage("This is a test English Text").getDetectedLanguages());
+    }
+
+    /**
+     * Test client builder with invalid subscription key
+     */
+    @Test
+    public void invalidKey() {
+        // Arrange
+        final TextAnalyticsClient client = createClientBuilder(getEndpoint(),
+            new TextAnalyticsApiKeyCredential(INVALID_KEY)).buildClient();
+
+        // Action and Assert
+        assertThrows(HttpResponseException.class, () -> client.detectLanguage("This is a test English Text"));
+    }
+
+    /**
+     * Test client with valid subscription key but update to invalid key and make call to server.
+     */
+    @Test
+    public void updateToInvalidKey() {
+        // Arrange
+        final TextAnalyticsApiKeyCredential credential =
+            new TextAnalyticsApiKeyCredential(getSubscriptionKey());
+
+        final TextAnalyticsClient client = createClientBuilder(getEndpoint(), credential).buildClient();
+
+        // Update to invalid key
+        credential.updateCredential(INVALID_KEY);
+
+        // Action and Assert
+        assertThrows(HttpResponseException.class, () -> client.detectLanguage("This is a test English Text"));
+    }
+
+    /**
+     * Test client with invalid subscription key but update to valid key and make call to server.
+     */
+    @Test
+    public void updateToValidKey() {
+        // Arrange
+        final TextAnalyticsApiKeyCredential credential =
+            new TextAnalyticsApiKeyCredential(INVALID_KEY);
+
+        final TextAnalyticsClient client = createClientBuilder(getEndpoint(), credential).buildClient();
+
+        // Update to valid key
+        credential.updateCredential(getSubscriptionKey());
+
+        // Action and Assert
+        validateDetectedLanguages(Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
+            client.detectLanguage("This is a test English Text").getDetectedLanguages());
+    }
+
+    /**
+     * Test for missing endpoint
+     */
+    @Test
+    public void missingEndpoint() {
+        assertThrows(NullPointerException.class, () -> {
+            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
+            builder.buildClient();
+        });
+    }
+
+    /**
+     * Test for null subscription key
+     */
+    @Test
+    public void nullSubscriptionKey() {
+        assertThrows(NullPointerException.class, () -> {
+            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
+            builder.endpoint(getEndpoint()).subscriptionKey(null);
+        });
+    }
+
+    /**
+     * Test for null AAD credential
+     */
+    @Test
+    public void nullAADCredential() {
+        assertThrows(NullPointerException.class, () -> {
+            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
+            builder.endpoint(getEndpoint()).credential(null);
+        });
+    }
+
+    /**
+     * Test for null service version, which would take take the default service version by default
+     */
+    @Test
+    public void nullServiceVersion() {
+        // Arrange
+        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
+            .endpoint(getEndpoint())
+            .subscriptionKey(new TextAnalyticsApiKeyCredential(getSubscriptionKey()))
+            .retryPolicy(new RetryPolicy())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .serviceVersion(null);
+
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        // Action and Assert
+        validateDetectedLanguages(Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
+            clientBuilder.buildClient().detectLanguage("This is a test English Text").getDetectedLanguages());
+    }
+
+    /**
+     * Test for default pipeline in client builder
+     */
+    @Test
+    public void defaultPipeline() {
+        // Arrange
+        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
+            .endpoint(getEndpoint())
+            .subscriptionKey(new TextAnalyticsApiKeyCredential(getSubscriptionKey()))
+            .configuration(Configuration.getGlobalConfiguration())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        // Action and Assert
+        validateDetectedLanguages(Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
+            clientBuilder.buildClient().detectLanguage("This is a test English Text").getDetectedLanguages());
     }
 }

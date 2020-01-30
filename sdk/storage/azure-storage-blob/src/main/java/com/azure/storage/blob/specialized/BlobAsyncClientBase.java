@@ -1025,12 +1025,13 @@ public class BlobAsyncClientBase {
     }
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
+        // blobSize determination - contentLength only returns blobSize if the download is not chunked.
+        long blobSize = response.getDeserializedHeaders().getContentRange() == null
+            ? response.getDeserializedHeaders().getContentLength()
+            : extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
         BlobProperties properties = new BlobProperties(null, response.getDeserializedHeaders().getLastModified(),
-            response.getDeserializedHeaders().getETag(),
-            response.getDeserializedHeaders().getContentLength() == null
-                ? 0 : response.getDeserializedHeaders().getContentLength(),
-            response.getDeserializedHeaders().getContentType(), null,
-            response.getDeserializedHeaders().getContentEncoding(),
+            response.getDeserializedHeaders().getETag(), blobSize, response.getDeserializedHeaders().getContentType(),
+            null, response.getDeserializedHeaders().getContentEncoding(),
             response.getDeserializedHeaders().getContentDisposition(),
             response.getDeserializedHeaders().getContentLanguage(), response.getDeserializedHeaders().getCacheControl(),
             response.getDeserializedHeaders().getBlobSequenceNumber(), response.getDeserializedHeaders().getBlobType(),
