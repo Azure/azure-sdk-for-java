@@ -27,19 +27,9 @@ This library provides an easy (native) way for a Java developer to interact with
 ```
 [//]: # ({x-version-update-end})
 
-## Using the library
-
-The APIs documented in this section provide access to operations on search data, such as index creation and population, document upload, and queries. When calling APIs, keep the following points in mind:
-
--   All APIs will be issued over HTTPS (on the default port 443).
--   Your search service is uniquely identified by a fully-qualified domain name (for example: `mysearchservice.search.windows.net`).
--   All requests must include an `api-key` that was generated for the Search service you provisioned. Having a valid key establishes trust, on a per request basis, between the application sending the request and the service that handles it.
--   Requests can optionally specify an `api-version`. The default value matches the version of the current service release: `2019-05-06`.
--   You will need to provide the `cognitive search service url` which is the URL of the Azure Cognitive Search service you provisioned: `https://<yourService>.search.windows.net`.
-
 ## Key concepts
 
-Azure Cognitive Search has the concepts of search services and indexes and documents, where a search service contains one or more indexes that provides persistent storage of searchable data, and data is loaded in the form of JSON documents. DData can be pushed to an index from an external data source, but if you use an indexer, it's possible to crawl a data source to extract and load data into an index.
+Azure Cognitive Search has the concepts of search services and indexes and documents, where a search service contains one or more indexes that provides persistent storage of searchable data, and data is loaded in the form of JSON documents. Data can be pushed to an index from an external data source, but if you use an indexer, it's possible to crawl a data source to extract and load data into an index.
 
 There are several types of operations that can be executed against the service:
 
