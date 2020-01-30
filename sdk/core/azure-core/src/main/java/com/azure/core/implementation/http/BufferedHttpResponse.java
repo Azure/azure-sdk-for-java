@@ -56,7 +56,7 @@ public final class BufferedHttpResponse extends HttpResponse {
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return cachedBody.next().map(byteBuffer -> byteBuffer.array());
+        return cachedBody.next().map(ByteBuffer::array);
     }
 
     @Override
