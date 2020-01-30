@@ -16,8 +16,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * A Flux that simplifies the task of executing long-running operations against an Azure service.
- * A subscription to {@link PollerFlux} initiate a long-running operation and polls the status
+ * A Flux that simplifies the task of executing long running operations against an Azure service.
+ * A subscription to {@link PollerFlux} initiate a long running operation and polls the status
  * until it completes.
  *
  * <p><strong>Code samples</strong></p>
@@ -38,7 +38,7 @@ import java.util.function.Function;
  * {@codesnippet com.azure.core.util.polling.poller.cancelOperation}
  *
  * @param <T> The type of poll response value.
- * @param <U> The type of the final result of long-running operation.
+ * @param <U> The type of the final result of long running operation.
  */
 public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     private final ClientLogger logger = new ClientLogger(PollerFlux.class);
@@ -53,35 +53,34 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     /**
      * Creates PollerFlux.
      *
-     * @param defaultPollInterval the default polling interval
-     * @param activationOperation the activation operation to be invoked at most once across all subscriptions,
-     *                            this parameter is required, if there is no specific activation work to be
-     *                            done then invocation should return Mono.empty(), this operation will be called
-     *                            with a new {@link PollingContext}.
-     * @param pollOperation the operation to poll the current state of long running operation, this parameter
-     *                      is required and the operation will be called with current {@link PollingContext}.
-     * @param cancelOperation a {@link Function} that represents the operation to cancel the long-running operation
-     *                        if service supports cancellation, this parameter is required and if service does not
-     *                        support cancellation then the implementer should return Mono.error with an error message
-     *                        indicating absence of cancellation support, the operation will be called with current
-     *                        {@link PollingContext}.
+     * @param pollInterval the polling interval
+     * @param activationOperation the activation operation to activate (start) the long running operation.
+     *     This operation will be invoked at most once across all subscriptions. This parameter is required.
+     *     If there is no specific activation work to be done then invocation should return Mono.empty(),
+     *     this operation will be called with a new {@link PollingContext}.
+     * @param pollOperation the operation to poll the current state of long running operation. This parameter
+     *     is required and the operation will be called with current {@link PollingContext}.
+     * @param cancelOperation a {@link Function} that represents the operation to cancel the long running operation
+     *     if service supports cancellation. This parameter is required. If service does not support cancellation
+     *     then the implementer should return Mono.error with an error message indicating absence of cancellation
+     *     support. The operation will be called with current {@link PollingContext}.
      * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of
-     *                             the long-running operation if service support it, this parameter is required and
-     *                             operation will be called current {@link PollingContext}, if service does not have an
-     *                             api to fetch final result and if final result is same as final poll response value
-     *                             then implementer can choose to simply return value from provided final poll response.
+     *     the long running operation if service support it. This parameter is required and operation will be called
+     *     current {@link PollingContext}. If service does not have an api to fetch final result and if final result
+     *     is same as final poll response value then implementer can choose to simply return value from provided
+     *     final poll response.
      */
-    public PollerFlux(Duration defaultPollInterval,
+    public PollerFlux(Duration pollInterval,
                       Function<PollingContext<T>, Mono<T>> activationOperation,
                       Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
                       BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
                       Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
-        Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
-        if (defaultPollInterval.compareTo(Duration.ZERO) <= 0) {
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
-        this.defaultPollInterval = defaultPollInterval;
+        this.defaultPollInterval = pollInterval;
         Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
@@ -98,43 +97,40 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     /**
      * Creates PollerFlux.
      *
-     * PollerFlux obtained from this factory method uses an activationOperation which returns a Mono that
-     * emits {@link PollResponse}, which holds the result.
-     * The PollerFlux created from constructor uses an activationOperation which returns a Mono that directly
-     * emits result.
-     * Since the first variant of PollerFlux has access to the response, it can skip the polling loop if the
-     * response indicate that LRO is completed. Whereas the second PollerFlux variant calls pollFunction at
-     * least once.
+     * This create method differs from the PollerFlux constructor in that the constructor uses an
+     * activationOperation which returns a Mono that emits result, the create method uses an activationOperation
+     * which returns a Mono that emits {@link PollResponse}. The {@link PollResponse} holds the result.
+     * If the {@link PollResponse} from the activationOperation indicate that long running operation is
+     * completed then the pollOperation will not be called.
      *
-     * @param defaultPollInterval the default polling interval
-     * @param activationOperation the activation operation to be invoked at most once across all subscriptions,
-     *                            this parameter is required, if there is no specific activation work to be
-     *                            done then invocation should return Mono.empty(), this operation will be called
-     *                            with a new {@link PollingContext}.
-     * @param pollOperation the operation to poll the current state of long running operation, this parameter
-     *                      is required and the operation will be called with current {@link PollingContext}.
-     * @param cancelOperation a {@link Function} that represents the operation to cancel the long-running operation
-     *                        if service supports cancellation, this parameter is required and if service does not
-     *                        support cancellation then the implementer should return Mono.error with an error message
-     *                        indicating absence of cancellation support, the operation will be called with current
-     *                        {@link PollingContext}.
+     * @param pollInterval the polling interval
+     * @param activationOperation the activation operation to activate (start) the long running operation.
+     *     This operation will be invoked at most once across all subscriptions. This parameter is required.
+     *     If there is no specific activation work to be done then invocation should return Mono.empty(),
+     *     this operation will be called with a new {@link PollingContext}.
+     * @param pollOperation the operation to poll the current state of long running operation. This parameter
+     *     is required and the operation will be called with current {@link PollingContext}.
+     * @param cancelOperation a {@link Function} that represents the operation to cancel the long running operation
+     *     if service supports cancellation. This parameter is required. If service does not support cancellation
+     *     then the implementer should return Mono.error with an error message indicating absence of cancellation
+     *     support. The operation will be called with current {@link PollingContext}.
      * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of
-     *                             the long-running operation if service support it, this parameter is required and
-     *                             operation will be called current {@link PollingContext}, if service does not have an
-     *                             api to fetch final result and if final result is same as final poll response value
-     *                             then implementer can choose to simply return value from provided final poll response.
+     *     the long running operation if service support it. This parameter is required and operation will be called
+     *     current {@link PollingContext}. If service does not have an api to fetch final result and if final result
+     *     is same as final poll response value then implementer can choose to simply return value from provided
+     *     final poll response.
      *
      * @param <T> The type of poll response value.
-     * @param <U> The type of the final result of long-running operation.
+     * @param <U> The type of the final result of long running operation.
      * @return PollerFlux
      */
     public static <T, U> PollerFlux<T, U>
-        create(Duration defaultPollInterval,
+        create(Duration pollInterval,
                Function<PollingContext<T>, Mono<PollResponse<T>>> activationOperation,
                Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
                BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
                Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
-        return new PollerFlux<>(defaultPollInterval,
+        return new PollerFlux<>(pollInterval,
             activationOperation,
             pollOperation,
             cancelOperation,
@@ -142,18 +138,18 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             true);
     }
 
-    private PollerFlux(Duration defaultPollInterval,
+    private PollerFlux(Duration pollInterval,
                        Function<PollingContext<T>, Mono<PollResponse<T>>> activationOperation,
                        Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
                        BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
                        Function<PollingContext<T>, Mono<U>> fetchResultOperation,
                        boolean ignored) {
-        Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
-        if (defaultPollInterval.compareTo(Duration.ZERO) <= 0) {
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'defaultPollInterval' is not allowed."));
+                "Negative or zero value for 'pollInterval' is not allowed."));
         }
-        this.defaultPollInterval = defaultPollInterval;
+        this.defaultPollInterval = pollInterval;
         Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
