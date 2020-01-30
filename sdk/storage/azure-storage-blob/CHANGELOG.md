@@ -1,5 +1,9 @@
 # Release History
 
+## 12.4.0-beta.1 (Unreleased)
+- Added ability to access BlobProperties from BlobInputStream.
+- Modified downloadToFile to populate BlobProperties.blobSize to be the actual blob size instead of the content length of the first range. 
+
 ## 12.3.0 (2020-01-16)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.3.0/sdk/storage/azure-storage-blob/README.md)

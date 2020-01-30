@@ -458,6 +458,66 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     }
 
     /**
+     * Verifies we can receive from the same partition concurrently.
+     */
+    @Test
+    public void multipleReceiversSamePartition() throws InterruptedException {
+        // Arrange
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 50);
+        final EventHubConsumerAsyncClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 50);
+        final String partitionId = "1";
+        final PartitionProperties properties = consumer.getPartitionProperties(partitionId).block(TIMEOUT);
+        Assertions.assertNotNull(properties, "Should have been able to get partition properties.");
+
+        final int numberToTake = 10;
+        final CountDownLatch countdown1 = new CountDownLatch(numberToTake);
+        final CountDownLatch countdown2 = new CountDownLatch(numberToTake);
+        final EventPosition position = EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber());
+
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final EventHubProducerAsyncClient producer = client.createProducer();
+        final Disposable producerEvents = getEvents(isActive).flatMap(event -> {
+            event.getProperties().put(PARTITION_ID_HEADER, partitionId);
+            return producer.send(event, new SendOptions().setPartitionId(partitionId));
+        }).subscribe(
+            sent -> logger.info("Event sent."),
+            error -> logger.error("Error sending event. Exception:" + error, error),
+            () -> logger.info("Completed"));
+
+        consumer.receiveFromPartition(partitionId, position)
+            .filter(x -> TestUtils.isMatchingEvent(x.getData(), MESSAGE_TRACKING_ID))
+            .take(numberToTake)
+            .subscribe(event -> {
+                logger.info("Consumer1: Event received");
+                countdown1.countDown();
+            });
+
+        consumer2.receiveFromPartition(partitionId, position)
+            .filter(x -> TestUtils.isMatchingEvent(x.getData(), MESSAGE_TRACKING_ID))
+            .take(numberToTake)
+            .subscribe(event -> {
+                logger.info("Consumer2: Event received");
+                countdown2.countDown();
+            });
+
+        // Assert
+        try {
+            boolean successful = countdown1.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+            boolean successful2 = countdown2.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+
+            Assertions.assertTrue(successful,
+                String.format("Expected to get %s events. Got: %s", numberToTake, countdown1.getCount()));
+            Assertions.assertTrue(successful2,
+                String.format("Expected to get %s events. Got: %s", numberToTake, countdown2.getCount()));
+        } finally {
+            isActive.set(false);
+            producerEvents.dispose();
+            consumer.close();
+            consumer2.close();
+        }
+    }
+
+    /**
      * Verifies that we are properly closing the receiver after each receive operation that terminates the upstream
      * flux.
      */

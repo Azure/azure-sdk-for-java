@@ -3,7 +3,7 @@
 
 package com.azure.data.cosmos;
 
-import com.google.common.base.Strings;
+import com.azure.data.cosmos.internal.guava27.Strings;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
