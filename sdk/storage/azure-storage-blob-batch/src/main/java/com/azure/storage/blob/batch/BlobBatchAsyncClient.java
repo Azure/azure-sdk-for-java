@@ -26,6 +26,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -214,8 +215,8 @@ public final class BlobBatchAsyncClient {
     private <T> PagedResponse<Response<T>> initPagedResponse(List<Response<T>> values, Response<?> response) {
         return new PagedResponse<Response<T>>() {
             @Override
-            public IterableStream<Response<T>> getElements() {
-                return new IterableStream<>(values);
+            public List<Response<T>> getItems() {
+                return values;
             }
 
             @Override

@@ -4,11 +4,13 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.IdleStateEventHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
-import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
@@ -101,9 +103,15 @@ public class NettyAsyncHttpClientBuilder {
                             .nonProxyHosts(proxyOptions.getNonProxyHosts()));
                 }
 
-                return tcpConfig.bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap,
-                    "azure.idleHandler", (connectionObserver, channel) -> channel.pipeline()
-                        .addFirst("azure.idleHandler", new IdleStateHandler(true, 30, 30, 60, TimeUnit.SECONDS))));
+                return tcpConfig.bootstrap(bootstrap -> bootstrap.handler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast("azure.idleStateHandler",
+                            new IdleStateHandler(true, 30, 30, 0, TimeUnit.SECONDS));
+                        ch.pipeline().addLast("azure.idleStateEventHandler", new IdleStateEventHandler());
+
+                    }
+                }));
             });
 
         return new NettyAsyncHttpClient(nettyHttpClient);

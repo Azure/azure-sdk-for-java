@@ -862,7 +862,7 @@ public class BlobAsyncClientBase {
                             .subscribeOn(Schedulers.elastic())
                             .flatMap(response ->
                                 writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
-                                    totalProgress));
+                                    totalProgress)).then();
                     })
                     // Only the first download call returns a value.
                     .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));

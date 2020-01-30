@@ -375,39 +375,17 @@ final class HttpResponseBodyDecoder {
      */
     private static Type extractEntityTypeFromReturnType(HttpResponseDecodeData decodeData) {
         Type token = decodeData.getReturnType();
-        final ClientLogger logger = new ClientLogger(HttpResponseBodyDecoder.class);
+
         if (token != null) {
-            if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
+            if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class) || TypeUtil.isTypeOrSubTypeOf(token, Flux.class)) {
                 token = TypeUtil.getTypeArgument(token);
-            } else if (TypeUtil.isTypeOrSubTypeOf(token, Flux.class)) {
-                Type t = TypeUtil.getTypeArgument(token);
-                try {
-                    // TODO: anuchan - unwrap OperationStatus a different way
-                    // Check for OperationStatus<?>
-                    if (TypeUtil.isTypeOrSubTypeOf(t, Class.forName(
-                        "com.azure.core.management.implementation.OperationStatus"))) {
-                        token = t;
-                    }
-                } catch (ClassNotFoundException ignored) {
-                    logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus'.");
-                }
             }
 
             if (TypeUtil.isTypeOrSubTypeOf(token, Response.class)) {
                 token = TypeUtil.getRestResponseBodyType(token);
             }
-
-            try {
-                // TODO: anuchan - unwrap OperationStatus a different way
-                if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName(
-                    "com.azure.core.management.implementation.OperationStatus"))) {
-                    // Get Type of 'T' from OperationStatus<T>
-                    token = TypeUtil.getTypeArgument(token);
-                }
-            } catch (ClassNotFoundException ignored) {
-                logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus'.");
-            }
         }
+
         return token;
     }
 
