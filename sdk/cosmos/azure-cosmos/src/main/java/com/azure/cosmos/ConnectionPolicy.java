@@ -29,7 +29,7 @@ public final class ConnectionPolicy {
     private RetryOptions retryOptions;
     private boolean enableEndpointDiscovery = true;
     private List<String> preferredLocations;
-    private boolean usingMultipleWriteLocations;
+    private boolean usingMultipleWriteLocations = true;
     private InetSocketAddress inetSocketProxyAddress;
     private Boolean enableReadRequestsFallback;
 
