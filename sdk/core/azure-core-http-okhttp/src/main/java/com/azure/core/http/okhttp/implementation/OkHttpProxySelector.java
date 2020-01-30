@@ -23,18 +23,20 @@ public final class OkHttpProxySelector extends ProxySelector {
     public OkHttpProxySelector(Proxy.Type proxyType, SocketAddress proxyAddress, String nonProxyHosts) {
         this.proxyType = proxyType;
         this.proxyAddress = proxyAddress;
-        this.nonProxyHostsPattern = Pattern.compile(nonProxyHosts);
+        this.nonProxyHostsPattern = (nonProxyHosts == null)
+            ? null
+            : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
     }
 
     @Override
     public List<Proxy> select(URI uri) {
         /*
-         * If the 'URI' the request is being sent to matches the 'nonProxyHostsPattern' return no options for proxying,
-         * otherwise return the proxy.
+         * If the host of the URI matches the nonProxyHostsPattern return no options for proxying, otherwise return the
+         * proxy.
          */
-        return nonProxyHostsPattern.matcher(uri.toString()).find()
-            ? null
-            : Collections.singletonList(new Proxy(proxyType, proxyAddress));
+        return (nonProxyHostsPattern == null || !nonProxyHostsPattern.matcher(uri.getHost()).matches())
+            ? Collections.singletonList(new Proxy(proxyType, proxyAddress))
+            : null;
     }
 
     @Override
