@@ -3,7 +3,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
-import com.google.common.base.Strings;
+import com.azure.data.cosmos.internal.guava27.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;

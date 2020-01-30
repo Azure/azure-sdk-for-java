@@ -12,6 +12,7 @@ import spock.lang.Unroll
 
 import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
+import java.nio.file.InvalidPathException
 import java.time.OffsetDateTime
 
 class AzureFileSystemSpec extends APISpec {
@@ -19,6 +20,13 @@ class AzureFileSystemSpec extends APISpec {
 
     def setup() {
         config = initializeConfigMap()
+    }
+
+    def createFS() {
+        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
+        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+
+        return new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
     }
 
     // We do not have a meaningful way of testing the configurations for the ServiceClient.
@@ -128,5 +136,50 @@ class AzureFileSystemSpec extends APISpec {
         then:
         notThrown(FileSystemAlreadyExistsException)
         provider.getFileSystem(uri) != null
+    }
+
+    @Unroll
+    def "FileSystem getPath"() {
+        setup:
+        def fs = createFS()
+        def arr = pathArr == null ? null : Arrays.copyOf(pathArr.toArray(), pathArr.size(), String[].class)
+
+        expect:
+        fs.getPath(path0, arr).toString() == resultStr
+
+        where:
+        path0               | pathArr                    || resultStr
+        "foo"               | null                       || "foo"
+        "foo/bar"           | null                       || "foo/bar"
+        "/foo/"             | null                       || "foo"
+        "/foo/bar/"         | null                       || "foo/bar"
+        "foo"               | ["bar"]                    || "foo/bar"
+        "foo/bar/fizz/buzz" | null                       || "foo/bar/fizz/buzz"
+        "foo"               | ["bar", "fizz", "buzz"]    || "foo/bar/fizz/buzz"
+        "foo"               | ["bar/fizz", "buzz"]       || "foo/bar/fizz/buzz"
+        "foo"               | ["bar", "fizz/buzz"]       || "foo/bar/fizz/buzz"
+        "root:/foo"         | null                       || "root:/foo"
+        "root:/foo"         | ["bar"]                    || "root:/foo/bar"
+        "///root:////foo"   | ["//bar///fizz//", "buzz"] || "root:/foo/bar/fizz/buzz"
+        "root:/"            | null                       || "root:"
+    }
+
+    @Unroll
+    def "FileSystem getPath fail"() {
+        when:
+        createFS().getPath(path)
+
+        then:
+        thrown(InvalidPathException)
+
+        where:
+        path                  | _
+        "root1:/dir1:"        | _
+        "root1:/d:ir"         | _
+        ":root1:/dir"         | _
+        "root1::/dir"         | _
+        "root:1/dir"          | _
+        "root1/dir:"          | _
+        "root1:/foo/bar/dir:" | _
     }
 }

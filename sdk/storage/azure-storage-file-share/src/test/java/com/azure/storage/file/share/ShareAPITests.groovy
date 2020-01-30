@@ -4,11 +4,15 @@
 package com.azure.storage.file.share
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.rest.Response
+import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareSnapshotInfo
+import com.azure.storage.file.share.models.ShareStatistics
 import com.azure.storage.file.share.models.ShareStorageException
 import spock.lang.Unroll
 
@@ -246,6 +250,37 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
     }
 
+    @Unroll
+    def "Get statistics"() {
+        setup:
+        primaryShareClient.create()
+        primaryShareClient.createFile("tempFile", (long) size)
+
+        when:
+        def resp = primaryShareClient.getStatisticsWithResponse(null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(resp, 200)
+        resp.getValue().getShareUsageInBytes() == size
+        resp.getValue().getShareUsageInGB() == gigabytes
+
+        where:
+        size                    || gigabytes
+        0                       || 0
+        Constants.KB            || 1
+        Constants.GB            || 1
+        (long) 3 * Constants.GB || 3
+    }
+
+    def "Get statistics error"() {
+        when:
+        primaryShareClient.getStatistics()
+
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
+    }
+
     def "Create directory"() {
         given:
         primaryShareClient.create()
@@ -384,6 +419,16 @@ class ShareAPITests extends APISpec {
         "fileName"  | -1      | null                                                  | testMetadata                          | ShareErrorCode.OUT_OF_RANGE_INPUT
         "fileName"  | 1024    | new ShareFileHttpHeaders().setContentMd5(new byte[0]) | testMetadata                          | ShareErrorCode.INVALID_HEADER_VALUE
         "fileName"  | 1024    | null                                                  | Collections.singletonMap("", "value") | ShareErrorCode.EMPTY_METADATA_KEY
+    }
+
+    def "Create file in root directory"() {
+        given:
+        primaryShareClient.create()
+        def directoryClient = primaryShareClient.getRootDirectoryClient()
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            directoryClient.createFileWithResponse("testCreateFile", 1024, null,  null, null, null, null, null), 201)
     }
 
     def "Delete directory"() {

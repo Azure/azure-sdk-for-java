@@ -40,9 +40,6 @@ import reactor.core.publisher.Mono;
  */
 public class EventProcessorClientErrorHandlingTest {
 
-    private static final String NAMESPACE_NAME = "dummyNamespaceName";
-    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
-
     @Mock
     private EventHubClientBuilder eventHubClientBuilder;
 
@@ -80,7 +77,11 @@ public class EventProcessorClientErrorHandlingTest {
         }, new HashMap<>());
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
-        client.stop();
+        try {
+            client.stop();
+        } catch (IllegalStateException ex) {
+            // do nothing, expected as the checkpointstores are expected to throw errors
+        }
         Assertions.assertTrue(completed);
     }
 
@@ -185,7 +186,7 @@ public class EventProcessorClientErrorHandlingTest {
         @Override
         public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace,
             String eventHubName, String consumerGroup) {
-            return null;
+            return Flux.empty();
         }
 
         @Override

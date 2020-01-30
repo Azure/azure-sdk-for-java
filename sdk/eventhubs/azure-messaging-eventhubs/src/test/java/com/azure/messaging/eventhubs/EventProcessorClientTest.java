@@ -143,7 +143,6 @@ public class EventProcessorClientTest {
             () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>());
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
-        eventProcessorClient.stop();
 
         // Assert
         assertNotNull(eventProcessorClient.getIdentifier());
@@ -168,6 +167,18 @@ public class EventProcessorClientTest {
         verify(consumer1, atLeastOnce()).receiveFromPartition(anyString(), any(EventPosition.class),
             any(ReceiveOptions.class));
         verify(consumer1, atLeastOnce()).close();
+        eventProcessorClient.stop();
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
+            .assertNext(partitionOwnership -> {
+                assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
+                assertEquals("test-consumer", partitionOwnership.getConsumerGroup(), "Consumer");
+                assertEquals("test-eh", partitionOwnership.getEventHubName(), "EventHub name");
+                assertEquals("", partitionOwnership.getOwnerId(), "Owner Id");
+                assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
+                assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
+                assertNotNull(partitionOwnership.getETag());
+            }).verifyComplete();
+
     }
 
     /**

@@ -145,7 +145,6 @@ class APISpec extends Specification {
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
-        cc.create()
     }
 
     def cleanup() {
