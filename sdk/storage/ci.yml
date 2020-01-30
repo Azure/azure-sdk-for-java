@@ -4,6 +4,7 @@
 resources:
   repositories:
     - repository: azure-sdk-build-tools
+      refs: ChangePushScript
       type: git
       name: internal/azure-sdk-build-tools
     - repository: azure-sdk-tools
