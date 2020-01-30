@@ -125,6 +125,8 @@ class APISpec extends Specification {
     static StorageSharedKeyCredential premiumCredential
     static TestMode testMode
 
+    static HttpClient client
+
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
     BlobServiceClient alternateBlobServiceClient
@@ -147,6 +149,8 @@ class APISpec extends Specification {
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
+
+        client = getHttpClient()
     }
 
     def setup() {
@@ -245,7 +249,7 @@ class APISpec extends Specification {
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .httpClient(getHttpClient())
+            .httpClient(client)
 
         if (testMode != TestMode.PLAYBACK) {
             if (testMode == TestMode.RECORD) {
@@ -289,7 +293,7 @@ class APISpec extends Specification {
         HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
+            .httpClient(client)
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
@@ -313,7 +317,7 @@ class APISpec extends Specification {
     BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
+            .httpClient(client)
 
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -326,7 +330,7 @@ class APISpec extends Specification {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
-            .httpClient(getHttpClient())
+            .httpClient(client)
 
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -344,7 +348,7 @@ class APISpec extends Specification {
             .endpoint(endpoint)
             .blobName(blobName)
             .snapshot(snapshotId)
-            .httpClient(getHttpClient())
+            .httpClient(client)
 
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -356,7 +360,7 @@ class APISpec extends Specification {
     BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
+            .httpClient(client)
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
@@ -373,7 +377,7 @@ class APISpec extends Specification {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
-            .httpClient(getHttpClient())
+            .httpClient(client)
 
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -385,7 +389,7 @@ class APISpec extends Specification {
     BlobClient getBlobClient(String endpoint, String sasToken) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
+            .httpClient(client)
 
         if (!CoreUtils.isNullOrEmpty(sasToken)) {
             builder.sasToken(sasToken)
