@@ -2,13 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import reactor.core.publisher.Mono;
-
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public interface IDocumentClientRetryPolicy extends IRetryPolicy {
+public abstract class DocumentClientRetryPolicy extends RetryPolicyWithDiagnostics {
 
     // TODO: this is just a place holder for now. As .Net has this method.
     // I have to spend more time figure out what's the right pattern for this (if method needed)
@@ -24,27 +22,5 @@ public interface IDocumentClientRetryPolicy extends IRetryPolicy {
     /// </remarks>
 
     // TODO: I need to investigate what's the right contract here and/or if/how this is useful
-    void onBeforeSendRequest(RxDocumentServiceRequest request);
-
-
-    class NoRetry implements IDocumentClientRetryPolicy {
-
-        private static NoRetry instance = new NoRetry();
-
-        private NoRetry() {}
-
-        public static NoRetry getInstance() {
-            return instance;
-        }
-
-        @Override
-        public void onBeforeSendRequest(RxDocumentServiceRequest request) {
-            // no op
-        }
-
-        @Override
-        public Mono<ShouldRetryResult> shouldRetry(Exception e) {
-            return Mono.just(ShouldRetryResult.error(e));
-        }
-    }
+    public abstract void onBeforeSendRequest(RxDocumentServiceRequest request);
 }

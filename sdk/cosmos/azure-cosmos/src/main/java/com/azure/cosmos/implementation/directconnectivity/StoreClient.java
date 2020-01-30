@@ -95,6 +95,7 @@ public class StoreClient implements IStoreClient {
                         return;
                     }
 
+                    BridgeInternal.recordRetryContext(request.requestContext.cosmosResponseDiagnostics, request);
                     exception = BridgeInternal.setCosmosResponseDiagnostics(exception, request.requestContext.cosmosResponseDiagnostics);
 
                     handleUnsuccessfulStoreResponse(request, exception);
@@ -141,6 +142,7 @@ public class StoreClient implements IStoreClient {
 
         this.updateResponseHeader(request, headers);
         this.captureSessionToken(request, headers);
+        BridgeInternal.recordRetryContext(request.requestContext.cosmosResponseDiagnostics, request);
         storeResponse.setCosmosResponseDiagnostics(request.requestContext.cosmosResponseDiagnostics);
         return new RxDocumentServiceResponse(storeResponse);
     }

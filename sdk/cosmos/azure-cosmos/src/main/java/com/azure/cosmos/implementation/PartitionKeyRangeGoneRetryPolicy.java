@@ -16,10 +16,10 @@ import java.time.Duration;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class PartitionKeyRangeGoneRetryPolicy implements IDocumentClientRetryPolicy {
+public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy {
 
     private final RxCollectionCache collectionCache;
-    private final IDocumentClientRetryPolicy nextRetryPolicy;
+    private final DocumentClientRetryPolicy nextRetryPolicy;
     private final IPartitionKeyRangeCache partitionKeyRangeCache;
     private final String collectionLink;
     private final FeedOptions feedOptions;
@@ -29,7 +29,7 @@ public class PartitionKeyRangeGoneRetryPolicy implements IDocumentClientRetryPol
             RxCollectionCache collectionCache,
             IPartitionKeyRangeCache partitionKeyRangeCache,
             String collectionLink,
-            IDocumentClientRetryPolicy nextRetryPolicy,
+            DocumentClientRetryPolicy nextRetryPolicy,
             FeedOptions feedOptions) {
         this.collectionCache = collectionCache;
         this.partitionKeyRangeCache = partitionKeyRangeCache;
