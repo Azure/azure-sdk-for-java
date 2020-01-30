@@ -346,23 +346,14 @@ public class KeyClientTest extends KeyClientTestBase {
                     pollResponse = poller.poll();
                 }
             }
-            sleepInRecordMode(60000);
-            Iterable<DeletedKey> deletedKeys =  client.listDeletedKeys();
-            for (DeletedKey actualKey : deletedKeys) {
-                if (keysToDelete.containsKey(actualKey.getName())) {
-                    assertNotNull(actualKey.getDeletedOn());
-                    assertNotNull(actualKey.getRecoveryId());
-                    keysToDelete.remove(actualKey.getName());
-                }
-            }
+            sleepInRecordMode(300000);
 
-            assertEquals(0, keysToDelete.size());
-
+            Iterable<DeletedKey> deletedKeys = client.listDeletedKeys();
+            assertTrue(deletedKeys.iterator().hasNext());
             for (DeletedKey deletedKey : deletedKeys) {
-                client.purgeDeletedKey(deletedKey.getName());
-                pollOnKeyPurge(deletedKey.getName());
+                assertNotNull(deletedKey.getDeletedOn());
+                assertNotNull(deletedKey.getRecoveryId());
             }
-            sleepInRecordMode(10000);
         });
     }
 

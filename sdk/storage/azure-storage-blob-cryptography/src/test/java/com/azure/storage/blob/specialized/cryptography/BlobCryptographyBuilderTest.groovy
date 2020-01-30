@@ -1,7 +1,5 @@
 package com.azure.storage.blob.specialized.cryptography
 
-import spock.lang.Requires
-
 class BlobCryptographyBuilderTest extends APISpec {
 
     def beac
@@ -10,7 +8,7 @@ class BlobCryptographyBuilderTest extends APISpec {
 
     def setup() {
         def keyId = "keyId"
-        def fakeKey = new FakeKey(keyId, 256)
+        def fakeKey = new FakeKey(keyId, getRandomByteArray(256))
         def fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
         def sc = getServiceClientBuilder(primaryCredential,
@@ -42,7 +40,6 @@ class BlobCryptographyBuilderTest extends APISpec {
         }
     }
 
-    @Requires({ liveMode() })
     def "Encrypted client integrity"() {
         setup:
         cc.create()

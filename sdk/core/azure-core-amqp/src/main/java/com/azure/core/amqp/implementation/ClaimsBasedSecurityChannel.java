@@ -14,6 +14,7 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,6 +22,7 @@ import java.util.Objects;
 public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     static final String PUT_TOKEN_TYPE = "type";
     static final String PUT_TOKEN_AUDIENCE = "name";
+    static final String PUT_TOKEN_EXPIRY = "expiration";
     private static final String PUT_TOKEN_OPERATION = "operation";
     private static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
 
@@ -46,6 +48,7 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
                     final Message request = Proton.message();
                     final Map<String, Object> properties = new HashMap<>();
                     properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
+                    properties.put(PUT_TOKEN_EXPIRY, Date.from(accessToken.getExpiresAt().toInstant()));
                     properties.put(PUT_TOKEN_TYPE, authorizationType.getTokenType());
                     properties.put(PUT_TOKEN_AUDIENCE, tokenAudience);
 

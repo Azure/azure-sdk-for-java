@@ -92,8 +92,8 @@ class LinkHandlerTest {
         handler.onLinkLocalClose(event);
 
         // Assert
-        verify(session).setCondition(same(errorCondition));
-        verify(session).close();
+        verify(session, never()).setCondition(same(errorCondition));
+        verify(session, never()).close();
     }
 
     /**
@@ -164,8 +164,8 @@ class LinkHandlerTest {
         verify(link).setCondition(errorCondition);
         verify(link).close();
 
-        verify(session).setCondition(errorCondition);
-        verify(session).close();
+        verify(session, never()).setCondition(errorCondition);
+        verify(session, never()).close();
 
         endpointState.thenCancel().verify();
         throwableStep.then(() -> handler.close())
@@ -203,8 +203,8 @@ class LinkHandlerTest {
         verify(link, never()).setCondition(errorCondition);
         verify(link, never()).close();
 
-        verify(session).setCondition(errorCondition);
-        verify(session).close();
+        verify(session, never()).setCondition(errorCondition);
+        verify(session, never()).close();
 
         endpointState.thenCancel().verify();
         throwableStep.thenCancel().verify();

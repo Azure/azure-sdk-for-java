@@ -44,7 +44,9 @@ import java.util.Objects;
  * respectively, and operations on the service are available on {@link DataLakeServiceClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">
  *     Azure Docs</a> for more information on file systems.
  */
 @ServiceClient(builder = DataLakeFileSystemClientBuilder.class)

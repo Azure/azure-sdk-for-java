@@ -49,8 +49,8 @@ public class EventHubSharedKeyCredential implements TokenCredential {
     private final ClientLogger logger = new ClientLogger(EventHubSharedKeyCredential.class);
 
     private final String policyName;
-    private final Mac hmac;
     private final Duration tokenValidity;
+    private final SecretKeySpec secretKeySpec;
 
     /**
      * Creates an instance that authorizes using the {@code policyName} and {@code sharedAccessKey}.
@@ -96,21 +96,8 @@ public class EventHubSharedKeyCredential implements TokenCredential {
             throw new IllegalArgumentException("'tokenTimeToLive' has to positive and in the order-of seconds");
         }
 
-        try {
-            hmac = Mac.getInstance(HASH_ALGORITHM);
-        } catch (NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                String.format("Unable to create hashing algorithm '%s'", HASH_ALGORITHM), e));
-        }
-
         final byte[] sasKeyBytes = sharedAccessKey.getBytes(UTF_8);
-        final SecretKeySpec finalKey = new SecretKeySpec(sasKeyBytes, HASH_ALGORITHM);
-        try {
-            hmac.init(finalKey);
-        } catch (InvalidKeyException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "'sharedAccessKey' is an invalid value for the hashing algorithm.", e));
-        }
+        secretKeySpec = new SecretKeySpec(sasKeyBytes, HASH_ALGORITHM);
     }
 
     /**
@@ -135,6 +122,18 @@ public class EventHubSharedKeyCredential implements TokenCredential {
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
         if (CoreUtils.isNullOrEmpty(resource)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("resource cannot be empty"));
+        }
+
+        final Mac hmac;
+        try {
+            hmac = Mac.getInstance(HASH_ALGORITHM);
+            hmac.init(secretKeySpec);
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
+                String.format("Unable to create hashing algorithm '%s'", HASH_ALGORITHM), e));
+        } catch (InvalidKeyException e) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'sharedAccessKey' is an invalid value for the hashing algorithm.", e));
         }
 
         final String utf8Encoding = UTF_8.name();
