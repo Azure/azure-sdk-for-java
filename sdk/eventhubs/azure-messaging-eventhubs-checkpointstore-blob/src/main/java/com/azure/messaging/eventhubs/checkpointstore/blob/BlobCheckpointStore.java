@@ -49,7 +49,8 @@ public class BlobCheckpointStore implements CheckpointStore {
     private static final String BLOB_PATH_SEPARATOR = "/";
     private static final String CHECKPOINT_PATH = "/checkpoint/";
     private static final String OWNERSHIP_PATH = "/ownership/";
-    private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap("".getBytes(UTF_8));
+    public static final String EMPTY_STRING = "";
+    private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap(EMPTY_STRING.getBytes(UTF_8));
 
     private final BlobContainerAsyncClient blobContainerAsyncClient;
     private final ClientLogger logger = new ClientLogger(BlobCheckpointStore.class);
@@ -257,13 +258,13 @@ public class BlobCheckpointStore implements CheckpointStore {
                 return Mono.empty();
             }
             logger
-                .info(Messages.BLOB_OWNER_INFO, blobItem.getName(), blobItem.getMetadata().getOrDefault(OWNER_ID, ""));
+                .info(Messages.BLOB_OWNER_INFO, blobItem.getName(), blobItem.getMetadata().getOrDefault(OWNER_ID, EMPTY_STRING));
 
             BlobItemProperties blobProperties = blobItem.getProperties();
 
-            String ownerId = blobItem.getMetadata().getOrDefault(OWNER_ID, "");
+            String ownerId = blobItem.getMetadata().getOrDefault(OWNER_ID, EMPTY_STRING);
             if (ownerId == null) {
-                return Mono.empty();
+                ownerId = EMPTY_STRING;
             }
 
             PartitionOwnership partitionOwnership = new PartitionOwnership()
