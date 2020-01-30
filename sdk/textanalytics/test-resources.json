@@ -17,27 +17,35 @@
         }
     },
     "variables": {
-        "location": "[resourceGroup().location]",
-        "azureTextAnalyticsUrl": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]"
+        "location": "eastus",
+        "azureTextAnalyticsUrl": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]",
+        "textAnalyticsApiVersion": "2017-04-18"
+
     },
     "resources": [
         {
-            "name": "[parameters('baseName')]",
-            "location": "[resourceGroup().location]",
             "type": "Microsoft.CognitiveServices/accounts",
-            "apiVersion": "2017-04-18",
-            "sku": {
-                "name": "F0"
+            "apiVersion": "[variables('textAnalyticsApiVersion')]",
+            "name": "[parameters('baseName')]",
+            "location": "[variables('location')]",
+            "tags": {
             },
-            "kind": "string",
-            "tags": {},
-            "properties": {}
+            "sku": {
+                "name": "S"
+            },
+            "kind": "TextAnalytics",
+            "properties": {
+            }
         }
     ],
     "outputs": {
         "AZURE_TEXT_ANALYTICS_ENDPOINT": {
-            "type": "string",
+            "type": "String",
             "value": "[variables('azureTextAnalyticsUrl')]"
+        },
+        "AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName')), variables('textAnalyticsApiVersion')).key1]"
         }
     }
 }
