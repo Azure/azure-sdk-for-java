@@ -406,7 +406,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void nullServiceVersion();
 
-    ConfigurationClientBuilder getBuilderWithNullServiceVersion(){
+    ConfigurationClientBuilder getBuilderWithNullServiceVersion() {
         final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
             .connectionString(getConnectionString())
             .retryPolicy(new RetryPolicy())
@@ -419,7 +419,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                 .addPolicy(interceptorManager.getRecordPolicy());
         }
-      return clientBuilder;
+        return clientBuilder;
     }
 
     @Test
