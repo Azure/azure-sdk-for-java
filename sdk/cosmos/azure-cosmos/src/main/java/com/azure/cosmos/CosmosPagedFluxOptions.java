@@ -12,12 +12,12 @@ public class CosmosPagedFluxOptions {
     private String requestContinuation;
     private Integer maxItemCount;
 
-    public CosmosPagedFluxOptions(FeedOptions feedOptions) {
+    CosmosPagedFluxOptions(FeedOptions feedOptions) {
         this.requestContinuation = feedOptions.requestContinuation();
         this.maxItemCount = feedOptions.maxItemCount();
     }
 
-    public CosmosPagedFluxOptions() {}
+    CosmosPagedFluxOptions() {}
 
     /**
      * Gets the request continuation token.
