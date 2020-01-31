@@ -14,7 +14,6 @@
     <module>azure-core-http-netty</module>
     <module>azure-core-http-okhttp</module>
     <module>azure-core-test</module>
-    <module>azure-core-tracing-opencensus</module>
     <module>azure-core-tracing-opentelemetry</module>
   </modules>
 </project>
