@@ -390,7 +390,7 @@ public final class RestProxy implements InvocationHandler {
             //
             asyncResult = bodyAsString.flatMap((Function<String, Mono<HttpDecodedResponse>>) responseContent -> {
                 // bodyAsString() emits non-empty string, now look for decoded version of same string
-                Mono<Object> decodedErrorBody = decodedResponse.getDecodedBody();
+                Mono<Object> decodedErrorBody = decodedResponse.getDecodedBody(responseContent);
                 //
                 return decodedErrorBody
                     .flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> {
@@ -506,7 +506,7 @@ public final class RestProxy implements InvocationHandler {
             asyncResult = Mono.just(response.getSourceResponse().getBody());
         } else {
             // Mono<Object> or Mono<Page<T>>
-            asyncResult = response.getDecodedBody();
+            asyncResult = response.getDecodedBody(null);
         }
         return asyncResult;
     }
