@@ -67,7 +67,8 @@ mvn -f pom.client.xml -Dgpg.skip -DskipTests clean install
 - `clean:` will remove any previous generated output.
 - `install:`  compiles project and installs it in the local Maven cache.
 
->**Note**: Refer to [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning about how to build using Java 11
+>**Note**: Refer to [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning about how to build using Java 11 
+>and [this wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) for guidelines on unit testing
 
 ### Compiling one project only
 
