@@ -35,7 +35,7 @@ pr:
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
-      ServiceDirectory: keyvault
+      ServiceDirectory: bom
       Artifacts:
         - name: azure-sdk-bom
           groupId: com.azure
