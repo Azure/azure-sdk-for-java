@@ -36,6 +36,7 @@ import java.time.Duration;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -137,7 +138,6 @@ class ReactorReceiverTest {
         final String description = "test-symbol-description";
         final ErrorCondition condition = new ErrorCondition(symbol, description);
         final ArgumentCaptor<ErrorCondition> captor = ArgumentCaptor.forClass(ErrorCondition.class);
-        final ArgumentCaptor<ErrorCondition> captor2 = ArgumentCaptor.forClass(ErrorCondition.class);
 
         when(event.getLink()).thenReturn(link);
         when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
@@ -152,13 +152,11 @@ class ReactorReceiverTest {
 
         // Assert
         verify(link, times(1)).close();
-        verify(session, times(1)).close();
+        verify(session, never()).close();
 
         verify(link).setCondition(captor.capture());
         Assertions.assertSame(condition, captor.getValue());
 
-        verify(session).setCondition(captor2.capture());
-        Assertions.assertSame(condition, captor2.getValue());
     }
 
     @Test

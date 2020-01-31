@@ -12,6 +12,7 @@ import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareSnapshotInfo
+import com.azure.storage.file.share.models.ShareStatistics
 import com.azure.storage.file.share.models.ShareStorageException
 import spock.lang.Unroll
 
@@ -243,6 +244,37 @@ class ShareAPITests extends APISpec {
     def "Set metadata error"() {
         when:
         primaryShareClient.setMetadata(testMetadata)
+
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
+    }
+
+    @Unroll
+    def "Get statistics"() {
+        setup:
+        primaryShareClient.create()
+        primaryShareClient.createFile("tempFile", (long) size)
+
+        when:
+        def resp = primaryShareClient.getStatisticsWithResponse(null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(resp, 200)
+        resp.getValue().getShareUsageInBytes() == size
+        resp.getValue().getShareUsageInGB() == gigabytes
+
+        where:
+        size                    || gigabytes
+        0                       || 0
+        Constants.KB            || 1
+        Constants.GB            || 1
+        (long) 3 * Constants.GB || 3
+    }
+
+    def "Get statistics error"() {
+        when:
+        primaryShareClient.getStatistics()
 
         then:
         def e = thrown(ShareStorageException)
