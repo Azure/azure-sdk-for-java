@@ -4,6 +4,10 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
@@ -43,6 +47,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String KEY_PREFIX = "key";
     private static final String LABEL_PREFIX = "label";
+    private static final String VALUE_PREFIX = "value";
     private static final int PREFIX_LENGTH = 8;
     private static final int RESOURCE_LENGTH = 16;
     static String connectionString;
@@ -51,10 +56,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     String keyPrefix;
     String labelPrefix;
+    String valuePrefix;
 
     void beforeTestSetup() {
         keyPrefix = testResourceNamer.randomName(KEY_PREFIX, PREFIX_LENGTH);
         labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH);
+        valuePrefix = testResourceNamer.randomName(VALUE_PREFIX, PREFIX_LENGTH);
     }
 
     <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
@@ -84,6 +91,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     String getLabel() {
         return testResourceNamer.randomName(labelPrefix, RESOURCE_LENGTH);
+    }
+
+    String getValue() {
+        return testResourceNamer.randomName(valuePrefix, RESOURCE_LENGTH);
     }
 
     @Test
@@ -392,6 +403,45 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(newConfiguration);
     }
 
+    @Test
+    public abstract void nullServiceVersion();
+
+    ConfigurationClientBuilder getBuilderWithNullServiceVersion(){
+        final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
+            .connectionString(getConnectionString())
+            .retryPolicy(new RetryPolicy())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .serviceVersion(null);
+
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .addPolicy(interceptorManager.getRecordPolicy());
+        }
+      return clientBuilder;
+    }
+
+    @Test
+    public abstract void defaultPipeline();
+
+    ConfigurationClientBuilder getBuilderWithDefaultPipeline() {
+        final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
+            .connectionString(getConnectionString())
+            .retryPolicy(new RetryPolicy())
+            .configuration(Configuration.getGlobalConfiguration())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .pipeline(null);
+
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .addPolicy(interceptorManager.getRecordPolicy());
+        }
+        return clientBuilder;
+    }
+
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
      *
@@ -597,5 +647,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     static void assertContainsHeaders(HttpHeaders headers, HttpHeaders headerContainer) {
         headers.stream().forEach(httpHeader ->
             assertEquals(headerContainer.getValue(httpHeader.getName()), httpHeader.getValue()));
+    }
+
+    String getConnectionString() {
+        return interceptorManager.isPlaybackMode()
+            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
     }
 }
