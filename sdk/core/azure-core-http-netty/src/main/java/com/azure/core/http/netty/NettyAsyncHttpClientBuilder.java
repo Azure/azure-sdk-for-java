@@ -4,34 +4,20 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.ProxyOptions;
-<<<<<<< HEAD
-import com.azure.core.http.netty.implementation.IdleStateEventHandler;
-=======
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.azure.core.util.AuthorizationChallengeHandler;
->>>>>>> 42e3e9056dce3461bba4020ac81e4e102ff2501a
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
-<<<<<<< HEAD
-import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.timeout.IdleStateHandler;
-=======
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.proxy.Socks4ProxyHandler;
 import io.netty.handler.proxy.Socks5ProxyHandler;
->>>>>>> 42e3e9056dce3461bba4020ac81e4e102ff2501a
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 
 import java.util.Objects;
-<<<<<<< HEAD
-import java.util.concurrent.TimeUnit;
-=======
 import java.util.concurrent.atomic.AtomicReference;
->>>>>>> 42e3e9056dce3461bba4020ac81e4e102ff2501a
 
 /**
  * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
