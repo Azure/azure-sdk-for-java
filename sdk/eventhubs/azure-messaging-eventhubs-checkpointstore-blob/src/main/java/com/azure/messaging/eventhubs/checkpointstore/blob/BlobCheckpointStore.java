@@ -258,7 +258,8 @@ public class BlobCheckpointStore implements CheckpointStore {
                 return Mono.empty();
             }
             logger
-                .info(Messages.BLOB_OWNER_INFO, blobItem.getName(), blobItem.getMetadata().getOrDefault(OWNER_ID, EMPTY_STRING));
+                .info(Messages.BLOB_OWNER_INFO, blobItem.getName(),
+                    blobItem.getMetadata().getOrDefault(OWNER_ID, EMPTY_STRING));
 
             BlobItemProperties blobProperties = blobItem.getProperties();
 
