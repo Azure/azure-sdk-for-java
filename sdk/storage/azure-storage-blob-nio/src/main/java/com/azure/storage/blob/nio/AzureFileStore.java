@@ -13,6 +13,8 @@ import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.attribute.FileStoreAttributeView;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -22,14 +24,19 @@ import java.util.Objects;
  * {@inheritDoc}
  */
 public final class AzureFileStore extends FileStore {
+    private static final String AZURE_FILE_STORE_TYPE = "AzureBlobContainer";
+
     private final ClientLogger logger = new ClientLogger(AzureFileStore.class);
     private final AzureFileSystem parentFileSystem;
     private final BlobContainerClient containerClient;
-    private static final Map<Class<? extends FileAttributeView>, String> supportedAttributeViews = Map.of(
-        BasicFileAttributeView.class, "basic",
-        UserDefinedFileAttributeView.class, "user",
-        AzureStorageFileAttributeView.class, "azureStorage"
-    );
+    private static final Map<Class<? extends FileAttributeView>, String> supportedAttributeViews;
+    static {
+        Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();
+        map.put(BasicFileAttributeView.class, "basic");
+        map.put(UserDefinedFileAttributeView.class, "user");
+        map.put(AzureStorageFileAttributeView.class, "azureStorage");
+        supportedAttributeViews = Collections.unmodifiableMap(map);
+    }
 
     AzureFileStore(AzureFileSystem parentFileSystem, String containerName) throws IOException {
         // A FileStore should only ever be created by a FileSystem.
@@ -69,7 +76,7 @@ public final class AzureFileStore extends FileStore {
      */
     @Override
     public String type() {
-        return "AzureBlobContainer";
+        return AZURE_FILE_STORE_TYPE;
     }
 
     /**
@@ -149,6 +156,6 @@ public final class AzureFileStore extends FileStore {
      */
     @Override
     public Object getAttribute(String s) throws IOException {
-        throw new UnsupportedOperationException("No FileStoreAttributeViews are currently supported.");
+        throw new UnsupportedOperationException("FileStoreAttributeViews aren't supported.");
     }
 }
