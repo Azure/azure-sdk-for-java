@@ -492,7 +492,7 @@ public class IdentityClient {
         }
     }
 
-    private void openUrl(String url) throws IOException {
+    void openUrl(String url) throws IOException {
         Runtime rt = Runtime.getRuntime();
 
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);

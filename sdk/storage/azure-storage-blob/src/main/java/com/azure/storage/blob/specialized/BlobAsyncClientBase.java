@@ -47,7 +47,6 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -89,9 +88,6 @@ import static java.lang.StrictMath.toIntExact;
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
 public class BlobAsyncClientBase {
-
-    private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
-    private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
     private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
 
@@ -996,12 +992,13 @@ public class BlobAsyncClientBase {
     }
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
+        // blobSize determination - contentLength only returns blobSize if the download is not chunked.
+        long blobSize = response.getDeserializedHeaders().getContentRange() == null
+            ? response.getDeserializedHeaders().getContentLength()
+            : extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
         BlobProperties properties = new BlobProperties(null, response.getDeserializedHeaders().getLastModified(),
-            response.getDeserializedHeaders().getETag(),
-            response.getDeserializedHeaders().getContentLength() == null
-                ? 0 : response.getDeserializedHeaders().getContentLength(),
-            response.getDeserializedHeaders().getContentType(), null,
-            response.getDeserializedHeaders().getContentEncoding(),
+            response.getDeserializedHeaders().getETag(), blobSize, response.getDeserializedHeaders().getContentType(),
+            null, response.getDeserializedHeaders().getContentEncoding(),
             response.getDeserializedHeaders().getContentDisposition(),
             response.getDeserializedHeaders().getContentLanguage(), response.getDeserializedHeaders().getCacheControl(),
             response.getDeserializedHeaders().getBlobSequenceNumber(), response.getDeserializedHeaders().getBlobType(),

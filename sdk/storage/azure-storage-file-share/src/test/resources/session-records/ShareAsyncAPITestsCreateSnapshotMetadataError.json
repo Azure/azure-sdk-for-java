@@ -1,11 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshotmetadataerror744186f8eb?restype=share&comp=snapshot",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshotmetadataerror589139f306?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "16b64525-cb03-4025-9f65-637c3219f26e"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ae2aa805-ff3d-490b-8c8f-b47e5db37984"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7A03E681B6C0A",
+      "Last-Modified" : "Thu, 23 Jan 2020 19:56:59 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "de16672a-801a-0123-2e27-d219e8000000",
+      "Date" : "Thu, 23 Jan 2020 19:56:59 GMT",
+      "x-ms-client-request-id" : "ae2aa805-ff3d-490b-8c8f-b47e5db37984"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshotmetadataerror589139f306?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "087a905a-dcbe-4762-8769-2f37aea23ef7"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +35,13 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "83e48cde-a01a-0116-4088-83b7bd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:83e48cde-a01a-0116-4088-83b7bd000000\nTime:2019-10-15T18:43:28.4690044Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Tue, 15 Oct 2019 18:43:27 GMT",
-      "x-ms-client-request-id" : "16b64525-cb03-4025-9f65-637c3219f26e",
+      "x-ms-request-id" : "de166730-801a-0123-3127-d219e8000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:de166730-801a-0123-3127-d219e8000000\nTime:2020-01-23T19:57:00.4120293Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Thu, 23 Jan 2020 19:56:59 GMT",
+      "x-ms-client-request-id" : "087a905a-dcbe-4762-8769-2f37aea23ef7",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatesnapshotmetadataerror744186f8eb" ]
+  "variables" : [ "shareasyncapitestscreatesnapshotmetadataerror589139f306" ]
 }

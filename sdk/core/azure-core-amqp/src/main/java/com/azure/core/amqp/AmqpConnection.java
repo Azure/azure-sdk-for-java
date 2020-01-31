@@ -4,6 +4,7 @@
 package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 /**
  * Represents a TCP connection between the client and a service that uses the AMQP protocol.
  */
-public interface AmqpConnection extends AutoCloseable {
+public interface AmqpConnection extends Disposable {
     /**
      * Gets the connection identifier.
      *
@@ -78,10 +79,4 @@ public interface AmqpConnection extends AutoCloseable {
      * @return A stream of shutdown signals that occur in the AMQP endpoint.
      */
     Flux<AmqpShutdownSignal> getShutdownSignals();
-
-    /**
-     * Closes the AMQP connection.
-     */
-    @Override
-    void close();
 }

@@ -1,5 +1,8 @@
 # Release History
 
+## 12.4.0-beta.1 (Unreleased)
+- Added support for upload via OutputStream by adding EncryptedBlobClient.getOutputStream methods
+
 ## 12.3.0 (2020-01-15)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-cryptography_12.3.0/sdk/storage/azure-storage-blob-cryptography/README.md)

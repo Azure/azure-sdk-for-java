@@ -365,7 +365,9 @@ create a configuration file with the contents below. Or set `proton.trace.level=
 you want for the `java.util.logging.Handler` implementation. Implementation classes and their options can be found in
 [Java 8 SDK javadoc][java_8_sdk_javadocs].
 
-#### Sample "logging.config" file
+To trace the AMQP transport frames, set the environment variable: `PN_TRACE_FRM=1`.
+
+#### Sample "logging.properties" file
 
 The configuration file below logs trace output from proton-j to the file "proton-trace.log".
 
@@ -378,6 +380,7 @@ java.util.logging.FileHandler.pattern=proton-trace.log
 java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter
 java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 ```
+
 
 ### Common exceptions
 

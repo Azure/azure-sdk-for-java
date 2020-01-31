@@ -5,7 +5,7 @@ package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.ResourceType;
-import com.google.common.base.Strings;
+import com.azure.data.cosmos.internal.guava27.Strings;
 import io.netty.buffer.ByteBuf;
 
 import java.util.UUID;

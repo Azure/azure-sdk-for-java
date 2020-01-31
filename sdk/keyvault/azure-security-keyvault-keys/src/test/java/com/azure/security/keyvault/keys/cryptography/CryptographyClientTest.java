@@ -55,7 +55,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     public void encryptDecryptRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
-            String keyName = "testRsaKey";
+            String keyName = generateResourceId("testRsaKey");
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)
@@ -91,7 +91,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     public void wrapUnwraptRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
-            String keyName = "testRsaKeyWrapUnwrap";
+            String keyName = generateResourceId("testRsaKeyWrapUnwrap");
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)
@@ -128,7 +128,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     public void signVerifyRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
-            String keyName = "testRsaKeySignVerify";
+            String keyName = generateResourceId("testRsaKeySignVerify");
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)
@@ -184,7 +184,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             KeyPair keyPair = generator.generateKeyPair();
 
             JsonWebKey key = JsonWebKey.fromEc(keyPair, provider);
-            String keyName = "testEcKey" + crv.toString();
+            String keyName = generateResourceId("testEcKey" + crv.toString());
             KeyVaultKey imported = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)

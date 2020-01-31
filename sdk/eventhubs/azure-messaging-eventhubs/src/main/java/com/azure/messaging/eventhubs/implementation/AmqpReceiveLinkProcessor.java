@@ -170,7 +170,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                             currentLink = null;
 
                             if (existing != null) {
-                                existing.close();
+                                existing.dispose();
                             }
 
                             requestUpstream();
@@ -183,11 +183,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         if (oldChannel != null) {
-            try {
-                oldChannel.close();
-            } catch (Exception e) {
-                logger.info("Error encountered closing old connection.", e);
-            }
+            oldChannel.dispose();
         }
 
         if (oldSubscription != null) {
@@ -280,7 +276,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     }
 
     /**
-     * Terminates the
+     * When the upstream publisher has no more items to emit.
      */
     @Override
     public void onComplete() {
@@ -301,7 +297,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     @Override
     public void request(long request) {
         if (isTerminated.get()) {
-            logger.warning("Cannot request more from AMQP link processor that is disposed.");
+            logger.info("Cannot request more from AMQP link processor that is disposed.");
             return;
         }
 
@@ -367,11 +363,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         if (currentLink != null) {
-            try {
-                currentLink.close();
-            } catch (Exception error) {
-                logger.warning("Error encountered closing connection.", error);
-            }
+            currentLink.dispose();
         }
 
         currentLink = null;

@@ -86,13 +86,16 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         try {
             for (int i = 0; i < partitionIds.size(); i++) {
                 final String partitionId = partitionIds.get(i);
-                final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
+                final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME,
+                    DEFAULT_PREFETCH_COUNT);
                 consumers[i] = consumer;
 
-                final Disposable subscription = consumer.receiveFromPartition(partitionId, EventPosition.fromEnqueuedTime(Instant.now()))
+                final Disposable subscription = consumer.receiveFromPartition(partitionId,
+                    EventPosition.fromEnqueuedTime(Instant.now()))
                     .take(numberOfEvents)
                     .subscribe(
-                        event -> logger.info("Event[{}] received. partition: {}", event.getData().getSequenceNumber(), partitionId),
+                        event -> logger.info("Event[{}] received. partition: {}",
+                            event.getData().getSequenceNumber(), partitionId),
                         error -> Assertions.fail("An error should not have occurred:" + error.toString()),
                         () -> {
                             logger.info("Disposing of consumer now that the receive is complete.");
@@ -129,8 +132,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     }
 
     /**
-     * Verify if we don't set {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()}, then it is always
-     * null as we are consuming events.
+     * Verify if we don't set {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()}, then it is always null as we
+     * are consuming events.
      */
     @Test
     public void lastEnqueuedInformationIsNotUpdated() {
@@ -152,7 +155,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             StepVerifier.create(consumer.receiveFromPartition(secondPartitionId, position, options)
                 .take(expectedNumber))
                 .assertNext(event -> {
-                    Assertions.assertNull(event.getLastEnqueuedEventProperties(), "'lastEnqueuedEventProperties' should be null.");
+                    Assertions.assertNull(event.getLastEnqueuedEventProperties(), "'lastEnqueuedEventProperties' "
+                        + "should be null.");
                 })
                 .expectNextCount(expectedNumber - 1)
                 .verifyComplete();
@@ -164,7 +168,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     }
 
     /**
-     * Verify that each time we receive an event, the data, {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()},
+     * Verify that each time we receive an event, the data,
+     * {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()},
      * null as we are consuming events.
      */
     @Test
@@ -216,14 +221,17 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             return;
         }
 
-        Assertions.assertNotNull(previous.getRetrievalTime(), "This is not the first event, should have a retrieval time.");
+        Assertions.assertNotNull(previous.getRetrievalTime(), "This is not the first event, should have a retrieval "
+            + "time.");
 
         final int compared = previous.getRetrievalTime().compareTo(current.getRetrievalTime());
         final int comparedSequenceNumber = previous.getOffset().compareTo(current.getOffset());
-        Assertions.assertTrue(compared <= 0, String.format("Expected retrieval time previous '%s' to be before or equal to current '%s'",
+        Assertions.assertTrue(compared <= 0, String.format("Expected retrieval time previous '%s' to be before or "
+                + "equal to current '%s'",
             previous.getRetrievalTime(), current.getRetrievalTime()));
 
-        Assertions.assertTrue(comparedSequenceNumber <= 0, String.format("Expected offset previous '%s' to be before or equal to current '%s'",
+        Assertions.assertTrue(comparedSequenceNumber <= 0, String.format("Expected offset previous '%s' to be before "
+                + "or equal to current '%s'",
             previous.getRetrievalTime(), current.getRetrievalTime()));
     }
 
@@ -278,7 +286,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
         // Assert
         try {
-            Assertions.assertTrue(semaphore.tryAcquire(20, TimeUnit.SECONDS), "The EventHubConsumer was not closed after one with a higher epoch number started.");
+            Assertions.assertTrue(semaphore.tryAcquire(20, TimeUnit.SECONDS), "The EventHubConsumer was not closed "
+                + "after one with a higher epoch number started.");
         } finally {
             subscriptions.dispose();
             isActive.set(false);
@@ -353,7 +362,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
     /**
      * Verify that each time we receive an event, the data, and
-     * {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()} as we are consuming events.
+     * {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()}
+     * as we are consuming events.
      */
     @Test
     public void canReceive() {
@@ -424,12 +434,18 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             StepVerifier.create(consumer.receive(false)
                 .filter(x -> TestUtils.isMatchingEvent(x.getData(), MESSAGE_TRACKING_ID))
                 .take(expectedNumber))
-                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions, expectedPartitions))
-                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions, expectedPartitions))
-                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions, expectedPartitions))
-                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions, expectedPartitions))
-                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions, expectedPartitions))
-                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions, expectedPartitions))
+                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions,
+                    expectedPartitions))
+                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions,
+                    expectedPartitions))
+                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions,
+                    expectedPartitions))
+                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions,
+                    expectedPartitions))
+                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions,
+                    expectedPartitions))
+                .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions,
+                    expectedPartitions))
                 .verifyComplete();
         } finally {
             isActive.set(false);
@@ -437,7 +453,111 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             consumer.close();
         }
 
-        Assertions.assertTrue(expectedPartitions.isEmpty(), "Expected messages to be received from all partitions. There are: " + expectedPartitions.size());
+        Assertions.assertTrue(expectedPartitions.isEmpty(), "Expected messages to be received from all partitions. "
+            + "There are: " + expectedPartitions.size());
+    }
+
+    /**
+     * Verifies we can receive from the same partition concurrently.
+     */
+    @Test
+    public void multipleReceiversSamePartition() throws InterruptedException {
+        // Arrange
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 50);
+        final EventHubConsumerAsyncClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 50);
+        final String partitionId = "1";
+        final PartitionProperties properties = consumer.getPartitionProperties(partitionId).block(TIMEOUT);
+        Assertions.assertNotNull(properties, "Should have been able to get partition properties.");
+
+        final int numberToTake = 10;
+        final CountDownLatch countdown1 = new CountDownLatch(numberToTake);
+        final CountDownLatch countdown2 = new CountDownLatch(numberToTake);
+        final EventPosition position = EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber());
+
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final EventHubProducerAsyncClient producer = client.createProducer();
+        final Disposable producerEvents = getEvents(isActive).flatMap(event -> {
+            event.getProperties().put(PARTITION_ID_HEADER, partitionId);
+            return producer.send(event, new SendOptions().setPartitionId(partitionId));
+        }).subscribe(
+            sent -> logger.info("Event sent."),
+            error -> logger.error("Error sending event. Exception:" + error, error),
+            () -> logger.info("Completed"));
+
+        consumer.receiveFromPartition(partitionId, position)
+            .filter(x -> TestUtils.isMatchingEvent(x.getData(), MESSAGE_TRACKING_ID))
+            .take(numberToTake)
+            .subscribe(event -> {
+                logger.info("Consumer1: Event received");
+                countdown1.countDown();
+            });
+
+        consumer2.receiveFromPartition(partitionId, position)
+            .filter(x -> TestUtils.isMatchingEvent(x.getData(), MESSAGE_TRACKING_ID))
+            .take(numberToTake)
+            .subscribe(event -> {
+                logger.info("Consumer2: Event received");
+                countdown2.countDown();
+            });
+
+        // Assert
+        try {
+            boolean successful = countdown1.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+            boolean successful2 = countdown2.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+
+            Assertions.assertTrue(successful,
+                String.format("Expected to get %s events. Got: %s", numberToTake, countdown1.getCount()));
+            Assertions.assertTrue(successful2,
+                String.format("Expected to get %s events. Got: %s", numberToTake, countdown2.getCount()));
+        } finally {
+            isActive.set(false);
+            producerEvents.dispose();
+            consumer.close();
+            consumer2.close();
+        }
+    }
+
+    /**
+     * Verifies that we are properly closing the receiver after each receive operation that terminates the upstream
+     * flux.
+     */
+    @Test
+    void closesReceiver() throws InterruptedException {
+        // Arrange
+        final String partitionId = "1";
+        final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 1);
+        final int numberOfEvents = 5;
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final EventHubProducerAsyncClient producer = client.createProducer();
+        final PartitionProperties properties = producer.getPartitionProperties(partitionId).block(TIMEOUT);
+        final AtomicReference<EventPosition> startingPosition = new AtomicReference<>(
+            EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber()));
+        final Disposable producerEvents = getEvents(isActive)
+            .flatMap(event -> producer.send(event, sendOptions).thenReturn(Instant.now()))
+            .subscribe(time -> logger.verbose("Sent event at: {}", time),
+                error -> logger.error("Error sending event.", error),
+                () -> logger.info("Completed"));
+
+        // Act & Assert
+        try {
+            for (int i = 0; i < 7; i++) {
+                logger.info("[{}]: Starting iteration", i);
+
+                final List<PartitionEvent> events = consumer.receiveFromPartition(partitionId, startingPosition.get())
+                    .take(numberOfEvents)
+                    .collectList()
+                    .block(Duration.ofSeconds(15));
+
+                Thread.sleep(700);
+                Assertions.assertNotNull(events);
+                Assertions.assertEquals(numberOfEvents, events.size());
+            }
+        } finally {
+            isActive.set(false);
+            producerEvents.dispose();
+            consumer.close();
+        }
     }
 
     private static void assertPartitionEvent(PartitionEvent event, String eventHubName, Set<Integer> allPartitions,

@@ -76,7 +76,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     @Override
     protected void afterTest() {
         if (connection != null) {
-            connection.close();
+            connection.dispose();
         }
     }
 

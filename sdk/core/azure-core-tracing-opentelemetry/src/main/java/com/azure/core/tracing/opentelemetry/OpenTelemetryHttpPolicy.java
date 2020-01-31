@@ -26,7 +26,6 @@ import reactor.util.context.Context;
 import java.util.Optional;
 
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
@@ -94,7 +93,8 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().getValue("User-Agent"));
         putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
         putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
-        Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
+        // TODO (savaity): replace with the AZ_TRACING_NAMESPACE_KEY
+        Optional<Object> tracingNamespace = context.getData("az.tracing.namespace");
         if (tracingNamespace.isPresent()) {
             putAttributeIfNotEmptyOrNull(span, AZ_NAMESPACE_KEY, tracingNamespace.get().toString());
         }

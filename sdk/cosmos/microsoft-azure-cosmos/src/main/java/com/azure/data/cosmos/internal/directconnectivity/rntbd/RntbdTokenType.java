@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.base.Strings.lenientFormat;
+import static com.azure.data.cosmos.internal.guava27.Strings.lenientFormat;
 
 enum RntbdTokenType {
 

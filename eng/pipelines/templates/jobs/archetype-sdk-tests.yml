@@ -82,7 +82,7 @@ jobs:
             -ProvisionerApplicationId '$(provisioner-aad-id)'
             -ProvisionerApplicationSecret '$(provisioner-aad-secret)'
             -DeleteAfterHours 24
-            -Location westus2
+            -CI
             -Force
             -Verbose
           displayName: Provision Test Resources

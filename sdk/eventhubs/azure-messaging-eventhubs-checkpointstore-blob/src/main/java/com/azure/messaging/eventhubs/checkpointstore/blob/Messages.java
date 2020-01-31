@@ -3,50 +3,29 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
-import com.azure.core.util.logging.ClientLogger;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import com.azure.core.util.CoreUtils;
+import java.util.Map;
 
 /**
  * I18n messages loaded from the messages.properties file located within the same package.
  */
 public enum Messages {
     ;
-    private static final ClientLogger LOGGER = new ClientLogger(Messages.class);
-    private static Properties properties;
-    private static final String PATH = "com/azure/messaging/eventhubs/checkpointstore/blob/messages.properties";
-    public static final String NO_METADATA_AVAILABLE_FOR_BLOB = "No metadata available for blob {}";
-    public static final String CLAIM_ERROR = "Couldn't claim ownership of partition {}";
-    public static final String FOUND_BLOB_FOR_PARTITION = "Found blob for partition {}";
-    public static final String BLOB_OWNER_INFO = "Blob {} is owned by {}";
-    public static final String CHECKPOINT_INFO = "Blob {} has checkpoint with sequence number {} and offset {}";
+    private static final String PATH = "eventhubs-checkpointstore-blob-messages.properties";
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties(PATH);
 
-    private static synchronized Properties getProperties() {
-        if (properties != null) {
-            return properties;
-        }
-        properties = new Properties();
-        try (InputStream inputStream =
-                 Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH)) {
-            if (inputStream != null) {
-                properties.load(inputStream);
-            } else {
-                LOGGER.error("Message properties [{}] not found", PATH); //NON-NLS
-            }
-        } catch (IOException exception) {
-            LOGGER.error("Error loading message properties [{}]", PATH, exception); //NON-NLS
-        }
-        return properties;
-    }
+    public static final String NO_METADATA_AVAILABLE_FOR_BLOB = getMessage("NO_METADATA_AVAILABLE_FOR_BLOB");
+    public static final String CLAIM_ERROR = getMessage("CLAIM_ERROR");
+    public static final String FOUND_BLOB_FOR_PARTITION = getMessage("FOUND_BLOB_FOR_PARTITION");
+    public static final String BLOB_OWNER_INFO = getMessage("BLOB_OWNER_INFO");
+    public static final String CHECKPOINT_INFO = getMessage("CHECKPOINT_INFO");
 
     /**
      * @param key the key of the message to retrieve
      * @return the message matching the given key
      */
     public static String getMessage(String key) {
-        return String.valueOf(getProperties().getOrDefault(key, key));
+        return PROPERTIES.getOrDefault(key, key);
     }
 
 }

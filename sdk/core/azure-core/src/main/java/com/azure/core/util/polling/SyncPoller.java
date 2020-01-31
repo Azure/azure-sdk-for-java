@@ -43,8 +43,6 @@ public interface SyncPoller<T, U> {
      *
      * @param timeout the duration to waits for polling completion.
      * @return the final poll response.
-     * @throws java.util.concurrent.TimeoutException TimeoutException will be thrown if polling
-     *         does not complete within the given {@link Duration}.
      */
     PollResponse<T> waitForCompletion(Duration timeout);
 
@@ -64,8 +62,6 @@ public interface SyncPoller<T, U> {
      * @param statusToWaitFor the desired {@link LongRunningOperationStatus} to block for.
      * @return {@link PollResponse} whose {@link PollResponse#getStatus()} matches {@code statusToWaitFor}.
      * @throws IllegalArgumentException if {@code statusToWaitFor} is or {@code timeout} {@code null}.
-     * @throws java.util.concurrent.TimeoutException TimeoutException will be thrown if polling
-     *         does not find the matching status within the given {@link Duration}.
      */
     PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor);
 

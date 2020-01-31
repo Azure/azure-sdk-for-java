@@ -49,7 +49,8 @@ public class BlobCheckpointStore implements CheckpointStore {
     private static final String BLOB_PATH_SEPARATOR = "/";
     private static final String CHECKPOINT_PATH = "/checkpoint/";
     private static final String OWNERSHIP_PATH = "/ownership/";
-    private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap("".getBytes(UTF_8));
+    public static final String EMPTY_STRING = "";
+    private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap(EMPTY_STRING.getBytes(UTF_8));
 
     private final BlobContainerAsyncClient blobContainerAsyncClient;
     private final ClientLogger logger = new ClientLogger(BlobCheckpointStore.class);
@@ -201,7 +202,7 @@ public class BlobCheckpointStore implements CheckpointStore {
      */
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
-        if (checkpoint.getSequenceNumber() == null && checkpoint.getOffset() == null) {
+        if (checkpoint == null || (checkpoint.getSequenceNumber() == null && checkpoint.getOffset() == null)) {
             throw logger.logExceptionAsWarning(Exceptions
                 .propagate(new IllegalStateException(
                     "Both sequence number and offset cannot be null when updating a checkpoint")));
@@ -257,16 +258,23 @@ public class BlobCheckpointStore implements CheckpointStore {
                 return Mono.empty();
             }
             logger
-                .info(Messages.BLOB_OWNER_INFO, blobItem.getName(), blobItem.getMetadata().getOrDefault(OWNER_ID, ""));
+                .info(Messages.BLOB_OWNER_INFO, blobItem.getName(),
+                    blobItem.getMetadata().getOrDefault(OWNER_ID, EMPTY_STRING));
 
             BlobItemProperties blobProperties = blobItem.getProperties();
+
+            String ownerId = blobItem.getMetadata().getOrDefault(OWNER_ID, EMPTY_STRING);
+            if (ownerId == null) {
+                ownerId = EMPTY_STRING;
+            }
+
             PartitionOwnership partitionOwnership = new PartitionOwnership()
                 .setFullyQualifiedNamespace(names[0])
                 .setEventHubName(names[1])
                 .setConsumerGroup(names[2])
                 // names[3] is "ownership"
                 .setPartitionId(names[4])
-                .setOwnerId(blobItem.getMetadata().getOrDefault(OWNER_ID, ""))
+                .setOwnerId(ownerId)
                 .setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli())
                 .setETag(blobProperties.getETag());
             return Mono.just(partitionOwnership);

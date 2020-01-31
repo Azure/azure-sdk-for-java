@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
  * Due to the nature of some distributed systems real-time consistency between requests can't (or it's very hard) to be
  * enforced implicitly. A solution is to allow protocol support in the form of multiple Synchronization Tokens.
  * Synchronization tokens are optional.
- *
+ * <p>
  * Uses optional Sync-Token request/response headers will guarantee real-time consistency between different client
  * instances and requests.
  *
@@ -19,69 +19,47 @@ import com.azure.core.util.logging.ClientLogger;
  */
 @Immutable
 public final class SyncToken {
-    private static final ClientLogger LOGGER = new ClientLogger(SyncToken.class);
+    private final ClientLogger logger = new ClientLogger(SyncToken.class);
 
     private final String id;
     private final String value;
-    private final long sequenceNumber;
+    private final Long sequenceNumber;
 
     /**
-     * Create an instance of SyncToken class.
-     *
-     * @param id Token ID (opaque)
-     * @param value Token value (opaque). Allows base64 encoded string
-     * @param sequenceNumber Token sequence number (version). Higher means newer version of the same token.
-     * Allows for better concurrency and client cache ability. The client may choose to use only token's last version,
-     * since token versions are inclusive. Not required for requests.
-     */
-    private SyncToken(String id, String value, long sequenceNumber) {
-        this.id = id;
-        this.value = value;
-        this.sequenceNumber = sequenceNumber;
-    }
-
-    /**
-     * Create an {@code SyncToken} by parsing a given sync-token string with only one sync-token.
+     * Create an instance of SyncToken class. Skip the sync token if the parsing failed.
      *
      * @param syncToken only one raw sync-token string from HTTP response header, ex.,
      * <p>Sync-Token: {@code <id>=<value>;sn=<sn></p>}. But not
      * <p>Sync-Token: {@code <id>=<value>;sn=<sn>,<id>=<value>;sn=<sn>}</p>
-     * @return {@code SyncToken} instance
+     * Allows for better concurrency and client cache ability. The client may choose to use only token's last version,
+     * since token versions are inclusive. Not required for requests.
      */
-    static SyncToken parseSyncToken(String syncToken) {
-        if (CoreUtils.isNullOrEmpty(syncToken)) {
-            return null;
+    SyncToken(String syncToken) {
+        String localId = null;
+        String localValue = null;
+        Long localSequenceNumber = null;
+        if (!CoreUtils.isNullOrEmpty(syncToken)) {
+            final String[] syncTokenParts = syncToken.split(";", 2);
+            if (syncTokenParts.length == 2) {
+                String[] idParts = syncTokenParts[0].split("=", 2);
+                String[] snParts = syncTokenParts[1].split("=", 2);
+
+                if (idParts.length == 2 && snParts.length == 2
+                    && !idParts[0].isEmpty() && !idParts[1].isEmpty()
+                    && !snParts[0].isEmpty() && !snParts[1].isEmpty()) {
+                    try {
+                        localSequenceNumber = Long.parseLong(snParts[1]);
+                        localId = idParts[0];
+                        localValue = idParts[1];
+                    } catch (NumberFormatException ex) {
+                    }
+                }
+            }
         }
 
-        final String[] syncTokenParts = syncToken.split(";", 2);
-        // Not a fully formatted sync-token
-        if (syncTokenParts.length != 2) {
-            LOGGER.warning("Failed to parse sync token, it cannot split to two parts by delimiter ';'.");
-            return null;
-        }
-
-        final String[] idParts = syncTokenParts[0].split("=", 2);
-        // Identifier is missing a section.
-        if (idParts.length != 2) {
-            LOGGER.warning("Failed to parse sync token, it cannot split 'id=value' into two parts.");
-            return null;
-        }
-
-        final String[] snParts = syncTokenParts[1].split("=", 2);
-        if (snParts.length != 2) {
-            LOGGER.warning("Failed to parse sync token, it cannot split 'sn=value' into two parts.");
-            return null;
-        }
-
-        final long sequenceNumber;
-        try {
-            sequenceNumber = Long.parseLong(snParts[1]);
-        } catch (NumberFormatException ex) {
-            LOGGER.warning("Cannot parse sequence number for invalid number format.", ex);
-            return null;
-        }
-
-        return new SyncToken(idParts[0], idParts[1], sequenceNumber);
+        this.sequenceNumber = localSequenceNumber;
+        this.value = localValue;
+        this.id = localId;
     }
 
     /**
@@ -94,7 +72,7 @@ public final class SyncToken {
     }
 
     /**
-     *  Get Token value (opaque). Allows base64 encoded string.
+     * Get Token value (opaque). Allows base64 encoded string.
      *
      * @return Token value
      */
@@ -111,7 +89,7 @@ public final class SyncToken {
      *
      * @return Token sequence number
      */
-    public long getSequenceNumber() {
+    public Long getSequenceNumber() {
         return sequenceNumber;
     }
 }

@@ -40,10 +40,9 @@ pr:
       - sdk/eventhubs/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: eventhubs
-      SDKType: data
       Artifacts:
         - name: azure-eventhubs
           groupId: com.microsoft.azure

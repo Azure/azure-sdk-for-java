@@ -27,7 +27,7 @@ import static com.azure.data.cosmos.internal.HttpConstants.StatusCodes.RETRY_WIT
 import static com.azure.data.cosmos.internal.HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
 import static com.azure.data.cosmos.internal.HttpConstants.StatusCodes.TOO_MANY_REQUESTS;
 import static com.azure.data.cosmos.internal.HttpConstants.StatusCodes.UNAUTHORIZED;
-import static com.google.common.base.Strings.lenientFormat;
+import static com.azure.data.cosmos.internal.guava27.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 

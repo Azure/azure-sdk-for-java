@@ -42,7 +42,7 @@ The libraries released in the GA January 2020 release is listed below.
 - [October 2019](https://azure.github.io/azure-sdk/releases/2019-10-11/java.html)
 - [September 2019](https://azure.github.io/azure-sdk/releases/2019-09-17/java.html)
 - [August 2019](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html)
-- [July 2010](https://azure.github.io/azure-sdk/releases/2019-07-10/java.html)
+- [July 2019](https://azure.github.io/azure-sdk/releases/2019-07-10/java.html)
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 

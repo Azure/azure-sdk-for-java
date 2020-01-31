@@ -14,9 +14,9 @@ import com.azure.messaging.eventhubs.PartitionProperties;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -71,10 +71,7 @@ public class ManagementChannel implements EventHubManagementNode {
         this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-
-        // Cache the first response from this mono, so we don't keep creating it.
-        this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.")
-            .cache();
+        this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
     }
 
     /**
@@ -124,9 +121,8 @@ public class ManagementChannel implements EventHubManagementNode {
      */
     @Override
     public void close() {
-        final RequestResponseChannel channel = channelMono.block(Duration.ofSeconds(60));
-        if (channel != null) {
-            channel.close();
+        if (channelMono instanceof Disposable) {
+            ((Disposable) channelMono).dispose();
         }
     }
 }

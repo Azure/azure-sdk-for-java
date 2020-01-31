@@ -36,7 +36,6 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: template
-      SDKType: client
       Artifacts:
         - name: azure-sdk-template
           groupId: com.azure

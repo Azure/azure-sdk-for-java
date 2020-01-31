@@ -42,7 +42,6 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: eventhubs
-      SDKType: client
       Artifacts:
         - name: azure-messaging-eventhubs
           groupId: com.azure

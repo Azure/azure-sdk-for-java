@@ -177,7 +177,7 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link StorageSharedKeyCredential}.
      * @return the updated DataLakePathClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -192,7 +192,7 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link TokenCredential}.
      * @return the updated DataLakePathClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -367,7 +367,7 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the request retry options for all the requests made through the client.
      *
-     * @param retryOptions The options used to configure retry behavior.
+     * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
@@ -401,7 +401,9 @@ public final class DataLakePathClientBuilder {
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * <p>
+     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
      * @param version {@link DataLakeServiceVersion} of the service to be used when making requests.
      * @return the updated DataLakePathClientBuilder object

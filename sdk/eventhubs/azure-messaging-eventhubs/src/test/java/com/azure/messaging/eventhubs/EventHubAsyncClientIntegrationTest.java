@@ -5,15 +5,12 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -25,7 +22,6 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.IntStream;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
@@ -122,13 +118,14 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         final EventHubProducerAsyncClient producer = clients[0].createProducer();
         final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
+        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
 
         try {
             for (final EventHubAsyncClient hubClient : clients) {
                 final EventHubConsumerAsyncClient consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
                 consumers.add(consumer);
 
-                consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
+                consumer.receiveFromPartition(PARTITION_ID, position)
                     .filter(partitionEvent -> TestUtils.isMatchingEvent(partitionEvent.getData(), messageTrackingValue))
                     .take(numberOfEvents).subscribe(partitionEvent -> {
                         EventData event = partitionEvent.getData();
@@ -178,51 +175,23 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify(TIMEOUT);
     }
 
-    @Disabled("Testing long running operations and disconnections.")
+    /**
+     * Verifies that we can get partition properties.
+     */
     @Test
-    void worksAfterReconnection() throws InterruptedException {
-        beforeTest(AmqpTransportType.AMQP);
+    void getMultipleProperties() {
+        // Arrange
+        final EventHubAsyncClient theClient = createBuilder(true)
+            .buildAsyncClient();
 
-        final String partitionId = "0";
-        final CreateBatchOptions options = new CreateBatchOptions().setPartitionId(partitionId);
-
-        producer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .retry(RETRY_OPTIONS)
-            .buildAsyncProducerClient();
-
-        Disposable subscribe = Flux.interval(Duration.ofSeconds(1))
-            .flatMap(position -> client.getPartitionIds().collectList())
-            .subscribe(partitionIds -> {
-                System.out.printf("Ids %s: {%s}%n", Instant.now(), String.join(",", partitionIds));
-            }, error -> {
-                    logger.error("Error fetching info.", error);
-                }, () -> {
-                    logger.info("Complete.");
-                });
-
-        Disposable subscription2 = Flux.interval(Duration.ofSeconds(5))
-            .flatMap(position -> producer.createBatch(options).flatMap(batch -> {
-                IntStream.range(0, 3).mapToObj(number -> new EventData("Position" + position + ": " + number))
-                    .forEach(event -> {
-                        if (!batch.tryAdd(event)) {
-                            logger.error("Could not add event. Size: {}. Max: {}. Content: {}",
-                                batch.getSizeInBytes(), batch.getMaxSizeInBytes(), event.getBodyAsString());
-                        }
-                    });
-
-                return producer.send(batch).thenReturn(Instant.now());
-            }))
-            .subscribe(instant -> {
-                System.out.println("---- Sent batch at: " + instant);
-            }, error -> {
-                    logger.error("---- Error sending batch: ", error);
-                }, () -> {
-                    logger.info("---- Complete.");
-                });
-
-        System.out.println("Sleeping while performing work.");
-        TimeUnit.MINUTES.sleep(30);
-        System.out.println("Complete.");
+        for (int i = 0; i < 10; i++) {
+            // Act & Assert
+            StepVerifier.create(theClient.getProperties())
+                .assertNext(properties -> {
+                    Assertions.assertEquals(getEventHubName(), properties.getName());
+                    Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
+                })
+                .verifyComplete();
+        }
     }
 }

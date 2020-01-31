@@ -5,9 +5,11 @@ package com.azure.storage.file.share
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.ShareStorageException
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
@@ -138,8 +140,12 @@ class ShareAsyncAPITests extends APISpec {
     }
 
     def "Create snapshot metadata error"() {
+        given:
+        primaryShareAsyncClient.create().block()
+
         when:
         def createSnapshotErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(Collections.singletonMap("", "value")))
+
         then:
         createSnapshotErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY)
@@ -235,6 +241,38 @@ class ShareAsyncAPITests extends APISpec {
     def "Set metadata error"() {
         expect:
         StepVerifier.create(primaryShareAsyncClient.setMetadata(testMetadata))
+            .verifyErrorSatisfies {
+                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
+            }
+    }
+
+    @Unroll
+    def "Get statistics"() {
+        setup:
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.createFile("tempFile", (long) size).block()
+
+        when:
+        def respVerifier = StepVerifier.create(primaryShareAsyncClient.getStatisticsWithResponse())
+
+        then:
+        respVerifier.assertNext {
+            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert it.getValue().getShareUsageInBytes() == size
+            assert it.getValue().getShareUsageInGB() == gigabytes
+        }
+
+        where:
+        size                    || gigabytes
+        0                       || 0
+        Constants.KB            || 1
+        Constants.GB            || 1
+        (long) 3 * Constants.GB || 3
+    }
+
+    def "Get statistics error"() {
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.getStatistics())
             .verifyErrorSatisfies {
                 assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
             }

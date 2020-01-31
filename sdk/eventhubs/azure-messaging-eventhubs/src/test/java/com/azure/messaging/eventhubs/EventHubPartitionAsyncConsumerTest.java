@@ -294,7 +294,7 @@ class EventHubPartitionAsyncConsumerTest {
             Assertions.assertTrue(successful);
             Assertions.assertEquals(0, shutdownReceived.getCount());
 
-            verify(link1).close();
+            verify(link1).dispose();
         } finally {
             subscriptions.dispose();
         }

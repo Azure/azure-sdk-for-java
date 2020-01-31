@@ -95,7 +95,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         }
 
         if (connection != null) {
-            connection.close();
+            connection.dispose();
         }
     }
 
