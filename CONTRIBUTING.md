@@ -140,9 +140,7 @@ In README files this ends up being slightly different. Because the version tag i
 Let's say we've GA'd and I need to tick up the version of azure-storage libraries how would I do it? Guidelines for incrementing versions after release can be found [here](https://github.com/Azure/azure-sdk/blob/master/docs/policies/releases.md#incrementing-after-release).
 
 1. I'd open up eng\versioning\version_client.txt and update the current-versions of the libraries that are built and released as part of the azure storage pipeline. This list can be found in pom.service.xml under the sdk/storage directory. It's worth noting that any module entry starting with "../" are external module dependencies and not something that's released as part of the pipeline. Dependencies for library components outside of a given area would be downloading the appropriate dependency from Maven like we do for external dependencies.
-2. Execute the update_versions python script from the root of the enlistment
-`python eng/versioning/update_versions.py --ut libary --bt client`
-This will go through the entire source tree and update all of the references in the POM and README files with the updated versions. Git status will show all of the modified files.
+2. Execute the update_versions python script from the root of the enlistment. The exact syntax and commands will vary based upon what is being changed and some examples can be found in the use cases in the [update_versions.py](./eng/versioning/update_versions.py#L6) file.
 3. Review and submit a PR with the modified files.
 
 ### Next steps: Management plane

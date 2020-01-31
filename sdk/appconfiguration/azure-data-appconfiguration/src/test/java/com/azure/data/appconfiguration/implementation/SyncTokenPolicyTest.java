@@ -65,7 +65,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseNullSyncTokenString() {
-        syncTokenEquals(new SyncToken(null), null, null, 0);
+        syncTokenEquals(new SyncToken(null), null, null, null);
     }
 
     /**
@@ -73,7 +73,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseEmptySyncTokenString() {
-        syncTokenEquals(new SyncToken(""), null, null, 0);
+        syncTokenEquals(new SyncToken(""), null, null, null);
     }
 
     /**
@@ -81,7 +81,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingSectionSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, -1)), null, null, 0);
+        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, null)), null, null, null);
     }
 
     /**
@@ -89,7 +89,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseWrongIdentifierNameSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(null, VALUE, SN_NAME, SEQUENCE_NUMBER)), null, null, 0);
+        syncTokenEquals(new SyncToken(constructSyncTokenString(null, VALUE, SN_NAME, SEQUENCE_NUMBER)), null, null, null);
     }
 
     /**
@@ -97,7 +97,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingIdentifierValueSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, null, SN_NAME, SEQUENCE_NUMBER)), null, null, 0);
+        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, null, SN_NAME, SEQUENCE_NUMBER)), null, null, null);
     }
 
     /**
@@ -105,7 +105,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingSequenceNumberNameSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, null, SEQUENCE_NUMBER)), null, null, 0);
+        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, null, SEQUENCE_NUMBER)), null, null, null);
     }
 
     /**
@@ -113,7 +113,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingSequenceNumberSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, -1)), null, null, 0);
+        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, null)), null, null, null);
     }
 
     /**
@@ -121,7 +121,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseInvalidSequenceNumberSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER) + "ABC"), null, null, 0);
+        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER) + "ABC"), null, null, null);
     }
 
     /**
@@ -130,6 +130,7 @@ public class SyncTokenPolicyTest {
      * @throws Exception URL exception
      */
     @Test
+    @SuppressWarnings("unchecked")
     public void singleSyncTokenTest() throws MalformedURLException {
         // Arrange
         final String firstResponseHeadersExpected = constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER);
@@ -138,7 +139,7 @@ public class SyncTokenPolicyTest {
         final HttpRequest secondRequest = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST),
             new HttpHeaders().put(SYNC_TOKEN, firstResponseHeadersExpected), null);
 
-        final String secondResponseRequestHeaderExpected = constructSyncTokenString(ID, VALUE, null, -1);
+        final String secondResponseRequestHeaderExpected = constructSyncTokenString(ID, VALUE, null, null);
 
         // Mock
         when(httpPipelineCallContext.getHttpRequest()).thenReturn(firstRequest, secondRequest);
@@ -173,6 +174,7 @@ public class SyncTokenPolicyTest {
      * @throws Exception URL exception
      */
     @Test
+    @SuppressWarnings("unchecked")
     public void multipleSyncTokensTest() throws Exception {
         // Arrange
         final String firstResponseHeadersExpected = constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER) + COMMA
@@ -183,8 +185,8 @@ public class SyncTokenPolicyTest {
         final HttpRequest secondRequest = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST),
             new HttpHeaders().put(SYNC_TOKEN, firstResponseHeadersExpected), null);
 
-        final String secondResponseRequestHeaderExpectedPart1 = constructSyncTokenString(ID, VALUE, null, -1);
-        final String secondResponseRequestHeaderExpectedPart2 = constructSyncTokenString(NEW_ID, UPDATED_VALUE, null, -1);
+        final String secondResponseRequestHeaderExpectedPart1 = constructSyncTokenString(ID, VALUE, null, null);
+        final String secondResponseRequestHeaderExpectedPart2 = constructSyncTokenString(NEW_ID, UPDATED_VALUE, null, null);
         // Because the limitation of constructSyncTokenString() always return the string ending with semicolon
         final String secondResponseRequestHeaderExpected =
             secondResponseRequestHeaderExpectedPart1.substring(0, secondResponseRequestHeaderExpectedPart1.length() - 1)
@@ -213,14 +215,14 @@ public class SyncTokenPolicyTest {
         assertEquals(secondResponseHeaderExpected, secondResponse.getHeaders().getValue(SYNC_TOKEN));
     }
 
-    private void syncTokenEquals(SyncToken syncToken, String id, String value, long sn) {
+    private void syncTokenEquals(SyncToken syncToken, String id, String value, Long sn) {
         assertEquals(id, syncToken.getId());
         assertEquals(value, syncToken.getValue());
         assertEquals(sn, syncToken.getSequenceNumber());
     }
 
     // This helper function construct an sync token string by
-    private String constructSyncTokenString(String id, String value, String snName, long sn) {
+    private String constructSyncTokenString(String id, String value, String snName, Long sn) {
         final StringBuilder sb = new StringBuilder();
         // identifier name
         if (id != null) {
@@ -237,7 +239,7 @@ public class SyncTokenPolicyTest {
         }
 
         // Always have ";" if any of given value exist
-        if (id != null || value != null || snName != null || sn > 0) {
+        if (id != null || value != null || snName != null || sn != null) {
             sb.append(SEMICOLON);
         }
 
@@ -246,12 +248,12 @@ public class SyncTokenPolicyTest {
             sb.append(snName);
         }
 
-        if (snName != null || sn > 0) {
+        if (snName != null || sn != null) {
             sb.append(EQUAL);
         }
 
         // sequence number value
-        if (sn > 0) {
+        if (sn != null) {
             sb.append(sn);
         }
 

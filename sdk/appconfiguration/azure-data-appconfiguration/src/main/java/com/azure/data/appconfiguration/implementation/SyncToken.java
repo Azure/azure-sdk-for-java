@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
  * Due to the nature of some distributed systems real-time consistency between requests can't (or it's very hard) to be
  * enforced implicitly. A solution is to allow protocol support in the form of multiple Synchronization Tokens.
  * Synchronization tokens are optional.
- *
+ * <p>
  * Uses optional Sync-Token request/response headers will guarantee real-time consistency between different client
  * instances and requests.
  *
@@ -21,9 +21,9 @@ import com.azure.core.util.logging.ClientLogger;
 public final class SyncToken {
     private final ClientLogger logger = new ClientLogger(SyncToken.class);
 
-    private String id;
-    private String value;
-    private long sequenceNumber;
+    private final String id;
+    private final String value;
+    private final Long sequenceNumber;
 
     /**
      * Create an instance of SyncToken class. Skip the sync token if the parsing failed.
@@ -35,41 +35,31 @@ public final class SyncToken {
      * since token versions are inclusive. Not required for requests.
      */
     SyncToken(String syncToken) {
-        if (CoreUtils.isNullOrEmpty(syncToken)) {
-            return;
+        String localId = null;
+        String localValue = null;
+        Long localSequenceNumber = null;
+        if (!CoreUtils.isNullOrEmpty(syncToken)) {
+            final String[] syncTokenParts = syncToken.split(";", 2);
+            if (syncTokenParts.length == 2) {
+                String[] idParts = syncTokenParts[0].split("=", 2);
+                String[] snParts = syncTokenParts[1].split("=", 2);
+
+                if (idParts.length == 2 && snParts.length == 2
+                    && !idParts[0].isEmpty() && !idParts[1].isEmpty()
+                    && !snParts[0].isEmpty() && !snParts[1].isEmpty()) {
+                    try {
+                        localSequenceNumber = Long.parseLong(snParts[1]);
+                        localId = idParts[0];
+                        localValue = idParts[1];
+                    } catch (NumberFormatException ex) {
+                    }
+                }
+            }
         }
 
-        final String[] syncTokenParts = syncToken.split(";", 2);
-        // Not a fully formatted sync-token
-        if (syncTokenParts.length != 2) {
-            logger.warning("Failed to parse sync token, it cannot split to two parts by delimiter ';'.");
-            return;
-        }
-
-        final String[] idParts = syncTokenParts[0].split("=", 2);
-        // Identifier is missing a section.
-        if (idParts.length != 2 || idParts[0].isEmpty() || idParts[1].isEmpty()) {
-            logger.warning("Failed to parse sync token, it cannot split 'id=value' into two parts.");
-            return;
-        }
-
-        final String[] snParts = syncTokenParts[1].split("=", 2);
-        // Sequence number is missing a section
-        if (snParts.length != 2 || snParts[0].isEmpty() || snParts[1].isEmpty()) {
-            logger.warning("Failed to parse sync token, it cannot split 'sn=value' into two parts.");
-            return;
-        }
-
-        // Not a valid number format
-        try {
-            this.sequenceNumber = Long.parseLong(snParts[1]);
-        } catch (NumberFormatException ex) {
-            logger.warning("Cannot parse sequence number for invalid number format.", ex);
-            return;
-        }
-
-        this.id = idParts[0];
-        this.value = idParts[1];
+        this.sequenceNumber = localSequenceNumber;
+        this.value = localValue;
+        this.id = localId;
     }
 
     /**
@@ -82,7 +72,7 @@ public final class SyncToken {
     }
 
     /**
-     *  Get Token value (opaque). Allows base64 encoded string.
+     * Get Token value (opaque). Allows base64 encoded string.
      *
      * @return Token value
      */
@@ -99,7 +89,7 @@ public final class SyncToken {
      *
      * @return Token sequence number
      */
-    public long getSequenceNumber() {
+    public Long getSequenceNumber() {
         return sequenceNumber;
     }
 }

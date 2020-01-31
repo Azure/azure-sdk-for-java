@@ -288,7 +288,8 @@ public class ClientLoggerTests {
 
     private String setupLogLevel(int logLevelToSet) {
         String originalLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
-        System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, Integer.toString(logLevelToSet));
+        Configuration.getGlobalConfiguration()
+            .put(Configuration.PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
         return originalLogLevel;
     }
 

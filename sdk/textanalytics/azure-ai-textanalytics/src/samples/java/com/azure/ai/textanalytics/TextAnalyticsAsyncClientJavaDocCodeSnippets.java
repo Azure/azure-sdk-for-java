@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
@@ -26,8 +27,6 @@ import java.util.List;
  * Code snippet for {@link TextAnalyticsAsyncClient}
  */
 public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
-    private static final String SUBSCRIPTION_KEY = null;
-    private static final String ENDPOINT = null;
     TextAnalyticsAsyncClient textAnalyticsAsyncClient = createTextAnalyticsAsyncClient();
 
     /**
@@ -38,11 +37,28 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public TextAnalyticsAsyncClient createTextAnalyticsAsyncClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
+            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         return textAnalyticsAsyncClient;
+    }
+
+    /**
+     * Code snippet for updating the existing subscription key.
+     */
+    public void rotateSubscriptionKey() {
+        // BEGIN: com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential
+        TextAnalyticsApiKeyCredential credential =
+            new TextAnalyticsApiKeyCredential("{subscription_key}");
+
+        TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
+            .subscriptionKey(credential)
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
+
+        credential.updateCredential("{new_subscription_key}");
+        // END: com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential
     }
 
     // Languages
