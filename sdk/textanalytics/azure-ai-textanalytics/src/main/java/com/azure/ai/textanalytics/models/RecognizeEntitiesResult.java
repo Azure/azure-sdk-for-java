@@ -35,6 +35,7 @@ public final class RecognizeEntitiesResult extends DocumentResult {
      * @return a list of {@link NamedEntity}
      */
     public List<NamedEntity> getNamedEntities() {
+        throwExceptionIfError();
         return namedEntities;
     }
 }

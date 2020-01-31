@@ -55,7 +55,7 @@ class RecognizeLinkedEntityAsyncClient {
 
         return recognizeBatchLinkedEntitiesWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
+            .map(Transforms::processSingleResponseErrorResult);
     }
 
     Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
@@ -122,6 +122,4 @@ class RecognizeLinkedEntityAsyncClient {
             entityLinkingResult.getModelVersion(), entityLinkingResult.getStatistics() == null ? null
             : toBatchStatistics(entityLinkingResult.getStatistics()));
     }
-
-
 }
