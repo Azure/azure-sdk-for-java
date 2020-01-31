@@ -890,5 +890,35 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 })
                 .verifyComplete());
     }
+
+    /**
+     * A builder client with null service version, which will use the default service version.
+     */
+    @Test
+    public void nullServiceVersion() {
+        final String key = getKey();
+        final String value = getValue();
+        client = getBuilderWithNullServiceVersion().buildAsyncClient();
+
+        ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue(value);
+        StepVerifier.create(client.setConfigurationSettingWithResponse(expected, false))
+            .assertNext(response -> assertConfigurationEquals(expected, response))
+            .verifyComplete();
+    }
+
+    /**
+     * A builder client with null pipeline assigned, which will use the default pipeline.
+     */
+    @Test
+    public void defaultPipeline() {
+        final String key = getKey();
+        final String value = getValue();
+        client = getBuilderWithDefaultPipeline().buildAsyncClient();
+
+        ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue(value);
+        StepVerifier.create(client.setConfigurationSettingWithResponse(expected, false))
+            .assertNext(response -> assertConfigurationEquals(expected, response))
+            .verifyComplete();
+    }
 }
 

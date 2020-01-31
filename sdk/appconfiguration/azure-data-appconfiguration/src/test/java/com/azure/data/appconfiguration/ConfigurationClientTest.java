@@ -18,6 +18,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -661,5 +662,33 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 assertContainsHeaders(headers, response.getRequest().getHeaders());
             }
         );
+    }
+
+    /**
+     * A builder client with null service version, which will use the default service version.
+     */
+    @Test
+    public void nullServiceVersion() {
+        final String key = getKey();
+        final String value = getValue();
+        client = getBuilderWithNullServiceVersion().buildClient();
+        ConfigurationSetting addedSetting = client.setConfigurationSetting(key, null, value);
+        Assertions.assertEquals(addedSetting.getKey(), key);
+        Assertions.assertEquals(addedSetting.getValue(), value);
+
+    }
+
+    /**
+     * A builder client with null pipeline assigned, which will use the default pipeline.
+     */
+    @Test
+    public void defaultPipeline() {
+        final String key = getKey();
+        final String value = getValue();
+        client = getBuilderWithNullServiceVersion().buildClient();
+
+        ConfigurationSetting addedSetting = client.setConfigurationSetting(key, null, value);
+        Assertions.assertEquals(addedSetting.getKey(), key);
+        Assertions.assertEquals(addedSetting.getValue(), value);
     }
 }
