@@ -19,69 +19,57 @@ import com.azure.core.util.logging.ClientLogger;
  */
 @Immutable
 public final class SyncToken {
-    private static final ClientLogger LOGGER = new ClientLogger(SyncToken.class);
+    private final ClientLogger logger = new ClientLogger(SyncToken.class);
 
-    private final String id;
-    private final String value;
-    private final long sequenceNumber;
-
-    /**
-     * Create an instance of SyncToken class.
-     *
-     * @param id Token ID (opaque)
-     * @param value Token value (opaque). Allows base64 encoded string
-     * @param sequenceNumber Token sequence number (version). Higher means newer version of the same token.
-     * Allows for better concurrency and client cache ability. The client may choose to use only token's last version,
-     * since token versions are inclusive. Not required for requests.
-     */
-    private SyncToken(String id, String value, long sequenceNumber) {
-        this.id = id;
-        this.value = value;
-        this.sequenceNumber = sequenceNumber;
-    }
+    private String id;
+    private String value;
+    private long sequenceNumber;
 
     /**
-     * Create an {@code SyncToken} by parsing a given sync-token string with only one sync-token.
+     * Create an instance of SyncToken class. Skip the sync token if the parsing failed.
      *
      * @param syncToken only one raw sync-token string from HTTP response header, ex.,
      * <p>Sync-Token: {@code <id>=<value>;sn=<sn></p>}. But not
      * <p>Sync-Token: {@code <id>=<value>;sn=<sn>,<id>=<value>;sn=<sn>}</p>
-     * @return {@code SyncToken} instance
+     * Allows for better concurrency and client cache ability. The client may choose to use only token's last version,
+     * since token versions are inclusive. Not required for requests.
      */
-    static SyncToken parseSyncToken(String syncToken) {
+    SyncToken(String syncToken) {
         if (CoreUtils.isNullOrEmpty(syncToken)) {
-            return null;
+            return;
         }
 
         final String[] syncTokenParts = syncToken.split(";", 2);
         // Not a fully formatted sync-token
         if (syncTokenParts.length != 2) {
-            LOGGER.warning("Failed to parse sync token, it cannot split to two parts by delimiter ';'.");
-            return null;
+            logger.warning("Failed to parse sync token, it cannot split to two parts by delimiter ';'.");
+            return;
         }
 
         final String[] idParts = syncTokenParts[0].split("=", 2);
         // Identifier is missing a section.
-        if (idParts.length != 2) {
-            LOGGER.warning("Failed to parse sync token, it cannot split 'id=value' into two parts.");
-            return null;
+        if (idParts.length != 2 || idParts[0].isEmpty() || idParts[1].isEmpty()) {
+            logger.warning("Failed to parse sync token, it cannot split 'id=value' into two parts.");
+            return;
         }
 
         final String[] snParts = syncTokenParts[1].split("=", 2);
-        if (snParts.length != 2) {
-            LOGGER.warning("Failed to parse sync token, it cannot split 'sn=value' into two parts.");
-            return null;
+        // Sequence number is missing a section
+        if (snParts.length != 2 || snParts[0].isEmpty() || snParts[1].isEmpty()) {
+            logger.warning("Failed to parse sync token, it cannot split 'sn=value' into two parts.");
+            return;
         }
 
-        final long sequenceNumber;
+        // Not a valid number format
         try {
-            sequenceNumber = Long.parseLong(snParts[1]);
+            this.sequenceNumber = Long.parseLong(snParts[1]);
         } catch (NumberFormatException ex) {
-            LOGGER.warning("Cannot parse sequence number for invalid number format.", ex);
-            return null;
+            logger.warning("Cannot parse sequence number for invalid number format.", ex);
+            return;
         }
 
-        return new SyncToken(idParts[0], idParts[1], sequenceNumber);
+        this.id = idParts[0];
+        this.value = idParts[1];
     }
 
     /**

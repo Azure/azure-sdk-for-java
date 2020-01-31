@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
  * request. Also after received the HTTP response, update the latest sync-tokens to the map.
  */
 public final class SyncTokenPolicy implements HttpPipelinePolicy {
+    private static final String COMMA = ",";
+    private static final String EQUAL = "=";
     private static final String SYNC_TOKEN = "Sync-Token";
     private final ConcurrentHashMap<String, SyncToken> syncTokenMap = new ConcurrentHashMap<>(); // key is sync-token id
 
@@ -44,13 +46,13 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
             }
 
             // Sync-Token header could have more than one value
-            final String[] syncTokens = syncTokenValue.split(",");
+            final String[] syncTokens = syncTokenValue.split(COMMA);
             for (final String syncTokenStr : syncTokens) {
-                final SyncToken syncToken = SyncToken.parseSyncToken(syncTokenStr);
+                final SyncToken syncToken = new SyncToken(syncTokenStr);
                 final String tokenId = syncToken.getId();
                 // If the value is not thread safe and must be updated inside the method with a remapping function
                 // to ensure the entire operation is atomic.
-                syncTokenMap.compute(tokenId, (s, existingSyncToken) -> {
+                syncTokenMap.compute(tokenId, (key, existingSyncToken) -> {
                     if (existingSyncToken == null
                         || syncToken.getSequenceNumber() > existingSyncToken.getSequenceNumber()) {
                         return syncToken;
@@ -69,7 +71,7 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
      * @return sync-token string
      */
     private String getSyncTokenHeader() {
-        return syncTokenMap.values().stream().map(syncToken -> syncToken.getId() + "=" + syncToken.getValue())
-            .collect(Collectors.joining(","));
+        return syncTokenMap.values().stream().map(syncToken -> syncToken.getId() + EQUAL + syncToken.getValue())
+            .collect(Collectors.joining(COMMA));
     }
 }
