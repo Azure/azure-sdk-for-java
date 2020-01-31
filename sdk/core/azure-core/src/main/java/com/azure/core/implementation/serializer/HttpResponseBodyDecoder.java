@@ -8,18 +8,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.UnixTime;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.implementation.UnixTime;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -42,20 +42,25 @@ final class HttpResponseBodyDecoder {
      * The content reading and decoding happens when caller subscribe to the returned {@code Mono<Object>},
      * if the response body is not decodable then {@code Mono.empty()} will be returned.
      *
+     * @param body the response body to decode, null for this parameter
+     *             indicate read body from {@code httpResponse} parameter and decode it.
      * @param httpResponse the response containing the body to be decoded
      * @param serializer the adapter to use for decoding
      * @param decodeData the necessary data required to decode a Http response
      * @return publisher that emits decoded response body upon subscription if body is decodable,
      *     no emission if the body is not-decodable
      */
-    static Mono<Object> decode(HttpResponse httpResponse, SerializerAdapter serializer,
+    static Mono<Object> decode(String body, HttpResponse httpResponse, SerializerAdapter serializer,
                                HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
         final ClientLogger logger = new ClientLogger(HttpResponseBodyDecoder.class);
         //
         return Mono.defer(() -> {
             if (isErrorStatus(httpResponse, decodeData)) {
-                return httpResponse.getBodyAsString()
+                Mono<String> bodyMono = body == null
+                    ? httpResponse.getBodyAsString()
+                    : Mono.just(body);
+                return bodyMono
                     .flatMap(bodyString -> {
                         try {
                             final Object decodedErrorEntity = deserializeBody(bodyString,
@@ -75,7 +80,10 @@ final class HttpResponseBodyDecoder {
             } else if (!isReturnTypeDecodable(decodeData)) {
                 return Mono.empty();
             } else {
-                return httpResponse.getBodyAsString()
+                Mono<String> bodyMono = body == null
+                    ? httpResponse.getBodyAsString()
+                    : Mono.just(body);
+                return bodyMono
                     .flatMap(bodyString -> {
                         try {
                             final Object decodedSuccessEntity = deserializeBody(bodyString,
@@ -375,12 +383,10 @@ final class HttpResponseBodyDecoder {
      */
     private static Type extractEntityTypeFromReturnType(HttpResponseDecodeData decodeData) {
         Type token = decodeData.getReturnType();
-
         if (token != null) {
             if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class) || TypeUtil.isTypeOrSubTypeOf(token, Flux.class)) {
                 token = TypeUtil.getTypeArgument(token);
             }
-
             if (TypeUtil.isTypeOrSubTypeOf(token, Response.class)) {
                 token = TypeUtil.getRestResponseBodyType(token);
             }

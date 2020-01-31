@@ -4,19 +4,34 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.ProxyOptions;
+<<<<<<< HEAD
 import com.azure.core.http.netty.implementation.IdleStateEventHandler;
+=======
+import com.azure.core.http.netty.implementation.ChallengeHolder;
+import com.azure.core.http.netty.implementation.HttpProxyHandler;
+import com.azure.core.util.AuthorizationChallengeHandler;
+>>>>>>> 42e3e9056dce3461bba4020ac81e4e102ff2501a
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
+<<<<<<< HEAD
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
+=======
+import io.netty.handler.proxy.ProxyHandler;
+import io.netty.handler.proxy.Socks4ProxyHandler;
+import io.netty.handler.proxy.Socks5ProxyHandler;
+>>>>>>> 42e3e9056dce3461bba4020ac81e4e102ff2501a
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
-import reactor.netty.tcp.ProxyProvider;
 
 import java.util.Objects;
+<<<<<<< HEAD
 import java.util.concurrent.TimeUnit;
+=======
+import java.util.concurrent.atomic.AtomicReference;
+>>>>>>> 42e3e9056dce3461bba4020ac81e4e102ff2501a
 
 /**
  * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
@@ -29,6 +44,8 @@ import java.util.concurrent.TimeUnit;
  * @see HttpClient
  */
 public class NettyAsyncHttpClientBuilder {
+    private static final String INVALID_PROXY_MESSAGE = "Unknown Proxy type '%s' in use. Not configuring Netty proxy.";
+
     private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
     private final HttpClient baseHttpClient;
@@ -68,73 +85,34 @@ public class NettyAsyncHttpClientBuilder {
      */
     public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient;
-        if (this.connectionProvider != null) {
-            if (this.baseHttpClient != null) {
-                throw logger.logExceptionAsError(new IllegalStateException("connectionProvider cannot be set on an "
-                    + "existing reactor netty HttpClient."));
-            }
+        if (this.baseHttpClient != null) {
+            nettyHttpClient = baseHttpClient;
+        } else if (this.connectionProvider != null) {
             nettyHttpClient = HttpClient.create(this.connectionProvider);
         } else {
-            nettyHttpClient = this.baseHttpClient == null ? HttpClient.create() : this.baseHttpClient;
+            nettyHttpClient = HttpClient.create();
         }
+
+        nettyHttpClient = nettyHttpClient
+            .port(port)
+            .wiretap(enableWiretap);
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        nettyHttpClient = nettyHttpClient
-            .port(port)
-            .wiretap(enableWiretap)
-            .tcpConfiguration(tcpConfig -> {
-                if (nioEventLoopGroup != null) {
-                    tcpConfig = tcpConfig.runOn(nioEventLoopGroup);
-                }
+        ProxyOptions buildProxyOptions = (proxyOptions == null && buildConfiguration != Configuration.NONE)
+            ? ProxyOptions.fromConfiguration(buildConfiguration)
+            : proxyOptions;
 
-                ProxyOptions buildProxyOptions = (proxyOptions == null)
-                    ? ProxyOptions.fromConfiguration(buildConfiguration)
-                    : proxyOptions;
+        String nonProxyHosts = (buildProxyOptions == null) ? null : buildProxyOptions.getNonProxyHosts();
+        AuthorizationChallengeHandler handler = (buildProxyOptions == null || buildProxyOptions.getUsername() == null)
+            ? null
+            : new AuthorizationChallengeHandler(buildProxyOptions.getUsername(), buildProxyOptions.getPassword());
+        AtomicReference<ChallengeHolder> proxyChallengeHolder = new AtomicReference<>();
 
-                if (buildProxyOptions != null) {
-                    tcpConfig = tcpConfig.proxy(typeSpec ->
-                        typeSpec.type(mapProxyType(buildProxyOptions.getType(), logger))
-                            .address(proxyOptions.getAddress())
-                            .username(proxyOptions.getUsername())
-                            .password(user -> proxyOptions.getPassword())
-                            .nonProxyHosts(proxyOptions.getNonProxyHosts()));
-                }
-
-                return tcpConfig.bootstrap(bootstrap -> bootstrap.handler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast("azure.idleStateHandler",
-                            new IdleStateHandler(true, 30, 30, 0, TimeUnit.SECONDS));
-                        ch.pipeline().addLast("azure.idleStateEventHandler", new IdleStateEventHandler());
-
-                    }
-                }));
-            });
-
-        return new NettyAsyncHttpClient(nettyHttpClient);
-    }
-
-    /*
-     * Maps a 'ProxyOptions.Type' to a 'ProxyProvider.Proxy', if the type is unknown or cannot be mapped an
-     * IllegalStateException will be thrown.
-     */
-    private static ProxyProvider.Proxy mapProxyType(ProxyOptions.Type type, ClientLogger logger) {
-        Objects.requireNonNull(type, "'ProxyOptions.getType()' cannot be null.");
-
-        switch (type) {
-            case HTTP:
-                return ProxyProvider.Proxy.HTTP;
-            case SOCKS4:
-                return ProxyProvider.Proxy.SOCKS4;
-            case SOCKS5:
-                return ProxyProvider.Proxy.SOCKS5;
-            default:
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    String.format("Unknown proxy type '%s' in use. Use a proxy type from 'ProxyOptions.Type'.", type)));
-        }
+        return new NettyAsyncHttpClient(nettyHttpClient, nioEventLoopGroup,
+            () -> getProxyHandler(handler, proxyChallengeHolder), nonProxyHosts);
     }
 
     /**
@@ -214,5 +192,29 @@ public class NettyAsyncHttpClientBuilder {
     public NettyAsyncHttpClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
+    }
+
+    /*
+     * Creates a proxy handler based on the passed ProxyOptions.
+     */
+    private ProxyHandler getProxyHandler(AuthorizationChallengeHandler challengeHandler,
+        AtomicReference<ChallengeHolder> proxyChallengeHolder) {
+        if (proxyOptions == null) {
+            return null;
+        }
+
+        switch (proxyOptions.getType()) {
+            case HTTP:
+                return new HttpProxyHandler(proxyOptions.getAddress(), challengeHandler,
+                    proxyChallengeHolder);
+            case SOCKS4:
+                return new Socks4ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername());
+            case SOCKS5:
+                return new Socks5ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername(),
+                    proxyOptions.getPassword());
+            default:
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    String.format(INVALID_PROXY_MESSAGE, proxyOptions.getType())));
+        }
     }
 }
