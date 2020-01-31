@@ -156,6 +156,8 @@ public class NettyAsyncHttpClientBuilderTests {
         Configuration configuration = new Configuration()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888");
 
+        System.out.printf("NO_PROXY has a value of %s%n", configuration.get(Configuration.PROPERTY_NO_PROXY));
+
         HttpClient validatorClient = HttpClient.create().tcpConfiguration(tcpClient -> tcpClient
             .bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap, "TestProxyHandler",
                 (connectionObserver, channel) ->
