@@ -9,7 +9,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -96,7 +96,7 @@ class RecognizePiiEntityAsyncClient {
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null, documentEntities.getEntities().stream().map(entity ->
-                new NamedEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
+                new PiiEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
                     entity.getLength(), entity.getScore())).collect(Collectors.toList())));
         }
 

@@ -4,13 +4,15 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
@@ -151,11 +153,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.0);
-        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
-        RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(namedEntity1, namedEntity2));
-        validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(),
-            client.recognizeEntities("I had a wonderful trip to Seattle last week.").getNamedEntities());
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
+        RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(categorizedEntity1, categorizedEntity2));
+        validateCategorizedEntities(recognizeEntitiesResultList.getCategorizedEntities(),
+            client.recognizeEntities("I had a wonderful trip to Seattle last week.").getCategorizedEntities());
     }
 
     @Test
@@ -166,15 +168,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForFaultyText() {
-        assertEquals(client.recognizeEntities("!@#%%").getNamedEntities().size(), 0);
+        assertEquals(client.recognizeEntities("!@#%%").getCategorizedEntities().size(), 0);
     }
 
     @Test
     public void recognizeEntitiesBatchInputSingleError() {
-        recognizeBatchNamedEntitySingleErrorRunner((inputs) -> {
+        recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
             DocumentResultCollection<RecognizeEntitiesResult> l = client.recognizeBatchEntities(inputs);
             for (RecognizeEntitiesResult recognizeEntitiesResult : l) {
-                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getNamedEntities());
+                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getCategorizedEntities());
                 assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
             }
         });
@@ -182,36 +184,36 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForBatchInput() {
-        recognizeBatchNamedEntityRunner((inputs) -> validateNamedEntity(false,
+        recognizeBatchCategorizedEntityRunner((inputs) -> validateCategorizedEntity(false,
             getExpectedBatchNamedEntities(), client.recognizeBatchEntities(inputs)));
     }
 
     @Test
     public void recognizeEntitiesForBatchInputShowStatistics() {
         recognizeBatchNamedEntitiesShowStatsRunner((inputs, options) ->
-            validateNamedEntity(true, getExpectedBatchNamedEntities(),
+            validateCategorizedEntity(true, getExpectedBatchNamedEntities(),
                 client.recognizeBatchEntitiesWithResponse(inputs, options, Context.NONE).getValue()));
     }
 
     @Test
     public void recognizeEntitiesForBatchStringInput() {
-        recognizeNamedEntityStringInputRunner((inputs) ->
-            validateNamedEntity(false, getExpectedBatchNamedEntities(), client.recognizeEntities(inputs)));
+        recognizeCategorizedEntityStringInputRunner((inputs) ->
+            validateCategorizedEntity(false, getExpectedBatchNamedEntities(), client.recognizeEntities(inputs)));
     }
 
     @Test
     public void recognizeEntitiesForListLanguageHint() {
         recognizeNamedEntitiesLanguageHintRunner((inputs, language) ->
-            validateNamedEntity(false, getExpectedBatchNamedEntities(),
+            validateCategorizedEntity(false, getExpectedBatchNamedEntities(),
                 client.recognizeEntitiesWithResponse(inputs, language, Context.NONE).getValue()));
     }
 
     @Test
     public void recognizePiiEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
-        RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Collections.singletonList(namedEntity1));
-        validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(),
-            client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.").getNamedEntities());
+        PiiEntity piiEntity = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
+        RecognizePiiEntitiesResult recognizePiiEntitiesResult = new RecognizePiiEntitiesResult("0", null, null, Collections.singletonList(piiEntity));
+        validatePiiEntities(recognizePiiEntitiesResult.getPiiEntities(),
+            client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.").getPiiEntities());
     }
 
     @Test
@@ -222,7 +224,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizePiiEntitiesForFaultyText() {
-        assertEquals(client.recognizePiiEntities("!@#%%").getNamedEntities().size(), 0);
+        assertEquals(client.recognizePiiEntities("!@#%%").getPiiEntities().size(), 0);
     }
 
     @Test

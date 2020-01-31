@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Immutable
 public final class RecognizeEntitiesResult extends DocumentResult {
-    private final List<NamedEntity> namedEntities;
+    private final List<CategorizedEntity> categorizedEntities;
 
     /**
      * Creates a {@code RecognizeEntitiesResult} model that describes recognized entities result
@@ -21,21 +21,21 @@ public final class RecognizeEntitiesResult extends DocumentResult {
      * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
      * @param error the document error
-     * @param namedEntities a list of {@link NamedEntity}
+     * @param categorizedEntities a list of {@link CategorizedEntity}
      */
     public RecognizeEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
-        List<NamedEntity> namedEntities) {
+        List<CategorizedEntity> categorizedEntities) {
         super(id, textDocumentStatistics, error);
-        this.namedEntities = namedEntities == null ? new ArrayList<>() : namedEntities;
+        this.categorizedEntities = categorizedEntities == null ? new ArrayList<>() : categorizedEntities;
     }
 
     /**
-     * Get a list of named entities string
+     * Get a list of categorized entities string
      *
-     * @return a list of {@link NamedEntity}
+     * @return a list of {@link CategorizedEntity}
      */
-    public List<NamedEntity> getNamedEntities() {
+    public List<CategorizedEntity> getCategorizedEntities() {
         throwExceptionIfError();
-        return namedEntities;
+        return categorizedEntities;
     }
 }

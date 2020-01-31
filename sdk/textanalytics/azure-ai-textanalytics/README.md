@@ -232,12 +232,12 @@ for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inpu
 ```java
 String text = "Satya Nadella is the CEO of Microsoft";
 
-for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEntities()) {
+for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEntities()) {
     System.out.printf(
-        "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+        "Recognized Categorized Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
         entity.getText(),
-        entity.getType(),
-        entity.getSubtype(),
+        entity.getCategory(),
+        entity.getSubCategory(),
         entity.getScore());
 }
 ```
@@ -247,12 +247,12 @@ for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEn
 ```java
 String text = "My SSN is 555-55-5555";
 
-for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getNamedEntities()) {
+for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text).getPiiEntities()) {
     System.out.printf(
-        "Recognized PII Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+        "Recognized PII Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
         entity.getText(),
-        entity.getType(),
-        entity.getSubtype(),
+        entity.getCategory(),
+        entity.getSubCategory(),
         entity.getScore());
 }
 ```

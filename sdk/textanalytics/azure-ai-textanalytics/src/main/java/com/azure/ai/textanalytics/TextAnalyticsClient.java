@@ -166,7 +166,7 @@ public final class TextAnalyticsClient {
 
     // Named Entity
     /**
-     * Returns a list of general named entities in the provided text.
+     * Returns a list of general categorized entities in the provided text.
      * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>
      *
      * <p><strong>Code Sample</strong></p>
@@ -175,7 +175,7 @@ public final class TextAnalyticsClient {
      *
      * @param text the text to recognize entities for.
      *
-     * @return the {@link RecognizeEntitiesResult named entity} of the text.
+     * @return the {@link RecognizeEntitiesResult categorized entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -184,7 +184,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of general named entities in the provided text.
+     * Returns a list of general categorized entities in the provided text.
      * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
      *
@@ -196,7 +196,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link RecognizeEntitiesResult named entity} of the text.
+     * @return A {@link Response} containing the {@link RecognizeEntitiesResult categorized entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -206,7 +206,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of general named entities for the provided list of texts.
+     * Returns a list of general categorized entities for the provided list of texts.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities in a list of text.</p>
@@ -215,7 +215,7 @@ public final class TextAnalyticsClient {
      * @param textInputs A list of texts to recognize entities for.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
-     * {@link RecognizeEntitiesResult named entity} of the text.
+     * {@link RecognizeEntitiesResult categorized entity} of the text.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -224,7 +224,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of general named entities for the provided list of texts.
+     * Returns a list of general categorized entities for the provided list of texts.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities with http response in a list of text with a provided language representation.</p>
@@ -235,7 +235,7 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity}.
+     * {@link RecognizeEntitiesResult categorized entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -245,7 +245,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of general named entities for the provided list of text inputs.
+     * Returns a list of general categorized entities for the provided list of text inputs.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities in a list of {@link TextDocumentInput}.</p>
@@ -253,7 +253,7 @@ public final class TextAnalyticsClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
      *
-     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntitiesResult named entity}.
+     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntitiesResult categorized entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -263,7 +263,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of general named entities for the provided list of text inputs.
+     * Returns a list of general categorized entities for the provided list of text inputs.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities with http response in a list of {@link TextDocumentInput}.</p>
@@ -275,7 +275,7 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
+     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult categorized entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -320,7 +320,7 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizePiiEntitiesResult named entity} of the text.
+     * {@link RecognizePiiEntitiesResult PII entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -340,7 +340,7 @@ public final class TextAnalyticsClient {
      *
      * @param textInputs A list of text to recognize pii entities for.
      *
-     * @return A {@link DocumentResultCollection batch} of the {@link RecognizePiiEntitiesResult named entity}
+     * @return A {@link DocumentResultCollection batch} of the {@link RecognizePiiEntitiesResult PII entity}
      * of the text.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -364,7 +364,7 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizePiiEntitiesResult named entity}.
+     * {@link RecognizePiiEntitiesResult PII entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -385,7 +385,7 @@ public final class TextAnalyticsClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize pii entities for.
      *
-     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntitiesResult named entity}.
+     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntitiesResult PII entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -409,7 +409,7 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
+     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult PII entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -452,7 +452,7 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizeLinkedEntitiesResult named entity} of the text.
+     * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
