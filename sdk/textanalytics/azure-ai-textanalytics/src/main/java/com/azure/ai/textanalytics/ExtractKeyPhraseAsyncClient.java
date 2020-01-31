@@ -26,7 +26,6 @@ import java.util.Objects;
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
-import static com.azure.ai.textanalytics.Transforms.processSingleResponseErrorResult;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
@@ -53,7 +52,7 @@ class ExtractKeyPhraseAsyncClient {
 
         return extractBatchKeyPhrasesWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> processSingleResponseErrorResult(response));
+            .map(Transforms::processSingleResponseErrorResult);
     }
 
     Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(

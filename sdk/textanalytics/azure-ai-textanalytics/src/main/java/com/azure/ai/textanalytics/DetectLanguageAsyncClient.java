@@ -27,7 +27,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
-import static com.azure.ai.textanalytics.Transforms.processSingleResponseErrorResult;
 
 /**
  * Helper class for managing detect language endpoint.
@@ -51,7 +50,7 @@ class DetectLanguageAsyncClient {
         List<DetectLanguageInput> languageInputs = Collections.singletonList(new DetectLanguageInput("0",
             text, countryHint));
         return detectBatchLanguagesWithResponse(languageInputs, null, context)
-            .map(response -> processSingleResponseErrorResult(response));
+            .map(Transforms::processSingleResponseErrorResult);
     }
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> textInputs,

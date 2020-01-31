@@ -32,6 +32,9 @@ import java.util.stream.IntStream;
 final class Transforms {
     private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
 
+    private Transforms() {
+    }
+
     /**
      * Given a list of inputs will apply the indexing function to it and return the updated list.
      *
@@ -138,4 +141,6 @@ final class Transforms {
         com.azure.ai.textanalytics.models.TextAnalyticsError error) {
         return new TextAnalyticsException(error.getMessage(), error.getCode().toString(), error.getTarget());
     }
+
+
 }
