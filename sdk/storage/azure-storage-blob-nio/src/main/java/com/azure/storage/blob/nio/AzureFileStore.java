@@ -29,13 +29,13 @@ public final class AzureFileStore extends FileStore {
     private final ClientLogger logger = new ClientLogger(AzureFileStore.class);
     private final AzureFileSystem parentFileSystem;
     private final BlobContainerClient containerClient;
-    private static final Map<Class<? extends FileAttributeView>, String> supportedAttributeViews;
+    private static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
     static {
         Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();
         map.put(BasicFileAttributeView.class, "basic");
         map.put(UserDefinedFileAttributeView.class, "user");
         map.put(AzureStorageFileAttributeView.class, "azureStorage");
-        supportedAttributeViews = Collections.unmodifiableMap(map);
+        SUPPORTED_ATTRIBUTE_VIEWS = Collections.unmodifiableMap(map);
     }
 
     AzureFileStore(AzureFileSystem parentFileSystem, String containerName) throws IOException {
@@ -127,7 +127,7 @@ public final class AzureFileStore extends FileStore {
      */
     @Override
     public boolean supportsFileAttributeView(Class<? extends FileAttributeView> aClass) {
-        return supportedAttributeViews.containsKey(aClass);
+        return SUPPORTED_ATTRIBUTE_VIEWS.containsKey(aClass);
     }
 
     /**
@@ -135,7 +135,7 @@ public final class AzureFileStore extends FileStore {
      */
     @Override
     public boolean supportsFileAttributeView(String s) {
-        return supportedAttributeViews.containsValue(s);
+        return SUPPORTED_ATTRIBUTE_VIEWS.containsValue(s);
     }
 
     /**
