@@ -59,6 +59,8 @@ public interface DeploymentExtended extends HasInner<DeploymentExtendedInner>, I
         interface WithResourceGroupName {
            /**
             * Specifies resourceGroupName.
+            * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist
+            * @return the next definition stage
             */
             WithProperties withResourceGroupName(String resourceGroupName);
         }
@@ -69,6 +71,8 @@ public interface DeploymentExtended extends HasInner<DeploymentExtendedInner>, I
         interface WithProperties {
            /**
             * Specifies properties.
+            * @param properties The deployment properties
+            * @return the next definition stage
             */
             WithCreate withProperties(DeploymentProperties properties);
         }
@@ -97,6 +101,8 @@ public interface DeploymentExtended extends HasInner<DeploymentExtendedInner>, I
         interface WithProperties {
             /**
              * Specifies properties.
+             * @param properties The deployment properties
+             * @return the next update stage
              */
             Update withProperties(DeploymentProperties properties);
         }
