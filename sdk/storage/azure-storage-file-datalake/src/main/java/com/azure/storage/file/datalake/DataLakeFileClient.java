@@ -49,7 +49,9 @@ import java.util.Set;
  * {@link DataLakeFileSystemClient#getFileClient(String) getFileClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure
  * Docs</a> for more information.
  */
 public class DataLakeFileClient extends DataLakePathClient {

@@ -134,6 +134,10 @@ public class ShareDirectoryAsyncClient {
      */
     public ShareFileAsyncClient getFileClient(String fileName) {
         String filePath = directoryPath + "/" + fileName;
+        // Support for root directory
+        if (directoryPath.isEmpty()) {
+            filePath = fileName;
+        }
         return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, null, accountName,
             serviceVersion);
     }

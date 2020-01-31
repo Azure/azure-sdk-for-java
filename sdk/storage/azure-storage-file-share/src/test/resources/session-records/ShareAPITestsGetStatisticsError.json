@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://gaprastg71.file.core.windows.net/shareapitestsgetstatisticserror8494822023596b3f5?restype=share&comp=stats",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "fcc29dee-ea1a-4d8d-ac33-1f144a5f204f"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "ed3757b5-f01a-0002-0cb8-d02c83000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:ed3757b5-f01a-0002-0cb8-d02c83000000\nTime:2020-01-22T00:14:07.7109178Z</Message></Error>",
+      "Date" : "Wed, 22 Jan 2020 00:14:07 GMT",
+      "x-ms-client-request-id" : "fcc29dee-ea1a-4d8d-ac33-1f144a5f204f",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestsgetstatisticserror8494822023596b3f5" ]
+}

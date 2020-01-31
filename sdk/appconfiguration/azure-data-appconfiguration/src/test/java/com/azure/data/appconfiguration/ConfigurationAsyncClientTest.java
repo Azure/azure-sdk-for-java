@@ -810,6 +810,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         configurationSettingPagedFlux.toIterable().forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
         assertEquals(numberExpected, configurationSettingList2.size());
     }
+
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.
