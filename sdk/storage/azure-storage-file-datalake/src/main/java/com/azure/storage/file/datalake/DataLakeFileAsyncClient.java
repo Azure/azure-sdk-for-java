@@ -432,37 +432,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Downloads the entire file into a file specified by the path.
      *
-     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
-     * will be thrown.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
-     *
-     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
-     * @param range {@link FileRange}
-     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
-     * transfers parameter is ignored.
-     * @param options {@link DownloadRetryOptions}
-     * @param requestConditions {@link DataLakeRequestConditions}
-     * @param rangeGetContentMd5 Whether the contentMD5 for the specified file range should be returned.
-     * @return A reactive response containing the file properties and metadata.
-     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
-     * @throws UncheckedIOException If an I/O error occurs.
-     */
-    public Mono<Response<PathProperties>> downloadToFileWithResponse(String filePath, FileRange range,
-        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
-        DataLakeRequestConditions requestConditions, boolean rangeGetContentMd5) {
-        return downloadToFileWithResponse(filePath, range, parallelTransferOptions, options, requestConditions,
-            rangeGetContentMd5, null);
-    }
-
-    /**
-     * Downloads the entire file into a file specified by the path.
-     *
      * <p>By default the file will be created and must not exist, if the file already exists a
      * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
      * {@link OpenOption OpenOptions} </p>

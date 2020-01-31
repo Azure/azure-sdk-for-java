@@ -378,38 +378,6 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Downloads the entire file into a file specified by the path.
      *
-     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
-     * will be thrown.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Duration-Context}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
-     *
-     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
-     * @param range {@link FileRange}
-     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
-     * transfers parameter is ignored.
-     * @param downloadRetryOptions {@link DownloadRetryOptions}
-     * @param requestConditions {@link DataLakeRequestConditions}
-     * @param rangeGetContentMd5 Whether the contentMD5 for the specified file range should be returned.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the file properties and metadata.
-     * @throws UncheckedIOException If an I/O error occurs.
-     */
-    public Response<PathProperties> downloadToFileWithResponse(String filePath, FileRange range,
-        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
-        DataLakeRequestConditions requestConditions, boolean rangeGetContentMd5, Duration timeout, Context context) {
-        return downloadToFileWithResponse(filePath, range, parallelTransferOptions, downloadRetryOptions,
-            requestConditions, rangeGetContentMd5, null, timeout, context);
-    }
-
-    /**
-     * Downloads the entire file into a file specified by the path.
-     *
      * <p>By default the file will be created and must not exist, if the file already exists a
      * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
      * {@link OpenOption OpenOptions} </p>
