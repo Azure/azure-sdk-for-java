@@ -20,13 +20,19 @@ import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.WatchService;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.FileAttributeView;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.spi.FileSystemProvider;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * In the hierarchy of this file system, an {@code AzureFileSystem} corresponds to an Azure Blob Storage account. A
@@ -106,6 +112,15 @@ public final class AzureFileSystem extends FileSystem {
 
     private static final String AZURE_STORAGE_BLOB_ENDPOINT_TEMPLATE = "%s://%s.blob.core.windows.net";
 
+    static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
+    static {
+        Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();
+        map.put(BasicFileAttributeView.class, "basic");
+        map.put(UserDefinedFileAttributeView.class, "user");
+        map.put(AzureStorageFileAttributeView.class, "azureStorage");
+        SUPPORTED_ATTRIBUTE_VIEWS = Collections.unmodifiableMap(map);
+    }
+
     private final AzureFileSystemProvider parentFileSystemProvider;
     private final BlobServiceClient blobServiceClient;
     private final Integer blockSize;
@@ -173,6 +188,11 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * Always returns false. It may be the case that the authentication method provided to this file system only
+     * supports read operations and hence the file system is implicitly read only in this view, but that does not
+     * imply the underlying account/file system is inherently read only. Creating/specifying read only file
+     * systems is not supported.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -191,14 +211,26 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * The list of root directories corresponds to the list of available file stores and therefore containers specified
+     * upon initialization. A root directory always takes the form {@code "<file-store-name>:"}. This list will not
+     * change during the lifetime of this object. If containers are added to the account after initialization, they
+     * will be ignored. If a container is deleted or otherwise becomes unavailable, its root directory will still be
+     * returned but operations to it will fail.
+     *
      * {@inheritDoc}
      */
     @Override
     public Iterable<Path> getRootDirectories() {
-        return null;
+        return fileStores.keySet().stream()
+            .map(name -> this.getPath(name + AzurePath.ROOT_DIR_SUFFIX))
+            .collect(Collectors.toList());
     }
 
     /**
+     * This list will not change during the lifetime of this object. If containers are added to the account after
+     * initialization, they will be ignored. If a container is deleted or otherwise becomes unavailable, its
+     * corresponding file store will still be returned but operations to it will fail until it becomes available again.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -207,11 +239,18 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * This file system supports the following views:
+     * <ul>
+     *     <li>{@link java.nio.file.attribute.BasicFileAttributeView}</li>
+     *     <li>{@link java.nio.file.attribute.UserDefinedFileAttributeView}</li>
+     *     <li>{@link AzureStorageFileAttributeView}</li>
+     * </ul>
+     *
      * {@inheritDoc}
      */
     @Override
     public Set<String> supportedFileAttributeViews() {
-        return null;
+        return new HashSet<>(SUPPORTED_ATTRIBUTE_VIEWS.values());
     }
 
     /**
@@ -230,6 +269,8 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * Unsupported.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -238,6 +279,7 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * Unsupported.
      * {@inheritDoc}
      */
     @Override
@@ -246,6 +288,8 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * Unsupported.
+     *
      * {@inheritDoc}
      */
     @Override

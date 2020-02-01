@@ -47,7 +47,7 @@ import java.util.stream.StreamSupport;
  */
 public final class AzurePath implements Path {
     private final ClientLogger logger = new ClientLogger(AzurePath.class);
-    private static final String ROOT_DIR_SUFFIX = ":";
+    static final String ROOT_DIR_SUFFIX = ":";
 
     private final AzureFileSystem parentFileSystem;
     private final String pathString;
