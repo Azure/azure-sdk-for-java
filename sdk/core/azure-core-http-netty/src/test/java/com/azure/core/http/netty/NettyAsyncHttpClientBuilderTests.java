@@ -154,9 +154,7 @@ public class NettyAsyncHttpClientBuilderTests {
     @Test
     public void buildWithConfigurationProxy() {
         Configuration configuration = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888");
-
-        System.out.printf("NO_PROXY has a value of %s%n", configuration.get(Configuration.PROPERTY_NO_PROXY));
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345");
 
         HttpClient validatorClient = HttpClient.create().tcpConfiguration(tcpClient -> tcpClient
             .bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap, "TestProxyHandler",
@@ -174,7 +172,7 @@ public class NettyAsyncHttpClientBuilderTests {
     @Test
     public void buildWithNonProxyConfigurationProxy() {
         Configuration configuration = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
             .put(Configuration.PROPERTY_NO_PROXY, "localhost");
 
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()

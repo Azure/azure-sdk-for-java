@@ -305,7 +305,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
     @Test
     public void buildWithConfigurationProxy() {
         Configuration configuration = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888");
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345");
 
         String expectedProxyHost = "localhost";
         int expectedProxyPort = 8888;
@@ -325,7 +325,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
     @Test
     public void buildWithNonProxyConfigurationProxy() {
         Configuration configuration = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
             .put(Configuration.PROPERTY_NO_PROXY, "localhost");
 
         OkHttpAsyncHttpClient okClient = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder()
