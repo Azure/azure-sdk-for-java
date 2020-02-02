@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.IterableStream;
+import com.azure.core.util.paging.ContinuablePage;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -15,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class FeedResponse<T> {
+public class FeedResponse<T> implements ContinuablePage<String, T> {
 
     private final List<T> results;
     private final Map<String, String> header;
@@ -253,6 +255,11 @@ public class FeedResponse<T> {
      */
     public String getActivityId() {
         return getValueOrNull(header, HttpConstants.HttpHeaders.ACTIVITY_ID);
+    }
+
+    @Override
+    public IterableStream<T> getElements() {
+        return IterableStream.of(this.results);
     }
 
     /**

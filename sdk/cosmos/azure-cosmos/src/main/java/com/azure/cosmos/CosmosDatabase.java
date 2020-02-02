@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -279,10 +280,8 @@ public class CosmosDatabase {
      * @param query the query
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(String query) {
-        return databaseWrapper.queryContainers(query)
-                   .toIterable()
-                   .iterator();
+    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(String query) {
+        return new IterableStream<>(databaseWrapper.queryContainers(query).byPage());
     }
 
     /**
@@ -292,10 +291,8 @@ public class CosmosDatabase {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(String query, FeedOptions options) {
-        return databaseWrapper.queryContainers(query, options)
-                   .toIterable()
-                   .iterator();
+    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(String query, FeedOptions options) {
+        return new IterableStream<>(databaseWrapper.queryContainers(query, options).byPage());
     }
 
     /**
@@ -304,10 +301,8 @@ public class CosmosDatabase {
      * @param querySpec the query spec
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec) {
-        return databaseWrapper.queryContainers(querySpec)
-                   .toIterable()
-                   .iterator();
+    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec) {
+        return new IterableStream<>(databaseWrapper.queryContainers(querySpec).byPage());
     }
 
     /**
@@ -317,12 +312,10 @@ public class CosmosDatabase {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(
+    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return databaseWrapper.queryContainers(querySpec, options)
-                   .toIterable()
-                   .iterator();
+        return new IterableStream<>(databaseWrapper.queryContainers(querySpec, options).byPage());
     }
 
     /**

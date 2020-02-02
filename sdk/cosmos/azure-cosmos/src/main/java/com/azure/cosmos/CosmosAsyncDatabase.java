@@ -11,6 +11,8 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.function.Function;
+
 import static com.azure.cosmos.Resource.validateResource;
 
 /**
@@ -366,7 +368,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Flux} containing one or several feed response pages of the
      * obtained containers or an error.
      */
-    public Flux<FeedResponse<CosmosContainerProperties>> queryContainers(String query) {
+    public CosmosContinuablePagedFlux<CosmosContainerProperties> queryContainers(String query) {
         return queryContainers(new SqlQuerySpec(query));
     }
 
@@ -382,7 +384,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Flux} containing one or several feed response pages of the
      * obtained containers or an error.
      */
-    public Flux<FeedResponse<CosmosContainerProperties>> queryContainers(String query, FeedOptions options) {
+    public CosmosContinuablePagedFlux<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
         return queryContainers(new SqlQuerySpec(query), options);
     }
 
@@ -397,7 +399,7 @@ public class CosmosAsyncDatabase {
      * @return a {@link Flux} containing one or several feed response pages of the
      * obtained containers or an error.
      */
-    public Flux<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec) {
+    public CosmosContinuablePagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec) {
         return queryContainers(querySpec, null);
     }
 
@@ -413,11 +415,22 @@ public class CosmosAsyncDatabase {
      * @return a {@link Flux} containing one or several feed response pages of the
      * obtained containers or an error.
      */
-    public Flux<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec, FeedOptions options) {
-        return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
-                   .map(response -> BridgeInternal.createFeedResponse(
-                       CosmosContainerProperties.getFromV2Results(response.getResults()),
-                       response.getResponseHeaders()));
+    public CosmosContinuablePagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec, FeedOptions options) {
+        return new CosmosContinuablePagedFlux<>(new Function<CosmosPagedFluxOptions, Flux<FeedResponse<CosmosContainerProperties>>>() {
+            @Override
+            public Flux<FeedResponse<CosmosContainerProperties>> apply(CosmosPagedFluxOptions cosmosPagedFluxOptions) {
+                if (cosmosPagedFluxOptions.getMaxItemCount() != null) {
+                    options.maxItemCount(cosmosPagedFluxOptions.getMaxItemCount());
+                }
+                if (cosmosPagedFluxOptions.getRequestContinuation() != null) {
+                    options.requestContinuation(cosmosPagedFluxOptions.getRequestContinuation());
+                }
+                return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
+                                            .map(response -> BridgeInternal.createFeedResponse(
+                                                CosmosContainerProperties.getFromV2Results(response.getResults()),
+                                                response.getResponseHeaders()));
+            }
+        });
     }
 
     /**

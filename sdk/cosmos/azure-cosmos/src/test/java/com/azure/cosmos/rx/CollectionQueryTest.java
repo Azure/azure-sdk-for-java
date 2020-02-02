@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProperties;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -48,7 +49,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options);
+        CosmosContinuablePagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
 
         List<CosmosAsyncContainer> expectedCollections = createdCollections.stream()
                 .filter(c -> StringUtils.equals(filterCollectionId, c.getId()) ).collect(Collectors.toList());
@@ -65,7 +66,7 @@ public class CollectionQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        validateQuerySuccess(queryObservable.byPage(2), validator, 10000);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -75,7 +76,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options);
+        CosmosContinuablePagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
 
         List<CosmosAsyncContainer> expectedCollections = createdCollections;
 
@@ -91,7 +92,7 @@ public class CollectionQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        validateQuerySuccess(queryObservable.byPage(2), validator, 10000);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -99,7 +100,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options);
+        CosmosContinuablePagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
 
         FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()
                 .containsExactly(new ArrayList<>())
@@ -107,7 +108,7 @@ public class CollectionQueryTest extends TestSuiteBase {
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

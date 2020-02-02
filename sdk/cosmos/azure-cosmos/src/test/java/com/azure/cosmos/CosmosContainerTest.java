@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.IterableStream;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
@@ -234,23 +235,23 @@ public class CosmosContainerTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", collectionName);
         FeedOptions feedOptions = new FeedOptions();
 
-        Iterator<FeedResponse<CosmosContainerProperties>> feedResponseIterator = createdDatabase.queryContainers(query);
+        IterableStream<FeedResponse<CosmosContainerProperties>> feedResponseIterator = createdDatabase.queryContainers(query);
         // Very basic validation
-        assertThat(feedResponseIterator.hasNext()).isTrue();
+        assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
-        Iterator<FeedResponse<CosmosContainerProperties>> feedResponseIterator1 =
+        IterableStream<FeedResponse<CosmosContainerProperties>> feedResponseIterator1 =
             createdDatabase.queryContainers(query, feedOptions);
         // Very basic validation
-        assertThat(feedResponseIterator1.hasNext()).isTrue();
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        Iterator<FeedResponse<CosmosContainerProperties>> feedResponseIterator2 =
+        IterableStream<FeedResponse<CosmosContainerProperties>> feedResponseIterator2 =
             createdDatabase.queryContainers(querySpec);
-        assertThat(feedResponseIterator2.hasNext()).isTrue();
+        assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
 
-        Iterator<FeedResponse<CosmosContainerProperties>> feedResponseIterator3 =
+        IterableStream<FeedResponse<CosmosContainerProperties>> feedResponseIterator3 =
             createdDatabase.queryContainers(querySpec, feedOptions);
-        assertThat(feedResponseIterator3.hasNext()).isTrue();
+        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
     private void validateContainerResponse(CosmosContainerProperties containerProperties,
