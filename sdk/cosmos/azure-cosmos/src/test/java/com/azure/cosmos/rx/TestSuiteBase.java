@@ -66,7 +66,6 @@ import org.testng.annotations.DataProvider;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.concurrent.Queues;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -223,7 +222,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         cosmosContainer.queryItems("SELECT * FROM root", options, CosmosItemProperties.class)
                        .byPage(100)
-                       .subscribeOn(Schedulers.elastic(), false)
+                       .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                         .flatMap(doc -> {
 
@@ -241,7 +240,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
-                       .subscribeOn(Schedulers.elastic(), false)
+                       .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(trigger -> {
 //                    if (paths != null && !paths.isEmpty()) {
@@ -257,7 +256,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryStoredProcedures("SELECT * FROM root", options)
-                       .subscribeOn(Schedulers.elastic(), false)
+                       .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(storedProcedure -> {
 
@@ -274,7 +273,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} udfs ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryUserDefinedFunctions("SELECT * FROM root", options)
-                       .subscribeOn(Schedulers.elastic(), false)
+                       .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(udf -> {
 
@@ -455,7 +454,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             result.add(cosmosContainer.createItem(docDef));
         }
 
-        return Flux.merge(Flux.fromIterable(result), concurrencyLevel, Queues.SMALL_BUFFER_SIZE);
+        return Flux.merge(Flux.fromIterable(result), concurrencyLevel);
     }
     public List<CosmosItemProperties> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
                                                          List<CosmosItemProperties> documentDefinitionList) {
@@ -469,8 +468,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
                                        List<CosmosItemProperties> documentDefinitionList) {
         bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
-            .subscribeOn(Schedulers.elastic(), false)
-            .blockLast();
+            .publishOn(Schedulers.parallel())
+            .map(CosmosAsyncItemResponse::getProperties)
+            .then()
+            .block();
     }
 
     public static CosmosAsyncUser createUser(CosmosAsyncClient client, String databaseId, CosmosUserProperties userSettings) {
