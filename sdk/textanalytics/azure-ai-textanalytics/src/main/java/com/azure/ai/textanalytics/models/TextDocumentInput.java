@@ -5,6 +5,8 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Locale;
+
 /**
  * Contains an input document to be analyzed by the service.
  */
@@ -82,7 +84,7 @@ public final class TextDocumentInput {
 
     @Override
     public String toString() {
-        return String.format("Text = %s, Id = %s, Language = %s",
+        return String.format(Locale.ROOT, "Text = %s, Id = %s, Language = %s",
             this.getText(), this.getId(), this.getLanguage());
     }
 }

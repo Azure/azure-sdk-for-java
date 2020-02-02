@@ -6,10 +6,10 @@ package com.azure.core.http.okhttp;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.okhttp.implementation.OkHttpProxySelector;
+import com.azure.core.http.okhttp.implementation.ProxyAuthenticator;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.ConnectionPool;
-import okhttp3.Credentials;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -169,8 +169,8 @@ public class OkHttpAsyncHttpClientBuilder {
      */
     public HttpClient build() {
         OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null
-                ? new OkHttpClient.Builder()
-                : this.okHttpClient.newBuilder();
+            ? new OkHttpClient.Builder()
+            : this.okHttpClient.newBuilder();
 
         // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {
@@ -199,7 +199,7 @@ public class OkHttpAsyncHttpClientBuilder {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        ProxyOptions buildProxyOptions = (proxyOptions == null)
+        ProxyOptions buildProxyOptions = (proxyOptions == null && buildConfiguration != Configuration.NONE)
             ? ProxyOptions.fromConfiguration(buildConfiguration)
             : proxyOptions;
 
@@ -208,14 +208,12 @@ public class OkHttpAsyncHttpClientBuilder {
                 mapProxyType(buildProxyOptions.getType(), logger), buildProxyOptions.getAddress(),
                 buildProxyOptions.getNonProxyHosts()));
 
-            if (proxyOptions.getUsername() != null) {
-                String basicAuthorizationHeader = Credentials.basic(buildProxyOptions.getUsername(),
-                    buildProxyOptions.getPassword());
+            if (buildProxyOptions.getUsername() != null) {
+                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(proxyOptions.getUsername(),
+                    proxyOptions.getPassword());
 
-                httpClientBuilder = httpClientBuilder.proxyAuthenticator((route, response) ->
-                    response.request().newBuilder()
-                        .header("Proxy-Authorization", basicAuthorizationHeader)
-                        .build());
+                httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
+                    .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());
             }
         }
 
