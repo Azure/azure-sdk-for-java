@@ -31,14 +31,6 @@ Licensed under the MIT License.
 
   <dependencies>
 
-    <!-- https://mvnrepository.com/artifact/software.amazon.cryptools/AmazonCorrettoCryptoProvider -->
-    <dependency>
-      <groupId>software.amazon.cryptools</groupId>
-      <artifactId>AmazonCorrettoCryptoProvider</artifactId>
-      <version>1.3.0</version>
-      <classifier>linux-x86_64</classifier>
-    </dependency>
-
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
