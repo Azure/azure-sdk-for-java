@@ -22,7 +22,7 @@ import java.util.function.Function;
  * it is possible to be so, e.g. by using volatile and copying context.
  *
  * @param <T> The type of poll response value
- * @param <U> The type of the final result of long running operation
+ * @param <U> The type of the final result of the long running operation
  */
 final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     private final ClientLogger logger = new ClientLogger(DefaultSyncPoller.class);
