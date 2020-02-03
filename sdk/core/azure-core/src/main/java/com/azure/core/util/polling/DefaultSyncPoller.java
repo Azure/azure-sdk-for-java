@@ -37,7 +37,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     /**
      * Creates DefaultSyncPoller.
      *
-     * @param pollInterval the polling interval
+     * @param pollInterval the polling interval.
      * @param syncActivationOperation the operation to synchronously activate (start) the long running operation,
      *     this operation will be called with a new {@link PollingContext}.
      * @param pollOperation the operation to poll the current state of long running operation, this parameter
