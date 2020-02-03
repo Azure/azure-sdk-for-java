@@ -1,6 +1,0 @@
-[
-    {
-        "projectName": "azure-sdk-for-java",
-        "bom": "./azure-sdk-bom.xml"
-    }
-]

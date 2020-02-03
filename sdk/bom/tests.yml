@@ -1,6 +1,0 @@
-trigger: none
-
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: bom
