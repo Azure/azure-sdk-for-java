@@ -4,14 +4,13 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.ErrorCodeValue;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
@@ -117,27 +116,23 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that an error document is returned for a text input with invalid country hint.
-     * <p>
-     * TODO: update error Model. #6559
+     * Verifies that an TextAnalyticsException is thrown for a text input with invalid country hint.
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid Country Hint.", null, null);
         StepVerifier.create(client.detectLanguageWithResponse("Este es un document escrito en Español.", "en"))
-            .assertNext(response -> validateErrorDocument(expectedError, response.getValue().getError()))
-            .verifyComplete();
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && throwable.getMessage().equals(INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     /**
-     * Verifies that an error document is returned for a empty text input.
+     * Verifies that TextAnalyticsException is thrown for a empty text input.
      */
     @Test
     public void detectLanguageEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         StepVerifier.create(client.detectLanguage(""))
-            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
-            .verifyComplete();
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     /**
@@ -164,8 +159,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Entities
     @Test
     public void recognizeEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.80624294281005859);
-        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.8);
+        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.0);
+        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
         RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(namedEntity1, namedEntity2));
         StepVerifier.create(client.recognizeEntities("I had a wonderful trip to Seattle last week."))
             .assertNext(response -> validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(), response.getNamedEntities()))
@@ -174,10 +169,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         StepVerifier.create(client.recognizeEntities(""))
-            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
-            .verifyComplete();
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     @Test
@@ -185,6 +179,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         StepVerifier.create(client.recognizeEntities("!@#%%"))
             .assertNext(response -> assertEquals(response.getNamedEntities().size(), 0))
             .verifyComplete();
+    }
+
+    @Test
+    public void recognizeEntitiesBatchInputSingleError() {
+        recognizeBatchNamedEntitySingleErrorRunner((inputs) ->
+            StepVerifier.create(client.recognizeBatchEntities(inputs))
+                .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                    && throwable.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE)));
     }
 
     @Test
@@ -222,7 +224,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Linked Entities
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.11472424095537814, 7, 26);
+        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
         LinkedEntity linkedEntity = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
         RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResultList = new RecognizeLinkedEntitiesResult("0", null, null, Collections.singletonList(linkedEntity));
 
@@ -233,10 +235,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         StepVerifier.create(client.recognizeLinkedEntities(""))
-            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
-            .verifyComplete();
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     @Test
@@ -281,7 +282,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Pii Entities
     @Test
     public void recognizePiiEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.65);
+        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
         RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Collections.singletonList(namedEntity1));
 
         StepVerifier.create(client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's."))
@@ -291,10 +292,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizePiiEntitiesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         StepVerifier.create(client.recognizePiiEntities(""))
-            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
-            .verifyComplete();
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     @Test
@@ -346,10 +346,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void extractKeyPhrasesForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         StepVerifier.create(client.extractKeyPhrases(""))
-            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
-            .verifyComplete();
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     @Test
@@ -393,15 +392,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     // Sentiment
+
     /**
      * Test analyzing sentiment for a string input.
      */
     @Test
     public void analyseSentimentForTextInput() {
-        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED, 0.1, 0.5, 0.4, 66, 0);
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED, 0.0, 0.0, 0.0, 66, 0);
         final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-            new TextSentiment(TextSentimentClass.NEGATIVE, 0.99, 0.005, 0.005, 31, 0),
-            new TextSentiment(TextSentimentClass.POSITIVE, 0.005, 0.005, 0.99, 35, 32));
+            new TextSentiment(TextSentimentClass.NEGATIVE, 0.0, 0.0, 0.0, 31, 0),
+            new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.0, 35, 32));
 
         StepVerifier
             .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
@@ -412,13 +412,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that an error document is returned for a empty text input.
+     * Verifies that an TextAnalyticsException is thrown for a empty text input.
      */
     @Test
     public void analyseSentimentForEmptyText() {
-        TextAnalyticsError expectedError = new TextAnalyticsError(ErrorCodeValue.INVALID_ARGUMENT, "Invalid document in request.", null, null);
         StepVerifier.create(client.analyzeSentiment(""))
-            .assertNext(response -> validateErrorDocument(expectedError, response.getError())).verifyComplete();
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     /**
@@ -426,10 +426,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForFaultyText() {
-        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 5, 0);
+        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 5, 0);
         final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 1, 0),
-            new TextSentiment(TextSentimentClass.NEUTRAL, 0.02, 0.91, 0.07, 4, 1));
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 1, 0),
+            new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 4, 1));
 
         StepVerifier
             .create(client.analyzeSentiment("!@#%%"))

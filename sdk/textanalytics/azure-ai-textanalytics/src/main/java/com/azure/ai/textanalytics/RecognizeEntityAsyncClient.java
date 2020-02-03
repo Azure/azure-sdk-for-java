@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.Transforms.mapByIndex;
+import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
-import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 
 /**
  * Helper class for managing recognize entity endpoint.
@@ -54,7 +54,7 @@ class RecognizeEntityAsyncClient {
 
         return recognizeBatchEntitiesWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
+            .map(Transforms::processSingleResponseErrorResult);
     }
 
     Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
