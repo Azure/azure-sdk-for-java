@@ -142,7 +142,7 @@ public class OpenTelemetryTracerTest {
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
-        assertEquals(Span.Kind.PRODUCER, recordEventsSpan.toSpanData().getKind());
+        assertEquals(Span.Kind.CLIENT, recordEventsSpan.toSpanData().getKind());
 
         // verify span attributes
         final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
