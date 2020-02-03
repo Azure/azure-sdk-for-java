@@ -42,7 +42,7 @@ Licensed under the MIT License.
     <netty-tcnative.version>2.0.27.Final</netty-tcnative.version>
     <sdk-version>${project.version}</sdk-version>
     <guava.version>27.0.1-jre</guava.version>
-    <reactor-core.version>3.3.0.RELEASE</reactor-core.version>
+    <reactor-core.version>3.3.2.RELEASE</reactor-core.version>
     <netty.version>4.1.45.Final</netty.version>
     <reactor-netty.version>0.9.4.RELEASE</reactor-netty.version>
     <test.groups>unit</test.groups>
