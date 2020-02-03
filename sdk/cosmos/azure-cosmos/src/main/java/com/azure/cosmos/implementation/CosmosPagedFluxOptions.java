@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.implementation;
+
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 
 /**
  * Specifies paging options for Cosmos Paged Flux implementation.
@@ -12,12 +14,7 @@ public class CosmosPagedFluxOptions {
     private String requestContinuation;
     private Integer maxItemCount;
 
-    CosmosPagedFluxOptions(FeedOptions feedOptions) {
-        this.requestContinuation = feedOptions.requestContinuation();
-        this.maxItemCount = feedOptions.maxItemCount();
-    }
-
-    CosmosPagedFluxOptions() {}
+    public CosmosPagedFluxOptions() {}
 
     /**
      * Gets the request continuation token.
