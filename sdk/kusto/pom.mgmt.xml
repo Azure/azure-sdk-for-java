@@ -12,5 +12,6 @@
     <module>mgmt-v2018_09_07_preview</module>
     <module>mgmt-v2019_05_15</module>
     <module>mgmt-v2019_09_07</module>
+    <module>mgmt-v2019_11_09</module>
   </modules>
 </project>
