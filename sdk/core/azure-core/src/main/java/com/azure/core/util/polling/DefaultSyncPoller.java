@@ -57,7 +57,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
                              Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
                              BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
                              Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
-        Objects.requireNonNull(pollInterval, "'defaultPollInterval' cannot be null.");
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.compareTo(Duration.ZERO) <= 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
