@@ -53,7 +53,7 @@ public class DomainInner extends Resource {
     /**
      * Metric resource id for the domain.
      */
-    @JsonProperty(value = "properties.metricResourceId")
+    @JsonProperty(value = "properties.metricResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricResourceId;
 
     /**
@@ -135,17 +135,6 @@ public class DomainInner extends Resource {
      */
     public String metricResourceId() {
         return this.metricResourceId;
-    }
-
-    /**
-     * Set metric resource id for the domain.
-     *
-     * @param metricResourceId the metricResourceId value to set
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withMetricResourceId(String metricResourceId) {
-        this.metricResourceId = metricResourceId;
-        return this;
     }
 
     /**

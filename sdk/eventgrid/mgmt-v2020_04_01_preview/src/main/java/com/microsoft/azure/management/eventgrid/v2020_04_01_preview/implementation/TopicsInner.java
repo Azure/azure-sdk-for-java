@@ -26,7 +26,6 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -91,11 +90,11 @@ public class TopicsInner implements InnerSupportsGet<TopicInner>, InnerSupportsD
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.Topics update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}")
-        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("topicName") String topicName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TopicUpdateParameters topicUpdateParameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("topicName") String topicName, @Body TopicUpdateParameters topicUpdateParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.Topics beginUpdate" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}")
-        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("topicName") String topicName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TopicUpdateParameters topicUpdateParameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("topicName") String topicName, @Body TopicUpdateParameters topicUpdateParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.Topics list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/topics")
@@ -564,13 +563,14 @@ public class TopicsInner implements InnerSupportsGet<TopicInner>, InnerSupportsD
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param topicUpdateParameters Topic update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TopicInner object if successful.
      */
-    public TopicInner update(String resourceGroupName, String topicName) {
-        return updateWithServiceResponseAsync(resourceGroupName, topicName).toBlocking().last().body();
+    public TopicInner update(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, topicName, topicUpdateParameters).toBlocking().last().body();
     }
 
     /**
@@ -579,12 +579,13 @@ public class TopicsInner implements InnerSupportsGet<TopicInner>, InnerSupportsD
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param topicUpdateParameters Topic update information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TopicInner> updateAsync(String resourceGroupName, String topicName, final ServiceCallback<TopicInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, topicName), serviceCallback);
+    public ServiceFuture<TopicInner> updateAsync(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters, final ServiceCallback<TopicInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, topicName, topicUpdateParameters), serviceCallback);
     }
 
     /**
@@ -593,11 +594,12 @@ public class TopicsInner implements InnerSupportsGet<TopicInner>, InnerSupportsD
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param topicUpdateParameters Topic update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<TopicInner> updateAsync(String resourceGroupName, String topicName) {
-        return updateWithServiceResponseAsync(resourceGroupName, topicName).map(new Func1<ServiceResponse<TopicInner>, TopicInner>() {
+    public Observable<TopicInner> updateAsync(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, topicName, topicUpdateParameters).map(new Func1<ServiceResponse<TopicInner>, TopicInner>() {
             @Override
             public TopicInner call(ServiceResponse<TopicInner> response) {
                 return response.body();
@@ -611,10 +613,11 @@ public class TopicsInner implements InnerSupportsGet<TopicInner>, InnerSupportsD
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param topicUpdateParameters Topic update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<TopicInner>> updateWithServiceResponseAsync(String resourceGroupName, String topicName) {
+    public Observable<ServiceResponse<TopicInner>> updateWithServiceResponseAsync(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -624,92 +627,14 @@ public class TopicsInner implements InnerSupportsGet<TopicInner>, InnerSupportsD
         if (topicName == null) {
             throw new IllegalArgumentException("Parameter topicName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Map<String, String> tags = null;
-        TopicUpdateParameters topicUpdateParameters = new TopicUpdateParameters();
-        topicUpdateParameters.withTags(null);
-        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, topicName, this.client.apiVersion(), this.client.acceptLanguage(), topicUpdateParameters, this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<TopicInner>() { }.getType());
-    }
-    /**
-     * Update a topic.
-     * Asynchronously updates a topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param tags Tags of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TopicInner object if successful.
-     */
-    public TopicInner update(String resourceGroupName, String topicName, Map<String, String> tags) {
-        return updateWithServiceResponseAsync(resourceGroupName, topicName, tags).toBlocking().last().body();
-    }
-
-    /**
-     * Update a topic.
-     * Asynchronously updates a topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param tags Tags of the resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<TopicInner> updateAsync(String resourceGroupName, String topicName, Map<String, String> tags, final ServiceCallback<TopicInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, topicName, tags), serviceCallback);
-    }
-
-    /**
-     * Update a topic.
-     * Asynchronously updates a topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param tags Tags of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<TopicInner> updateAsync(String resourceGroupName, String topicName, Map<String, String> tags) {
-        return updateWithServiceResponseAsync(resourceGroupName, topicName, tags).map(new Func1<ServiceResponse<TopicInner>, TopicInner>() {
-            @Override
-            public TopicInner call(ServiceResponse<TopicInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Update a topic.
-     * Asynchronously updates a topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param tags Tags of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<TopicInner>> updateWithServiceResponseAsync(String resourceGroupName, String topicName, Map<String, String> tags) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (topicName == null) {
-            throw new IllegalArgumentException("Parameter topicName is required and cannot be null.");
+        if (topicUpdateParameters == null) {
+            throw new IllegalArgumentException("Parameter topicUpdateParameters is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(tags);
-        TopicUpdateParameters topicUpdateParameters = new TopicUpdateParameters();
-        topicUpdateParameters.withTags(tags);
-        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, topicName, this.client.apiVersion(), this.client.acceptLanguage(), topicUpdateParameters, this.client.userAgent());
+        Validator.validate(topicUpdateParameters);
+        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, topicName, topicUpdateParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<TopicInner>() { }.getType());
     }
 
@@ -719,13 +644,14 @@ public class TopicsInner implements InnerSupportsGet<TopicInner>, InnerSupportsD
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param topicUpdateParameters Topic update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TopicInner object if successful.
      */
-    public TopicInner beginUpdate(String resourceGroupName, String topicName) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, topicName).toBlocking().single().body();
+    public TopicInner beginUpdate(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, topicName, topicUpdateParameters).toBlocking().single().body();
     }
 
     /**
@@ -734,12 +660,13 @@ public class TopicsInner implements InnerSupportsGet<TopicInner>, InnerSupportsD
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param topicUpdateParameters Topic update information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TopicInner> beginUpdateAsync(String resourceGroupName, String topicName, final ServiceCallback<TopicInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, topicName), serviceCallback);
+    public ServiceFuture<TopicInner> beginUpdateAsync(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters, final ServiceCallback<TopicInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, topicName, topicUpdateParameters), serviceCallback);
     }
 
     /**
@@ -748,11 +675,12 @@ public class TopicsInner implements InnerSupportsGet<TopicInner>, InnerSupportsD
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param topicUpdateParameters Topic update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TopicInner object
      */
-    public Observable<TopicInner> beginUpdateAsync(String resourceGroupName, String topicName) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, topicName).map(new Func1<ServiceResponse<TopicInner>, TopicInner>() {
+    public Observable<TopicInner> beginUpdateAsync(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, topicName, topicUpdateParameters).map(new Func1<ServiceResponse<TopicInner>, TopicInner>() {
             @Override
             public TopicInner call(ServiceResponse<TopicInner> response) {
                 return response.body();
@@ -766,10 +694,11 @@ public class TopicsInner implements InnerSupportsGet<TopicInner>, InnerSupportsD
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param topicUpdateParameters Topic update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TopicInner object
      */
-    public Observable<ServiceResponse<TopicInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String topicName) {
+    public Observable<ServiceResponse<TopicInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -779,103 +708,14 @@ public class TopicsInner implements InnerSupportsGet<TopicInner>, InnerSupportsD
         if (topicName == null) {
             throw new IllegalArgumentException("Parameter topicName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Map<String, String> tags = null;
-        TopicUpdateParameters topicUpdateParameters = new TopicUpdateParameters();
-        topicUpdateParameters.withTags(null);
-        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, topicName, this.client.apiVersion(), this.client.acceptLanguage(), topicUpdateParameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TopicInner>>>() {
-                @Override
-                public Observable<ServiceResponse<TopicInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<TopicInner> clientResponse = beginUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Update a topic.
-     * Asynchronously updates a topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param tags Tags of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TopicInner object if successful.
-     */
-    public TopicInner beginUpdate(String resourceGroupName, String topicName, Map<String, String> tags) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, topicName, tags).toBlocking().single().body();
-    }
-
-    /**
-     * Update a topic.
-     * Asynchronously updates a topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param tags Tags of the resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<TopicInner> beginUpdateAsync(String resourceGroupName, String topicName, Map<String, String> tags, final ServiceCallback<TopicInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, topicName, tags), serviceCallback);
-    }
-
-    /**
-     * Update a topic.
-     * Asynchronously updates a topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param tags Tags of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TopicInner object
-     */
-    public Observable<TopicInner> beginUpdateAsync(String resourceGroupName, String topicName, Map<String, String> tags) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, topicName, tags).map(new Func1<ServiceResponse<TopicInner>, TopicInner>() {
-            @Override
-            public TopicInner call(ServiceResponse<TopicInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Update a topic.
-     * Asynchronously updates a topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param tags Tags of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TopicInner object
-     */
-    public Observable<ServiceResponse<TopicInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String topicName, Map<String, String> tags) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (topicName == null) {
-            throw new IllegalArgumentException("Parameter topicName is required and cannot be null.");
+        if (topicUpdateParameters == null) {
+            throw new IllegalArgumentException("Parameter topicUpdateParameters is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(tags);
-        TopicUpdateParameters topicUpdateParameters = new TopicUpdateParameters();
-        topicUpdateParameters.withTags(tags);
-        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, topicName, this.client.apiVersion(), this.client.acceptLanguage(), topicUpdateParameters, this.client.userAgent())
+        Validator.validate(topicUpdateParameters);
+        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, topicName, topicUpdateParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TopicInner>>>() {
                 @Override
                 public Observable<ServiceResponse<TopicInner>> call(Response<ResponseBody> response) {
