@@ -1004,7 +1004,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
             // not "apps/appName/partitions/partitionKey/replicas/replicaId/dbs/dbName"
 
             final String address = request.getResourceAddress();
-            final String[] fragments = address.split(UrlTrim);
+            final String[] fragments = StringUtils.split(address, UrlTrim);
             int count = fragments.length;
             int index = 0;
 
