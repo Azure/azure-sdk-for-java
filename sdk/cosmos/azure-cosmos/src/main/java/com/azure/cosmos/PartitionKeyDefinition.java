@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents a partition key definition in the Azure Cosmos DB database service. A partition key definition
@@ -19,7 +20,7 @@ import java.util.List;
 public final class PartitionKeyDefinition extends JsonSerializable {
     private List<String> paths;
     private PartitionKind kind;
-    private PartitionKeyDefinitionVersion version;
+    private Optional<PartitionKeyDefinitionVersion> versionOptional;
     private Boolean systemKey;
 
     /**
@@ -64,28 +65,30 @@ public final class PartitionKeyDefinition extends JsonSerializable {
     }
 
     public PartitionKeyDefinitionVersion getVersion() {
-        if (this.version == null) {
+        if (this.versionOptional == null) {
             Object versionObject = super.getObject(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, Object.class);
             if (versionObject == null) {
-                this.version = null;
+                this.versionOptional = Optional.empty();
             } else {
                 String versionStr = String.valueOf(versionObject);
                 if (StringUtils.isNumeric(versionStr)) {
-                    this.version = PartitionKeyDefinitionVersion.valueOf(String.format("V%d",
-                        Integer.parseInt(versionStr)));
+                    this.versionOptional = Optional.of(PartitionKeyDefinitionVersion.valueOf(String.format("V%d",
+                        Integer.parseInt(versionStr))));
                 } else {
-                    this.version = !Strings.isNullOrEmpty(versionStr)
-                                       ? PartitionKeyDefinitionVersion.valueOf(StringUtils.upperCase(versionStr))
-                                       : null;
+                    this.versionOptional = !Strings.isNullOrEmpty(versionStr)
+                                       ? Optional.of(PartitionKeyDefinitionVersion.valueOf(StringUtils.upperCase(versionStr)))
+                                       : Optional.empty();
                 }
             }
+
+            assert versionOptional != null;
         }
 
-        return this.version;
+        return this.versionOptional.isPresent() ? this.versionOptional.get() : null;
     }
 
     public PartitionKeyDefinition setVersion(PartitionKeyDefinitionVersion version) {
-        this.version = version;
+        this.versionOptional = Optional.of(version);
         return this;
     }
 
@@ -156,8 +159,8 @@ public final class PartitionKeyDefinition extends JsonSerializable {
             super.set(Constants.Properties.PARTITION_KEY_PATHS, paths);
         }
 
-        if (this.version != null) {
-            super.set(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, version.toString());
+        if (this.versionOptional != null && versionOptional.isPresent()) {
+            super.set(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, versionOptional.get().toString());
         }
         super.populatePropertyBag();
     }

@@ -6,10 +6,10 @@ package com.azure.cosmos.implementation.routing;
 import com.azure.cosmos.CommonsBridgeInternal;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.PartitionKind;
+import com.azure.cosmos.implementation.ByteBufferOutputStream;
 import com.azure.cosmos.implementation.Bytes;
 import com.azure.cosmos.implementation.RMResources;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -47,31 +47,31 @@ public class PartitionKeyInternalHelper {
     }
 
     static String toHexEncodedBinaryString(IPartitionKeyComponent... components) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream(MaxPartitionKeyBinarySize);
+        ByteBufferOutputStream stream = new ByteBufferOutputStream(MaxPartitionKeyBinarySize);
         for (IPartitionKeyComponent component: components) {
             component.WriteForBinaryEncoding(stream);
         }
 
-        return HexConvert.bytesToHex(stream.toByteArray());
+        return HexConvert.bytesToHex(stream.asByteBuffer());
     }
 
     static String toHexEncodedBinaryString(List<IPartitionKeyComponent> components) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream(MaxPartitionKeyBinarySize);
+        ByteBufferOutputStream stream = new ByteBufferOutputStream(MaxPartitionKeyBinarySize);
         for (IPartitionKeyComponent component: components) {
             component.WriteForBinaryEncoding(stream);
         }
 
-        return HexConvert.bytesToHex(stream.toByteArray());
+        return HexConvert.bytesToHex(stream.asByteBuffer());
     }
 
     static public String getEffectivePartitionKeyForHashPartitioningV2(PartitionKeyInternal partitionKeyInternal) {
-        try(ByteArrayOutputStream byteArrayBuffer = new ByteArrayOutputStream())  {
+        try(ByteBufferOutputStream byteArrayBuffer = new ByteBufferOutputStream())  {
             for (int i = 0; i < partitionKeyInternal.components.size(); i++) {
                 partitionKeyInternal.components.get(i).WriteForHashingV2(byteArrayBuffer);
             }
 
-            byte[] bytes = byteArrayBuffer.toByteArray();
-            UInt128 hashAsUnit128 = MurmurHash3_128.hash128(bytes);
+            ByteBuffer byteBuffer = byteArrayBuffer.asByteBuffer();
+            UInt128 hashAsUnit128 = MurmurHash3_128.hash128(byteBuffer.array(), byteBuffer.limit());
 
             byte[] hash = uIntToBytes(hashAsUnit128);
             Bytes.reverse(hash);
@@ -94,13 +94,13 @@ public class PartitionKeyInternalHelper {
         }
 
         double hash;
-        try(ByteArrayOutputStream byteArrayBuffer = new ByteArrayOutputStream())  {
+        try(ByteBufferOutputStream byteArrayBuffer = new ByteBufferOutputStream())  {
             for (int i = 0; i < truncatedComponents.length; i++) {
                 truncatedComponents[i].WriteForHashing(byteArrayBuffer);
             }
 
-            byte[]  bytes = byteArrayBuffer.toByteArray();
-            int hashAsInt = MurmurHash3_32.hash(bytes, bytes.length, 0);
+            ByteBuffer byteBuffer = byteArrayBuffer.asByteBuffer();
+            int hashAsInt = MurmurHash3_32.hash(byteBuffer.array(), byteBuffer.limit(), 0);
             hash = (double) asUnsignedLong(hashAsInt);
         } catch (IOException e) {
            throw new IllegalArgumentException(e);
@@ -170,6 +170,17 @@ public class PartitionKeyInternalHelper {
                 hexChars[j * 2] = hexArray[v >>> 4];
                 hexChars[j * 2 + 1] = hexArray[v & 0x0F];
             }
+            return new String(hexChars);
+        }
+
+        public static String bytesToHex(ByteBuffer byteBuffer) {
+            char[] hexChars = new char[byteBuffer.limit() * 2];
+            for (int j = 0; j < byteBuffer.limit(); j++) {
+                int v = byteBuffer.array()[j] & 0xFF;
+                hexChars[j * 2] = hexArray[v >>> 4];
+                hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+            }
+
             return new String(hexChars);
         }
     }
