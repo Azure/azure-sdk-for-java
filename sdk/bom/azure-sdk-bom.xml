@@ -115,6 +115,17 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>net.jonathangiles.tools</groupId>
+        <artifactId>dependencyChecker-maven-plugin</artifactId>
+        <version>1.0.2</version>
+        <configuration>
+          <reporters>html</reporters>
+          <showAll>true</showAll>
+          <analyseBom>true</analyseBom>
+          <failOnDependencyConflict>true</failOnDependencyConflict>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
