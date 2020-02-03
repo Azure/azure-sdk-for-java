@@ -5,15 +5,15 @@ package com.azure.cosmos.rx.examples.multimaster.samples;
 
 import com.azure.cosmos.AccessCondition;
 import com.azure.cosmos.AccessConditionType;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -133,7 +134,7 @@ public class ConflictWorker {
 
     }
 
-    private <T extends Resource> T getResource(Flux<ResourceResponse<T>> obs) {
+    private <T extends Resource> T getResource(Mono<ResourceResponse<T>> obs) {
         return obs.subscribeOn(schedulerForBlockingWork).single().block().getResource();
     }
 
@@ -174,7 +175,7 @@ public class ConflictWorker {
         do {
             logger.info("1) Performing conflicting insert across {} regions on {}", this.clients.size(), this.manualCollectionName);
 
-            ArrayList<Flux<Document>> insertTask = new ArrayList<>();
+            ArrayList<Mono<Document>> insertTask = new ArrayList<>();
 
             Document conflictDocument = new Document();
             conflictDocument.setId(UUID.randomUUID().toString());
@@ -206,14 +207,14 @@ public class ConflictWorker {
 
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.manualCollectionUri, conflictDocument, 0)
-                    .singleOrEmpty().block();
+                    .block();
 
             TimeUnit.SECONDS.sleep(1);//1 Second for write to sync.
 
 
             logger.info("1) Performing conflicting update across 3 regions on {}", this.manualCollectionName);
 
-            ArrayList<Flux<Document>> updateTask = new ArrayList<>();
+            ArrayList<Mono<Document>> updateTask = new ArrayList<>();
 
             int index = 0;
             for (AsyncDocumentClient client : this.clients) {
@@ -241,13 +242,13 @@ public class ConflictWorker {
             conflictDocument.setId(UUID.randomUUID().toString());
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.manualCollectionUri, conflictDocument, 0)
-                    .singleOrEmpty().block();
+                    .block();
 
             TimeUnit.SECONDS.sleep(10);//1 Second for write to sync.
 
             logger.info("1) Performing conflicting delete across 3 regions on {}", this.manualCollectionName);
 
-            ArrayList<Flux<Document>> deleteTask = new ArrayList<>();
+            ArrayList<Mono<Document>> deleteTask = new ArrayList<>();
 
             int index = 0;
             for (AsyncDocumentClient client : this.clients) {
@@ -276,7 +277,7 @@ public class ConflictWorker {
         do {
             logger.info("Performing conflicting insert across 3 regions");
 
-            ArrayList<Flux<Document>> insertTask = new ArrayList<>();
+            ArrayList<Mono<Document>> insertTask = new ArrayList<>();
 
             Document conflictDocument = new Document();
             conflictDocument.setId(UUID.randomUUID().toString());
@@ -307,14 +308,14 @@ public class ConflictWorker {
             conflictDocument.setId(UUID.randomUUID().toString());
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.lwwCollectionUri, conflictDocument, 0)
-                    .singleOrEmpty().block();
+                    .block();
 
 
             TimeUnit.SECONDS.sleep(1); //1 Second for write to sync.
 
             logger.info("1) Performing conflicting update across {} regions on {}", this.clients.size(), this.lwwCollectionUri);
 
-            ArrayList<Flux<Document>> insertTask = new ArrayList<>();
+            ArrayList<Mono<Document>> insertTask = new ArrayList<>();
 
             int index = 0;
             for (AsyncDocumentClient client : this.clients) {
@@ -342,14 +343,14 @@ public class ConflictWorker {
             conflictDocument.setId(UUID.randomUUID().toString());
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.lwwCollectionUri, conflictDocument, 0)
-                    .singleOrEmpty().block();
+                    .block();
 
 
             TimeUnit.SECONDS.sleep(1); //1 Second for write to sync.
 
             logger.info("1) Performing conflicting delete across {} regions on {}", this.clients.size(), this.lwwCollectionUri);
 
-            ArrayList<Flux<Document>> insertTask = new ArrayList<>();
+            ArrayList<Mono<Document>> insertTask = new ArrayList<>();
 
             int index = 0;
             for (AsyncDocumentClient client : this.clients) {
@@ -379,7 +380,7 @@ public class ConflictWorker {
         do {
             logger.info("1) Performing conflicting insert across 3 regions on {}", this.udpCollectionName);
 
-            ArrayList<Flux<Document>> insertTask = new ArrayList<>();
+            ArrayList<Mono<Document>> insertTask = new ArrayList<>();
 
             Document conflictDocument = new Document();
             conflictDocument.setId(UUID.randomUUID().toString());
@@ -410,13 +411,13 @@ public class ConflictWorker {
             conflictDocument.setId(UUID.randomUUID().toString());
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.udpCollectionUri, conflictDocument, 0)
-                    .singleOrEmpty().block();
+                    .block();
 
             TimeUnit.SECONDS.sleep(1); //1 Second for write to sync.
 
             logger.info("1) Performing conflicting update across 3 regions on {}", this.udpCollectionUri);
 
-            ArrayList<Flux<Document>> updateTask = new ArrayList<>();
+            ArrayList<Mono<Document>> updateTask = new ArrayList<>();
 
             int index = 0;
             for (AsyncDocumentClient client : this.clients) {
@@ -444,13 +445,13 @@ public class ConflictWorker {
             conflictDocument.setId(UUID.randomUUID().toString());
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.udpCollectionUri, conflictDocument, 0)
-                    .singleOrEmpty().block();
+                    .block();
 
             TimeUnit.SECONDS.sleep(1); //1 Second for write to sync.
 
             logger.info("1) Performing conflicting update/delete across 3 regions on {}", this.udpCollectionUri);
 
-            ArrayList<Flux<Document>> deleteTask = new ArrayList<>();
+            ArrayList<Mono<Document>> deleteTask = new ArrayList<>();
 
             int index = 0;
             for (AsyncDocumentClient client : this.clients) {
@@ -476,7 +477,7 @@ public class ConflictWorker {
         } while (true);
     }
 
-    private Flux<Document> tryInsertDocument(AsyncDocumentClient client, String collectionUri, Document document, int index) {
+    private Mono<Document> tryInsertDocument(AsyncDocumentClient client, String collectionUri, Document document, int index) {
 
         logger.debug("region: {}", client.getWriteEndpoint());
         BridgeInternal.setProperty(document, "regionId", index);
@@ -484,9 +485,9 @@ public class ConflictWorker {
         return client.createDocument(collectionUri, document, null, false)
                 .onErrorResume(e -> {
                     if (hasDocumentClientException(e, 409)) {
-                        return Flux.empty();
+                        return Mono.empty();
                     } else {
-                        return Flux.error(e);
+                        return Mono.error(e);
                     }
                 }).map(ResourceResponse::getResource);
     }
@@ -524,7 +525,7 @@ public class ConflictWorker {
         return false;
     }
 
-    private Flux<Document> tryUpdateDocument(AsyncDocumentClient client, String collectionUri, Document document, int index) {
+    private Mono<Document> tryUpdateDocument(AsyncDocumentClient client, String collectionUri, Document document, int index) {
         BridgeInternal.setProperty(document, "regionId", index);
         BridgeInternal.setProperty(document, "regionEndpoint", client.getReadEndpoint());
 
@@ -539,14 +540,14 @@ public class ConflictWorker {
             // pre condition failed
             if (hasDocumentClientException(e, 412)) {
                 //Lost synchronously or not document yet. No conflict is induced.
-                return Flux.empty();
+                return Mono.empty();
 
             }
-            return Flux.error(e);
+            return Mono.error(e);
         }).map(ResourceResponse::getResource);
     }
 
-    private Flux<Document> tryDeleteDocument(AsyncDocumentClient client, String collectionUri, Document document, int index) {
+    private Mono<Document> tryDeleteDocument(AsyncDocumentClient client, String collectionUri, Document document, int index) {
         BridgeInternal.setProperty(document, "regionId", index);
         BridgeInternal.setProperty(document, "regionEndpoint", client.getReadEndpoint());
 
@@ -561,10 +562,10 @@ public class ConflictWorker {
             // pre condition failed
             if (hasDocumentClientException(e, 412)) {
                 //Lost synchronously. No conflict is induced.
-                return Flux.empty();
+                return Mono.empty();
 
             }
-            return Flux.error(e);
+            return Mono.error(e);
         }).map(rr -> document);
     }
 

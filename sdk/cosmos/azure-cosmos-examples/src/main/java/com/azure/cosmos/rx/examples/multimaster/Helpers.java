@@ -38,7 +38,7 @@ public class Helpers {
                                 }
                             }
 
-                            return Flux.error(e);
+                            return Mono.error(e);
                         }
                 ).map(ResourceResponse::getResource).single();
     }
@@ -59,7 +59,7 @@ public class Helpers {
                                 }
                             }
 
-                            return Flux.error(e);
+                            return Mono.error(e);
                         }
                 ).map(ResourceResponse::getResource).single();
     }
@@ -77,7 +77,7 @@ public class Helpers {
                                 }
                             }
 
-                            return Flux.error(e);
+                            return Mono.error(e);
                         }
                 ).map(ResourceResponse::getResource).single();
     }

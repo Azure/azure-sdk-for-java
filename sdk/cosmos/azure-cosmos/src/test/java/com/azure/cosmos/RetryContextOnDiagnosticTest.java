@@ -146,12 +146,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryPolicy.getRetryCount()).thenReturn(1);
 
         Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
-        Mockito.when(mockStoreModel.processMessage(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Flux.just(mockRxDocumentServiceResponse));
+        Mockito.when(mockStoreModel.processMessage(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(mockRxDocumentServiceResponse));
         Mockito.when(mockRxDocumentServiceResponse.getResource(Document.class)).thenReturn(new Document());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setPartitionKey(new PartitionKey("TestPk"));
         String itemSelfLink = cosmosAsyncContainer.getLink()+"/docs/TestDoc";
-        Flux<ResourceResponse<Document>>  responseFlux = rxDocumentClient.createDocument(cosmosAsyncContainer.getLink(), new Document(), requestOptions, false);
+        Mono<ResourceResponse<Document>>  responseFlux = rxDocumentClient.createDocument(cosmosAsyncContainer.getLink(), new Document(), requestOptions, false);
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
@@ -214,7 +214,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         testSubscriber.assertTerminated();
     }
 
-    private void validateServiceResponseSuccess(Flux<ResourceResponse<Document>> documentServiceResponseMono) {
+    private void validateServiceResponseSuccess(Mono<ResourceResponse<Document>> documentServiceResponseMono) {
         TestSubscriber<ResourceResponse<Document>> testSubscriber = new TestSubscriber<>();
         documentServiceResponseMono.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(60000, TimeUnit.MILLISECONDS);

@@ -30,6 +30,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -244,7 +245,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                     .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
                     .withConsistencyLevel(ConsistencyLevel.SESSION).build();
-            Flux<ResourceResponse<DocumentCollection>> readObservable = asyncClientResourceToken
+            Mono<ResourceResponse<DocumentCollection>> readObservable = asyncClientResourceToken
                     .readCollection(collectionUrl, null);
 
             ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
@@ -277,7 +278,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             } else {
                 options.setPartitionKey(PartitionKey.NONE);
             }
-            Flux<ResourceResponse<Document>> readObservable = asyncClientResourceToken
+            Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(documentUrl, options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(documentId).build();
@@ -302,7 +303,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                     .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(PartitionKey.NONE);
-            Flux<ResourceResponse<Document>> readObservable = asyncClientResourceToken
+            Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(createdDocument.getSelfLink(), options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(createdDocument.getId()).build();
@@ -331,7 +332,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                     .withConsistencyLevel(ConsistencyLevel.SESSION).build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));
-            Flux<ResourceResponse<Document>> readObservable = asyncClientResourceToken
+            Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(documentUrl, options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(documentId).build();
@@ -360,7 +361,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                     .withConsistencyLevel(ConsistencyLevel.SESSION).build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));
-            Flux<ResourceResponse<Document>> readObservable = asyncClientResourceToken
+            Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(documentUrl, options);
             FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
             validateFailure(readObservable, validator);
@@ -389,7 +390,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                 .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE_2));
-            Flux<ResourceResponse<Document>> readObservable = asyncClientResourceToken
+            Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(createdDocumentWithPartitionKey.getSelfLink(), options);
             FailureValidator validator = new FailureValidator.Builder().resourceTokenNotFound().build();
             validateFailure(readObservable, validator);

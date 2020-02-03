@@ -40,6 +40,7 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
@@ -123,12 +124,12 @@ public class TestSuiteBase extends DocumentClientTest {
         }
 
         @Override
-        public Flux<ResourceResponse<Database>> createDatabase(Database databaseDefinition) {
+        public Mono<ResourceResponse<Database>> createDatabase(Database databaseDefinition) {
             return client.createDatabase(databaseDefinition, null);
         }
 
         @Override
-        public Flux<ResourceResponse<Database>> deleteDatabase(String id) {
+        public Mono<ResourceResponse<Database>> deleteDatabase(String id) {
             return client.deleteDatabase("dbs/" + id, null);
         }
     }
@@ -170,7 +171,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
             FeedOptions options = new FeedOptions();
             options.setMaxDegreeOfParallelism(-1);
-            
+
             options.maxItemCount(100);
 
             logger.info("Truncating collection {} documents ...", collection.getId());
@@ -418,7 +419,7 @@ public class TestSuiteBase extends DocumentClientTest {
                                                              String collectionLink,
                                                              List<Document> documentDefinitionList,
                                                              int concurrencyLevel) {
-        ArrayList<Flux<ResourceResponse<Document>>> result = new ArrayList<>(documentDefinitionList.size());
+        ArrayList<Mono<ResourceResponse<Document>>> result = new ArrayList<>(documentDefinitionList.size());
         for (Document docDef : documentDefinitionList) {
             result.add(client.createDocument(collectionLink, docDef, null, false));
         }
@@ -560,7 +561,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     static protected Database createDatabase(AsyncDocumentClient client, Database database) {
-        Flux<ResourceResponse<Database>> databaseObservable = client.createDatabase(database, null);
+        Mono<ResourceResponse<Database>> databaseObservable = client.createDatabase(database, null);
         return databaseObservable.single().block().getResource();
     }
 
@@ -651,12 +652,12 @@ public class TestSuiteBase extends DocumentClientTest {
         }
     }
 
-    public <T extends Resource> void validateSuccess(Flux<ResourceResponse<T>> observable,
+    public <T extends Resource> void validateSuccess(Mono<ResourceResponse<T>> observable,
                                                      ResourceResponseValidator<T> validator) {
         validateSuccess(observable, validator, subscriberValidationTimeout);
     }
 
-    public static <T extends Resource> void validateSuccess(Flux<ResourceResponse<T>> observable,
+    public static <T extends Resource> void validateSuccess(Mono<ResourceResponse<T>> observable,
                                                             ResourceResponseValidator<T> validator, long timeout) {
 
         TestSubscriber<ResourceResponse<T>> testSubscriber = new TestSubscriber<>();
@@ -669,12 +670,12 @@ public class TestSuiteBase extends DocumentClientTest {
         validator.validate(testSubscriber.values().get(0));
     }
 
-    public <T extends Resource> void validateFailure(Flux<ResourceResponse<T>> observable,
+    public <T extends Resource> void validateFailure(Mono<ResourceResponse<T>> observable,
                                                      FailureValidator validator) {
         validateFailure(observable, validator, subscriberValidationTimeout);
     }
 
-    public static <T extends Resource> void validateFailure(Flux<ResourceResponse<T>> observable,
+    public static <T extends Resource> void validateFailure(Mono<ResourceResponse<T>> observable,
                                                             FailureValidator validator, long timeout) {
 
         TestSubscriber<ResourceResponse<T>> testSubscriber = new TestSubscriber<>();

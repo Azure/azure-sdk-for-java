@@ -3,17 +3,18 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.RetryOptions;
+import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.RetryOptions;
-import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.TestConfigurations;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class Utils {
     public static AsyncDocumentClient housekeepingClient() {
@@ -86,12 +87,12 @@ public class Utils {
         }
 
         @Override
-        public Flux<ResourceResponse<Database>> createDatabase(Database databaseDefinition) {
+        public Mono<ResourceResponse<Database>> createDatabase(Database databaseDefinition) {
             return client.createDatabase(databaseDefinition, null);
         }
 
         @Override
-        public Flux<ResourceResponse<Database>> deleteDatabase(String id) {
+        public Mono<ResourceResponse<Database>> deleteDatabase(String id) {
 
             return client.deleteDatabase("dbs/" + id, null);
         }
