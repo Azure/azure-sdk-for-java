@@ -29,6 +29,19 @@ Licensed under the MIT License.
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
+  <repositories>
+    <repository>
+      <id>azure-sdk-for-java</id>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <build>
     <plugins>
       <plugin>
@@ -110,6 +123,11 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
     </dependency>
 
     <dependency>
