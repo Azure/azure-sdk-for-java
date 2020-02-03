@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.NAMED_ENTITY_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -147,7 +147,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void detectLanguagesBatchListCountryHint();
 
-    // Named Entities
+    // Categorized Entities
     @Test
     abstract void recognizeEntitiesForTextInput();
 
@@ -286,13 +286,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(TestUtils.getDetectLanguageInputs());
     }
 
-    // Named Entity runner
+    // Categorized Entity runner
     void recognizeCategorizedEntityStringInputRunner(Consumer<List<String>> testRunner) {
-        testRunner.accept(NAMED_ENTITY_INPUTS);
+        testRunner.accept(CATEGORIZED_ENTITY_INPUTS);
     }
 
-    void recognizeNamedEntitiesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
-        testRunner.accept(NAMED_ENTITY_INPUTS, "en");
+    void recognizeCatgeorizedEntitiesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
+        testRunner.accept(CATEGORIZED_ENTITY_INPUTS, "en");
     }
 
     void recognizeBatchCategorizedEntitySingleErrorRunner(Consumer<List<TextDocumentInput>> testRunner) {
@@ -301,18 +301,18 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     void recognizeBatchCategorizedEntityRunner(Consumer<List<TextDocumentInput>> testRunner) {
-        testRunner.accept(TestUtils.getTextDocumentInputs(NAMED_ENTITY_INPUTS));
+        testRunner.accept(TestUtils.getTextDocumentInputs(CATEGORIZED_ENTITY_INPUTS));
     }
 
-    void recognizeBatchNamedEntitiesShowStatsRunner(
+    void recognizeBatchCategorizedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
-        final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(NAMED_ENTITY_INPUTS);
+        final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(CATEGORIZED_ENTITY_INPUTS);
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         testRunner.accept(textDocumentInputs, options);
     }
 
-    // Pii Entity runner
+    // PII Entity runner
     void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS, "en");
     }

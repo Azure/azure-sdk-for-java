@@ -34,7 +34,7 @@ import java.util.List;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchNamedEntities;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -185,26 +185,26 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForBatchInput() {
         recognizeBatchCategorizedEntityRunner((inputs) -> validateCategorizedEntity(false,
-            getExpectedBatchNamedEntities(), client.recognizeBatchEntities(inputs)));
+            getExpectedBatchCategorizedEntities(), client.recognizeBatchEntities(inputs)));
     }
 
     @Test
     public void recognizeEntitiesForBatchInputShowStatistics() {
-        recognizeBatchNamedEntitiesShowStatsRunner((inputs, options) ->
-            validateCategorizedEntity(true, getExpectedBatchNamedEntities(),
+        recognizeBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
+            validateCategorizedEntity(true, getExpectedBatchCategorizedEntities(),
                 client.recognizeBatchEntitiesWithResponse(inputs, options, Context.NONE).getValue()));
     }
 
     @Test
     public void recognizeEntitiesForBatchStringInput() {
         recognizeCategorizedEntityStringInputRunner((inputs) ->
-            validateCategorizedEntity(false, getExpectedBatchNamedEntities(), client.recognizeEntities(inputs)));
+            validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), client.recognizeEntities(inputs)));
     }
 
     @Test
     public void recognizeEntitiesForListLanguageHint() {
-        recognizeNamedEntitiesLanguageHintRunner((inputs, language) ->
-            validateCategorizedEntity(false, getExpectedBatchNamedEntities(),
+        recognizeCatgeorizedEntitiesLanguageHintRunner((inputs, language) ->
+            validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(),
                 client.recognizeEntitiesWithResponse(inputs, language, Context.NONE).getValue()));
     }
 

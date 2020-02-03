@@ -37,7 +37,7 @@ final class TestUtils {
     static final List<String> SENTIMENT_INPUTS = Arrays.asList("The hotel was dark and unclean. The restaurant had amazing gnocchi.",
         "The restaurant had amazing gnocchi. The hotel was dark and unclean.");
 
-    static final List<String> NAMED_ENTITY_INPUTS = Arrays.asList(
+    static final List<String> CATEGORIZED_ENTITY_INPUTS = Arrays.asList(
         "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
     static final List<String> LINKED_ENTITY_INPUTS = Arrays.asList(
@@ -96,9 +96,9 @@ final class TestUtils {
     }
 
     /**
-     * Helper method to get the expected Batch Named Entities
+     * Helper method to get the expected Batch Categorized Entities
      */
-    static DocumentResultCollection<RecognizeEntitiesResult> getExpectedBatchNamedEntities() {
+    static DocumentResultCollection<RecognizeEntitiesResult> getExpectedBatchCategorizedEntities() {
         CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
         CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", "Organization", null, 10, 9, 0.0);

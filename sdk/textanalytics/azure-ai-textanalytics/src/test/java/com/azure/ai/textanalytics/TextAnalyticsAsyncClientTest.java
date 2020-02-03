@@ -34,7 +34,7 @@ import java.util.List;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchNamedEntities;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -195,15 +195,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeEntitiesForBatchInput() {
         recognizeBatchCategorizedEntityRunner((inputs) ->
             StepVerifier.create(client.recognizeBatchEntities(inputs))
-                .assertNext(response -> validateCategorizedEntity(false, getExpectedBatchNamedEntities(), response))
+                .assertNext(response -> validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
 
     @Test
     public void recognizeEntitiesForBatchInputShowStatistics() {
-        recognizeBatchNamedEntitiesShowStatsRunner((inputs, options) ->
+        recognizeBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
             StepVerifier.create(client.recognizeBatchEntitiesWithResponse(inputs, options))
-                .assertNext(response -> validateCategorizedEntity(true, getExpectedBatchNamedEntities(), response.getValue()))
+                .assertNext(response -> validateCategorizedEntity(true, getExpectedBatchCategorizedEntities(), response.getValue()))
                 .verifyComplete());
     }
 
@@ -211,15 +211,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeEntitiesForBatchStringInput() {
         recognizeCategorizedEntityStringInputRunner((inputs) ->
             StepVerifier.create(client.recognizeEntities(inputs))
-                .assertNext(response -> validateCategorizedEntity(false, getExpectedBatchNamedEntities(), response))
+                .assertNext(response -> validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
 
     @Test
     public void recognizeEntitiesForListLanguageHint() {
-        recognizeNamedEntitiesLanguageHintRunner((inputs, language) ->
+        recognizeCatgeorizedEntitiesLanguageHintRunner((inputs, language) ->
             StepVerifier.create(client.recognizeEntitiesWithResponse(inputs, language))
-                .assertNext(response -> validateCategorizedEntity(false, getExpectedBatchNamedEntities(), response.getValue()))
+                .assertNext(response -> validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), response.getValue()))
                 .verifyComplete());
     }
 

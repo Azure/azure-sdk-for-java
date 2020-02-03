@@ -273,7 +273,7 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    // Named Entity
+    // Categorized Entity
     /**
      * Returns a list of general categorized entities in the provided text. For a list of supported entity types, check:
      * <a href="https://aka.ms/taner"></a>. For a list of enabled languages,

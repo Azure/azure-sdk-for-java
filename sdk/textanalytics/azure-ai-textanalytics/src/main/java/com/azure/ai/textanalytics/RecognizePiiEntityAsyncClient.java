@@ -32,15 +32,15 @@ import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
- * Helper class for managing recognize pii entity endpoint.
+ * Helper class for managing recognize PII entity endpoint.
  */
 class RecognizePiiEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizePiiEntityAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's recognize pii
-     * entity endpoint.
+     * Create a {@code RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's
+     * recognize PII entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
      */

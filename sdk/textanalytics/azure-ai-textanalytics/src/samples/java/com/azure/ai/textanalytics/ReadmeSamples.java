@@ -99,7 +99,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for recognizing pii entity in a text.
+     * Code snippet for recognizing PII entity in a text.
      */
     public void recognizePiiEntity() {
         String text = "My SSN is 555-55-5555";

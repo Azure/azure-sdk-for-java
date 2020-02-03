@@ -108,7 +108,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.detectLanguage(textInputs).subscribe(detectedBatchResult -> {
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -136,7 +136,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -227,7 +227,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.recognizeEntities(inputText).subscribe(recognizeEntitiesResult -> {
             for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
                 System.out.printf(
-                    "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                    "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                     entity.getText(),
                     entity.getCategory(),
                     entity.getScore());
@@ -246,7 +246,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(recognizeEntitiesResult -> {
                 for (CategorizedEntity entity : recognizeEntitiesResult.getValue().getCategorizedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                        "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -273,7 +273,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                        "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -303,7 +303,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                        "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -333,7 +333,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                        "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -369,7 +369,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                     for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
                         System.out.printf(
-                            "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                            "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                             entity.getText(),
                             entity.getCategory(),
                             entity.getScore());
@@ -390,7 +390,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.recognizePiiEntities(inputText).subscribe(recognizeEntitiesResult -> {
             for (PiiEntity entity : recognizeEntitiesResult.getPiiEntities()) {
                 System.out.printf(
-                    "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                    "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                     entity.getText(),
                     entity.getCategory(),
                     entity.getScore());
@@ -410,7 +410,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(recognizeEntitiesResult -> {
                 for (PiiEntity entity : recognizeEntitiesResult.getValue().getPiiEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                        "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -431,14 +431,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getPiiEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                        "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -461,14 +461,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getPiiEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                        "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -491,14 +491,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getPiiEntities()) {
                     System.out.printf(
-                        "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                        "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -527,14 +527,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-                System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
                 for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                     for (PiiEntity entity : recognizeEntitiesResult.getPiiEntities()) {
                         System.out.printf(
-                            "Recognized Named Entity: %s, Category: %s, Score: %s.%n",
+                            "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                             entity.getText(),
                             entity.getCategory(),
                             entity.getScore());
@@ -625,7 +625,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -656,7 +656,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-                System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -778,7 +778,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
-            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
@@ -948,7 +948,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = analyzeSentimentResults.getStatistics();
-            System.out.printf("Batch statistics,transaction count: %s, valid document count: %s.%n",
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
