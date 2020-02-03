@@ -17,7 +17,7 @@ import java.util.function.Function;
 
 /**
  * A Flux that simplifies the task of executing long running operations against an Azure service.
- * A subscription to {@link PollerFlux} initiate a long running operation and polls the status
+ * A subscription to {@link PollerFlux} initiates a long running operation and polls the status
  * until it completes.
  *
  * <p><strong>Code samples</strong></p>
