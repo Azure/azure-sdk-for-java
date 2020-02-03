@@ -8,8 +8,7 @@ import java.io.OutputStream;
 
 import com.azure.core.test.perf.RandomFlux;
 import com.azure.core.test.perf.SizeOptions;
-import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.*;
 import com.azure.storage.blob.perf.core.ContainerTest;
 
 import reactor.core.publisher.Mono;
@@ -20,28 +19,28 @@ public class DownloadTest extends ContainerTest<SizeOptions> {
 
     public DownloadTest(SizeOptions options) {
         super(options);
-
-        String blobName = "downloadtest";
-        blobClient = BlobContainerClient.getBlobClient(blobName);
-        blobAsyncClient = BlobContainerAsyncClient.getBlobAsyncClient(blobName);
+        String blobName = "downloadTest";
+        blobClient = blobContainerClient.getBlobClient(blobName);
+        blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
     }
 
+    // Required resource setup goes here, upload the file to be downloaded during tests.
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
             .then(blobAsyncClient.upload(RandomFlux.create(options.getSize()), null))
             .then();
     }
 
+    // Perform the API call to be tested here
     @Override
     public void run() {
         blobClient.download(new NullOutputStream());
     }
 
-
-    /**Writes to nowhere*/
     class NullOutputStream extends OutputStream {
         @Override
         public void write(int b) throws IOException {
+
         }
     }
 
@@ -51,7 +50,6 @@ public class DownloadTest extends ContainerTest<SizeOptions> {
             .map(b -> {
                 b.get(new byte[b.remaining()]);
                 return 1;
-            })
-            .then();
-            }
+            }).then();
+    }
 }

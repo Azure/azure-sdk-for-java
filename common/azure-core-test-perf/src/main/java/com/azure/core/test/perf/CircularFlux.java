@@ -19,6 +19,7 @@ public class CircularFlux {
      * @param size the size of the flux to create.
      * @return The created {@link Flux}
      */
+    @SuppressWarnings("cast")
     public static Flux<ByteBuffer> create(ByteBuffer byteBuffer, long size) {
         int remaining = byteBuffer.remaining();
         

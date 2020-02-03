@@ -25,8 +25,8 @@ public abstract class RandomBlobTest<TOptions extends PerfStressOptions> extends
 
         String blobName = "randomblobtest-" + UUID.randomUUID().toString();
 
-        blobClient = BlobContainerClient.getBlobClient(blobName);
-        blobAsyncClient = BlobContainerAsyncClient.getBlobAsyncClient(blobName);
+        blobClient = blobContainerClient.getBlobClient(blobName);
+        blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
 
         blockBlobClient = blobClient.getBlockBlobClient();
         blockBlobAsyncClient = blobAsyncClient.getBlockBlobAsyncClient();

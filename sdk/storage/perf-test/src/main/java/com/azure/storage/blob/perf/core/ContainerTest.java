@@ -14,23 +14,25 @@ import java.util.UUID;
 public abstract class ContainerTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
     protected static final String containerName = "perfstress-" + UUID.randomUUID().toString();
 
-    protected final BlobContainerClient BlobContainerClient;
-    protected final BlobContainerAsyncClient BlobContainerAsyncClient;
+    protected final BlobContainerClient blobContainerClient;
+    protected final BlobContainerAsyncClient blobContainerAsyncClient;
 
     public ContainerTest(TOptions options) {
         super(options);
-
-        BlobContainerClient = BlobServiceClient.getBlobContainerClient(containerName);
-        BlobContainerAsyncClient = BlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
+        // Setup the container clients
+        blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
+        blobContainerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
     }
 
+    // NOTE: the pattern setup the parent first, then yourself.
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync().then(BlobContainerAsyncClient.create());
+        return super.globalSetupAsync().then(blobContainerAsyncClient.create());
     }
 
+    // NOTE: the pattern, cleanup yourself, then the parent.
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return BlobContainerAsyncClient.delete().then(super.globalCleanupAsync());
+        return blobContainerAsyncClient.delete().then(super.globalCleanupAsync());
     }
 }

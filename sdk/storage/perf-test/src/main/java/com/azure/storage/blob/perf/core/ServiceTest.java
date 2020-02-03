@@ -12,8 +12,8 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
 
-    protected final BlobServiceClient BlobServiceClient;
-    protected final BlobServiceAsyncClient BlobServiceAsyncClient;
+    protected final BlobServiceClient blobServiceClient;
+    protected final BlobServiceAsyncClient blobServiceAsyncClient;
 
     public ServiceTest(TOptions options) {
         super(options);
@@ -25,11 +25,12 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             System.exit(1);
         }
 
+        // Setup the service client
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .connectionString(connectionString)
             .httpClient(PerfStressHttpClient.create(options));
 
-        BlobServiceClient = builder.buildClient();
-        BlobServiceAsyncClient = builder.buildAsyncClient();
+        blobServiceClient = builder.buildClient();
+        blobServiceAsyncClient = builder.buildAsyncClient();
     }
 }
