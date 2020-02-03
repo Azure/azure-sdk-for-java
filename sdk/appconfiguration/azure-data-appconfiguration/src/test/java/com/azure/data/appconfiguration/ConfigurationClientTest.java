@@ -63,16 +63,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @Override
     protected void afterTest() {
-        logger.info("Cleaning up created key values.");
-        client.listConfigurationSettings(new SettingSelector().setKeyFilter(keyPrefix + "*")).forEach(configurationSetting -> {
-            logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
-            if (configurationSetting.isReadOnly()) {
-                client.setReadOnlyWithResponse(configurationSetting, false, Context.NONE);
-            }
-            client.deleteConfigurationSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
-        });
-
-        logger.info("Finished cleaning up values.");
+        cleanUp(client, keyPrefix + "*");
     }
 
     /**
@@ -544,7 +535,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertConfigurationEquals(original, revisions.get(1));
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
@@ -560,7 +550,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertEquals(numberExpected, client.listRevisions(filter).stream().collect(Collectors.toList()).size());
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of revisions, we can process {@link java.util.stream.Stream} multiple time and get same result.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
@@ -579,7 +568,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertEquals(numberExpected, configurationSettingPagedIterable.stream().collect(Collectors.toList()).size());
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of revisions, we can iterate over multiple time and get same result.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
@@ -606,7 +594,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         equalsArray(configurationSettingList1, configurationSettingList2);
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
@@ -671,11 +658,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void nullServiceVersion() {
         final String key = getKey();
         final String value = getValue();
-        client = getBuilderWithNullServiceVersion().buildClient();
+        ConfigurationClient client = getBuilderWithNullServiceVersion().buildClient();
         ConfigurationSetting addedSetting = client.setConfigurationSetting(key, null, value);
         Assertions.assertEquals(addedSetting.getKey(), key);
         Assertions.assertEquals(addedSetting.getValue(), value);
 
+        cleanUp(client, key);
     }
 
     /**
@@ -685,10 +673,28 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void defaultPipeline() {
         final String key = getKey();
         final String value = getValue();
-        client = getBuilderWithNullServiceVersion().buildClient();
-
+        ConfigurationClient client = getBuilderWithNullServiceVersion().buildClient();
         ConfigurationSetting addedSetting = client.setConfigurationSetting(key, null, value);
         Assertions.assertEquals(addedSetting.getKey(), key);
         Assertions.assertEquals(addedSetting.getValue(), value);
+
+        cleanUp(client, key);
+    }
+
+    /**
+     *
+     * @param client the given client that will clean all
+     */
+    private void cleanUp(ConfigurationClient client, String keyFilter) {
+        logger.info("Cleaning up created key values.");
+        client.listConfigurationSettings(new SettingSelector().setKeyFilter(keyFilter)).forEach(configurationSetting -> {
+            logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
+            if (configurationSetting.isReadOnly()) {
+                client.setReadOnlyWithResponse(configurationSetting, false, Context.NONE);
+            }
+            client.deleteConfigurationSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
+        });
+
+        logger.info("Finished cleaning up values.");
     }
 }

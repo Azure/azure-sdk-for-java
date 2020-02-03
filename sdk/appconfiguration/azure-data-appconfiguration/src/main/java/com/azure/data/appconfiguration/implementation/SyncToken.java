@@ -15,10 +15,18 @@ import com.azure.core.util.logging.ClientLogger;
  * Uses optional Sync-Token request/response headers will guarantee real-time consistency between different client
  * instances and requests.
  *
- * @see <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/consistency.md"/>
+ * @see <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/consistency.md">Real-time Consistency</a>
  */
 @Immutable
 public final class SyncToken {
+    private static final String CANNOT_EMPTY_OR_NULL = "sync-token cannot be null or empty.";
+    private static final String EQUAL = "=";
+    private static final String SEMICOLON = ";";
+    private static final String SEQUENCE_NUMBER_CANNOT_PARSED = "Sequence number cannot be parsed to long.";
+    private static final String VALID_FORMAT_ERROR_MESSAGE =
+        "Expected sync-token valid format should be <id>=<value>;sn=<sn>. For multiple sync tokens, " +
+            "<id>=<value>;sn=<sn>,<id>=<value>;sn=<sn>.";
+
     private final ClientLogger logger = new ClientLogger(SyncToken.class);
 
     private final String id;
@@ -35,31 +43,30 @@ public final class SyncToken {
      * since token versions are inclusive. Not required for requests.
      */
     SyncToken(String syncToken) {
-        String localId = null;
-        String localValue = null;
-        Long localSequenceNumber = null;
-        if (!CoreUtils.isNullOrEmpty(syncToken)) {
-            final String[] syncTokenParts = syncToken.split(";", 2);
-            if (syncTokenParts.length == 2) {
-                String[] idParts = syncTokenParts[0].split("=", 2);
-                String[] snParts = syncTokenParts[1].split("=", 2);
-
-                if (idParts.length == 2 && snParts.length == 2
-                    && !idParts[0].isEmpty() && !idParts[1].isEmpty()
-                    && !snParts[0].isEmpty() && !snParts[1].isEmpty()) {
-                    try {
-                        localSequenceNumber = Long.parseLong(snParts[1]);
-                        localId = idParts[0];
-                        localValue = idParts[1];
-                    } catch (NumberFormatException ex) {
-                    }
-                }
-            }
+        if (CoreUtils.isNullOrEmpty(syncToken)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(CANNOT_EMPTY_OR_NULL));
         }
 
-        this.sequenceNumber = localSequenceNumber;
-        this.value = localValue;
-        this.id = localId;
+        final String[] syncTokenParts = syncToken.split(SEMICOLON, 2);
+        if (syncTokenParts.length != 2) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(VALID_FORMAT_ERROR_MESSAGE));
+        }
+
+        final String[] idParts = syncTokenParts[0].split(EQUAL, 2);
+        final String[] snParts = syncTokenParts[1].split(EQUAL, 2);
+        if (idParts.length != 2 || snParts.length != 2
+            || idParts[0].isEmpty() || idParts[1].isEmpty()
+            || snParts[0].isEmpty() || snParts[1].isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(VALID_FORMAT_ERROR_MESSAGE));
+        }
+
+        try {
+            this.sequenceNumber = Long.parseLong(snParts[1]);
+        } catch (NumberFormatException ex) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(SEQUENCE_NUMBER_CANNOT_PARSED));
+        }
+        this.id = idParts[0];
+        this.value = idParts[1];
     }
 
     /**

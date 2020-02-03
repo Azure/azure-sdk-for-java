@@ -7,8 +7,11 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -21,7 +24,9 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
     private static final String COMMA = ",";
     private static final String EQUAL = "=";
     private static final String SYNC_TOKEN = "Sync-Token";
-    private final ConcurrentHashMap<String, SyncToken> syncTokenMap = new ConcurrentHashMap<>(); // key is sync-token id
+    private final String SKIP_INVALID_TOKEN = "Skipping invalid sync token '{}'.";
+    private final Map<String, SyncToken> syncTokenMap = new ConcurrentHashMap<>(); // key is sync-token id
+    private final ClientLogger logger = new ClientLogger(SyncTokenPolicy.class);
 
     /**
      * Add or update the sync token to a thread safe map.
@@ -47,8 +52,19 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
 
             // Sync-Token header could have more than one value
             final String[] syncTokens = syncTokenValue.split(COMMA);
-            for (final String syncTokenStr : syncTokens) {
-                final SyncToken syncToken = new SyncToken(syncTokenStr);
+            for (final String syncTokenString : syncTokens) {
+                if (CoreUtils.isNullOrEmpty(syncTokenString)) {
+                    continue;
+                }
+
+                final SyncToken syncToken;
+                try {
+                    syncToken = new SyncToken(syncTokenString);
+                } catch (Exception ex){
+                    logger.warning(SKIP_INVALID_TOKEN, syncTokenString);
+                    continue;
+                }
+
                 final String tokenId = syncToken.getId();
                 // If the value is not thread safe and must be updated inside the method with a remapping function
                 // to ensure the entire operation is atomic.

@@ -65,16 +65,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     @Override
     protected void afterTest() {
-        logger.info("Cleaning up created key values.");
-        client.listConfigurationSettings(new SettingSelector().setKeyFilter(keyPrefix + "*"))
-                .flatMap(configurationSetting -> {
-                    logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
-                    Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.setReadOnlyWithResponse(configurationSetting, false) : Mono.empty();
-                    return unlock.then(client.deleteConfigurationSettingWithResponse(configurationSetting, false));
-                })
-                .blockLast();
-
-        logger.info("Finished cleaning up values.");
+        cleanUp(client, keyPrefix + "*");
     }
 
     /**
@@ -726,7 +717,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
@@ -752,7 +742,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
@@ -783,7 +772,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         assertEquals(numberExpected, configurationSettingList2.size());
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
@@ -814,7 +802,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         assertEquals(numberExpected, configurationSettingList2.size());
     }
 
-    @Disabled("reactor netty aggregate method aggregate random order of context. Tracking issue #7771")
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.
@@ -898,12 +885,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void nullServiceVersion() {
         final String key = getKey();
         final String value = getValue();
-        client = getBuilderWithNullServiceVersion().buildAsyncClient();
+        ConfigurationAsyncClient client = getBuilderWithNullServiceVersion().buildAsyncClient();
 
         ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue(value);
         StepVerifier.create(client.setConfigurationSettingWithResponse(expected, false))
             .assertNext(response -> assertConfigurationEquals(expected, response))
             .verifyComplete();
+
+        cleanUp(client, key);
     }
 
     /**
@@ -913,12 +902,27 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void defaultPipeline() {
         final String key = getKey();
         final String value = getValue();
-        client = getBuilderWithDefaultPipeline().buildAsyncClient();
+        ConfigurationAsyncClient client = getBuilderWithDefaultPipeline().buildAsyncClient();
 
         ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue(value);
         StepVerifier.create(client.setConfigurationSettingWithResponse(expected, false))
             .assertNext(response -> assertConfigurationEquals(expected, response))
             .verifyComplete();
+
+        cleanUp(client, key);
+    }
+
+    private void cleanUp(ConfigurationAsyncClient client, String keyFilter) {
+        logger.info("Cleaning up created key values.");
+        client.listConfigurationSettings(new SettingSelector().setKeyFilter(keyFilter))
+            .flatMap(configurationSetting -> {
+                logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
+                Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.setReadOnlyWithResponse(configurationSetting, false) : Mono.empty();
+                return unlock.then(client.deleteConfigurationSettingWithResponse(configurationSetting, false));
+            })
+            .blockLast();
+
+        logger.info("Finished cleaning up values.");
     }
 }
 

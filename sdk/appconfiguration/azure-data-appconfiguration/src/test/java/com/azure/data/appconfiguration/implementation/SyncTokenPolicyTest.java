@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -65,7 +66,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseNullSyncTokenString() {
-        syncTokenEquals(new SyncToken(null), null, null, null);
+        assertThrows(IllegalArgumentException.class, () -> new SyncToken(null));
     }
 
     /**
@@ -73,7 +74,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseEmptySyncTokenString() {
-        syncTokenEquals(new SyncToken(""), null, null, null);
+        assertThrows(IllegalArgumentException.class, () -> new SyncToken(""));
     }
 
     /**
@@ -81,7 +82,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingSectionSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, null)), null, null, null);
+        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, null)));
     }
 
     /**
@@ -89,7 +90,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseWrongIdentifierNameSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(null, VALUE, SN_NAME, SEQUENCE_NUMBER)), null, null, null);
+        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(null, VALUE, SN_NAME, SEQUENCE_NUMBER)));
     }
 
     /**
@@ -97,7 +98,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingIdentifierValueSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, null, SN_NAME, SEQUENCE_NUMBER)), null, null, null);
+        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(ID, null, SN_NAME, SEQUENCE_NUMBER)));
     }
 
     /**
@@ -105,7 +106,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingSequenceNumberNameSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, null, SEQUENCE_NUMBER)), null, null, null);
+        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(ID, VALUE, null, SEQUENCE_NUMBER)));
     }
 
     /**
@@ -113,7 +114,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingSequenceNumberSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, null)), null, null, null);
+        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, null)));
     }
 
     /**
@@ -121,7 +122,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseInvalidSequenceNumberSyncToken() {
-        syncTokenEquals(new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER) + "ABC"), null, null, null);
+        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER) + "ABC"));
     }
 
     /**
