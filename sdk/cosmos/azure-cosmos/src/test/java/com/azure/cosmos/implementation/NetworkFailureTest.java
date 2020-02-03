@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.UnknownHostException;
@@ -44,7 +43,7 @@ public class NetworkFailureTest extends TestSuiteBase {
                 RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
 
                 if (request.getResourceType() == ResourceType.DocumentCollection) {
-                    return Flux.error(new UnknownHostException());
+                    return Mono.error(new UnknownHostException());
                 }
 
                 return origGatewayStoreModel.processMessage(request);
