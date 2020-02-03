@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public final class AnalyzeSentimentResult extends DocumentResult {
     private final TextSentiment documentSentiment;
     private final List<TextSentiment> sentenceSentiments;
+    private final ClientLogger logger = new ClientLogger(AnalyzeSentimentResult.class);
 
     /**
      * Creates a {@code TextSentimentResult} model that describes analyzed sentiment result
@@ -38,6 +40,7 @@ public final class AnalyzeSentimentResult extends DocumentResult {
      * @return the document sentiment
      */
     public TextSentiment getDocumentSentiment() {
+        throwExceptionIfError();
         return documentSentiment;
     }
 
@@ -47,6 +50,7 @@ public final class AnalyzeSentimentResult extends DocumentResult {
      * @return a list of sentence sentiments
      */
     public List<TextSentiment> getSentenceSentiments() {
+        throwExceptionIfError();
         return sentenceSentiments;
     }
 }
