@@ -10,7 +10,7 @@ The Azure BOM for client libraries provides a verified group of artifacts that a
 
 ### Adding the BOM to your project
 
-To consume the BOM add it as an artifact in the dependency management section of your project's POM.
+To consume the BOM include it in the `dependencyManagement` section of your project's POM. Note that this **does not** result in all dependencies being included in your project.
 
 ```xml
 <dependencyManagement>

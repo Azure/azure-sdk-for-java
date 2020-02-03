@@ -9,7 +9,7 @@
 /sdk/                                               @joshfree @jonathangiles
 
 # BOM
-/sdk/bom/                                           @alzimmermsft @jonathangiles
+/sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles
 
 # Service teams
 /sdk/appconfiguration/                              @mssfang @alzimmermsft @conniey @sima-zhu

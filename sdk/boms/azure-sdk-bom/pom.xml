@@ -115,6 +115,7 @@
 
   <build>
     <plugins>
+      <!-- This plugin validates that the artifacts in this BOM use a common dependency set. -->
       <plugin>
         <groupId>net.jonathangiles.tools</groupId>
         <artifactId>dependencyChecker-maven-plugin</artifactId>
