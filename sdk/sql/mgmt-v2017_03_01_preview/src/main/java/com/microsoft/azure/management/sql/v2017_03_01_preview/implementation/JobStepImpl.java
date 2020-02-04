@@ -67,7 +67,7 @@ class JobStepImpl extends CreatableUpdatableImpl<JobStep, JobStepInner, JobStepI
     @Override
     protected Observable<JobStepInner> getInnerAsync() {
         JobStepsInner client = this.manager().inner().jobSteps();
-        return client.getAsync(this.resourceGroupName, this.serverName, this.jobAgentName, this.jobName, this.stepName);
+        return client.getByVersionAsync(this.resourceGroupName, this.serverName, this.jobAgentName, this.jobName, this.stepName);
     }
 
     @Override
