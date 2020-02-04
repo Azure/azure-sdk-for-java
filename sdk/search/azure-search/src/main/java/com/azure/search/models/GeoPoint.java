@@ -4,7 +4,6 @@
 package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
@@ -18,8 +17,6 @@ import java.util.Objects;
 @Fluent
 public final class GeoPoint {
     private static final String TYPE = "Point";
-
-    private final ClientLogger logger = new ClientLogger(GeoPoint.class);
 
     @JsonProperty
     private List<Double> coordinates;
@@ -125,28 +122,6 @@ public final class GeoPoint {
      */
     public List<Double> getCoordinates() {
         return coordinates;
-    }
-
-    /**
-     * Return latitude value
-     * @return latitude
-     */
-    public double getLatitude() {
-        if (coordinates == null || coordinates.size() != 2) {
-            throw logger.logExceptionAsError(new RuntimeException("coordinates not set"));
-        }
-        return coordinates.get(0);
-    }
-
-    /**
-     * Return longitude value
-     * @return longitude
-     */
-    public double getLongitude() {
-        if (coordinates == null || coordinates.size() != 2) {
-            throw logger.logExceptionAsError(new RuntimeException("coordinates not set"));
-        }
-        return coordinates.get(1);
     }
 
     /**
