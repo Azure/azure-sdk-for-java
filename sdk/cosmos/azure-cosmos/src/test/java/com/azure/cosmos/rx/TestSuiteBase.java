@@ -225,16 +225,22 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                         .flatMap(doc -> {
 
+                            PartitionKey partitionKey = null;
+
                             Object propertyValue = null;
                             if (paths != null && !paths.isEmpty()) {
                                 List<String> pkPath = PathParser.getPathParts(paths.get(0));
                                 propertyValue = doc.getObjectByPath(pkPath);
                                 if (propertyValue == null) {
-                                    propertyValue = PartitionKey.NONE;
+                                    partitionKey = PartitionKey.NONE;
+                                } else {
+                                    partitionKey = new PartitionKey(propertyValue);
                                 }
-
+                            } else {
+                                partitionKey = new PartitionKey(null);
                             }
-                            return cosmosContainer.deleteItem(doc.getId(), new PartitionKey(propertyValue));
+
+                            return cosmosContainer.deleteItem(doc.getId(), partitionKey);
                     }).then().block();
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
@@ -549,7 +555,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         FeedOptions options = new FeedOptions();
         options.partitionKey(new PartitionKey(docId));
         CosmosAsyncContainer cosmosContainer = client.getDatabase(databaseId).getContainer(collectionId);
-        
+
         List<CosmosItemProperties> res = cosmosContainer
                 .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options, CosmosItemProperties.class)
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
