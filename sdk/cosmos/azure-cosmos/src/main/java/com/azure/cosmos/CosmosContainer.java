@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -254,10 +255,10 @@ public class CosmosContainer {
      * @param query the query
      * @param options the options
      * @param klass the class type
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public <T> Iterator<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.asyncContainer.queryItems(query, options, klass));
+    public <T> IterableStream<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
+        return getFeedIterableStream(this.asyncContainer.queryItems(query, options, klass));
     }
 
     /**
@@ -270,7 +271,7 @@ public class CosmosContainer {
      * @return the iterator
      */
     public <T> Iterator<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.asyncContainer.queryItems(querySpec, options, klass));
+        return getFeedIterator(this.asyncContainer.queryItems(querySpec, options, klass).byPage());
     }
 
     /**
@@ -366,6 +367,10 @@ public class CosmosContainer {
 
     private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
         return itemFlux.toIterable(1).iterator();
+    }
+
+    private <T> IterableStream<FeedResponse<T>> getFeedIterableStream(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
+        return IterableStream.of(cosmosContinuablePagedFlux.byPage().toIterable(1));
     }
 
 }
