@@ -253,40 +253,6 @@ public class StorageImplUtils {
         return accountName;
     }
 
-    /**
-     * Throws an IllegalArgumentException if a new header is present for an old service version.
-     *
-     * @param headers The {@link HttpHeaders headers} to check.
-     * @param header The header to check for.
-     * @param operationName The operation name.
-     * @param serviceVersion The service version.
-     * @throws IllegalArgumentException If the request is invalid.
-     */
-    public static void throwIfContainsHeader(HttpHeaders headers, String header, String operationName,
-        String serviceVersion) {
-        if (headers.get(header) != null) {
-            throw new IllegalStateException(header + " is not supported for " + operationName + " in service "
-                + "version " + serviceVersion);
-        }
-    }
-
-    /**
-     * Throws an IllegalArgumentException if a new query is present for an old service version.
-     *
-     * @param url The {@link URL url} to check.
-     * @param query The query to check for.
-     * @param operationName The operation name.
-     * @param serviceVersion The service version.
-     * @throws IllegalArgumentException If the request is invalid.
-     */
-    public static void throwIfContainsQuery(URL url, String query, String operationName,
-        String serviceVersion) {
-        if (url.getQuery() != null && url.getQuery().contains(query)) {
-            throw new IllegalStateException("The query " + query + " is not supported for " + operationName
-                + " in service version " + serviceVersion);
-        }
-    }
-
     /** Returns an empty string if value is {@code null}, otherwise returns value
      * @param value The value to check and return.
      * @return The value or empty string.
