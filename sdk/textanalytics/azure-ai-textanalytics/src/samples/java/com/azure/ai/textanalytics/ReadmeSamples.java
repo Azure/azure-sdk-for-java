@@ -158,7 +158,7 @@ public class ReadmeSamples {
     public void handlingException() {
         List<DetectLanguageInput> inputs = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "us"),
-            new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
+            new DetectLanguageInput("1", "Este es un document escrito en Español.", "es")
         );
 
         try {

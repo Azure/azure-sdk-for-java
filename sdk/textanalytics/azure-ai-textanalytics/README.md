@@ -232,7 +232,7 @@ for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inpu
 ```java
 String text = "Satya Nadella is the CEO of Microsoft";
 
-for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text).getCategorizedEntities()) {
+for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text).getEntities()) {
     System.out.printf(
         "Recognized Categorized Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
         entity.getText(),
@@ -242,12 +242,12 @@ for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text).getC
 }
 ```
 
-### Recognize PII(Personally Identifiable Information) entity
+### Recognize PII (Personally Identifiable Information) entity
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L105-L114 -->
 ```java
 String text = "My SSN is 555-55-5555";
 
-for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text).getPiiEntities()) {
+for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text).getEntities()) {
     System.out.printf(
         "Recognized PII Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
         entity.getText(),
@@ -302,7 +302,7 @@ gracefully by catching the exception and display the additional information abou
 ```java
 List<DetectLanguageInput> inputs = Arrays.asList(
     new DetectLanguageInput("1", "This is written in English.", "us"),
-    new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
+    new DetectLanguageInput("1", "Este es un document escrito en Español.", "es")
 );
 
 try {
@@ -316,7 +316,7 @@ try {
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
 example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
 be found here: [log levels][LogLevels].
-
+git add 
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
