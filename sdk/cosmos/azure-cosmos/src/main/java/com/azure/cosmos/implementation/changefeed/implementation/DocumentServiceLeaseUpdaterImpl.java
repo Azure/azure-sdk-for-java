@@ -4,10 +4,10 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.AccessCondition;
 import com.azure.cosmos.AccessConditionType;
-import com.azure.cosmos.CosmosAsyncItem;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
@@ -43,7 +43,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     }
 
     @Override
-    public Mono<Lease> updateLease(Lease cachedLease, CosmosAsyncItem itemLink, CosmosItemRequestOptions requestOptions, Function<Lease, Lease> updateLease) {
+    public Mono<Lease> updateLease(Lease cachedLease, String itemId, PartitionKey partitionKey,
+                                   CosmosItemRequestOptions requestOptions, Function<Lease, Lease> updateLease) {
         Lease arrayLease[] = {cachedLease};
         arrayLease[0] = updateLease.apply(cachedLease);
 
@@ -53,7 +54,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
         arrayLease[0].setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
 
-        return this.tryReplaceLease(arrayLease[0], itemLink)
+        return this.tryReplaceLease(arrayLease[0], itemId, partitionKey)
             .map(leaseDocument -> {
                 arrayLease[0] = ServiceItemLease.fromDocument(leaseDocument);
                 return arrayLease[0];
@@ -64,7 +65,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                     return Mono.just(arrayLease[0]);
                 }
                 // Partition lease update conflict. Reading the current version of lease.
-                return this.client.readItem(itemLink, requestOptions)
+                return this.client.readItem(itemId, partitionKey, requestOptions, CosmosItemProperties.class)
                     .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosClientException) {
                             CosmosClientException ex = (CosmosClientException) throwable;
@@ -115,8 +116,9 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             });
     }
 
-    private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, CosmosAsyncItem itemLink) throws LeaseLostException {
-        return this.client.replaceItem(itemLink, lease, this.getCreateIfMatchOptions(lease))
+    private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, String itemId, PartitionKey partitionKey) 
+                                                                                        throws LeaseLostException {
+        return this.client.replaceItem(itemId, partitionKey, lease, this.getCreateIfMatchOptions(lease))
             .map(cosmosItemResponse -> cosmosItemResponse.getProperties())
             .onErrorResume(re -> {
                 if (re instanceof CosmosClientException) {

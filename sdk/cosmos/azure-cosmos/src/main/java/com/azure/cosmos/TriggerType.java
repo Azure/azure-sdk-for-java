@@ -12,17 +12,18 @@ public enum TriggerType {
     /**
      * Trigger should be executed before the associated operation(s).
      */
-    PRE(0x0),
+    PRE(0x0, "Pre"),
 
     /**
      * Trigger should be executed after the associated operation(s).
      */
-    POST(0x1);
+    POST(0x1, "Post");
 
     private int value;
 
-    TriggerType(int value) {
+    TriggerType(int value, String overWireValue) {
         this.value = value;
+        this.overWireValue = overWireValue;
     }
 
     /**
@@ -34,8 +35,10 @@ public enum TriggerType {
         return value;
     }
 
+    private final String overWireValue;
+
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());
+        return this.overWireValue;
     }
 }

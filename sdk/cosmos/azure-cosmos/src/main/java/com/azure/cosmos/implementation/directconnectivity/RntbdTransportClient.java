@@ -135,7 +135,7 @@ public final class RntbdTransportClient extends TransportClient {
 
             BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosResponseDiagnostics, record.takeTimelineSnapshot());
         })).doOnCancel(() -> {
-            record.cancel(true);
+            logger.debug("REQUEST CANCELLED: {}", record);
         });
     }
 

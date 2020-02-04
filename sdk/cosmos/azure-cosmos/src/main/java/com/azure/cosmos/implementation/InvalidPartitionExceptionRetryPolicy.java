@@ -13,17 +13,17 @@ import java.time.Duration;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class InvalidPartitionExceptionRetryPolicy implements IDocumentClientRetryPolicy {
+public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPolicy {
 
     private final RxCollectionCache clientCollectionCache;
-    private final IDocumentClientRetryPolicy nextPolicy;
+    private final DocumentClientRetryPolicy nextPolicy;
     private final String collectionLink;
     private final FeedOptions feedOptions;
 
     private volatile boolean retried = false;
 
     public InvalidPartitionExceptionRetryPolicy(RxCollectionCache collectionCache,
-            IDocumentClientRetryPolicy nextPolicy,
+            DocumentClientRetryPolicy nextPolicy,
             String resourceFullName,
             FeedOptions feedOptions) {
 
@@ -43,7 +43,7 @@ public class InvalidPartitionExceptionRetryPolicy implements IDocumentClientRetr
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
         CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
-        if (clientException != null && 
+        if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.GONE) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE)) {
             if (!this.retried) {

@@ -45,7 +45,7 @@ public class AddressInformation {
     }
 
     public String getProtocolName() {
-        return this.protocol.toString();
+        return this.protocol.scheme();
     }
 
     public String getProtocolScheme() {

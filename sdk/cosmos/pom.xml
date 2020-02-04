@@ -39,12 +39,12 @@ Licensed under the MIT License.
     <metrics.version>4.1.0</metrics.version>
     <micrometer.version>1.2.0</micrometer.version>
     <mockito.version>1.10.19</mockito.version>
-    <netty.version>4.1.43.Final</netty.version>
     <netty-tcnative.version>2.0.27.Final</netty-tcnative.version>
     <sdk-version>${project.version}</sdk-version>
     <guava.version>27.0.1-jre</guava.version>
-    <reactor-core.version>3.3.0.RELEASE</reactor-core.version>
-    <reactor-netty.version>0.9.0.RELEASE</reactor-netty.version>
+    <reactor-core.version>3.3.2.RELEASE</reactor-core.version>
+    <netty.version>4.1.45.Final</netty.version>
+    <reactor-netty.version>0.9.4.RELEASE</reactor-netty.version>
     <test.groups>unit</test.groups>
     <collectedArtifactsForReleaseLocation>${project.basedir}/target/collectedArtifactsForRelease</collectedArtifactsForReleaseLocation>
     <javadoc.opts/>
@@ -52,6 +52,38 @@ Licensed under the MIT License.
 
   <dependencyManagement>
     <dependencies>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-codec-http</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-codec-http2</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-handler</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-transport-native-epoll</artifactId>
+        <version>${netty.version}</version>
+        <classifier>linux-x86_64</classifier>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-handler-proxy</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-cosmos</artifactId>
@@ -69,12 +101,12 @@ Licensed under the MIT License.
         <groupId>io.projectreactor</groupId>
         <artifactId>reactor-core</artifactId>
         <version>${reactor-core.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-codec-http</artifactId>
-        <version>${netty.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>io.netty</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>
@@ -88,12 +120,6 @@ Licensed under the MIT License.
         <artifactId>netty-tcnative</artifactId>
         <version>${netty-tcnative.version}</version>
         <classifier>linux-x86_64</classifier>
-      </dependency>
-
-      <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-handler</artifactId>
-        <version>${netty.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

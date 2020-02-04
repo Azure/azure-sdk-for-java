@@ -130,8 +130,8 @@ public class SampleChangeFeedProcessor {
                 throw new IllegalArgumentException(String.format("Collection %s already exists in database %s.", collectionName, databaseName));
             }
         } catch (RuntimeException ex) {
-            if (ex.getCause() instanceof CosmosClientException) {
-                CosmosClientException cosmosClientException = (CosmosClientException) ex.getCause();
+            if (ex instanceof CosmosClientException) {
+                CosmosClientException cosmosClientException = (CosmosClientException) ex;
 
                 if (cosmosClientException.getStatusCode() != 404) {
                     throw ex;
@@ -172,8 +172,8 @@ public class SampleChangeFeedProcessor {
                 }
             }
         } catch (RuntimeException ex) {
-            if (ex.getCause() instanceof CosmosClientException) {
-                CosmosClientException cosmosClientException = (CosmosClientException) ex.getCause();
+            if (ex instanceof CosmosClientException) {
+                CosmosClientException cosmosClientException = (CosmosClientException) ex;
 
                 if (cosmosClientException.getStatusCode() != 404) {
                     throw ex;

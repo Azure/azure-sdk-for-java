@@ -174,9 +174,9 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
 
         CosmosItemProperties properties = getDocumentDefinition(documentId);
-        Mono<CosmosAsyncItemResponse> createObservable = container.createItem(properties, new CosmosItemRequestOptions());
+        Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = container.createItem(properties, new CosmosItemRequestOptions());
 
-        CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
+        CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
             .withId(properties.getId())
             .build();
 
@@ -195,16 +195,19 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
 
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
-        CosmosAsyncItem document = container.createItem(docDefinition, new CosmosItemRequestOptions()).block().getItem();
+        container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.setPartitionKey(new PartitionKey(docDefinition.get("mypk")));
-        Mono<CosmosAsyncItemResponse> readObservable = document.read(options);
+        Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(docDefinition.getId(),
+                                                                                                new PartitionKey(docDefinition.get("mypk")),
+                                                                                                options,
+                                                                                                CosmosItemProperties.class);
 
-        CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
-            .withId(document.getId())
+        CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+            .withId(docDefinition.getId())
             .build();
 
         validateSuccess(readObservable, validator);
@@ -223,11 +226,13 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
 
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
 
-        CosmosAsyncItem document = container.createItem(docDefinition, new CosmosItemRequestOptions()).block().getItem();
+        container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.setPartitionKey(new PartitionKey(docDefinition.get("mypk")));
-        Mono<CosmosAsyncItemResponse> deleteObservable = document.delete(options);
+        Mono<CosmosAsyncItemResponse> deleteObservable = container.deleteItem(docDefinition.getId(), 
+                                                                              new PartitionKey(docDefinition.get(
+                                                                                  "mypk")), options);
 
 
         CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
@@ -237,7 +242,9 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         // attempt to read document which was deleted
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
-        Mono<CosmosAsyncItemResponse> readObservable = document.read(options);
+        Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(documentId,
+                                                                          new PartitionKey(docDefinition.get("mypk")), 
+                                                                          options, CosmosItemProperties.class);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, notFoundValidator);
 

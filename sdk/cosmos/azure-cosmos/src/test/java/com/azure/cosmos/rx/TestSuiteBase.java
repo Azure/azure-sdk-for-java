@@ -13,7 +13,6 @@ import com.azure.cosmos.CosmosAsyncClientTest;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.CosmosAsyncItem;
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosBridgeInternal;
@@ -226,16 +225,22 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                         .flatMap(doc -> {
 
+                            PartitionKey partitionKey = null;
+
                             Object propertyValue = null;
                             if (paths != null && !paths.isEmpty()) {
                                 List<String> pkPath = PathParser.getPathParts(paths.get(0));
                                 propertyValue = doc.getObjectByPath(pkPath);
                                 if (propertyValue == null) {
-                                    propertyValue = PartitionKey.NONE;
+                                    partitionKey = PartitionKey.NONE;
+                                } else {
+                                    partitionKey = new PartitionKey(propertyValue);
                                 }
-
+                            } else {
+                                partitionKey = new PartitionKey(null);
                             }
-                            return cosmosContainer.getItem(doc.getId(), propertyValue).delete();
+
+                            return cosmosContainer.deleteItem(doc.getId(), partitionKey);
                     }).then().block();
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
@@ -441,14 +446,15 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         client.getDatabase(dbId).getContainer(collectionId).delete().block();
     }
 
-    public static CosmosAsyncItem createDocument(CosmosAsyncContainer cosmosContainer, CosmosItemProperties item) {
-        return cosmosContainer.createItem(item).block().getItem();
+    public static CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, CosmosItemProperties item) {
+        return cosmosContainer.createItem(item).block().getProperties();
     }
 
     public Flux<CosmosAsyncItemResponse> bulkInsert(CosmosAsyncContainer cosmosContainer,
                                                     List<CosmosItemProperties> documentDefinitionList,
                                                     int concurrencyLevel) {
-        List<Mono<CosmosAsyncItemResponse>> result = new ArrayList<>(documentDefinitionList.size());
+        List<Mono<CosmosAsyncItemResponse<CosmosItemProperties>>> result =
+            new ArrayList<>(documentDefinitionList.size());
         for (CosmosItemProperties docDef : documentDefinitionList) {
             result.add(cosmosContainer.createItem(docDef));
         }
@@ -548,7 +554,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public static void deleteDocumentIfExists(CosmosAsyncClient client, String databaseId, String collectionId, String docId) {
         FeedOptions options = new FeedOptions();
         options.partitionKey(new PartitionKey(docId));
-        CosmosAsyncContainer cosmosContainer = client.getDatabase(databaseId).read().block().getDatabase().getContainer(collectionId).read().block().getContainer();
+        CosmosAsyncContainer cosmosContainer = client.getDatabase(databaseId).getContainer(collectionId);
+
         List<CosmosItemProperties> res = cosmosContainer
                 .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options, CosmosItemProperties.class)
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
@@ -562,7 +569,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public static void safeDeleteDocument(CosmosAsyncContainer cosmosContainer, String documentId, Object partitionKey) {
         if (cosmosContainer != null && documentId != null) {
             try {
-                cosmosContainer.getItem(documentId, partitionKey).delete().block();
+                cosmosContainer.deleteItem(documentId, new PartitionKey(partitionKey)).block();
             } catch (Exception e) {
                 CosmosClientException dce = Utils.as(e, CosmosClientException.class);
                 if (dce == null || dce.getStatusCode() != 404) {
@@ -573,7 +580,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static void deleteDocument(CosmosAsyncContainer cosmosContainer, String documentId) {
-        cosmosContainer.getItem(documentId, PartitionKey.NONE).delete();
+        cosmosContainer.deleteItem(documentId, PartitionKey.NONE).block();
     }
 
     public static void deleteUserIfExists(CosmosAsyncClient client, String databaseId, String userId) {
@@ -636,7 +643,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected void safeDeleteSyncDatabase(CosmosDatabase database) {
         if (database != null) {
             try {
+                logger.info("attempting to delete database ....");
                 database.delete();
+                logger.info("database deletion completed");
             } catch (Exception e) {
                 logger.error("failed to delete sync database", e);
             }
@@ -699,7 +708,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected void safeCloseSyncClient(CosmosClient client) {
         if (client != null) {
             try {
+                logger.info("closing client ...");
                 client.close();
+                logger.info("closing client completed");
             } catch (Exception e) {
                 logger.error("failed to close client", e);
             }

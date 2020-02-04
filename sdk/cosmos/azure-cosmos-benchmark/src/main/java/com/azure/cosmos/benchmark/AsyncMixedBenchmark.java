@@ -51,7 +51,10 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
 
             options.setPartitionKey(new PartitionKey(docsToRead.get(index).getId()));
 
-            obs = cosmosAsyncContainer.getItem(docsToRead.get(index).getId(), partitionKeyValue).read().flux();
+            obs = cosmosAsyncContainer.readItem(docsToRead.get(index).getId(),
+                                              new PartitionKey(partitionKeyValue),
+                                              PojoizedJson.class)
+                    .flux();
         }
 
         concurrencyControlSemaphore.acquire();

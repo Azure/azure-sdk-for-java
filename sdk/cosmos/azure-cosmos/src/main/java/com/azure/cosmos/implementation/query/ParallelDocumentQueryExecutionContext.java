@@ -9,8 +9,8 @@ import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IDocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.ResourceType;
@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 public class ParallelDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private FeedOptions feedOptions;
-    
+
     private ParallelDocumentQueryExecutionContext(
             IDocumentQueryClient client,
             List<PartitionKeyRange> partitionKeyRanges,
@@ -174,7 +175,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         private final RequestChargeTracker tracker;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
         private final FeedOptions feedOptions;
-        
+
         public EmptyPagesFilterTransformer(RequestChargeTracker tracker, FeedOptions options) {
 
             if (tracker == null) {
@@ -334,8 +335,8 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc,
-            Callable<IDocumentClientRetryPolicy> createRetryPolicyFunc) {
+            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
+            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc) {
         return new DocumentProducer<T>(client,
                 collectionRid,
                 feedOptions,

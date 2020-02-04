@@ -5,13 +5,14 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncItem;
 import com.azure.cosmos.CosmosAsyncItemResponse;
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
+import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.implementation.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -47,19 +48,20 @@ public class BasicDemo {
         TestObject testObject2 = new TestObject("item_new_id_2", "test2", "test description2", "CA");
 
         //CREATE an Item async
-        Mono<CosmosAsyncItemResponse> itemResponseMono = container.createItem(testObject);
+
+        Mono<CosmosAsyncItemResponse<TestObject>> itemResponseMono = container.createItem(testObject);
         //CREATE another Item async
-        Mono<CosmosAsyncItemResponse> itemResponseMono1 = container.createItem(testObject2);
+        Mono<CosmosAsyncItemResponse<TestObject>> itemResponseMono1 = container.createItem(testObject2);
 
         //Wait for completion
         try {
             itemResponseMono.doOnError(throwable -> log("CREATE item 1", throwable))
-                    .mergeWith(itemResponseMono1)
-                    .doOnError(throwable -> log("CREATE item 2 ", throwable))
-                    .doOnComplete(() -> log("Items created"))
-                    .publishOn(Schedulers.elastic())
-                    .blockLast();
-        }catch (RuntimeException e){
+                .mergeWith(itemResponseMono1)
+                .doOnError(throwable -> log("CREATE item 2 ", throwable))
+                .doOnComplete(() -> log("Items created"))
+                .publishOn(Schedulers.elastic())
+                .blockLast();
+        } catch (RuntimeException e) {
             log("Couldn't create items due to above exceptions");
         }
 
@@ -73,34 +75,39 @@ public class BasicDemo {
     }
 
     private void createAndReplaceItem() {
-        TestObject replaceObject =  new TestObject("item_new_id_3", "test3", "test description3", "JP");
-        CosmosAsyncItem cosmosItem = null;
+        TestObject replaceObject = new TestObject("item_new_id_3", "test3", "test description3", "JP");
+        CosmosItemProperties properties = null;
         //CREATE item sync
         try {
-            cosmosItem = container.createItem(replaceObject)
-                    .doOnError(throwable -> log("CREATE 3", throwable))
-                    .publishOn(Schedulers.elastic())
-                    .block()
-                    .getItem();
-        }catch (RuntimeException e){
+            properties = container.createItem(replaceObject)
+                             .doOnError(throwable -> log("CREATE 3", throwable))
+                             .publishOn(Schedulers.elastic())
+                             .block()
+                             .getProperties();
+        } catch (RuntimeException e) {
             log("Couldn't create items due to above exceptions");
         }
-        if (cosmosItem != null) {
+        if (properties != null) {
             replaceObject.setName("new name test3");
 
             //REPLACE the item and wait for completion
-            cosmosItem.replace(replaceObject).block();
+            container.replaceItem(replaceObject,
+                                  properties.getId(),
+                                  new PartitionKey(replaceObject.getCountry()))
+                .block();
         }
     }
 
     private void createDbAndContainerBlocking() {
         client.createDatabaseIfNotExists(DATABASE_NAME)
-                .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.getDatabase().getId()))
-                .flatMap(dbResponse -> dbResponse.getDatabase().createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME, "/country")))
-                .doOnSuccess(cosmosContainerResponse -> log("Container: " + cosmosContainerResponse.getContainer().getId()))
-                .doOnError(throwable -> log(throwable.getMessage()))
-                .publishOn(Schedulers.elastic())
-                .block();
+            .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.getDatabase().getId()))
+            .flatMap(dbResponse -> dbResponse.getDatabase()
+                                       .createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME,
+                                                                                                 "/country")))
+            .doOnSuccess(cosmosContainerResponse -> log("Container: " + cosmosContainerResponse.getContainer().getId()))
+            .doOnError(throwable -> log(throwable.getMessage()))
+            .publishOn(Schedulers.elastic())
+            .block();
     }
 
     private void queryItems() {
@@ -110,16 +117,12 @@ public class BasicDemo {
         options.setMaxDegreeOfParallelism(2);
         Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class);
 
-        queryFlux.publishOn(Schedulers.elastic()).subscribe(cosmosItemFeedResponse -> {},
-                            throwable -> {},
-                            () -> {});
-
         queryFlux.publishOn(Schedulers.elastic())
-                .toIterable()
-                .forEach(cosmosItemFeedResponse -> 
-                         {
-                             log(cosmosItemFeedResponse.getResults());
-                         });
+            .toIterable()
+            .forEach(cosmosItemFeedResponse ->
+                     {
+                         log(cosmosItemFeedResponse.getResults());
+                     });
 
     }
 
@@ -156,6 +159,9 @@ public class BasicDemo {
         String name;
         String description;
         String country;
+
+        public TestObject() {
+        }
 
         public TestObject(String id, String name, String description, String country) {
             this.id = id;

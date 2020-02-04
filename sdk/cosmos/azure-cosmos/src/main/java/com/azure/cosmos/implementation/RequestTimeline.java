@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -158,6 +159,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         @JsonSerialize(using = ToStringSerializer.class)
         private final long durationInMicroSec;
 
+        @JsonProperty("eventName")
         private final String name;
 
         @JsonSerialize(using = ToStringSerializer.class)

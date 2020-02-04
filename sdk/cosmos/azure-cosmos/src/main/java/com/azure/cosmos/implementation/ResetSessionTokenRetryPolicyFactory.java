@@ -17,7 +17,7 @@ public class ResetSessionTokenRetryPolicyFactory implements IRetryPolicyFactory 
     }
 
     @Override
-    public IDocumentClientRetryPolicy getRequestPolicy() {
+    public DocumentClientRetryPolicy getRequestPolicy() {
         return new RenameCollectionAwareClientRetryPolicy(this.sessionContainer, this.collectionCache, retryPolicy.getRequestPolicy());
     }
 }

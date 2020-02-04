@@ -30,6 +30,7 @@ Licensed under the MIT License.
   </scm>
 
   <dependencies>
+
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
@@ -88,11 +89,6 @@ Licensed under the MIT License.
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
     </dependency>
 
     <dependency>
