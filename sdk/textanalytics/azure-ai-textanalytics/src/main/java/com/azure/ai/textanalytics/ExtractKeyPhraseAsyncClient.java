@@ -10,7 +10,6 @@ import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.PagedFlux;

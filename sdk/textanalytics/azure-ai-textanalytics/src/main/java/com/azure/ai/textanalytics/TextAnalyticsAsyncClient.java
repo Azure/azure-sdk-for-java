@@ -131,11 +131,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectedLanguage> detectLanguage(String text) {
-        try {
-            return detectLanguageWithResponse(text, defaultCountryHint).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return detectLanguageWithResponse(text, defaultCountryHint).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -187,11 +183,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> textInputs) {
-        try {
-            return detectLanguagesWithResponse(textInputs, defaultCountryHint).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return detectLanguagesWithResponse(textInputs, defaultCountryHint).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -242,11 +234,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguages(
         List<DetectLanguageInput> textInputs) {
-        try {
-            return detectBatchLanguagesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return detectBatchLanguagesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -300,11 +288,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NamedEntity> recognizeEntities(String text) {
-        try {
-            return recognizeEntities(text, defaultLanguage);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return recognizeEntities(text, defaultLanguage);
     }
 
     /**
@@ -329,7 +313,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
      * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NamedEntity> recognizeEntities(String text, String language) {
         try {
             return new PagedFlux<>(() -> withContext(context ->
@@ -357,11 +341,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntities(List<String> textInputs) {
-        try {
-            return recognizeEntities(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeEntities(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -412,11 +392,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeBatchEntities(
         List<TextDocumentInput> textInputs) {
-        try {
-            return recognizeBatchEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeBatchEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -469,11 +445,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NamedEntity> recognizePiiEntities(String text) {
-        try {
-            return recognizePiiEntities(text, defaultLanguage);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return recognizePiiEntities(text, defaultLanguage);
     }
 
     /**
@@ -526,12 +498,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntities(List<String> textInputs) {
-        try {
-            return recognizePiiEntities(textInputs, defaultLanguage)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizePiiEntities(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -584,11 +551,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizeBatchPiiEntities(
         List<TextDocumentInput> textInputs) {
-        try {
-            return recognizeBatchPiiEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeBatchPiiEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -641,11 +604,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LinkedEntity> recognizeLinkedEntities(String text) {
-        try {
-            return recognizeLinkedEntities(text, defaultLanguage);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return recognizeLinkedEntities(text, defaultLanguage);
     }
 
     /**
@@ -697,12 +656,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntities(
         List<String> textInputs) {
-        try {
-            return recognizeLinkedEntities(textInputs, defaultLanguage)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeLinkedEntities(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -753,11 +707,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeBatchLinkedEntities(
         List<TextDocumentInput> textInputs) {
-        try {
-            return recognizeBatchLinkedEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeBatchLinkedEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -781,7 +731,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>>
         recognizeBatchLinkedEntitiesWithResponse(List<TextDocumentInput> textInputs,
-        TextAnalyticsRequestOptions options) {
+            TextAnalyticsRequestOptions options) {
         try {
             return withContext(context -> recognizeLinkedEntityAsyncClient.recognizeBatchLinkedEntitiesWithResponse(
                 textInputs, options, context));
@@ -809,11 +759,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> extractKeyPhrases(String text) {
-        try {
-            return extractKeyPhrases(text, defaultLanguage);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return extractKeyPhrases(text, defaultLanguage);
     }
 
     /**
@@ -863,11 +809,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrases(List<String> textInputs) {
-        try {
-            return extractKeyPhrases(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return extractKeyPhrases(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -917,11 +859,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<ExtractKeyPhraseResult>> extractBatchKeyPhrases(
         List<TextDocumentInput> textInputs) {
-        try {
-            return extractBatchKeyPhrasesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return extractBatchKeyPhrasesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**

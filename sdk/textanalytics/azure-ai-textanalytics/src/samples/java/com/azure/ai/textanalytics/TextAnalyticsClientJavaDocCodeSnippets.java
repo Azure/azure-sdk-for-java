@@ -615,8 +615,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrasesSingleText() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
-        for (String keyPhrase :
-            textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.")) {
+        for (String keyPhrase
+            : textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.")) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrase);
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String

@@ -7,7 +7,6 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.NamedEntity;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
@@ -36,7 +35,6 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsAsyncClient client;
