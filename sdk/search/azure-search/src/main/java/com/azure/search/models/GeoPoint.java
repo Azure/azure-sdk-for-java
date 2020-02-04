@@ -133,7 +133,7 @@ public final class GeoPoint {
      */
     public double getLatitude() {
         if (coordinates == null || coordinates.size() != 2) {
-            logger.logExceptionAsError(new RuntimeException("coordinates not set"));
+            throw logger.logExceptionAsError(new RuntimeException("coordinates not set"));
         }
         return coordinates.get(0);
     }
@@ -144,7 +144,7 @@ public final class GeoPoint {
      */
     public double getLongitude() {
         if (coordinates == null || coordinates.size() != 2) {
-            logger.logExceptionAsError(new RuntimeException("coordinates not set"));
+            throw logger.logExceptionAsError(new RuntimeException("coordinates not set"));
         }
         return coordinates.get(1);
     }
