@@ -87,20 +87,4 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
             .assertNext(node -> Assertions.assertTrue(node instanceof ClaimsBasedSecurityChannel))
             .verifyComplete();
     }
-
-    @Test
-    public void getCbsNodeAuthorize() {
-        // Arrange
-        final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
-            getConnectionStringProperties().getEndpoint().getHost(),
-            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-
-        final String tokenAudience = provider.getScopesFromResource(getConnectionStringProperties().getEntityPath());
-
-        // Act & Assert
-        StepVerifier.create(connection.getClaimsBasedSecurityNode().flatMap(node -> node.authorize(tokenAudience, tokenAudience)))
-            .assertNext(expiration -> OffsetDateTime.now(ZoneOffset.UTC).isBefore(expiration))
-            .verifyComplete();
-    }
 }
