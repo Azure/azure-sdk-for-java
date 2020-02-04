@@ -18,7 +18,7 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface ServerTableAuditingPolicies extends SupportsCreating<ServerTableAuditingPolicy.DefinitionStages.Blank>, HasInner<ServerTableAuditingPoliciesInner> {
     /**
-     * Lists a servers's table auditing policies. Table auditing is deprecated, use blob auditing instead.
+     * Lists a server's table auditing policies. Table auditing is deprecated, use blob auditing instead.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
