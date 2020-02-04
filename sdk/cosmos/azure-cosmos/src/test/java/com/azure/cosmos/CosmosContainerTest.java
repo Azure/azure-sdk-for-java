@@ -37,7 +37,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulator"}, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
         safeDeleteSyncDatabase(createdDatabase);
