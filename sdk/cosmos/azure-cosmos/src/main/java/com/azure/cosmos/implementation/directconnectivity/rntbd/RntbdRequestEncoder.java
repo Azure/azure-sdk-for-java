@@ -10,21 +10,21 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class RntbdRequestEncoder extends MessageToByteEncoder {
+public final class RntbdRequestEncoder extends MessageToByteEncoder<RntbdRequestRecord> {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestEncoder.class);
 
     /**
-     * Returns {@code true} if the given message is an @{link RntbdRequest} instance
+     * Returns {@code true} if the given message is an {@link RntbdRequestRecord} instance.
      * <p>
      * If {@code false} this message should be passed to the next {@link ChannelOutboundHandler} in the pipeline.
      *
      * @param message the message to encode
-     * @return {@code true}, if the given message is an an {@link RntbdRequest} instance; otherwise @{false}
+     * @return {@code true}, if the given message is an an {@link RntbdRequestRecord} instance; otherwise {@code false}.
      */
     @Override
     public boolean acceptOutboundMessage(final Object message) {
-        return message instanceof RntbdRequestArgs;
+        return message.getClass() == RntbdRequestRecord.class;
     }
 
     /**
@@ -34,12 +34,16 @@ public final class RntbdRequestEncoder extends MessageToByteEncoder {
      *
      * @param context the {@link ChannelHandlerContext} which this {@link MessageToByteEncoder} belongs encode
      * @param message the message to encode
-     * @param out     the {@link ByteBuf} into which the encoded message will be written
+     * @param out the {@link ByteBuf} into which the encoded message will be written
      */
     @Override
-    protected void encode(final ChannelHandlerContext context, final Object message, final ByteBuf out) throws Exception {
+    protected void encode(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord message,
+        final ByteBuf out
+    ) {
 
-        final RntbdRequest request = RntbdRequest.from((RntbdRequestArgs) message);
+        final RntbdRequest request = RntbdRequest.from(message.args());
         final int start = out.writerIndex();
 
         try {
@@ -49,9 +53,10 @@ public final class RntbdRequestEncoder extends MessageToByteEncoder {
             throw error;
         }
 
+        message.requestLength(out.writerIndex() - start);
+
         if (logger.isDebugEnabled()) {
-            final int length = out.writerIndex() - start;
-            logger.debug("{}: ENCODE COMPLETE: length={}, request={}", context.channel(), length, request);
+            logger.debug("{}: ENCODE COMPLETE: request={}", context.channel(), request);
         }
     }
 }
