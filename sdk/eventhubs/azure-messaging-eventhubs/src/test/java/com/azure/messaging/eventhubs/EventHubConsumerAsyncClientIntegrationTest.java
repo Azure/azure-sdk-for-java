@@ -150,21 +150,25 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     @Test
     public void lastEnqueuedInformationIsNotUpdated() {
         // Arrange
-        final String secondPartitionId = "1";
-        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
+        final String firstPartition = "0";
+        final PartitionProperties properties = client.getPartitionProperties(firstPartition).block();
+        Assertions.assertNotNull(properties);
+
+        final EventPosition position = EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber());
         final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 1);
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(false);
 
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final int expectedNumber = 5;
         final EventHubProducerAsyncClient producer = client.createProducer();
-        final Disposable producerEvents = getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
-            sent -> logger.info("Event sent."),
-            error -> logger.error("Error sending event", error));
+        final SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
+        final Disposable producerEvents = getEvents(isActive)
+            .flatMap(event -> producer.send(event, sendOptions))
+            .subscribe(sent -> logger.info("Event sent."), error -> logger.error("Error sending event", error));
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receiveFromPartition(secondPartitionId, position, options)
+            StepVerifier.create(consumer.receiveFromPartition(firstPartition, position, options)
                 .take(expectedNumber))
                 .assertNext(event -> {
                     Assertions.assertNull(event.getLastEnqueuedEventProperties(), "'lastEnqueuedEventProperties' "
@@ -476,8 +480,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     @Test
     public void multipleReceiversSamePartition() throws InterruptedException {
         // Arrange
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 50);
-        final EventHubConsumerAsyncClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 50);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 1);
+        final EventHubConsumerAsyncClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 1);
         final String partitionId = "1";
         final PartitionProperties properties = consumer.getPartitionProperties(partitionId).block(TIMEOUT);
         Assertions.assertNotNull(properties, "Should have been able to get partition properties.");
