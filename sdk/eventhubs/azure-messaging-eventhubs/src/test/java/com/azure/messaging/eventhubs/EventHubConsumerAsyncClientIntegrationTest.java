@@ -469,7 +469,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         Assertions.assertTrue(expectedPartitions.isEmpty(), "Expected messages to be received from all partitions. "
             + "There are: " + expectedPartitions.size());
     }
-    getEventHubProperties
+
     /**
      * Verifies we can receive from the same partition concurrently.
      */
