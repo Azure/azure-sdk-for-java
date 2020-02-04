@@ -70,6 +70,15 @@ public final class DatabaseStatus extends ExpandableStringEnum<DatabaseStatus> {
     /** Static value Scaling for DatabaseStatus. */
     public static final DatabaseStatus SCALING = fromString("Scaling");
 
+    /** Static value OfflineChangingDwPerformanceTiers for DatabaseStatus. */
+    public static final DatabaseStatus OFFLINE_CHANGING_DW_PERFORMANCE_TIERS = fromString("OfflineChangingDwPerformanceTiers");
+
+    /** Static value OnlineChangingDwPerformanceTiers for DatabaseStatus. */
+    public static final DatabaseStatus ONLINE_CHANGING_DW_PERFORMANCE_TIERS = fromString("OnlineChangingDwPerformanceTiers");
+
+    /** Static value Disabled for DatabaseStatus. */
+    public static final DatabaseStatus DISABLED = fromString("Disabled");
+
     /**
      * Creates or finds a DatabaseStatus from its string representation.
      * @param name a name to look for
