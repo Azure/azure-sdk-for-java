@@ -59,6 +59,7 @@ public class SearchIndexClient {
 
     /**
      * Uploads a collection of documents to the target index
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
      * @param documents collection of documents to upload to the target Index.
      * @return document index result.
@@ -69,6 +70,7 @@ public class SearchIndexClient {
 
     /**
      * Uploads a collection of documents to the target index
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
      * @param documents collection of documents to upload to the target Index.
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -79,7 +81,8 @@ public class SearchIndexClient {
     }
 
     /**
-     * Merges a collection of documents with existing documents in the target index.
+     * Merges a collection of documents with existing documents in the target index
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
      * If the type of the document contains non-nullable value-typed properties, these properties may not
      * merge correctly. If you do not set such a property, it will automatically take its default value
@@ -96,6 +99,7 @@ public class SearchIndexClient {
 
     /**
      * Merges a collection of documents with existing documents in the target index.
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
      * If the type of the document contains non-nullable value-typed properties, these properties may not
      * merge correctly. If you do not set such a property, it will automatically take its default value
@@ -114,6 +118,7 @@ public class SearchIndexClient {
     /**
      * This action behaves like merge if a document with the given key already exists in the index.
      * If the document does not exist, it behaves like upload with a new document.
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
      * If the type of the document contains non-nullable value-typed properties, these properties may not
      * merge correctly. If you do not set such a property, it will automatically take its default value
@@ -131,6 +136,7 @@ public class SearchIndexClient {
     /**
      * This action behaves like merge if a document with the given key already exists in the index.
      * If the document does not exist, it behaves like upload with a new document.
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
      * If the type of the document contains non-nullable value-typed properties, these properties may not
      * merge correctly. If you do not set such a property, it will automatically take its default value
@@ -148,6 +154,7 @@ public class SearchIndexClient {
 
     /**
      * Deletes a collection of documents from the target index
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
      * @param documents collection of documents to delete from the target Index.
      *                  Fields other than the key are ignored
@@ -159,6 +166,7 @@ public class SearchIndexClient {
 
     /**
      * Deletes a collection of documents from the target index
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
      * @param documents collection of documents to delete from the target Index.
      *                  Fields other than the key are ignored
@@ -210,8 +218,12 @@ public class SearchIndexClient {
 
     /**
      * Searches for documents in the Azure Cognitive Search index
+     * https://docs.microsoft.com/rest/api/searchservice/Search-Documents
      *
-     * @param searchText search text
+     * @param searchText A full-text search query expression;
+     * Use null or "*" to match all documents. See
+     * see https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search"
+     * for more information about search query syntax.
      * @return A {@link PagedIterable} that iterates over {@link SearchResult} objects
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
@@ -222,9 +234,13 @@ public class SearchIndexClient {
 
     /**
      * Searches for documents in the Azure Cognitive Search index
+     * https://docs.microsoft.com/rest/api/searchservice/Search-Documents
      *
-     * @param searchText search text
-     * @param searchOptions search options
+     * @param searchText A full-text search query expression;
+     * Use null or "*" to match all documents. See
+     * see https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search"
+     * for more information about search query syntax.
+     * @param searchOptions Parameters to further refine the search query
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -303,10 +319,12 @@ public class SearchIndexClient {
     }
 
     /**
-     * Suggests documents in the Azure Cognitive Search index that match the given partial query text.
+     * Suggests query terms based on input text and matching documents in the search index.
+     * see https://docs.microsoft.com/rest/api/searchservice/Suggestions
      *
-     * @param searchText search text
-     * @param suggesterName suggester name
+     * @param searchText The search text on which to base suggestions
+     * @param suggesterName The name of the suggester as specified in the suggesters collection
+     * that's part of the index definition
      * @return A {@link PagedIterableBase} that iterates over {@link SuggestResult} objects
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
@@ -317,11 +335,13 @@ public class SearchIndexClient {
     }
 
     /**
-     * Suggests documents in the Azure Cognitive Search index that match the given partial query text.
+     * Suggests query terms based on input text and matching documents in the search index.
+     * see https://docs.microsoft.com/rest/api/searchservice/Suggestions
      *
-     * @param searchText search text
-     * @param suggesterName suggester name
-     * @param suggestOptions suggest options
+     * @param searchText The search text on which to base suggestions
+     * @param suggesterName The name of the suggester as specified in the suggesters collection
+     * that's part of the index definition
+     * @param suggestOptions Parameters to further refine the suggestion query.
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -339,21 +359,23 @@ public class SearchIndexClient {
     }
 
     /**
-     * Sends a batch of document write to the Azure Cognitive Search index.
+     * Sends a batch of upload, merge, and/or delete actions to the search index.
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * @param batch batch of documents to send to the index with the requested action
-     * @return document index result
+     * @param batch The batch of index actions
+     * @return Response containing the status of operations for all actions in the batch
      */
     public IndexDocumentsResult index(IndexBatch<?> batch) {
         return this.indexWithResponse(batch, Context.NONE).getValue();
     }
 
     /**
-     * Sends a batch of document write to the Azure Cognitive Search index.
+     * Sends a batch of upload, merge, and/or delete actions to the search index.
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * @param batch batch of documents to send to the index with the requested action
+     * @param batch The batch of index actions
      * @param context additional context that is passed through the Http pipeline during the service call
-     * @return a response containing a document index result
+     * @return Response containing the status of operations for all actions in the batch
      */
     public Response<IndexDocumentsResult> indexWithResponse(IndexBatch<?> batch, Context context) {
         Mono<Response<IndexDocumentsResult>> results = asyncClient.indexWithResponse(batch, context);
