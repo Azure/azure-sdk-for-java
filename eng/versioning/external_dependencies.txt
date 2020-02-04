@@ -103,7 +103,7 @@ com.beust:jcommander;1.58
 com.google.code.findbugs:jsr305;3.0.2
 com.nimbusds:nimbus-jose-jwt;6.0.1
 com.nimbusds:oauth2-oidc-sdk;6.14
-com.puppycrawl.tools:checkstyle;8.24
+com.puppycrawl.tools:checkstyle;8.29
 commons-io:commons-io;2.5
 commons-validator:commons-validator;1.6
 io.dropwizard.metrics:metrics-core;4.0.5

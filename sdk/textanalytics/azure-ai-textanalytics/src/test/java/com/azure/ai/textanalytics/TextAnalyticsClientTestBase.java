@@ -78,6 +78,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
+    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeEntitiesResult returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
+    static final String INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE = "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code. ErrorCodeValue: {invalidCountryHint}";
+    static final String INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE = "Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_KEY = "invalid key";
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
@@ -154,6 +157,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeEntitiesForFaultyText();
+
+    @Test
+    abstract void recognizeEntitiesBatchInputSingleError();
 
     @Test
     abstract void recognizeEntitiesForBatchInput();
@@ -288,6 +294,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void recognizeNamedEntitiesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(NAMED_ENTITY_INPUTS, "en");
+    }
+
+    void recognizeBatchNamedEntitySingleErrorRunner(Consumer<List<TextDocumentInput>> testRunner) {
+        List<TextDocumentInput> inputs = Collections.singletonList(new TextDocumentInput("2", " "));
+        testRunner.accept(inputs);
     }
 
     void recognizeBatchNamedEntityRunner(Consumer<List<TextDocumentInput>> testRunner) {

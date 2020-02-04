@@ -35,6 +35,7 @@ public final class RecognizeLinkedEntitiesResult extends DocumentResult {
      * @return a list of linked entities.
      */
     public List<LinkedEntity> getLinkedEntities() {
+        throwExceptionIfError();
         return linkedEntities;
     }
 }

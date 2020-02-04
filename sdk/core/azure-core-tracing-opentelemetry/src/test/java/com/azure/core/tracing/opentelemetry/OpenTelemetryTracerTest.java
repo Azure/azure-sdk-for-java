@@ -29,7 +29,6 @@ import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESP
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.COMPONENT;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_BUS_DESTINATION;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.PEER_ENDPOINT;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
@@ -94,8 +93,9 @@ public class OpenTelemetryTracerTest {
         final SpanId parentSpanId = parentSpan.getContext().getSpanId();
 
         // Act
+        // TODO (savaity): replace with the AZ_TRACING_NAMESPACE_KEY
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME,
-            tracingContext.addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE));
+            tracingContext.addData("az.tracing.namespace", AZ_NAMESPACE_VALUE));
 
         // Assert
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
@@ -142,7 +142,7 @@ public class OpenTelemetryTracerTest {
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
-        assertEquals(Span.Kind.PRODUCER, recordEventsSpan.toSpanData().getKind());
+        assertEquals(Span.Kind.CLIENT, recordEventsSpan.toSpanData().getKind());
 
         // verify span attributes
         final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
@@ -163,7 +163,7 @@ public class OpenTelemetryTracerTest {
         // verify no kind set on Span for message
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
-        assertEquals(Span.Kind.INTERNAL, recordEventsSpan.toSpanData().getKind());
+        assertEquals(Span.Kind.PRODUCER, recordEventsSpan.toSpanData().getKind());
         // verify diagnostic id and span context returned
         assertNotNull(updatedContext.getData(SPAN_CONTEXT_KEY).get());
         assertNotNull(updatedContext.getData(DIAGNOSTIC_ID_KEY).get());
@@ -188,7 +188,7 @@ public class OpenTelemetryTracerTest {
         assertNotNull(updatedContext.getData(SCOPE_KEY).get());
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
-        assertEquals(Span.Kind.SERVER, recordEventsSpan.toSpanData().getKind());
+        assertEquals(Span.Kind.CONSUMER, recordEventsSpan.toSpanData().getKind());
         // verify span attributes
         final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
         verifySpanAttributes(attributeMap);
@@ -438,7 +438,7 @@ public class OpenTelemetryTracerTest {
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
         assertEquals(METHOD_NAME, recordEventsSpan.getName());
-        assertEquals(Span.Kind.SERVER, recordEventsSpan.toSpanData().getKind());
+        assertEquals(Span.Kind.CONSUMER, recordEventsSpan.toSpanData().getKind());
 
         // verify span started with remote parent
         assertTrue(recordEventsSpan.toSpanData().getHasRemoteParent());
