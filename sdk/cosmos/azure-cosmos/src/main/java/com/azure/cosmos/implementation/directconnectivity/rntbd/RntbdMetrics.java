@@ -6,23 +6,25 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.google.common.net.PercentEscaper;
 import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Gauge;
-import io.micrometer.core.instrument.Measurement;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import io.micrometer.core.instrument.config.NamingConvention;
+import io.micrometer.core.instrument.distribution.HistogramSnapshot;
 import io.micrometer.core.instrument.dropwizard.DropwizardConfig;
 import io.micrometer.core.instrument.dropwizard.DropwizardMeterRegistry;
 import io.micrometer.core.instrument.util.HierarchicalNameMapper;
 import io.micrometer.core.lang.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;
@@ -30,32 +32,38 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("UnstableApiUsage")
 @JsonPropertyOrder({
     "tags", "concurrentRequests", "requests", "responseErrors", "responseSuccesses", "completionRate", "responseRate",
-    "channelsAcquired", "channelsAvailable", "requestQueueLength", "usedDirectMemory", "usedHeapMemory"
+    "requestSize", "responseSize", "channelsAcquired", "channelsAvailable", "requestQueueLength", "usedDirectMemory",
+    "usedHeapMemory"
 })
 public final class RntbdMetrics {
 
     // region Fields
 
-    private static final PercentEscaper escaper = new PercentEscaper("_-", false);
+    private static final PercentEscaper PERCENT_ESCAPER = new PercentEscaper("_-", false);
+
+    private static final Logger logger = LoggerFactory.getLogger(RntbdMetrics.class);
     private static final CompositeMeterRegistry registry = new CompositeMeterRegistry();
 
-    private static final String prefix = "azure.cosmos.directTcp.";
-    private static MeterRegistry consoleLoggingRegistry;
-
-    private final RntbdTransportClient transportClient;
-    private final RntbdEndpoint endpoint;
-
-    private final Timer requests;
-    private final Timer responseErrors;
-    private final Timer responseSuccesses;
-    private final Tags tags;
-
     static {
-        int step = Integer.getInteger("azure.cosmos.monitoring.consoleLogging.step", 0);
-        if (step > 0) {
-            RntbdMetrics.add(RntbdMetrics.consoleLoggingRegistry(step));
+        try {
+            int step = Integer.getInteger("azure.cosmos.monitoring.consoleLogging.step", 0);
+            if (step > 0) {
+                RntbdMetrics.add(RntbdMetrics.consoleLoggingRegistry(step));
+            }
+        } catch (Throwable error) {
+            logger.error("failed to initialize console logging registry due to ", error);
         }
     }
+
+    private final RntbdEndpoint endpoint;
+
+    private final DistributionSummary requestSize;
+    private final Timer requests;
+    private final Timer responseErrors;
+    private final DistributionSummary responseSize;
+    private final Timer responseSuccesses;
+    private final Tags tags;
+    private final RntbdTransportClient transportClient;
 
     // endregion
 
@@ -67,6 +75,7 @@ public final class RntbdMetrics {
         this.endpoint = endpoint;
 
         this.tags = Tags.of(client.tag(), endpoint.tag());
+
         this.requests = registry.timer(nameOf("requests"), tags);
         this.responseErrors = registry.timer(nameOf("responseErrors"), tags);
         this.responseSuccesses = registry.timer(nameOf("responseSuccesses"), tags);
@@ -102,63 +111,36 @@ public final class RntbdMetrics {
              .register(registry);
 
         Gauge.builder(nameOf("usedDirectMemory"), endpoint, x -> x.usedDirectMemory())
-             .description("Java direct memory usage")
+             .description("Java direct memory usage (MiB)")
              .baseUnit("bytes")
              .tags(this.tags)
              .register(registry);
 
         Gauge.builder(nameOf("usedHeapMemory"), endpoint, x -> x.usedHeapMemory())
-             .description("Java heap memory usage")
+             .description("Java heap memory usage (MiB)")
              .baseUnit("MiB")
              .tags(this.tags)
              .register(registry);
+
+        this.requestSize = DistributionSummary.builder(nameOf("requestSize"))
+            .description("Request size (bytes)")
+            .baseUnit("bytes")
+            .tags(this.tags)
+            .register(registry);
+
+        this.responseSize = DistributionSummary.builder(nameOf("responseSize"))
+            .description("Response size (bytes)")
+            .baseUnit("bytes")
+            .tags(this.tags)
+            .register(registry);
     }
 
     // endregion
 
     // region Accessors
 
-    @JsonIgnore
-    private static synchronized MeterRegistry consoleLoggingRegistry(final int step) {
-
-        if (consoleLoggingRegistry == null) {
-
-            MetricRegistry dropwizardRegistry = new MetricRegistry();
-
-            ConsoleReporter consoleReporter = ConsoleReporter
-                .forRegistry(dropwizardRegistry)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .build();
-
-            consoleReporter.start(step, TimeUnit.SECONDS);
-
-            DropwizardConfig dropwizardConfig = new DropwizardConfig() {
-
-                @Override
-                public String get(@Nullable String key) {
-                    return null;
-                }
-
-                @Override
-                public String prefix() {
-                    return "console";
-                }
-
-            };
-
-            consoleLoggingRegistry = new DropwizardMeterRegistry(dropwizardConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
-                @Override
-                @Nonnull
-                protected Double nullGaugeValue() {
-                    return Double.NaN;
-                }
-            };
-
-            consoleLoggingRegistry.config().namingConvention(NamingConvention.dot);
-        }
-
-        return consoleLoggingRegistry;
+    public static void add(MeterRegistry registry) {
+        RntbdMetrics.registry.add(registry);
     }
 
     @JsonProperty
@@ -172,13 +154,13 @@ public final class RntbdMetrics {
     }
 
     /***
-     * Computes the number of successful (non-error) responses received divided by the number of completed requests
+     * Computes the number of successful (non-error) responses received divided by the number of completed requests.
      *
-     * @return The number of successful (non-error) responses received divided by the number of completed requests
+     * @return number of successful (non-error) responses received divided by the number of completed requests.
      */
     @JsonProperty
     public double completionRate() {
-        return this.responseSuccesses.count() / (double)this.requests.count();
+        return this.responseSuccesses.count() / (double) this.requests.count();
     }
 
     @JsonProperty
@@ -197,13 +179,18 @@ public final class RntbdMetrics {
     }
 
     @JsonProperty
-    public Iterable<Measurement> requests() {
-        return this.requests.measure();
+    public HistogramSnapshot requestSize() {
+        return this.requestSize.takeSnapshot();
     }
 
     @JsonProperty
-    public Iterable<Measurement> responseErrors() {
-        return this.responseErrors.measure();
+    public HistogramSnapshot requests() {
+        return this.requests.takeSnapshot();
+    }
+
+    @JsonProperty
+    public HistogramSnapshot responseErrors() {
+        return this.responseErrors.takeSnapshot();
     }
 
     /***
@@ -213,12 +200,17 @@ public final class RntbdMetrics {
      */
     @JsonProperty
     public double responseRate() {
-        return this.responseSuccesses.count() / (double)(this.requests.count() + this.endpoint.concurrentRequests());
+        return this.responseSuccesses.count() / (double) (this.requests.count() + this.endpoint.concurrentRequests());
     }
 
     @JsonProperty
-    public Iterable<Measurement> responseSuccesses() {
-        return this.responseSuccesses.measure();
+    public HistogramSnapshot responseSize() {
+        return this.responseSize.takeSnapshot();
+    }
+
+    @JsonProperty
+    public HistogramSnapshot responseSuccesses() {
+        return this.responseSuccesses.takeSnapshot();
     }
 
     @JsonProperty
@@ -240,16 +232,12 @@ public final class RntbdMetrics {
 
     // region Methods
 
-    public static void add(MeterRegistry registry) {
-        RntbdMetrics.registry.add(registry);
-    }
-
-    public void markComplete(RntbdRequestRecord record) {
-        record.stop(this.requests, record.isCompletedExceptionally() ? this.responseErrors : this.responseSuccesses);
-    }
-
-    public static String escape(String value) {
-        return escaper.escape(value);
+    public void markComplete(RntbdRequestRecord requestRecord) {
+        requestRecord.stop(this.requests, requestRecord.isCompletedExceptionally()
+            ? this.responseErrors
+            : this.responseSuccesses);
+        this.requestSize.record(requestRecord.requestLength());
+        this.responseSize.record(requestRecord.responseLength());
     }
 
     @Override
@@ -261,8 +249,51 @@ public final class RntbdMetrics {
 
     // region Private
 
+    static String escape(String value) {
+        return PERCENT_ESCAPER.escape(value);
+    }
+
+    private static MeterRegistry consoleLoggingRegistry(final int step) {
+
+        final MetricRegistry dropwizardRegistry = new MetricRegistry();
+
+        ConsoleReporter consoleReporter = ConsoleReporter
+            .forRegistry(dropwizardRegistry)
+            .convertRatesTo(TimeUnit.SECONDS)
+            .convertDurationsTo(TimeUnit.MILLISECONDS)
+            .build();
+
+        consoleReporter.start(step, TimeUnit.SECONDS);
+
+        DropwizardConfig dropwizardConfig = new DropwizardConfig() {
+
+            @Override
+            public String get(@Nullable String key) {
+                return null;
+            }
+
+            @Override
+            public String prefix() {
+                return "console";
+            }
+
+        };
+
+        final MeterRegistry consoleLoggingRegistry = new DropwizardMeterRegistry(
+            dropwizardConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
+            @Override
+            @Nonnull
+            protected Double nullGaugeValue() {
+                return Double.NaN;
+            }
+        };
+
+        consoleLoggingRegistry.config().namingConvention(NamingConvention.dot);
+        return consoleLoggingRegistry;
+    }
+
     private static String nameOf(final String member) {
-        return prefix + member;
+        return "azure.cosmos.directTcp." + member;
     }
 
     // endregion
