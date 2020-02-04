@@ -242,7 +242,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             final EventHubProperties properties = consumer.getEventHubProperties();
             Assertions.assertNotNull(properties);
             Assertions.assertEquals(consumer.getEventHubName(), properties.getName());
-            Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
+            Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
         } finally {
             dispose(consumer);
         }
@@ -262,7 +262,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             final IterableStream<String> partitionIds = consumer.getPartitionIds();
             final List<String> collect = partitionIds.stream().collect(Collectors.toList());
 
-            Assertions.assertEquals(2, collect.size());
+            Assertions.assertEquals(3, collect.size());
         } finally {
             dispose(consumer);
         }

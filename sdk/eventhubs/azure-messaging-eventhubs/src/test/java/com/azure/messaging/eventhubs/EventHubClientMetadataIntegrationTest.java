@@ -94,6 +94,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(partitionProperties)
             .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
             .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
+            .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
             .verifyComplete();
     }
 

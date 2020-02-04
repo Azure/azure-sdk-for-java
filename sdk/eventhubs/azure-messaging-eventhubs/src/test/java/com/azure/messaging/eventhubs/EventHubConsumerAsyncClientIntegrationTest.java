@@ -323,7 +323,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                 .assertNext(properties -> {
                     Assertions.assertNotNull(properties);
                     Assertions.assertEquals(consumer.getEventHubName(), properties.getName());
-                    Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
+                    Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -469,7 +469,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         Assertions.assertTrue(expectedPartitions.isEmpty(), "Expected messages to be received from all partitions. "
             + "There are: " + expectedPartitions.size());
     }
-
+    getEventHubProperties
     /**
      * Verifies we can receive from the same partition concurrently.
      */
