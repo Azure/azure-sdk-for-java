@@ -89,7 +89,7 @@
             ],
             "properties": {
                 "messageRetentionInDays": 1,
-                "partitionCount": 2,
+                "partitionCount": 3,
                 "status": "Active"
             }
         },

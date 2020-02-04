@@ -19,7 +19,7 @@ import reactor.test.StepVerifier;
  * Tests the metadata operations such as fetching partition properties and event hub properties.
  */
 public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
-    private final String[] expectedPartitionIds = new String[]{"0", "1"};
+    private final String[] expectedPartitionIds = new String[]{"0", "1", "2"};
     private EventHubAsyncClient client;
     private String eventHubName;
 

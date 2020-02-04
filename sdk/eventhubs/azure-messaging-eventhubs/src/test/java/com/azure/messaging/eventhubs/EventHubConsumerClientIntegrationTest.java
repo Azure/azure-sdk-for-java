@@ -30,7 +30,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
 
     private static final int NUMBER_OF_EVENTS = 10;
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
-    private final String[] expectedPartitionIds = new String[]{"0", "1"};
+    private final String[] expectedPartitionIds = new String[]{"0", "1", "2"};
 
     private static volatile IntegrationTestEventData testData = null;
 
