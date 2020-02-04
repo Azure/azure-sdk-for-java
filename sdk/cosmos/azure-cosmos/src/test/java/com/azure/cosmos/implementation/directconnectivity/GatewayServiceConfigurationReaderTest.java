@@ -50,14 +50,14 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
     public void clientInitialization() throws Exception {
         client = this.clientBuilder().build();
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) client;
-        GatewayServiceConfigurationReader serviceConfigurationReader = getServiceConfigurationReader(rxDocumentClient);
-        GlobalEndpointManager globalEndpointManager = this.getGlobalEndpointManager(serviceConfigurationReader);
+        GatewayServiceConfigurationReader serviceConfigurationReader = ReflectionUtils.getServiceConfigurationReader(rxDocumentClient);
+        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(serviceConfigurationReader);
         Mono<DatabaseAccount> databaseAccountMono = globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST));
         validateSuccess(databaseAccountMono);
-        assertThat(serviceConfigurationReader.getDefaultConsistencyLevel()).isNotNull();
-        assertThat(serviceConfigurationReader.getQueryEngineConfiguration()).isNotNull();
-        assertThat(serviceConfigurationReader.getSystemReplicationPolicy()).isNotNull();
-        assertThat(serviceConfigurationReader.getSystemReplicationPolicy()).isNotNull();
+        assertThat(serviceConfigurationReader.getDefaultConsistencyLevel().block()).isNotNull();
+        assertThat(serviceConfigurationReader.getQueryEngineConfiguration().block()).isNotNull();
+        assertThat(serviceConfigurationReader.getSystemReplicationPolicy().block()).isNotNull();
+        assertThat(serviceConfigurationReader.getSystemReplicationPolicy().block()).isNotNull();
     }
 
     @Test(groups = "simple")
@@ -67,36 +67,36 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         DatabaseAccountManagerInternal databaseAccountManagerInternal = Mockito.mock(DatabaseAccountManagerInternal.class);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson1)));
         GlobalEndpointManager globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
-        setBackgroundRefreshLocationTimeIntervalInMS(globalEndpointManager, 1000);
+        ReflectionUtils.setBackgroundRefreshLocationTimeIntervalInMS(globalEndpointManager, 1000);
         globalEndpointManager.init();
 
         GatewayServiceConfigurationReader configurationReader = new GatewayServiceConfigurationReader(new URI(TestConfigurations.HOST), globalEndpointManager);
-        assertThat(configurationReader.getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
-        assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();
-        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
-        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(configurationReader.getDefaultConsistencyLevel().block()).isEqualTo(ConsistencyLevel.SESSION);
+        assertThat((boolean) configurationReader.getQueryEngineConfiguration().block().get("enableSpatialIndexing")).isTrue();
+        assertThat(configurationReader.getSystemReplicationPolicy().block().getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(configurationReader.getSystemReplicationPolicy().block().getMaxReplicaSetSize()).isEqualTo(4);
 
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson2)));
         Thread.sleep(2000);
-        assertThat(configurationReader.getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.EVENTUAL);
-        assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isFalse();
-        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(5);
-        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(5);
+        assertThat(configurationReader.getDefaultConsistencyLevel().block()).isEqualTo(ConsistencyLevel.EVENTUAL);
+        assertThat((boolean) configurationReader.getQueryEngineConfiguration().block().get("enableSpatialIndexing")).isFalse();
+        assertThat(configurationReader.getSystemReplicationPolicy().block().getMaxReplicaSetSize()).isEqualTo(5);
+        assertThat(configurationReader.getSystemReplicationPolicy().block().getMaxReplicaSetSize()).isEqualTo(5);
 
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson3)));
         Thread.sleep(2000);
-        assertThat(configurationReader.getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
-        assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();
-        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
-        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(configurationReader.getDefaultConsistencyLevel().block()).isEqualTo(ConsistencyLevel.SESSION);
+        assertThat((boolean) configurationReader.getQueryEngineConfiguration().block().get("enableSpatialIndexing")).isTrue();
+        assertThat(configurationReader.getSystemReplicationPolicy().block().getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(configurationReader.getSystemReplicationPolicy().block().getMaxReplicaSetSize()).isEqualTo(4);
 
         //Testing scenario of scheduled cache refresh with error
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenThrow(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.FORBIDDEN));
         Thread.sleep(2000);
-        assertThat(configurationReader.getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
-        assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();
-        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
-        assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(configurationReader.getDefaultConsistencyLevel().block()).isEqualTo(ConsistencyLevel.SESSION);
+        assertThat((boolean) configurationReader.getQueryEngineConfiguration().block().get("enableSpatialIndexing")).isTrue();
+        assertThat(configurationReader.getSystemReplicationPolicy().block().getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(configurationReader.getSystemReplicationPolicy().block().getMaxReplicaSetSize()).isEqualTo(4);
     }
 
     public static void validateSuccess(Mono<DatabaseAccount> observable) {
@@ -111,23 +111,5 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         assertThat(BridgeInternal.getQueryEngineConfiuration(databaseAccount).size() > 0).isTrue();
         assertThat(BridgeInternal.getReplicationPolicy(databaseAccount)).isNotNull();
         assertThat(BridgeInternal.getSystemReplicationPolicy(databaseAccount)).isNotNull();
-    }
-
-    private void setBackgroundRefreshLocationTimeIntervalInMS(GlobalEndpointManager globalEndPointManager, int millSec) throws Exception {
-        Field backgroundRefreshLocationTimeIntervalInMSField = GlobalEndpointManager.class.getDeclaredField("backgroundRefreshLocationTimeIntervalInMS");
-        backgroundRefreshLocationTimeIntervalInMSField.setAccessible(true);
-        backgroundRefreshLocationTimeIntervalInMSField.setInt(globalEndPointManager, millSec);
-    }
-
-    private GatewayServiceConfigurationReader getServiceConfigurationReader(RxDocumentClientImpl rxDocumentClient) throws Exception {
-        Field serviceConfigurationReaderField = RxDocumentClientImpl.class.getDeclaredField("gatewayConfigurationReader");
-        serviceConfigurationReaderField.setAccessible(true);
-        return (GatewayServiceConfigurationReader) serviceConfigurationReaderField.get(rxDocumentClient);
-    }
-
-    private GlobalEndpointManager getGlobalEndpointManager(GatewayServiceConfigurationReader serviceConfigurationReader) throws Exception {
-        Field globalEndpointManagerField = GatewayServiceConfigurationReader.class.getDeclaredField("globalEndpointManager");
-        globalEndpointManagerField.setAccessible(true);
-        return (GlobalEndpointManager) globalEndpointManagerField.get(serviceConfigurationReader);
     }
 }

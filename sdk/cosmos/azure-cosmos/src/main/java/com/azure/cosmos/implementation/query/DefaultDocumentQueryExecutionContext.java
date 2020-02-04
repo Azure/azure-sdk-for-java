@@ -105,7 +105,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
 
         int maxPageSize = newFeedOptions.maxItemCount() != null ? newFeedOptions.maxItemCount() : Constants.Properties.DEFAULT_MAX_PAGE_SIZE;
 
-        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> this.createRequestAsync(continuationToken, pageSize);
+        BiFunction<String, Integer, Mono<RxDocumentServiceRequest>> createRequestFunc = (continuationToken, pageSize) -> this.createRequestAsync(continuationToken, pageSize);
 
         // TODO: clean up if we want to use single vs observable.
         Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = executeInternalAsyncFunc();
@@ -181,55 +181,55 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         // The code leaves some temporary garbage in request (in RequestContext etc.),
         // which shold be erased during retries.
 
-        RxDocumentServiceRequest request = this.createRequestAsync(continuationToken, this.feedOptions.maxItemCount());
-        if (retryPolicyInstance != null) {
-            retryPolicyInstance.onBeforeSendRequest(request);
-        }
+        return this.createRequestAsync(continuationToken, this.feedOptions.maxItemCount()).flatMap(request -> {
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
 
-        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY))
+            if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY))
                 || !request.getResourceType().isPartitioned()) {
+                return this.executeRequestAsync(request);
+            }
+
+
+            // TODO: remove this as partition key range id is not relevant
+            // TODO; has to be rx async
+            //CollectionCache collectionCache =  this.client.getCollectionCache();
+
+            // TODO: has to be rx async
+            //DocumentCollection collection =
+            //        collectionCache.resolveCollection(request);
+
+            // TODO: this code is not relevant because partition key range id should not be exposed
+            //            if (!Strings.isNullOrEmpty(super.getPartitionKeyId()))
+            //            {
+            //                request.RouteTo(new PartitionKeyRangeIdentity(collection.ResourceId, base.PartitionKeyRangeId));
+            //                return await this.ExecuteRequestAsync(request);
+            //            }
+
+            request.UseGatewayMode = true;
             return this.executeRequestAsync(request);
-        }
-
-
-        // TODO: remove this as partition key range id is not relevant
-        // TODO; has to be rx async
-        //CollectionCache collectionCache =  this.client.getCollectionCache();
-
-        // TODO: has to be rx async
-        //DocumentCollection collection =
-        //        collectionCache.resolveCollection(request);
-
-        // TODO: this code is not relevant because partition key range id should not be exposed
-        //            if (!Strings.isNullOrEmpty(super.getPartitionKeyId()))
-        //            {
-        //                request.RouteTo(new PartitionKeyRangeIdentity(collection.ResourceId, base.PartitionKeyRangeId));
-        //                return await this.ExecuteRequestAsync(request);
-        //            }
-
-        request.UseGatewayMode = true;
-        return this.executeRequestAsync(request);
+        });
     }
 
-    public RxDocumentServiceRequest createRequestAsync(String continuationToken, Integer maxPageSize) {
+    public Mono<RxDocumentServiceRequest> createRequestAsync(String continuationToken, Integer maxPageSize) {
 
-        // TODO this should be async
-        Map<String, String> requestHeaders = this.createCommonHeadersAsync(
-                this.getFeedOptions(continuationToken, maxPageSize));
+        return this.createCommonHeadersAsync(
+                this.getFeedOptions(continuationToken, maxPageSize)).map(requestHeaders -> {
+            // TODO: add support for simple continuation for single partition query
+            //requestHeaders.put(keyHttpConstants.HttpHeaders.IsContinuationExpected, isContinuationExpected.ToString())
 
-        // TODO: add support for simple continuation for single partition query
-        //requestHeaders.put(keyHttpConstants.HttpHeaders.IsContinuationExpected, isContinuationExpected.ToString())
-
-        RxDocumentServiceRequest request = this.createDocumentServiceRequest(
+            RxDocumentServiceRequest request = this.createDocumentServiceRequest(
                 requestHeaders,
                 this.query,
                 this.getPartitionKeyInternal());
 
-        if (!StringUtils.isEmpty(partitionKeyRangeIdInternal(feedOptions))) {
-            request.routeTo(new PartitionKeyRangeIdentity(partitionKeyRangeIdInternal(feedOptions)));
-        }
+            if (!StringUtils.isEmpty(partitionKeyRangeIdInternal(feedOptions))) {
+                request.routeTo(new PartitionKeyRangeIdentity(partitionKeyRangeIdInternal(feedOptions)));
+            }
 
-        return request;
+            return request;
+        });
     }
 
     private static boolean isClientSideContinuationToken(String continuationToken) {

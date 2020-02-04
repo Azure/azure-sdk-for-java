@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.Utils.ValueHolder;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -103,24 +104,24 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 correlatedActivityId);
 
         try {
-            context.initialize(partitionKeyRanges,
+            Mono<IDocumentQueryExecutionComponent<T>> monoContext = context.initialize(partitionKeyRanges,
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderBy(),
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderByExpressions(),
                     initialPageSize,
-                    feedOptions.requestContinuation());
-
-            return Flux.just(context);
+                    feedOptions.requestContinuation()).then(Mono.just(context));
+            return monoContext.flux();
         } catch (CosmosClientException dce) {
             return Flux.error(dce);
         }
     }
 
-    private void initialize(
+    private Mono<Void> initialize(
             List<PartitionKeyRange> partitionKeyRanges,
             List<SortOrder> sortOrders,
             Collection<String> orderByExpressions,
             int initialPageSize,
             String continuationToken) throws CosmosClientException {
+        Mono<Void> init;
         if (continuationToken == null) {
             // First iteration so use null continuation tokens and "true" filters
             Map<PartitionKeyRange, String> partitionKeyRangeToContinuationToken = new HashMap<PartitionKeyRange, String>();
@@ -129,7 +130,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                         null);
             }
 
-            super.initialize(collectionRid,
+            init = super.initialize(collectionRid,
                     partitionKeyRangeToContinuationToken,
                     initialPageSize,
                     new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder,
@@ -172,41 +173,46 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
             // Left
             String filterForRangesLeftOfTheTargetRange = formattedFilterInfo.getFilterForRangesLeftOfTheTargetRange();
-            this.initializeRangeWithContinuationTokenAndFilter(partitionKeyRanges,
+            init = this.initializeRangeWithContinuationTokenAndFilter(partitionKeyRanges,
                     /* startInclusive */ 0,
                     /* endExclusive */ targetIndex,
                     /* continuationToken */ null,
                     filterForRangesLeftOfTheTargetRange,
-                    initialPageSize);
-
-            // Target
-            String filterForTargetRange = formattedFilterInfo.getFilterForTargetRange();
-            this.initializeRangeWithContinuationTokenAndFilter(partitionKeyRanges,
+                    initialPageSize).then( // Target
+                this.initializeRangeWithContinuationTokenAndFilter(partitionKeyRanges,
                     /* startInclusive */ targetIndex,
                     /* endExclusive */ targetIndex + 1,
                     null,
-                    filterForTargetRange,
-                    initialPageSize);
-
-            // Right
-            String filterForRangesRightOfTheTargetRange = formattedFilterInfo.getFilterForRangesRightOfTheTargetRange();
-            this.initializeRangeWithContinuationTokenAndFilter(partitionKeyRanges,
+                    formattedFilterInfo.getFilterForTargetRange(),
+                    initialPageSize)).then(                    // Right
+                   // String filterForRangesRightOfTheTargetRange = formattedFilterInfo.getFilterForRangesRightOfTheTargetRange();
+                this.initializeRangeWithContinuationTokenAndFilter(partitionKeyRanges,
                     /* startInclusive */ targetIndex + 1,
                     /* endExclusive */ partitionKeyRanges.size(),
                     /* continuationToken */ null,
-                    filterForRangesRightOfTheTargetRange,
-                    initialPageSize);
+                    formattedFilterInfo.getFilterForRangesRightOfTheTargetRange(),
+                    initialPageSize)
+                ).doOnSuccess(aVoid -> {
+                orderByObservable = OrderByUtils.orderedMerge(resourceType,
+                    consumeComparer,
+                    tracker,
+                    documentProducers,
+                    queryMetricMap,
+                    targetRangeToOrderByContinuationTokenMap);
+            });
         }
 
-        orderByObservable = OrderByUtils.orderedMerge(resourceType,
+        return init.doOnSuccess(aVoid -> {
+            orderByObservable = OrderByUtils.orderedMerge(resourceType,
                 consumeComparer,
                 tracker,
                 documentProducers,
                 queryMetricMap,
                 targetRangeToOrderByContinuationTokenMap);
+        });
     }
 
-    private void initializeRangeWithContinuationTokenAndFilter(
+    private Mono<Void> initializeRangeWithContinuationTokenAndFilter(
             List<PartitionKeyRange> partitionKeyRanges,
             int startInclusive,
             int endExclusive,
@@ -220,7 +226,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     continuationToken);
         }
 
-        super.initialize(collectionRid,
+        return super.initialize(collectionRid,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
                 new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder,

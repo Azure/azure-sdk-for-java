@@ -155,8 +155,8 @@ class DocumentProducer<T extends Resource> {
     }
 
     public Flux<DocumentProducerFeedResponse> produceAsync() {
-        BiFunction<String, Integer, RxDocumentServiceRequest> sourcePartitionCreateRequestFunc =
-                (token, maxItemCount) -> createRequestFunc.apply(targetRange, token, maxItemCount);
+        BiFunction<String, Integer, Mono<RxDocumentServiceRequest>> sourcePartitionCreateRequestFunc =
+                (token, maxItemCount) -> Mono.just(createRequestFunc.apply(targetRange, token, maxItemCount));
         Flux<FeedResponse<T>> obs = Paginator
                 .getPaginatedQueryResultAsObservable(
                         feedOptions.requestContinuation(),

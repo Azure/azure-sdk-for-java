@@ -197,48 +197,45 @@ public class ConsistencyReader {
 
         ValueHolder<ConsistencyLevel> targetConsistencyLevel = ValueHolder.initialize(null);
         ValueHolder<Boolean> useSessionToken = ValueHolder.initialize(null);
-        ReadMode desiredReadMode;
-        try {
-            desiredReadMode = this.deduceReadMode(entity, targetConsistencyLevel, useSessionToken);
-        } catch (CosmosClientException e) {
-            return Mono.error(e);
-        }
-        int maxReplicaCount = this.getMaxReplicaSetSize(entity);
-        int readQuorumValue = maxReplicaCount - (maxReplicaCount / 2);
+        return this.deduceReadMode(entity, targetConsistencyLevel, useSessionToken).flatMap(desiredReadMode -> {
+            return this.getMaxReplicaSetSize(entity).flatMap(maxReplicaCount -> {
+                int readQuorumValue = maxReplicaCount - (maxReplicaCount / 2);
 
-        switch (desiredReadMode) {
-            case Primary:
-                return this.readPrimaryAsync(entity, useSessionToken.v);
+                switch (desiredReadMode) {
+                    case Primary:
+                        return this.readPrimaryAsync(entity, useSessionToken.v);
 
-            case Strong:
-                entity.requestContext.performLocalRefreshOnGoneException = true;
-                return this.quorumReader.readStrongAsync(entity, readQuorumValue, desiredReadMode);
+                    case Strong:
+                        entity.requestContext.performLocalRefreshOnGoneException = true;
+                        return this.quorumReader.readStrongAsync(entity, readQuorumValue, desiredReadMode);
 
-            case BoundedStaleness:
-                entity.requestContext.performLocalRefreshOnGoneException = true;
+                    case BoundedStaleness:
+                        entity.requestContext.performLocalRefreshOnGoneException = true;
 
-                // for bounded staleness, we are defaulting to read strong for local region reads.
-                // this can be done since we are always running with majority quorum w = 3 (or 2 during quorum downshift).
-                // This means that the primary will always be part of the write quorum, and
-                // therefore can be included for barrier reads.
+                        // for bounded staleness, we are defaulting to read strong for local region reads.
+                        // this can be done since we are always running with majority quorum w = 3 (or 2 during quorum downshift).
+                        // This means that the primary will always be part of the write quorum, and
+                        // therefore can be included for barrier reads.
 
-                // NOTE: this assumes that we are running with SYNC replication (i.e. majority quorum).
-                // When we run on a minority write quorum(w=2), to ensure monotonic read guarantees
-                // we always contact two secondary replicas and exclude primary.
-                // However, this model significantly reduces availability and available throughput for serving reads for bounded staleness during reconfiguration.
-                // Therefore, to ensure monotonic read guarantee from any replica set we will just use regular quorum read(R=2) since our write quorum is always majority(W=3)
-                return this.quorumReader.readStrongAsync(entity, readQuorumValue, desiredReadMode);
+                        // NOTE: this assumes that we are running with SYNC replication (i.e. majority quorum).
+                        // When we run on a minority write quorum(w=2), to ensure monotonic read guarantees
+                        // we always contact two secondary replicas and exclude primary.
+                        // However, this model significantly reduces availability and available throughput for serving reads for bounded staleness during reconfiguration.
+                        // Therefore, to ensure monotonic read guarantee from any replica set we will just use regular quorum read(R=2) since our write quorum is always majority(W=3)
+                        return this.quorumReader.readStrongAsync(entity, readQuorumValue, desiredReadMode);
 
-            case Any:
-                if (targetConsistencyLevel.v == ConsistencyLevel.SESSION) {
-                    return this.readSessionAsync(entity, desiredReadMode);
-                } else {
-                    return this.readAnyAsync(entity, desiredReadMode);
+                    case Any:
+                        if (targetConsistencyLevel.v == ConsistencyLevel.SESSION) {
+                            return this.readSessionAsync(entity, desiredReadMode);
+                        } else {
+                            return this.readAnyAsync(entity, desiredReadMode);
+                        }
+
+                    default:
+                        throw new IllegalStateException("invalid operation " + desiredReadMode);
                 }
-
-            default:
-                throw new IllegalStateException("invalid operation " + desiredReadMode);
-        }
+        });
+        });
     }
 
     private Mono<StoreResponse> readPrimaryAsync(RxDocumentServiceRequest entity,
@@ -331,55 +328,57 @@ public class ConsistencyReader {
         });
     }
 
-    ReadMode deduceReadMode(RxDocumentServiceRequest request,
+    Mono<ReadMode> deduceReadMode(RxDocumentServiceRequest request,
                             ValueHolder<ConsistencyLevel> targetConsistencyLevel,
                             ValueHolder<Boolean> useSessionToken) throws CosmosClientException {
-        targetConsistencyLevel.v = RequestHelper.GetConsistencyLevelToUse(this.serviceConfigReader, request);
-        useSessionToken.v = (targetConsistencyLevel.v == ConsistencyLevel.SESSION);
+        return RequestHelper.GetConsistencyLevelToUse(this.serviceConfigReader, request).map(consistencyLevel -> {
+            targetConsistencyLevel.v = consistencyLevel;
+            useSessionToken.v = (targetConsistencyLevel.v == ConsistencyLevel.SESSION);
 
-        if (request.getDefaultReplicaIndex() != null) {
-            // Don't use session token - this is used by internal scenarios which technically don't intend session read when they target
-            // request to specific replica.
-            useSessionToken.v = false;
-            return ReadMode.Primary;  //Let the addressResolver decides which replica to connect to.
-        }
+            if (request.getDefaultReplicaIndex() != null) {
+                // Don't use session token - this is used by internal scenarios which technically don't intend session read when they target
+                // request to specific replica.
+                useSessionToken.v = false;
+                return ReadMode.Primary;  //Let the addressResolver decides which replica to connect to.
+            }
 
-        switch (targetConsistencyLevel.v) {
-            case EVENTUAL:
-                return ReadMode.Any;
+            switch (targetConsistencyLevel.v) {
+                case EVENTUAL:
+                    return ReadMode.Any;
 
-            case CONSISTENT_PREFIX:
-                return ReadMode.Any;
+                case CONSISTENT_PREFIX:
+                    return ReadMode.Any;
 
-            case SESSION:
-                return ReadMode.Any;
+                case SESSION:
+                    return ReadMode.Any;
 
-            case BOUNDED_STALENESS:
-                return ReadMode.BoundedStaleness;
+                case BOUNDED_STALENESS:
+                    return ReadMode.BoundedStaleness;
 
-            case STRONG:
-                return ReadMode.Strong;
+                case STRONG:
+                    return ReadMode.Strong;
 
-            default:
-                throw new IllegalStateException("INVALID Consistency Level " + targetConsistencyLevel.v);
+                default:
+                    throw new IllegalStateException("INVALID Consistency Level " + targetConsistencyLevel.v);
+            }
+        });
+    }
+
+    public Mono<Integer> getMaxReplicaSetSize(RxDocumentServiceRequest entity) {
+        boolean isMasterResource = ReplicatedResourceClient.isReadingFromMaster(entity.getResourceType(), entity.getOperationType());
+        if (isMasterResource) {
+            return this.serviceConfigReader.getSystemReplicationPolicy().map(replicationPolicy -> replicationPolicy.getMaxReplicaSetSize());
+        } else {
+            return this.serviceConfigReader.getUserReplicationPolicy().map(replicationPolicy -> replicationPolicy.getMaxReplicaSetSize());
         }
     }
 
-    public int getMaxReplicaSetSize(RxDocumentServiceRequest entity) {
+    public Mono<Integer> getMinReplicaSetSize(RxDocumentServiceRequest entity) {
         boolean isMasterResource = ReplicatedResourceClient.isReadingFromMaster(entity.getResourceType(), entity.getOperationType());
         if (isMasterResource) {
-            return this.serviceConfigReader.getSystemReplicationPolicy().getMaxReplicaSetSize();
+            return this.serviceConfigReader.getSystemReplicationPolicy().map(replicationPolicy -> replicationPolicy.getMinReplicaSetSize());
         } else {
-            return this.serviceConfigReader.getUserReplicationPolicy().getMaxReplicaSetSize();
-        }
-    }
-
-    public int getMinReplicaSetSize(RxDocumentServiceRequest entity) {
-        boolean isMasterResource = ReplicatedResourceClient.isReadingFromMaster(entity.getResourceType(), entity.getOperationType());
-        if (isMasterResource) {
-            return this.serviceConfigReader.getSystemReplicationPolicy().getMinReplicaSetSize();
-        } else {
-            return this.serviceConfigReader.getUserReplicationPolicy().getMinReplicaSetSize();
+            return this.serviceConfigReader.getUserReplicationPolicy().map(replicationPolicy -> replicationPolicy.getMinReplicaSetSize());
         }
     }
 

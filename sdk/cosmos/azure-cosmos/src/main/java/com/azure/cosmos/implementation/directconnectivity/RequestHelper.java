@@ -11,27 +11,29 @@ import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import org.apache.commons.lang3.EnumUtils;
+import reactor.core.publisher.Mono;
 
 public class RequestHelper {
-    public static ConsistencyLevel GetConsistencyLevelToUse(GatewayServiceConfigurationReader serviceConfigReader,
-                                                            RxDocumentServiceRequest request) throws CosmosClientException {
-        ConsistencyLevel consistencyLevelToUse = serviceConfigReader.getDefaultConsistencyLevel();
+    public static Mono<ConsistencyLevel> GetConsistencyLevelToUse(GatewayServiceConfigurationReader serviceConfigReader,
+                                                                  RxDocumentServiceRequest request) throws CosmosClientException {
+        return serviceConfigReader.getDefaultConsistencyLevel().map(consistencyLevelToUse -> {
 
-        String requestConsistencyLevelHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+            String requestConsistencyLevelHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
 
-        if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
-            ConsistencyLevel requestConsistencyLevel = EnumUtils.getEnum(ConsistencyLevel.class, Strings.fromCamelCaseToUpperCase(requestConsistencyLevelHeaderValue));
-            if (requestConsistencyLevel == null) {
-                throw new BadRequestException(
+            if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
+                ConsistencyLevel requestConsistencyLevel = EnumUtils.getEnum(ConsistencyLevel.class, Strings.fromCamelCaseToUpperCase(requestConsistencyLevelHeaderValue));
+                if (requestConsistencyLevel == null) {
+                    throw new BadRequestException(
                         String.format(
-                                RMResources.InvalidHeaderValue,
-                                requestConsistencyLevelHeaderValue,
-                                HttpConstants.HttpHeaders.CONSISTENCY_LEVEL));
+                            RMResources.InvalidHeaderValue,
+                            requestConsistencyLevelHeaderValue,
+                            HttpConstants.HttpHeaders.CONSISTENCY_LEVEL));
+                }
+
+                consistencyLevelToUse = requestConsistencyLevel;
             }
 
-            consistencyLevelToUse = requestConsistencyLevel;
-        }
-
-        return consistencyLevelToUse;
+            return consistencyLevelToUse;
+        });
     }
 }

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -18,7 +19,7 @@ import java.util.function.Function;
 class Fetcher<T extends Resource> {
     private final static Logger logger = LoggerFactory.getLogger(Fetcher.class);
 
-    private final BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc;
+    private final BiFunction<String, Integer, Mono<RxDocumentServiceRequest>> createRequestFunc;
     private final Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc;
     private final boolean isChangeFeed;
 
@@ -27,7 +28,7 @@ class Fetcher<T extends Resource> {
     private volatile int top;
     private volatile String continuationToken;
 
-    public Fetcher(BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
+    public Fetcher(BiFunction<String, Integer, Mono<RxDocumentServiceRequest>> createRequestFunc,
                    Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc,
                    String continuationToken,
                    boolean isChangeFeed,
@@ -54,8 +55,7 @@ class Fetcher<T extends Resource> {
     }
 
     public Flux<FeedResponse<T>> nextPage() {
-        RxDocumentServiceRequest request = createRequest();
-        return nextPage(request);
+        return createRequest().flux().flatMap(request -> nextPage(request));
     }
 
     private void updateState(FeedResponse<T> response) {
@@ -82,7 +82,7 @@ class Fetcher<T extends Resource> {
                         isChangeFeed, continuationToken, maxItemCount, shouldFetchMore);
     }
 
-    private RxDocumentServiceRequest createRequest() {
+    private Mono<RxDocumentServiceRequest> createRequest() {
         if (!shouldFetchMore) {
             // this should never happen
             logger.error("invalid state, trying to fetch more after completion");

@@ -10,6 +10,7 @@ import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +72,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         this.options = getChangeFeedOptions(changeFeedOptions, initialNextIfNoneMatch);
     }
 
-    private RxDocumentServiceRequest createDocumentServiceRequest(String continuationToken, int pageSize) {
+    private Mono<RxDocumentServiceRequest> createDocumentServiceRequest(String continuationToken, int pageSize) {
         Map<String, String> headers = new HashMap<>();
 
         if (options.getMaxItemCount() != null) {
@@ -106,7 +107,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
             req.routeTo(new PartitionKeyRangeIdentity(partitionKeyRangeIdInternal(this.options)));
         }
 
-        return req;
+        return Mono.just(req);
     }
 
     private ChangeFeedOptions getChangeFeedOptions(ChangeFeedOptions options, String continuationToken) {
@@ -117,7 +118,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
     public Flux<FeedResponse<T>> executeAsync() {
 
-        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = this::createDocumentServiceRequest;
+        BiFunction<String, Integer, Mono<RxDocumentServiceRequest>> createRequestFunc = this::createDocumentServiceRequest;
 
         Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = this::executeRequestAsync;
 

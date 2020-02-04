@@ -80,7 +80,7 @@ public class ConsistencyReaderTest {
         ValueHolder<ConsistencyLevel> consistencyLevel = ValueHolder.initialize(null);
         ValueHolder<Boolean> useSession = ValueHolder.initialize(null);
 
-        ReadMode readMode = consistencyReader.deduceReadMode(request, consistencyLevel, useSession);
+        ReadMode readMode = consistencyReader.deduceReadMode(request, consistencyLevel, useSession).block();
 
         assertThat(readMode).isEqualTo(expectedReadMode);
         assertThat(consistencyLevel.v).isEqualTo(expectedConsistencyToUse);
@@ -130,8 +130,8 @@ public class ConsistencyReaderTest {
                     OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         }
 
-        assertThat(consistencyReader.getMaxReplicaSetSize(request)).isEqualTo(isReadingFromMasterOperation? systemMaxReplicaCount : userMaxReplicaCount);
-        assertThat(consistencyReader.getMinReplicaSetSize(request)).isEqualTo(isReadingFromMasterOperation? systemMinReplicaCount : userMinReplicaCount);
+        assertThat(consistencyReader.getMaxReplicaSetSize(request).block()).isEqualTo(isReadingFromMasterOperation? systemMaxReplicaCount : userMaxReplicaCount);
+        assertThat(consistencyReader.getMinReplicaSetSize(request).block()).isEqualTo(isReadingFromMasterOperation? systemMinReplicaCount : userMinReplicaCount);
     }
 
     @Test(groups = "unit")
@@ -679,6 +679,7 @@ public class ConsistencyReaderTest {
 
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(Mono.just(ConsistencyLevel.SESSION)).when(serviceConfigurator).getDefaultConsistencyLevel();
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 

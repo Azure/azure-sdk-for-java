@@ -47,8 +47,8 @@ public class GatewayServiceConfiguratorReaderMock {
                                                 ConsistencyLevel defaultConsistencyLevel) {
         this.gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
 
-        Mockito.doReturn(defaultConsistencyLevel).when(this.gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
-        Mockito.doReturn(systemReplicationPolicy).when(this.gatewayServiceConfigurationReader).getSystemReplicationPolicy();
-        Mockito.doReturn(userReplicationPolicy).when(this.gatewayServiceConfigurationReader).getUserReplicationPolicy();
+        Mockito.doReturn(Mono.just(defaultConsistencyLevel)).when(this.gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
+        Mockito.doReturn(Mono.just(systemReplicationPolicy)).when(this.gatewayServiceConfigurationReader).getSystemReplicationPolicy();
+        Mockito.doReturn(Mono.just(userReplicationPolicy)).when(this.gatewayServiceConfigurationReader).getUserReplicationPolicy();
     }
 }

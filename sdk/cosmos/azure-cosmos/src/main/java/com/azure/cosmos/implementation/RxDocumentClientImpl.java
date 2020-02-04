@@ -1319,7 +1319,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public ConsistencyLevel getDefaultConsistencyLevelAsync() {
+            public Mono<ConsistencyLevel> getDefaultConsistencyLevelAsync() {
                 return RxDocumentClientImpl.this.gatewayConfigurationReader.getDefaultConsistencyLevel();
             }
 
@@ -2557,7 +2557,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final FeedOptions finalFeedOptions = options;
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setPartitionKey(options.partitionKey());
-        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
+        BiFunction<String, Integer, Mono<RxDocumentServiceRequest>> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
                 requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
@@ -2565,7 +2565,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.ReadFeed,
                     resourceType, resourceLink, requestHeaders, finalFeedOptions);
-            return request;
+            return Mono.just(request);
         };
 
         Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = request -> {
@@ -2588,7 +2588,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         int maxPageSize = options.maxItemCount() != null ? options.maxItemCount() : -1;
         final FeedOptions finalFeedOptions = options;
-        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
+        BiFunction<String, Integer, Mono<RxDocumentServiceRequest>> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
                 requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
@@ -2596,7 +2596,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(OperationType.ReadFeed,
                     resourceType, resourceLink, requestHeaders, finalFeedOptions);
-            return request;
+            return Mono.just(request);
         };
 
         Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = request -> {

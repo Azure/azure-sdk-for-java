@@ -50,23 +50,19 @@ public class GatewayServiceConfigurationReader {
         this.globalEndpointManager.getDatabaseAccountFromCache(this.serviceEndpoint).block();
     }
 
-    public ReplicationPolicy getUserReplicationPolicy() {
-        DatabaseAccount databaseAccount = this.globalEndpointManager.getDatabaseAccountFromCache(this.serviceEndpoint).block();
-        return BridgeInternal.getReplicationPolicy(databaseAccount);
+    public Mono<ReplicationPolicy> getUserReplicationPolicy() {
+        return this.globalEndpointManager.getDatabaseAccountFromCache(this.serviceEndpoint).map(databaseAccount -> BridgeInternal.getReplicationPolicy(databaseAccount));
     }
 
-    public ReplicationPolicy getSystemReplicationPolicy() {
-        DatabaseAccount databaseAccount = this.globalEndpointManager.getDatabaseAccountFromCache(this.serviceEndpoint).block();
-        return BridgeInternal.getSystemReplicationPolicy(databaseAccount);
+    public Mono<ReplicationPolicy> getSystemReplicationPolicy() {
+        return this.globalEndpointManager.getDatabaseAccountFromCache(this.serviceEndpoint).map(databaseAccount -> BridgeInternal.getSystemReplicationPolicy(databaseAccount));
     }
 
-    public ConsistencyLevel getDefaultConsistencyLevel() {
-        DatabaseAccount databaseAccount = this.globalEndpointManager.getDatabaseAccountFromCache(this.serviceEndpoint).block();
-        return BridgeInternal.getConsistencyPolicy(databaseAccount).getDefaultConsistencyLevel();
+    public Mono<ConsistencyLevel> getDefaultConsistencyLevel() {
+        return this.globalEndpointManager.getDatabaseAccountFromCache(this.serviceEndpoint).map(databaseAccount -> BridgeInternal.getConsistencyPolicy(databaseAccount).getDefaultConsistencyLevel());
     }
 
-    public Map<String, Object> getQueryEngineConfiguration() {
-        DatabaseAccount databaseAccount = this.globalEndpointManager.getDatabaseAccountFromCache(this.serviceEndpoint).block();
-        return BridgeInternal.getQueryEngineConfiuration(databaseAccount);
+    public Mono<Map<String, Object>> getQueryEngineConfiguration() {
+        return this.globalEndpointManager.getDatabaseAccountFromCache(this.serviceEndpoint).map(databaseAccount -> BridgeInternal.getQueryEngineConfiuration(databaseAccount));
     }
 }

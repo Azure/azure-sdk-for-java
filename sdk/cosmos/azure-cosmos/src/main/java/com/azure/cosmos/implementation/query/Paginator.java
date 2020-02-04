@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -23,7 +24,7 @@ public class Paginator {
     private final static Logger logger = LoggerFactory.getLogger(Paginator.class);
 
     public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedChangeFeedQueryResultAsObservable(
-            ChangeFeedOptions feedOptions, BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            ChangeFeedOptions feedOptions, BiFunction<String, Integer, Mono<RxDocumentServiceRequest>> createRequestFunc,
             Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int maxPageSize) {
         return getPaginatedQueryResultAsObservable(feedOptions.getRequestContinuation(), createRequestFunc, executeFunc, resourceType,
@@ -31,42 +32,42 @@ public class Paginator {
     }
 
     public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
-            FeedOptions feedOptions,
-            BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
-            int maxPageSize) {
+        FeedOptions feedOptions,
+        BiFunction<String, Integer, Mono<RxDocumentServiceRequest>> createRequestFunc,
+        Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
+        int maxPageSize) {
         return getPaginatedQueryResultAsObservable(feedOptions.requestContinuation(), createRequestFunc, executeFunc, resourceType,
-                -1, maxPageSize);
+            -1, maxPageSize);
     }
 
     public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
-            String continuationToken,
-            BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
-            int top, int maxPageSize) {
+        String continuationToken,
+        BiFunction<String, Integer, Mono<RxDocumentServiceRequest>> createRequestFunc,
+        Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
+        int top, int maxPageSize) {
         return getPaginatedQueryResultAsObservable(continuationToken, createRequestFunc, executeFunc, resourceType,
-                top, maxPageSize, false);
+            top, maxPageSize, false);
     }
 
     private static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
-            String continuationToken,
-            BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
-            int top, int maxPageSize, boolean isChangeFeed) {
+        String continuationToken,
+        BiFunction<String, Integer, Mono<RxDocumentServiceRequest>> createRequestFunc,
+        Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
+        int top, int maxPageSize, boolean isChangeFeed) {
 
         return Flux.defer(() -> {
             Flux<Flux<FeedResponse<T>>> generate = Flux.generate(() ->
                     new Fetcher<>(createRequestFunc, executeFunc, continuationToken, isChangeFeed, top, maxPageSize),
-                    (tFetcher, sink) -> {
-                        if (tFetcher.shouldFetchMore()) {
-                            Flux<FeedResponse<T>> nextPage = tFetcher.nextPage();
-                            sink.next(nextPage);
-                        } else {
-                            logger.debug("No more results");
-                            sink.complete();
-                        }
-                        return tFetcher;
-            });
+                (tFetcher, sink) -> {
+                    if (tFetcher.shouldFetchMore()) {
+                        Flux<FeedResponse<T>> nextPage = tFetcher.nextPage();
+                        sink.next(nextPage);
+                    } else {
+                        logger.debug("No more results");
+                        sink.complete();
+                    }
+                    return tFetcher;
+                });
 
             return generate.flatMapSequential(feedResponseFlux -> feedResponseFlux, 1);
         });

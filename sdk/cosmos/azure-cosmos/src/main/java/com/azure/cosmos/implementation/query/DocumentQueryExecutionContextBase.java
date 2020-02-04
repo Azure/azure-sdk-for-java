@@ -118,59 +118,62 @@ implements IDocumentQueryExecutionContext<T> {
         return this.client.executeQueryAsync(request);
     }
 
-    public Map<String, String> createCommonHeadersAsync(FeedOptions feedOptions) {
+    public Mono<Map<String, String>> createCommonHeadersAsync(FeedOptions feedOptions) {
         Map<String, String> requestHeaders = new HashMap<>();
 
-        ConsistencyLevel defaultConsistencyLevel = this.client.getDefaultConsistencyLevelAsync();
-        ConsistencyLevel desiredConsistencyLevel = this.client.getDesiredConsistencyLevelAsync();
-        if (!Strings.isNullOrEmpty(feedOptions.getSessionToken())
-                && !ReplicatedResourceClientUtils.isReadingFromMaster(this.resourceTypeEnum, OperationType.ReadFeed)) {
-            if (defaultConsistencyLevel == ConsistencyLevel.SESSION
-                    || (desiredConsistencyLevel == ConsistencyLevel.SESSION)) {
-                // Query across partitions is not supported today. Master resources (for e.g.,
-                // database)
-                // can span across partitions, whereas server resources (viz: collection,
-                // document and attachment)
-                // don't span across partitions. Hence, session token returned by one partition
-                // should not be used
-                // when quering resources from another partition.
-                // Since master resources can span across partitions, don't send session token
-                // to the backend.
-                // As master resources are sync replicated, we should always get consistent
-                // query result for master resources,
-                // irrespective of the chosen replica.
-                // For server resources, which don't span partitions, specify the session token
-                // for correct replica to be chosen for servicing the query result.
-                requestHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, feedOptions.getSessionToken());
+        return this.client.getDefaultConsistencyLevelAsync().map(defaultConsistencyLevel -> {
+                ConsistencyLevel desiredConsistencyLevel = this.client.getDesiredConsistencyLevelAsync();
+                if (!Strings.isNullOrEmpty(feedOptions.getSessionToken())
+                    && !ReplicatedResourceClientUtils.isReadingFromMaster(this.resourceTypeEnum, OperationType.ReadFeed)) {
+                    if (defaultConsistencyLevel == ConsistencyLevel.SESSION
+                        || (desiredConsistencyLevel == ConsistencyLevel.SESSION)) {
+                        // Query across partitions is not supported today. Master resources (for e.g.,
+                        // database)
+                        // can span across partitions, whereas server resources (viz: collection,
+                        // document and attachment)
+                        // don't span across partitions. Hence, session token returned by one partition
+                        // should not be used
+                        // when quering resources from another partition.
+                        // Since master resources can span across partitions, don't send session token
+                        // to the backend.
+                        // As master resources are sync replicated, we should always get consistent
+                        // query result for master resources,
+                        // irrespective of the chosen replica.
+                        // For server resources, which don't span partitions, specify the session token
+                        // for correct replica to be chosen for servicing the query result.
+                        requestHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, feedOptions.getSessionToken());
+                    }
+                }
+
+                requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, feedOptions.requestContinuation());
+                requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY, Strings.toString(true));
+
+                // Flow the pageSize only when we are not doing client eval
+                if (feedOptions.maxItemCount() != null && feedOptions.maxItemCount() > 0) {
+                    requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(feedOptions.maxItemCount()));
+                }
+
+                if (feedOptions.getMaxDegreeOfParallelism() != 0) {
+                    requestHeaders.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Strings.toString(true));
+                }
+
+                if (this.feedOptions.setResponseContinuationTokenLimitInKb() > 0) {
+                    requestHeaders.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
+                        Strings.toString(feedOptions.setResponseContinuationTokenLimitInKb()));
+                }
+
+                if (desiredConsistencyLevel != null) {
+                    requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, desiredConsistencyLevel.toString());
+                }
+
+                if(feedOptions.populateQueryMetrics()){
+                    requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.populateQueryMetrics()));
+                }
+
+                return requestHeaders;
             }
-        }
+            );
 
-        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, feedOptions.requestContinuation());
-        requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY, Strings.toString(true));
-
-        // Flow the pageSize only when we are not doing client eval
-        if (feedOptions.maxItemCount() != null && feedOptions.maxItemCount() > 0) {
-            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(feedOptions.maxItemCount()));
-        }
-
-        if (feedOptions.getMaxDegreeOfParallelism() != 0) {
-            requestHeaders.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Strings.toString(true));
-        }
-
-        if (this.feedOptions.setResponseContinuationTokenLimitInKb() > 0) {
-            requestHeaders.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
-                    Strings.toString(feedOptions.setResponseContinuationTokenLimitInKb()));
-        }
-
-        if (desiredConsistencyLevel != null) {
-            requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, desiredConsistencyLevel.toString());
-        }
-
-        if(feedOptions.populateQueryMetrics()){
-            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.populateQueryMetrics()));
-        }
-
-        return requestHeaders;
     }
 
     private void populatePartitionKeyInfo(RxDocumentServiceRequest request, PartitionKeyInternal partitionKey) {

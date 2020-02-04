@@ -77,6 +77,7 @@ public class ConsistencyWriterTest {
         sessionContainer = Mockito.mock(ISessionContainer.class);
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(Mono.just(ConsistencyLevel.SESSION)).when(serviceConfigReader).getDefaultConsistencyLevel();
 
         consistencyWriter = new ConsistencyWriter(
                 addressSelectorWrapper.addressSelector,
@@ -242,10 +243,10 @@ public class ConsistencyWriterTest {
     @Test(groups = "unit", dataProvider = "globalStrongArgProvider")
     public void isGlobalStrongRequest(ConsistencyLevel defaultConsistencyLevel, RxDocumentServiceRequest req, StoreResponse storeResponse, boolean isGlobalStrongExpected) {
         initializeConsistencyWriter(false);
-        Mockito.doReturn(defaultConsistencyLevel).when(this.serviceConfigReader).getDefaultConsistencyLevel();
+        Mockito.doReturn(Mono.just(defaultConsistencyLevel)).when(this.serviceConfigReader).getDefaultConsistencyLevel();
 
 
-        assertThat(consistencyWriter.isGlobalStrongRequest(req, storeResponse)).isEqualTo(isGlobalStrongExpected);
+        assertThat(consistencyWriter.isGlobalStrongRequest(req, storeResponse).block()).isEqualTo(isGlobalStrongExpected);
     }
 
     private void initializeConsistencyWriter(boolean useMultipleWriteLocation) {

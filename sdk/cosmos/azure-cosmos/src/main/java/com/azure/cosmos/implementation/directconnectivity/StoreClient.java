@@ -86,45 +86,45 @@ public class StoreClient implements IStoreClient {
             return Mono.error(e);
         }
 
-        storeResponse = storeResponse.doOnError(e -> {
-                try {
-                    Throwable unwrappedException = reactor.core.Exceptions.unwrap(e);
-                    CosmosClientException exception = Utils.as(unwrappedException, CosmosClientException.class);
+        storeResponse = storeResponse.onErrorResume(e -> {
+            try {
+                Throwable unwrappedException = reactor.core.Exceptions.unwrap(e);
+                CosmosClientException exception = Utils.as(unwrappedException, CosmosClientException.class);
 
-                    if (exception == null) {
-                        return;
-                    }
-
-                    exception = BridgeInternal.setCosmosResponseDiagnostics(exception, request.requestContext.cosmosResponseDiagnostics);
-
-                    handleUnsuccessfulStoreResponse(request, exception);
-                } catch (Throwable throwable) {
-                    logger.error("Unexpected failure in handling orig [{}]", e.getMessage(), e);
-                    logger.error("Unexpected failure in handling orig [{}] : new [{}]", e.getMessage(), throwable.getMessage(), throwable);
+                if (exception == null) {
+                    return Mono.empty();
                 }
+
+                exception = BridgeInternal.setCosmosResponseDiagnostics(exception, request.requestContext.cosmosResponseDiagnostics);
+                return handleUnsuccessfulStoreResponse(request, exception).then(Mono.error(e));
+            } catch (Throwable throwable) {
+                logger.error("Unexpected failure in handling orig [{}]", e.getMessage(), e);
+                logger.error("Unexpected failure in handling orig [{}] : new [{}]", e.getMessage(), throwable.getMessage(), throwable);
             }
-        );
+            return Mono.error(e);
+        });
 
         return storeResponse.flatMap(sr -> {
             try {
-                return Mono.just(this.completeResponse(sr, request));
+                return this.completeResponse(sr, request);
             } catch (Exception e) {
                 return Mono.error(e);
             }
         });
     }
 
-    private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosClientException exception) {
-        this.updateResponseHeader(request, exception.getResponseHeaders());
-        if ((!ReplicatedResourceClient.isMasterResource(request.getResourceType())) &&
+    private Mono<Void> handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosClientException exception) {
+        return this.updateResponseHeader(request, exception.getResponseHeaders()).doOnSuccess(Void -> {
+            if ((!ReplicatedResourceClient.isMasterResource(request.getResourceType())) &&
                 (Exceptions.isStatusCode(exception, HttpConstants.StatusCodes.PRECONDITION_FAILED) || Exceptions.isStatusCode(exception, HttpConstants.StatusCodes.CONFLICT) ||
-                        (Exceptions.isStatusCode(exception, HttpConstants.StatusCodes.NOTFOUND) &&
-                                !Exceptions.isSubStatusCode(exception, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)))) {
-            this.captureSessionToken(request, exception.getResponseHeaders());
-        }
+                    (Exceptions.isStatusCode(exception, HttpConstants.StatusCodes.NOTFOUND) &&
+                        !Exceptions.isSubStatusCode(exception, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)))) {
+                this.captureSessionToken(request, exception.getResponseHeaders());
+            }
+        });
     }
 
-    private RxDocumentServiceResponse completeResponse(
+    private Mono<RxDocumentServiceResponse> completeResponse(
         StoreResponse storeResponse,
         RxDocumentServiceRequest request) throws InternalServerErrorException {
         if (storeResponse.getResponseHeaderNames().length != storeResponse.getResponseHeaderValues().length) {
@@ -138,11 +138,13 @@ public class StoreClient implements IStoreClient {
 
             headers.put(name, value);
         }
-
-        this.updateResponseHeader(request, headers);
-        this.captureSessionToken(request, headers);
+//        this.captureSessionToken(request, headers);
+//        storeResponse.setCosmosResponseDiagnostics(request.requestContext.cosmosResponseDiagnostics);
+//        return Mono.just(new RxDocumentServiceResponse(storeResponse));
+        return this.updateResponseHeader(request, headers).doOnSuccess(aVoid -> {
+         this.captureSessionToken(request, headers);
         storeResponse.setCosmosResponseDiagnostics(request.requestContext.cosmosResponseDiagnostics);
-        return new RxDocumentServiceResponse(storeResponse);
+        }).then(Mono.just(new RxDocumentServiceResponse(storeResponse)));
     }
 
     private long getLSN(Map<String, String> headers) {
@@ -157,44 +159,46 @@ public class StoreClient implements IStoreClient {
         return defaultValue;
     }
 
-    private void updateResponseHeader(RxDocumentServiceRequest request, Map<String, String> headers) {
-        String requestConsistencyLevel = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+    private Mono<Void> updateResponseHeader(RxDocumentServiceRequest request, Map<String, String> headers) {
+        return this.serviceConfigurationReader.getDefaultConsistencyLevel().doOnSuccess(consistencyLevel -> {
+            String requestConsistencyLevel = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
 
-        boolean sessionConsistency =
-                this.serviceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION ||
-                        (!Strings.isNullOrEmpty(requestConsistencyLevel)
-                                && Strings.areEqualIgnoreCase(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()));
+            boolean sessionConsistency =
+                consistencyLevel == ConsistencyLevel.SESSION ||
+                    (!Strings.isNullOrEmpty(requestConsistencyLevel)
+                        && Strings.areEqualIgnoreCase(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()));
 
-        long storeLSN = this.getLSN(headers);
-        if (storeLSN == -1) {
-            return;
-        }
-
-        String partitionKeyRangeId = headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
-
-        if (Strings.isNullOrEmpty(partitionKeyRangeId)) {
-            String inputSession = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-            if (!Strings.isNullOrEmpty(inputSession)
-                    && inputSession.indexOf(ISessionToken.PARTITION_KEY_RANGE_SESSION_SEPARATOR) >= 1) {
-                partitionKeyRangeId = inputSession.substring(0,
-                        inputSession.indexOf(ISessionToken.PARTITION_KEY_RANGE_SESSION_SEPARATOR));
-            } else {
-                partitionKeyRangeId = ZERO_PARTITION_KEY_RANGE;
+            long storeLSN = this.getLSN(headers);
+            if (storeLSN == -1) {
+                return;
             }
-        }
 
-        ISessionToken sessionToken = null;
-        String sessionTokenResponseHeader = headers.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-        if (!Strings.isNullOrEmpty(sessionTokenResponseHeader)) {
-            sessionToken = SessionTokenHelper.parse(sessionTokenResponseHeader);
-        }
+            String partitionKeyRangeId = headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
 
-        if (sessionToken != null) {
-            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN,
-                        SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, sessionToken.convertToString()));
-        }
+            if (Strings.isNullOrEmpty(partitionKeyRangeId)) {
+                String inputSession = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                if (!Strings.isNullOrEmpty(inputSession)
+                    && inputSession.indexOf(ISessionToken.PARTITION_KEY_RANGE_SESSION_SEPARATOR) >= 1) {
+                    partitionKeyRangeId = inputSession.substring(0,
+                        inputSession.indexOf(ISessionToken.PARTITION_KEY_RANGE_SESSION_SEPARATOR));
+                } else {
+                    partitionKeyRangeId = ZERO_PARTITION_KEY_RANGE;
+                }
+            }
 
-        headers.remove(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
+            ISessionToken sessionToken = null;
+            String sessionTokenResponseHeader = headers.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            if (!Strings.isNullOrEmpty(sessionTokenResponseHeader)) {
+                sessionToken = SessionTokenHelper.parse(sessionTokenResponseHeader);
+            }
+
+            if (sessionToken != null) {
+                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN,
+                    SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, sessionToken.convertToString()));
+            }
+
+            headers.remove(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
+        }).then();
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> headers) {

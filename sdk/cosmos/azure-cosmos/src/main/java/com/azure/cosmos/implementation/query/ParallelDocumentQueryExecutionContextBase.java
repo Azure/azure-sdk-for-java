@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.routing.Range;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,36 +63,37 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         }
     }
 
-    protected void initialize(String collectionRid,
-            Map<PartitionKeyRange, String> partitionKeyRangeToContinuationTokenMap, int initialPageSize,
-            SqlQuerySpec querySpecForInit) {
-        this.pageSize = initialPageSize;
-        Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
+    protected Mono<Void> initialize(String collectionRid,
+                                    Map<PartitionKeyRange, String> partitionKeyRangeToContinuationTokenMap, int initialPageSize,
+                                    SqlQuerySpec querySpecForInit) {
+        return createCommonHeadersAsync(this.getFeedOptions(null, null)).doOnSuccess(commonRequestHeaders -> {
+            this.pageSize = initialPageSize;
 
-        for (PartitionKeyRange targetRange : partitionKeyRangeToContinuationTokenMap.keySet()) {
-            TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (partitionKeyRange,
-                                                                                                     continuationToken, pageSize) -> {
-                Map<String, String> headers = new HashMap<>(commonRequestHeaders);
-                headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
-                headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
-                if (feedOptions.partitionKey() != null && feedOptions.partitionKey() != PartitionKey.NONE) {
-                    headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, 
-                                BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey()).toJson());
-                }
-                return this.createDocumentServiceRequest(headers, querySpecForInit, partitionKeyRange, collectionRid);
-            };
+            for (PartitionKeyRange targetRange : partitionKeyRangeToContinuationTokenMap.keySet()) {
+                TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (partitionKeyRange,
+                                                                                                               continuationToken, pageSize) -> {
+                    Map<String, String> headers = new HashMap<>(commonRequestHeaders);
+                    headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
+                    headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
+                    if (feedOptions.partitionKey() != null && feedOptions.partitionKey() != PartitionKey.NONE) {
+                        headers.put(HttpConstants.HttpHeaders.PARTITION_KEY,
+                            BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey()).toJson());
+                    }
+                    return this.createDocumentServiceRequest(headers, querySpecForInit, partitionKeyRange, collectionRid);
+                };
 
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = (request) -> {
-                return this.executeRequestAsync(request).flux();
-            };
+                Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = (request) -> {
+                    return this.executeRequestAsync(request).flux();
+                };
 
-            DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
+                DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
                     partitionKeyRangeToContinuationTokenMap.get(targetRange), initialPageSize, feedOptions,
                     querySpecForInit, commonRequestHeaders, createRequestFunc, executeFunc,
                     () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy());
 
-            documentProducers.add(dp);
+                documentProducers.add(dp);
         }
+        }).then();
     }
 
     protected <TContinuationToken> int FindTargetRangeAndExtractContinuationTokens(

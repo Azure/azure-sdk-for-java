@@ -48,7 +48,7 @@ public class ReplicatedResourceClient {
             ISessionContainer sessionContainer,
             TransportClient transportClient,
             GatewayServiceConfigurationReader serviceConfigReader,
-            IAuthorizationTokenProvider authorizationTokenProvider, 
+            IAuthorizationTokenProvider authorizationTokenProvider,
             boolean enableReadRequestsFallback,
             boolean useMultipleWriteLocations) {
         this.configs = configs;
@@ -84,7 +84,7 @@ public class ReplicatedResourceClient {
     public static boolean isMasterResource(ResourceType resourceType) {
         return ReplicatedResourceClientUtils.isMasterResource(resourceType);
     }
-    
+
     public static boolean isGlobalStrongEnabled() {
         return true;
     }
@@ -145,13 +145,15 @@ public class ReplicatedResourceClient {
             };
         }
 
-        int retryTimeout = this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG ?
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> finalInBackoffFuncDelegate = inBackoffFuncDelegate;
+        return this.serviceConfigReader.getDefaultConsistencyLevel().flatMap(consistencyLevel -> {
+            int retryTimeout = consistencyLevel == ConsistencyLevel.STRONG ?
                 ReplicatedResourceClient.STRONG_GONE_AND_RETRY_WITH_RETRY_TIMEOUT_SECONDS :
                 ReplicatedResourceClient.GONE_AND_RETRY_WITH_TIMEOUT_IN_SECONDS;
-
-        return BackoffRetryUtility.executeAsync(funcDelegate, new GoneAndRetryWithRetryPolicy(request, retryTimeout),
-                                                inBackoffFuncDelegate, Duration.ofSeconds(
-                        ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS));
+            return BackoffRetryUtility.executeAsync(funcDelegate, new GoneAndRetryWithRetryPolicy(request, retryTimeout),
+                finalInBackoffFuncDelegate, Duration.ofSeconds(
+                    ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS));
+        });
     }
 
     private Mono<StoreResponse> invokeAsync(RxDocumentServiceRequest request, TimeoutHelper timeout,

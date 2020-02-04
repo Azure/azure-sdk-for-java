@@ -35,13 +35,13 @@ public interface IDocumentQueryClient {
 
     /**
      * TODO: this should be async returning observable
-     * @return 
+     * @return
      */
-    ConsistencyLevel getDefaultConsistencyLevelAsync();
+    Mono<ConsistencyLevel> getDefaultConsistencyLevelAsync();
 
     /**
      * TODO: this should be async returning observable
-     * @return 
+     * @return
      */
     ConsistencyLevel getDesiredConsistencyLevelAsync();
 

@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 public class ParallelDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private FeedOptions feedOptions;
-    
+
     private ParallelDocumentQueryExecutionContext(
             IDocumentQueryClient client,
             List<PartitionKeyRange> partitionKeyRanges,
@@ -85,17 +86,17 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 correlatedActivityId);
 
         try {
-            context.initialize(collectionRid,
+            Mono<IDocumentQueryExecutionComponent<T>> monoContext = context.initialize(collectionRid,
                     targetRanges,
                     initialPageSize,
-                    feedOptions.requestContinuation());
-            return Flux.just(context);
+                    feedOptions.requestContinuation()).then(Mono.just(context));
+            return monoContext.flux();
         } catch (CosmosClientException dce) {
             return Flux.error(dce);
         }
     }
 
-    private void initialize(
+    private Mono<Void> initialize(
             String collectionRid,
             List<PartitionKeyRange> targetRanges,
             int initialPageSize,
@@ -148,7 +149,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             }
         }
 
-        super.initialize(collectionRid,
+        return super.initialize(collectionRid,
                 partitionKeyRangeToContinuationTokenMap,
                 initialPageSize,
                 this.querySpec);
@@ -174,7 +175,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         private final RequestChargeTracker tracker;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
         private final FeedOptions feedOptions;
-        
+
         public EmptyPagesFilterTransformer(RequestChargeTracker tracker, FeedOptions options) {
 
             if (tracker == null) {

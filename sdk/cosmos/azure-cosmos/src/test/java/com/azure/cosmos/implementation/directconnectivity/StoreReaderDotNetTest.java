@@ -621,7 +621,7 @@ public class StoreReaderDotNetTest {
         // setup max replica set size on the config reader
         ReplicationPolicy replicationPolicy = new ReplicationPolicy();
         GatewayServiceConfigurationReader mockServiceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
-        Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);
+        Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(Mono.just(replicationPolicy));
 
         try {
             StoreClient storeClient = new StoreClient(new Configs(),mockAddressCache, sessionContainer, mockServiceConfigReader, mockAuthorizationTokenProvider, mockTransportClient, false);
@@ -686,6 +686,7 @@ public class StoreReaderDotNetTest {
         // create a real session container - we don't need session for this test anyway
         SessionContainer sessionContainer = new SessionContainer(StringUtils.EMPTY);
         GatewayServiceConfigurationReader serviceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.when(serviceConfigurationReader.getDefaultConsistencyLevel()).thenReturn(Mono.just(ConsistencyLevel.SESSION));
 
         IAuthorizationTokenProvider mockAuthorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(),Matchers.any(), Matchers.anyString(), Matchers.anyMap(),
@@ -787,7 +788,7 @@ public class StoreReaderDotNetTest {
             // setup max replica set size on the config reader
             ReplicationPolicy replicationPolicy = new ReplicationPolicy();
             GatewayServiceConfigurationReader mockServiceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
-            Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);
+            Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(Mono.just(replicationPolicy));
 
             QuorumReader reader = new QuorumReader(new Configs(),mockTransportClient, addressSelector, storeReader, mockServiceConfigReader, mockAuthorizationTokenProvider);
 
@@ -822,8 +823,8 @@ public class StoreReaderDotNetTest {
             BridgeInternal.setMaxReplicaSetSize(replicationPolicy,4);
 
             GatewayServiceConfigurationReader mockServiceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
-            Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);
-            Mockito.when(mockServiceConfigReader.getDefaultConsistencyLevel()).thenReturn(ConsistencyLevel.STRONG);
+            Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(Mono.just(replicationPolicy));
+            Mockito.when(mockServiceConfigReader.getDefaultConsistencyLevel()).thenReturn(Mono.just(ConsistencyLevel.STRONG));
 
             QuorumReader reader = new QuorumReader(new Configs(), mockTransportClient, addressSelector, storeReader, mockServiceConfigReader, mockAuthorizationTokenProvider);
             entity.requestContext.originalRequestConsistencyLevel = ConsistencyLevel.STRONG;
@@ -864,8 +865,8 @@ public class StoreReaderDotNetTest {
             BridgeInternal.setMaxReplicaSetSize(replicationPolicy,4);
 
             GatewayServiceConfigurationReader mockServiceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
-            Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);
-            Mockito.when(mockServiceConfigReader.getDefaultConsistencyLevel()).thenReturn(ConsistencyLevel.STRONG);
+            Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(Mono.just(replicationPolicy));
+            Mockito.when(mockServiceConfigReader.getDefaultConsistencyLevel()).thenReturn(Mono.just(ConsistencyLevel.STRONG));
 
             QuorumReader reader = new QuorumReader(new Configs(), mockTransportClient, addressSelector, storeReader, mockServiceConfigReader, mockAuthorizationTokenProvider);
             entity.requestContext.originalRequestConsistencyLevel = ConsistencyLevel.STRONG;

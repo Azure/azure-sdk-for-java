@@ -315,38 +315,40 @@ public class QuorumReader {
                             -1, -1, null, storeResponses), null));
                     }
 
-                    //either request overrides consistency level with strong, or request does not override and account default consistency level is strong
-                    boolean isGlobalStrongReadCandidate =
-                        (ReplicatedResourceClient.isGlobalStrongEnabled() && this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG) &&
-                            (entity.requestContext.originalRequestConsistencyLevel == null || entity.requestContext.originalRequestConsistencyLevel == ConsistencyLevel.STRONG);
+                    return this.serviceConfigReader.getDefaultConsistencyLevel().flatMap(consistencyLevel -> {
+                        //either request overrides consistency level with strong, or request does not override and account default consistency level is strong
+                        boolean isGlobalStrongReadCandidate =
+                            (ReplicatedResourceClient.isGlobalStrongEnabled() && consistencyLevel == ConsistencyLevel.STRONG) &&
+                                (entity.requestContext.originalRequestConsistencyLevel == null || entity.requestContext.originalRequestConsistencyLevel == ConsistencyLevel.STRONG);
 
-                    ValueHolder<Long> readLsn = new ValueHolder(-1);
-                    ValueHolder<Long> globalCommittedLSN = new ValueHolder(-1);
-                    ValueHolder<StoreResult> storeResult = new ValueHolder(null);
+                        ValueHolder<Long> readLsn = new ValueHolder(-1);
+                        ValueHolder<Long> globalCommittedLSN = new ValueHolder(-1);
+                        ValueHolder<StoreResult> storeResult = new ValueHolder(null);
 
-                    if (this.isQuorumMet(
-                        responseResult,
-                        readQuorum,
-                        false,
-                        isGlobalStrongReadCandidate,
-                        readLsn,
-                        globalCommittedLSN,
-                        storeResult)) {
-                        return Mono.just(Pair.of(new ReadQuorumResult(
-                            entity.requestContext.requestChargeTracker,
-                            ReadQuorumResultKind.QuorumMet,
-                            readLsn.v,
-                            globalCommittedLSN.v,
-                            storeResult.v,
-                            storeResponses), null));
-                    }
+                        if (this.isQuorumMet(
+                            responseResult,
+                            readQuorum,
+                            false,
+                            isGlobalStrongReadCandidate,
+                            readLsn,
+                            globalCommittedLSN,
+                            storeResult)) {
+                            return Mono.just(Pair.of(new ReadQuorumResult(
+                                entity.requestContext.requestChargeTracker,
+                                ReadQuorumResultKind.QuorumMet,
+                                readLsn.v,
+                                globalCommittedLSN.v,
+                                storeResult.v,
+                                storeResponses), null));
+                        }
 
-                    // at this point, if refresh were necessary, we would have refreshed it in ReadMultipleReplicaAsync
-                    // so set to false here to avoid further refrehses for this request.
-                    entity.requestContext.forceRefreshAddressCache = false;
+                        // at this point, if refresh were necessary, we would have refreshed it in ReadMultipleReplicaAsync
+                        // so set to false here to avoid further refrehses for this request.
+                        entity.requestContext.forceRefreshAddressCache = false;
 
-                    Quadruple<Long, Long, StoreResult, List<String>> state = Quadruple.with(readLsn.v, globalCommittedLSN.v, storeResult.v, storeResponses);
-                    return Mono.just(Pair.of(null, state));
+                        Quadruple<Long, Long, StoreResult, List<String>> state = Quadruple.with(readLsn.v, globalCommittedLSN.v, storeResult.v, storeResponses);
+                        return Mono.just(Pair.of(null, state));
+                    });
                 }
             );
         } else {
