@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -26,8 +25,6 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Map;
 
 import static com.azure.core.amqp.implementation.CbsAuthorizationType.SHARED_ACCESS_SIGNATURE;
