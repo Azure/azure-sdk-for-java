@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.1 (2020-01-07)
+## 1.0.1 (2020-02-11)
 
 ## 1.0.0-beta.4 (2019-12-02)
 - Artifact name changed from `preview` to `beta`.
