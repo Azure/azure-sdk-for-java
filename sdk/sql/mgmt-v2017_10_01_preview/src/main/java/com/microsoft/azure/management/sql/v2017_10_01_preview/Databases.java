@@ -19,17 +19,6 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Databases extends SupportsCreating<Database.DefinitionStages.Blank>, HasInner<DatabasesInner> {
     /**
-     * Upgrades a data warehouse.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to be upgraded.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable upgradeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName);
-
-    /**
      * Gets a list of databases in an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
@@ -61,6 +50,17 @@ public interface Databases extends SupportsCreating<Database.DefinitionStages.Bl
      * @return the observable for the request
      */
     Observable<Database> resumeAsync(String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Upgrades a data warehouse.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to be upgraded.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable upgradeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName);
 
     /**
      * Renames a database.
