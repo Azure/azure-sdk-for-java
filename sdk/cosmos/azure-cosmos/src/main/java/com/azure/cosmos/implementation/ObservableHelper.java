@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
- * 
+ *
  **/
 public class ObservableHelper {
 
@@ -28,20 +28,20 @@ public class ObservableHelper {
         }
     }
 
-    static public <T> Flux<T> inlineIfPossibleAsObs(Callable<Flux<T>> function, IRetryPolicy retryPolicy) {
+    static public <T> Mono<T> inlineIfPossibleAsObs(Callable<Mono<T>> function, IRetryPolicy retryPolicy) {
 
         if (retryPolicy == null) {
             // shortcut
-            return Flux.defer(() -> {
+            return Mono.defer(() -> {
                 try {
                     return function.call();
                 } catch (Exception e) {
-                    return Flux.error(e);
+                    return Mono.error(e);
                 }
             });
 
         } else {
-            return BackoffRetryUtility.executeRetry(() -> function.call().single(), retryPolicy).flux();
+            return BackoffRetryUtility.executeRetry(() -> function.call(), retryPolicy);
         }
     }
 }

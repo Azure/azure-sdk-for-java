@@ -16,9 +16,11 @@ import io.netty.buffer.Unpooled;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
+import sun.jvm.hotspot.utilities.UnsupportedPlatformException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -447,16 +449,26 @@ public class RxDocumentServiceRequest {
     }
 
     public static RxDocumentServiceRequest create(OperationType operation,
-                                                  ResourceType resourceType,
-                                                  String relativePath,
-                                                  Map<String, String> headers,
-                                                  Object options,
-                                                  ByteBuffer byteBuffer) {
+                                                       ResourceType resourceType,
+                                                       String relativePath,
+                                                       Map<String, String> headers,
+                                                       Object options,
+                                                       ByteBuffer byteBuffer) {
 
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         return request;
+    }
+
+    public static RxDocumentServiceRequest create(OperationType operation,
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  Map<String, String> headers,
+                                                  Object options,
+                                                  String content) {
+
+        return create(operation, resourceType, relativePath, headers, options, wrapByteBuffer(content));
     }
 
     /**
@@ -1125,6 +1137,18 @@ public class RxDocumentServiceRequest {
             return ((ChangeFeedOptions) options).getProperties();
         } else {
             return null;
+        }
+    }
+
+    private static ByteBuffer wrapByteBuffer(String content) {
+        if (content == null) {
+            return null;
+        }
+
+        try {
+            return wrapByteBuffer(Utils.getUTF8Bytes(content));
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException(e);
         }
     }
 

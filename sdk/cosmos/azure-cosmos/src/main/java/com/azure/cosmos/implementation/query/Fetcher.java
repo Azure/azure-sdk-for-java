@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -19,7 +19,7 @@ class Fetcher<T extends Resource> {
     private final static Logger logger = LoggerFactory.getLogger(Fetcher.class);
 
     private final BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc;
-    private final Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc;
+    private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final boolean isChangeFeed;
 
     private volatile boolean shouldFetchMore;
@@ -28,7 +28,7 @@ class Fetcher<T extends Resource> {
     private volatile String continuationToken;
 
     public Fetcher(BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-                   Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc,
+                   Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
                    String continuationToken,
                    boolean isChangeFeed,
                    int top,
@@ -53,7 +53,7 @@ class Fetcher<T extends Resource> {
         return shouldFetchMore;
     }
 
-    public Flux<FeedResponse<T>> nextPage() {
+    public Mono<FeedResponse<T>> nextPage() {
         RxDocumentServiceRequest request = createRequest();
         return nextPage(request);
     }
@@ -92,7 +92,7 @@ class Fetcher<T extends Resource> {
         return createRequestFunc.apply(continuationToken, maxItemCount);
     }
 
-    private Flux<FeedResponse<T>> nextPage(RxDocumentServiceRequest request) {
+    private Mono<FeedResponse<T>> nextPage(RxDocumentServiceRequest request) {
         return executeFunc.apply(request).map(rsp -> {
             updateState(rsp);
             return rsp;

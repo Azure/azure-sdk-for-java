@@ -41,7 +41,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 .withConsistencyLevel(ConsistencyLevel.SESSION).build();
 
         Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
-                                                           null, false).blockFirst().getResource();
+                                                           null, false).block().getResource();
         Thread.sleep(5000);//WaitForServerReplication
         boolean readLagging = this.validateReadSession(document);
         //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
@@ -62,7 +62,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 .withConsistencyLevel(ConsistencyLevel.SESSION).build();
 
         Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
-                                                           null, false).blockFirst().getResource();
+                                                           null, false).block().getResource();
         Thread.sleep(5000);//WaitForServerReplication
         boolean readLagging = this.validateWriteSession(document);
         //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
@@ -70,14 +70,14 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT, enabled = false)
     public void validateEventualConsistencyOnAsyncReplicationDirect() {
-        //TODO this need to complete once we implement emulator container in java, and the we can do operation 
+        //TODO this need to complete once we implement emulator container in java, and the we can do operation
         // like pause, resume, stop, recycle on it needed for this test.
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT, enabled = false)
     public void validateEventualConsistencyOnAsyncReplicationGateway() {
-        //TODO this need to complete once we implement emulator container in java, and the we can do operation 
+        //TODO this need to complete once we implement emulator container in java, and the we can do operation
         // like pause, resume, stop, recycle on it needed for this test.
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }
@@ -172,12 +172,12 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         try {
             // CREATE collection
             DocumentCollection parentResource = writeClient.createCollection(createdDatabase.getSelfLink(),
-                                                                             getCollectionDefinition(), null).blockFirst().getResource();
+                                                                             getCollectionDefinition(), null).block().getResource();
 
             // Document to lock pause/resume clients
             Document documentDefinition = getDocumentDefinition();
             documentDefinition.setId("test" + documentDefinition.getId());
-            ResourceResponse<Document> childResource = writeClient.createDocument(parentResource.getSelfLink(), documentDefinition, null, true).blockFirst();
+            ResourceResponse<Document> childResource = writeClient.createDocument(parentResource.getSelfLink(), documentDefinition, null, true).block();
             logger.info("Created {} child resource", childResource.getResource().getResourceId());
 
             String token = childResource.getSessionToken().split(":")[0] + ":" + this.createSessionToken(SessionTokenHelper.parse(childResource.getSessionToken()), 100000000).convertToString();
@@ -227,12 +227,12 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         try {
             Document lastDocument = client.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
                                                           null, true)
-                    .blockFirst()
+                    .block()
                     .getResource();
 
             Mono<Void> task1 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> client.createDocument(createdCollection.getSelfLink(), documents.get(index % documents.size()),
                                   null, true)
-                    .blockFirst());
+                    .block());
 
             Mono<Void> task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> {
                 try {

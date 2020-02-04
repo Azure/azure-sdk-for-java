@@ -131,7 +131,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         Document docDefinition = getDocumentDefinition(cnt);
         return client
-                .createDocument(collectionLink, docDefinition, null, false).blockFirst().getResource();
+                .createDocument(collectionLink, docDefinition, null, false).block().getResource();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
@@ -160,7 +160,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         TimeUnit.SECONDS.sleep(1);
 
         FeedOptions options = new FeedOptions();
-        
+
         // do the query once to ensure the collection is cached.
         client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", options)
             .then().block();

@@ -13,6 +13,7 @@ import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.TokenResolver;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -279,40 +280,40 @@ public interface AsyncDocumentClient {
      * Creates a database.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the created database.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the created database.
+     * In case of failure the {@link Mono} will error.
      *
      * @param database the database.
      * @param options  the request options.
-     * @return a {@link Flux} containing the single resource response with the created database or an error.
+     * @return a {@link Mono} containing the single resource response with the created database or an error.
      */
-    Flux<ResourceResponse<Database>> createDatabase(Database database, RequestOptions options);
+    Mono<ResourceResponse<Database>> createDatabase(Database database, RequestOptions options);
 
     /**
      * Deletes a database.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the deleted database.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the deleted database.
+     * In case of failure the {@link Mono} will error.
      *
      * @param databaseLink the database link.
      * @param options      the request options.
-     * @return a {@link Flux} containing the single resource response with the deleted database or an error.
+     * @return a {@link Mono} containing the single resource response with the deleted database or an error.
      */
-    Flux<ResourceResponse<Database>> deleteDatabase(String databaseLink, RequestOptions options);
+    Mono<ResourceResponse<Database>> deleteDatabase(String databaseLink, RequestOptions options);
 
     /**
      * Reads a database.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the read database.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the read database.
+     * In case of failure the {@link Mono} will error.
      *
      * @param databaseLink the database link.
      * @param options      the request options.
-     * @return a {@link Flux} containing the single resource response with the read database or an error.
+     * @return a {@link Mono} containing the single resource response with the read database or an error.
      */
-    Flux<ResourceResponse<Database>> readDatabase(String databaseLink, RequestOptions options);
+    Mono<ResourceResponse<Database>> readDatabase(String databaseLink, RequestOptions options);
 
     /**
      * Reads all databases.
@@ -356,55 +357,55 @@ public interface AsyncDocumentClient {
      * Creates a document collection.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the created collection.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the created collection.
+     * In case of failure the {@link Mono} will error.
      *
      * @param databaseLink the database link.
      * @param collection   the collection.
      * @param options      the request options.
-     * @return a {@link Flux} containing the single resource response with the created collection or an error.
+     * @return a {@link Mono} containing the single resource response with the created collection or an error.
      */
-    Flux<ResourceResponse<DocumentCollection>> createCollection(String databaseLink, DocumentCollection collection,
+    Mono<ResourceResponse<DocumentCollection>> createCollection(String databaseLink, DocumentCollection collection,
                                                                 RequestOptions options);
 
     /**
      * Replaces a document collection.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the replaced document collection.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced document collection.
+     * In case of failure the {@link Mono} will error.
      *
      * @param collection the document collection to use.
      * @param options    the request options.
-     * @return a {@link Flux} containing the single resource response with the replaced document collection or an error.
+     * @return a {@link Mono} containing the single resource response with the replaced document collection or an error.
      */
-    Flux<ResourceResponse<DocumentCollection>> replaceCollection(DocumentCollection collection, RequestOptions options);
+    Mono<ResourceResponse<DocumentCollection>> replaceCollection(DocumentCollection collection, RequestOptions options);
 
     /**
      * Deletes a document collection by the collection link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response for the deleted database.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted database.
+     * In case of failure the {@link Mono} will error.
      *
      * @param collectionLink the collection link.
      * @param options        the request options.
-     * @return a {@link Flux} containing the single resource response for the deleted database or an error.
+     * @return a {@link Mono} containing the single resource response for the deleted database or an error.
      */
-    Flux<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink, RequestOptions options);
+    Mono<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink, RequestOptions options);
 
     /**
      * Reads a document collection by the collection link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the read collection.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the read collection.
+     * In case of failure the {@link Mono} will error.
      *
      * @param collectionLink the collection link.
      * @param options        the request options.
-     * @return a {@link Flux} containing the single resource response with the read collection or an error.
+     * @return a {@link Mono} containing the single resource response with the read collection or an error.
      */
-    Flux<ResourceResponse<DocumentCollection>> readCollection(String collectionLink, RequestOptions options);
+    Mono<ResourceResponse<DocumentCollection>> readCollection(String collectionLink, RequestOptions options);
 
     /**
      * Reads all document collections in a database.
@@ -451,86 +452,86 @@ public interface AsyncDocumentClient {
      * Creates a document.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the created document.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the created document.
+     * In case of failure the {@link Mono} will error.
      *
      * @param collectionLink               the link to the parent document collection.
      * @param document                     the document represented as a POJO or Document object.
      * @param options                      the request options.
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
-     * @return a {@link Flux} containing the single resource response with the created document or an error.
+     * @return a {@link Mono} containing the single resource response with the created document or an error.
      */
-    Flux<ResourceResponse<Document>> createDocument(String collectionLink, Object document, RequestOptions options,
+    Mono<ResourceResponse<Document>> createDocument(String collectionLink, Object document, RequestOptions options,
                                                     boolean disableAutomaticIdGeneration);
 
     /**
      * Upserts a document.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the upserted document.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the upserted document.
+     * In case of failure the {@link Mono} will error.
      *
      * @param collectionLink               the link to the parent document collection.
      * @param document                     the document represented as a POJO or Document object to upsert.
      * @param options                      the request options.
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
-     * @return a {@link Flux} containing the single resource response with the upserted document or an error.
+     * @return a {@link Mono} containing the single resource response with the upserted document or an error.
      */
-    Flux<ResourceResponse<Document>> upsertDocument(String collectionLink, Object document, RequestOptions options,
+    Mono<ResourceResponse<Document>> upsertDocument(String collectionLink, Object document, RequestOptions options,
                                                           boolean disableAutomaticIdGeneration);
 
     /**
      * Replaces a document using a POJO object.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the replaced document.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced document.
+     * In case of failure the {@link Mono} will error.
      *
      * @param documentLink the document link.
      * @param document     the document represented as a POJO or Document object.
      * @param options      the request options.
-     * @return a {@link Flux} containing the single resource response with the replaced document or an error.
+     * @return a {@link Mono} containing the single resource response with the replaced document or an error.
      */
-    Flux<ResourceResponse<Document>> replaceDocument(String documentLink, Object document, RequestOptions options);
+    Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document, RequestOptions options);
 
     /**
      * Replaces a document with the passed in document.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the replaced document.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced document.
+     * In case of failure the {@link Mono} will error.
      *
      * @param document the document to replace (containing the document id).
      * @param options  the request options.
-     * @return a {@link Flux} containing the single resource response with the replaced document or an error.
+     * @return a {@link Mono} containing the single resource response with the replaced document or an error.
      */
-    Flux<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options);
+    Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options);
 
     /**
      * Deletes a document by the document link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response for the deleted document.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted document.
+     * In case of failure the {@link Mono} will error.
      *
      * @param documentLink the document link.
      * @param options      the request options.
-     * @return a {@link Flux} containing the single resource response for the deleted document or an error.
+     * @return a {@link Mono} containing the single resource response for the deleted document or an error.
      */
-    Flux<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options);
+    Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options);
 
     /**
      * Reads a document by the document link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the read document.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the read document.
+     * In case of failure the {@link Mono} will error.
      *
      * @param documentLink the document link.
      * @param options      the request options.
-     * @return a {@link Flux} containing the single resource response with the read document or an error.
+     * @return a {@link Mono} containing the single resource response with the read document or an error.
      */
-    Flux<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options);
+    Mono<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options);
 
     /**
      * Reads all documents in a document collection.
@@ -603,70 +604,70 @@ public interface AsyncDocumentClient {
      * Creates a stored procedure.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the created stored procedure.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the created stored procedure.
+     * In case of failure the {@link Mono} will error.
      *
      * @param collectionLink  the collection link.
      * @param storedProcedure the stored procedure to create.
      * @param options         the request options.
-     * @return a {@link Flux} containing the single resource response with the created stored procedure or an error.
+     * @return a {@link Mono} containing the single resource response with the created stored procedure or an error.
      */
-    Flux<ResourceResponse<StoredProcedure>> createStoredProcedure(String collectionLink, StoredProcedure storedProcedure,
+    Mono<ResourceResponse<StoredProcedure>> createStoredProcedure(String collectionLink, StoredProcedure storedProcedure,
                                                                   RequestOptions options);
 
     /**
      * Upserts a stored procedure.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the upserted stored procedure.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the upserted stored procedure.
+     * In case of failure the {@link Mono} will error.
      *
      * @param collectionLink  the collection link.
      * @param storedProcedure the stored procedure to upsert.
      * @param options         the request options.
-     * @return a {@link Flux} containing the single resource response with the upserted stored procedure or an error.
+     * @return a {@link Mono} containing the single resource response with the upserted stored procedure or an error.
      */
-    Flux<ResourceResponse<StoredProcedure>> upsertStoredProcedure(String collectionLink, StoredProcedure storedProcedure,
+    Mono<ResourceResponse<StoredProcedure>> upsertStoredProcedure(String collectionLink, StoredProcedure storedProcedure,
                                                                         RequestOptions options);
 
     /**
      * Replaces a stored procedure.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the replaced stored procedure.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored procedure.
+     * In case of failure the {@link Mono} will error.
      *
      * @param storedProcedure the stored procedure to use.
      * @param options         the request options.
-     * @return a {@link Flux} containing the single resource response with the replaced stored procedure or an error.
+     * @return a {@link Mono} containing the single resource response with the replaced stored procedure or an error.
      */
-    Flux<ResourceResponse<StoredProcedure>> replaceStoredProcedure(StoredProcedure storedProcedure, RequestOptions options);
+    Mono<ResourceResponse<StoredProcedure>> replaceStoredProcedure(StoredProcedure storedProcedure, RequestOptions options);
 
     /**
      * Deletes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response for the deleted stored procedure.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored procedure.
+     * In case of failure the {@link Mono} will error.
      *
      * @param storedProcedureLink the stored procedure link.
      * @param options             the request options.
-     * @return a {@link Flux} containing the single resource response for the deleted stored procedure or an error.
+     * @return a {@link Mono} containing the single resource response for the deleted stored procedure or an error.
      */
-    Flux<ResourceResponse<StoredProcedure>> deleteStoredProcedure(String storedProcedureLink, RequestOptions options);
+    Mono<ResourceResponse<StoredProcedure>> deleteStoredProcedure(String storedProcedureLink, RequestOptions options);
 
     /**
      * READ a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the read stored procedure.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the read stored procedure.
+     * In case of failure the {@link Mono} will error.
      *
      * @param storedProcedureLink the stored procedure link.
      * @param options             the request options.
-     * @return a {@link Flux} containing the single resource response with the read stored procedure or an error.
+     * @return a {@link Mono} containing the single resource response with the read stored procedure or an error.
      */
-    Flux<ResourceResponse<StoredProcedure>> readStoredProcedure(String storedProcedureLink, RequestOptions options);
+    Mono<ResourceResponse<StoredProcedure>> readStoredProcedure(String storedProcedureLink, RequestOptions options);
 
     /**
      * Reads all stored procedures in a document collection link.
@@ -714,96 +715,96 @@ public interface AsyncDocumentClient {
      * Executes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the stored procedure response.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure response.
+     * In case of failure the {@link Mono} will error.
      *
      * @param storedProcedureLink the stored procedure link.
      * @param procedureParams     the array of procedure parameter values.
-     * @return a {@link Flux} containing the single resource response with the stored procedure response or an error.
+     * @return a {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
-    Flux<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, Object[] procedureParams);
+    Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, Object[] procedureParams);
 
     /**
      * Executes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the stored procedure response.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure response.
+     * In case of failure the {@link Mono} will error.
      *
      * @param storedProcedureLink the stored procedure link.
      * @param options             the request options.
      * @param procedureParams     the array of procedure parameter values.
-     * @return a {@link Flux} containing the single resource response with the stored procedure response or an error.
+     * @return a {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
-    Flux<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, RequestOptions options,
+    Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, RequestOptions options,
                                                                Object[] procedureParams);
 
     /**
      * Creates a trigger.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the created trigger.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the created trigger.
+     * In case of failure the {@link Mono} will error.
      *
      * @param collectionLink the collection link.
      * @param trigger        the trigger.
      * @param options        the request options.
-     * @return a {@link Flux} containing the single resource response with the created trigger or an error.
+     * @return a {@link Mono} containing the single resource response with the created trigger or an error.
      */
-    Flux<ResourceResponse<Trigger>> createTrigger(String collectionLink, Trigger trigger, RequestOptions options);
+    Mono<ResourceResponse<Trigger>> createTrigger(String collectionLink, Trigger trigger, RequestOptions options);
 
     /**
      * Upserts a trigger.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the upserted trigger.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the upserted trigger.
+     * In case of failure the {@link Mono} will error.
      *
      * @param collectionLink the collection link.
      * @param trigger        the trigger to upsert.
      * @param options        the request options.
-     * @return a {@link Flux} containing the single resource response with the upserted trigger or an error.
+     * @return a {@link Mono} containing the single resource response with the upserted trigger or an error.
      */
-    Flux<ResourceResponse<Trigger>> upsertTrigger(String collectionLink, Trigger trigger, RequestOptions options);
+    Mono<ResourceResponse<Trigger>> upsertTrigger(String collectionLink, Trigger trigger, RequestOptions options);
 
     /**
      * Replaces a trigger.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the replaced trigger.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced trigger.
+     * In case of failure the {@link Mono} will error.
      *
      * @param trigger the trigger to use.
      * @param options the request options.
-     * @return a {@link Flux} containing the single resource response with the replaced trigger or an error.
+     * @return a {@link Mono} containing the single resource response with the replaced trigger or an error.
      */
-    Flux<ResourceResponse<Trigger>> replaceTrigger(Trigger trigger, RequestOptions options);
+    Mono<ResourceResponse<Trigger>> replaceTrigger(Trigger trigger, RequestOptions options);
 
     /**
      * Deletes a trigger.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response for the deleted trigger.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted trigger.
+     * In case of failure the {@link Mono} will error.
      *
      * @param triggerLink the trigger link.
      * @param options     the request options.
-     * @return a {@link Flux} containing the single resource response for the deleted trigger or an error.
+     * @return a {@link Mono} containing the single resource response for the deleted trigger or an error.
      */
-    Flux<ResourceResponse<Trigger>> deleteTrigger(String triggerLink, RequestOptions options);
+    Mono<ResourceResponse<Trigger>> deleteTrigger(String triggerLink, RequestOptions options);
 
     /**
      * Reads a trigger by the trigger link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response for the read trigger.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response for the read trigger.
+     * In case of failure the {@link Mono} will error.
      *
      * @param triggerLink the trigger link.
      * @param options     the request options.
-     * @return a {@link Flux} containing the single resource response for the read trigger or an error.
+     * @return a {@link Mono} containing the single resource response for the read trigger or an error.
      */
-    Flux<ResourceResponse<Trigger>> readTrigger(String triggerLink, RequestOptions options);
+    Mono<ResourceResponse<Trigger>> readTrigger(String triggerLink, RequestOptions options);
 
     /**
      * Reads all triggers in a document collection.
@@ -850,70 +851,70 @@ public interface AsyncDocumentClient {
      * Creates a user defined function.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the created user defined function.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the created user defined function.
+     * In case of failure the {@link Mono} will error.
      *
      * @param collectionLink the collection link.
      * @param udf            the user defined function.
      * @param options        the request options.
-     * @return a {@link Flux} containing the single resource response with the created user defined function or an error.
+     * @return a {@link Mono} containing the single resource response with the created user defined function or an error.
      */
-    Flux<ResourceResponse<UserDefinedFunction>> createUserDefinedFunction(String collectionLink, UserDefinedFunction udf,
+    Mono<ResourceResponse<UserDefinedFunction>> createUserDefinedFunction(String collectionLink, UserDefinedFunction udf,
                                                                           RequestOptions options);
 
     /**
      * Upserts a user defined function.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the upserted user defined function.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the upserted user defined function.
+     * In case of failure the {@link Mono} will error.
      *
      * @param collectionLink the collection link.
      * @param udf            the user defined function to upsert.
      * @param options        the request options.
-     * @return a {@link Flux} containing the single resource response with the upserted user defined function or an error.
+     * @return a {@link Mono} containing the single resource response with the upserted user defined function or an error.
      */
-    Flux<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunction(String collectionLink, UserDefinedFunction udf,
+    Mono<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunction(String collectionLink, UserDefinedFunction udf,
                                                                                 RequestOptions options);
 
     /**
      * Replaces a user defined function.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the replaced user defined function.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced user defined function.
+     * In case of failure the {@link Mono} will error.
      *
      * @param udf     the user defined function.
      * @param options the request options.
-     * @return a {@link Flux} containing the single resource response with the replaced user defined function or an error.
+     * @return a {@link Mono} containing the single resource response with the replaced user defined function or an error.
      */
-    Flux<ResourceResponse<UserDefinedFunction>> replaceUserDefinedFunction(UserDefinedFunction udf, RequestOptions options);
+    Mono<ResourceResponse<UserDefinedFunction>> replaceUserDefinedFunction(UserDefinedFunction udf, RequestOptions options);
 
     /**
      * Deletes a user defined function.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response for the deleted user defined function.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted user defined function.
+     * In case of failure the {@link Mono} will error.
      *
      * @param udfLink the user defined function link.
      * @param options the request options.
-     * @return a {@link Flux} containing the single resource response for the deleted user defined function or an error.
+     * @return a {@link Mono} containing the single resource response for the deleted user defined function or an error.
      */
-    Flux<ResourceResponse<UserDefinedFunction>> deleteUserDefinedFunction(String udfLink, RequestOptions options);
+    Mono<ResourceResponse<UserDefinedFunction>> deleteUserDefinedFunction(String udfLink, RequestOptions options);
 
     /**
      * READ a user defined function.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response for the read user defined function.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response for the read user defined function.
+     * In case of failure the {@link Mono} will error.
      *
      * @param udfLink the user defined function link.
      * @param options the request options.
-     * @return a {@link Flux} containing the single resource response for the read user defined function or an error.
+     * @return a {@link Mono} containing the single resource response for the read user defined function or an error.
      */
-    Flux<ResourceResponse<UserDefinedFunction>> readUserDefinedFunction(String udfLink, RequestOptions options);
+    Mono<ResourceResponse<UserDefinedFunction>> readUserDefinedFunction(String udfLink, RequestOptions options);
 
     /**
      * Reads all user defined functions in a document collection.
@@ -962,14 +963,14 @@ public interface AsyncDocumentClient {
      * Reads a conflict.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the read conflict.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the read conflict.
+     * In case of failure the {@link Mono} will error.
      *
      * @param conflictLink the conflict link.
      * @param options      the request options.
-     * @return a {@link Flux} containing the single resource response with the read conflict or an error.
+     * @return a {@link Mono} containing the single resource response with the read conflict or an error.
      */
-    Flux<ResourceResponse<Conflict>> readConflict(String conflictLink, RequestOptions options);
+    Mono<ResourceResponse<Conflict>> readConflict(String conflictLink, RequestOptions options);
 
     /**
      * Reads all conflicts in a document collection.
@@ -1016,81 +1017,81 @@ public interface AsyncDocumentClient {
      * Deletes a conflict.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response for the deleted conflict.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted conflict.
+     * In case of failure the {@link Mono} will error.
      *
      * @param conflictLink the conflict link.
      * @param options      the request options.
-     * @return a {@link Flux} containing the single resource response for the deleted conflict or an error.
+     * @return a {@link Mono} containing the single resource response for the deleted conflict or an error.
      */
-    Flux<ResourceResponse<Conflict>> deleteConflict(String conflictLink, RequestOptions options);
+    Mono<ResourceResponse<Conflict>> deleteConflict(String conflictLink, RequestOptions options);
 
     /**
      * Creates a user.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the created user.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the created user.
+     * In case of failure the {@link Mono} will error.
      *
      * @param databaseLink the database link.
      * @param user         the user to create.
      * @param options      the request options.
-     * @return a {@link Flux} containing the single resource response with the created user or an error.
+     * @return a {@link Mono} containing the single resource response with the created user or an error.
      */
-    Flux<ResourceResponse<User>> createUser(String databaseLink, User user, RequestOptions options);
+    Mono<ResourceResponse<User>> createUser(String databaseLink, User user, RequestOptions options);
 
     /**
      * Upserts a user.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the upserted user.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the upserted user.
+     * In case of failure the {@link Mono} will error.
      *
      * @param databaseLink the database link.
      * @param user         the user to upsert.
      * @param options      the request options.
-     * @return a {@link Flux} containing the single resource response with the upserted user or an error.
+     * @return a {@link Mono} containing the single resource response with the upserted user or an error.
      */
-    Flux<ResourceResponse<User>> upsertUser(String databaseLink, User user, RequestOptions options);
+    Mono<ResourceResponse<User>> upsertUser(String databaseLink, User user, RequestOptions options);
 
     /**
      * Replaces a user.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the replaced user.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced user.
+     * In case of failure the {@link Mono} will error.
      *
      * @param user    the user to use.
      * @param options the request options.
-     * @return a {@link Flux} containing the single resource response with the replaced user or an error.
+     * @return a {@link Mono} containing the single resource response with the replaced user or an error.
      */
-    Flux<ResourceResponse<User>> replaceUser(User user, RequestOptions options);
+    Mono<ResourceResponse<User>> replaceUser(User user, RequestOptions options);
 
     /**
      * Deletes a user.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response for the deleted user.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted user.
+     * In case of failure the {@link Mono} will error.
      *
      * @param userLink the user link.
      * @param options  the request options.
-     * @return a {@link Flux} containing the single resource response for the deleted user or an error.
+     * @return a {@link Mono} containing the single resource response for the deleted user or an error.
      */
-    Flux<ResourceResponse<User>> deleteUser(String userLink, RequestOptions options);
+    Mono<ResourceResponse<User>> deleteUser(String userLink, RequestOptions options);
 
     /**
      * Reads a user.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the read user.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the read user.
+     * In case of failure the {@link Mono} will error.
      *
      * @param userLink the user link.
      * @param options  the request options.
-     * @return a {@link Flux} containing the single resource response with the read user or an error.
+     * @return a {@link Mono} containing the single resource response with the read user or an error.
      */
-    Flux<ResourceResponse<User>> readUser(String userLink, RequestOptions options);
+    Mono<ResourceResponse<User>> readUser(String userLink, RequestOptions options);
 
     /**
      * Reads all users in a database.
@@ -1137,68 +1138,68 @@ public interface AsyncDocumentClient {
      * Creates a permission.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the created permission.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the created permission.
+     * In case of failure the {@link Mono} will error.
      *
      * @param userLink   the user link.
      * @param permission the permission to create.
      * @param options    the request options.
-     * @return a {@link Flux} containing the single resource response with the created permission or an error.
+     * @return a {@link Mono} containing the single resource response with the created permission or an error.
      */
-    Flux<ResourceResponse<Permission>> createPermission(String userLink, Permission permission, RequestOptions options);
+    Mono<ResourceResponse<Permission>> createPermission(String userLink, Permission permission, RequestOptions options);
 
     /**
      * Upserts a permission.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the upserted permission.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the upserted permission.
+     * In case of failure the {@link Mono} will error.
      *
      * @param userLink   the user link.
      * @param permission the permission to upsert.
      * @param options    the request options.
-     * @return a {@link Flux} containing the single resource response with the upserted permission or an error.
+     * @return a {@link Mono} containing the single resource response with the upserted permission or an error.
      */
-    Flux<ResourceResponse<Permission>> upsertPermission(String userLink, Permission permission, RequestOptions options);
+    Mono<ResourceResponse<Permission>> upsertPermission(String userLink, Permission permission, RequestOptions options);
 
     /**
      * Replaces a permission.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the replaced permission.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced permission.
+     * In case of failure the {@link Mono} will error.
      *
      * @param permission the permission to use.
      * @param options    the request options.
-     * @return a {@link Flux} containing the single resource response with the replaced permission or an error.
+     * @return a {@link Mono} containing the single resource response with the replaced permission or an error.
      */
-    Flux<ResourceResponse<Permission>> replacePermission(Permission permission, RequestOptions options);
+    Mono<ResourceResponse<Permission>> replacePermission(Permission permission, RequestOptions options);
 
     /**
      * Deletes a permission.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response for the deleted permission.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted permission.
+     * In case of failure the {@link Mono} will error.
      *
      * @param permissionLink the permission link.
      * @param options        the request options.
-     * @return a {@link Flux} containing the single resource response for the deleted permission or an error.
+     * @return a {@link Mono} containing the single resource response for the deleted permission or an error.
      */
-    Flux<ResourceResponse<Permission>> deletePermission(String permissionLink, RequestOptions options);
+    Mono<ResourceResponse<Permission>> deletePermission(String permissionLink, RequestOptions options);
 
     /**
      * Reads a permission.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the read permission.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the read permission.
+     * In case of failure the {@link Mono} will error.
      *
      * @param permissionLink the permission link.
      * @param options        the request options.
-     * @return a {@link Flux} containing the single resource response with the read permission or an error.
+     * @return a {@link Mono} containing the single resource response with the read permission or an error.
      */
-    Flux<ResourceResponse<Permission>> readPermission(String permissionLink, RequestOptions options);
+    Mono<ResourceResponse<Permission>> readPermission(String permissionLink, RequestOptions options);
 
     /**
      * Reads all permissions.
@@ -1245,25 +1246,25 @@ public interface AsyncDocumentClient {
      * Replaces an offer.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the replaced offer.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced offer.
+     * In case of failure the {@link Mono} will error.
      *
      * @param offer the offer to use.
-     * @return a {@link Flux} containing the single resource response with the replaced offer or an error.
+     * @return a {@link Mono} containing the single resource response with the replaced offer or an error.
      */
-    Flux<ResourceResponse<Offer>> replaceOffer(Offer offer);
+    Mono<ResourceResponse<Offer>> replaceOffer(Offer offer);
 
     /**
      * Reads an offer.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the read offer.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the read offer.
+     * In case of failure the {@link Mono} will error.
      *
      * @param offerLink the offer link.
-     * @return a {@link Flux} containing the single resource response with the read offer or an error.
+     * @return a {@link Mono} containing the single resource response with the read offer or an error.
      */
-    Flux<ResourceResponse<Offer>> readOffer(String offerLink);
+    Mono<ResourceResponse<Offer>> readOffer(String offerLink);
 
     /**
      * Reads offers.
@@ -1307,12 +1308,12 @@ public interface AsyncDocumentClient {
      * Gets database account information.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} upon successful completion will contain a single resource response with the database account.
-     * In case of failure the {@link Flux} will error.
+     * The {@link Mono} upon successful completion will contain a single resource response with the database account.
+     * In case of failure the {@link Mono} will error.
      *
-     * @return a {@link Flux} containing the single resource response with the database account or an error.
+     * @return a {@link Mono} containing the single resource response with the database account or an error.
      */
-    Flux<DatabaseAccount> getDatabaseAccount();
+    Mono<DatabaseAccount> getDatabaseAccount();
 
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.
