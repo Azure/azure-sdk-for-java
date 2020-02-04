@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
