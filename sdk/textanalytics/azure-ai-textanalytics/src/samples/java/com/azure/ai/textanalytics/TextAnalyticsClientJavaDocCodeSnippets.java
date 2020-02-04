@@ -211,7 +211,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#String
         final RecognizeEntitiesResult recognizeEntitiesResult =
             textAnalyticsClient.recognizeEntities("Satya Nadella is the CEO of Microsoft");
-        for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+        for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
             System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
                 entity.getText(), entity.getCategory(), entity.getScore());
         }
@@ -226,7 +226,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         final RecognizeEntitiesResult recognizeEntitiesResult = textAnalyticsClient.recognizeEntitiesWithResponse(
             "Satya Nadella is the CEO of Microsoft", "en", Context.NONE).getValue();
 
-        for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+        for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
             System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
                 entity.getText(), entity.getCategory(), entity.getScore());
         }
@@ -252,7 +252,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-            for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -279,7 +279,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-            for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -306,7 +306,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-            for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -335,7 +335,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-            for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -351,7 +351,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String
         final RecognizePiiEntitiesResult recognizePiiEntitiesResult =
             textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555");
-        for (PiiEntity entity : recognizePiiEntitiesResult.getPiiEntities()) {
+        for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
             System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                 entity.getText(), entity.getCategory(), entity.getScore());
         }
@@ -367,7 +367,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             textAnalyticsClient.recognizePiiEntitiesWithResponse("My SSN is 555-55-5555", "en", Context.NONE)
                 .getValue();
 
-        for (PiiEntity entity : recognizePiiEntitiesResult.getPiiEntities()) {
+        for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
             System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                 entity.getText(), entity.getCategory(), entity.getScore());
         }
@@ -391,7 +391,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
-            for (PiiEntity entity : recognizePiiEntitiesResult.getPiiEntities()) {
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
                 System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -416,7 +416,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
-            for (PiiEntity entity : recognizePiiEntitiesResult.getPiiEntities()) {
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
                 System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -443,7 +443,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
-            for (PiiEntity entity : recognizePiiEntitiesResult.getPiiEntities()) {
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
                 System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -472,7 +472,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
-            for (PiiEntity entity : recognizePiiEntitiesResult.getPiiEntities()) {
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
                 System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }

@@ -165,7 +165,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
         RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(categorizedEntity1, categorizedEntity2));
         StepVerifier.create(client.recognizeEntities("I had a wonderful trip to Seattle last week."))
-            .assertNext(response -> validateCategorizedEntities(recognizeEntitiesResultList.getCategorizedEntities(), response.getCategorizedEntities()))
+            .assertNext(response -> validateCategorizedEntities(recognizeEntitiesResultList.getEntities(), response.getEntities()))
             .verifyComplete();
     }
 
@@ -179,7 +179,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForFaultyText() {
         StepVerifier.create(client.recognizeEntities("!@#%%"))
-            .assertNext(response -> assertEquals(response.getCategorizedEntities().size(), 0))
+            .assertNext(response -> assertEquals(response.getEntities().size(), 0))
             .verifyComplete();
     }
 
@@ -288,7 +288,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         RecognizePiiEntitiesResult recognizePiiEntitiesResultList = new RecognizePiiEntitiesResult("0", null, null, Collections.singletonList(piiEntity));
 
         StepVerifier.create(client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's."))
-            .assertNext(response -> validatePiiEntities(recognizePiiEntitiesResultList.getPiiEntities(), response.getPiiEntities()))
+            .assertNext(response -> validatePiiEntities(recognizePiiEntitiesResultList.getEntities(), response.getEntities()))
             .verifyComplete();
     }
 
@@ -302,7 +302,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizePiiEntitiesForFaultyText() {
         StepVerifier.create(client.recognizePiiEntities("!@#%%"))
-            .assertNext(response -> assertEquals(response.getPiiEntities().size(), 0))
+            .assertNext(response -> assertEquals(response.getEntities().size(), 0))
             .verifyComplete();
     }
 

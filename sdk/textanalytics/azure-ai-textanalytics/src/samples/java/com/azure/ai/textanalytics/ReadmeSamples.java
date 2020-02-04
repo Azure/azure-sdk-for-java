@@ -88,7 +88,7 @@ public class ReadmeSamples {
     public void recognizeCategorizedEntity() {
         String text = "Satya Nadella is the CEO of Microsoft";
 
-        for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text).getCategorizedEntities()) {
+        for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text).getEntities()) {
             System.out.printf(
                 "Recognized Categorized Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
                 entity.getText(),
@@ -104,7 +104,7 @@ public class ReadmeSamples {
     public void recognizePiiEntity() {
         String text = "My SSN is 555-55-5555";
 
-        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text).getPiiEntities()) {
+        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text).getEntities()) {
             System.out.printf(
                 "Recognized PII Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
                 entity.getText(),

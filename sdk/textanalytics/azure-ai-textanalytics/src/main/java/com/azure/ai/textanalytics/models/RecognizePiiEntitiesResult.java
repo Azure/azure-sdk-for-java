@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Immutable
 public final class RecognizePiiEntitiesResult extends DocumentResult {
-    private final List<PiiEntity> piiEntities;
+    private final List<PiiEntity> entities;
 
     /**
      * Creates a {@code RecognizePiiEntitiesResult} model that describes recognized entities result
@@ -21,12 +21,12 @@ public final class RecognizePiiEntitiesResult extends DocumentResult {
      * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
      * @param error the document error
-     * @param piiEntities a list of {@link PiiEntity}
+     * @param entities a list of {@link PiiEntity}
      */
     public RecognizePiiEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, List<PiiEntity> piiEntities) {
+        TextAnalyticsError error, List<PiiEntity> entities) {
         super(id, textDocumentStatistics, error);
-        this.piiEntities = piiEntities == null ? new ArrayList<>() : piiEntities;
+        this.entities = entities == null ? new ArrayList<>() : entities;
     }
 
     /**
@@ -34,8 +34,8 @@ public final class RecognizePiiEntitiesResult extends DocumentResult {
      *
      * @return a list of {@link PiiEntity}
      */
-    public List<PiiEntity> getPiiEntities() {
+    public List<PiiEntity> getEntities() {
         throwExceptionIfError();
-        return piiEntities;
+        return entities;
     }
 }

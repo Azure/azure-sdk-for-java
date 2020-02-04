@@ -30,7 +30,7 @@ public class RecognizePiiAsync {
 
         client.recognizePiiEntities(text).subscribe(
             result -> {
-                for (PiiEntity entity : result.getPiiEntities()) {
+                for (PiiEntity entity : result.getEntities()) {
                     System.out.printf(
                         "Recognized personal identifiable information entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
                         entity.getText(),

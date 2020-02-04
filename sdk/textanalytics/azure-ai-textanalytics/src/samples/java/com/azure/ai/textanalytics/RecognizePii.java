@@ -25,7 +25,7 @@ public class RecognizePii {
         // The text that need be analysed.
         String text = "My SSN is 555-55-5555";
 
-        for (PiiEntity entity : client.recognizePiiEntities(text).getPiiEntities()) {
+        for (PiiEntity entity : client.recognizePiiEntities(text).getEntities()) {
             System.out.printf(
                 "Recognized personal identifiable information entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
                 entity.getText(),

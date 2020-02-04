@@ -29,7 +29,7 @@ public class RecognizeEntitiesAsync {
 
         client.recognizeEntities(text).subscribe(
             result -> {
-                for (CategorizedEntity entity : result.getCategorizedEntities()) {
+                for (CategorizedEntity entity : result.getEntities()) {
                     System.out.printf(
                         "Recognized entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
                         entity.getText(),

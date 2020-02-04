@@ -64,7 +64,7 @@ public class RecognizeEntitiesBatchDocuments {
                 continue;
             }
             // Valid document
-            for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf("Recognized entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
                     entity.getText(),
                     entity.getCategory(),

@@ -156,8 +156,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
         RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(categorizedEntity1, categorizedEntity2));
-        validateCategorizedEntities(recognizeEntitiesResultList.getCategorizedEntities(),
-            client.recognizeEntities("I had a wonderful trip to Seattle last week.").getCategorizedEntities());
+        validateCategorizedEntities(recognizeEntitiesResultList.getEntities(),
+            client.recognizeEntities("I had a wonderful trip to Seattle last week.").getEntities());
     }
 
     @Test
@@ -168,7 +168,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForFaultyText() {
-        assertEquals(client.recognizeEntities("!@#%%").getCategorizedEntities().size(), 0);
+        assertEquals(client.recognizeEntities("!@#%%").getEntities().size(), 0);
     }
 
     @Test
@@ -176,7 +176,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
             DocumentResultCollection<RecognizeEntitiesResult> l = client.recognizeBatchEntities(inputs);
             for (RecognizeEntitiesResult recognizeEntitiesResult : l) {
-                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getCategorizedEntities());
+                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getEntities());
                 assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
             }
         });
@@ -212,8 +212,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizePiiEntitiesForTextInput() {
         PiiEntity piiEntity = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
         RecognizePiiEntitiesResult recognizePiiEntitiesResult = new RecognizePiiEntitiesResult("0", null, null, Collections.singletonList(piiEntity));
-        validatePiiEntities(recognizePiiEntitiesResult.getPiiEntities(),
-            client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.").getPiiEntities());
+        validatePiiEntities(recognizePiiEntitiesResult.getEntities(),
+            client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.").getEntities());
     }
 
     @Test
@@ -224,7 +224,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizePiiEntitiesForFaultyText() {
-        assertEquals(client.recognizePiiEntities("!@#%%").getPiiEntities().size(), 0);
+        assertEquals(client.recognizePiiEntities("!@#%%").getEntities().size(), 0);
     }
 
     @Test

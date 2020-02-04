@@ -225,7 +225,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
         String inputText = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntities(inputText).subscribe(recognizeEntitiesResult -> {
-            for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf(
                     "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                     entity.getText(),
@@ -244,7 +244,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         String inputText1 = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntitiesWithResponse(inputText1, "en")
             .subscribe(recognizeEntitiesResult -> {
-                for (CategorizedEntity entity : recognizeEntitiesResult.getValue().getCategorizedEntities()) {
+                for (CategorizedEntity entity : recognizeEntitiesResult.getValue().getEntities()) {
                     System.out.printf(
                         "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
@@ -271,7 +271,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+                for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                     System.out.printf(
                         "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
@@ -301,7 +301,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+                for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                     System.out.printf(
                         "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
@@ -331,7 +331,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+                for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                     System.out.printf(
                         "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
@@ -367,7 +367,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     batchStatistics.getValidDocumentCount());
 
                 for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                    for (CategorizedEntity entity : recognizeEntitiesResult.getCategorizedEntities()) {
+                    for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                         System.out.printf(
                             "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                             entity.getText(),
@@ -388,7 +388,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
         String inputText = "My SSN is 555-55-5555";
         textAnalyticsAsyncClient.recognizePiiEntities(inputText).subscribe(recognizeEntitiesResult -> {
-            for (PiiEntity entity : recognizeEntitiesResult.getPiiEntities()) {
+            for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf(
                     "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                     entity.getText(),
@@ -408,7 +408,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         String inputText1 = "My SSN is 555-55-5555";
         textAnalyticsAsyncClient.recognizePiiEntitiesWithResponse(inputText1, "en")
             .subscribe(recognizeEntitiesResult -> {
-                for (PiiEntity entity : recognizeEntitiesResult.getValue().getPiiEntities()) {
+                for (PiiEntity entity : recognizeEntitiesResult.getValue().getEntities()) {
                     System.out.printf(
                         "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
@@ -436,7 +436,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                for (PiiEntity entity : recognizeEntitiesResult.getPiiEntities()) {
+                for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
                     System.out.printf(
                         "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
@@ -466,7 +466,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                for (PiiEntity entity : recognizeEntitiesResult.getPiiEntities()) {
+                for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
                     System.out.printf(
                         "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
@@ -496,7 +496,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                for (PiiEntity entity : recognizeEntitiesResult.getPiiEntities()) {
+                for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
                     System.out.printf(
                         "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
@@ -532,7 +532,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     batchStatistics.getValidDocumentCount());
 
                 for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                    for (PiiEntity entity : recognizeEntitiesResult.getPiiEntities()) {
+                    for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
                         System.out.printf(
                             "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                             entity.getText(),

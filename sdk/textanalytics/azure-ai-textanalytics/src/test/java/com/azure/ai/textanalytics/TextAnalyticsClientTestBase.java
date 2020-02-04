@@ -411,13 +411,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateCategorizedEntity(boolean showStatistics, DocumentResultCollection<RecognizeEntitiesResult> expected,
         DocumentResultCollection<RecognizeEntitiesResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateCategorizedEntities(expectedItem.getCategorizedEntities(), actualItem.getCategorizedEntities()));
+            validateCategorizedEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }
 
     static void validatePiiEntity(boolean showStatistics, DocumentResultCollection<RecognizePiiEntitiesResult> expected,
         DocumentResultCollection<RecognizePiiEntitiesResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validatePiiEntities(expectedItem.getPiiEntities(), actualItem.getPiiEntities()));
+            validatePiiEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }
 
     static void validateLinkedEntity(boolean showStatistics,
