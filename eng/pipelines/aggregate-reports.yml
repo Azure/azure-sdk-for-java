@@ -103,10 +103,21 @@ jobs:
         publishJUnitResults: false
         goals: 'clean package exec:java'
 
+    - task: UsePythonVersion@0
+      displayName: 'Use Python 3.6'
+      inputs:
+        versionSpec: '3.6'
+
+    - pwsh: |
+        $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
+      displayName: Generate Interdependency Report Data
+
     - pwsh: |   
         copy -r target/staging $(Build.ArtifactStagingDirectory)
         copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
         copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+        copy eng/common/InterdependencyGraph.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+        copy data.js (Join-Path $(Build.ArtifactStagingDirectory) "staging")
       displayName: 'Copy reports to artifact staging'
 
     - publish: $(Build.ArtifactStagingDirectory)
