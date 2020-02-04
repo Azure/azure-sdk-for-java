@@ -79,7 +79,6 @@ public final class IdentityClientOptions {
      * @param retryTimeout the Function that returns a timeout in seconds given the number of retry
      * @return IdentityClientOptions
      */
-    @Deprecated()
     public IdentityClientOptions setRetryTimeout(Function<Duration, Duration> retryTimeout) {
         this.retryTimeout = retryTimeout;
         return this;
