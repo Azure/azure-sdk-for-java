@@ -159,7 +159,7 @@ public final class BlobContainerClient {
     }
 
     /**
-     * Gets the {@link EncryptionScope encryption scope} used to encrypt this blob's content on the server.
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
      *
      * @return the encryption scope used for encryption.
      */
