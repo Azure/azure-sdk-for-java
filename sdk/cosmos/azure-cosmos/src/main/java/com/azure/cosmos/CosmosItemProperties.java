@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,15 @@ public class CosmosItemProperties extends Resource {
     public CosmosItemProperties setId(String id) {
         super.setId(id);
         return this;
+    }
+
+    /**
+     * Initialize a CosmosItemProperties object from json string.
+     *
+     * @param byteBuffer the json string that represents the document object.
+     */
+    public CosmosItemProperties(ByteBuffer byteBuffer) {
+        super(byteBuffer);
     }
 
     /**
@@ -69,6 +79,18 @@ public class CosmosItemProperties extends Resource {
             } catch (IOException e) {
                 throw new IllegalArgumentException("Can't serialize the object into the json string", e);
             }
+        }
+    }
+
+    static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
+        if (cosmosItem instanceof CosmosItemProperties) {
+            return ((CosmosItemProperties) cosmosItem).serializeJsonToByteBuffer();
+        } else {
+            if (cosmosItem instanceof Document) {
+                return ((Document) cosmosItem).serializeJsonToByteBuffer();
+            }
+
+            return Utils.serializeJsonToByteBuffer(objectMapper, cosmosItem);
         }
     }
 

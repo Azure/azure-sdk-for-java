@@ -48,6 +48,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,9 +60,9 @@ import java.util.function.Function;
 
 import static com.azure.cosmos.BridgeInternal.documentFromObject;
 import static com.azure.cosmos.BridgeInternal.getAltLink;
+import static com.azure.cosmos.BridgeInternal.serializeJsonToByteBuffer;
 import static com.azure.cosmos.BridgeInternal.toDatabaseAccount;
 import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
-import static com.azure.cosmos.BridgeInternal.toJsonString;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 
@@ -865,7 +866,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request,
-                                                                      String contentAsString,
+                                                                      ByteBuffer contentAsString,
                                                                       Document document,
                                                                       RequestOptions options) {
 
@@ -878,7 +879,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request,
-                                                                      String contentAsString,
+                                                                      ByteBuffer contentAsString,
                                                                       Object document,
                                                                       RequestOptions options,
                                                                       Mono<Utils.ValueHolder<DocumentCollection>> collectionObs) {
@@ -890,7 +891,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void addPartitionKeyInformation(RxDocumentServiceRequest request,
-                                            String contentAsString,
+                                            ByteBuffer contentAsString,
                                             Object objectDoc, RequestOptions options,
                                             DocumentCollection collection) {
         PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
@@ -966,7 +967,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("document");
         }
 
-        String content = toJsonString(document, mapper);
+        ByteBuffer content = serializeJsonToByteBuffer(document, mapper);
 
         String path = Utils.joinPath(documentCollectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         Map<String, String> requestHeaders = this.getRequestHeaders(options);
@@ -1179,7 +1180,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final String path = Utils.joinPath(documentLink, null);
         final Map<String, String> requestHeaders = getRequestHeaders(options);
 
-        String content = toJsonString(typedDocument, mapper);
+        ByteBuffer content = serializeJsonToByteBuffer(typedDocument, mapper);
 
         final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
             ResourceType.Document, path, requestHeaders, options, content);
@@ -1202,7 +1203,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final String path = Utils.joinPath(document.getSelfLink(), null);
         final Map<String, String> requestHeaders = getRequestHeaders(options);
 
-        String content = toJsonString(document, mapper);
+        ByteBuffer content = serializeJsonToByteBuffer(document, mapper);
 
         final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
             ResourceType.Document, path, requestHeaders, options, content);
@@ -1210,7 +1211,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(document, options, content, finalRequestRetryPolicy, request), requestRetryPolicy);
     }
 
-    private Flux<ResourceResponse<Document>> replaceDocumentInternal(Document document, RequestOptions options, String content, DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Flux<ResourceResponse<Document>> replaceDocumentInternal(Document document, RequestOptions options, ByteBuffer content, DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
 
         try {
             if (document == null) {
@@ -1226,7 +1227,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Flux<ResourceResponse<Document>> replaceDocumentInternal(String documentLink, Document document,
-                                                                     RequestOptions options, String content, DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+                                                                     RequestOptions options, ByteBuffer content, DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
         Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);

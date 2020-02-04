@@ -12,12 +12,14 @@ import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -528,6 +530,16 @@ public class Utils {
             return getSimpleObjectMapper().readValue(itemResponseBodyAsString, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException("Failed to get POJO.", e);
+        }
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            objectMapper.writeValue(byteArrayOutputStream, object);
+            return ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Failed to serialize json", e);
         }
     }
 }

@@ -157,7 +157,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.Invalid);
         assertThat(request.getResourceAddress()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
         assertThat(request.getResourceId()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
-        assertThat(request.getContent()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
+        assertThat(request.copyContentAsByteArray()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
 
         Flux<byte[]> inputStream = Flux.just(document.toJson().getBytes(StandardCharsets.UTF_8));
         request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, documentUrlWithId, inputStream,
@@ -283,7 +283,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getResourceType()).isEqualTo(resourceType);
         assertThat(request.getOperationType()).isEqualTo(operationType);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryMasterKey);
-        assertThat(request.getContent()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
+        assertThat(request.copyContentAsByteArray()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
 
         request = RxDocumentServiceRequest.create(operationType, resourceId, resourceType, document, null, AuthorizationTokenType.ResourceToken);
         assertThat(request.getHeaders()).isNotNull();
@@ -292,7 +292,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getResourceType()).isEqualTo(resourceType);
         assertThat(request.getOperationType()).isEqualTo(operationType);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.ResourceToken);
-        assertThat(request.getContent()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
+        assertThat(request.copyContentAsByteArray()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
 
         request = RxDocumentServiceRequest.createFromName(operationType, resourceFullName, resourceType);
         assertThat(request.getHeaders()).isNotNull();
@@ -320,7 +320,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getResourceType()).isEqualTo(resourceType);
         assertThat(request.getOperationType()).isEqualTo(operationType);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryMasterKey);
-        assertThat(request.getContent()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
+        assertThat(request.copyContentAsByteArray()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
 
         request = RxDocumentServiceRequest.createFromName(operationType, document, resourceFullName, resourceType, AuthorizationTokenType.ResourceToken);
         assertThat(request.getHeaders()).isNotNull();
@@ -330,7 +330,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getResourceType()).isEqualTo(resourceType);
         assertThat(request.getOperationType()).isEqualTo(operationType);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.ResourceToken);
-        assertThat(request.getContent()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
+        assertThat(request.copyContentAsByteArray()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
     }
 
     @Test(groups = { "unit" }, dataProvider = "documentUrl")

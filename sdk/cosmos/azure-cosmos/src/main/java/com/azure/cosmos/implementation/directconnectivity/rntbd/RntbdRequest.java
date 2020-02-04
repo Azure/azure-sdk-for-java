@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Strings;
 import io.netty.buffer.ByteBuf;
 
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRequestHeader;
@@ -19,16 +20,16 @@ public final class RntbdRequest {
 
     private final RntbdRequestFrame frame;
     private final RntbdRequestHeaders headers;
-    private final byte[] payload;
+    private final ByteBuffer payload;
 
-    private RntbdRequest(final RntbdRequestFrame frame, final RntbdRequestHeaders headers, final byte[] payload) {
+    private RntbdRequest(final RntbdRequestFrame frame, final RntbdRequestHeaders headers, final ByteBuffer payload) {
 
         checkNotNull(frame, "frame");
         checkNotNull(headers, "headers");
 
         this.frame = frame;
         this.headers = headers;
-        this.payload = payload == null ? EMPTY_BYTE_ARRAY : payload;
+        this.payload = payload == null ? ByteBuffer.wrap(EMPTY_BYTE_ARRAY) : payload;
     }
 
     public UUID getActivityId() {
@@ -72,7 +73,7 @@ public final class RntbdRequest {
         payloadBuf.readBytes(payload);
         in.discardReadBytes();
 
-        return new RntbdRequest(header, metadata, payload);
+        return new RntbdRequest(header, metadata, ByteBuffer.wrap(payload));
     }
 
     void encode(final ByteBuf out) {
@@ -86,8 +87,8 @@ public final class RntbdRequest {
 
         assert out.writerIndex() - start == expectedLength;
 
-        if (this.payload.length > 0) {
-            out.writeIntLE(this.payload.length);
+        if (this.payload.limit() > 0) {
+            out.writeIntLE(this.payload.limit());
             out.writeBytes(this.payload);
         }
     }
@@ -103,6 +104,6 @@ public final class RntbdRequest {
 
         final RntbdRequestHeaders headers = new RntbdRequestHeaders(args, frame);
 
-        return new RntbdRequest(frame, headers, serviceRequest.getContent());
+        return new RntbdRequest(frame, headers, serviceRequest.getByteBuffer());
     }
 }

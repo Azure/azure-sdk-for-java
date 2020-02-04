@@ -292,14 +292,28 @@ public final class RntbdResponse implements ReferenceCounted {
 
     StoreResponse toStoreResponse(final RntbdContext context) {
 
+
+
         checkNotNull(context, "context");
-        final int length = this.content.readableBytes();
+        final int length = content.readableBytes();
 
         return new StoreResponse(
             this.getStatus().code(),
             this.headers.asList(context, this.getActivityId()),
-            length == 0 ? null : this.content.readCharSequence(length, StandardCharsets.UTF_8).toString()
+            length == 0 ? null : toByteArray(this.content)
         );
+    }
+
+    private static byte[] toByteArray(ByteBuf content) {
+        if (content == null) {
+            return null;
+        }
+
+        final int length = content.readableBytes();
+        byte[] bytes = new byte[length];
+        content.getBytes(content.readerIndex(), bytes);
+
+        return bytes;
     }
 
     // endregion

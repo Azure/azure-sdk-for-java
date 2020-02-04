@@ -154,10 +154,9 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             if (request.getContentObservable() != null) {
                 byteBufObservable = request.getContentObservable().map(Unpooled::wrappedBuffer);
-            } else if (request.getContent() != null){
-                byteBufObservable = Flux.just(Unpooled.wrappedBuffer(request.getContent()));
+            } else if (request.getContentAsByteBufFlux() != null){
+                byteBufObservable = request.getContentAsByteBufFlux();
             }
-
 
             HttpRequest httpRequest = new HttpRequest(method,
                     uri,

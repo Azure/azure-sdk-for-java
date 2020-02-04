@@ -9,6 +9,10 @@ import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
+import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
+import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
@@ -16,9 +20,11 @@ import reactor.core.publisher.Flux;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
@@ -49,8 +55,8 @@ public class RxDocumentServiceRequest {
     public DocumentServiceRequestContext requestContext;
 
     private Flux<byte[]> contentObservable;
-    private byte[] byteContent;
-    
+    private ByteBuffer byteBuffer;
+
     // NOTE: TODO: these fields are copied from .Net SDK
     // some of these fields are missing from the main java sdk service request
     // so it means most likely the corresponding features are also missing from the main sdk
@@ -98,10 +104,29 @@ public class RxDocumentServiceRequest {
                                      Map<String, String> headers,
                                      boolean isNameBased,
                                      AuthorizationTokenType authorizationTokenType) {
+        this(operationType, resourceIdOrFullName, resourceType, wrapByteBuffer(byteContent), headers, isNameBased, authorizationTokenType);
+    }
+
+    /**
+     * @param operationType          the operation type.
+     * @param resourceIdOrFullName   the request id or full name.
+     * @param resourceType           the resource type.
+     * @param byteBuffer             the byte content.
+     * @param headers                the headers.
+     * @param isNameBased            whether request is name based.
+     * @param authorizationTokenType the request authorizationTokenType.
+     */
+    private RxDocumentServiceRequest(OperationType operationType,
+                                     String resourceIdOrFullName,
+                                     ResourceType resourceType,
+                                     ByteBuffer byteBuffer,
+                                     Map<String, String> headers,
+                                     boolean isNameBased,
+                                     AuthorizationTokenType authorizationTokenType) {
         this.operationType = operationType;
         this.forceNameCacheRefresh = false;
         this.resourceType = resourceType;
-        this.byteContent = byteContent;
+        this.byteBuffer = byteBuffer;
         this.headers = headers != null ? headers : new HashMap<>();
         this.activityId = Utils.randomUUID().toString();
         this.isFeed = false;
@@ -118,7 +143,7 @@ public class RxDocumentServiceRequest {
 
     /**
      * Creates a AbstractDocumentServiceRequest
-     * 
+     *
      * @param operationType     the operation type.
      * @param resourceIdOrFullName        the request id or full name.
      * @param resourceType      the resource type.
@@ -186,6 +211,34 @@ public class RxDocumentServiceRequest {
      *
      * @param resourceId        the resource Id.
      * @param resourceType      the resource type.
+     * @param byteBuffer           the byte content observable\
+     * @param contentObservable the byte content observable
+     * @param headers           the request headers.
+     */
+    private RxDocumentServiceRequest(OperationType operationType,
+                                     String resourceId,
+                                     ResourceType resourceType,
+                                     Flux<byte[]> contentObservable,
+                                     ByteBuffer byteBuffer,
+                                     String path,
+                                     Map<String, String> headers,
+                                     AuthorizationTokenType authorizationTokenType) {
+        this(operationType,
+            resourceId,
+            resourceType,
+            path,
+            headers);
+        this.authorizationTokenType = authorizationTokenType;
+        this.byteBuffer = byteBuffer;
+        this.contentObservable = contentObservable;
+    }
+
+
+    /**
+     * Creates a DocumentServiceRequest
+     *
+     * @param resourceId        the resource Id.
+     * @param resourceType      the resource type.
      * @param content           the byte content observable\
      * @param contentObservable the byte content observable
      * @param headers           the request headers.
@@ -198,14 +251,7 @@ public class RxDocumentServiceRequest {
             String path,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this( operationType,
-             resourceId,
-             resourceType,
-             path,
-             headers);
-        this.authorizationTokenType = authorizationTokenType;
-        this.byteContent = content;
-        this.contentObservable = contentObservable;
+        this(operationType, resourceId, resourceType, contentObservable, wrapByteBuffer(content), path, headers, authorizationTokenType);
     }
 
     /**
@@ -222,7 +268,24 @@ public class RxDocumentServiceRequest {
             Flux<byte[]> contentObservable,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this(operationType, extractIdFromUri(path), resourceType, contentObservable, null, path, headers, authorizationTokenType);
+        this(operationType, extractIdFromUri(path), resourceType, contentObservable, (ByteBuffer) null, path, headers, authorizationTokenType);
+    }
+
+    /**
+     * Creates a DocumentServiceRequest with an HttpEntity.
+     *
+     * @param resourceType the resource type.
+     * @param path         the relative URI path.
+     * @param byteBuffer  the byte content.
+     * @param headers      the request headers.
+     */
+    private RxDocumentServiceRequest(OperationType operationType,
+                                     ResourceType resourceType,
+                                     String path,
+                                     ByteBuffer byteBuffer,
+                                     Map<String, String> headers,
+                                     AuthorizationTokenType authorizationTokenType) {
+        this(operationType, extractIdFromUri(path), resourceType, null, byteBuffer, path, headers, authorizationTokenType);
     }
 
     /**
@@ -254,11 +317,15 @@ public class RxDocumentServiceRequest {
             String path,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this(operationType, extractIdFromUri(path), resourceType, null , null, path, headers, authorizationTokenType);
+        this(operationType, extractIdFromUri(path), resourceType, null , (ByteBuffer) null, path, headers, authorizationTokenType);
     }
 
-    public void setContentBytes(byte[] bytes) {
-        this.byteContent = bytes;
+    public void setContentBytes(byte[] contentBytes) {
+        this.byteBuffer = wrapByteBuffer(contentBytes);
+    }
+
+    public void setByteBuffer(ByteBuffer byteBuffer) {
+        this.byteBuffer = byteBuffer;
     }
 
     /**
@@ -353,7 +420,7 @@ public class RxDocumentServiceRequest {
             Map<String, String> headers) {
         return create(operation, resourceType, relativePath, resource, headers, (RequestOptions)null);
     }
-    
+
     /**
      * Creates a DocumentServiceRequest with a resource.
      *
@@ -384,10 +451,10 @@ public class RxDocumentServiceRequest {
                                                   String relativePath,
                                                   Map<String, String> headers,
                                                   Object options,
-                                                  String content) {
+                                                  ByteBuffer byteBuffer) {
 
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
-                                                                        content.getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
+            byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         return request;
     }
@@ -582,7 +649,7 @@ public class RxDocumentServiceRequest {
             String resourceId,
             ResourceType resourceType,
             Map<String, String> headers) {
-        return new RxDocumentServiceRequest(operation, resourceId,resourceType, null, headers, false, AuthorizationTokenType.PrimaryMasterKey) ;
+        return new RxDocumentServiceRequest(operation, resourceId,resourceType, (ByteBuffer) null, headers, false, AuthorizationTokenType.PrimaryMasterKey) ;
     }
 
     /**
@@ -600,7 +667,7 @@ public class RxDocumentServiceRequest {
             ResourceType resourceType,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        return new RxDocumentServiceRequest(operation, resourceId, resourceType, null, headers, false, authorizationTokenType);
+        return new RxDocumentServiceRequest(operation, resourceId, resourceType, (ByteBuffer) null, headers, false, authorizationTokenType);
     }
 
     /**
@@ -659,7 +726,7 @@ public class RxDocumentServiceRequest {
         return new RxDocumentServiceRequest(operationType,
                 resourceFullName,
                 resourceType,
-                null,
+                (ByteBuffer) null,
                 new HashMap<>(),
                 true,
                 AuthorizationTokenType.PrimaryMasterKey
@@ -674,7 +741,7 @@ public class RxDocumentServiceRequest {
         return new RxDocumentServiceRequest(operationType,
                 resourceFullName,
                 resourceType,
-                null,
+                (ByteBuffer) null,
                 new HashMap<>(),
                 true,
                 authorizationTokenType
@@ -731,7 +798,7 @@ public class RxDocumentServiceRequest {
         // TODO(pushi): Improve the code and remove the hack.
         path = path + '=';
 
-        // The path will be in the form of 
+        // The path will be in the form of
         // /[resourceType]/[resourceId]/ or
         // /[resourceType]/[resourceId]/[resourceType]/
         // The result of split will be in the form of
@@ -991,13 +1058,34 @@ public class RxDocumentServiceRequest {
         return contentObservable;
     }
 
-    public byte[] getContent() {
-        return byteContent;
+
+    public Flux<ByteBuf> getContentAsByteBufFlux() {
+        if (byteBuffer == null) {
+            return Flux.empty();
+        }
+
+        return Flux.just(Unpooled.wrappedBuffer(byteBuffer));
+    }
+
+    public byte[] copyContentAsByteArray() {
+        if (byteBuffer == null) {
+            return null;
+        }
+
+        try {
+            return IOUtils.toByteArray(new ByteBufferBackedInputStream(byteBuffer));
+        } catch (IOException e) {
+           throw new IllegalArgumentException(e);
+        }
+    }
+
+    public ByteBuffer getByteBuffer() {
+        return byteBuffer;
     }
 
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
-        rxDocumentServiceRequest.setContentBytes(this.getContent());
+        rxDocumentServiceRequest.setByteBuffer(this.getByteBuffer());
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
         rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());
         rxDocumentServiceRequest.setEndpointOverride(this.getEndpointOverride());
@@ -1019,8 +1107,8 @@ public class RxDocumentServiceRequest {
             return;
         }
 
-        if (this.byteContent != null) {
-            this.byteContent = null;
+        if (this.byteBuffer != null) {
+            this.byteBuffer = null;
         }
 
         this.isDisposed = true;
@@ -1038,5 +1126,9 @@ public class RxDocumentServiceRequest {
         } else {
             return null;
         }
+    }
+
+    private static ByteBuffer wrapByteBuffer(byte[] bytes) {
+        return bytes != null ? ByteBuffer.wrap(bytes) : null;
     }
 }

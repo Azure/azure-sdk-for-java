@@ -96,7 +96,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         URI uri = new URI(resourceUri);
 
         HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
-        httpRequest.withBody(request.getContent());
+        httpRequest.withBody(request.getContentAsByteBufFlux());
         String body = httpClient.send(httpRequest).block().bodyAsString().block();
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_ID + "\"");
 
@@ -117,7 +117,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         uri = new URI(resourceUri);
 
         httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
-        httpRequest.withBody(request.getContent());
+        httpRequest.withBody(request.getContentAsByteBufFlux());
 
         body = httpClient.send(httpRequest).block().bodyAsString().block();
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_DOCUEMNT_ID + "\"");
@@ -136,7 +136,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         validateSuccess(readMono, validator);
 
         String createdItemId = UUID.randomUUID().toString();
-        Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createMono = 
+        Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createMono =
             createdContainer.createItem(new CosmosItemProperties("{'id':'" + createdItemId + "'}"));
         validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
                 .withId(createdItemId).build();
@@ -146,7 +146,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
                 .withId(createdItemId).build();
         validateSuccess(readMono, validator);
-        
+
         CosmosItemProperties itemSettingsToReplace = createdContainer.readItem(createdItemId, PartitionKey.NONE,
                                                                                CosmosItemProperties.class)
                                                          .block()

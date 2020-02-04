@@ -21,6 +21,7 @@ import io.netty.buffer.Unpooled;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Map;
@@ -59,9 +60,9 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         checkNotNull(frame, "frame");
 
         final RxDocumentServiceRequest request = args.serviceRequest();
-        final byte[] content = request.getContent();
+        final ByteBuffer content = request.getByteBuffer();
 
-        this.getPayloadPresent().setValue(content != null && content.length > 0);
+        this.getPayloadPresent().setValue(content != null && content.limit() > 0);
         this.getReplicaPath().setValue(args.replicaPath());
         this.getTransportRequestID().setValue(args.transportRequestId());
 
