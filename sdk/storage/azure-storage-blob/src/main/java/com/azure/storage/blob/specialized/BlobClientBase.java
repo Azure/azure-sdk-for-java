@@ -25,7 +25,6 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.BlobDownloadResponse;
-import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
