@@ -2,16 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
-import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.caches.RxCollectionCache;
-import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
-import com.azure.cosmos.implementation.query.metrics.FetchExecutionRangeAccumulator;
-import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
-import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -19,6 +9,7 @@ import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -29,6 +20,15 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
+import com.azure.cosmos.implementation.query.metrics.FetchExecutionRangeAccumulator;
+import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
+import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.routing.RoutingMapProviderHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -108,7 +108,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> this.createRequestAsync(continuationToken, pageSize);
 
         // TODO: clean up if we want to use single vs observable.
-        Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = executeInternalAsyncFunc();
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = executeInternalAsyncFunc();
 
         return Paginator
     			.getPaginatedQueryResultAsObservable(newFeedOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
@@ -128,7 +128,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                    .flatMap(partitionKeyRange -> Mono.just(Collections.singletonList(partitionKeyRange.v)));
     }
 
-    protected Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeInternalAsyncFunc() {
+    protected Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeInternalAsyncFunc() {
         RxCollectionCache collectionCache = this.client.getCollectionCache();
         IPartitionKeyRangeCache partitionKeyRangeCache =  this.client.getPartitionKeyRangeCache();
         DocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy();
@@ -152,7 +152,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
             return BackoffRetryUtility.executeRetry(() -> {
                 ++this.retries;
                 return executeRequestAsync(req);
-            }, finalRetryPolicyInstance).flux()
+            }, finalRetryPolicyInstance)
                     .map(tFeedResponse -> {
                         this.fetchSchedulingMetrics.stop();
                         this.fetchExecutionRangeAccumulator.endFetchRange(tFeedResponse.getActivityId(),

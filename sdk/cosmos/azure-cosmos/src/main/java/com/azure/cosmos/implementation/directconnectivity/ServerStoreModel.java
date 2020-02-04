@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Strings;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class ServerStoreModel implements RxStoreModel {
@@ -22,16 +21,16 @@ public class ServerStoreModel implements RxStoreModel {
         this.storeClient = storeClient;
     }
 
-    public Flux<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
+    public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
         String requestConsistencyLevelHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
 
         request.requestContext.originalRequestConsistencyLevel = null;
 
         if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
             ConsistencyLevel requestConsistencyLevel;
-
-            if ((requestConsistencyLevel = ConsistencyLevel.fromServiceSerializedFormat(requestConsistencyLevelHeaderValue)) == null) {
-                return Flux.error(new BadRequestException(
+            
+                if ((requestConsistencyLevel = ConsistencyLevel.fromServiceSerializedFormat(requestConsistencyLevelHeaderValue)) == null) {
+                return Mono.error(new BadRequestException(
                     String.format(
                         RMResources.InvalidHeaderValue,
                         requestConsistencyLevelHeaderValue,
@@ -45,7 +44,6 @@ public class ServerStoreModel implements RxStoreModel {
             request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.STRONG.toString());
         }
 
-        Mono<RxDocumentServiceResponse> response = this.storeClient.processMessageAsync(request);
-        return response.flux();
+        return this.storeClient.processMessageAsync(request);
     }
 }

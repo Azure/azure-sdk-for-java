@@ -376,16 +376,16 @@ class RxGatewayStoreModel implements RxStoreModel {
         }
     }
 
-    private Flux<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
+    private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
         Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
-        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy()).flux();
+        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy());
     }
 
     @Override
-    public Flux<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
+    public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
         this.applySessionToken(request);
 
-        Flux<RxDocumentServiceResponse> responseObs = invokeAsync(request);
+        Mono<RxDocumentServiceResponse> responseObs = invokeAsync(request);
 
         return responseObs.onErrorResume(
                 e -> {
@@ -393,7 +393,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
                     if (dce == null) {
                         logger.error("unexpected failure {}", e.getMessage(), e);
-                        return Flux.error(e);
+                        return Mono.error(e);
                     }
 
                     if ((!ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) &&
@@ -406,7 +406,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                         this.captureSessionToken(request, dce.getResponseHeaders());
                     }
 
-                    return Flux.error(dce);
+                    return Mono.error(dce);
                 }
         ).map(response ->
                 {

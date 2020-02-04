@@ -11,7 +11,6 @@ import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -49,7 +48,7 @@ public class RxGatewayStoreModelTest {
         dsr.getHeaders().put("key", "value");
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
 
-        Flux<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
+        Mono<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
         validateFailure(resp, FailureValidator.builder()
                 .instanceOf(CosmosClientException.class)
                 .causeInstanceOf(ReadTimeoutException.class)
@@ -57,12 +56,12 @@ public class RxGatewayStoreModelTest {
                 .statusCode(0).build());
     }
 
-    public void validateFailure(Flux<RxDocumentServiceResponse> observable,
+    public void validateFailure(Mono<RxDocumentServiceResponse> observable,
                                 FailureValidator validator) {
         validateFailure(observable, validator, TIMEOUT);
     }
 
-    public static void validateFailure(Flux<RxDocumentServiceResponse> observable,
+    public static void validateFailure(Mono<RxDocumentServiceResponse> observable,
                                        FailureValidator validator,
                                        long timeout) {
         TestSubscriber<RxDocumentServiceResponse> testSubscriber = new TestSubscriber<>();

@@ -94,7 +94,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
             retryPolicyInstance.onBeforeSendRequest(request);
         }
 
-        Flux<RxDocumentServiceResponse> responseObs = this.storeModel.processMessage(request);
+        Mono<RxDocumentServiceResponse> responseObs = this.storeModel.processMessage(request);
         return responseObs.map(response -> BridgeInternal.toResourceResponse(response, DocumentCollection.class)
                 .getResource()).single();
     }

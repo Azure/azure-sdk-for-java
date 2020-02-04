@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -19,5 +19,5 @@ public interface RxStoreModel {
      * @param request
      * @return
      */
-    Flux<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request);
+    Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request);
 }
