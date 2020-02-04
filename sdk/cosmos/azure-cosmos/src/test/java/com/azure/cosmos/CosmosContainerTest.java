@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CosmosContainerTest extends TestSuiteBase {
 
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
-    private List<String> databases = new ArrayList<>();
     private CosmosClient client;
     private CosmosDatabase createdDatabase;
 
@@ -38,12 +37,10 @@ public class CosmosContainerTest extends TestSuiteBase {
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulator"}, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
+        logger.info("starting ....");
         safeDeleteSyncDatabase(createdDatabase);
-        for (String dbId : databases) {
-            safeDeleteSyncDatabase(client.getDatabase(dbId));
-        }
         safeCloseSyncClient(client);
     }
 
