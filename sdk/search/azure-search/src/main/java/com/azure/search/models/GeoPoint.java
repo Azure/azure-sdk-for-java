@@ -125,6 +125,34 @@ public final class GeoPoint {
     }
 
     /**
+     * Return latitude value
+     * @return latitude
+     * @throws Exception if coordinates are not set
+     */
+    public double getLatitude() throws Exception {
+        if (coordinates != null && coordinates.size() == 2) {
+            return coordinates.get(0);
+        }
+        else {
+            throw new Exception("coordinates not set");
+        }
+    }
+
+    /**
+     * Return longitude value
+     * @return longitude
+     * @throws Exception if coordinates are not set
+     */
+    public double getLongitude() throws Exception {
+        if (coordinates != null && coordinates.size() == 2) {
+            return coordinates.get(1);
+        }
+        else {
+            throw new Exception("coordinates not set");
+        }
+    }
+
+    /**
      * Set coordinates
      * @param coordinates list of coordinates
      * @return GeoPoint updated

@@ -81,6 +81,12 @@ public class SearchIndexClient {
     /**
      * Merges a collection of documents with existing documents in the target index.
      *
+     * If the type of the document contains non-nullable value-typed properties, these properties may not
+     * merge correctly. If you do not set such a property, it will automatically take its default value
+     * (for example, 0 for int or false for bool), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare value-typed properties to be nullable
+     *
      * @param documents collection of documents to be merged
      * @return document index result
      */
@@ -90,6 +96,12 @@ public class SearchIndexClient {
 
     /**
      * Merges a collection of documents with existing documents in the target index.
+     *
+     * If the type of the document contains non-nullable value-typed properties, these properties may not
+     * merge correctly. If you do not set such a property, it will automatically take its default value
+     * (for example, 0 for int or false for bool), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare value-typed properties to be nullable
      *
      * @param documents collection of documents to be merged
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -103,6 +115,12 @@ public class SearchIndexClient {
      * This action behaves like merge if a document with the given key already exists in the index.
      * If the document does not exist, it behaves like upload with a new document.
      *
+     * If the type of the document contains non-nullable value-typed properties, these properties may not
+     * merge correctly. If you do not set such a property, it will automatically take its default value
+     * (for example, 0 for int or false for bool), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare value-typed properties to be nullable
+     *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
      */
@@ -113,6 +131,12 @@ public class SearchIndexClient {
     /**
      * This action behaves like merge if a document with the given key already exists in the index.
      * If the document does not exist, it behaves like upload with a new document.
+     *
+     * If the type of the document contains non-nullable value-typed properties, these properties may not
+     * merge correctly. If you do not set such a property, it will automatically take its default value
+     * (for example, 0 for int or false for bool), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare value-typed properties to be nullable
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -126,6 +150,7 @@ public class SearchIndexClient {
      * Deletes a collection of documents from the target index
      *
      * @param documents collection of documents to delete from the target Index.
+     *                  Fields other than the key are ignored
      * @return document index result.
      */
     public IndexDocumentsResult deleteDocuments(Iterable<?> documents) {
@@ -136,6 +161,8 @@ public class SearchIndexClient {
      * Deletes a collection of documents from the target index
      *
      * @param documents collection of documents to delete from the target Index.
+     *                  Fields other than the key are ignored
+     *                  Fields other than the key are ignored
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document index result.
      */
@@ -162,7 +189,7 @@ public class SearchIndexClient {
     }
 
     /**
-     * Gets the number of documents
+     * Queries the number of documents in the search index.
      *
      * @return the number of documents.
      */
@@ -171,7 +198,7 @@ public class SearchIndexClient {
     }
 
     /**
-     * Gets the number of documents
+     * Queries the number of documents in the search index.
      *
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the number of documents.
@@ -214,8 +241,11 @@ public class SearchIndexClient {
 
     /**
      * Retrieves a document from the Azure Cognitive Search index.
+     * <see href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document"/>
      *
-     * @param key the name of the document
+     * @param key The key of the document to retrieve;
+     * <see href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules"/>
+     * for the rules for constructing valid document keys.
      * @return document object
      */
     public Document getDocument(String key) {
@@ -225,9 +255,14 @@ public class SearchIndexClient {
 
     /**
      * Retrieves a document from the Azure Cognitive Search index.
+     * <see href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document"/>
      *
-     * @param key document key
-     * @param selectedFields selected fields to return
+     * @param key The key of the document to retrieve;
+     * <see href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules"/>
+     * for the rules for constructing valid document keys.
+     * @param selectedFields List of field names to retrieve for the document;
+     * Any field not retrieved will have null or default as its
+     * corresponding property value in the returned object.
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return document object
@@ -243,9 +278,14 @@ public class SearchIndexClient {
 
     /**
      * Retrieves a document from the Azure Cognitive Search index.
+     * <see href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document"/>
      *
-     * @param key document key
-     * @param selectedFields selected fields to return
+     * @param key The key of the document to retrieve;
+     * <see href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules"/>
+     * for the rules for constructing valid document keys.
+     * @param selectedFields List of field names to retrieve for the document;
+     * Any field not retrieved will have null or default as its
+     * corresponding property value in the returned object.
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
