@@ -27,6 +27,7 @@ known_presence_issues:
   - ['cosmosdb/data-plane/gateway', '#2847']
   - ['cosmosdb/data-plane/sdk', '#2847']
   - ['mediaservices/data-plane', '#2847']
+  - ['sdk/boms/azure-sdk-bom', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-autosuggest', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-computervision', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-contentmoderator', '#2847']
