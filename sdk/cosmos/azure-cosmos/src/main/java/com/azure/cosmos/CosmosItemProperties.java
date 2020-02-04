@@ -1,12 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation;
+package com.azure.cosmos;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -24,15 +22,6 @@ public class CosmosItemProperties extends Resource {
     }
 
     /**
-     * Initialize a CosmosItemProperties object from json string.
-     *
-     * @param byteBuffer the json string that represents the document object.
-     */
-    public CosmosItemProperties(ByteBuffer byteBuffer) {
-        super(byteBuffer);
-    }
-
-    /**
      * Sets the id
      *
      * @param id the name of the resource.
@@ -46,20 +35,25 @@ public class CosmosItemProperties extends Resource {
     /**
      * Initialize a CosmosItemProperties object from json string.
      *
+     * @param byteBuffer the json string that represents the document object.
+     */
+    public CosmosItemProperties(ByteBuffer byteBuffer) {
+        super(byteBuffer);
+    }
+
+    /**
+     * Initialize a CosmosItemProperties object from json string.
+     *
      * @param jsonString the json string that represents the document object.
      */
     public CosmosItemProperties(String jsonString) {
         super(jsonString);
     }
 
-    public CosmosItemProperties(ObjectNode propertyBag) {
-        super(propertyBag);
-    }
-
     /**
      * fromObject returns Document for compatibility with V2 sdk
      */
-    public static Document fromObject(Object cosmosItem) {
+    static Document fromObject(Object cosmosItem) {
         Document typedItem;
         if (cosmosItem instanceof CosmosItemProperties) {
             typedItem = new Document(((CosmosItemProperties) cosmosItem).toJson());
@@ -70,11 +64,10 @@ public class CosmosItemProperties extends Resource {
                 throw new IllegalArgumentException("Can't serialize the object into the json string", e);
             }
         }
-
         return typedItem;
     }
 
-    public static String toJsonString(Object cosmosItem, ObjectMapper objectMapper) {
+    static String toJsonString(Object cosmosItem, ObjectMapper objectMapper) {
         if (cosmosItem instanceof CosmosItemProperties) {
             return ((CosmosItemProperties) cosmosItem).toJson();
         } else {
@@ -89,16 +82,21 @@ public class CosmosItemProperties extends Resource {
         }
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
-        if (cosmosItem instanceof com.azure.cosmos.implementation.CosmosItemProperties) {
-            return ((com.azure.cosmos.implementation.CosmosItemProperties) cosmosItem).serializeJsonToByteBuffer();
+    static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
+        if (cosmosItem instanceof CosmosItemProperties) {
+            return ((CosmosItemProperties) cosmosItem).serializeJsonToByteBuffer();
         } else {
             if (cosmosItem instanceof Document) {
-                return BridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem, objectMapper);
+                return ((Document) cosmosItem).serializeJsonToByteBuffer();
             }
 
             return Utils.serializeJsonToByteBuffer(objectMapper, cosmosItem);
         }
+    }
+
+    static List<CosmosItemProperties> getFromV2Results(List<Document> results) {
+        return results.stream().map(document -> new CosmosItemProperties(document.toJson()))
+                   .collect(Collectors.toList());
     }
 
     static <T> List<T> getTypedResultsFromV2Results(List<Document> results, Class<T> klass) {

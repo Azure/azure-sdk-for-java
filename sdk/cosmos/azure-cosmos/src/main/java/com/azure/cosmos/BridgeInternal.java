@@ -31,6 +31,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -57,6 +58,18 @@ public class BridgeInternal {
 
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.FromObject(document, mapper);
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(Document document, ObjectMapper mapper) {
+        return document.serializeJsonToByteBuffer();
+    }
+
+    public static String toJsonByteBuffer(Object document, ObjectMapper mapper) {
+        return CosmosItemProperties.toJsonString(document, mapper);
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
+        return CosmosItemProperties.serializeJsonToByteBuffer(document, mapper);
     }
 
     public static void monitorTelemetry(MeterRegistry registry) {

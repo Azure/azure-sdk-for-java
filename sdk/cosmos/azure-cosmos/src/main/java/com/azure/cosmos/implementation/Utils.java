@@ -14,11 +14,13 @@ import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -549,7 +551,7 @@ public class Utils {
     static String escapeNonAscii(String partitionKeyJson) {
         // if all are ascii original string will be returned, and avoids copying data.
         StringBuilder sb = null;
-        for(int i = 0; i < partitionKeyJson.length(); i++) {
+        for (int i = 0; i < partitionKeyJson.length(); i++) {
             int val = partitionKeyJson.charAt(i);
             if (val > 127) {
                 if (sb == null) {
@@ -569,6 +571,16 @@ public class Utils {
             return partitionKeyJson;
         } else {
             return sb.toString();
+        }
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            objectMapper.writeValue(byteArrayOutputStream, object);
+            return ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Failed to serialize json", e);
         }
     }
 }

@@ -13,13 +13,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -68,6 +71,10 @@ public class JsonSerializable {
      */
     JsonSerializable(ObjectNode objectNode) {
         this.propertyBag = objectNode;
+    }
+
+    protected JsonSerializable(ByteBuffer byteBuffer) {
+        this.propertyBag = fromJson(byteBuffer);
     }
 
     private static void checkForValidPOJO(Class<?> c) {
@@ -520,6 +527,19 @@ public class JsonSerializable {
             throw new IllegalArgumentException(
                 String.format("Unable to parse JSON %s", json), e);
         }
+    }
+
+    private ObjectNode fromJson(ByteBuffer json) {
+        try {
+            return (ObjectNode) getMapper().readTree(new ByteBufferBackedInputStream(json));
+        } catch (IOException e) {
+            throw new IllegalArgumentException(
+                String.format("Unable to parse JSON %s", json), e);
+        }
+    }
+
+    public ByteBuffer serializeJsonToByteBuffer() {
+        return Utils.serializeJsonToByteBuffer(getMapper(), propertyBag);
     }
 
     private String toJson(Object object) {
