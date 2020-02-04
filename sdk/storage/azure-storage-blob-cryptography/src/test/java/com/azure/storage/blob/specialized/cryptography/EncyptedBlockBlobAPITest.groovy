@@ -1209,8 +1209,14 @@ class EncyptedBlockBlobAPITest extends APISpec {
             new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null)
 
         then:
-        // We should receive exactly one notification of the completed progress.
-        1 * mockReceiver.reportProgress(fileSize)
+        /*
+         * Should receive at least one notification indicating completed progress, multiple notifications may be
+         * received if there are empty buffers in the stream.
+         */
+        (1.._) * mockReceiver.reportProgress(fileSize)
+
+        // There should be NO notification with a larger than expected size.
+        0 * mockReceiver.reportProgress({ it > fileSize })
 
         /*
         We should receive at least one notification reporting an intermediary value per block, but possibly more
