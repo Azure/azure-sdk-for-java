@@ -35,6 +35,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         storedProcedure.setId(UUID.randomUUID().toString());
         storedProcedure.setBody("function() {var x = 10;}");
 
-        Flux<ResourceResponse<StoredProcedure>> createObservable = client
+        Mono<ResourceResponse<StoredProcedure>> createObservable = client
                 .createStoredProcedure(getCollectionLink(), storedProcedure, null);
 
         ResourceResponseValidator<StoredProcedure> validator = new ResourceResponseValidator.Builder<StoredProcedure>()
@@ -126,7 +127,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     public void create() {
         final Document docDefinition = getDocumentDefinition();
 
-        Flux<ResourceResponse<Document>> createObservable = client.createDocument(
+        Mono<ResourceResponse<Document>> createObservable = client.createDocument(
             this.getCollectionLink(), docDefinition, null, false);
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
@@ -221,7 +222,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(-1);
         options.maxItemCount(100);
-        
+
         Flux<FeedResponse<Document>> results = client.queryDocuments(getCollectionLink(), "SELECT * FROM r", options);
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()

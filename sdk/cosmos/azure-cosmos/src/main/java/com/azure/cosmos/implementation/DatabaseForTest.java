@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -95,14 +96,14 @@ public class DatabaseForTest {
 
             if (db != null && dbForTest.isStale()) {
                 logger.info("Deleting database {}", db.getId());
-                client.deleteDatabase(db.getId()).single().block();
+                client.deleteDatabase(db.getId()).block();
             }
         }
     }
 
     public interface DatabaseManager {
         Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec query);
-        Flux<ResourceResponse<Database>> createDatabase(Database databaseDefinition);
-        Flux<ResourceResponse<Database>> deleteDatabase(String id);
+        Mono<ResourceResponse<Database>> createDatabase(Database databaseDefinition);
+        Mono<ResourceResponse<Database>> deleteDatabase(String id);
     }
 }

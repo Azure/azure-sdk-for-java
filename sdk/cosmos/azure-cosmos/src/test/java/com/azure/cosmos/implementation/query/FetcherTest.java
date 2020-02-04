@@ -12,6 +12,7 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -85,10 +86,10 @@ public class FetcherTest {
 
         AtomicInteger executeIndex = new AtomicInteger(0);
 
-        Function<RxDocumentServiceRequest, Flux<FeedResponse<Document>>> executeFunc = request ->  {
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc = request ->  {
                 FeedResponse<Document> rsp = feedResponseList.get(executeIndex.getAndIncrement());
                 totalResultsReceived.addAndGet(rsp.getResults().size());
-                return Flux.just(rsp);
+                return Mono.just(rsp);
         };
 
         Fetcher<Document> fetcher =
@@ -151,8 +152,8 @@ public class FetcherTest {
 
         AtomicInteger executeIndex = new AtomicInteger(0);
 
-        Function<RxDocumentServiceRequest, Flux<FeedResponse<Document>>> executeFunc = request -> {
-            return Flux.just(feedResponseList.get(executeIndex.getAndIncrement()));
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc = request -> {
+            return Mono.just(feedResponseList.get(executeIndex.getAndIncrement()));
         };
 
         Fetcher<Document> fetcher =
@@ -175,7 +176,7 @@ public class FetcherTest {
         assertThat(fetcher.shouldFetchMore()).describedAs("should not fetch more pages").isFalse();
     }
 
-    private FeedResponse<Document> validate(Flux<FeedResponse<Document>> page) {
+    private FeedResponse<Document> validate(Mono<FeedResponse<Document>> page) {
         TestSubscriber<FeedResponse<Document>> subscriber = new TestSubscriber<>();
         page.subscribe(subscriber);
         subscriber.awaitTerminalEvent();

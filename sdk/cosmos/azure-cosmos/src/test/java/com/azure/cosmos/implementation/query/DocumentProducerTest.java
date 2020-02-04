@@ -692,7 +692,7 @@ public class DocumentProducerTest {
         }
     }
 
-    static abstract class RequestExecutor implements Function<RxDocumentServiceRequest, Flux<FeedResponse<Document>>> {
+    static abstract class RequestExecutor implements Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> {
 
         LinkedListMultimap<String, CapturedInvocation> partitionKeyRangeIdToCapturedInvocation =
                 LinkedListMultimap.create();
@@ -729,7 +729,7 @@ public class DocumentProducerTest {
         public static RequestExecutor fromPartitionAnswer(List<PartitionAnswer> answers) {
             return new RequestExecutor() {
                 @Override
-                public Flux<FeedResponse<Document>> apply(RxDocumentServiceRequest request) {
+                public Mono<FeedResponse<Document>> apply(RxDocumentServiceRequest request) {
                     synchronized (this) {
                         logger.debug("executing request: " + request + " cp is: " + request.getContinuation());
                         for (PartitionAnswer a : answers) {
@@ -744,7 +744,7 @@ public class DocumentProducerTest {
 
                                 } catch (Exception e) {
                                     capture(a.getPartitionKeyRangeId(), new CapturedInvocation(request, e));
-                                    return Flux.error(e);
+                                    return Mono.error(e);
                                 }
                             }
                         }
@@ -771,11 +771,11 @@ public class DocumentProducerTest {
                     this.failureResult = ex;
                 }
 
-                public Flux<FeedResponse<Document>> toSingle() {
+                public Mono<FeedResponse<Document>> toSingle() {
                     if (invocationResult != null) {
-                        return Flux.just(invocationResult);
+                        return Mono.just(invocationResult);
                     } else {
-                        return Flux.error(failureResult);
+                        return Mono.error(failureResult);
                     }
                 }
             }

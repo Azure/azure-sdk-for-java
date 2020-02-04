@@ -12,7 +12,7 @@ import com.azure.cosmos.PartitionKind;
 import org.testng.SkipException;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -257,19 +257,19 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
             documentCollection.setPartitionKey(partitionKeyDefinition);
 
             DocumentCollection collection = client.createCollection(createdDatabase.getSelfLink(), documentCollection
-                    , null).blockFirst().getResource();
+                    , null).block().getResource();
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setPartitionKey(new PartitionKey("1"));
 
             Document documentDefinition = new Document();
             documentDefinition.setId("1");
-            Document document = client.createDocument(collection.getSelfLink(), documentDefinition, requestOptions, false).blockFirst().getResource();
+            Document document = client.createDocument(collection.getSelfLink(), documentDefinition, requestOptions, false).block().getResource();
 
-            Flux<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.getSelfLink(), requestOptions);
+            Mono<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.getSelfLink(), requestOptions);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .nullResource().build();
             validateSuccess(deleteObservable, validator);
-            Flux<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), requestOptions);
+            Mono<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), requestOptions);
             FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().unknownSubStatusCode().build();
             validateFailure(readObservable, notFoundValidator);
 

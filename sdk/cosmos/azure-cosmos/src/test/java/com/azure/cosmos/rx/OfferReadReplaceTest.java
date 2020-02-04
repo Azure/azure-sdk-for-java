@@ -16,6 +16,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
         Offer rOffer = client.readOffer(offers.get(i).getSelfLink()).single().block().getResource();
         int oldThroughput = rOffer.getThroughput();
 
-        Flux<ResourceResponse<Offer>> readObservable = client.readOffer(offers.get(i).getSelfLink());
+        Mono<ResourceResponse<Offer>> readObservable = client.readOffer(offers.get(i).getSelfLink());
 
         // validate offer read
         ResourceResponseValidator<Offer> validatorForRead = new ResourceResponseValidator.Builder<Offer>()
@@ -62,7 +63,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
         // update offer
         int newThroughput = oldThroughput + 100;
         offers.get(i).setThroughput(newThroughput);
-        Flux<ResourceResponse<Offer>> replaceObservable = client.replaceOffer(offers.get(i));
+        Mono<ResourceResponse<Offer>> replaceObservable = client.replaceOffer(offers.get(i));
 
         // validate offer replace
         ResourceResponseValidator<Offer> validatorForReplace = new ResourceResponseValidator.Builder<Offer>()

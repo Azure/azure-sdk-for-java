@@ -26,6 +26,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
@@ -228,7 +229,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     public List<Document> bulkInsert(AsyncDocumentClient client, List<Document> docs) {
-        ArrayList<Flux<ResourceResponse<Document>>> result = new ArrayList<Flux<ResourceResponse<Document>>>();
+        ArrayList<Mono<ResourceResponse<Document>>> result = new ArrayList<Mono<ResourceResponse<Document>>>();
         for (int i = 0; i < docs.size(); i++) {
             result.add(client.createDocument("dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId(), docs.get(i), null, false));
         }

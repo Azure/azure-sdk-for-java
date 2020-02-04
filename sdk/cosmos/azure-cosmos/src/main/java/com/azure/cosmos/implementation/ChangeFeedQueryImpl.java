@@ -2,14 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.query.Paginator;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
+import com.azure.cosmos.implementation.query.Paginator;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -119,12 +120,12 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = this::createDocumentServiceRequest;
 
-        Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = this::executeRequestAsync;
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = this::executeRequestAsync;
 
         return Paginator.getPaginatedChangeFeedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, options.getMaxItemCount() != null ? options.getMaxItemCount(): -1);
     }
 
-    private Flux<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
+    private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         return client.readFeed(request)
                 .map( rsp -> BridgeInternal.toChaneFeedResponsePage(rsp, klass));
     }
