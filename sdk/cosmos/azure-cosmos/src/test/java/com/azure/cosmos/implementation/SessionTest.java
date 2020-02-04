@@ -15,7 +15,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -100,23 +99,23 @@ public class SessionTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionConsistency_ReadYourWrites(boolean isNameBased) {
-        spyClient.readCollection(getCollectionLink(isNameBased), null).blockFirst();
-        spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false).blockFirst();
+        spyClient.readCollection(getCollectionLink(isNameBased), null).block();
+        spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false).block();
 
         spyClient.clearCapturedRequests();
 
         for (int i = 0; i < 10; i++) {
             Document documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false)
-                    .blockFirst().getResource();
+                    .block().getResource();
 
             spyClient.clearCapturedRequests();
 
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).blockFirst();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).block();
 
             assertThat(getSessionTokensInRequests()).hasSize(1);
             assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
 
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).blockFirst();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).block();
 
             assertThat(getSessionTokensInRequests()).hasSize(2);
             assertThat(getSessionTokensInRequests().get(1)).isNotEmpty();
@@ -129,11 +128,11 @@ public class SessionTest extends TestSuiteBase {
         document.setId(UUID.randomUUID().toString());
         BridgeInternal.setProperty(document, "pk", "pk");
         document = spyClient.createDocument(getCollectionLink(isNameBased), document, null, false)
-                .blockFirst()
+                .block()
                 .getResource();
 
         final String documentLink = getDocumentLink(document, isNameBased);
-        spyClient.readDocument(documentLink, options).blockFirst()
+        spyClient.readDocument(documentLink, options).block()
                 .getResource();
 
         List<HttpRequest> documentReadHttpRequests = spyClient.getCapturedRequests().stream()
@@ -158,7 +157,7 @@ public class SessionTest extends TestSuiteBase {
             throw new SkipException("Master resource access is only through gateway");
         }
         String collectionLink = getCollectionLink(isNameBased);
-        spyClient.readCollection(collectionLink, null).blockFirst();
+        spyClient.readCollection(collectionLink, null).block();
 
         List<HttpRequest> collectionReadHttpRequests = spyClient.getCapturedRequests().stream()
                 .filter(r -> r.httpMethod() == HttpMethod.GET)

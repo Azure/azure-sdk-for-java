@@ -14,6 +14,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,11 +51,11 @@ public class RetryThrottleTest extends TestSuiteBase {
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(builder);
 
         // create a document to ensure collection is cached
-        client.createDocument(getCollectionLink(collection), getDocumentDefinition(), null, false).blockFirst();
+        client.createDocument(getCollectionLink(collection), getDocumentDefinition(), null, false).block();
 
-        List<Flux<ResourceResponse<Document>>> list = new ArrayList<>();
+        List<Mono<ResourceResponse<Document>>> list = new ArrayList<>();
         for(int i = 0; i < TOTAL_DOCS; i++) {
-            Flux<ResourceResponse<Document>> obs = client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false);
+            Mono<ResourceResponse<Document>> obs = client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false);
             list.add(obs);
         }
 
@@ -62,7 +63,7 @@ public class RetryThrottleTest extends TestSuiteBase {
         AtomicInteger totalCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
 
-        doAnswer((Answer<Flux<RxDocumentServiceResponse>>) invocation -> {
+        doAnswer((Answer<Mono<RxDocumentServiceResponse>>) invocation -> {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
                 if (req.getResourceType() ==  ResourceType.Document && req.getOperationType() == OperationType.Create) {
                     // increment the counter per Document CREATE operations
@@ -83,22 +84,22 @@ public class RetryThrottleTest extends TestSuiteBase {
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createGatewayRxDocumentClient());
 
         // create a document to ensure collection is cached
-        client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false).blockFirst();
+        client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false).block();
 
         Document docDefinition = getDocumentDefinition();
 
-        Flux<ResourceResponse<Document>> createObservable = client
+        Mono<ResourceResponse<Document>> createObservable = client
                 .createDocument(collection.getSelfLink(), docDefinition, null, false);
         AtomicInteger count = new AtomicInteger();
 
-        doAnswer((Answer<Flux<RxDocumentServiceResponse>>) invocation -> {
+        doAnswer((Answer<Mono<RxDocumentServiceResponse>>) invocation -> {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
                 if (req.getOperationType() != OperationType.Create) {
                     return client.getOrigGatewayStoreModel().processMessage(req);
                 }
                 int currentAttempt = count.getAndIncrement();
                 if (currentAttempt == 0) {
-                    return Flux.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.TOO_MANY_REQUESTS));
+                    return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.TOO_MANY_REQUESTS));
                 } else {
                     return client.getOrigGatewayStoreModel().processMessage(req);
                 }

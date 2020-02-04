@@ -2,20 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,9 +26,9 @@ import org.apache.commons.lang3.RandomUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,7 +121,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDocument_Async() throws Exception {
         Document doc = new Document(String.format("{ 'id': 'doc%s', 'counter': '%d'}", UUID.randomUUID().toString(), 1));
-        Flux<ResourceResponse<Document>> createDocumentObservable = client
+        Mono<ResourceResponse<Document>> createDocumentObservable = client
                 .createDocument(getCollectionLink(), doc, null, true);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
@@ -147,7 +147,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDocument_Async_withoutLambda() throws Exception {
         Document doc = new Document(String.format("{ 'getId': 'doc%s', 'counter': '%d'}", UUID.randomUUID().toString(), 1));
-        Flux<ResourceResponse<Document>> createDocumentObservable = client
+        Mono<ResourceResponse<Document>> createDocumentObservable = client
                 .createDocument(getCollectionLink(), doc, null, true);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
@@ -185,7 +185,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDocument_toBlocking() {
         Document doc = new Document(String.format("{ 'id': 'doc%s', 'counter': '%d'}", UUID.randomUUID().toString(), 1));
-        Flux<ResourceResponse<Document>> createDocumentObservable = client
+        Mono<ResourceResponse<Document>> createDocumentObservable = client
                 .createDocument(getCollectionLink(), doc, null, true);
 
         // toBlocking() converts to a blocking observable.
@@ -210,7 +210,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(PartitionKey.NONE);
         // READ the created document
-        Flux<ResourceResponse<Document>> readDocumentObservable = client
+        Mono<ResourceResponse<Document>> readDocumentObservable = client
                 .readDocument(getDocumentLink(createdDocument), null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
@@ -237,11 +237,11 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void documentCreation_SumUpRequestCharge() throws Exception {
         // CREATE 10 documents
-        List<Flux<ResourceResponse<Document>>> listOfCreateDocumentObservables = new ArrayList<>();
+        List<Mono<ResourceResponse<Document>>> listOfCreateDocumentObservables = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Document doc = new Document(String.format("{ 'id': 'doc%s', 'counter': '%d'}", UUID.randomUUID().toString(), i));
 
-            Flux<ResourceResponse<Document>> createDocumentObservable = client
+            Mono<ResourceResponse<Document>> createDocumentObservable = client
                     .createDocument(getCollectionLink(), doc, null, false);
             listOfCreateDocumentObservables.add(createDocumentObservable);
         }
@@ -283,7 +283,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         client.createDocument(getCollectionLink(), doc, null, false).single().block();
 
         // CREATE the document
-        Flux<ResourceResponse<Document>> createDocumentObservable = client
+        Mono<ResourceResponse<Document>> createDocumentObservable = client
                 .createDocument(getCollectionLink(), doc, null, false);
 
         try {
@@ -309,7 +309,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         client.createDocument(getCollectionLink(), doc, null, false).single().block();
 
         // CREATE the document
-        Flux<ResourceResponse<Document>> createDocumentObservable = client
+        Mono<ResourceResponse<Document>> createDocumentObservable = client
                 .createDocument(getCollectionLink(), doc, null, false);
 
         List<Throwable> errorList = Collections.synchronizedList(new ArrayList<>());
@@ -339,7 +339,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         // Try to replace the existing document
         Document replacingDocument = new Document(
                 String.format("{ 'id': 'doc%s', 'counter': '%d', 'new-prop' : '2'}", createdDocument.getId(), 1));
-        Flux<ResourceResponse<Document>> replaceDocumentObservable = client
+        Mono<ResourceResponse<Document>> replaceDocumentObservable = client
                 .replaceDocument(getDocumentLink(createdDocument), replacingDocument, null);
 
         List<ResourceResponse<Document>> capturedResponse = Collections
@@ -367,7 +367,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         // Upsert the existing document
         Document upsertingDocument = new Document(
                 String.format("{ 'id': 'doc%s', 'counter': '%d', 'new-prop' : '2'}", doc.getId(), 1));
-        Flux<ResourceResponse<Document>> upsertDocumentObservable = client
+        Mono<ResourceResponse<Document>> upsertDocumentObservable = client
                 .upsertDocument(getCollectionLink(), upsertingDocument, null, false);
 
         List<ResourceResponse<Document>> capturedResponse = Collections
@@ -397,7 +397,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         options.setPartitionKey(new PartitionKey(createdDocument.getString("mypk")));
 
         // DELETE the existing document
-        Flux<ResourceResponse<Document>> deleteDocumentObservable = client
+        Mono<ResourceResponse<Document>> deleteDocumentObservable = client
                 .deleteDocument(getDocumentLink(createdDocument), options);
 
         List<ResourceResponse<Document>> capturedResponse = Collections
@@ -438,7 +438,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         // READ the document
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(createdDocument.getString("mypk")));
-        Flux<ResourceResponse<Document>> readDocumentObservable = client
+        Mono<ResourceResponse<Document>> readDocumentObservable = client
                 .readDocument(getDocumentLink(createdDocument), options);
 
         List<ResourceResponse<Document>> capturedResponse = Collections
@@ -503,7 +503,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void transformObservableToCompletableFuture() throws Exception {
         Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", RandomUtils.nextInt(), 1));
-        Flux<ResourceResponse<Document>> createDocumentObservable = client
+        Mono<ResourceResponse<Document>> createDocumentObservable = client
                 .createDocument(getCollectionLink(), doc, null, false);
         CompletableFuture<ResourceResponse<Document>> listenableFuture = createDocumentObservable.single().toFuture();
 

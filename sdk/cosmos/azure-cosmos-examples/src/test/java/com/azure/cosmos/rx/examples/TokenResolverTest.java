@@ -89,12 +89,12 @@ public class TokenResolverTest extends DocumentClientTest {
             // CREATE a document
             Document documentDefinition = new Document();
             documentDefinition.setId(UUID.randomUUID().toString());
-            Document createdDocument = client.createDocument(createdCollection.getSelfLink(), documentDefinition, null, true).blockFirst().getResource();
+            Document createdDocument = client.createDocument(createdCollection.getSelfLink(), documentDefinition, null, true).block().getResource();
 
             // CREATE a User who is meant to only read this document
             User readUserDefinition = new User();
             readUserDefinition.setId(UUID.randomUUID().toString());
-            User createdReadUser = client.createUser(createdDatabase.getSelfLink(), readUserDefinition, null).blockFirst().getResource();
+            User createdReadUser = client.createUser(createdDatabase.getSelfLink(), readUserDefinition, null).block().getResource();
 
             // CREATE a read only getPermission for  the above document
             Permission readOnlyPermissionDefinition = new Permission();
@@ -103,7 +103,7 @@ public class TokenResolverTest extends DocumentClientTest {
             readOnlyPermissionDefinition.setPermissionMode(PermissionMode.READ);
 
             // Assign the getPermission to the above getUser
-            Permission readOnlyCreatedPermission = client.createPermission(createdReadUser.getSelfLink(), readOnlyPermissionDefinition, null).blockFirst().getResource();
+            Permission readOnlyCreatedPermission = client.createPermission(createdReadUser.getSelfLink(), readOnlyPermissionDefinition, null).block().getResource();
             userToReadOnlyResourceTokenMap.put(createdReadUser.getId(), readOnlyCreatedPermission.getToken());
 
             documentToReadUserMap.put(createdDocument.getSelfLink(), createdReadUser.getId());
@@ -111,7 +111,7 @@ public class TokenResolverTest extends DocumentClientTest {
             // CREATE a User who can both read and write this document
             User readWriteUserDefinition = new User();
             readWriteUserDefinition.setId(UUID.randomUUID().toString());
-            User createdReadWriteUser = client.createUser(createdDatabase.getSelfLink(), readWriteUserDefinition, null).blockFirst().getResource();
+            User createdReadWriteUser = client.createUser(createdDatabase.getSelfLink(), readWriteUserDefinition, null).block().getResource();
 
             // CREATE a read/write permission for the above document
             Permission readWritePermissionDefinition = new Permission();
@@ -120,7 +120,7 @@ public class TokenResolverTest extends DocumentClientTest {
             readWritePermissionDefinition.setPermissionMode(PermissionMode.ALL);
 
             // Assign the getPermission to the above getUser
-            Permission readWriteCreatedPermission = client.createPermission(createdReadWriteUser.getSelfLink(), readWritePermissionDefinition, null).blockFirst().getResource();
+            Permission readWriteCreatedPermission = client.createPermission(createdReadWriteUser.getSelfLink(), readWritePermissionDefinition, null).block().getResource();
             userToReadWriteResourceTokenMap.put(createdReadWriteUser.getId(), readWriteCreatedPermission.getToken());
 
             documentToReadWriteUserMap.put(createdDocument.getSelfLink(), createdReadWriteUser.getId());
@@ -155,7 +155,7 @@ public class TokenResolverTest extends DocumentClientTest {
                 requestOptions.setProperties(properties);
                 requestOptions.setPartitionKey(PartitionKey.NONE);
                 Flux<ResourceResponse<Document>> readDocumentObservable = asyncClientWithTokenResolver
-                        .readDocument(documentLink, requestOptions);
+                        .readDocument(documentLink, requestOptions).flux();
                 readDocumentObservable.collectList().block().forEach(capturedResponse::add);
             }
             System.out.println("capturedResponse.size() = " + capturedResponse.size());
@@ -194,7 +194,7 @@ public class TokenResolverTest extends DocumentClientTest {
                 requestOptions.setProperties(properties);
                 requestOptions.setPartitionKey(PartitionKey.NONE);
                 Flux<ResourceResponse<Document>> readDocumentObservable = asyncClientWithTokenResolver
-                        .deleteDocument(documentLink, requestOptions);
+                        .deleteDocument(documentLink, requestOptions).flux();
                 readDocumentObservable.collectList().block().forEach(capturedResponse::add);
             }
             assertThat(capturedResponse, hasSize(10));
@@ -231,7 +231,7 @@ public class TokenResolverTest extends DocumentClientTest {
                     .build();
 
             options.setProperties(properties);
-            Flux<ResourceResponse<DocumentCollection>> readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.getSelfLink(), options);
+            Flux<ResourceResponse<DocumentCollection>> readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.getSelfLink(), options).flux();
             List<Throwable> capturedErrors = Collections
                     .synchronizedList(new ArrayList<>());
             readObservable.subscribe(response -> {}, throwable -> capturedErrors.add(throwable));
@@ -248,7 +248,7 @@ public class TokenResolverTest extends DocumentClientTest {
                     .put(USER_ID, validUserId)
                     .build();
             options.setProperties(properties);
-            readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.getSelfLink(), options);
+            readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.getSelfLink(), options).flux();
             List<DocumentCollection> capturedResponse = Collections
                     .synchronizedList(new ArrayList<>());
             readObservable.subscribe(resourceResponse -> capturedResponse.add(resourceResponse.getResource()), error -> error.printStackTrace());

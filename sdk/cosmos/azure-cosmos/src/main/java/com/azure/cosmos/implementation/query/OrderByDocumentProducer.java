@@ -2,20 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
-import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
+import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
             String collectionResourceId,
             FeedOptions feedOptions,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeRequestFunc,
+            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
             String collectionLink,
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,

@@ -2,18 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.UniqueKey;
 import com.azure.cosmos.UniqueKeyPolicy;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -22,7 +22,7 @@ import org.hamcrest.Matchers;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -67,7 +67,7 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
 
         // doc1 got inserted with the same values for 'name' and 'field'
         // so inserting a new one with the same values will violate unique index constraint.
-        Flux<ResourceResponse<Document>> docCreation =
+        Mono<ResourceResponse<Document>> docCreation =
                 client.createDocument(getCollectionLink(collection), doc3, null, false);
 
         TestSubscriber<ResourceResponse<Document>> subscriber = new TestSubscriber<>();

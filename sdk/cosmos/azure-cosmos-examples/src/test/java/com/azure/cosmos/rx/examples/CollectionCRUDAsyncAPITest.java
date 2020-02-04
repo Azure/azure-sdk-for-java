@@ -2,21 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.DataType;
-import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.IncludedPath;
 import com.azure.cosmos.Index;
 import com.azure.cosmos.IndexingPolicy;
 import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import org.testng.annotations.AfterClass;
@@ -24,6 +24,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -113,7 +114,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
     public void createCollection_SinglePartition_Async() throws Exception {
         RequestOptions singlePartitionRequestOptions = new RequestOptions();
         singlePartitionRequestOptions.setOfferThroughput(400);
-        Flux<ResourceResponse<DocumentCollection>> createCollectionObservable = client
+        Mono<ResourceResponse<DocumentCollection>> createCollectionObservable = client
                 .createCollection(getDatabaseLink(), collectionDefinition, singlePartitionRequestOptions);
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -145,7 +146,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
         RequestOptions multiPartitionRequestOptions = new RequestOptions();
         multiPartitionRequestOptions.setOfferThroughput(20000);
 
-        Flux<ResourceResponse<DocumentCollection>> createCollectionObservable = client.createCollection(
+        Mono<ResourceResponse<DocumentCollection>> createCollectionObservable = client.createCollection(
                 getDatabaseLink(), getMultiPartitionCollectionDefinition(), multiPartitionRequestOptions);
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -169,7 +170,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
      */
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createCollection_Async_withoutLambda() throws Exception {
-        Flux<ResourceResponse<DocumentCollection>> createCollectionObservable = client
+        Mono<ResourceResponse<DocumentCollection>> createCollectionObservable = client
                 .createCollection(getDatabaseLink(), collectionDefinition, null);
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -204,7 +205,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
      */
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createCollection_toBlocking() {
-        Flux<ResourceResponse<DocumentCollection>> createCollectionObservable = client
+        Mono<ResourceResponse<DocumentCollection>> createCollectionObservable = client
                 .createCollection(getDatabaseLink(), collectionDefinition, null);
 
         // single() converts the flux to a mono.
@@ -224,7 +225,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
         client.createCollection(getDatabaseLink(), collectionDefinition, null).single().block();
 
         // CREATE the collection for test.
-        Flux<ResourceResponse<DocumentCollection>> collectionForTestObservable = client
+        Mono<ResourceResponse<DocumentCollection>> collectionForTestObservable = client
                 .createCollection(getDatabaseLink(), collectionDefinition, null);
 
         try {
@@ -242,7 +243,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
      */
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void transformObservableToCompletableFuture() throws Exception {
-        Flux<ResourceResponse<DocumentCollection>> createCollectionObservable = client
+        Mono<ResourceResponse<DocumentCollection>> createCollectionObservable = client
                 .createCollection(getDatabaseLink(), collectionDefinition, null);
         CompletableFuture<ResourceResponse<DocumentCollection>> future = createCollectionObservable.single().toFuture();
 
@@ -263,7 +264,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
                 .getResource();
 
         // READ the created collection using async api
-        Flux<ResourceResponse<DocumentCollection>> readCollectionObservable = client
+        Mono<ResourceResponse<DocumentCollection>> readCollectionObservable = client
                 .readCollection(getCollectionLink(documentCollection), null);
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -293,7 +294,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
                 .getResource();
 
         // DELETE the created collection using async api
-        Flux<ResourceResponse<DocumentCollection>> deleteCollectionObservable = client
+        Mono<ResourceResponse<DocumentCollection>> deleteCollectionObservable = client
                 .deleteCollection(getCollectionLink(documentCollection), null);
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
