@@ -1290,9 +1290,7 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-
-
-
+        
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
