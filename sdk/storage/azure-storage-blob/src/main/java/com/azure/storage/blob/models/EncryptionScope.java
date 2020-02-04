@@ -11,9 +11,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * Additional parameters for a set of operations.
  */
-@JacksonXmlRootElement(localName = "cpk-scope-info")
+@JacksonXmlRootElement(localName = "encryption-scope")
 @Fluent
-public final class CpkScopeInfo {
+public final class EncryptionScope {
     /*
      * Optional. Version 2019-07-07 and later.  Specifies the name of the
      * encryption scope to use to encrypt the data provided in the request. If
@@ -45,9 +45,9 @@ public final class CpkScopeInfo {
      * Encryption at Rest for Azure Storage Services.
      *
      * @param encryptionScope the encryptionScope value to set.
-     * @return the CpkScopeInfo object itself.
+     * @return the EncryptionScope object itself.
      */
-    public CpkScopeInfo setEncryptionScope(String encryptionScope) {
+    public EncryptionScope setEncryptionScope(String encryptionScope) {
         this.encryptionScope = encryptionScope;
         return this;
     }

@@ -24,7 +24,6 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.BlobGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
-import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
@@ -41,6 +40,7 @@ import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -95,7 +95,7 @@ public class BlobAsyncClientBase {
     protected final AzureBlobStorageImpl azureBlobStorage;
     private final String snapshot;
     private final CpkInfo customerProvidedKey;
-    protected final CpkScopeInfo encryptionScope;
+    protected final EncryptionScope encryptionScope;
     protected final String accountName;
     protected final String containerName;
     protected final String blobName;
@@ -136,7 +136,7 @@ public class BlobAsyncClientBase {
      */
     protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        CpkScopeInfo encryptionScope) {
+        EncryptionScope encryptionScope) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -153,12 +153,15 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Gets the {@link CpkScopeInfo encryption scope} used to encrypt this blob's content on the server.
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
      *
      * @return the encryption scope used for encryption.
      */
-    protected CpkScopeInfo getEncryptionScope() {
-        return encryptionScope;
+    protected String getEncryptionScope() {
+        if (encryptionScope == null) {
+            return null;
+        }
+        return encryptionScope.getEncryptionScope();
     }
 
     /**

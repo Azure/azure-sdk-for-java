@@ -12,11 +12,11 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -53,7 +53,7 @@ public final class BlobServiceClientBuilder {
     private String accountName;
 
     private CpkInfo customerProvidedKey;
-    private CpkScopeInfo encryptionScope;
+    private EncryptionScope encryptionScope;
     private BlobContainerEncryptionScope blobContainerEncryptionScope;
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
@@ -157,7 +157,7 @@ public final class BlobServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link String encryption scope} that is used to encrypt blob contents on the server.
+     * Sets the {@code encryption scope} that is used to encrypt blob contents on the server.
      *
      * @param encryptionScope Encryption scope containing the encryption key information.
      * @return the updated BlobServiceClientBuilder object
@@ -166,7 +166,7 @@ public final class BlobServiceClientBuilder {
         if (encryptionScope == null) {
             this.encryptionScope = null;
         } else {
-            this.encryptionScope = new CpkScopeInfo().setEncryptionScope(encryptionScope);
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
         }
 
         return this;

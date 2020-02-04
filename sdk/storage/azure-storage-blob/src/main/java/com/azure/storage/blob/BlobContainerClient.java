@@ -8,13 +8,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -159,11 +159,11 @@ public final class BlobContainerClient {
     }
 
     /**
-     * Gets the {@link CpkScopeInfo encryption scope} used to encrypt this blob's content on the server.
+     * Gets the {@link EncryptionScope encryption scope} used to encrypt this blob's content on the server.
      *
      * @return the encryption scope used for encryption.
      */
-    public CpkScopeInfo getEncryptionScope() {
+    public String getEncryptionScope() {
         return client.getEncryptionScope();
     }
 

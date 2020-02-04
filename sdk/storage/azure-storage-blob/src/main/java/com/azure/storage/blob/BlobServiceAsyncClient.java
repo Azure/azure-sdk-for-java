@@ -17,7 +17,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
@@ -27,6 +26,7 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -80,7 +80,7 @@ public final class BlobServiceAsyncClient {
     private final String accountName;
     private final BlobServiceVersion serviceVersion;
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
-    private final CpkScopeInfo encryptionScope; // only used to pass down to blob clients
+    private final EncryptionScope encryptionScope; // only used to pass down to blob clients
     private final BlobContainerEncryptionScope blobContainerEncryptionScope; // only used to pass down to container
     // clients
     private final boolean anonymousAccess;
@@ -99,7 +99,7 @@ public final class BlobServiceAsyncClient {
      * @param anonymousAccess Whether or not the client was built with anonymousAccess
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
-        CpkInfo customerProvidedKey, CpkScopeInfo encryptionScope,
+        CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
         BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)

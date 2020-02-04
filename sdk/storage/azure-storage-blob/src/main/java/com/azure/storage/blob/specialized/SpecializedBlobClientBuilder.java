@@ -16,10 +16,10 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -65,7 +65,7 @@ public final class SpecializedBlobClientBuilder {
     private String snapshot;
 
     private CpkInfo customerProvidedKey;
-    private CpkScopeInfo encryptionScope;
+    private EncryptionScope encryptionScope;
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
@@ -220,7 +220,9 @@ public final class SpecializedBlobClientBuilder {
         serviceVersion(blobClient.getServiceVersion());
         this.snapshot = blobClient.getSnapshotId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
-        this.encryptionScope = blobClient.getEncryptionScope();
+        if (blobClient.getEncryptionScope() != null) {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(blobClient.getEncryptionScope());
+        }
         return this;
     }
 
@@ -236,7 +238,9 @@ public final class SpecializedBlobClientBuilder {
         serviceVersion(blobAsyncClient.getServiceVersion());
         this.snapshot = blobAsyncClient.getSnapshotId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
-        this.encryptionScope = blobAsyncClient.getEncryptionScope();
+        if (blobAsyncClient.getEncryptionScope() != null) {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(blobAsyncClient.getEncryptionScope());
+        }
         return this;
     }
 
@@ -253,7 +257,9 @@ public final class SpecializedBlobClientBuilder {
         serviceVersion(blobContainerClient.getServiceVersion());
         blobName(blobName);
         this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
-        this.encryptionScope = blobContainerClient.getEncryptionScope();
+        if (blobContainerClient.getEncryptionScope() != null) {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(blobContainerClient.getEncryptionScope());
+        }
         return this;
     }
 
@@ -272,7 +278,10 @@ public final class SpecializedBlobClientBuilder {
         serviceVersion(blobContainerAsyncClient.getServiceVersion());
         blobName(blobName);
         this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
-        this.encryptionScope = blobContainerAsyncClient.getEncryptionScope();
+        if (blobContainerAsyncClient.getEncryptionScope() != null) {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(
+                blobContainerAsyncClient.getEncryptionScope());
+        }
         return this;
     }
 
@@ -326,7 +335,7 @@ public final class SpecializedBlobClientBuilder {
 
 
     /**
-     * Sets the {@link String encryption scope} that is used to encrypt blob contents on the server.
+     * Sets the {@code encryption scope} that is used to encrypt blob contents on the server.
      *
      * @param encryptionScope Encryption scope containing the encryption key information.
      * @return the updated BlobClientBuilder object
@@ -335,7 +344,7 @@ public final class SpecializedBlobClientBuilder {
         if (encryptionScope == null) {
             this.encryptionScope = null;
         } else {
-            this.encryptionScope = new CpkScopeInfo().setEncryptionScope(encryptionScope);
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
         }
 
         return this;

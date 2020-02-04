@@ -32,8 +32,8 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.CpkScopeInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
+import com.azure.storage.blob.models.EncryptionScope;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -155,13 +155,13 @@ public final class BlockBlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param blobHttpHeaders Additional parameters for the operation.
      * @param cpkInfo Additional parameters for the operation.
-     * @param cpkScopeInfo Additional parameters for the operation.
+     * @param encryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Integer timeout, byte[] transactionalContentMD5, Map<String, String> metadata, String leaseId, AccessTier tier, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, CpkScopeInfo cpkScopeInfo, Context context) {
+    public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Integer timeout, byte[] transactionalContentMD5, Map<String, String> metadata, String leaseId, AccessTier tier, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String blobType = "BlockBlob";
         String contentType = null;
         if (blobHttpHeaders != null) {
@@ -199,15 +199,15 @@ public final class BlockBlobsImpl {
         if (cpkInfo != null) {
             encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope = null;
-        if (cpkScopeInfo != null) {
-            encryptionScope = cpkScopeInfo.getEncryptionScope();
+        String encryptionScope1 = null;
+        if (encryptionScope != null) {
+            encryptionScope1 = encryptionScope.getEncryptionScope();
         }
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        return service.upload(containerName, blob, this.client.getUrl(), body, timeout, transactionalContentMD5Converted, contentLength, metadata, leaseId, tier, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, this.client.getVersion(), requestId, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.upload(containerName, blob, this.client.getUrl(), body, timeout, transactionalContentMD5Converted, contentLength, metadata, leaseId, tier, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, this.client.getVersion(), requestId, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**
@@ -251,13 +251,13 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Additional parameters for the operation.
-     * @param cpkScopeInfo Additional parameters for the operation.
+     * @param encryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsStageBlockResponse> stageBlockWithRestResponseAsync(String containerName, String blob, String blockId, long contentLength, Flux<ByteBuffer> body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo, CpkScopeInfo cpkScopeInfo, Context context) {
+    public Mono<BlockBlobsStageBlockResponse> stageBlockWithRestResponseAsync(String containerName, String blob, String blockId, long contentLength, Flux<ByteBuffer> body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String comp = "block";
         String encryptionKey = null;
         if (cpkInfo != null) {
@@ -271,13 +271,13 @@ public final class BlockBlobsImpl {
         if (cpkInfo != null) {
             encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope = null;
-        if (cpkScopeInfo != null) {
-            encryptionScope = cpkScopeInfo.getEncryptionScope();
+        String encryptionScope1 = null;
+        if (encryptionScope != null) {
+            encryptionScope1 = encryptionScope.getEncryptionScope();
         }
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return service.stageBlock(containerName, blob, this.client.getUrl(), blockId, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, body, timeout, leaseId, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.stageBlock(containerName, blob, this.client.getUrl(), blockId, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, body, timeout, leaseId, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**
@@ -331,13 +331,13 @@ public final class BlockBlobsImpl {
      * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Additional parameters for the operation.
-     * @param cpkScopeInfo Additional parameters for the operation.
+     * @param encryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURLWithRestResponseAsync(String containerName, String blob, String blockId, long contentLength, URL sourceUrl, String sourceRange, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout, String leaseId, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, String requestId, CpkInfo cpkInfo, CpkScopeInfo cpkScopeInfo, Context context) {
+    public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURLWithRestResponseAsync(String containerName, String blob, String blockId, long contentLength, URL sourceUrl, String sourceRange, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout, String leaseId, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String comp = "block";
         String encryptionKey = null;
         if (cpkInfo != null) {
@@ -351,15 +351,15 @@ public final class BlockBlobsImpl {
         if (cpkInfo != null) {
             encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope = null;
-        if (cpkScopeInfo != null) {
-            encryptionScope = cpkScopeInfo.getEncryptionScope();
+        String encryptionScope1 = null;
+        if (encryptionScope != null) {
+            encryptionScope1 = encryptionScope.getEncryptionScope();
         }
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.stageBlockFromURL(containerName, blob, this.client.getUrl(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, leaseId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.stageBlockFromURL(containerName, blob, this.client.getUrl(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, leaseId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**
@@ -418,13 +418,13 @@ public final class BlockBlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param blobHttpHeaders Additional parameters for the operation.
      * @param cpkInfo Additional parameters for the operation.
-     * @param cpkScopeInfo Additional parameters for the operation.
+     * @param encryptionScope Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(String containerName, String blob, BlockLookupList blocks, Integer timeout, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Map<String, String> metadata, String leaseId, AccessTier tier, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, CpkScopeInfo cpkScopeInfo, Context context) {
+    public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(String containerName, String blob, BlockLookupList blocks, Integer timeout, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Map<String, String> metadata, String leaseId, AccessTier tier, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
         final String comp = "blocklist";
         String cacheControl = null;
         if (blobHttpHeaders != null) {
@@ -462,16 +462,16 @@ public final class BlockBlobsImpl {
         if (cpkInfo != null) {
             encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope = null;
-        if (cpkScopeInfo != null) {
-            encryptionScope = cpkScopeInfo.getEncryptionScope();
+        String encryptionScope1 = null;
+        if (encryptionScope != null) {
+            encryptionScope1 = encryptionScope.getEncryptionScope();
         }
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        return service.commitBlockList(containerName, blob, this.client.getUrl(), timeout, transactionalContentMD5Converted, transactionalContentCrc64Converted, metadata, leaseId, tier, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blocks, this.client.getVersion(), requestId, comp, cacheControl, contentType, contentEncoding, contentLanguage, contentMd5Converted, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
+        return service.commitBlockList(containerName, blob, this.client.getUrl(), timeout, transactionalContentMD5Converted, transactionalContentCrc64Converted, metadata, leaseId, tier, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blocks, this.client.getVersion(), requestId, comp, cacheControl, contentType, contentEncoding, contentLanguage, contentMd5Converted, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
     }
 
     /**

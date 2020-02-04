@@ -13,7 +13,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
@@ -26,6 +25,7 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -145,11 +145,11 @@ public class BlobClientBase {
     }
 
     /**
-     * Gets the {@link String encryption scope} used to encrypt this blob's content on the server.
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
      *
      * @return the encryption scope used for encryption.
      */
-    CpkScopeInfo getEncryptionScope() {
+    String getEncryptionScope() {
         return client.getEncryptionScope();
     }
 
