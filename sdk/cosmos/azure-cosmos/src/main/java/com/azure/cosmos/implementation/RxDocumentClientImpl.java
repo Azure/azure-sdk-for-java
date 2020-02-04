@@ -2772,8 +2772,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         LifeCycleUtils.closeQuietly(this.globalEndpointManager);
         logger.info("Closing StoreClientFactory ...");
         LifeCycleUtils.closeQuietly(this.storeClientFactory);
-        logger.info("Closing reactorHttpClient ...");
-        LifeCycleUtils.closeQuietly(this.reactorHttpClient);
+        logger.info("Shutting down reactorHttpClient ...");
+        try {
+            this.reactorHttpClient.shutdown();
+        } catch (Exception e) {
+            logger.warn("shutting down reactorHttpClient failed", e);
+        }
         logger.info("Shutting down completed.");
     }
 }

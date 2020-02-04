@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  * A generic interface for sending HTTP requests and getting responses.
  */
-public interface HttpClient extends Closeable {
+public interface HttpClient {
 
     /**
      * Send the provided request asynchronously.
