@@ -139,7 +139,7 @@ public class SubscriptionsInner {
                 @Override
                 public Observable<ServiceResponse<List<LocationInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<LocationInner>> result = listLocationsDelegate(response);
+                        ServiceResponse<PageImpl1<LocationInner>> result = listLocationsDelegate(response);
                         List<LocationInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
@@ -153,9 +153,9 @@ public class SubscriptionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<LocationInner>> listLocationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<LocationInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<LocationInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<LocationInner>> listLocationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<LocationInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<LocationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -324,7 +324,7 @@ public class SubscriptionsInner {
                 @Override
                 public Observable<ServiceResponse<Page<SubscriptionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<SubscriptionInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<SubscriptionInner>> result = listDelegate(response);
                         return Observable.just(new ServiceResponse<Page<SubscriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -333,9 +333,9 @@ public class SubscriptionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<SubscriptionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<SubscriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<SubscriptionInner>>() { }.getType())
+    private ServiceResponse<PageImpl<SubscriptionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SubscriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SubscriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -421,7 +421,7 @@ public class SubscriptionsInner {
     /**
      * Gets all subscriptions for a tenant.
      *
-    ServiceResponse<PageImpl1<SubscriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SubscriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -435,7 +435,7 @@ public class SubscriptionsInner {
                 @Override
                 public Observable<ServiceResponse<Page<SubscriptionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<SubscriptionInner>> result = listNextDelegate(response);
+                        ServiceResponse<PageImpl<SubscriptionInner>> result = listNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<SubscriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -444,9 +444,9 @@ public class SubscriptionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<SubscriptionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<SubscriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<SubscriptionInner>>() { }.getType())
+    private ServiceResponse<PageImpl<SubscriptionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SubscriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SubscriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
