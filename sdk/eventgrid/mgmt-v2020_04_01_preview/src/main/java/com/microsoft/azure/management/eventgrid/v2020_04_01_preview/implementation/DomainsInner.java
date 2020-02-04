@@ -26,7 +26,6 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -91,11 +90,11 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.Domains update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
-        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body DomainUpdateParameters domainUpdateParameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Body DomainUpdateParameters domainUpdateParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.Domains beginUpdate" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
-        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body DomainUpdateParameters domainUpdateParameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Body DomainUpdateParameters domainUpdateParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.Domains list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/domains")
@@ -560,13 +559,14 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
+     * @param domainUpdateParameters Domain update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainInner object if successful.
      */
-    public DomainInner update(String resourceGroupName, String domainName) {
-        return updateWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().last().body();
+    public DomainInner update(String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, domainName, domainUpdateParameters).toBlocking().last().body();
     }
 
     /**
@@ -575,12 +575,13 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
+     * @param domainUpdateParameters Domain update information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DomainInner> updateAsync(String resourceGroupName, String domainName, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
+    public ServiceFuture<DomainInner> updateAsync(String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters, final ServiceCallback<DomainInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, domainName, domainUpdateParameters), serviceCallback);
     }
 
     /**
@@ -589,11 +590,12 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
+     * @param domainUpdateParameters Domain update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<DomainInner> updateAsync(String resourceGroupName, String domainName) {
-        return updateWithServiceResponseAsync(resourceGroupName, domainName).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
+    public Observable<DomainInner> updateAsync(String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, domainName, domainUpdateParameters).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
             @Override
             public DomainInner call(ServiceResponse<DomainInner> response) {
                 return response.body();
@@ -607,10 +609,11 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
+     * @param domainUpdateParameters Domain update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<DomainInner>> updateWithServiceResponseAsync(String resourceGroupName, String domainName) {
+    public Observable<ServiceResponse<DomainInner>> updateWithServiceResponseAsync(String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -620,92 +623,14 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
         if (domainName == null) {
             throw new IllegalArgumentException("Parameter domainName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Map<String, String> tags = null;
-        DomainUpdateParameters domainUpdateParameters = new DomainUpdateParameters();
-        domainUpdateParameters.withTags(null);
-        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, domainName, this.client.apiVersion(), this.client.acceptLanguage(), domainUpdateParameters, this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<DomainInner>() { }.getType());
-    }
-    /**
-     * Update a domain.
-     * Asynchronously updates a domain with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param tags Tags of the domains resource
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DomainInner object if successful.
-     */
-    public DomainInner update(String resourceGroupName, String domainName, Map<String, String> tags) {
-        return updateWithServiceResponseAsync(resourceGroupName, domainName, tags).toBlocking().last().body();
-    }
-
-    /**
-     * Update a domain.
-     * Asynchronously updates a domain with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param tags Tags of the domains resource
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<DomainInner> updateAsync(String resourceGroupName, String domainName, Map<String, String> tags, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, domainName, tags), serviceCallback);
-    }
-
-    /**
-     * Update a domain.
-     * Asynchronously updates a domain with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param tags Tags of the domains resource
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<DomainInner> updateAsync(String resourceGroupName, String domainName, Map<String, String> tags) {
-        return updateWithServiceResponseAsync(resourceGroupName, domainName, tags).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
-            @Override
-            public DomainInner call(ServiceResponse<DomainInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Update a domain.
-     * Asynchronously updates a domain with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param tags Tags of the domains resource
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<DomainInner>> updateWithServiceResponseAsync(String resourceGroupName, String domainName, Map<String, String> tags) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (domainName == null) {
-            throw new IllegalArgumentException("Parameter domainName is required and cannot be null.");
+        if (domainUpdateParameters == null) {
+            throw new IllegalArgumentException("Parameter domainUpdateParameters is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(tags);
-        DomainUpdateParameters domainUpdateParameters = new DomainUpdateParameters();
-        domainUpdateParameters.withTags(tags);
-        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, domainName, this.client.apiVersion(), this.client.acceptLanguage(), domainUpdateParameters, this.client.userAgent());
+        Validator.validate(domainUpdateParameters);
+        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, domainName, domainUpdateParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<DomainInner>() { }.getType());
     }
 
@@ -715,13 +640,14 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
+     * @param domainUpdateParameters Domain update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainInner object if successful.
      */
-    public DomainInner beginUpdate(String resourceGroupName, String domainName) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().body();
+    public DomainInner beginUpdate(String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, domainName, domainUpdateParameters).toBlocking().single().body();
     }
 
     /**
@@ -730,12 +656,13 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
+     * @param domainUpdateParameters Domain update information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DomainInner> beginUpdateAsync(String resourceGroupName, String domainName, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
+    public ServiceFuture<DomainInner> beginUpdateAsync(String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters, final ServiceCallback<DomainInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, domainName, domainUpdateParameters), serviceCallback);
     }
 
     /**
@@ -744,11 +671,12 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
+     * @param domainUpdateParameters Domain update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainInner object
      */
-    public Observable<DomainInner> beginUpdateAsync(String resourceGroupName, String domainName) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, domainName).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
+    public Observable<DomainInner> beginUpdateAsync(String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, domainName, domainUpdateParameters).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
             @Override
             public DomainInner call(ServiceResponse<DomainInner> response) {
                 return response.body();
@@ -762,10 +690,11 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
+     * @param domainUpdateParameters Domain update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainInner object
      */
-    public Observable<ServiceResponse<DomainInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String domainName) {
+    public Observable<ServiceResponse<DomainInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -775,103 +704,14 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
         if (domainName == null) {
             throw new IllegalArgumentException("Parameter domainName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Map<String, String> tags = null;
-        DomainUpdateParameters domainUpdateParameters = new DomainUpdateParameters();
-        domainUpdateParameters.withTags(null);
-        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, domainName, this.client.apiVersion(), this.client.acceptLanguage(), domainUpdateParameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DomainInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DomainInner> clientResponse = beginUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Update a domain.
-     * Asynchronously updates a domain with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param tags Tags of the domains resource
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DomainInner object if successful.
-     */
-    public DomainInner beginUpdate(String resourceGroupName, String domainName, Map<String, String> tags) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, domainName, tags).toBlocking().single().body();
-    }
-
-    /**
-     * Update a domain.
-     * Asynchronously updates a domain with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param tags Tags of the domains resource
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<DomainInner> beginUpdateAsync(String resourceGroupName, String domainName, Map<String, String> tags, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, domainName, tags), serviceCallback);
-    }
-
-    /**
-     * Update a domain.
-     * Asynchronously updates a domain with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param tags Tags of the domains resource
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DomainInner object
-     */
-    public Observable<DomainInner> beginUpdateAsync(String resourceGroupName, String domainName, Map<String, String> tags) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, domainName, tags).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
-            @Override
-            public DomainInner call(ServiceResponse<DomainInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Update a domain.
-     * Asynchronously updates a domain with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param tags Tags of the domains resource
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DomainInner object
-     */
-    public Observable<ServiceResponse<DomainInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String domainName, Map<String, String> tags) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (domainName == null) {
-            throw new IllegalArgumentException("Parameter domainName is required and cannot be null.");
+        if (domainUpdateParameters == null) {
+            throw new IllegalArgumentException("Parameter domainUpdateParameters is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(tags);
-        DomainUpdateParameters domainUpdateParameters = new DomainUpdateParameters();
-        domainUpdateParameters.withTags(tags);
-        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, domainName, this.client.apiVersion(), this.client.acceptLanguage(), domainUpdateParameters, this.client.userAgent())
+        Validator.validate(domainUpdateParameters);
+        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, domainName, domainUpdateParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DomainInner>> call(Response<ResponseBody> response) {
