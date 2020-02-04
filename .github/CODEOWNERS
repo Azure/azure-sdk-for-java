@@ -8,6 +8,9 @@
 # Catch all
 /sdk/                                               @joshfree @jonathangiles
 
+# BOM
+/sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles
+
 # Service teams
 /sdk/appconfiguration/                              @mssfang @alzimmermsft @conniey @sima-zhu
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
