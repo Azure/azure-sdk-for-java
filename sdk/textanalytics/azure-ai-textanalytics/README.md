@@ -58,6 +58,8 @@ az cognitiveservices account create \
 ### Authenticate the client
 In order to interact with the Text Analytics service, you'll need to create an instance of the 
 `TextAnalyticsClient` class. You would need an **endpoint** and **API key** to instantiate a client object.
+And they can be found in the [Azure Portal][https://ms.portal.azure.com] under the "Quickstart" in your created
+Text Analytics resource. 
 
 #### Get credentials
 ##### Types of credentials
@@ -65,7 +67,7 @@ The authentication credential may be provided as the API key to your resource or
 See the full details regarding [authentication](https://docs.microsoft.com/azure/cognitive-services/authentication) of 
 cognitive services.
 
-1. To use a [API key](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource), 
+1. To use an [API key](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource), 
    provide the key as a string. This can be found in the Azure Portal under the "Quickstart" 
    section or by running the following Azure CLI command:
 
@@ -113,7 +115,7 @@ cognitive services.
 The Azure Text Analytics client library for Java allows you to engage with the Text Analytics service to 
 analyze sentiment, recognize entities, detect language, and extract key phrases from text.
 To create a client object, you will need the cognitive services or text analytics endpoint to 
-your resource and a API key that allows you access:
+your resource and an API key that allows you access:
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L44-L47 -->
 ```java
@@ -124,7 +126,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 #### Rotate existing API key
-The Azure Text Analytics client library provide a way to rotate the existing API key.
+The Azure Text Analytics client library provides a way to rotate the existing API key.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L174-L180 -->
 ```java
