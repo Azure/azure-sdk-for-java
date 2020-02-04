@@ -13,7 +13,7 @@ import java.time.Duration;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class ResourceThrottleRetryPolicy implements IDocumentClientRetryPolicy{
+public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
 
     private final static Logger logger = LoggerFactory.getLogger(ResourceThrottleRetryPolicy.class);
 

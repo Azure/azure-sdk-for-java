@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 // TODO update documentation
 /**
@@ -24,6 +26,23 @@ public interface IRetryPolicy  {
     /// <returns>If the retry needs to be attempted or not</returns>
     Mono<ShouldRetryResult> shouldRetry(Exception e);
 
+    int getRetryCount();
+
+    void incrementRetry();
+
+    void captureStartTimeIfNotSet();
+
+    void updateEndTime();
+
+    Duration getRetryLatency();
+
+    ZonedDateTime getStartTime();
+
+    ZonedDateTime getEndTime();
+
+    void addStatusAndSubStatusCode(Integer index, int statusCode, int subStatusCode);
+
+    List<int[]> getStatusAndSubStatusCodes();
 
     class ShouldRetryResult {
         /// <summary>

@@ -8,9 +8,9 @@ import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IDocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.ResourceType;
@@ -336,7 +336,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             Map<String, String> commonRequestHeaders,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc,
-            Callable<IDocumentClientRetryPolicy> createRetryPolicyFunc) {
+            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc) {
         return new DocumentProducer<T>(client,
                 collectionRid,
                 feedOptions,

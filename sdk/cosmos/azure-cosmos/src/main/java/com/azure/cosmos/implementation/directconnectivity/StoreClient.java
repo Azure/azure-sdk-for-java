@@ -138,11 +138,10 @@ public class StoreClient implements IStoreClient {
 
             headers.put(name, value);
         }
-//        this.captureSessionToken(request, headers);
-//        storeResponse.setCosmosResponseDiagnostics(request.requestContext.cosmosResponseDiagnostics);
-//        return Mono.just(new RxDocumentServiceResponse(storeResponse));
+
         return this.updateResponseHeader(request, headers).doOnSuccess(aVoid -> {
          this.captureSessionToken(request, headers);
+        BridgeInternal.recordRetryContext(request.requestContext.cosmosResponseDiagnostics, request);
         storeResponse.setCosmosResponseDiagnostics(request.requestContext.cosmosResponseDiagnostics);
         }).then(Mono.just(new RxDocumentServiceResponse(storeResponse)));
     }

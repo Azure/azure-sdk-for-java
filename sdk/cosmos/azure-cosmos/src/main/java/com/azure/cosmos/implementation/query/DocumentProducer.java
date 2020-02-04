@@ -15,7 +15,7 @@ import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IDocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -88,7 +88,7 @@ class DocumentProducer<T extends Resource> {
     protected final String collectionLink;
     protected final TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc;
     protected final Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeRequestFuncWithRetries;
-    protected final Callable<IDocumentClientRetryPolicy> createRetryPolicyFunc;
+    protected final Callable<DocumentClientRetryPolicy> createRetryPolicyFunc;
     protected final int pageSize;
     protected final UUID correlatedActivityId;
     public int top;
@@ -105,7 +105,7 @@ class DocumentProducer<T extends Resource> {
             Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
             String collectionLink,
-            Callable<IDocumentClientRetryPolicy> createRetryPolicyFunc,
+            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
             Class<T> resourceType ,
             UUID correlatedActivityId,
             int initialPageSize, // = -1,
@@ -125,7 +125,7 @@ class DocumentProducer<T extends Resource> {
             retries = -1;
             this.fetchSchedulingMetrics.start();
             this.fetchExecutionRangeAccumulator.beginFetchRange();
-            IDocumentClientRetryPolicy retryPolicy = null;
+            DocumentClientRetryPolicy retryPolicy = null;
             if (createRetryPolicyFunc != null) {
                 try {
                     retryPolicy = createRetryPolicyFunc.call();

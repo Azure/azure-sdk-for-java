@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,17 +11,17 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-public class RenameCollectionAwareClientRetryPolicy implements IDocumentClientRetryPolicy {
+public class RenameCollectionAwareClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private final static Logger logger = LoggerFactory.getLogger(RenameCollectionAwareClientRetryPolicy.class);
 
-    private final IDocumentClientRetryPolicy retryPolicy;
+    private final DocumentClientRetryPolicy retryPolicy;
     private final ISessionContainer sessionContainer;
     private final RxClientCollectionCache collectionCache;
     private RxDocumentServiceRequest request;
     private boolean hasTriggered = false;
 
-    public RenameCollectionAwareClientRetryPolicy(ISessionContainer sessionContainer, RxClientCollectionCache collectionCache, IDocumentClientRetryPolicy retryPolicy) {
+    public RenameCollectionAwareClientRetryPolicy(ISessionContainer sessionContainer, RxClientCollectionCache collectionCache, DocumentClientRetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         this.sessionContainer = sessionContainer;
         this.collectionCache = collectionCache;
