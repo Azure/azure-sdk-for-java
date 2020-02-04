@@ -74,7 +74,7 @@ public enum NtfsFileAttributes {
      */
     public static String toString(EnumSet<NtfsFileAttributes> ntfsAttributes) {
         if (ntfsAttributes == null) {
-            return null;
+            return "";
         }
 
         final StringBuilder builder = new StringBuilder();

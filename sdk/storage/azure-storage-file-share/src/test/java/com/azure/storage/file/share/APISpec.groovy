@@ -97,9 +97,6 @@ class APISpec extends Specification {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
                 "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
         }
-        primaryFileServiceClient = setClient(primaryCredential)
-        primaryFileServiceAsyncClient = setAsyncClient(primaryCredential)
-
         premiumFileServiceClient = setClient(premiumCredential)
         premiumFileServiceAsyncClient = setAsyncClient(premiumCredential)
 
