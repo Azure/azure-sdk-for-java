@@ -7,7 +7,6 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.NamedEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -37,6 +36,7 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsAsyncClient client;
@@ -111,7 +111,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectSingleTextLanguage() {
         DetectedLanguage primaryLanguage = new DetectedLanguage("English", "en", 1.0);
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response -> validateDetectedLanguages(Collections.singletonList(primaryLanguage), response.getDetectedLanguages()))
+            .assertNext(response -> validateDetectedLanguages(Collections.singletonList(primaryLanguage),
+                Collections.singletonList(response)))
             .verifyComplete();
     }
 
@@ -142,7 +143,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageFaultyText() {
         DetectedLanguage primaryLanguage = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0);
         StepVerifier.create(client.detectLanguage("!@#%%"))
-            .assertNext(response -> validateDetectedLanguages(Collections.singletonList(primaryLanguage), response.getDetectedLanguages()))
+            .assertNext(response -> validateDetectedLanguages(Collections.singletonList(primaryLanguage),
+                Collections.singletonList(response)))
             .verifyComplete();
     }
 
@@ -159,11 +161,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Entities
     @Test
     public void recognizeEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.0);
-        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
-        RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(namedEntity1, namedEntity2));
+        final NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.0);
+        final NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
         StepVerifier.create(client.recognizeEntities("I had a wonderful trip to Seattle last week."))
-            .assertNext(response -> validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(), response.getNamedEntities()))
+            .assertNext(response -> validateNamedEntity(namedEntity1, response))
+            .assertNext(response -> validateNamedEntity(namedEntity2, response))
             .verifyComplete();
     }
 
@@ -177,7 +179,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForFaultyText() {
         StepVerifier.create(client.recognizeEntities("!@#%%"))
-            .assertNext(response -> assertEquals(response.getNamedEntities().size(), 0))
             .verifyComplete();
     }
 
@@ -216,7 +217,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForListLanguageHint() {
         recognizeNamedEntitiesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeEntitiesWithResponse(inputs, language))
+            StepVerifier.create(client.recognizeEntities(inputs, language))
                 .assertNext(response -> validateNamedEntity(false, getExpectedBatchNamedEntities(), response.getValue()))
                 .verifyComplete());
     }
@@ -224,12 +225,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Linked Entities
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
-        LinkedEntity linkedEntity = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
-        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResultList = new RecognizeLinkedEntitiesResult("0", null, null, Collections.singletonList(linkedEntity));
+        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
+        final LinkedEntity linkedEntity = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
 
         StepVerifier.create(client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week."))
-            .assertNext(response -> validateLinkedEntities(recognizeLinkedEntitiesResultList.getLinkedEntities(), response.getLinkedEntities()))
+            .assertNext(response -> validateLinkedEntity(linkedEntity, response))
             .verifyComplete();
     }
 
@@ -243,7 +243,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForFaultyText() {
         StepVerifier.create(client.recognizeLinkedEntities("!@#%%"))
-            .assertNext(response -> assertEquals(response.getLinkedEntities().size(), 0))
             .verifyComplete();
     }
 
@@ -274,7 +273,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForListLanguageHint() {
         recognizeLinkedLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeLinkedEntitiesWithResponse(inputs, language))
+            StepVerifier.create(client.recognizeLinkedEntities(inputs, language))
                 .assertNext(response -> validateLinkedEntity(false, getExpectedBatchLinkedEntities(), response.getValue()))
                 .verifyComplete());
     }
@@ -282,11 +281,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Pii Entities
     @Test
     public void recognizePiiEntitiesForTextInput() {
-        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
-        RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Collections.singletonList(namedEntity1));
-
+        final NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
         StepVerifier.create(client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's."))
-            .assertNext(response -> validateNamedEntities(recognizeEntitiesResultList.getNamedEntities(), response.getNamedEntities()))
+            .assertNext(response -> validateNamedEntity(namedEntity1, response))
             .verifyComplete();
     }
 
@@ -300,7 +297,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizePiiEntitiesForFaultyText() {
         StepVerifier.create(client.recognizePiiEntities("!@#%%"))
-            .assertNext(response -> assertEquals(response.getNamedEntities().size(), 0))
             .verifyComplete();
     }
 
@@ -331,7 +327,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizePiiEntitiesForListLanguageHint() {
         recognizePiiLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizePiiEntitiesWithResponse(inputs, language))
+            StepVerifier.create(client.recognizePiiEntities(inputs, language))
                 .assertNext(response -> validatePiiEntity(false, getExpectedBatchPiiEntities(), response.getValue()))
                 .verifyComplete());
     }
@@ -340,7 +336,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForTextInput() {
         StepVerifier.create(client.extractKeyPhrases("Bonjour tout le monde."))
-            .assertNext(response -> validateKeyPhrases(Collections.singletonList("monde"), response.getKeyPhrases()))
+            .assertNext(response -> assertEquals("monde", response))
             .verifyComplete();
     }
 
@@ -354,7 +350,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForFaultyText() {
         StepVerifier.create(client.extractKeyPhrases("!@#%%"))
-            .assertNext(response -> assertEquals(response.getKeyPhrases().size(), 0))
             .verifyComplete();
     }
 
@@ -386,7 +381,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForListLanguageHint() {
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.extractKeyPhrasesWithResponse(inputs, language))
+            StepVerifier.create(client.extractKeyPhrases(inputs, language))
                 .assertNext(response -> validateExtractKeyPhrase(false, getExpectedBatchKeyPhrases(), response.getValue()))
                 .verifyComplete());
     }
@@ -495,8 +490,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
             .assertNext(response -> validateDetectedLanguages(
-                Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
-                response.getDetectedLanguages()))
+                Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
+                Collections.singletonList(response)))
             .verifyComplete();
     }
 
@@ -550,8 +545,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
             .assertNext(response -> validateDetectedLanguages(
-                Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
-                response.getDetectedLanguages()))
+                Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
+                Collections.singletonList(response)))
             .verifyComplete();
     }
 
@@ -589,8 +584,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         // Action and Assert
         StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage("This is a test English Text"))
             .assertNext(response -> validateDetectedLanguages(
-                Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
-                response.getDetectedLanguages()))
+                Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
+                Collections.singletonList(response)))
             .verifyComplete();
     }
 
@@ -616,8 +611,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         // Action and Assert
         StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage("This is a test English Text"))
             .assertNext(response -> validateDetectedLanguages(
-                Arrays.asList(new DetectedLanguage("English", "en", 1.0)),
-                response.getDetectedLanguages()))
+                Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
+                Collections.singletonList(response)))
             .verifyComplete();
     }
 }

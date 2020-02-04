@@ -35,7 +35,7 @@ public class RotateSubscriptionKey {
         // Update the subscription key
         credential.updateCredential("{valid_subscription_key}");
 
-        for (String keyPhrase : client.extractKeyPhrases(text).getKeyPhrases()) {
+        for (String keyPhrase : client.extractKeyPhrases(text)) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrase);
         }
     }

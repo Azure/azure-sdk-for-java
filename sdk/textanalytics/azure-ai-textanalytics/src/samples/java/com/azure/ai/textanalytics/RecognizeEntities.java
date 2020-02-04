@@ -25,7 +25,7 @@ public class RecognizeEntities {
         // The text that need be analysed.
         String text = "Satya Nadella is the CEO of Microsoft";
 
-        for (NamedEntity entity : client.recognizeEntities(text).getNamedEntities()) {
+        for (NamedEntity entity : client.recognizeEntities(text)) {
             System.out.printf(
                 "Recognized entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
                 entity.getText(),

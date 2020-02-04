@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -28,18 +27,14 @@ public class RecognizeEntitiesAsync {
         String text = "Satya Nadella is the CEO of Microsoft";
 
         client.recognizeEntities(text).subscribe(
-            result -> {
-                for (NamedEntity entity : result.getNamedEntities()) {
-                    System.out.printf(
-                        "Recognized entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
-                        entity.getText(),
-                        entity.getType(),
-                        entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
-                        entity.getOffset(),
-                        entity.getLength(),
-                        entity.getScore());
-                }
-            },
+            entity -> System.out.printf(
+                "Recognized entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
+                entity.getText(),
+                entity.getType(),
+                entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
+                entity.getOffset(),
+                entity.getLength(),
+                entity.getScore()),
             error -> System.err.println("There was an error recognizing entities of the text." + error),
             () -> System.out.println("Entities recognized."));
 

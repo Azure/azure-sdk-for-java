@@ -21,6 +21,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
 import java.util.Arrays;
@@ -67,11 +68,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void detectLanguageSingleText() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String
-        final DetectLanguageResult detectLanguageResult = textAnalyticsClient.detectLanguage("Bonjour tout le monde");
-        for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-            System.out.printf("Detected languages name: %s, ISO 6391 name: %s, score: %s.%n",
-                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
-        }
+        final DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage("Bonjour tout le monde");
+        System.out.printf("Detected languages name: %s, ISO 6391 name: %s, score: %s.%n",
+            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String
     }
 
@@ -80,12 +79,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void detectLanguageForSingleInputTextAndCountryHintWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageWithResponse#String-String-Context
-        final DetectLanguageResult detectLanguageResult = textAnalyticsClient.detectLanguageWithResponse(
+        final DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguageWithResponse(
             "This text is in English", "US", Context.NONE).getValue();
-        for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-            System.out.printf("Detected languages name: %s, ISO 6391 name: %s, score: %s.%n",
-                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
-        }
+        System.out.printf("Detected languages name: %s, ISO 6391 name: %s, score: %s.%n",
+            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageWithResponse#String-String-Context
     }
 
@@ -208,9 +205,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeEntitiesSingleText() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#String
-        final RecognizeEntitiesResult recognizeEntitiesResult =
+        final PagedIterable<NamedEntity> recognizeEntitiesResult =
             textAnalyticsClient.recognizeEntities("Satya Nadella is the CEO of Microsoft");
-        for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
+        for (NamedEntity entity : recognizeEntitiesResult) {
             System.out.printf("Recognized entity: %s, entity type: %s, score: %s.%n",
                 entity.getText(), entity.getType(), entity.getScore());
         }
@@ -218,14 +215,14 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeEntitiesWithResponse(String, String, Context)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeEntities(String, String, Context)}
      */
     public void recognizeEntitiesSingleTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesWithResponse#String-String-Context
-        final RecognizeEntitiesResult recognizeEntitiesResult = textAnalyticsClient.recognizeEntitiesWithResponse(
-            "Satya Nadella is the CEO of Microsoft", "en", Context.NONE).getValue();
+        final PagedIterable<NamedEntity> recognizeEntitiesResult = textAnalyticsClient.recognizeEntities(
+            "Satya Nadella is the CEO of Microsoft", "en", Context.NONE);
 
-        for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
+        for (NamedEntity entity : recognizeEntitiesResult) {
             System.out.printf("Recognized entity: %s, entity type: %s, score: %s.%n",
                 entity.getText(), entity.getType(), entity.getScore());
         }
@@ -260,7 +257,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeEntitiesWithResponse(List, String, Context)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeEntities(List, String, Context)}
      */
     public void recognizeEntitiesListTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesWithResponse#List-String-Context
@@ -269,7 +266,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "I work at Microsoft.");
 
         final DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults =
-            textAnalyticsClient.recognizeEntitiesWithResponse(textInputs, "en", Context.NONE).getValue();
+            textAnalyticsClient.recognizeEntities(textInputs, "en", Context.NONE).getValue();
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
@@ -348,9 +345,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizePiiEntitiesSingleText() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String
-        final RecognizePiiEntitiesResult recognizePiiEntitiesResult =
-            textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555");
-        for (NamedEntity entity : recognizePiiEntitiesResult.getNamedEntities()) {
+        for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555")) {
             System.out.printf("Recognized PII entity: %s, entity type: %s, score: %s.%n",
                 entity.getText(), entity.getType(), entity.getScore());
         }
@@ -358,15 +353,11 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesWithResponse(String, String, Context)}
+     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntities(String, String, Context)}
      */
     public void recognizePiiEntitiesSingleTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#String-String-Context
-        final RecognizePiiEntitiesResult recognizePiiEntitiesResult =
-            textAnalyticsClient.recognizePiiEntitiesWithResponse("My SSN is 555-55-5555", "en", Context.NONE)
-                .getValue();
-
-        for (NamedEntity entity : recognizePiiEntitiesResult.getNamedEntities()) {
+        for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555", "en", Context.NONE)) {
             System.out.printf("Recognized PII entity: %s, entity type: %s, score: %s.%n",
                 entity.getText(), entity.getType(), entity.getScore());
         }
@@ -399,14 +390,14 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesWithResponse(List, String, Context)}
+     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntities(List, String, Context)}
      */
     public void recognizePiiEntitiesListTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#List-String-Context
         final List<String> textInputs = Arrays.asList("My SSN is 555-55-5555", "Visa card 4111 1111 1111 1111");
 
         final DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntitiesResults =
-            textAnalyticsClient.recognizePiiEntitiesWithResponse(textInputs, "en", Context.NONE).getValue();
+            textAnalyticsClient.recognizePiiEntities(textInputs, "en", Context.NONE).getValue();
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizePiiEntitiesResults.getStatistics();
@@ -486,7 +477,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void recognizeLinkedEntitiesSingleText() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String
         for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(
-            "Old Faithful is a geyser at Yellowstone Park.").getLinkedEntities()) {
+            "Old Faithful is a geyser at Yellowstone Park.")) {
             System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
         }
@@ -494,15 +485,12 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeLinkedEntitiesWithResponse(String, String, Context)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeLinkedEntities(String, String, Context)}
      */
     public void recognizeLinkedEntitiesSingleTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesWithResponse#String-String-Context
-        final RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult =
-            textAnalyticsClient.recognizeLinkedEntitiesWithResponse(
-                "Old Faithful is a geyser at Yellowstone Park.", "en", Context.NONE).getValue();
-
-        for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getLinkedEntities()) {
+        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(
+            "Old Faithful is a geyser at Yellowstone Park.", "en", Context.NONE)) {
             System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
         }
@@ -537,7 +525,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeLinkedEntitiesWithResponse(List, String, Context)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeLinkedEntities(List, String, Context)}
      */
     public void recognizeLinkedEntitiesListTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesWithResponse#List-String-Context
@@ -546,7 +534,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "Mount Shasta has lenticular clouds.");
 
         final DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults =
-            textAnalyticsClient.recognizeLinkedEntitiesWithResponse(textInputs, "en", Context.NONE).getValue();
+            textAnalyticsClient.recognizeLinkedEntities(textInputs, "en", Context.NONE).getValue();
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
@@ -627,23 +615,20 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrasesSingleText() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
-        final List<String> keyPhrases =
-            textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.").getKeyPhrases();
-
-        for (String keyPhrase : keyPhrases) {
+        for (String keyPhrase :
+            textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.")) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrase);
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#extractKeyPhrasesWithResponse(String, String, Context)}
+     * Code snippet for {@link TextAnalyticsClient#extractKeyPhrases(String, String, Context)}
      */
     public void extractKeyPhrasesSingleTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesWithResponse#String-String-Context
-        final ExtractKeyPhraseResult extractKeyPhrases = textAnalyticsClient.extractKeyPhrasesWithResponse(
-            "My cat might need to see a veterinarian.", "en", Context.NONE).getValue();
-        for (String keyPhrases : extractKeyPhrases.getKeyPhrases()) {
+        for (String keyPhrases : textAnalyticsClient.extractKeyPhrases(
+            "My cat might need to see a veterinarian.", "en", Context.NONE)) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrases);
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesWithResponse#String-String-Context
@@ -681,7 +666,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#extractKeyPhrasesWithResponse(List, String, Context)}
+     * Code snippet for {@link TextAnalyticsClient#extractKeyPhrases(List, String, Context)}
      */
     public void extractKeyPhrasesListTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesWithResponse#List-String-Context
@@ -692,7 +677,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Extracting batch key phrases
         final DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhraseResults =
-            textAnalyticsClient.extractKeyPhrasesWithResponse(textInputs, "en", Context.NONE).getValue();
+            textAnalyticsClient.extractKeyPhrases(textInputs, "en", Context.NONE).getValue();
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();

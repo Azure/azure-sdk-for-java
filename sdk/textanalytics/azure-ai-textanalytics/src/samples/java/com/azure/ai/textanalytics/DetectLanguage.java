@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
@@ -26,18 +25,11 @@ public class DetectLanguage {
         // The text that need be analysed.
         String text = "hello world";
 
-        final DetectLanguageResult detectLanguageResult = client.detectLanguage(text);
-        final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
+        final DetectedLanguage detectedLanguage = client.detectLanguage(text);
         System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %s.%n",
-            detectedPrimaryLanguage.getName(),
-            detectedPrimaryLanguage.getIso6391Name(),
-            detectedPrimaryLanguage.getScore());
+            detectedLanguage.getName(),
+            detectedLanguage.getIso6391Name(),
+            detectedLanguage.getScore());
 
-        for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-            System.out.printf("Another detected language: %s, ISO 6391 name: %s, score: %s.%n",
-                detectedLanguage.getName(),
-                detectedLanguage.getIso6391Name(),
-                detectedLanguage.getScore());
-        }
     }
 }

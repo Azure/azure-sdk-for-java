@@ -73,12 +73,12 @@ public class ReadmeSamples {
     public void detectLanguages() {
         String inputText = "Bonjour tout le monde";
 
-        for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inputText).getDetectedLanguages()) {
-            System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
-                detectedLanguage.getName(),
-                detectedLanguage.getIso6391Name(),
-                detectedLanguage.getScore());
-        }
+        DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
+        System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
+            detectedLanguage.getName(),
+            detectedLanguage.getIso6391Name(),
+            detectedLanguage.getScore());
+
     }
 
     /**
@@ -87,7 +87,7 @@ public class ReadmeSamples {
     public void recognizeNamedEntity() {
         String text = "Satya Nadella is the CEO of Microsoft";
 
-        for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEntities()) {
+        for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text)) {
             System.out.printf(
                 "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
                 entity.getText(),
@@ -103,7 +103,7 @@ public class ReadmeSamples {
     public void recognizePiiEntity() {
         String text = "My SSN is 555-55-5555";
 
-        for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getNamedEntities()) {
+        for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
             System.out.printf(
                 "Recognized PII Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
                 entity.getText(),
@@ -119,7 +119,7 @@ public class ReadmeSamples {
     public void recognizeLinkedEntity() {
         String text = "Old Faithful is a geyser at Yellowstone Park.";
 
-        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text).getLinkedEntities()) {
+        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
             System.out.printf("Recognized Linked Entity: %s, Url: %s, Data Source: %s.%n",
                 linkedEntity.getName(),
                 linkedEntity.getUrl(),
@@ -133,7 +133,7 @@ public class ReadmeSamples {
     public void extractKeyPhrases() {
         String text = "My cat might need to see a veterinarian.";
 
-        for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text).getKeyPhrases()) {
+        for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrase);
         }
     }

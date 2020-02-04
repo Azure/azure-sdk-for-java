@@ -28,11 +28,7 @@ public class RotateSubscriptionKeyAsync {
         String text = "My cat might need to see a veterinarian.";
 
         client.extractKeyPhrases(text).subscribe(
-            result -> {
-                for (String keyPhrase : result.getKeyPhrases()) {
-                    System.out.printf("Recognized phrases: %s.%n", keyPhrase);
-                }
-            },
+            keyPhrase -> System.out.printf("Recognized phrases: %s.%n", keyPhrase),
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));
 
@@ -40,11 +36,7 @@ public class RotateSubscriptionKeyAsync {
         credential.updateCredential("{valid_subscription_key}");
 
         client.extractKeyPhrases(text).subscribe(
-            result -> {
-                for (String keyPhrase : result.getKeyPhrases()) {
-                    System.out.printf("Recognized phrases: %s.%n", keyPhrase);
-                }
-            },
+            keyPhrase -> System.out.printf("Recognized phrases: %s.%n", keyPhrase),
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));
 

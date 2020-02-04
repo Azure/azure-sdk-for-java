@@ -6,8 +6,11 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
@@ -16,6 +19,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -56,11 +60,11 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String}
      *
      * @param text The text to be analyzed.
-     * @return the {@link DetectLanguageResult detected language} of the text.
+     * @return the {@link DetectedLanguage detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectLanguageResult detectLanguage(String text) {
+    public DetectedLanguage detectLanguage(String text) {
         return detectLanguageWithResponse(text, client.getDefaultCountryHint(), Context.NONE).getValue();
     }
 
@@ -77,11 +81,11 @@ public final class TextAnalyticsClient {
      * specified.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link DetectLanguageResult detected language} of the text.
+     * @return A {@link Response} containing the {@link DetectedLanguage detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DetectLanguageResult> detectLanguageWithResponse(String text, String countryHint, Context context) {
+    public Response<DetectedLanguage> detectLanguageWithResponse(String text, String countryHint, Context context) {
         return client.detectLanguageAsyncClient.detectLanguageWithResponse(text, countryHint, context).block();
     }
 
@@ -175,12 +179,12 @@ public final class TextAnalyticsClient {
      *
      * @param text the text to recognize entities for.
      *
-     * @return the {@link RecognizeEntitiesResult named entity} of the text.
+     * @return the {@link NamedEntity named entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecognizeEntitiesResult recognizeEntities(String text) {
-        return recognizeEntitiesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NamedEntity> recognizeEntities(String text) {
+        return recognizeEntities(text, client.getDefaultLanguage(), Context.NONE);
     }
 
     /**
@@ -196,13 +200,13 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link RecognizeEntitiesResult named entity} of the text.
+     * @return A {@link Response} containing the {@link NamedEntity named entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecognizeEntitiesResult> recognizeEntitiesWithResponse(
-        String text, String language, Context context) {
-        return client.recognizeEntityAsyncClient.recognizeEntitiesWithResponse(text, language, context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NamedEntity> recognizeEntities(String text, String language, Context context) {
+        return new PagedIterable<>(
+            client.recognizeEntityAsyncClient.recognizeEntities(text, language, context));
     }
 
     /**
@@ -220,7 +224,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<RecognizeEntitiesResult> recognizeEntities(List<String> textInputs) {
-        return recognizeEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
+        return recognizeEntities(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -239,7 +243,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(
+    public Response<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntities(
         List<String> textInputs, String language, Context context) {
         return client.recognizeEntityAsyncClient.recognizeEntitiesWithResponse(textInputs, language, context).block();
     }
@@ -300,9 +304,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecognizePiiEntitiesResult recognizePiiEntities(String text) {
-        return recognizePiiEntitiesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NamedEntity> recognizePiiEntities(String text) {
+        return recognizePiiEntities(text, client.getDefaultLanguage(), Context.NONE);
     }
 
     /**
@@ -323,10 +327,9 @@ public final class TextAnalyticsClient {
      * {@link RecognizePiiEntitiesResult named entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecognizePiiEntitiesResult> recognizePiiEntitiesWithResponse(String text, String language,
-        Context context) {
-        return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(text, language, context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NamedEntity> recognizePiiEntities(String text, String language, Context context) {
+        return new PagedIterable<>(client.recognizePiiEntityAsyncClient.recognizePiiEntities(text, language, context));
     }
 
     /**
@@ -346,7 +349,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntities(List<String> textInputs) {
-        return recognizePiiEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
+        return recognizePiiEntities(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -368,7 +371,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(
+    public Response<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntities(
         List<String> textInputs, String language, Context context) {
         return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(textInputs, language,
             context).block();
@@ -433,9 +436,9 @@ public final class TextAnalyticsClient {
      * @return A {@link RecognizeLinkedEntitiesResult linked entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecognizeLinkedEntitiesResult recognizeLinkedEntities(String text) {
-        return recognizeLinkedEntitiesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LinkedEntity> recognizeLinkedEntities(String text) {
+        return recognizeLinkedEntities(text, client.getDefaultLanguage(), Context.NONE);
     }
 
     /**
@@ -455,11 +458,10 @@ public final class TextAnalyticsClient {
      * {@link RecognizeLinkedEntitiesResult named entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesWithResponse(String text, String language,
-        Context context) {
-        return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(text, language,
-            context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LinkedEntity> recognizeLinkedEntities(String text, String language, Context context) {
+        return new PagedIterable<>(
+            client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntities(text, language, context));
     }
 
     /**
@@ -478,7 +480,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntities(List<String> textInputs) {
-        return recognizeLinkedEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
+        return recognizeLinkedEntities(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -500,7 +502,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(
+    public Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntities(
         List<String> textInputs, String language, Context context) {
         return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs, language,
             context).block();
@@ -562,9 +564,9 @@ public final class TextAnalyticsClient {
      * @return A {@link ExtractKeyPhraseResult key phrases} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtractKeyPhraseResult extractKeyPhrases(String text) {
-        return extractKeyPhrasesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> extractKeyPhrases(String text) {
+        return extractKeyPhrases(text, client.getDefaultLanguage(), Context.NONE);
     }
 
     /**
@@ -584,10 +586,9 @@ public final class TextAnalyticsClient {
      * {@link ExtractKeyPhraseResult key phrases} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExtractKeyPhraseResult> extractKeyPhrasesWithResponse(String text, String language,
-        Context context) {
-        return client.extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(text, language, context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> extractKeyPhrases(String text, String language, Context context) {
+        return new PagedIterable<>(client.extractKeyPhraseAsyncClient.extractKeyPhrases(text, language, context));
     }
 
     /**
@@ -604,7 +605,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhrases(List<String> textInputs) {
-        return extractKeyPhrasesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
+        return extractKeyPhrases(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -625,7 +626,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(
+    public Response<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrases(
         List<String> textInputs, String language, Context context) {
         return client.extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(textInputs, language, context).block();
     }
