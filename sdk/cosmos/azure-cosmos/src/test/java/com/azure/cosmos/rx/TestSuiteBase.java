@@ -643,7 +643,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected void safeDeleteSyncDatabase(CosmosDatabase database) {
         if (database != null) {
             try {
+                logger.info("attempting to delete database ....");
                 database.delete();
+                logger.info("database deletion completed");
             } catch (Exception e) {
                 logger.error("failed to delete sync database", e);
             }
@@ -706,7 +708,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected void safeCloseSyncClient(CosmosClient client) {
         if (client != null) {
             try {
+                logger.info("closing client ...");
                 client.close();
+                logger.info("closing client completed");
             } catch (Exception e) {
                 logger.error("failed to close client", e);
             }
