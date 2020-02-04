@@ -14,7 +14,6 @@ import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
