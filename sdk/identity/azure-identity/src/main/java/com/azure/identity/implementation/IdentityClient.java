@@ -5,9 +5,12 @@ package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -118,7 +121,7 @@ public class IdentityClient {
             }
 
             if (options.getHttpClient() != null) {
-                HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(options.getHttpClient()).build();
+                HttpPipeline pipeline = setupPipeline(options.getHttpClient());
                 applicationBuilder.httpClient(new HttpPipelineAdapter(pipeline));
             }
 
@@ -136,6 +139,11 @@ public class IdentityClient {
         } catch (MalformedURLException e) {
             return Mono.error(e);
         }
+    }
+
+    private HttpPipeline setupPipeline(HttpClient httpClient) {
+        return new HttpPipelineBuilder().httpClient(httpClient)
+            .policies(new RetryPolicy()).build();
     }
 
     /**
@@ -159,7 +167,7 @@ public class IdentityClient {
             }
 
             if (options.getHttpClient() != null) {
-                HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(options.getHttpClient()).build();
+                HttpPipeline pipeline = setupPipeline(options.getHttpClient());
                 applicationBuilder.httpClient(new HttpPipelineAdapter(pipeline));
             }
 
@@ -195,7 +203,7 @@ public class IdentityClient {
             }
 
             if (options.getHttpClient() != null) {
-                HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(options.getHttpClient()).build();
+                HttpPipeline pipeline = setupPipeline(options.getHttpClient());
                 applicationBuilder.httpClient(new HttpPipelineAdapter(pipeline));
             }
 
