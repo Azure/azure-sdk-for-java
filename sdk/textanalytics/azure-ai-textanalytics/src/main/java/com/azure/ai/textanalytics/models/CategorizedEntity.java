@@ -6,24 +6,24 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The NamedEntity model.
+ * The CategorizedEntity model.
  */
 @Immutable
-public final class NamedEntity {
+public final class CategorizedEntity {
     /*
-     * NamedEntity text as appears in the request.
+     * CategorizedEntity text as appears in the request.
      */
     private final String text;
 
     /*
-     * NamedEntity type, such as Person/Location/Org/SSN etc
+     * CategorizedEntity category, such as Person/Location/Org/SSN etc
      */
-    private final String type;
+    private final String category;
 
     /*
-     * NamedEntity sub type, such as Age/Year/TimeRange etc
+     * CategorizedEntity sub category, such as Age/Year/TimeRange etc
      */
-    private final String subtype;
+    private final String subCategory;
 
     /*
      * Start position (in Unicode characters) for the entity text.
@@ -41,26 +41,26 @@ public final class NamedEntity {
     private final double score;
 
     /**
-     * Creates a {@code NamedEntity} model that describes entity.
+     * Creates a {@code CategorizedEntity} model that describes entity.
      *
-     * @param text namedEntity text as appears in the request
-     * @param type namedEntity type, such as Person/Location/Org/SSN etc
-     * @param subtype namedEntity sub type, such as Age/Year/TimeRange etc
+     * @param text categorizedEntity text as appears in the request
+     * @param category categorizedEntity category, such as Person/Location/Org/SSN etc
+     * @param subCategory categorizedEntity sub category, such as Age/Year/TimeRange etc
      * @param offset start position (in Unicode characters) for the entity text
      * @param length length (in Unicode characters) for the entity text
      * @param score confidence score between 0 and 1 of the extracted entity
      */
-    public NamedEntity(String text, String type, String subtype, int offset, int length, double score) {
+    public CategorizedEntity(String text, String category, String subCategory, int offset, int length, double score) {
         this.text = text;
-        this.type = type;
-        this.subtype = subtype;
+        this.category = category;
+        this.subCategory = subCategory;
         this.offset = offset;
         this.length = length;
         this.score = score;
     }
 
     /**
-     * Get the text property: NamedEntity text as appears in the request.
+     * Get the text property: CategorizedEntity text as appears in the request.
      *
      * @return the text value.
      */
@@ -69,22 +69,22 @@ public final class NamedEntity {
     }
 
     /**
-     * Get the type property: NamedEntity type, such as Person/Location/Org/SSN etc.
+     * Get the category property: CategorizedEntity category, such as Person/Location/Org/SSN etc.
      *
-     * @return the type value.
+     * @return the category value.
      */
-    public String getType() {
-        return this.type;
+    public String getCategory() {
+        return this.category;
     }
 
     /**
-     * Get the subtype property: NamedEntity sub type, such as Age/Year/TimeRange
+     * Get the subcategory property: CategorizedEntity sub category, such as Age/Year/TimeRange
      * etc.
      *
-     * @return the subtype value.
+     * @return the subcategory value.
      */
-    public String getSubtype() {
-        return this.subtype;
+    public String getSubCategory() {
+        return this.subCategory;
     }
 
     /**
