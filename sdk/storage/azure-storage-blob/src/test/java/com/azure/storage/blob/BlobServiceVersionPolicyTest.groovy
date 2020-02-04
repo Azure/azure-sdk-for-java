@@ -8,20 +8,20 @@ import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.TestMode
 import com.azure.storage.blob.models.BlobContainerEncryptionScope
 import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.EncryptionScope
+
 import com.azure.storage.blob.specialized.PageBlobClient
 
 class BlobServiceVersionPolicyTest extends APISpec {
 
     BlobClient bc
     BlobContainerClient cc
-    EncryptionScope es
+    String es
     BlobContainerEncryptionScope ces
 
     BlobContainerClientBuilder containerBuilder
 
     def setup() {
-        es = new EncryptionScope().setEncryptionScope("testscope1")
+        es = "testscope1"
 
         containerBuilder = new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl().toString())
@@ -39,7 +39,7 @@ class BlobServiceVersionPolicyTest extends APISpec {
         when:
         ces = new BlobContainerEncryptionScope()
             .setDefaultEncryptionScope("testscope2")
-            .preventEncryptionScopeOverride(true)
+            .setEncryptionScopeOverridePrevented(true)
         BlobContainerClient cpkncesContainer = containerBuilder.blobContainerEncryptionScope(ces).encryptionScope(null)
             .containerName(generateContainerName()).buildClient()
         cpkncesContainer.createWithResponse(null, null, null, null)
@@ -53,7 +53,7 @@ class BlobServiceVersionPolicyTest extends APISpec {
         setup:
         ces = new BlobContainerEncryptionScope()
             .setDefaultEncryptionScope(null)
-            .preventEncryptionScopeOverride(true)
+            .setEncryptionScopeOverridePrevented(true)
         BlobContainerClient cpkncesContainer = containerBuilder.blobContainerEncryptionScope(ces)
             .containerName(generateContainerName()).buildClient()
 

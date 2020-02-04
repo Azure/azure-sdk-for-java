@@ -16,10 +16,10 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -65,7 +65,7 @@ public final class SpecializedBlobClientBuilder {
     private String snapshot;
 
     private CpkInfo customerProvidedKey;
-    private EncryptionScope encryptionScope;
+    private CpkScopeInfo encryptionScope;
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
@@ -326,13 +326,18 @@ public final class SpecializedBlobClientBuilder {
 
 
     /**
-     * Sets the {@link EncryptionScope encryption scope} that is used to encrypt blob contents on the server.
+     * Sets the {@link String encryption scope} that is used to encrypt blob contents on the server.
      *
      * @param encryptionScope Encryption scope containing the encryption key information.
      * @return the updated BlobClientBuilder object
      */
-    public SpecializedBlobClientBuilder encryptionScope(EncryptionScope encryptionScope) {
-        this.encryptionScope = encryptionScope;
+    public SpecializedBlobClientBuilder encryptionScope(String encryptionScope) {
+        if (encryptionScope == null) {
+            this.encryptionScope = null;
+        } else {
+            this.encryptionScope = new CpkScopeInfo().setEncryptionScope(encryptionScope);
+        }
+
         return this;
     }
 

@@ -72,10 +72,10 @@ public final class BlobContainerItemProperties {
     private String defaultEncryptionScope;
 
     /*
-     * The preventEncryptionScopeOverride property.
+     * The encryptionScopeOverridePrevented property.
      */
     @JsonProperty(value = "DenyEncryptionScopeOverride")
-    private boolean preventEncryptionScopeOverride;
+    private boolean encryptionScopeOverridePrevented;
 
     /**
      * Get the lastModified property: The lastModified property.
@@ -277,25 +277,25 @@ public final class BlobContainerItemProperties {
     }
 
     /**
-     * Get the preventEncryptionScopeOverride property: The
-     * preventEncryptionScopeOverride property.
+     * Get the encryptionScopeOverridePrevented property: The
+     * encryptionScopeOverridePrevented property.
      *
-     * @return the preventEncryptionScopeOverride value.
+     * @return the encryptionScopeOverridePrevented value.
      */
-    public boolean preventEncryptionScopeOverride() {
-        return this.preventEncryptionScopeOverride;
+    public boolean isEncryptionScopeOverridePrevented() {
+        return this.encryptionScopeOverridePrevented;
     }
 
     /**
-     * Set the preventEncryptionScopeOverride property: The
-     * preventEncryptionScopeOverride property.
+     * Set the encryptionScopeOverridePrevented property: The
+     * encryptionScopeOverridePrevented property.
      *
-     * @param preventEncryptionScopeOverride the preventEncryptionScopeOverride
-     * value to set.
+     * @param encryptionScopeOverridePrevented the
+     * encryptionScopeOverridePrevented value to set.
      * @return the BlobContainerItemProperties object itself.
      */
-    public BlobContainerItemProperties preventEncryptionScopeOverride(boolean preventEncryptionScopeOverride) {
-        this.preventEncryptionScopeOverride = preventEncryptionScopeOverride;
+    public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {
+        this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
         return this;
     }
 }

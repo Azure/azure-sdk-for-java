@@ -12,11 +12,11 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -55,7 +55,7 @@ public final class BlobContainerClientBuilder {
     private String containerName;
 
     private CpkInfo customerProvidedKey;
-    private EncryptionScope encryptionScope;
+    private CpkScopeInfo encryptionScope;
     private BlobContainerEncryptionScope blobContainerEncryptionScope;
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
@@ -175,13 +175,18 @@ public final class BlobContainerClientBuilder {
     }
 
     /**
-     * Sets the {@link EncryptionScope encryption scope} that is used to encrypt blob contents on the server.
+     * Sets the {@link String encryption scope} that is used to encrypt blob contents on the server.
      *
      * @param encryptionScope Encryption scope containing the encryption key information.
      * @return the updated BlobContainerClientBuilder object
      */
-    public BlobContainerClientBuilder encryptionScope(EncryptionScope encryptionScope) {
-        this.encryptionScope = encryptionScope;
+    public BlobContainerClientBuilder encryptionScope(String encryptionScope) {
+        if (encryptionScope == null) {
+            this.encryptionScope = null;
+        } else {
+            this.encryptionScope = new CpkScopeInfo().setEncryptionScope(encryptionScope);
+        }
+
         return this;
     }
 

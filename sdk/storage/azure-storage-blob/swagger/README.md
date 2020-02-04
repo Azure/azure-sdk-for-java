@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,EncryptionScope,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
 custom-types-subpackage: models
 ```
 
@@ -694,6 +694,7 @@ directive:
             etag["x-ms-client-name"] = "eTag";
             $.BlobContainerItemProperties.properties.Etag = etag;
         }
+        $.BlobContainerItemProperties.properties.DenyEncryptionScopeOverride["x-ms-client-name"] = "EncryptionScopeOverridePrevented";
     }
     if (!$.BlobContainerItem) {
         $.BlobContainerItem = $.ContainerItem;
@@ -1271,17 +1272,9 @@ directive:
 - from: swagger-document
   where: $.parameters
   transform: >
+    $.DenyEncryptionScopeOverride["x-ms-client-name"] = "EncryptionScopeOverridePrevented";
     $.DefaultEncryptionScope["x-ms-parameter-grouping"]["name"] = "blob-container-encryption-scope";
     $.DenyEncryptionScopeOverride["x-ms-parameter-grouping"]["name"] = "blob-container-encryption-scope";
-```
-
-### Rename cpk-scope-info to encryption-scope
-``` yaml
-directive:
-- from: swagger-document
-  where: $.parameters
-  transform: >
-    $.EncryptionScope["x-ms-parameter-grouping"]["name"] = "encryption-scope";
 ```
 
 ### BlobContainerEncryptionScope Boolean Fix
@@ -1290,9 +1283,9 @@ directive:
 - from: BlobContainerEncryptionScope.java
   where: $
   transform: >
-    return $.replace('private Boolean preventEncryptionScopeOverride;', 'private boolean preventEncryptionScopeOverride;').
-      replace('public Boolean isPreventEncryptionScopeOverride() {', 'public boolean preventEncryptionScopeOverride() {').
-      replace('public BlobContainerEncryptionScope setPreventEncryptionScopeOverride(Boolean preventEncryptionScopeOverride) {', 'public BlobContainerEncryptionScope preventEncryptionScopeOverride(boolean preventEncryptionScopeOverride) {');
+    return $.replace('private Boolean encryptionScopeOverridePrevented;', 'private boolean encryptionScopeOverridePrevented;').
+      replace('public Boolean isEncryptionScopeOverridePrevented() {', 'public boolean isEncryptionScopeOverridePrevented() {').
+      replace('public BlobContainerEncryptionScope setEncryptionScopeOverridePrevented(Boolean preventEncryptionScopeOverride) {', 'public BlobContainerEncryptionScope setEncryptionScopeOverridePrevented(boolean preventEncryptionScopeOverride) {');
 ```
 
 ### ContainersImpl Boolean Fix
@@ -1310,9 +1303,9 @@ directive:
 - from: BlobContainerItemProperties.java
   where: $
   transform: >
-    return $.replace('private Boolean preventEncryptionScopeOverride;', 'private boolean preventEncryptionScopeOverride;').
-      replace('public Boolean isPreventEncryptionScopeOverride() {', 'public boolean preventEncryptionScopeOverride() {').
-      replace('public BlobContainerItemProperties setPreventEncryptionScopeOverride(Boolean preventEncryptionScopeOverride) {', 'public BlobContainerItemProperties preventEncryptionScopeOverride(boolean preventEncryptionScopeOverride) {');
+    return $.replace('private Boolean encryptionScopeOverridePrevented;', 'private boolean encryptionScopeOverridePrevented;').
+      replace('public Boolean isEncryptionScopeOverridePrevented() {', 'public boolean isEncryptionScopeOverridePrevented() {').
+      replace('public BlobContainerItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {', 'public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {');
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

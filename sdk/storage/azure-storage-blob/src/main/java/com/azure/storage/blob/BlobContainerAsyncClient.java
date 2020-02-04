@@ -20,6 +20,7 @@ import com.azure.storage.blob.implementation.models.ContainerGetAccountInfoHeade
 import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
@@ -29,7 +30,6 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -90,7 +90,7 @@ public final class BlobContainerAsyncClient {
     private final String containerName;
     private final BlobServiceVersion serviceVersion;
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
-    private final EncryptionScope encryptionScope; // only used to pass down to blob clients
+    private final CpkScopeInfo encryptionScope; // only used to pass down to blob clients
     private final BlobContainerEncryptionScope blobContainerEncryptionScope;
 
     /**
@@ -107,7 +107,7 @@ public final class BlobContainerAsyncClient {
      * {@code null} to allow the service to use its own encryption.
      */
     BlobContainerAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
-        String accountName, String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
+        String accountName, String containerName, CpkInfo customerProvidedKey, CpkScopeInfo encryptionScope,
         BlobContainerEncryptionScope blobContainerEncryptionScope) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
@@ -220,11 +220,11 @@ public final class BlobContainerAsyncClient {
     }
 
     /**
-     * Gets the {@link EncryptionScope} used to encrypt this blob's content on the server.
+     * Gets the {@link CpkScopeInfo} used to encrypt this blob's content on the server.
      *
      * @return the encryption scope used for encryption.
      */
-    public EncryptionScope getEncryptionScope() {
+    public CpkScopeInfo getEncryptionScope() {
         return encryptionScope;
     }
 
