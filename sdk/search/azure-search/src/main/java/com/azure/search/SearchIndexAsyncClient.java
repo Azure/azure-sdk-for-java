@@ -420,10 +420,10 @@ public class SearchIndexAsyncClient {
 
     /**
      * Retrieves a document from the Azure Cognitive Search index.
-     * <see href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document"/>
+     * https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
      *
      * @param key The key of the document to retrieve;
-     * <see href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules"/>
+     * https://docs.microsoft.com/rest/api/searchservice/Naming-rules
      * for the rules for constructing valid document keys.
      * @return the document object
      */
@@ -438,10 +438,10 @@ public class SearchIndexAsyncClient {
 
     /**
      * Retrieves a document from the Azure Cognitive Search index.
-     * <see href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document"/>
+     * https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
      *
      * @param key The key of the document to retrieve;
-     * <see href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules"/>
+     * https://docs.microsoft.com/rest/api/searchservice/Naming-rules
      * for the rules for constructing valid document keys.
      * @param selectedFields List of field names to retrieve for the document;
      * Any field not retrieved will have null or default as its
@@ -464,10 +464,10 @@ public class SearchIndexAsyncClient {
 
     /**
      * Retrieves a document from the Azure Cognitive Search index.
-     * <see href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document"/>
+     * https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
      *
      * @param key The key of the document to retrieve;
-     * <see href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules"/>
+     * https://docs.microsoft.com/rest/api/searchservice/Naming-rules
      * for the rules for constructing valid document keys.
      * @param selectedFields List of field names to retrieve for the document;
      * Any field not retrieved will have null or default as its
