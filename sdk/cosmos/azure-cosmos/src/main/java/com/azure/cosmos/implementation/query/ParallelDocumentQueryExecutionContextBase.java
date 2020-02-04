@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
-import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
@@ -20,6 +19,7 @@ import com.azure.cosmos.implementation.routing.Range;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,14 +75,14 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
                 if (feedOptions.partitionKey() != null && feedOptions.partitionKey() != PartitionKey.NONE) {
-                    headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, 
+                    headers.put(HttpConstants.HttpHeaders.PARTITION_KEY,
                                 BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey()).toJson());
                 }
                 return this.createDocumentServiceRequest(headers, querySpecForInit, partitionKeyRange, collectionRid);
             };
 
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = (request) -> {
-                return this.executeRequestAsync(request).flux();
+            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> {
+                return this.executeRequestAsync(request);
             };
 
             DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
@@ -131,7 +131,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             String initialContinuationToken, int initialPageSize, FeedOptions feedOptions, SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc,
+            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc);
 
     @Override

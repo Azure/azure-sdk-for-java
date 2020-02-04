@@ -2,26 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
-import com.azure.cosmos.implementation.query.metrics.FetchExecutionRangeAccumulator;
-import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
-import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
-import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Resource;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
+import com.azure.cosmos.implementation.query.metrics.FetchExecutionRangeAccumulator;
+import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
+import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
+import com.azure.cosmos.implementation.routing.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
@@ -87,7 +87,7 @@ class DocumentProducer<T extends Resource> {
     protected final PartitionKeyRange targetRange;
     protected final String collectionLink;
     protected final TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc;
-    protected final Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeRequestFuncWithRetries;
+    protected final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFuncWithRetries;
     protected final Callable<DocumentClientRetryPolicy> createRetryPolicyFunc;
     protected final int pageSize;
     protected final UUID correlatedActivityId;
@@ -102,7 +102,7 @@ class DocumentProducer<T extends Resource> {
             String collectionResourceId,
             FeedOptions feedOptions,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeRequestFunc,
+            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
             String collectionLink,
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
@@ -130,7 +130,7 @@ class DocumentProducer<T extends Resource> {
                 try {
                     retryPolicy = createRetryPolicyFunc.call();
                 } catch (Exception e) {
-                    return Flux.error(e);
+                    return Mono.error(e);
                 }
                 retryPolicy.onBeforeSendRequest(request);
             }

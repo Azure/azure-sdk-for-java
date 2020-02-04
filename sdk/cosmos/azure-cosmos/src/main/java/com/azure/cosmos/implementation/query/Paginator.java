@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -24,17 +25,17 @@ public class Paginator {
 
     public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedChangeFeedQueryResultAsObservable(
             ChangeFeedOptions feedOptions, BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
+            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int maxPageSize) {
         return getPaginatedQueryResultAsObservable(feedOptions.getRequestContinuation(), createRequestFunc, executeFunc, resourceType,
                 -1, maxPageSize, true);
     }
 
     public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
-            FeedOptions feedOptions,
-            BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
-            int maxPageSize) {
+        FeedOptions feedOptions,
+        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc, Class<T> resourceType,
+        int maxPageSize) {
         return getPaginatedQueryResultAsObservable(feedOptions.requestContinuation(), createRequestFunc, executeFunc, resourceType,
                 -1, maxPageSize);
     }
@@ -42,7 +43,7 @@ public class Paginator {
     public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
             String continuationToken,
             BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
+            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int top, int maxPageSize) {
         return getPaginatedQueryResultAsObservable(continuationToken, createRequestFunc, executeFunc, resourceType,
                 top, maxPageSize, false);
@@ -51,7 +52,7 @@ public class Paginator {
     private static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
             String continuationToken,
             BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
+            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int top, int maxPageSize, boolean isChangeFeed) {
 
         return Flux.defer(() -> {
@@ -59,8 +60,8 @@ public class Paginator {
                     new Fetcher<>(createRequestFunc, executeFunc, continuationToken, isChangeFeed, top, maxPageSize),
                     (tFetcher, sink) -> {
                         if (tFetcher.shouldFetchMore()) {
-                            Flux<FeedResponse<T>> nextPage = tFetcher.nextPage();
-                            sink.next(nextPage);
+                            Mono<FeedResponse<T>> nextPage = tFetcher.nextPage();
+                            sink.next(nextPage.flux());
                         } else {
                             logger.debug("No more results");
                             sink.complete();
