@@ -5,6 +5,8 @@ package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -114,15 +116,23 @@ public class IdentityClient {
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
+
+            if (options.getHttpClient() != null) {
+                HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(options.getHttpClient()).build();
+                applicationBuilder.httpClient(new HttpPipelineAdapter(pipeline));
+            }
+
             if (options.getHttpPipeline() != null) {
                 applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
             }
+
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                     .build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                    ZoneOffset.UTC)));
+                       .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
+                               ZoneOffset.UTC)));
+
         } catch (MalformedURLException e) {
             return Mono.error(e);
         }
@@ -147,9 +157,16 @@ public class IdentityClient {
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
+
+            if (options.getHttpClient() != null) {
+                HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(options.getHttpClient()).build();
+                applicationBuilder.httpClient(new HttpPipelineAdapter(pipeline));
+            }
+
             if (options.getHttpPipeline() != null) {
                 applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
             }
+
             return applicationBuilder.build();
         }).flatMap(application -> Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build())))
@@ -176,9 +193,16 @@ public class IdentityClient {
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
+
+            if (options.getHttpClient() != null) {
+                HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(options.getHttpClient()).build();
+                applicationBuilder.httpClient(new HttpPipelineAdapter(pipeline));
+            }
+
             if (options.getHttpPipeline() != null) {
                 applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
             }
+
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))

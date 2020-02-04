@@ -3,11 +3,13 @@
 
 package com.azure.identity;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -66,6 +68,20 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     @SuppressWarnings("unchecked")
     public T httpPipeline(HttpPipeline httpPipeline) {
         this.identityClientOptions.setHttpPipeline(httpPipeline);
+        return (T) this;
+    }
+
+    /**
+     * Sets the HTTP client to use for sending and receiving requests to and from the service.
+     *
+     * @param client The HTTP client to use for requests.
+     * @return itself
+     * @throws NullPointerException If {@code client} is {@code null}.
+     */
+    @SuppressWarnings("unchecked")
+    public T httpClient(HttpClient client) {
+        Objects.requireNonNull(client);
+        this.identityClientOptions.setHttpClient(client);
         return (T) this;
     }
 }
