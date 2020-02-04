@@ -13,16 +13,16 @@ import java.util.List;
 
 public final class RntbdResponseDecoder extends ByteToMessageDecoder {
 
-    private static final Logger Logger = LoggerFactory.getLogger(RntbdResponseDecoder.class);
+    private static final Logger logger = LoggerFactory.getLogger(RntbdResponseDecoder.class);
 
     /**
-     * Deserialize from an input {@link ByteBuf} to an {@link RntbdResponse} instance
+     * Deserialize from an input {@link ByteBuf} to an {@link RntbdResponse} instance.
      * <p>
-     * This method is called till it reads no bytes from the {@link ByteBuf} or there is no more data to be readTree.
+     * This method is called till it reads no bytes from the {@link ByteBuf} or there is no more data to be read.
      *
-     * @param context the {@link ChannelHandlerContext} to which this {@link RntbdResponseDecoder} belongs
-     * @param in      the {@link ByteBuf} to which data to be decoded is readTree
-     * @param out     the {@link List} to which decoded messages are added
+     * @param context the {@link ChannelHandlerContext} to which this {@link RntbdResponseDecoder} belongs.
+     * @param in the {@link ByteBuf} to which data to be decoded is read.
+     * @param out the {@link List} to which decoded messages are added.
      */
     @Override
     protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) {
@@ -32,7 +32,7 @@ public final class RntbdResponseDecoder extends ByteToMessageDecoder {
             final RntbdResponse response = RntbdResponse.decode(in);
 
             if (response != null) {
-                Logger.debug("{} DECODE COMPLETE: {}", context.channel(), response);
+                logger.debug("{} DECODE COMPLETE: {}", context.channel(), response);
                 in.discardReadBytes();
                 response.retain();
                 out.add(response);

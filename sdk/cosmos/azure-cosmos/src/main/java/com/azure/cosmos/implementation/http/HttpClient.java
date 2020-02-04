@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.http;
 import reactor.core.publisher.Mono;
 import reactor.netty.resources.ConnectionProvider;
 
+import java.io.Closeable;
 import java.time.Duration;
 
 /**
