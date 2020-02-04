@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.GoneException;
 import com.azure.cosmos.implementation.Configs;
@@ -12,8 +13,10 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import io.reactivex.subscribers.TestSubscriber;
+import javafx.beans.binding.When;
 import org.assertj.core.api.Assertions;
 import org.mockito.Matchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -37,6 +40,7 @@ public class ReplicatedResourceClientTest {
         transportClient = Mockito.mock(TransportClient.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
         authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        Mockito.when(serviceConfigReader.getDefaultConsistencyLevel()).thenReturn(Mono.just(ConsistencyLevel.SESSION));
     }
 
     /**

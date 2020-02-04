@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.DocumentServiceRequestContextValidator;
@@ -107,6 +108,7 @@ public class QuorumReaderTest {
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
 
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.when(serviceConfigurator.getDefaultConsistencyLevel()).thenReturn(Mono.just(ConsistencyLevel.SESSION));
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 
@@ -225,6 +227,7 @@ public class QuorumReaderTest {
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
 
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.when(serviceConfigurator.getDefaultConsistencyLevel()).thenReturn(Mono.just(ConsistencyLevel.SESSION));
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 
@@ -374,6 +377,7 @@ public class QuorumReaderTest {
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
 
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.when(serviceConfigurator.getDefaultConsistencyLevel()).thenReturn(Mono.just(ConsistencyLevel.SESSION));
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 
@@ -499,6 +503,7 @@ public class QuorumReaderTest {
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
 
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.when(serviceConfigurator.getDefaultConsistencyLevel()).thenReturn(Mono.just(ConsistencyLevel.SESSION));
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 
@@ -593,6 +598,7 @@ public class QuorumReaderTest {
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
 
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.when(serviceConfigurator.getDefaultConsistencyLevel()).thenReturn(Mono.just(ConsistencyLevel.SESSION));
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
 
         QuorumReader quorumReader = new QuorumReader(configs, endpointMock.transportClientWrapper.transportClient,

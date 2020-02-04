@@ -789,7 +789,7 @@ public class StoreReaderDotNetTest {
             ReplicationPolicy replicationPolicy = new ReplicationPolicy();
             GatewayServiceConfigurationReader mockServiceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
             Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(Mono.just(replicationPolicy));
-
+            Mockito.when(mockServiceConfigReader.getDefaultConsistencyLevel()).thenReturn(Mono.just(ConsistencyLevel.SESSION));
             QuorumReader reader = new QuorumReader(new Configs(),mockTransportClient, addressSelector, storeReader, mockServiceConfigReader, mockAuthorizationTokenProvider);
 
             entity.requestContext.originalRequestConsistencyLevel = ConsistencyLevel.STRONG;
