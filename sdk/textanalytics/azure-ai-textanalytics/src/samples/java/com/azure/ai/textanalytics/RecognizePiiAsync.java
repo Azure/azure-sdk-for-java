@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -30,12 +30,12 @@ public class RecognizePiiAsync {
 
         client.recognizePiiEntities(text).subscribe(
             result -> {
-                for (NamedEntity entity : result.getNamedEntities()) {
+                for (PiiEntity entity : result.getEntities()) {
                     System.out.printf(
-                        "Recognized personal identifiable information entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
+                        "Recognized personal identifiable information entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
                         entity.getText(),
-                        entity.getType(),
-                        entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
+                        entity.getCategory(),
+                        entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
                         entity.getOffset(),
                         entity.getLength(),
                         entity.getScore());
