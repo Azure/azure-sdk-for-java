@@ -139,9 +139,13 @@ public class SearchIndexAsyncClient {
      * Uploads a collection of documents to the target index
      * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
-     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
-     * heavy indexing load. It is important to explicitly catch this exception and check its
+     * Exception IndexBatchException is thrown when some of the indexing actions failed,
+     * but other actions succeeded and modified the state of the index.
+     * This can happen when the Search Service is under heavy indexing load.
+     * It is important to explicitly catch this exception and check the return value of
+     * its getIndexingResult method. The indexing result reports the status of each indexing
+     * action in the batch, making it possible to determine the state of the index after a
+     * partial failure.
      *
      * @param documents collection of documents to upload to the target Index.
      * @return document index result.
@@ -159,9 +163,13 @@ public class SearchIndexAsyncClient {
      * Uploads a collection of documents to the target index
      * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
-     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
-     * heavy indexing load. It is important to explicitly catch this exception and check its
+     * Exception IndexBatchException is thrown when some of the indexing actions failed,
+     * but other actions succeeded and modified the state of the index.
+     * This can happen when the Search Service is under heavy indexing load.
+     * It is important to explicitly catch this exception and check the return value of
+     * its getIndexingResult method. The indexing result reports the status of each indexing
+     * action in the batch, making it possible to determine the state of the index after a
+     * partial failure.
      *
      * @param documents collection of documents to upload to the target Index.
      * @return response containing the document index result.
@@ -191,9 +199,13 @@ public class SearchIndexAsyncClient {
      * declare primitive-typed properties with their class equivalents (for example, an integer property should be
      * of type Integer instead of int).
      *
-     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
-     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
-     * heavy indexing load. It is important to explicitly catch this exception and check its
+     * Exception IndexBatchException is thrown when some of the indexing actions failed,
+     * but other actions succeeded and modified the state of the index.
+     * This can happen when the Search Service is under heavy indexing load.
+     * It is important to explicitly catch this exception and check the return value of
+     * its getIndexingResult method. The indexing result reports the status of each indexing
+     * action in the batch, making it possible to determine the state of the index after a
+     * partial failure.
      *
      * @param documents collection of documents to be merged
      * @return document index result
@@ -218,9 +230,13 @@ public class SearchIndexAsyncClient {
      * declare primitive-typed properties with their class equivalents (for example, an integer property should be
      * of type Integer instead of int).
      *
-     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
-     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
-     * heavy indexing load. It is important to explicitly catch this exception and check its
+     * Exception IndexBatchException is thrown when some of the indexing actions failed,
+     * but other actions succeeded and modified the state of the index.
+     * This can happen when the Search Service is under heavy indexing load.
+     * It is important to explicitly catch this exception and check the return value of
+     * its getIndexingResult method. The indexing result reports the status of each indexing
+     * action in the batch, making it possible to determine the state of the index after a
+     * partial failure.
      *
      * @param documents collection of documents to be merged
      * @return response containing the document index result.
@@ -255,9 +271,13 @@ public class SearchIndexAsyncClient {
      * declare primitive-typed properties with their class equivalents (for example, an integer property should be
      * of type Integer instead of int).
      *
-     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
-     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
-     * heavy indexing load. It is important to explicitly catch this exception and check its
+     * Exception IndexBatchException is thrown when some of the indexing actions failed,
+     * but other actions succeeded and modified the state of the index.
+     * This can happen when the Search Service is under heavy indexing load.
+     * It is important to explicitly catch this exception and check the return value of
+     * its getIndexingResult method. The indexing result reports the status of each indexing
+     * action in the batch, making it possible to determine the state of the index after a
+     * partial failure.
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
@@ -283,9 +303,13 @@ public class SearchIndexAsyncClient {
      * declare primitive-typed properties with their class equivalents (for example, an integer property should be
      * of type Integer instead of int).
      *
-     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
-     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
-     * heavy indexing load. It is important to explicitly catch this exception and check its
+     * Exception IndexBatchException is thrown when some of the indexing actions failed,
+     * but other actions succeeded and modified the state of the index.
+     * This can happen when the Search Service is under heavy indexing load.
+     * It is important to explicitly catch this exception and check the return value of
+     * its getIndexingResult method. The indexing result reports the status of each indexing
+     * action in the batch, making it possible to determine the state of the index after a
+     * partial failure.
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return response containing the document index result.
@@ -312,12 +336,16 @@ public class SearchIndexAsyncClient {
      * Deletes a collection of documents from the target index
      * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
-     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
-     * heavy indexing load. It is important to explicitly catch this exception and check its
+     * Exception IndexBatchException is thrown when some of the indexing actions failed,
+     * but other actions succeeded and modified the state of the index.
+     * This can happen when the Search Service is under heavy indexing load.
+     * It is important to explicitly catch this exception and check the return value of
+     * its getIndexingResult method. The indexing result reports the status of each indexing
+     * action in the batch, making it possible to determine the state of the index after a
+     * partial failure.
      *
      * @param documents collection of documents to delete from the target Index.
-     *                  Fields other than the key are ignoreFields other than the key are ignored.
+     *                  Fields other than the key are ignored.
      * @return document index result.
      */
     public Mono<IndexDocumentsResult> deleteDocuments(Iterable<?> documents) {
@@ -333,9 +361,13 @@ public class SearchIndexAsyncClient {
      * Deletes a collection of documents from the target index
      * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
-     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
-     * heavy indexing load. It is important to explicitly catch this exception and check its
+     * Exception IndexBatchException is thrown when some of the indexing actions failed,
+     * but other actions succeeded and modified the state of the index.
+     * This can happen when the Search Service is under heavy indexing load.
+     * It is important to explicitly catch this exception and check the return value of
+     * its getIndexingResult method. The indexing result reports the status of each indexing
+     * action in the batch, making it possible to determine the state of the index after a
+     * partial failure.
      *
      * @param documents collection of documents to delete from the target Index.
      *                  Fields other than the key are ignored.
@@ -623,9 +655,13 @@ public class SearchIndexAsyncClient {
      * Sends a batch of upload, merge, and/or delete actions to the search index.
      * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
-     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
-     * heavy indexing load. It is important to explicitly catch this exception and check its
+     * Exception IndexBatchException is thrown when some of the indexing actions failed,
+     * but other actions succeeded and modified the state of the index.
+     * This can happen when the Search Service is under heavy indexing load.
+     * It is important to explicitly catch this exception and check the return value of
+     * its getIndexingResult method. The indexing result reports the status of each indexing
+     * action in the batch, making it possible to determine the state of the index after a
+     * partial failure.
      *
      * @param batch The batch of index actions
      * @return Response containing the status of operations for all actions in the batch.
@@ -643,9 +679,13 @@ public class SearchIndexAsyncClient {
      * Sends a batch of upload, merge, and/or delete actions to the search index.
      * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
-     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
-     * heavy indexing load. It is important to explicitly catch this exception and check its
+     * Exception IndexBatchException is thrown when some of the indexing actions failed,
+     * but other actions succeeded and modified the state of the index.
+     * This can happen when the Search Service is under heavy indexing load.
+     * It is important to explicitly catch this exception and check the return value of
+     * its getIndexingResult method. The indexing result reports the status of each indexing
+     * action in the batch, making it possible to determine the state of the index after a
+     * partial failure.
      *
      * @param batch The batch of index actions
      * @return Response containing the status of operations for all actions in the batch
