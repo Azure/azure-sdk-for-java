@@ -985,7 +985,6 @@ public class SearchServiceClient {
     /**
      * Returns service level statistics for a search service, including service counters and limits.
      *
-     * Contains the tracking ID sent with the request to help with debugging
      * @return the search service statistics result.
      */
     public ServiceStatistics getServiceStatistics() {

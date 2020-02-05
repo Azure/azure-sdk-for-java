@@ -5,6 +5,7 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import org.apache.http.HttpStatus;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -136,7 +137,11 @@ public class SearchIndexAsyncClient {
 
     /**
      * Uploads a collection of documents to the target index
-     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     *
+     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
+     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
+     * heavy indexing load. It is important to explicitly catch this exception and check its
      *
      * @param documents collection of documents to upload to the target Index.
      * @return document index result.
@@ -151,8 +156,12 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Uploads a collection of documents to the target
-     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * Uploads a collection of documents to the target index
+     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     *
+     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
+     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
+     * heavy indexing load. It is important to explicitly catch this exception and check its
      *
      * @param documents collection of documents to upload to the target Index.
      * @return response containing the document index result.
@@ -173,13 +182,18 @@ public class SearchIndexAsyncClient {
 
     /**
      * Merges a collection of documents with existing documents in the target index.
-     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * If the type of the document contains non-nullable value-typed properties, these properties may not
+     * If the type of the document contains non-nullable primitive-typed properties, these properties may not
      * merge correctly. If you do not set such a property, it will automatically take its default value
-     * (for example, 0 for int or false for bool), which will override the value of the property currently stored
+     * (for example, 0 for int or false for boolean), which will override the value of the property currently stored
      * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
-     * declare value-typed properties to be nullable
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be
+     * of type Integer instead of int).
+     *
+     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
+     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
+     * heavy indexing load. It is important to explicitly catch this exception and check its
      *
      * @param documents collection of documents to be merged
      * @return document index result
@@ -194,14 +208,19 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Merges a collection of documents with existing documents in the target index
-     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * Merges a collection of documents with existing documents in the target index.
+     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * If the type of the document contains non-nullable value-typed properties, these properties may not
+     * If the type of the document contains non-nullable primitive-typed properties, these properties may not
      * merge correctly. If you do not set such a property, it will automatically take its default value
-     * (for example, 0 for int or false for bool), which will override the value of the property currently stored
+     * (for example, 0 for int or false for boolean), which will override the value of the property currently stored
      * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
-     * declare value-typed properties to be nullable
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be
+     * of type Integer instead of int).
+     *
+     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
+     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
+     * heavy indexing load. It is important to explicitly catch this exception and check its
      *
      * @param documents collection of documents to be merged
      * @return response containing the document index result.
@@ -227,13 +246,18 @@ public class SearchIndexAsyncClient {
     /**
      * This action behaves like merge if a document with the given key already exists in the index.
      * If the document does not exist, it behaves like upload with a new document.
-     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * If the type of the document contains non-nullable value-typed properties, these properties may not
+     * If the type of the document contains non-nullable primitive-typed properties, these properties may not
      * merge correctly. If you do not set such a property, it will automatically take its default value
-     * (for example, 0 for int or false for bool), which will override the value of the property currently stored
+     * (for example, 0 for int or false for boolean), which will override the value of the property currently stored
      * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
-     * declare value-typed properties to be nullable
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be
+     * of type Integer instead of int).
+     *
+     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
+     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
+     * heavy indexing load. It is important to explicitly catch this exception and check its
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
@@ -250,13 +274,18 @@ public class SearchIndexAsyncClient {
     /**
      * This action behaves like merge if a document with the given key already exists in the index.
      * If the document does not exist, it behaves like upload with a new document.
-     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * If the type of the document contains non-nullable value-typed properties, these properties may not
+     * If the type of the document contains non-nullable primitive-typed properties, these properties may not
      * merge correctly. If you do not set such a property, it will automatically take its default value
-     * (for example, 0 for int or false for bool), which will override the value of the property currently stored
+     * (for example, 0 for int or false for boolean), which will override the value of the property currently stored
      * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
-     * declare value-typed properties to be nullable
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be
+     * of type Integer instead of int).
+     *
+     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
+     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
+     * heavy indexing load. It is important to explicitly catch this exception and check its
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return response containing the document index result.
@@ -281,10 +310,14 @@ public class SearchIndexAsyncClient {
 
     /**
      * Deletes a collection of documents from the target index
-     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     *
+     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
+     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
+     * heavy indexing load. It is important to explicitly catch this exception and check its
      *
      * @param documents collection of documents to delete from the target Index.
-     *                  Fields other than the key are ignored
+     *                  Fields other than the key are ignoreFields other than the key are ignored.
      * @return document index result.
      */
     public Mono<IndexDocumentsResult> deleteDocuments(Iterable<?> documents) {
@@ -298,10 +331,14 @@ public class SearchIndexAsyncClient {
 
     /**
      * Deletes a collection of documents from the target index
-     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     *
+     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
+     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
+     * heavy indexing load. It is important to explicitly catch this exception and check its
      *
      * @param documents collection of documents to delete from the target Index.
-     *                  Fields other than the key are ignored
+     *                  Fields other than the key are ignored.
      * @return response containing the document index result.
      */
     public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
@@ -376,11 +413,11 @@ public class SearchIndexAsyncClient {
 
     /**
      * Searches for documents in the Azure Cognitive Search index
-     * https://docs.microsoft.com/rest/api/searchservice/Search-Documents
+     * See https://docs.microsoft.com/rest/api/searchservice/Search-Documents
      *
      * @param searchText A full-text search query expression;
      * Use null or "*" to match all documents. See
-     * see https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search"
+     * See https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search"
      * for more information about search query syntax.
      * @return A {@link PagedFluxBase} that iterates over {@link SearchResult} objects
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
@@ -396,11 +433,11 @@ public class SearchIndexAsyncClient {
 
     /**
      * Searches for documents in the Azure Cognitive Search index
-     * https://docs.microsoft.com/rest/api/searchservice/Search-Documents
+     * See https://docs.microsoft.com/rest/api/searchservice/Search-Documents
      *
      * @param searchText A full-text search query expression;
      * Use null or "*" to match all documents. See
-     * see https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search"
+     * See https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search"
      * for more information about search query syntax.
      * @param searchOptions Parameters to further refine the search query
      * @param requestOptions additional parameters for the operation.
@@ -436,10 +473,10 @@ public class SearchIndexAsyncClient {
 
     /**
      * Retrieves a document from the Azure Cognitive Search index.
-     * https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
+     * See https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
      *
      * @param key The key of the document to retrieve;
-     * https://docs.microsoft.com/rest/api/searchservice/Naming-rules
+     * See https://docs.microsoft.com/rest/api/searchservice/Naming-rules
      * for the rules for constructing valid document keys.
      * @return the document object
      */
@@ -454,10 +491,10 @@ public class SearchIndexAsyncClient {
 
     /**
      * Retrieves a document from the Azure Cognitive Search index.
-     * https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
+     * See https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
      *
      * @param key The key of the document to retrieve;
-     * https://docs.microsoft.com/rest/api/searchservice/Naming-rules
+     * See https://docs.microsoft.com/rest/api/searchservice/Naming-rules
      * for the rules for constructing valid document keys.
      * @param selectedFields List of field names to retrieve for the document;
      * Any field not retrieved will have null or default as its
@@ -480,10 +517,10 @@ public class SearchIndexAsyncClient {
 
     /**
      * Retrieves a document from the Azure Cognitive Search index.
-     * https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
+     * See https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
      *
      * @param key The key of the document to retrieve;
-     * https://docs.microsoft.com/rest/api/searchservice/Naming-rules
+     * See https://docs.microsoft.com/rest/api/searchservice/Naming-rules
      * for the rules for constructing valid document keys.
      * @param selectedFields List of field names to retrieve for the document;
      * Any field not retrieved will have null or default as its
@@ -525,8 +562,8 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Suggests query terms based on input text and matching documents in the search index.
-     * see https://docs.microsoft.com/rest/api/searchservice/Suggestions
+     * Suggests documents in the index that match the given partial query.
+     * See https://docs.microsoft.com/rest/api/searchservice/Suggestions
      *
      * @param searchText The search text on which to base suggestions
      * @param suggesterName The name of the suggester as specified in the suggesters collection
@@ -544,8 +581,8 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Suggests query terms based on input text and matching documents in the search index.
-     * see https://docs.microsoft.com/rest/api/searchservice/Suggestions
+     * Suggests documents in the index that match the given partial query.
+     * See https://docs.microsoft.com/rest/api/searchservice/Suggestions
      *
      * @param searchText The search text on which to base suggestions
      * @param suggesterName The name of the suggester as specified in the suggesters collection
@@ -584,7 +621,11 @@ public class SearchIndexAsyncClient {
 
     /**
      * Sends a batch of upload, merge, and/or delete actions to the search index.
-     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     *
+     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
+     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
+     * heavy indexing load. It is important to explicitly catch this exception and check its
      *
      * @param batch The batch of index actions
      * @return Response containing the status of operations for all actions in the batch.
@@ -600,7 +641,11 @@ public class SearchIndexAsyncClient {
 
     /**
      * Sends a batch of upload, merge, and/or delete actions to the search index.
-     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     *
+     * Exception IndexBatchException thrown when some of the indexing actions failed, but other
+     * actions succeeded and modified the state of the index. This can happen when the Search Service is under
+     * heavy indexing load. It is important to explicitly catch this exception and check its
      *
      * @param batch The batch of index actions
      * @return Response containing the status of operations for all actions in the batch
@@ -617,7 +662,7 @@ public class SearchIndexAsyncClient {
         return restClient.documents()
             .indexWithRestResponseAsync(batch, context)
             .handle((res, sink) -> {
-                if (res.getStatusCode() == 207) {
+                    if (res.getStatusCode() == HttpStatus.SC_MULTI_STATUS) {
                     IndexBatchException ex = new IndexBatchException(res.getValue());
                     sink.error(ex);
                 } else {
@@ -627,7 +672,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Autocomplete incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
      *
      * @param searchText search text
      * @param suggesterName suggester name
@@ -643,7 +688,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Autocomplete incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
      *
      * @param searchText search text
      * @param suggesterName suggester name

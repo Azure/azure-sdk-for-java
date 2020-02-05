@@ -38,6 +38,11 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.3.6</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>

@@ -125,6 +125,24 @@ public final class GeoPoint {
     }
 
     /**
+     * Return latitude
+     * @return value of latitude coordinate
+     */
+    public Double getLatitude()
+    {
+        return coordinates.get(0);
+    }
+
+    /**
+     * Return longitude
+     * @return value of longitude coordinate
+     */
+    public Double getLongitude()
+    {
+        return coordinates.get(1);
+    }
+
+    /**
      * Set coordinates
      * @param coordinates list of coordinates
      * @return GeoPoint updated
