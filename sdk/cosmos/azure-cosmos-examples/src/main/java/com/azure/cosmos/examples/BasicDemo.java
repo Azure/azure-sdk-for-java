@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -115,7 +116,7 @@ public class BasicDemo {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class);
+        Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class).byPage();
 
         queryFlux.publishOn(Schedulers.elastic())
             .toIterable()
@@ -135,7 +136,7 @@ public class BasicDemo {
         String continuation = null;
         do {
             options.requestContinuation(continuation);
-            Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class);
+            Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class).byPage();
             FeedResponse<TestObject> page = queryFlux.blockFirst();
             assert page != null;
             log(page.getResults());

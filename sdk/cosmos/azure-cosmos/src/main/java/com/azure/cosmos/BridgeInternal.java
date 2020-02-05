@@ -465,4 +465,17 @@ public class BridgeInternal {
     public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
         return partitionKey.getInternalPartitionKey();
     }
+
+    public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
+        feedOptions.requestContinuation(continuationToken);
+        feedOptions.maxItemCount(maxItemCount);
+    }
+
+    public static void setFeedOptionsContinuationToken(FeedOptions feedOptions, String continuationToken) {
+        feedOptions.requestContinuation(continuationToken);
+    }
+
+    public static void setFeedOptionsMaxItemCount(FeedOptions feedOptions, Integer maxItemCount) {
+        feedOptions.maxItemCount(maxItemCount);
+    }
 }

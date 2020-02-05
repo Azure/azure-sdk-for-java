@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -57,7 +58,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         options.maxItemCount(5);
         options.populateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options,
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,
                                                                                                 CosmosItemProperties.class);
 
         FeedResponseListValidator<CosmosItemProperties> validator =
@@ -69,7 +70,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
                 .hasValidQueryMetrics(qmEnabled)
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, TIMEOUT);
+        validateQuerySuccess(queryObservable.byPage(), validator, TIMEOUT);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -79,7 +80,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable;
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable;
 
         int totalDocsObtained = 0;
         int totalDocs = docs.size();
@@ -90,7 +91,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         while (numCalls < expectedNumCalls) {
             query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
             queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
-            Iterator<FeedResponse<CosmosItemProperties>> iterator = queryObservable.toIterable().iterator();
+            Iterator<FeedResponse<CosmosItemProperties>> iterator = queryObservable.byPage().toIterable().iterator();
             while (iterator.hasNext()) {
                 FeedResponse<CosmosItemProperties> next = iterator.next();
                 totalDocsObtained += next.getResults().size();
@@ -154,11 +155,11 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
             options.maxItemCount(pageSize);
             options.maxItemCount(5);
             options.requestContinuation(requestContinuation);
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable =
+            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable =
                 createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();
-            queryObservable.subscribe(testSubscriber);
+            queryObservable.byPage().subscribe(testSubscriber);
             testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();
@@ -203,7 +204,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         safeClose(client);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"simple"}, timeOut = 3 * SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = this.clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);

@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.FeedOptions;
@@ -76,7 +77,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.populateQueryMetrics(qmEnabled);
 
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<String> expectedResourceIds = new ArrayList<>();
         expectedResourceIds.add(expectedDocument.getResourceId());
@@ -95,7 +96,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .hasValidQueryMetrics(qmEnabled)
                 .build();
 
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -103,7 +104,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2' ORDER BY r.propInt";
         FeedOptions options = new FeedOptions();
         
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
             .containsExactly(new ArrayList<>())
@@ -113,7 +114,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .hasRequestChargeHeader().build())
             .build();
 
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     @DataProvider(name = "sortOrder")
@@ -128,7 +129,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         
         int pageSize = 3;
         options.maxItemCount(pageSize);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
 
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator);
@@ -146,7 +147,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
                 .build();
 
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -156,7 +157,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         
         int pageSize = 3;
         options.maxItemCount(pageSize);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator);
@@ -170,7 +171,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
             .build();
 
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -180,7 +181,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         
         int pageSize = 3;
         options.maxItemCount(pageSize);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         Comparator<String> validatorComparator = Comparator.nullsFirst(Comparator.<String>naturalOrder());
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propStr", d -> d.getString("propStr"), validatorComparator);
@@ -194,7 +195,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
             .build();
 
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     @DataProvider(name = "topValue")
@@ -210,7 +211,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         
         int pageSize = 3;
         options.maxItemCount(pageSize);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
 
@@ -228,7 +229,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .totalRequestChargeIsAtLeast(numberOfPartitions * (topValue > 0 ? minQueryRequestChargePerPartition : 1))
                 .build();
 
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     private <T> List<String> sortDocumentsAndCollectResourceIds(String propName, Function<CosmosItemProperties, T> extractProp, Comparator<T> comparer) {
@@ -244,10 +245,10 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.partitionKey(new PartitionKey("duplicateParitionKeyValue"));
         options.maxItemCount(3);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>();
-        queryObservable.take(1).subscribe(subscriber);
+        queryObservable.byPage().take(1).subscribe(subscriber);
 
         subscriber.awaitTerminalEvent();
         subscriber.assertComplete();
@@ -280,7 +281,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .requestChargeGreaterThanOrEqualTo(1.0).build())
             .build();
 
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -454,12 +455,12 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                     "rid",
                     false);
             options.requestContinuation(orderByContinuationToken.toString());
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query,
+            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query,
                     options, CosmosItemProperties.class);
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();
-            queryObservable.subscribe(testSubscriber);
+            queryObservable.byPage().subscribe(testSubscriber);
             testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
             testSubscriber.assertError(CosmosClientException.class);
         } while (requestContinuation != null);
@@ -487,12 +488,12 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             
             options.setMaxDegreeOfParallelism(2);
             options.requestContinuation(requestContinuation);
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query,
+            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query,
                     options, CosmosItemProperties.class);
 
-            //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
+            //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.byPage().first();
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();
-            queryObservable.subscribe(testSubscriber);
+            queryObservable.byPage().subscribe(testSubscriber);
             testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();

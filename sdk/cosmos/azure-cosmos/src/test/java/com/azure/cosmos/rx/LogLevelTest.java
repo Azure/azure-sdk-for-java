@@ -68,7 +68,7 @@ public class LogLevelTest extends TestSuiteBase {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
-            CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = 
+            CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator =
                 new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
                     .withId(docDefinition.getId()).build();
             validateSuccess(createObservable, validator);
@@ -265,12 +265,14 @@ public class LogLevelTest extends TestSuiteBase {
 
     @AfterMethod(groups = { "simple" })
     public void afterMethod() {
+        LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.OFF);
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT)
     public void afterClass() {
+        LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.OFF);
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }

@@ -34,4 +34,12 @@ public class ConnectionPolicyTest {
                 {  Protocol.TCP},
         };
     }
+
+    @Test(groups = { "unit" })
+    public void usingMultipleWriteLocations() {
+        ConnectionPolicy policy = new ConnectionPolicy();
+        assertThat(policy.getUsingMultipleWriteLocations()).isEqualTo(true);
+        policy.setUsingMultipleWriteLocations(false);
+        assertThat(policy.getUsingMultipleWriteLocations()).isEqualTo(false);
+    }
 }
