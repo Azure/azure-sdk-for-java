@@ -8,14 +8,12 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +36,9 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
     public void readDocuments() {
         final FeedOptions options = new FeedOptions();
 
+        int maxItemCount = 2;
         final CosmosContinuablePagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
-        final int expectedPageSize = (createdDocuments.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        final int expectedPageSize = (createdDocuments.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(createdDocuments.size())
@@ -48,7 +47,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(feedObservable.byPage(5), validator, FEED_TIMEOUT);
+        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
     // TODO (DANOBLE) SinglePartitionReadFeedDocumentsTest initialization consistently times out in CI environments.
