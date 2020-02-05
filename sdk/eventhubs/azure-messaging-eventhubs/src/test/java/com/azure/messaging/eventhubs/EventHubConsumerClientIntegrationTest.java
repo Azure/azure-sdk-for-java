@@ -30,7 +30,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
 
     private static final int NUMBER_OF_EVENTS = 10;
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
-    private final String[] expectedPartitionIds = new String[]{"0", "1"};
+    private final String[] expectedPartitionIds = new String[]{"0", "1", "2"};
 
     private static volatile IntegrationTestEventData testData = null;
 
@@ -62,6 +62,8 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             final EventHubProducerClient producer = client.createProducer();
             testData = setupEventTestData(producer, NUMBER_OF_EVENTS, options);
         }
+
+        Assertions.assertNotNull(testData, "'testData' should have been populated.");
 
         startingPosition = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime());
         consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
@@ -242,7 +244,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             final EventHubProperties properties = consumer.getEventHubProperties();
             Assertions.assertNotNull(properties);
             Assertions.assertEquals(consumer.getEventHubName(), properties.getName());
-            Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
+            Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
         } finally {
             dispose(consumer);
         }
@@ -262,7 +264,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             final IterableStream<String> partitionIds = consumer.getPartitionIds();
             final List<String> collect = partitionIds.stream().collect(Collectors.toList());
 
-            Assertions.assertEquals(2, collect.size());
+            Assertions.assertEquals(3, collect.size());
         } finally {
             dispose(consumer);
         }
