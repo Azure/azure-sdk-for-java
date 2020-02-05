@@ -7,6 +7,8 @@ import spock.lang.Unroll
 
 import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
+import java.nio.file.FileSystems
+import java.nio.file.spi.FileSystemProvider
 
 class AzureFileSystemProviderSpec extends APISpec {
     def config = [:]
@@ -110,5 +112,12 @@ class AzureFileSystemProviderSpec extends APISpec {
     def "FileSystemProvider getScheme"() {
         expect:
         provider.getScheme() == "azb"
+    }
+
+    // getPath methods
+
+    def "temp"() {
+        expect:
+        FileSystems
     }
 }

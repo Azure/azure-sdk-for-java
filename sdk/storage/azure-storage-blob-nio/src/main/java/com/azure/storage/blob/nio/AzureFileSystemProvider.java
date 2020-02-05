@@ -5,7 +5,9 @@ package com.azure.storage.blob.nio;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.nio.implementation.util.Utility;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,6 +21,7 @@ import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemAlreadyExistsException;
 import java.nio.file.FileSystemNotFoundException;
+import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -181,11 +184,61 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
+     * This method fulfills the contract of "The check for the existence of the file and the creation of the directory
+     * if it does not exist are a single operation that is atomic with respect to all other filesystem activities that
+     * might affect the directory."
+     *
+     * Directories are implemented as:
      * {@inheritDoc}
      */
     @Override
     public void createDirectory(Path path, FileAttribute<?>... fileAttributes) throws IOException {
+        if (!(path instanceof AzurePath)) {
+            throw Utility.logError(logger, new IllegalArgumentException("This provider cannot operate on subtypes of " +
+                "Path other than AzurePath"));
+        }
 
+        BlobClient client = ((AzurePath) path).toBlobClient();
+
+        // create the directory blob with the specified attributes (etag check. catch failure)
+        // check if the parent exists and delete
+
+        /*
+        Only the check for a file at that path and creation of the directory needs to be atomic. Checking the parent
+        doesn't need to be atomic. This is good because we couldn't make it atomic without leases anyway (even a
+        static map of path->lock wouldn't be sufficient because someone could have another FS in this JVM instance
+        that points to the same account and it wouldn't see the same locks. So we can't check the parent before because
+        someone could just delete it between our check and our putBlob. And same thing with trying to check after
+        we create because someone could put a blob under this directory in that time and then if we delete the dir now
+        there's a floating file.
+         */
+
+        /*
+        What is the definition of an extant directory? We can't strictly enforce that there be the directory blob
+        because then you could never load a FS with data already in Azure. So then minimally it is just the path. In
+        that case, this always succeeds because the parent is always implicitly created when we put the blob because
+        its just the existence of the path as a prefix of some other path. So then what's the point of empty blobs with
+        is_hdi_folder=true? just for properties? ok... We could check the existence of a directory by trying an
+        enumeration on that prefix, fail if nothing is there, and then put the new directory and just doc the race
+        condition. We communicate you have to be careful with concurrency, and the javadocs don't say it has to be
+        atomic. In this case, the worst scenario is that someone deleted an empty dir, returned true, and then we
+        effectively just recreated it. Now that previous return is invalidated. But that's more or less just the same
+        as deleting it and then someone else immediately recreating it and creating the child. So maybe it's fine.
+         */
+
+        /*
+        Can't just accept the race condition even though ti's documented because we tell them to be careful about
+        concurrency and then don't support file locks, so they have no way to actually handle it, but it is documented
+        in our docs and javadocs and creating the child implicitly creates the parent anyway... but the safest thing
+        to do is just lease the directory. But if it's preloaded data, then there's not a blob to lease and creating a
+        blob for the parent as part of that operation just to be able to lease it is suuuuper slow and also weird.
+        Should add a section to the design doc on concurrency things for non atomic operations--we will generally not
+        attempt to offer atomicity where the service does not support it. In some exceptional and particularly unsafe
+        cases, we may add stronger guards, but in general, the performance and complexity cost outweight the benefits.
+        For example, in the case of creating a directory which requires a parent check, (not specified as atomic in
+        docs), this is mostly safe not to be atomic because even if the parent is deleted between the check and the put,
+        the blob implicitly puts the parent and is consequently not left floating.  
+         */
     }
 
     /**

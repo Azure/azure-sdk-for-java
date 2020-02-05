@@ -4,6 +4,8 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.nio.implementation.util.Utility;
 
 import java.io.File;
@@ -512,11 +514,19 @@ public final class AzurePath implements Path {
         return Objects.hash(parentFileSystem, pathString);
     }
 
-    // Used to ensure we only try to access containers that are mounted.
-    boolean validRoot(String fileStoreName) {
-        return StreamSupport.stream(parentFileSystem.getFileStores().spliterator(), false)
-            .map(FileStore::name)
-            .anyMatch(fileStoreName::equals);
+    /*
+    We don't store the blob client because unlike other types in this package, a Path does not actually indicate the
+    existence or even validity of any remote resource. It is purely a representation of a path. Therefore, we do not
+    construct the client or perform any validation until it is requested.
+     */
+    BlobClient toBlobClient() throws IOException{
+        // Converting to an absolute path ensures there is a container to operate on even if it is the default.
+        String fileStoreName = this.rootToFileStore(this.toAbsolutePath().getRoot().toString());
+
+        BlobContainerClient containerClient =
+            ((AzureFileStore)this.parentFileSystem.getFileStore(fileStoreName)).getContainerClient();
+
+        return containerClient.getBlobClient(this.withoutRoot());
     }
 
     private String withoutRoot() {
@@ -546,5 +556,9 @@ public final class AzurePath implements Path {
             return new String[0];
         }
         return arr;
+    }
+
+    private String rootToFileStore(String root) {
+        return root.substring(0, root.length() - 1); // Remove the ROOT_DIR_SUFFIX
     }
 }

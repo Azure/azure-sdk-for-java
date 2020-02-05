@@ -378,6 +378,14 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     Path getDefaultDirectory() {
-        return this.getPath(this.defaultFileStore.name() + ":");
+        return this.getPath(this.defaultFileStore.name() + AzurePath.ROOT_DIR_SUFFIX);
+    }
+
+    FileStore getFileStore(String name) throws IOException {
+        FileStore store = this.fileStores.get(name);
+        if (store == null) {
+            throw Utility.logError(logger, new IOException("Invalid file store: " + name));
+        }
+        return store;
     }
 }
