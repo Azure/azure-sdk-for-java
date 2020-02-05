@@ -27,7 +27,6 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -415,32 +414,24 @@ public class EventHubProducerAsyncClient implements Closeable {
             messages.add(message);
         }
 
-        final Context finalSharedContext = sharedContext != null ? sharedContext : Context.NONE;
-        return withRetry(
-            getSendLink(batch.getPartitionId()).flatMap(link -> {
-                // if parent context already has send span context data (in case of retries),
-                // don't start a new send span
-                if (isTracingEnabled && !parentContext.get().getData(HOST_NAME_KEY).isPresent()) {
-                    Context entityContext = finalSharedContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
-                    // Start send span and store updated context
-                    parentContext.set(tracerProvider.startSpan(
-                        entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
-                }
-                return messages.size() == 1
-                    ? link.send(messages.get(0))
-                    : link.send(messages);
+        if (isTracingEnabled) {
+            final Context finalSharedContext = sharedContext == null
+                ? Context.NONE
+                : sharedContext.addData(ENTITY_PATH_KEY, eventHubName).addData(HOST_NAME_KEY, fullyQualifiedNamespace);
+            // Start send span and store updated context
+            parentContext.set(tracerProvider.startSpan(finalSharedContext, ProcessKind.SEND));
+        }
 
-            })
+        return withRetry(getSendLink(batch.getPartitionId())
+            .flatMap(link ->
+                messages.size() == 1
+                    ? link.send(messages.get(0))
+                    : link.send(messages)), retryOptions.getTryTimeout(), retryPolicy)
             .doOnEach(signal -> {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);
                 }
-            })
-            .doOnError(error -> {
-                if (isTracingEnabled) {
-                    tracerProvider.endSpan(parentContext.get(), Signal.error(error));
-                }
-            }), retryOptions.getTryTimeout(), retryPolicy);
+            });
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
