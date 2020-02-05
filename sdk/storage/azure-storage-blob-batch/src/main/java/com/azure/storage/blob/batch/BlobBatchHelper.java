@@ -33,6 +33,11 @@ class BlobBatchHelper {
     static final String HTTP_NEWLINE = "\r\n";
 
     /*
+     * BOM header from some response bodies. To be removed in deserialization.
+     */
+    private static final String BOM = "\uFEFF";
+
+    /*
      * This pattern matches finding the "Content-Id" of the batch response.
      */
     private static final Pattern CONTENT_ID_PATTERN = Pattern
@@ -166,6 +171,12 @@ class BlobBatchHelper {
          * Currently no batching operations will return a success body, they will only return a body on an exception.
          * For now this will only construct the exception and throw if it should throw on an error.
          */
+
+        // Remove the leading BOM as this is an illegal XML character.
+        if (responseBody.startsWith(BOM)) {
+            responseBody = responseBody.replaceFirst(BOM, "");
+        }
+
         BlobStorageException exception = new BlobStorageException(responseBody,
             batchOperationResponse.asHttpResponse(responseBody), responseBody);
         batchOperationResponse.setException(exception);
