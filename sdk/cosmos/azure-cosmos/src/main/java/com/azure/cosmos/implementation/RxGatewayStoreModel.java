@@ -167,11 +167,9 @@ class RxGatewayStoreModel implements RxStoreModel {
                     httpHeaders,
                     byteBufObservable);
 
-            ReactorNettyRequestRecord reactorNettyRequestRecord = new ReactorNettyRequestRecord();
-            reactorNettyRequestRecord.setTimeCreated(OffsetDateTime.now());
-            Mono<Pair<HttpResponse, ReactorNettyRequestRecord>> httpResponsePairMono = this.httpClient.send(httpRequest, reactorNettyRequestRecord);
+            Mono<HttpResponse> httpResponse = this.httpClient.send(httpRequest);
 
-            return toDocumentServiceResponse(httpResponsePairMono, request);
+            return toDocumentServiceResponse(httpResponse, request);
 
         } catch (Exception e) {
             return Flux.error(e);
@@ -250,12 +248,11 @@ class RxGatewayStoreModel implements RxStoreModel {
      * @param request
      * @return {@link Flux}
      */
-    private Flux<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<Pair<HttpResponse, ReactorNettyRequestRecord>> httpResponsePairMono,
+    private Flux<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponsePairMono,
                                                                       RxDocumentServiceRequest request) {
 
-        return httpResponsePairMono.flatMap(httpResponseTuple ->  {
+        return httpResponsePairMono.flatMap(httpResponse ->  {
 
-            HttpResponse httpResponse = httpResponseTuple.getLeft();
             // header key/value pairs
             HttpHeaders httpResponseHeaders = httpResponse.headers();
             int httpResponseStatus = httpResponse.statusCode();
@@ -277,7 +274,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                        .flatMap(content -> {
                            try {
                                //Adding transport client request timeline to diagnostics
-                               ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponseTuple.getRight();
+                               ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().getReactorNettyRequestRecord();
                                if (reactorNettyRequestRecord != null) {
                                    reactorNettyRequestRecord.setTimeCompleted(OffsetDateTime.now());
                                    BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosResponseDiagnostics,

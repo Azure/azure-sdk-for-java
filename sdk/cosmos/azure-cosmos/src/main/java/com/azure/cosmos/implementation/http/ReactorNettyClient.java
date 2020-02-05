@@ -98,43 +98,32 @@ class ReactorNettyClient implements HttpClient {
         Objects.requireNonNull(request.httpMethod());
         Objects.requireNonNull(request.uri());
         Objects.requireNonNull(this.httpClientConfig);
+        if(request.getReactorNettyRequestRecord() == null) {
+            ReactorNettyRequestRecord reactorNettyRequestRecord = new ReactorNettyRequestRecord();
+            reactorNettyRequestRecord.setTimeCreated(OffsetDateTime.now());
+            request.setReactorNettyRequestRecord(reactorNettyRequestRecord);
+        }
 
         return this.httpClient
-                .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
+            .observe((connection, state) -> {
+                OffsetDateTime time = OffsetDateTime.now();
+                if(state.equals(HttpClientState.CONNECTED) || state.equals(HttpClientState.ACQUIRED)){
+                    request.getReactorNettyRequestRecord().setTimeConnected(time);
+                } else if(state.equals(HttpClientState.CONFIGURED)){
+                    request.getReactorNettyRequestRecord().setTimeConfigured(time);
+                } else if(state.equals(HttpClientState.REQUEST_SENT)){
+                    request.getReactorNettyRequestRecord().setTimeSent(time);
+                } else if(state.equals(HttpClientState.RESPONSE_RECEIVED)){
+                    request.getReactorNettyRequestRecord().setTimeReceived(time);
+                }
+            })
+            .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
                 .port(request.port())
                 .request(HttpMethod.valueOf(request.httpMethod().toString()))
                 .uri(request.uri().toString())
                 .send(bodySendDelegate(request))
                 .responseConnection(responseDelegate(request))
                 .single();
-    }
-
-    @Override
-    public Mono<Pair<HttpResponse, ReactorNettyRequestRecord>> send(HttpRequest request, ReactorNettyRequestRecord reactorNettyRequestRecord) {
-        Objects.requireNonNull(request.httpMethod());
-        Objects.requireNonNull(request.uri());
-        Objects.requireNonNull(this.httpClientConfig);
-
-        return this.httpClient
-            .observe((connection, state) -> {
-                    OffsetDateTime time = OffsetDateTime.now();
-                    if(state.equals(HttpClientState.CONNECTED) || state.equals(HttpClientState.ACQUIRED)){
-                        reactorNettyRequestRecord.setTimeConnected(time);
-                    } else if(state.equals(HttpClientState.CONFIGURED)){
-                        reactorNettyRequestRecord.setTimeConfigured(time);
-                    } else if(state.equals(HttpClientState.REQUEST_SENT)){
-                        reactorNettyRequestRecord.setTimeSent(time);
-                    } else if(state.equals(HttpClientState.RESPONSE_RECEIVED)){
-                        reactorNettyRequestRecord.setTimeReceived(time);
-                    }
-            })
-            .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
-            .port(request.port())
-            .request(HttpMethod.valueOf(request.httpMethod().toString()))
-            .uri(request.uri().toString())
-            .send(bodySendDelegate(request))
-            .responseConnection(responseDelegatePair(request, reactorNettyRequestRecord))
-            .single();
     }
 
     /**
@@ -166,20 +155,6 @@ class ReactorNettyClient implements HttpClient {
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(final HttpRequest restRequest) {
         return (reactorNettyResponse, reactorNettyConnection) ->
                 Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection).withRequest(restRequest));
-    }
-
-    /**
-     * Delegate to receive response and update ReactorNettyRequestRecord for diagnostics.
-     *
-     * @param restRequest the Rest request whose response this delegate handles
-     * @return a delegate upon invocation setup Rest response object
-     */
-    private static BiFunction<HttpClientResponse, Connection, Publisher<Pair<HttpResponse,ReactorNettyRequestRecord>>> responseDelegatePair(final HttpRequest restRequest, final ReactorNettyRequestRecord reactorNettyRequestRecord) {
-        return (reactorNettyResponse, reactorNettyConnection) ->
-        {
-            Pair<HttpResponse,ReactorNettyRequestRecord> httpResponsePair = Pair.of(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection).withRequest(restRequest), reactorNettyRequestRecord);
-            return Mono.just(httpResponsePair);
-        };
     }
 
     @Override

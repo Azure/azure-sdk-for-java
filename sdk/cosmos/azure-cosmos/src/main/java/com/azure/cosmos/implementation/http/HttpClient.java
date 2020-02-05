@@ -25,15 +25,6 @@ public interface HttpClient {
     Mono<HttpResponse> send(HttpRequest request);
 
     /**
-     * Send the provided request asynchronously and capture transport client request timeline for diagnostics.
-     *
-     * @param request The HTTP request to send
-     * @param reactorNettyRequestRecord The requestRecord to capture request timeline
-     * @return A {@link Mono} that emits response asynchronously
-     */
-    Mono<Pair<HttpResponse,ReactorNettyRequestRecord>> send(HttpRequest request, ReactorNettyRequestRecord reactorNettyRequestRecord);
-
-    /**
      * Create HttpClient with FixedChannelPool {@link HttpClientConfig}
      *
      * @return the HttpClient
