@@ -22,6 +22,7 @@
         <module>microsoft-azure-eventhubs-extensions</module>
       </modules>
     </profile>
+
     <profile>
       <id>client</id>
       <activation>
@@ -33,6 +34,24 @@
       <modules>
         <module>azure-messaging-eventhubs</module>
         <module>azure-messaging-eventhubs-checkpointstore-blob</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>build-from-source</id>
+      <activation>
+        <property>
+          <name>buildFromSource</name>
+        </property>
+      </activation>
+      <modules>
+        <module>../core/azure-core</module>
+        <module>../core/azure-core-test</module>
+        <module>../core/azure-core-http-netty</module>
+        <module>../identity/azure-identity</module>
+        <module>../core/azure-core-amqp</module>
+        <module>../storage/azure-storage-common</module>
+        <module>../storage/azure-storage-blob</module>
       </modules>
     </profile>
   </profiles>
