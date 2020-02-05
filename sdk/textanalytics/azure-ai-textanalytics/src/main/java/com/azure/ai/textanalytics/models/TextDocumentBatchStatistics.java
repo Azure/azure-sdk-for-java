@@ -26,7 +26,7 @@ public final class TextDocumentBatchStatistics {
      * Number of invalid documents. This includes empty, over-size limit or
      * non-supported languages documents.
      */
-    private final int erroneousDocumentCount;
+    private final int invalidDocumentCount;
 
     /*
      * Number of transactions for the request.
@@ -39,15 +39,15 @@ public final class TextDocumentBatchStatistics {
      * @param documentCount number of documents submitted in the request
      * @param validDocumentCount number of valid documents. This excludes empty, over-size limit or
      * non-supported languages documents
-     * @param erroneousDocumentCount Number of invalid documents. This includes empty, over-size limit or
+     * @param invalidDocumentCount Number of invalid documents. This includes empty, over-size limit or
      * non-supported languages documents
      * @param transactionCount number of transactions for the request
      */
-    public TextDocumentBatchStatistics(int documentCount, int validDocumentCount, int erroneousDocumentCount,
+    public TextDocumentBatchStatistics(int documentCount, int validDocumentCount, int invalidDocumentCount,
         long transactionCount) {
         this.documentCount = documentCount;
         this.validDocumentCount = validDocumentCount;
-        this.erroneousDocumentCount = erroneousDocumentCount;
+        this.invalidDocumentCount = invalidDocumentCount;
         this.transactionCount = transactionCount;
     }
 
@@ -72,14 +72,14 @@ public final class TextDocumentBatchStatistics {
     }
 
     /**
-     * Get the erroneousDocumentCount property: Number of invalid documents.
+     * Get the invalidDocumentCount property: Number of invalid documents.
      * This includes empty, over-size limit or non-supported languages
      * documents.
      *
-     * @return the erroneousDocumentCount value.
+     * @return the invalidDocumentCount value.
      */
-    public int getErroneousDocumentCount() {
-        return this.erroneousDocumentCount;
+    public int getInvalidDocumentCount() {
+        return this.invalidDocumentCount;
     }
 
     /**

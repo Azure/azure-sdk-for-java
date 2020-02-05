@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.exception.UnexpectedLengthException
+
 import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
@@ -32,7 +32,6 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
-import com.ctc.wstx.shaded.msv_core.verifier.jarv.Const
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
@@ -693,8 +692,14 @@ class BlobAPITest extends APISpec {
             new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null)
 
         then:
-        // We should receive exactly one notification of the completed progress.
-        1 * mockReceiver.reportProgress(fileSize)
+        /*
+         * Should receive at least one notification indicating completed progress, multiple notifications may be
+         * received if there are empty buffers in the stream.
+         */
+        (1.._) * mockReceiver.reportProgress(fileSize)
+
+        // There should be NO notification with a larger than expected size.
+        0 * mockReceiver.reportProgress({ it > fileSize })
 
         /*
         We should receive at least one notification reporting an intermediary value per block, but possibly more
@@ -702,7 +707,7 @@ class BlobAPITest extends APISpec {
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
         (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
-            if (!(bytesTransferred > prevCount)) {
+            if (!(bytesTransferred >= prevCount)) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
                 prevCount = bytesTransferred

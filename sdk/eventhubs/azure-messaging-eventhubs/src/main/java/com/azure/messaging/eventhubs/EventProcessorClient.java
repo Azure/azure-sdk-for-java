@@ -55,8 +55,6 @@ public class EventProcessorClient {
     private final String eventHubName;
     private final String consumerGroup;
 
-
-
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
      *
