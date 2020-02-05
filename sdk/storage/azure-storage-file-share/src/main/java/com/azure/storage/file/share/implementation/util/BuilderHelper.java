@@ -20,7 +20,6 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
-import com.azure.storage.file.share.ShareServiceVersionPolicy;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -59,7 +58,6 @@ public final class BuilderHelper {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new ShareServiceVersionPolicy());
         policies.add(getUserAgentPolicy(configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());

@@ -18,7 +18,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobServiceVersionPolicy;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -67,7 +66,6 @@ public final class BuilderHelper {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new BlobServiceVersionPolicy());
         policies.add(getUserAgentPolicy(configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
