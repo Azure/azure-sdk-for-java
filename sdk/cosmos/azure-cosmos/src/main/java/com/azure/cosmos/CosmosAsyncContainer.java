@@ -12,7 +12,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.function.Function;
 
 import static com.azure.cosmos.Resource.validateResource;
 
@@ -524,25 +523,28 @@ public class CosmosAsyncContainer {
      * Lists all the conflicts in the container
      *
      * @param options the feed options
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
-    public Flux<FeedResponse<CosmosConflictProperties>> readAllConflicts(FeedOptions options) {
-        return database.getDocClientWrapper().readConflicts(getLink(), options)
-                   .map(response -> BridgeInternal.createFeedResponse(
-                       CosmosConflictProperties.getFromV2Results(response.getResults()),
-                       response.getResponseHeaders()));
+    public CosmosContinuablePagedFlux<CosmosConflictProperties> readAllConflicts(FeedOptions options) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return database.getDocClientWrapper().readConflicts(getLink(), options)
+                           .map(response -> BridgeInternal.createFeedResponse(
+                               CosmosConflictProperties.getFromV2Results(response.getResults()),
+                               response.getResponseHeaders()));
+        });
     }
 
     /**
      * Queries all the conflicts in the container
      *
      * @param query the query
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
-    public Flux<FeedResponse<CosmosConflictProperties>> queryConflicts(String query) {
-        return queryConflicts(query, null);
+    public CosmosContinuablePagedFlux<CosmosConflictProperties> queryConflicts(String query) {
+        return queryConflicts(query, new FeedOptions());
     }
 
     /**
@@ -550,14 +552,17 @@ public class CosmosAsyncContainer {
      *
      * @param query the query
      * @param options the feed options
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
-    public Flux<FeedResponse<CosmosConflictProperties>> queryConflicts(String query, FeedOptions options) {
-        return database.getDocClientWrapper().queryConflicts(getLink(), query, options)
-                   .map(response -> BridgeInternal.createFeedResponse(
-                       CosmosConflictProperties.getFromV2Results(response.getResults()),
-                       response.getResponseHeaders()));
+    public CosmosContinuablePagedFlux<CosmosConflictProperties> queryConflicts(String query, FeedOptions options) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return database.getDocClientWrapper().queryConflicts(getLink(), query, options)
+                           .map(response -> BridgeInternal.createFeedResponse(
+                               CosmosConflictProperties.getFromV2Results(response.getResults()),
+                               response.getResponseHeaders()));
+        });
     }
 
     /**

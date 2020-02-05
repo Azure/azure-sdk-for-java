@@ -14,7 +14,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.Iterator;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -146,9 +145,9 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
+        IterableStream<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
                 container.queryItems(querySpec, feedOptions, CosmosItemProperties.class);
-        assertThat(feedResponseIterator3.hasNext()).isTrue();
+        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
 

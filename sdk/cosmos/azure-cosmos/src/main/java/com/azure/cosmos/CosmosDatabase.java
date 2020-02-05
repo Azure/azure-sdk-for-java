@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -254,35 +255,29 @@ public class CosmosDatabase {
      * Read all containers iterator.
      *
      * @param options the options
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> readAllContainers(FeedOptions options) {
-        return databaseWrapper.readAllContainers(options)
-                   .toIterable()
-                   .iterator();
+    public IterableStream<FeedResponse<CosmosContainerProperties>> readAllContainers(FeedOptions options) {
+        return getFeedIterableStream(databaseWrapper.readAllContainers(options));
     }
 
     /**
      * Read all containers iterator.
      *
-     * @return the iterator
+     @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> readAllContainers() {
-        return databaseWrapper.readAllContainers()
-                   .toIterable()
-                   .iterator();
+    public IterableStream<FeedResponse<CosmosContainerProperties>> readAllContainers() {
+        return getFeedIterableStream(databaseWrapper.readAllContainers());
     }
 
     /**
      * Query containers iterator.
      *
      * @param query the query
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(String query) {
-        return databaseWrapper.queryContainers(query)
-                   .toIterable()
-                   .iterator();
+    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(String query) {
+        return getFeedIterableStream(databaseWrapper.queryContainers(query));
     }
 
     /**
@@ -290,24 +285,20 @@ public class CosmosDatabase {
      *
      * @param query the query
      * @param options the options
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(String query, FeedOptions options) {
-        return databaseWrapper.queryContainers(query, options)
-                   .toIterable()
-                   .iterator();
+    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(String query, FeedOptions options) {
+        return getFeedIterableStream(databaseWrapper.queryContainers(query, options));
     }
 
     /**
      * Query containers iterator.
      *
      * @param querySpec the query spec
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec) {
-        return databaseWrapper.queryContainers(querySpec)
-                   .toIterable()
-                   .iterator();
+    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec) {
+        return getFeedIterableStream(databaseWrapper.queryContainers(querySpec));
     }
 
     /**
@@ -315,14 +306,12 @@ public class CosmosDatabase {
      *
      * @param querySpec the query spec
      * @param options the options
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(
+    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return databaseWrapper.queryContainers(querySpec, options)
-                   .toIterable()
-                   .iterator();
+        return getFeedIterableStream(databaseWrapper.queryContainers(querySpec, options));
     }
 
     /**
@@ -494,6 +483,14 @@ public class CosmosDatabase {
 
     private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
         return itemFlux.toIterable(1).iterator();
+    }
+
+    private <T> IterableStream<FeedResponse<T>> getFeedIterableStream(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux, int batchSize) {
+        return IterableStream.of(cosmosContinuablePagedFlux.byPage().toIterable(batchSize));
+    }
+
+    private <T> IterableStream<FeedResponse<T>> getFeedIterableStream(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
+        return IterableStream.of(cosmosContinuablePagedFlux.byPage().toIterable());
     }
 
 }
