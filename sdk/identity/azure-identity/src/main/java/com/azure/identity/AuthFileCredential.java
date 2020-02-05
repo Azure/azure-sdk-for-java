@@ -35,6 +35,8 @@ import java.util.Objects;
  */
 @Immutable
 public class AuthFileCredential implements TokenCredential {
+    /* The file path value. */
+    private final String filepath;
     private final static ClientLogger logger = new ClientLogger(AuthFileCredential.class);
     private IdentityClientOptions identityClientOptions;
     TokenCredential credential;
@@ -53,14 +55,8 @@ public class AuthFileCredential implements TokenCredential {
     AuthFileCredential(String filepath, IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(filepath, "'filepath' cannot be null.");
         Objects.requireNonNull(identityClientOptions, "'identityClientOptions' cannot be null.");
+        this.filepath = filepath;
         this.identityClientOptions = identityClientOptions;
-        if (credential == null) {
-            try {
-                credential = BuildCredentialForCredentialsFile(ParseCredentialsFile(filepath));
-            } catch (Exception e) {
-                throw logger.logExceptionAsError(new RuntimeException("Error parsing SDK Auth File", e));
-            }
-        }
     }
 
     /**
@@ -68,14 +64,36 @@ public class AuthFileCredential implements TokenCredential {
      * client detailed specified in the SDK Auth file. This method is called by
      * Azure SDK clients. It isn't intended for use in application code. If the SDK
      * Auth file is missing or invalid, this method throws a
-     * <see cref="AuthenticationFailedException"/> exception.
+     * <see cref="RuntimeException"/> exception.
      * <param name="requestContext">The details of the authentication
      * request</param> <returns>An <see cref="AccessToken"/> which can be used to
      * authenticate service client calls.</returns>
      */
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
+        try {
+            ensureCredential();
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
         return credential.getToken(request);
+    }
+
+    /**
+     * Ensures that credential information is loaded from the SDK Auth file. This
+     * method should be called to initialize <code>_credential</code> before it is
+     * used. If the SDK Auth file is not found or invalid, this method will throw
+     * <see cref="RuntimeException"/>. <returns>A method that will
+     * ensure <code>credential</code> has been initialized</returns>
+     */
+    void ensureCredential() {
+        if (credential == null) {
+            try {
+                credential = BuildCredentialForCredentialsFile(ParseCredentialsFile(filepath));
+            } catch (Exception e) {
+                throw logger.logExceptionAsError(new RuntimeException("Error parsing SDK Auth File", e));
+            }
+        }
     }
 
     private static Map<String, String> ParseCredentialsFile(String filePath) throws Exception

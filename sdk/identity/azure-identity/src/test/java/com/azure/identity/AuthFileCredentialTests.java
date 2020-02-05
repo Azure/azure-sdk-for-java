@@ -3,12 +3,16 @@
 
 package com.azure.identity;
 
+import com.azure.core.credential.TokenRequestContext;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import reactor.test.StepVerifier;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = "com.azure.identity.*")
@@ -22,6 +26,7 @@ public class AuthFileCredentialTests<T> {
         AuthFileCredential credential = new AuthFileCredentialBuilder().filePath(authFilePath).build();
 
         // test
+        credential.ensureCredential();
         ClientSecretCredential clientSecretCredential= (ClientSecretCredential) credential.credential;
         Assert.assertEquals("mockclientsecret", clientSecretCredential.clientSecret);
      }
@@ -29,11 +34,13 @@ public class AuthFileCredentialTests<T> {
     @Test
     public void BadSdkAuthFilePathThrowsDuringGetToken()
     {
+        // setup 
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+
         // test
-        try{
-        AuthFileCredential credential = new AuthFileCredentialBuilder().filePath("Bougs*File*Path").build();
-        }catch(RuntimeException  ex){
-            Assert.assertEquals(ex.getMessage(),  "Error parsing SDK Auth File");
-        } 
+        AuthFileCredential credential =new AuthFileCredentialBuilder().filePath("Bougs*File*Path").build(); 
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof Exception && "Error parsing SDK Auth File".equals(e.getMessage()))
+            .verify();  
     }
 }
