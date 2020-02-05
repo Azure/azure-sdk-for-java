@@ -662,7 +662,7 @@ public class SearchIndexAsyncClient {
         return restClient.documents()
             .indexWithRestResponseAsync(batch, context)
             .handle((res, sink) -> {
-                    if (res.getStatusCode() == HttpStatus.SC_MULTI_STATUS) {
+                if (res.getStatusCode() == HttpStatus.SC_MULTI_STATUS) {
                     IndexBatchException ex = new IndexBatchException(res.getValue());
                     sink.error(ex);
                 } else {
