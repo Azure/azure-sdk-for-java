@@ -128,8 +128,7 @@ public final class GeoPoint {
      * Return latitude
      * @return value of latitude coordinate
      */
-    public Double getLatitude()
-    {
+    public Double getLatitude() {
         return coordinates.get(1);
     }
 
@@ -137,8 +136,7 @@ public final class GeoPoint {
      * Return longitude
      * @return value of longitude coordinate
      */
-    public Double getLongitude()
-    {
+    public Double getLongitude() {
         return coordinates.get(0);
     }
 
