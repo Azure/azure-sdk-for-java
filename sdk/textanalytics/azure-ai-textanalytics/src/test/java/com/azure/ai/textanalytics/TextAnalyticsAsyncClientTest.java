@@ -5,13 +5,15 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.SentimentScorePerLabel;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.models.TextSentimentClass;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SentimentLabel;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -216,7 +218,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForListLanguageHint() {
         recognizeCatgeorizedEntitiesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeEntities(inputs, language))
+            StepVerifier.create(client.recognizeEntitiesWithResponse(inputs, language))
                 .assertNext(response -> validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), response.getValue()))
                 .verifyComplete());
     }
@@ -272,7 +274,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForListLanguageHint() {
         recognizeLinkedLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeLinkedEntities(inputs, language))
+            StepVerifier.create(client.recognizeLinkedEntitiesWithResponse(inputs, language))
                 .assertNext(response -> validateLinkedEntity(false, getExpectedBatchLinkedEntities(), response.getValue()))
                 .verifyComplete());
     }
@@ -326,7 +328,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizePiiEntitiesForListLanguageHint() {
         recognizePiiLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizePiiEntities(inputs, language))
+            StepVerifier.create(client.recognizePiiEntitiesWithResponse(inputs, language))
                 .assertNext(response -> validatePiiEntity(false, getExpectedBatchPiiEntities(), response.getValue()))
                 .verifyComplete());
     }
@@ -380,7 +382,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForListLanguageHint() {
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.extractKeyPhrases(inputs, language))
+            StepVerifier.create(client.extractKeyPhrasesWithResponse(inputs, language))
                 .assertNext(response -> validateExtractKeyPhrase(false, getExpectedBatchKeyPhrases(), response.getValue()))
                 .verifyComplete());
     }
@@ -392,17 +394,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForTextInput() {
-        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED, 0.0, 0.0, 0.0, 66, 0);
-        final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-            new TextSentiment(TextSentimentClass.NEGATIVE, 0.0, 0.0, 0.0, 31, 0),
-            new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.0, 35, 32));
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(SentimentLabel.MIXED,
+            new SentimentScorePerLabel(0.0, 0.0, 0.0),
+            Arrays.asList(
+                new SentenceSentiment(SentimentLabel.NEGATIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(SentimentLabel.POSITIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 35, 32)
+            ));
 
         StepVerifier
             .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
-            .assertNext(response -> {
-                validateAnalysedSentiment(expectedDocumentSentiment, response.getDocumentSentiment());
-                validateAnalysedSentenceSentiment(expectedSentenceSentiments, response.getSentenceSentiments());
-            }).verifyComplete();
+            .assertNext(response -> validateAnalysedSentiment(expectedDocumentSentiment, response)).verifyComplete();
     }
 
     /**
@@ -420,17 +421,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForFaultyText() {
-        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 5, 0);
-        final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-            new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 1, 0),
-            new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 4, 1));
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
+            SentimentLabel.NEUTRAL,
+            new SentimentScorePerLabel(0.0, 0.0, 0.0),
+            Arrays.asList(
+                new SentenceSentiment(SentimentLabel.NEUTRAL, new SentimentScorePerLabel(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentiment(SentimentLabel.NEUTRAL, new SentimentScorePerLabel(0.0, 0.0, 0.0), 4, 1)
+            ));
 
-        StepVerifier
-            .create(client.analyzeSentiment("!@#%%"))
-            .assertNext(response -> {
-                validateAnalysedSentiment(expectedDocumentSentiment, response.getDocumentSentiment());
-                validateAnalysedSentenceSentiment(expectedSentenceSentiments, response.getSentenceSentiments());
-            }).verifyComplete();
+        StepVerifier.create(client.analyzeSentiment("!@#%%"))
+            .assertNext(response -> validateAnalysedSentiment(expectedDocumentSentiment, response)).verifyComplete();
     }
 
     /**

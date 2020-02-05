@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
@@ -17,13 +18,15 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.SentimentLabel;
+import com.azure.ai.textanalytics.models.SentimentScorePerLabel;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -438,7 +441,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         DocumentResultCollection<AnalyzeSentimentResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
             validateAnalysedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment());
-            validateAnalysedSentenceSentiment(expectedItem.getSentenceSentiments(), actualItem.getSentenceSentiments());
         });
     }
 
@@ -587,13 +589,27 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentimentList a list of analyzed sentence sentiment returned by the service.
      * @param actualSentimentList a list of analyzed sentence sentiment returned by the API.
      */
-    static void validateAnalysedSentenceSentiment(List<TextSentiment> expectedSentimentList,
-        List<TextSentiment> actualSentimentList) {
+    static void validateAnalysedSentenceSentiment(List<SentenceSentiment> expectedSentimentList,
+        List<SentenceSentiment> actualSentimentList) {
 
         assertEquals(expectedSentimentList.size(), actualSentimentList.size());
         for (int i = 0; i < expectedSentimentList.size(); i++) {
-            validateAnalysedSentiment(expectedSentimentList.get(i), actualSentimentList.get(i));
+            validateSentenceSentiment(expectedSentimentList.get(i), actualSentimentList.get(i));
         }
+    }
+
+    /**
+     * Helper method to validate one pair of analysed sentiments. Can't really validate score numbers because it
+     * frequently changed by background model computation.
+     *
+     * @param expectedSentiment analyzed sentence sentiment returned by the service.
+     * @param actualSentiment analyzed sentence sentiment returned by the API.
+     */
+    static void validateSentenceSentiment(SentenceSentiment expectedSentiment, SentenceSentiment actualSentiment) {
+        assertEquals(expectedSentiment.getSentimentLabel(), actualSentiment.getSentimentLabel());
+        // score per label doesn't need to verify since service can return it with different values
+        assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
+        assertTrue(actualSentiment.getLength() > 0);
     }
 
     /**
@@ -603,10 +619,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentiment analyzed document sentiment returned by the service.
      * @param actualSentiment analyzed document sentiment returned by the API.
      */
-    static void validateAnalysedSentiment(TextSentiment expectedSentiment, TextSentiment actualSentiment) {
-        assertEquals(expectedSentiment.getTextSentimentClass(), actualSentiment.getTextSentimentClass());
-        assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
-        assertTrue(actualSentiment.getLength() > 0);
+    static void validateAnalysedSentiment(DocumentSentiment expectedSentiment, DocumentSentiment actualSentiment) {
+        assertEquals(expectedSentiment.getSentimentLabel(), actualSentiment.getSentimentLabel());
+        validateAnalysedSentenceSentiment(expectedSentiment.getSentenceSentiments(), expectedSentiment.getSentenceSentiments());
     }
 
     /**

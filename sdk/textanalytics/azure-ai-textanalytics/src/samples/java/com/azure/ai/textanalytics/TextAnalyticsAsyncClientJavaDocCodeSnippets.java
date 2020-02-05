@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntity;
@@ -19,7 +20,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -273,14 +274,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntities(List, String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesWithResponse(List, String)}
      */
     public void recognizeEntitiesWithResponseStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#List-String
         List<String> textInputs1 = Arrays.asList(
             "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
-        textAnalyticsAsyncClient.recognizeEntities(textInputs1, "en").subscribe(response -> {
+        textAnalyticsAsyncClient.recognizeEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults = response.getValue();
 
             // Batch statistics
@@ -430,14 +431,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(List, String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntitiesWithResponse(List, String)}
      */
     public void recognizePiiEntitiesWithResponseStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#List-String
         List<String> textInputs1 = Arrays.asList(
             "My SSN is 555-55-5555.", "Visa card 0111 1111 1111 1111.");
 
-        textAnalyticsAsyncClient.recognizePiiEntities(textInputs1, "en").subscribe(response -> {
+        textAnalyticsAsyncClient.recognizePiiEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<RecognizePiiEntitiesResult> recognizeEntitiesResults = response.getValue();
 
             // Batch statistics
@@ -587,7 +588,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntities(List, String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesWithResponse(List, String)}
      */
     public void recognizeLinkedEntitiesWithResponseStringList() {
 
@@ -595,7 +596,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         List<String> textInputs1 = Arrays.asList(
             "Old Faithful is a geyser at Yellowstone Park.", "Mount Shasta has lenticular clouds.");
 
-        textAnalyticsAsyncClient.recognizeLinkedEntities(textInputs1, "en").subscribe(response -> {
+        textAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults = response.getValue();
 
             // Batch statistics
@@ -733,7 +734,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrases(List, String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrasesWithResponse(List, String)}
      */
     public void extractKeyPhrasesWithResponseStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesWithResponse#List-String
@@ -741,7 +742,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Hello world. This is some input text that I love.",
             "Bonjour tout le monde");
 
-        textAnalyticsAsyncClient.extractKeyPhrases(textInputs1, "en").subscribe(response -> {
+        textAnalyticsAsyncClient.extractKeyPhrasesWithResponse(textInputs1, "en").subscribe(response -> {
             DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhraseResults = response.getValue();
 
             // Batch statistics
@@ -824,19 +825,18 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void analyzeSentiment() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string
         String inputText = "The hotel was dark and unclean.";
-        textAnalyticsAsyncClient.analyzeSentiment(inputText).subscribe(analyzeSentimentResult -> {
-            TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+        textAnalyticsAsyncClient.analyzeSentiment(inputText).subscribe(documentSentiment -> {
             System.out.printf(
-                "Recognized sentiment class: %s.%n",
-                documentSentiment.getTextSentimentClass());
+                "Recognized document sentiment: %s.%n",
+                documentSentiment.getSentimentLabel());
 
-            for (TextSentiment textSentiment : analyzeSentimentResult.getSentenceSentiments()) {
+            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
                 System.out.printf(
                     "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                    textSentiment.getTextSentimentClass(),
-                    textSentiment.getPositiveScore(),
-                    textSentiment.getNeutralScore(),
-                    textSentiment.getNegativeScore());
+                    sentenceSentiment.getSentimentLabel(),
+                    sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
+                    sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
+                    sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string
@@ -849,21 +849,20 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#string-string
         String inputText1 = "The hotel was dark and unclean.";
         textAnalyticsAsyncClient.analyzeSentimentWithResponse(inputText1, "en")
-            .subscribe(analyzeSentimentResult -> {
-                AnalyzeSentimentResult sentimentResult = analyzeSentimentResult.getValue();
-                TextSentiment documentSentiment = sentimentResult.getDocumentSentiment();
+            .subscribe(response -> {
+                DocumentSentiment documentSentiment = response.getValue();
                 System.out.printf(
                     "Recognized sentiment class: %s.%n",
-                    documentSentiment.getTextSentimentClass());
+                    documentSentiment.getSentimentLabel());
 
-                for (TextSentiment textSentiment : sentimentResult.getSentenceSentiments()) {
+                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
                     System.out.printf(
                         "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
                             + "negative score: %s.%n",
-                        textSentiment.getTextSentimentClass(),
-                        textSentiment.getPositiveScore(),
-                        textSentiment.getNeutralScore(),
-                        textSentiment.getNegativeScore());
+                        sentenceSentiment.getSentimentLabel(),
+                        sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
+                        sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
+                        sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#string-string
@@ -887,16 +886,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (AnalyzeSentimentResult analyzeSentimentResult : analyzeSentimentResults) {
                 System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-                TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                 System.out.printf("Recognized document sentiment: %s.%n",
-                    documentSentiment.getTextSentimentClass());
-                for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
+                    documentSentiment.getSentimentLabel());
+                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
                             + "negative score: %s.%n",
-                        sentenceSentiment.getTextSentimentClass(),
-                        sentenceSentiment.getPositiveScore(),
-                        sentenceSentiment.getNeutralScore(),
-                        sentenceSentiment.getNegativeScore());
+                        sentenceSentiment.getSentimentLabel(),
+                        sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
+                        sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
+                        sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
                 }
             }
         });
@@ -922,16 +921,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (AnalyzeSentimentResult analyzeSentimentResult : analyzeSentimentResults) {
                 System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-                TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                 System.out.printf("Recognized document sentiment: %s.%n",
-                    documentSentiment.getTextSentimentClass());
-                for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
+                    documentSentiment.getSentimentLabel());
+                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
                             + "negative score: %s.%n",
-                        sentenceSentiment.getTextSentimentClass(),
-                        sentenceSentiment.getPositiveScore(),
-                        sentenceSentiment.getNeutralScore(),
-                        sentenceSentiment.getNegativeScore());
+                        sentenceSentiment.getSentimentLabel(),
+                        sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
+                        sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
+                        sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
                 }
             }
         });
@@ -957,16 +956,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (AnalyzeSentimentResult analyzeSentimentResult : analyzeSentimentResults) {
                 System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-                TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                 System.out.printf("Recognized document sentiment: %s.%n",
-                    documentSentiment.getTextSentimentClass());
-                for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
+                    documentSentiment.getSentimentLabel());
+                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
                             + "negative score: %s.%n",
-                        sentenceSentiment.getTextSentimentClass(),
-                        sentenceSentiment.getPositiveScore(),
-                        sentenceSentiment.getNeutralScore(),
-                        sentenceSentiment.getNegativeScore());
+                        sentenceSentiment.getSentimentLabel(),
+                        sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
+                        sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
+                        sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
                 }
             }
         });
@@ -998,16 +997,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 for (AnalyzeSentimentResult analyzeSentimentResult : analyzeSentimentResults) {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-                    TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                    DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     System.out.printf("Recognized document sentiment: %s.%n",
-                        documentSentiment.getTextSentimentClass());
-                    for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
+                        documentSentiment.getSentimentLabel());
+                    for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
                         System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
                                 + "negative score: %s.%n",
-                            sentenceSentiment.getTextSentimentClass(),
-                            sentenceSentiment.getPositiveScore(),
-                            sentenceSentiment.getNeutralScore(),
-                            sentenceSentiment.getNegativeScore());
+                            sentenceSentiment.getSentimentLabel(),
+                            sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
+                            sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
+                            sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
                     }
                 }
             });

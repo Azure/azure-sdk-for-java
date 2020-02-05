@@ -9,7 +9,7 @@ import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
-import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -145,10 +145,10 @@ public class ReadmeSamples {
     public void analyzeSentiment() {
         String text = "The hotel was dark and unclean.";
 
-        for (TextSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).getSentenceSentiments()) {
+        for (SentenceSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).getSentenceSentiments()) {
             System.out.printf(
                 "Analyzed Sentence Sentiment class: %s.%n",
-                textSentiment.getTextSentimentClass());
+                textSentiment.getSentimentLabel());
         }
     }
 

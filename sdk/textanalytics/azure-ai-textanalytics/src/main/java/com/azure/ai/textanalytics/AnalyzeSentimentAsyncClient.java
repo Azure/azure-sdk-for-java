@@ -11,10 +11,14 @@ import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScore
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.SentimentScorePerLabel;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.models.TextSentimentClass;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SentimentLabel;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -51,12 +55,16 @@ class AnalyzeSentimentAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<AnalyzeSentimentResult>> analyzeSentimentWithResponse(String text, String language, Context context) {
+    Mono<Response<com.azure.ai.textanalytics.models.DocumentSentiment>> analyzeSentimentWithResponse(
+        String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return analyzeBatchSentimentWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(Transforms::processSingleResponseErrorResult);
+            .map(response -> new SimpleResponse<>(
+                response,
+                Transforms.processSingleResponseErrorResult(response).getValue().getDocumentSentiment()
+            ));
     }
 
     Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentWithResponse(
@@ -101,7 +109,7 @@ class AnalyzeSentimentAsyncClient {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 toTextAnalyticsError(documentError.getError());
             analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
-                error, null, null));
+                error, null));
         }
         return new DocumentResultCollection<>(analyzeSentimentResults,
             sentimentResponse.getModelVersion(), sentimentResponse.getStatistics() == null ? null
@@ -117,7 +125,7 @@ class AnalyzeSentimentAsyncClient {
      */
     private AnalyzeSentimentResult convertToTextSentimentResult(final DocumentSentiment documentSentiment) {
         // Document text sentiment
-        final TextSentimentClass documentSentimentClass = TextSentimentClass.fromString(documentSentiment.
+        final SentimentLabel documentSentimentClass = SentimentLabel.fromString(documentSentiment.
             getSentiment().toString());
         if (documentSentimentClass == null) {
             // Not throw exception for an invalid Sentiment type because we should not skip processing the
@@ -129,9 +137,9 @@ class AnalyzeSentimentAsyncClient {
         final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getDocumentScores();
 
         // Sentence text sentiment
-        final List<TextSentiment> sentenceSentimentTexts = documentSentiment.getSentences().stream()
+        final List<SentenceSentiment> sentenceSentimentTexts = documentSentiment.getSentences().stream()
             .map(sentenceSentiment -> {
-                TextSentimentClass sentimentClass = TextSentimentClass.fromString(sentenceSentiment
+                SentimentLabel sentimentClass = SentimentLabel.fromString(sentenceSentiment
                     .getSentiment().toString());
                 if (sentimentClass == null) {
                     // Not throw exception for an invalid Sentiment type because we should not skip processing the
@@ -142,18 +150,23 @@ class AnalyzeSentimentAsyncClient {
                 }
                 SentimentConfidenceScorePerLabel confidenceScorePerSentence = sentenceSentiment.getSentenceScores();
 
-                return new TextSentiment(sentimentClass, confidenceScorePerSentence.getNegative(),
-                    confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive(),
-                    sentenceSentiment.getLength(), sentenceSentiment.getOffset());
+                return new SentenceSentiment(
+                    sentimentClass,
+                    new SentimentScorePerLabel(confidenceScorePerSentence.getNegative(),
+                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
+                    sentenceSentiment.getLength(),
+                    sentenceSentiment.getOffset());
 
             }).collect(Collectors.toList());
 
-        return new AnalyzeSentimentResult(documentSentiment.getId(),
+        return new AnalyzeSentimentResult(
+            documentSentiment.getId(),
             documentSentiment.getStatistics() == null ? null
                 : toTextDocumentStatistics(documentSentiment.getStatistics()), null,
-            new TextSentiment(documentSentimentClass, confidenceScorePerLabel.getNegative(),
-                confidenceScorePerLabel.getNeutral(), confidenceScorePerLabel.getPositive(),
-                sentenceSentimentTexts.stream().mapToInt(TextSentiment::getLength).sum(), 0),
-            sentenceSentimentTexts);
+            new com.azure.ai.textanalytics.models.DocumentSentiment(
+                documentSentimentClass,
+                new SentimentScorePerLabel(confidenceScorePerLabel.getNegative(), confidenceScorePerLabel.getNeutral(),
+                    confidenceScorePerLabel.getPositive()),
+                sentenceSentimentTexts));
     }
 }

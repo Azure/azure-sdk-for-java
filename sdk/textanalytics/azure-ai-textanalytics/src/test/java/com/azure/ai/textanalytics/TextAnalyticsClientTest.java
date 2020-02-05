@@ -7,14 +7,16 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.SentimentScorePerLabel;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.models.TextSentimentClass;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SentimentLabel;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -350,16 +352,17 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForTextInput() {
-        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED, 0.0, 0.0, 0.0, 66, 0);
-        final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-            new TextSentiment(TextSentimentClass.NEGATIVE, 0.0, 0.0, 0.0, 31, 0),
-            new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.0, 35, 32));
-
-        AnalyzeSentimentResult analyzeSentimentResult =
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
+            SentimentLabel.MIXED,
+            new SentimentScorePerLabel(0.0, 0.0, 0.0),
+            Arrays.asList(
+                new SentenceSentiment(SentimentLabel.NEGATIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(SentimentLabel.POSITIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 35, 32)
+            ));
+        DocumentSentiment analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
 
-        validateAnalysedSentiment(expectedDocumentSentiment, analyzeSentimentResult.getDocumentSentiment());
-        validateAnalysedSentenceSentiment(expectedSentenceSentiments, analyzeSentimentResult.getSentenceSentiments());
+        validateAnalysedSentiment(expectedDocumentSentiment, analyzeSentimentResult);
     }
 
     /**
@@ -376,15 +379,16 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForFaultyText() {
-        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 5, 0);
-        final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
-            new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 1, 0),
-            new TextSentiment(TextSentimentClass.NEUTRAL, 0.0, 0.0, 0.0, 4, 1));
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(SentimentLabel.NEUTRAL,
+            new SentimentScorePerLabel(0.0, 0.0, 0.0),
+            Arrays.asList(
+                new SentenceSentiment(SentimentLabel.NEUTRAL, new SentimentScorePerLabel(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentiment(SentimentLabel.NEUTRAL, new SentimentScorePerLabel(0.0, 0.0, 0.0), 4, 1)
+            ));
 
-        AnalyzeSentimentResult analyzeSentimentResult = client.analyzeSentiment("!@#%%");
+        DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");
 
-        validateAnalysedSentiment(expectedDocumentSentiment, analyzeSentimentResult.getDocumentSentiment());
-        validateAnalysedSentenceSentiment(expectedSentenceSentiments, analyzeSentimentResult.getSentenceSentiments());
+        validateAnalysedSentiment(expectedDocumentSentiment, analyzeSentimentResult);
     }
 
     /**

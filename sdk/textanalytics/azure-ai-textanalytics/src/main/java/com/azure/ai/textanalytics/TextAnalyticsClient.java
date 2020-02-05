@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntity;
@@ -688,7 +689,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeSentimentResult analyzeSentiment(String text) {
+    public DocumentSentiment analyzeSentiment(String text) {
         return analyzeSentimentWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
@@ -709,8 +710,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeSentimentResult> analyzeSentimentWithResponse(
-        String text, String language, Context context) {
+    public Response<DocumentSentiment> analyzeSentimentWithResponse(String text, String language, Context context) {
         return client.analyzeSentimentAsyncClient.analyzeSentimentWithResponse(text, language, context).block();
     }
 

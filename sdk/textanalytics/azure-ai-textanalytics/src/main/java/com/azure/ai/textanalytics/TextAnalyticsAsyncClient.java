@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntity;
@@ -342,7 +343,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntities(List<String> textInputs) {
-        return recognizeEntities(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
+        return recognizeEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -364,7 +365,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntities(
+    public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
             return withContext(context -> recognizeEntityAsyncClient.recognizeEntitiesWithResponse(textInputs, language,
@@ -499,7 +500,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntities(List<String> textInputs) {
-        return recognizePiiEntities(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
+        return recognizePiiEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -522,7 +523,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntities(
+    public Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
             return withContext(context -> recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(textInputs,
@@ -657,7 +658,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntities(
         List<String> textInputs) {
-        return recognizeLinkedEntities(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
+        return recognizeLinkedEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -679,7 +680,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntities(
+    public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
             return withContext(context ->
@@ -810,7 +811,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrases(List<String> textInputs) {
-        return extractKeyPhrases(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
+        return extractKeyPhrasesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -832,7 +833,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrases(
+    public Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
         List<String> textInputs, String language) {
         try {
             return withContext(context -> extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(textInputs,
@@ -911,7 +912,7 @@ public final class TextAnalyticsAsyncClient {
      * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeSentimentResult> analyzeSentiment(String text) {
+    public Mono<DocumentSentiment> analyzeSentiment(String text) {
         try {
             return analyzeSentimentWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -940,7 +941,7 @@ public final class TextAnalyticsAsyncClient {
      * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnalyzeSentimentResult>> analyzeSentimentWithResponse(String text, String language) {
+    public Mono<Response<DocumentSentiment>> analyzeSentimentWithResponse(String text, String language) {
         try {
             return withContext(context ->
                 analyzeSentimentAsyncClient.analyzeSentimentWithResponse(text, language, context));

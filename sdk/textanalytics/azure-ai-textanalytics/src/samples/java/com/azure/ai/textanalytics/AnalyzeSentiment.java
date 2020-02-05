@@ -3,8 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
-import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 
 /**
@@ -26,23 +27,21 @@ public class AnalyzeSentiment {
         // The text that need be analysed.
         String text = "The hotel was dark and unclean.";
 
-        final AnalyzeSentimentResult sentimentResult = client.analyzeSentiment(text);
-
-        final TextSentiment documentSentiment = sentimentResult.getDocumentSentiment();
+        final DocumentSentiment documentSentiment = client.analyzeSentiment(text);
         System.out.printf(
             "Recognized sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-            documentSentiment.getTextSentimentClass(),
-            documentSentiment.getPositiveScore(),
-            documentSentiment.getNeutralScore(),
-            documentSentiment.getNegativeScore());
+            documentSentiment.getSentimentLabel(),
+            documentSentiment.getSentimentScorePerLabel().getPositiveScore(),
+            documentSentiment.getSentimentScorePerLabel().getNeutralScore(),
+            documentSentiment.getSentimentScorePerLabel().getNegativeScore());
 
-        for (TextSentiment textSentiment : sentimentResult.getSentenceSentiments()) {
+        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
             System.out.printf(
                 "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                textSentiment.getTextSentimentClass(),
-                textSentiment.getPositiveScore(),
-                textSentiment.getNeutralScore(),
-                textSentiment.getNegativeScore());
+                sentenceSentiment.getSentimentLabel(),
+                sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
+                sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
+                sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
         }
     }
 }
