@@ -112,16 +112,20 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
             .buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(invalidClient.getProperties())
-            .expectErrorSatisfies(error -> {
-                Assertions.assertTrue(error instanceof AmqpException);
+        try {
+            StepVerifier.create(invalidClient.getProperties())
+                .expectErrorSatisfies(error -> {
+                    Assertions.assertTrue(error instanceof AmqpException);
 
-                AmqpException exception = (AmqpException) error;
-                Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
-                Assertions.assertFalse(exception.isTransient());
-                Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
-            })
-            .verify();
+                    AmqpException exception = (AmqpException) error;
+                    Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                    Assertions.assertFalse(exception.isTransient());
+                    Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
+                })
+                .verify();
+        } finally {
+            invalidClient.close();
+        }
     }
 
     /**
@@ -138,15 +142,19 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
             .buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(invalidClient.getPartitionIds())
-            .expectErrorSatisfies(error -> {
-                Assertions.assertTrue(error instanceof AmqpException);
+        try {
+            StepVerifier.create(invalidClient.getPartitionIds())
+                .expectErrorSatisfies(error -> {
+                    Assertions.assertTrue(error instanceof AmqpException);
 
-                AmqpException exception = (AmqpException) error;
-                Assertions.assertEquals(AmqpErrorCondition.NOT_FOUND, exception.getErrorCondition());
-                Assertions.assertFalse(exception.isTransient());
-                Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
-            })
-            .verify();
+                    AmqpException exception = (AmqpException) error;
+                    Assertions.assertEquals(AmqpErrorCondition.NOT_FOUND, exception.getErrorCondition());
+                    Assertions.assertFalse(exception.isTransient());
+                    Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
+                })
+                .verify();
+        } finally {
+            invalidClient.close();
+        }
     }
 }
