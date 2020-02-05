@@ -8,9 +8,9 @@ import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -51,7 +51,7 @@ class RecognizeEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<PagedResponse<NamedEntity>> recognizeEntitiesWithResponse(String text, String language, Context context) {
+    Mono<PagedResponse<CategorizedEntity>> recognizeEntitiesWithResponse(String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return recognizeBatchEntitiesWithResponse(
@@ -60,13 +60,13 @@ class RecognizeEntityAsyncClient {
                     response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    Transforms.processSingleResponseErrorResult(response).getValue().getNamedEntities(),
+                    Transforms.processSingleResponseErrorResult(response).getValue().getEntities(),
                     null,
                     null
                 ));
     }
 
-    PagedFlux<NamedEntity> recognizeEntities(String text, String language, Context context) {
+    PagedFlux<CategorizedEntity> recognizeEntities(String text, String language, Context context) {
         return new PagedFlux<>(() -> recognizeEntitiesWithResponse(text, language, context));
     }
 
@@ -89,9 +89,10 @@ class RecognizeEntityAsyncClient {
             batchInput,
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of named entities input - {}", textInputs.toString()))
-            .doOnSuccess(response -> logger.info("A batch of named entities output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to recognize named entities - {}", error))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of categorized entities input - {}",
+                textInputs.toString()))
+            .doOnSuccess(response -> logger.info("A batch of categorized entities output - {}", response.getValue()))
+            .doOnError(error -> logger.warning("Failed to recognize categorized entities - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
@@ -110,7 +111,7 @@ class RecognizeEntityAsyncClient {
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null, documentEntities.getEntities().stream().map(entity ->
-                new NamedEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
+                new CategorizedEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
                     entity.getLength(), entity.getScore())).collect(Collectors.toList())));
         }
 

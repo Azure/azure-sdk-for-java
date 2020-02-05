@@ -1,6 +1,6 @@
 # Release History
 
-## 5.0.1 (2020-01-07)
+## 5.0.1 (2020-02-11)
 - Add support for different error handling cases in EventProcessor.
 - Recreate connection in client on transient errors.
 - Add tracing links when sending a batch of events.

@@ -4,11 +4,12 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -19,6 +20,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
@@ -29,14 +31,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchNamedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -154,12 +156,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForTextInput() {
-        final NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.0);
-        final NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
+        final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
+        final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
 
-        final List<NamedEntity> entities = client.recognizeEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
-        validateNamedEntity(namedEntity1, entities.get(0));
-        validateNamedEntity(namedEntity2, entities.get(1));
+        final List<CategorizedEntity> entities = client.recognizeEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
+        validateCategorizedEntity(categorizedEntity1, entities.get(0));
+        validateCategorizedEntity(categorizedEntity2, entities.get(1));
     }
 
     @Test
@@ -170,15 +172,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForFaultyText() {
-        assertNull(client.recognizeEntities("!@#%%"));
+        assertFalse(client.recognizeEntities("!@#%%").iterator().hasNext());
     }
 
     @Test
     public void recognizeEntitiesBatchInputSingleError() {
-        recognizeBatchNamedEntitySingleErrorRunner((inputs) -> {
+        recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
             DocumentResultCollection<RecognizeEntitiesResult> l = client.recognizeBatchEntities(inputs);
             for (RecognizeEntitiesResult recognizeEntitiesResult : l) {
-                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getNamedEntities());
+                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getEntities());
                 assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
             }
         });
@@ -186,36 +188,35 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForBatchInput() {
-        recognizeBatchNamedEntityRunner((inputs) -> validateNamedEntity(false,
-            getExpectedBatchNamedEntities(), client.recognizeBatchEntities(inputs)));
+        recognizeBatchCategorizedEntityRunner((inputs) -> validateCategorizedEntity(false,
+            getExpectedBatchCategorizedEntities(), client.recognizeBatchEntities(inputs)));
     }
 
     @Test
     public void recognizeEntitiesForBatchInputShowStatistics() {
-        recognizeBatchNamedEntitiesShowStatsRunner((inputs, options) ->
-            validateNamedEntity(true, getExpectedBatchNamedEntities(),
+        recognizeBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
+            validateCategorizedEntity(true, getExpectedBatchCategorizedEntities(),
                 client.recognizeBatchEntitiesWithResponse(inputs, options, Context.NONE).getValue()));
     }
 
     @Test
     public void recognizeEntitiesForBatchStringInput() {
-        recognizeNamedEntityStringInputRunner((inputs) ->
-            validateNamedEntity(false, getExpectedBatchNamedEntities(), client.recognizeEntities(inputs)));
+        recognizeCategorizedEntityStringInputRunner((inputs) ->
+            validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), client.recognizeEntities(inputs)));
     }
 
     @Test
     public void recognizeEntitiesForListLanguageHint() {
-        recognizeNamedEntitiesLanguageHintRunner((inputs, language) ->
-            validateNamedEntity(false, getExpectedBatchNamedEntities(),
+        recognizeCatgeorizedEntitiesLanguageHintRunner((inputs, language) ->
+            validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(),
                 client.recognizeEntities(inputs, language, Context.NONE).getValue()));
     }
 
     @Test
     public void recognizePiiEntitiesForTextInput() {
-        final NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
-        final List<NamedEntity> entities = client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.").stream().collect(Collectors.toList());
-
-        validateNamedEntity(namedEntity1, entities.get(0));
+        final PiiEntity piiEntity = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
+        final PagedIterable<PiiEntity> entities = client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.");
+        validatePiiEntity(piiEntity, entities.iterator().next());
     }
 
     @Test
@@ -226,7 +227,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizePiiEntitiesForFaultyText() {
-        assertNull(client.recognizePiiEntities("!@#%%"));
+        assertFalse(client.recognizePiiEntities("!@#%%").iterator().hasNext());
     }
 
     @Test
@@ -272,7 +273,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForFaultyText() {
-        assertNull(client.recognizeLinkedEntities("!@#%%"));
+        assertFalse(client.recognizeLinkedEntities("!@#%%").iterator().hasNext());
     }
 
     @Test
@@ -314,7 +315,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void extractKeyPhrasesForFaultyText() {
-        assertNull(client.extractKeyPhrases("!@#%%"));
+        assertFalse(client.extractKeyPhrases("!@#%%").iterator().hasNext());
     }
 
     @Test

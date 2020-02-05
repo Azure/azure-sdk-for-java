@@ -4,13 +4,14 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
@@ -205,11 +206,11 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeEntitiesSingleText() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#String
-        final PagedIterable<NamedEntity> recognizeEntitiesResult =
+        final PagedIterable<CategorizedEntity> recognizeEntitiesResult =
             textAnalyticsClient.recognizeEntities("Satya Nadella is the CEO of Microsoft");
-        for (NamedEntity entity : recognizeEntitiesResult) {
-            System.out.printf("Recognized entity: %s, entity type: %s, score: %s.%n",
-                entity.getText(), entity.getType(), entity.getScore());
+        for (CategorizedEntity entity : recognizeEntitiesResult) {
+            System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
+                entity.getText(), entity.getCategory(), entity.getScore());
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#String
     }
@@ -219,12 +220,12 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeEntitiesSingleTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesWithResponse#String-String-Context
-        final PagedIterable<NamedEntity> recognizeEntitiesResult = textAnalyticsClient.recognizeEntities(
+        final PagedIterable<CategorizedEntity> recognizeEntitiesResult = textAnalyticsClient.recognizeEntities(
             "Satya Nadella is the CEO of Microsoft", "en", Context.NONE);
 
-        for (NamedEntity entity : recognizeEntitiesResult) {
-            System.out.printf("Recognized entity: %s, entity type: %s, score: %s.%n",
-                entity.getText(), entity.getType(), entity.getScore());
+        for (CategorizedEntity entity : recognizeEntitiesResult) {
+            System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
+                entity.getText(), entity.getCategory(), entity.getScore());
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesWithResponse#String-String-Context
     }
@@ -248,9 +249,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-            for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
-                System.out.printf("Recognized entity: %s, entity type: %s, score: %s.%n",
-                    entity.getText(), entity.getType(), entity.getScore());
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
+                System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
+                    entity.getText(), entity.getCategory(), entity.getScore());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#List
@@ -275,9 +276,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-            for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
-                System.out.printf("Recognized entity: %s, entity type: %s, score: %s.%n",
-                    entity.getText(), entity.getType(), entity.getScore());
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
+                System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
+                    entity.getText(), entity.getCategory(), entity.getScore());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesWithResponse#List-String-Context
@@ -302,9 +303,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-            for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
-                System.out.printf("Recognized entity: %s, entity type: %s, score: %s.%n",
-                    entity.getText(), entity.getType(), entity.getScore());
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
+                System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
+                    entity.getText(), entity.getCategory(), entity.getScore());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchEntities#List
@@ -331,9 +332,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-            for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
-                System.out.printf("Recognized entity: %s, entity type: %s, score: %s.%n",
-                    entity.getText(), entity.getType(), entity.getScore());
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
+                System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
+                    entity.getText(), entity.getCategory(), entity.getScore());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchEntitiesWithResponse#List-TextAnalyticsRequestOptions-Context
@@ -345,9 +346,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizePiiEntitiesSingleText() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String
-        for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555")) {
-            System.out.printf("Recognized PII entity: %s, entity type: %s, score: %s.%n",
-                entity.getText(), entity.getType(), entity.getScore());
+        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555")) {
+            System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
+                entity.getText(), entity.getCategory(), entity.getScore());
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String
     }
@@ -357,9 +358,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizePiiEntitiesSingleTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#String-String-Context
-        for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555", "en", Context.NONE)) {
-            System.out.printf("Recognized PII entity: %s, entity type: %s, score: %s.%n",
-                entity.getText(), entity.getType(), entity.getScore());
+        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555", "en", Context.NONE)) {
+            System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
+                entity.getText(), entity.getCategory(), entity.getScore());
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#String-String-Context
     }
@@ -381,9 +382,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
-            for (NamedEntity entity : recognizePiiEntitiesResult.getNamedEntities()) {
-                System.out.printf("Recognized PII entity: %s, entity type: %s, score: %s.%n",
-                    entity.getText(), entity.getType(), entity.getScore());
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
+                System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
+                    entity.getText(), entity.getCategory(), entity.getScore());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#List
@@ -406,9 +407,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
-            for (NamedEntity entity : recognizePiiEntitiesResult.getNamedEntities()) {
-                System.out.printf("Recognized PII entity: %s, entity type: %s, score: %s.%n",
-                    entity.getText(), entity.getType(), entity.getScore());
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
+                System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
+                    entity.getText(), entity.getCategory(), entity.getScore());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#List-String-Context
@@ -433,9 +434,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
-            for (NamedEntity entity : recognizePiiEntitiesResult.getNamedEntities()) {
-                System.out.printf("Recognized PII entity: %s, entity type: %s, score: %s.%n",
-                    entity.getText(), entity.getType(), entity.getScore());
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
+                System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
+                    entity.getText(), entity.getCategory(), entity.getScore());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchPiiEntities#List
@@ -462,9 +463,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
-            for (NamedEntity entity : recognizePiiEntitiesResult.getNamedEntities()) {
-                System.out.printf("Recognized PII entity: %s, entity type: %s, score: %s.%n",
-                    entity.getText(), entity.getType(), entity.getScore());
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
+                System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
+                    entity.getText(), entity.getCategory(), entity.getScore());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeBatchPiiEntitiesWithResponse#List-TextAnalyticsRequestOptions-Context

@@ -5,13 +5,14 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
@@ -182,8 +183,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> textInputs) {
-        return detectLanguagesWithResponse(textInputs, defaultCountryHint).flatMap(FluxUtil::toMono);
+    public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguage(List<String> textInputs) {
+        return detectLanguageWithResponse(textInputs, defaultCountryHint).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -205,7 +206,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(
+    public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguageWithResponse(
         List<String> textInputs, String countryHint) {
         try {
             return withContext(context -> detectLanguageAsyncClient.detectLanguagesWithResponse(textInputs, countryHint,
@@ -232,9 +233,9 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguages(
+    public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguage(
         List<DetectLanguageInput> textInputs) {
-        return detectBatchLanguagesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
+        return detectBatchLanguageWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -256,7 +257,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
+    public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguageWithResponse(
         List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
             return withContext(
@@ -266,9 +267,9 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    // Named Entity
+    // Categorized Entity
     /**
-     * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
+     * Returns a list of general categorized entities in the provided text. For a list of supported entity types, check:
      * <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>
      *
@@ -280,19 +281,19 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param text the text to recognize entities for.
      *
-     * @return A {@link Mono} containing the {@link NamedEntity named entity} of the text.
+     * @return A {@link Mono} containing the {@link CategorizedEntity categorized entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
      * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NamedEntity> recognizeEntities(String text) {
+    public PagedFlux<CategorizedEntity> recognizeEntities(String text) {
         return recognizeEntities(text, defaultLanguage);
     }
 
     /**
-     * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
+     * Returns a list of general categorized entities in the provided text. For a list of supported entity types, check:
      * <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>
      *
@@ -307,14 +308,14 @@ public final class TextAnalyticsAsyncClient {
      * default.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizeEntitiesResult named entity} of the text.
+     * {@link RecognizeEntitiesResult categorized entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
      * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NamedEntity> recognizeEntities(String text, String language) {
+    public PagedFlux<CategorizedEntity> recognizeEntities(String text, String language) {
         try {
             return new PagedFlux<>(() -> withContext(context ->
                 recognizeEntityAsyncClient.recognizeEntitiesWithResponse(text, language, context)));
@@ -324,7 +325,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of general named entities for the provided list of texts.
+     * Returns a list of general categorized entities for the provided list of texts.
      *
      * <p><strong>Code sample</strong></p>
      * <p>Recognize entities in a text. Subscribes to the call asynchronously and prints out the entity details
@@ -335,7 +336,7 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs A list of texts to recognize entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity} of the text.
+     * {@link RecognizeEntitiesResult categorized entity} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -345,7 +346,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of general named entities for the provided list of texts.
+     * Returns a list of general categorized entities for the provided list of texts.
      *
      * <p><strong>Code sample</strong></p>
      * <p>Recognize entities in a text with the provided language hint. Subscribes to the call asynchronously and
@@ -358,7 +359,7 @@ public final class TextAnalyticsAsyncClient {
      * default.
      *
      * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity}.
+     * {@link RecognizeEntitiesResult categorized entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -374,7 +375,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of general named entities for the provided list of text inputs.
+     * Returns a list of general categorized entities for the provided list of text inputs.
      *
      * <p><strong>Code sample</strong></p>
      * <p>Recognize entities in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
@@ -385,7 +386,7 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity}.
+     * {@link RecognizeEntitiesResult categorized entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -396,7 +397,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of general named entities for the provided list of text inputs.
+     * Returns a list of general categorized entities for the provided list of text inputs.
      *
      * <p><strong>Code sample</strong></p>
      * <p>Recognize entities in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
@@ -409,7 +410,7 @@ public final class TextAnalyticsAsyncClient {
      * and show statistics.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
+     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult categorized entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -437,14 +438,14 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param text the text to recognize PII entities for.
      *
-     * @return A {@link Mono} containing the {@link RecognizeEntitiesResult PII entity} of the text.
+     * @return A {@link Mono} containing the {@link PiiEntity PII entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
      * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NamedEntity> recognizePiiEntities(String text) {
+    public PagedFlux<PiiEntity> recognizePiiEntities(String text) {
         return recognizePiiEntities(text, defaultLanguage);
     }
 
@@ -463,14 +464,14 @@ public final class TextAnalyticsAsyncClient {
      * English as default.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizeEntitiesResult named entity} of the text.
+     * {@link PiiEntity PII entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
      * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NamedEntity> recognizePiiEntities(String text, String language) {
+    public PagedFlux<PiiEntity> recognizePiiEntities(String text, String language) {
         try {
             return new PagedFlux<>(() -> withContext(context ->
                 recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(text, language, context)));
@@ -492,7 +493,7 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs A list of text to recognize PII entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity} of the text.
+     * {@link RecognizePiiEntitiesResult PII entity} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -516,7 +517,7 @@ public final class TextAnalyticsAsyncClient {
      * English as default.
      *
      * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity}.
+     * {@link RecognizePiiEntitiesResult PII entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -544,7 +545,7 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity}.
+     * {@link RecognizePiiEntitiesResult PII entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -569,7 +570,7 @@ public final class TextAnalyticsAsyncClient {
      * and show statistics.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
+     * {@link DocumentResultCollection batch} of {@link RecognizePiiEntitiesResult PII entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -621,7 +622,7 @@ public final class TextAnalyticsAsyncClient {
      * English as default.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizeLinkedEntitiesResult named entity} of the text.
+     * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
