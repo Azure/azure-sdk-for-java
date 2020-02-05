@@ -14,6 +14,7 @@ import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
@@ -144,7 +145,7 @@ public class ReadmeSamples {
         );
 
         try {
-            textAnalyticsClient.detectBatchLanguages(inputs);
+            textAnalyticsClient.detectLanguageBatchWithResponse(inputs, null, Context.NONE);
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }

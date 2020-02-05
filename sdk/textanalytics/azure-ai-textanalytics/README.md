@@ -25,7 +25,7 @@ and includes six main functions:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -286,7 +286,7 @@ List<DetectLanguageInput> inputs = Arrays.asList(
 );
 
 try {
-    textAnalyticsClient.detectBatchLanguages(inputs);
+    textAnalyticsClient.detectLanguageBatchWithResponse(inputs, null, Context.NONE);
 } catch (HttpResponseException e) {
     System.out.println(e.getMessage());
 }

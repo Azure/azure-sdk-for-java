@@ -44,7 +44,7 @@ public class RecognizeEntitiesBatchDocuments {
 
         // Recognizing batch entities
         final DocumentResultCollection<RecognizeEntitiesResult> recognizedBatchResult =
-            client.recognizeBatchEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+            client.recognizeEntitiesBatchWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
 
         // Batch statistics

@@ -69,12 +69,12 @@ class ExtractKeyPhraseAsyncClient {
     }
 
     Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
-        List<String> textInputs, String language, Context context) {
+        List<String> textInputs, String language,  TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
-        return extractBatchKeyPhrasesWithResponse(documentInputs, null, context);
+        return extractBatchKeyPhrasesWithResponse(documentInputs, options, context);
     }
 
     Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(

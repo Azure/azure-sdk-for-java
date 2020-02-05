@@ -44,7 +44,7 @@ public class AnalyzeSentimentBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Analyzing batch sentiments
-        DocumentResultCollection<AnalyzeSentimentResult> analyzedBatchResult = client.analyzeBatchSentimentWithResponse(
+        DocumentResultCollection<AnalyzeSentimentResult> analyzedBatchResult = client.analyzeSentimentBatchWithResponse(
             inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", analyzedBatchResult.getModelVersion());
 
