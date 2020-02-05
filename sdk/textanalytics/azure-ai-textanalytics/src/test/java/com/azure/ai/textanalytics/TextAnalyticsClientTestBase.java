@@ -68,16 +68,17 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
+    private static final String AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY = "AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY";
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
-
     private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
+    static final String INVALID_KEY = "invalid key";
     static final String INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE = "Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE = "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code. ErrorCodeValue: {invalidCountryHint}";
     static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeEntitiesResult returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
@@ -271,7 +272,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void detectLanguageDuplicateIdRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(TestUtils.getDetectLanguageInputs(), null);
+        testRunner.accept(TestUtils.getDuplicateIdDetectLanguageInputs(), null);
     }
 
     void detectLanguagesCountryHintRunner(BiConsumer<List<String>, String> testRunner) {
@@ -715,9 +716,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLanguage.getName(), actualLanguage.getName());
         assertNotNull(actualLanguage.getScore());
     }
-
-    private static final String AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY = "AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY";
-    static final String INVALID_KEY = "invalid key";
 
     /**
      * Create a client builder with endpoint and subscription key credential.

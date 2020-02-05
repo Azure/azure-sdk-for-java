@@ -304,7 +304,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void extractKeyPhrasesForTextInput() {
-        assertEquals("monde", client.extractKeyPhrases("Bonjour tout le monde."));
+        assertEquals("monde", client.extractKeyPhrases("Bonjour tout le monde.").iterator().next());
     }
 
     @Test

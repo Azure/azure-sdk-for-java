@@ -63,6 +63,13 @@ final class TestUtils {
         );
     }
 
+    static List<DetectLanguageInput> getDuplicateIdDetectLanguageInputs() {
+        return Arrays.asList(
+            new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"),
+            new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US")
+        );
+    }
+
     static List<TextDocumentInput> getTextDocumentInputs(List<String> inputs) {
         return IntStream.range(0, inputs.size())
             .mapToObj(index ->
