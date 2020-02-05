@@ -63,6 +63,8 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             testData = setupEventTestData(producer, NUMBER_OF_EVENTS, options);
         }
 
+        Assertions.assertNotNull(testData, "'testData' should have been populated.");
+
         startingPosition = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime());
         consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
     }
