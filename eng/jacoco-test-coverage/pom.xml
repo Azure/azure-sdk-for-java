@@ -153,6 +153,11 @@
       <artifactId>azure-storage-queue</artifactId>
       <version>12.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-search</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-search;current} -->
+    </dependency>
   </dependencies>
 
   <build>
