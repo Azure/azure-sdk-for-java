@@ -13,8 +13,8 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.WorkItemConfigurations;
 import rx.Observable;
 import rx.functions.Func1;
-import java.util.List;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.WorkItemConfiguration;
+import java.util.List;
 import rx.Completable;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.WorkItemCreateConfiguration;
 
@@ -32,6 +32,30 @@ class WorkItemConfigurationsImpl extends WrapperImpl<WorkItemConfigurationsInner
 
     private WorkItemConfigurationImpl wrapWorkItemConfigurationModel(WorkItemConfigurationInner inner) {
         return  new WorkItemConfigurationImpl(inner, manager());
+    }
+
+    private Observable<WorkItemConfigurationInner> getWorkItemConfigurationInnerUsingWorkItemConfigurationsInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceName = IdParsingUtils.getValueFromIdByName(id, "components");
+        String workItemConfigId = IdParsingUtils.getValueFromIdByName(id, "WorkItemConfigs");
+        WorkItemConfigurationsInner client = this.inner();
+        return client.getItemAsync(resourceGroupName, resourceName, workItemConfigId);
+    }
+
+    @Override
+    public Observable<WorkItemConfiguration> getItemAsync(String resourceGroupName, String resourceName, String workItemConfigId) {
+        WorkItemConfigurationsInner client = this.inner();
+        return client.getItemAsync(resourceGroupName, resourceName, workItemConfigId)
+        .flatMap(new Func1<WorkItemConfigurationInner, Observable<WorkItemConfiguration>>() {
+            @Override
+            public Observable<WorkItemConfiguration> call(WorkItemConfigurationInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((WorkItemConfiguration)wrapWorkItemConfigurationModel(inner));
+                }
+            }
+       });
     }
 
     @Override
@@ -56,6 +80,18 @@ class WorkItemConfigurationsImpl extends WrapperImpl<WorkItemConfigurationsInner
     public Completable deleteAsync(String resourceGroupName, String resourceName, String workItemConfigId) {
         WorkItemConfigurationsInner client = this.inner();
         return client.deleteAsync(resourceGroupName, resourceName, workItemConfigId).toCompletable();
+    }
+
+    @Override
+    public Observable<WorkItemConfiguration> updateItemAsync(String resourceGroupName, String resourceName, String workItemConfigId, WorkItemCreateConfiguration workItemConfigurationProperties) {
+        WorkItemConfigurationsInner client = this.inner();
+        return client.updateItemAsync(resourceGroupName, resourceName, workItemConfigId, workItemConfigurationProperties)
+        .map(new Func1<WorkItemConfigurationInner, WorkItemConfiguration>() {
+            @Override
+            public WorkItemConfiguration call(WorkItemConfigurationInner inner) {
+                return new WorkItemConfigurationImpl(inner, manager());
+            }
+        });
     }
 
     @Override

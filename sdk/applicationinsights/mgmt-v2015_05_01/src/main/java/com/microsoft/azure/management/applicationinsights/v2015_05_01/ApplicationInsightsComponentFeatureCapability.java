@@ -27,7 +27,7 @@ public class ApplicationInsightsComponentFeatureCapability {
     private String description;
 
     /**
-     * The vaule of the capability.
+     * The value of the capability.
      */
     @JsonProperty(value = "Value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
@@ -69,7 +69,7 @@ public class ApplicationInsightsComponentFeatureCapability {
     }
 
     /**
-     * Get the vaule of the capability.
+     * Get the value of the capability.
      *
      * @return the value value
      */
