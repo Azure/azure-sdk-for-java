@@ -3,12 +3,11 @@ package com.azure.storage.blob
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.TestMode
-import com.azure.core.util.Configuration
 import com.azure.storage.blob.models.BlobContainerEncryptionScope
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.EncryptionScope
+
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
@@ -24,7 +23,7 @@ class CPKNTest extends APISpec {
 
     String scope1 = "testscope1"
     String scope2 = "testscope2"
-    EncryptionScope es
+    String es
     BlobContainerEncryptionScope ces
     BlobContainerClientBuilder builder
 
@@ -35,8 +34,8 @@ class CPKNTest extends APISpec {
     BlobClientBase cpknExistingBlob
 
     def setup() {
-        es = new EncryptionScope().setEncryptionScope(scope1)
-        ces = new BlobContainerEncryptionScope().setDefaultEncryptionScope(scope2).preventEncryptionScopeOverride(true)
+        es = scope1
+        ces = new BlobContainerEncryptionScope().setDefaultEncryptionScope(scope2).setEncryptionScopeOverridePrevented(true)
 
         builder = new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl().toString())

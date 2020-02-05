@@ -224,8 +224,11 @@ public final class BlobContainerAsyncClient {
      *
      * @return the encryption scope used for encryption.
      */
-    public EncryptionScope getEncryptionScope() {
-        return encryptionScope;
+    public String getEncryptionScope() {
+        if (encryptionScope == null) {
+            return null;
+        }
+        return encryptionScope.getEncryptionScope();
     }
 
     /**

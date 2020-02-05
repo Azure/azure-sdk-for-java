@@ -153,12 +153,15 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Gets the {@link EncryptionScope} used to encrypt this blob's content on the server.
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
      *
      * @return the encryption scope used for encryption.
      */
-    EncryptionScope getEncryptionScope() {
-        return encryptionScope;
+    protected String getEncryptionScope() {
+        if (encryptionScope == null) {
+            return null;
+        }
+        return encryptionScope.getEncryptionScope();
     }
 
     /**
@@ -1290,7 +1293,7 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-
+        
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),

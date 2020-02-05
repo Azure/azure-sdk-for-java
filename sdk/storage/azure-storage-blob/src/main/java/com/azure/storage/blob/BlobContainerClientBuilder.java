@@ -175,13 +175,18 @@ public final class BlobContainerClientBuilder {
     }
 
     /**
-     * Sets the {@link EncryptionScope encryption scope} that is used to encrypt blob contents on the server.
+     * Sets the {@code encryption scope} that is used to encrypt blob contents on the server.
      *
      * @param encryptionScope Encryption scope containing the encryption key information.
      * @return the updated BlobContainerClientBuilder object
      */
-    public BlobContainerClientBuilder encryptionScope(EncryptionScope encryptionScope) {
-        this.encryptionScope = encryptionScope;
+    public BlobContainerClientBuilder encryptionScope(String encryptionScope) {
+        if (encryptionScope == null) {
+            this.encryptionScope = null;
+        } else {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+
         return this;
     }
 

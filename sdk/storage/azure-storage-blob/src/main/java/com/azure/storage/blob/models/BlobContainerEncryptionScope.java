@@ -26,8 +26,8 @@ public final class BlobContainerEncryptionScope {
      * from specifying a different encryption scope than the scope set on the
      * container.
      */
-    @JsonProperty(value = "preventEncryptionScopeOverride")
-    private boolean preventEncryptionScopeOverride;
+    @JsonProperty(value = "encryptionScopeOverridePrevented")
+    private boolean encryptionScopeOverridePrevented;
 
     /**
      * Get the defaultEncryptionScope property: Optional.  Version 2019-07-07
@@ -54,27 +54,27 @@ public final class BlobContainerEncryptionScope {
     }
 
     /**
-     * Get the preventEncryptionScopeOverride property: Optional.  Version
+     * Get the encryptionScopeOverridePrevented property: Optional.  Version
      * 2019-07-07 and newer.  If true, prevents any request from specifying a
      * different encryption scope than the scope set on the container.
      *
-     * @return the preventEncryptionScopeOverride value.
+     * @return the encryptionScopeOverridePrevented value.
      */
-    public boolean preventEncryptionScopeOverride() {
-        return this.preventEncryptionScopeOverride;
+    public boolean isEncryptionScopeOverridePrevented() {
+        return this.encryptionScopeOverridePrevented;
     }
 
     /**
-     * Set the preventEncryptionScopeOverride property: Optional.  Version
+     * Set the encryptionScopeOverridePrevented property: Optional.  Version
      * 2019-07-07 and newer.  If true, prevents any request from specifying a
      * different encryption scope than the scope set on the container.
      *
-     * @param preventEncryptionScopeOverride the preventEncryptionScopeOverride
-     * value to set.
+     * @param encryptionScopeOverridePrevented the
+     * encryptionScopeOverridePrevented value to set.
      * @return the BlobContainerEncryptionScope object itself.
      */
-    public BlobContainerEncryptionScope preventEncryptionScopeOverride(boolean preventEncryptionScopeOverride) {
-        this.preventEncryptionScopeOverride = preventEncryptionScopeOverride;
+    public BlobContainerEncryptionScope setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {
+        this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
         return this;
     }
 }

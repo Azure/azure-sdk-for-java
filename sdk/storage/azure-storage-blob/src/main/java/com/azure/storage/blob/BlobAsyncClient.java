@@ -183,7 +183,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             builder.customerProvidedKey(new CustomerProvidedKey(cpk.getEncryptionKey()));
         }
 
-        builder.encryptionScope(encryptionScope);
+        if (encryptionScope != null) {
+            builder.encryptionScope(encryptionScope.getEncryptionScope());
+        }
 
         return builder;
     }

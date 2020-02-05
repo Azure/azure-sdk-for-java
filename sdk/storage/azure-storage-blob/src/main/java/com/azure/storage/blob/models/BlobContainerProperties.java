@@ -76,7 +76,7 @@ public final class BlobContainerProperties {
         this.hasLegalHold = hasLegalHold;
         this.blobContainerEncryptionScope = new BlobContainerEncryptionScope()
             .setDefaultEncryptionScope(defaultEncryptionScope)
-            .preventEncryptionScopeOverride(denyEncryptionScopeOverride);
+            .setEncryptionScopeOverridePrevented(denyEncryptionScopeOverride);
     }
 
     /**
