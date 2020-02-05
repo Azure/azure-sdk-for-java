@@ -94,7 +94,7 @@ jobs:
     - task: Maven@3
       displayName: 'Analyze dependencies'
       inputs:
-        mavenPomFile: 'DependencyChecker/pom.xml'
+        mavenPomFile: 'DependencyChecker/core/pom.xml'
         options: '-Dexec.args="-showall -dependencymanagement"'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
