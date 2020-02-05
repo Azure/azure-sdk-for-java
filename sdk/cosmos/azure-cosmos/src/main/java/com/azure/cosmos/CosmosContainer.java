@@ -242,10 +242,10 @@ public class CosmosContainer {
      * @param <T> the type parameter
      * @param options the options
      * @param klass the klass
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public <T> Iterator<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.asyncContainer.readAllItems(options, klass));
+    public <T> IterableStream<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
+        return getFeedIterableStream(this.asyncContainer.readAllItems(options, klass));
     }
 
     /**

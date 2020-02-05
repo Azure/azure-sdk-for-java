@@ -23,7 +23,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
 
@@ -66,21 +65,62 @@ public class BackPressureTest extends TestSuiteBase {
     }
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
-    public void readFeed() throws Exception {
+    public void readFeedPages() throws Exception {
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(1);
         
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         AtomicInteger valueCount = new AtomicInteger();
         rxClient.httpRequests.clear();
 
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
-        queryObservable.doOnNext(cosmosItemPropertiesFeedResponse -> {
+        queryObservable.byPage(1).doOnNext(cosmosItemPropertiesFeedResponse -> {
             if (!cosmosItemPropertiesFeedResponse.getResults().isEmpty()) {
                 valueCount.incrementAndGet();
             }
+        }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+
+        int sleepTimeInMillis = 10000; // 10 seconds
+
+        int i = 0;
+        // use a test subscriber and request for more result and sleep in between
+        while (subscriber.completions() == 0 && subscriber.getEvents().get(1).isEmpty()) {
+            TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
+            sleepTimeInMillis /= 2;
+
+            if (sleepTimeInMillis > 1000) {
+                // validate that only one item is returned to subscriber in each iteration
+                assertThat(subscriber.valueCount() - i).isEqualTo(1);
+            }
+            // validate that only one item is returned to subscriber in each iteration
+            // validate that the difference between the number of requests to backend
+            // and the number of returned results is always less than a fixed threshold
+            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
+                .isLessThanOrEqualTo(Queues.SMALL_BUFFER_SIZE);
+
+            subscriber.requestMore(1);
+            i++;
+        }
+
+        subscriber.assertNoErrors();
+        subscriber.assertComplete();
+        assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
+    }
+
+    @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
+    public void readFeedItems() throws Exception {
+        FeedOptions options = new FeedOptions();
+
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+
+        RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
+        AtomicInteger valueCount = new AtomicInteger();
+        rxClient.httpRequests.clear();
+
+        TestSubscriber<CosmosItemProperties> subscriber = new TestSubscriber<>(1);
+        queryObservable.doOnNext(cosmosItemPropertiesFeedResponse -> {
+            valueCount.incrementAndGet();
         }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
 
         int sleepTimeInMillis = 10000; // 10 seconds
