@@ -168,7 +168,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForEmptyText() {
-        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizeEntities(""));
+        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizeEntities("").iterator().hasNext());
         assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
@@ -223,7 +223,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizePiiEntitiesForEmptyText() {
-        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizePiiEntities(""));
+        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizePiiEntities("").iterator().hasNext());
         assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
@@ -269,7 +269,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForEmptyText() {
-        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizeLinkedEntities(""));
+        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizeLinkedEntities("").iterator().hasNext());
         assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
@@ -311,7 +311,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void extractKeyPhrasesForEmptyText() {
-        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.extractKeyPhrases(""));
+        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.extractKeyPhrases("").iterator().hasNext());
         assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
