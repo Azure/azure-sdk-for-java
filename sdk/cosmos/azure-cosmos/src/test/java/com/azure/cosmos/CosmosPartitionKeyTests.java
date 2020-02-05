@@ -24,9 +24,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -174,13 +172,13 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         expectedIds.add(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID);
         expectedIds.add(replacedItemId);
         expectedIds.add(upsertedItemId);
-        Flux<FeedResponse<CosmosItemProperties>> queryFlux = createdContainer.queryItems("SELECT * from c", feedOptions, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryFlux = createdContainer.queryItems("SELECT * from c", feedOptions, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(3)
                 .numberOfPages(1)
                 .containsExactlyIds(expectedIds)
                 .build();
-        validateQuerySuccess(queryFlux, queryValidator);
+        validateQuerySuccess(queryFlux.byPage(), queryValidator);
 
         queryFlux = createdContainer.readAllItems(feedOptions, CosmosItemProperties.class);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
@@ -188,7 +186,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .numberOfPages(1)
                 .containsExactlyIds(expectedIds)
                 .build();
-        validateQuerySuccess(queryFlux, queryValidator);
+        validateQuerySuccess(queryFlux.byPage(), queryValidator);
 
         String documentCreatedBySprocId = "testDoc";
         CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties(
@@ -223,7 +221,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .numberOfPages(1)
                 .containsExactlyIds(expectedIds)
                 .build();
-        validateQuerySuccess(queryFlux, queryValidator);
+        validateQuerySuccess(queryFlux.byPage(), queryValidator);
         CosmosResponseValidator<CosmosAsyncItemResponse> deleteResponseValidator;
         Mono<CosmosAsyncItemResponse> deleteMono =
             createdContainer.deleteItem(upsertedItemId, PartitionKey.NONE);
@@ -251,7 +249,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .totalSize(0)
                 .numberOfPages(1)
                 .build();
-        validateQuerySuccess(queryFlux, queryValidator);
+        validateQuerySuccess(queryFlux.byPage(), queryValidator);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT*100)

@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.DataType;
 import com.azure.cosmos.FeedOptions;
@@ -97,7 +98,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     private void warmUp() {
         FeedOptions options = new FeedOptions();
         // ensure collection is cached
-        createdCollection.queryItems("SELECT * FROM r", options, CosmosItemProperties.class).blockFirst();
+        createdCollection.queryItems("SELECT * FROM r", options, CosmosItemProperties.class).byPage().blockFirst();
     }
 
     @DataProvider(name = "queryProvider")
@@ -114,18 +115,17 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     }
 
     @Test(groups = { "long" }, dataProvider = "queryProvider", timeOut = 2 * TIMEOUT)
-    public void query(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
+    public void queryPages(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(maxItemCount);
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
 
         log.info("instantiating subscriber ...");
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>(1);
-        queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        queryObservable.byPage(maxItemCount).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
         int sleepTimeInMillis = 10000;
         int i = 0;
 
@@ -156,6 +156,50 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         subscriber.assertNoErrors();
         subscriber.assertComplete();
         assertThat(subscriber.values().stream().mapToInt(p -> p.getResults().size()).sum()).isEqualTo(expectedNumberOfResults);
+    }
+
+    @Test(groups = { "long" }, dataProvider = "queryProvider", timeOut = 2 * TIMEOUT)
+    public void queryItems(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
+        FeedOptions options = new FeedOptions();
+        options.setMaxDegreeOfParallelism(2);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+
+        RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
+        rxClient.httpRequests.clear();
+
+        log.info("instantiating subscriber ...");
+        TestSubscriber<CosmosItemProperties> subscriber = new TestSubscriber<>(1);
+        queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        int sleepTimeInMillis = 10000;
+        int i = 0;
+
+        // use a test subscriber and request for more result and sleep in between
+        while (subscriber.completions() == 0 && subscriber.errorCount() == 0) {
+            log.debug("loop " + i);
+
+            TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
+            sleepTimeInMillis /= 2;
+
+            if (sleepTimeInMillis > 4000) {
+                // validate that only one item is returned to subscriber in each iteration
+                assertThat(subscriber.valueCount() - i).isEqualTo(1);
+            }
+
+            log.debug("subscriber.getValueCount(): " + subscriber.valueCount());
+            log.debug("client.httpRequests.size(): " + rxClient.httpRequests.size());
+            // validate that the difference between the number of requests to backend
+            // and the number of returned results is always less than a fixed threshold
+            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
+                .isLessThanOrEqualTo(maxExpectedBufferedCountForBackPressure);
+
+            log.debug("requesting more");
+            subscriber.requestMore(1);
+            i++;
+        }
+
+        subscriber.assertNoErrors();
+        subscriber.assertComplete();
+        assertThat(Integer.valueOf(subscriber.values().size())).isEqualTo(expectedNumberOfResults);
     }
 
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)

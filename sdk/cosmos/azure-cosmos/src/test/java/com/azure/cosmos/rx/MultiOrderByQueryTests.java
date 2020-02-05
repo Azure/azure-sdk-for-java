@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.FeedOptions;
@@ -245,14 +246,14 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
                         List<CosmosItemProperties> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
                         
-                        Flux<FeedResponse<CosmosItemProperties>> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
+                        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
 
                         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator
                                 .Builder<CosmosItemProperties>()
                                 .withOrderedResults(expectedOrderedList, compositeIndex)
                                 .build();
 
-                        validateQuerySuccess(queryObservable, validator);
+                        validateQuerySuccess(queryObservable.byPage(), validator);
                     }
                 }
             }
@@ -264,13 +265,13 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         BridgeInternal.remove(documentWithEmptyField, NUMBER_FIELD);
         documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
         String query = "SELECT [root." + NUMBER_FIELD + ",root." + STRING_FIELD + "] FROM root ORDER BY root." + NUMBER_FIELD + " ASC ,root." + STRING_FIELD + " DESC";
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(UnsupportedOperationException.class)
                 .build();
 
-        validateQueryFailure(queryObservable, validator);
+        validateQueryFailure(queryObservable.byPage(), validator);
     }
 
     private List<CosmosItemProperties> top(List<CosmosItemProperties> arrayList, boolean hasTop, int topCount) {
