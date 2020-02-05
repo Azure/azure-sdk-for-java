@@ -535,7 +535,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public static void deleteCollectionIfExists(CosmosAsyncClient client, String databaseId, String collectionId) {
         CosmosAsyncDatabase database = client.getDatabase(databaseId).read().block().getDatabase();
         List<CosmosContainerProperties> res = database.queryContainers(String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null)
-                                                      .flatMap(page -> Flux.fromIterable(page.getResults()))
                                                       .collectList()
                                                       .block();
 
@@ -657,7 +656,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected void safeDeleteAllCollections(CosmosAsyncDatabase database) {
         if (database != null) {
             List<CosmosContainerProperties> collections = database.readAllContainers()
-                                                                  .flatMap(p -> Flux.fromIterable(p.getResults()))
                                                                   .collectList()
                                                                   .block();
 

@@ -268,10 +268,10 @@ public class CosmosContainer {
      * @param querySpec the query spec
      * @param options the options
      * @param klass the class type
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public <T> Iterator<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.asyncContainer.queryItems(querySpec, options, klass).byPage());
+    public <T> IterableStream<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
+        return getFeedIterableStream(this.asyncContainer.queryItems(querySpec, options, klass));
     }
 
     /**
