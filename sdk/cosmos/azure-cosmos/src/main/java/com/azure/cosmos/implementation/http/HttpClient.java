@@ -2,13 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Mono;
 import reactor.netty.resources.ConnectionProvider;
-import reactor.util.function.Tuple2;
 
-import java.io.Closeable;
 import java.time.Duration;
 
 /**

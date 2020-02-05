@@ -20,7 +20,6 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -167,9 +166,9 @@ class RxGatewayStoreModel implements RxStoreModel {
                     httpHeaders,
                     byteBufObservable);
 
-            Mono<HttpResponse> httpResponse = this.httpClient.send(httpRequest);
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
 
-            return toDocumentServiceResponse(httpResponse, request);
+            return toDocumentServiceResponse(httpResponseMono, request);
 
         } catch (Exception e) {
             return Flux.error(e);
@@ -244,14 +243,14 @@ class RxGatewayStoreModel implements RxStoreModel {
      * Once the customer code subscribes to the observable returned by the CRUD APIs,
      * the subscription goes up till it reaches the source reactor netty's observable, and at that point the HTTP invocation will be made.
      *
-     * @param httpResponsePairMono
+     * @param httpResponseMono
      * @param request
      * @return {@link Flux}
      */
-    private Flux<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponsePairMono,
-                                                                      RxDocumentServiceRequest request) {
+    private Flux<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
+                                                                            RxDocumentServiceRequest request) {
 
-        return httpResponsePairMono.flatMap(httpResponse ->  {
+        return httpResponseMono.flatMap(httpResponse ->  {
 
             // header key/value pairs
             HttpHeaders httpResponseHeaders = httpResponse.headers();
