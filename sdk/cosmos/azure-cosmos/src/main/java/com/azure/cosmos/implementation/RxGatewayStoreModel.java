@@ -41,7 +41,7 @@ import java.util.concurrent.Callable;
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
 class RxGatewayStoreModel implements RxStoreModel {
-
+    private final static byte[] EMPTY_BYTE_ARRAY = {};
     private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);
     private final Map<String, String> defaultHeaders;
     private final HttpClient httpClient;
@@ -254,40 +254,34 @@ class RxGatewayStoreModel implements RxStoreModel {
             HttpHeaders httpResponseHeaders = httpResponse.headers();
             int httpResponseStatus = httpResponse.statusCode();
 
-            Flux<String> contentObservable;
+            Mono<byte[]> contentObservable;
 
             if (request.getOperationType() == OperationType.Delete) {
                 // for delete we don't expect any body
-                contentObservable = Flux.just(StringUtils.EMPTY);
+                contentObservable = Mono.just(EMPTY_BYTE_ARRAY);
             } else {
                 // transforms the ByteBufFlux to Flux<String>
                 contentObservable = httpResponse
-                                        .bodyAsString()
-                                        .switchIfEmpty(Mono.just(StringUtils.EMPTY))
-                                        .flux();
+                                        .bodyAsByteArray()
+                                        .switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
             }
 
             return contentObservable
-                       .flatMap(content -> {
-                           try {
-                               // If there is any error in the header response this throws exception
-                               // TODO: potential performance improvement: return Observable.error(exception) on failure instead of throwing Exception
-                               validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content, null);
+                .map(content -> {
+                    // If there is any error in the header response this throws exception
+                    // TODO: potential performance improvement: return Observable.error(exception) on failure instead of throwing Exception
+                    validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content);
 
-                               // transforms to Observable<StoreResponse>
-                               StoreResponse rsp = new StoreResponse(httpResponseStatus,
-                                   HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
-                                   content);
-                               if (request.requestContext.cosmosResponseDiagnostics != null) {
-                                   BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, request, rsp, null);
-                                   DirectBridgeInternal.setCosmosResponseDiagnostics(rsp, request.requestContext.cosmosResponseDiagnostics);
-                               }
-                               return Flux.just(rsp);
-                           } catch (Exception e) {
-                               return Flux.error(e);
-                           }
-                       })
-                       .single();
+                    // transforms to Observable<StoreResponse>
+                    StoreResponse rsp = new StoreResponse(httpResponseStatus,
+                        HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
+                        content);
+                    if (request.requestContext.cosmosResponseDiagnostics != null) {
+                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, request, rsp, null);
+                        DirectBridgeInternal.setCosmosResponseDiagnostics(rsp, request.requestContext.cosmosResponseDiagnostics);
+                    }
+                    return rsp;
+                });
 
         }).map(RxDocumentServiceResponse::new)
                    .onErrorResume(throwable -> {
@@ -316,29 +310,16 @@ class RxGatewayStoreModel implements RxStoreModel {
                    }).flux();
     }
 
-    private void validateOrThrow(RxDocumentServiceRequest request, HttpResponseStatus status, HttpHeaders headers, String body,
-                                 InputStream inputStream) throws CosmosClientException {
+    private void validateOrThrow(RxDocumentServiceRequest request, HttpResponseStatus status, HttpHeaders headers, byte[] bodyAsByteArray) throws CosmosClientException {
 
         int statusCode = status.code();
 
         if (statusCode >= HttpConstants.StatusCodes.MINIMUM_STATUSCODE_AS_ERROR_GATEWAY) {
-            if (body == null && inputStream != null) {
-                try {
-                    body = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    logger.error("Failed to get content from the http response", e);
-                    CosmosClientException dce = BridgeInternal.createCosmosClientException(0, e);
-                    BridgeInternal.setRequestHeaders(dce, request.getHeaders());
-                    throw dce;
-                } finally {
-                    IOUtils.closeQuietly(inputStream);
-                }
-            }
-
             String statusCodeString = status.reasonPhrase() != null
                     ? status.reasonPhrase().replace(" ", "")
                     : "";
             CosmosError cosmosError;
+            String body = new String(bodyAsByteArray);
             cosmosError = (StringUtils.isNotEmpty(body)) ? BridgeInternal.createCosmosError(body) : new CosmosError();
             cosmosError = new CosmosError(statusCodeString,
                     String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),

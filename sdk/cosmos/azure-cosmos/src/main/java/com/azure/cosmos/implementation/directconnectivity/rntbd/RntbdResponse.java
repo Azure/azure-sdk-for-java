@@ -292,8 +292,6 @@ public final class RntbdResponse implements ReferenceCounted {
 
     StoreResponse toStoreResponse(final RntbdContext context) {
 
-
-
         checkNotNull(context, "context");
         final int length = content.readableBytes();
 
@@ -304,7 +302,7 @@ public final class RntbdResponse implements ReferenceCounted {
         );
     }
 
-    private static byte[] toByteArray(ByteBuf content) {
+    static byte[] toByteArray(ByteBuf content) {
         if (content == null) {
             return null;
         }

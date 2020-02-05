@@ -85,8 +85,22 @@ public class Resource extends JsonSerializable {
         super(jsonString);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param byteBuffer {@link ByteBuffer} encoding of the json string that represents the resource.
+     */
     protected Resource(ByteBuffer byteBuffer) {
         super(byteBuffer);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param bytes byte[] encoding of the json string that represents the resource.
+     */
+    protected Resource(byte[] bytes) {
+        super(bytes);
     }
 
     /**

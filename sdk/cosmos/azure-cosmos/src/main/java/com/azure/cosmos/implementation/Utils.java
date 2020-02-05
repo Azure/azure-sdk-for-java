@@ -59,8 +59,12 @@ public class Utils {
         Utils.simpleObjectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
     }
 
-    public static byte[] getUTF8Bytes(String str) throws UnsupportedEncodingException {
-        return str.getBytes("UTF-8");
+    public static byte[] getUTF8Bytes(String str) {
+        try {
+            return str.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     public static String encodeBase64String(byte[] binaryData) {
@@ -532,13 +536,36 @@ public class Utils {
         }
     }
 
+    public static <T> T parse(byte[] item, Class<T> itemClassType) {
+        if (Utils.isEmpty(item)) {
+            return null;
+        }
+        try {
+            return getSimpleObjectMapper().readValue(item, itemClassType);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to get POJO.", e);
+        }
+    }
+
     public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
         try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            objectMapper.writeValue(byteArrayOutputStream, object);
-            return ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
+            ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream();
+            objectMapper.writeValue(byteBufferOutputStream, object);
+            return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
             throw new IllegalArgumentException("Failed to serialize json", e);
         }
+    }
+
+    public static boolean isEmpty(byte[] bytes) {
+        return bytes == null || bytes.length == 0;
+    }
+
+    public static String utf8StringFrom(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
+
+        return new String(bytes);
     }
 }

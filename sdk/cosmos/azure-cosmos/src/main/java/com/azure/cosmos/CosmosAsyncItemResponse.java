@@ -9,13 +9,13 @@ import org.apache.commons.lang3.StringUtils;
 
 public class CosmosAsyncItemResponse<T> extends CosmosResponse<CosmosItemProperties> {
     private final Class<T> itemClassType;
-    private final String responseBodyString;
+    private final byte[] responseBodyAsByteArray;
     private T item;
 
     CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> klass) {
         super(response);
         this.itemClassType = klass;
-        this.responseBodyString = response.getBodyAsString();
+        this.responseBodyAsByteArray = response.getBodyAsByteArray();
     }
 
     /**
@@ -35,8 +35,8 @@ public class CosmosAsyncItemResponse<T> extends CosmosResponse<CosmosItemPropert
 
         if (item == null) {
             synchronized (this) {
-                if (item == null && !StringUtils.isEmpty(responseBodyString)) {
-                    item = Utils.parse(responseBodyString, itemClassType);
+                if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
+                    item = Utils.parse(responseBodyAsByteArray, itemClassType);
                 }
             }
         }
@@ -58,10 +58,10 @@ public class CosmosAsyncItemResponse<T> extends CosmosResponse<CosmosItemPropert
         if (super.getProperties() == null) {
             synchronized (this) {
                 if (super.getProperties() == null) {
-                    if (StringUtils.isEmpty(responseBodyString)){
+                    if (Utils.isEmpty(responseBodyAsByteArray)){
                         super.setProperties(null);
                     } else {
-                        CosmosItemProperties props = new CosmosItemProperties(responseBodyString);
+                        CosmosItemProperties props = new CosmosItemProperties(responseBodyAsByteArray);
                         super.setProperties(props);
                     }
                 }

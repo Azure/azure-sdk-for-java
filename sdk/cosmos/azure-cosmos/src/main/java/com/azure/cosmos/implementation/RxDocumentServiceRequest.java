@@ -3,20 +3,18 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
-import sun.jvm.hotspot.utilities.UnsupportedPlatformException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +24,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
@@ -1145,11 +1142,7 @@ public class RxDocumentServiceRequest {
             return null;
         }
 
-        try {
-            return wrapByteBuffer(Utils.getUTF8Bytes(content));
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return wrapByteBuffer(Utils.getUTF8Bytes(content));
     }
 
     private static ByteBuffer wrapByteBuffer(byte[] bytes) {
