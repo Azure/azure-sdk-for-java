@@ -63,8 +63,18 @@ class ApplicationInsightsComponentImpl extends GroupableResourceCoreImpl<Applica
     }
 
     @Override
+    public String connectionString() {
+        return this.inner().connectionString();
+    }
+
+    @Override
     public DateTime creationDate() {
         return this.inner().creationDate();
+    }
+
+    @Override
+    public Boolean disableIpMasking() {
+        return this.inner().disableIpMasking();
     }
 
     @Override
@@ -80,6 +90,11 @@ class ApplicationInsightsComponentImpl extends GroupableResourceCoreImpl<Applica
     @Override
     public String hockeyAppToken() {
         return this.inner().hockeyAppToken();
+    }
+
+    @Override
+    public Boolean immediatePurgeDataOn30Days() {
+        return this.inner().immediatePurgeDataOn30Days();
     }
 
     @Override
@@ -100,6 +115,11 @@ class ApplicationInsightsComponentImpl extends GroupableResourceCoreImpl<Applica
     @Override
     public RequestSource requestSource() {
         return this.inner().requestSource();
+    }
+
+    @Override
+    public Integer retentionInDays() {
+        return this.inner().retentionInDays();
     }
 
     @Override
@@ -125,6 +145,12 @@ class ApplicationInsightsComponentImpl extends GroupableResourceCoreImpl<Applica
     }
 
     @Override
+    public ApplicationInsightsComponentImpl withDisableIpMasking(Boolean disableIpMasking) {
+        this.inner().withDisableIpMasking(disableIpMasking);
+        return this;
+    }
+
+    @Override
     public ApplicationInsightsComponentImpl withFlowType(FlowType flowType) {
         this.inner().withFlowType(flowType);
         return this;
@@ -137,8 +163,20 @@ class ApplicationInsightsComponentImpl extends GroupableResourceCoreImpl<Applica
     }
 
     @Override
+    public ApplicationInsightsComponentImpl withImmediatePurgeDataOn30Days(Boolean immediatePurgeDataOn30Days) {
+        this.inner().withImmediatePurgeDataOn30Days(immediatePurgeDataOn30Days);
+        return this;
+    }
+
+    @Override
     public ApplicationInsightsComponentImpl withRequestSource(RequestSource requestSource) {
         this.inner().withRequestSource(requestSource);
+        return this;
+    }
+
+    @Override
+    public ApplicationInsightsComponentImpl withRetentionInDays(Integer retentionInDays) {
+        this.inner().withRetentionInDays(retentionInDays);
         return this;
     }
 
