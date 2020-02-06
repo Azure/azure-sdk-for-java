@@ -29,7 +29,8 @@ public final class TextAnalyticsError {
 
     /**
      * Creates a {@code TextAnalyticsError} model that describes text analytics error.
-     *  @param code error code
+     *
+     * @param code error code
      * @param message error message
      * @param target error target
      */

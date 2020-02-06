@@ -17,9 +17,10 @@ public final class DocumentSentiment {
     private final List<SentenceSentiment> sentenceSentiments;
 
     /**
-     * Creates a {@code DocumentSentiment} model that describes the sentiment of the document
+     * Creates a {@code DocumentSentiment} model that describes the sentiment of the document.
      *
      * @param sentimentLabel the sentiment label of the document
+     * @param sentimentScorePerLabel the score of sentiment label of the document
      * @param sentenceSentiments a list of sentence sentiments
      */
     public DocumentSentiment(SentimentLabel sentimentLabel, SentimentScorePerLabel sentimentScorePerLabel,
@@ -30,7 +31,7 @@ public final class DocumentSentiment {
     }
 
     /**
-     * Get the sentiment label
+     * Get the sentiment label.
      *
      * @return the SentimentLabel
      */
@@ -39,7 +40,7 @@ public final class DocumentSentiment {
     }
 
     /**
-     * Get the confidence scores of the sentiment label
+     * Get the confidence scores of the sentiment label.
      *
      * @return the SentimentScorePerLabel
      */

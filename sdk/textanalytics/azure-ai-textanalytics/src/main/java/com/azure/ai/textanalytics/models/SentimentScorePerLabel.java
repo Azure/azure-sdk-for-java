@@ -15,7 +15,7 @@ public final class SentimentScorePerLabel {
     private final double positiveScore;
 
     /**
-     * Creates a {@code SentimentScorePerLabel} model that describes the sentiment score of the sentiment label
+     * Creates a {@code SentimentScorePerLabel} model that describes the sentiment score of the sentiment label.
      *
      * @param negativeScore negative score value, range in between 0 and 1.0
      * @param neutralScore neutral score value, range in between 0 and 1.0
@@ -28,7 +28,7 @@ public final class SentimentScorePerLabel {
     }
 
     /**
-     * The negative score value, range in between 0 and 1.0
+     * The negative score value, range in between 0 and 1.0.
      *
      * @return negative score value
      */
@@ -37,7 +37,7 @@ public final class SentimentScorePerLabel {
     }
 
     /**
-     * The neutral score value, range in between 0 and 1.0
+     * The neutral score value, range in between 0 and 1.0.
      *
      * @return neutral score value
      */
@@ -46,7 +46,7 @@ public final class SentimentScorePerLabel {
     }
 
     /**
-     * The positive score value, range in between 0 and 1.0
+     * The positive score value, range in between 0 and 1.0.
      *
      * @return positive score value
      */

@@ -16,7 +16,7 @@ public final class DetectLanguageResult extends DocumentResult {
     private final List<DetectedLanguage> detectedLanguages;
 
     /**
-     * Create a {@code DetectedLanguageResult} model that describes detected languages result
+     * Create a {@code DetectedLanguageResult} model that describes detected languages result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics text document statistics
@@ -32,7 +32,7 @@ public final class DetectLanguageResult extends DocumentResult {
     }
 
     /**
-     * Get the detected primary language
+     * Get the detected primary language.
      *
      * @return the detected language
      */
@@ -42,7 +42,7 @@ public final class DetectLanguageResult extends DocumentResult {
     }
 
     /**
-     * Get the list of detected languages
+     * Get the list of detected languages.
      *
      * @return the list of detected language
      */

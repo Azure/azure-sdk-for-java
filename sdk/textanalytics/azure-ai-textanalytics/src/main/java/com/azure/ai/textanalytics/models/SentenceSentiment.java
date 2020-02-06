@@ -16,9 +16,10 @@ public final class SentenceSentiment {
     private final SentimentLabel sentimentLabel;
 
     /**
-     * Creates a {@code SentenceSentiment} model that describes the sentiment analysis of sentence
+     * Creates a {@code SentenceSentiment} model that describes the sentiment analysis of sentence.
      *
      * @param sentimentLabel sentiment label of the sentence
+     * @param sentimentScorePerLabel the score of sentiment label of the document
      * @param length length of the sentence
      * @param offset the offset from the start of the sentence
      */

@@ -16,8 +16,7 @@ public final class TextAnalyticsApiKeyCredential {
     private volatile String subscriptionKey;
 
     /**
-     * Creates a {@link TextAnalyticsApiKeyCredential} model that describes subscription key for
-     * authentication.
+     * Creates a {@link TextAnalyticsApiKeyCredential} model that describes subscription key for authentication.
      *
      * @param subscriptionKey the subscription key for authentication
      */

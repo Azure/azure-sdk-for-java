@@ -51,7 +51,8 @@ class RecognizeEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<PagedResponse<CategorizedEntity>> recognizeEntitiesWithResponse(String text, String language, Context context) {
+    Mono<PagedResponse<CategorizedEntity>> recognizeEntitiesWithResponse(String text, String language,
+        Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return recognizeBatchEntitiesWithResponse(

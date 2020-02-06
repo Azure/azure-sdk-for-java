@@ -4,9 +4,8 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
  * Sample demonstrates how to analyze the sentiment of an input text.
