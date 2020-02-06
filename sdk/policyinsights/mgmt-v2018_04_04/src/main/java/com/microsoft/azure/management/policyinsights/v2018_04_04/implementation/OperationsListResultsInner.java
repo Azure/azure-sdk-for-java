@@ -28,7 +28,7 @@ public class OperationsListResultsInner {
     private List<OperationInner> value;
 
     /**
-     * Get the odatacount value.
+     * Get oData entity count; represents the number of operations returned.
      *
      * @return the odatacount value
      */
@@ -37,7 +37,7 @@ public class OperationsListResultsInner {
     }
 
     /**
-     * Set the odatacount value.
+     * Set oData entity count; represents the number of operations returned.
      *
      * @param odatacount the odatacount value to set
      * @return the OperationsListResultsInner object itself.
@@ -48,7 +48,7 @@ public class OperationsListResultsInner {
     }
 
     /**
-     * Get the value value.
+     * Get list of available operations.
      *
      * @return the value value
      */
@@ -57,7 +57,7 @@ public class OperationsListResultsInner {
     }
 
     /**
-     * Set the value value.
+     * Set list of available operations.
      *
      * @param value the value value to set
      * @return the OperationsListResultsInner object itself.
