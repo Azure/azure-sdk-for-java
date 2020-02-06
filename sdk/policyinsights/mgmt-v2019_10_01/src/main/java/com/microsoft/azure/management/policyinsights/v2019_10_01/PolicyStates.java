@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.policyinsights.v2019_10_01;
 
+import rx.Completable;
 import rx.Observable;
 
 /**
@@ -91,6 +92,25 @@ public interface PolicyStates {
      * @return the observable for the request
      */
     Observable<SummarizeResults> summarizeForResourceAsync(String resourceId);
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the subscription.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable triggerSubscriptionEvaluationAsync(String subscriptionId);
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the resource group.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable triggerResourceGroupEvaluationAsync(String subscriptionId, String resourceGroupName);
 
     /**
      * Queries policy states for the subscription level policy set definition.
