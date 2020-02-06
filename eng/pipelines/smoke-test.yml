@@ -3,7 +3,7 @@ jobs:
     variables:
       - template: ./templates/variables/globals.yml
       - name: PomFile
-        value: eng/smoke-tests/pom.xml
+        value: common/smoke-tests/pom.xml
 
     timeoutInMinutes: 5
 
