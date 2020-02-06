@@ -101,8 +101,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = detectLanguageResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (DetectLanguageResult detectLanguageResult : detectLanguageResults) {
@@ -128,8 +127,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = detectLanguageResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (DetectLanguageResult detectLanguageResult : detectLanguageResults) {
@@ -157,8 +155,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = detectLanguageResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (DetectLanguageResult detectLanguageResult : detectLanguageResults) {
@@ -187,8 +184,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = detectLanguageResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (DetectLanguageResult detectLanguageResult : detectLanguageResults) {
@@ -245,8 +241,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
@@ -272,8 +267,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
@@ -299,8 +293,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
@@ -328,8 +321,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
@@ -378,8 +370,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizePiiEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
@@ -403,8 +394,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizePiiEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
@@ -430,8 +420,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizePiiEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
@@ -478,8 +467,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeLinkedEntitiesSingleText() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String
-        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(
-            "Old Faithful is a geyser at Yellowstone Park.")) {
+        final String textInput = "Old Faithful is a geyser at Yellowstone Park.";
+        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(textInput)) {
             System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
         }
@@ -491,8 +480,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeLinkedEntitiesSingleTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String-String-Context
-        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(
-            "Old Faithful is a geyser at Yellowstone Park.", "en", Context.NONE)) {
+        final String textInput = "Old Faithful is a geyser at Yellowstone Park.";
+        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(textInput, "en", Context.NONE)) {
             System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
         }
@@ -513,8 +502,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
@@ -540,8 +528,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
@@ -568,8 +555,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
@@ -598,8 +584,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
@@ -617,8 +602,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrasesSingleText() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
-        for (String keyPhrase
-            : textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.")) {
+        final String textInput = "My cat might need to see a veterinarian.";
+        for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(textInput)) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrase);
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
@@ -629,8 +614,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrasesSingleTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context
-        for (String keyPhrases : textAnalyticsClient.extractKeyPhrases(
-            "My cat might need to see a veterinarian.", "en", Context.NONE)) {
+        final String textInput = "My cat might need to see a veterinarian.";
+        for (String keyPhrases : textAnalyticsClient.extractKeyPhrases(textInput, "en", Context.NONE)) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrases);
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context
@@ -652,8 +637,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Extracted key phrase for each of document from a batch of documents
@@ -683,8 +667,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Extracted key phrase for each of document from a batch of documents
@@ -714,8 +697,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Extracted key phrase for each of document from a batch of documents
@@ -747,8 +729,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Extracted key phrase for each of document from a batch of documents
@@ -771,8 +752,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         final DocumentSentiment documentSentiment =
             textAnalyticsClient.analyzeSentiment("The hotel was dark and unclean.");
 
-        System.out.printf(
-            "Recognized sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
+        System.out.printf("Recognized sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
             documentSentiment.getSentimentLabel(),
             documentSentiment.getSentimentScorePerLabel().getPositiveScore(),
             documentSentiment.getSentimentScorePerLabel().getNeutralScore(),
@@ -797,8 +777,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         final DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentimentWithResponse(
             "The hotel was dark and unclean.", "en", Context.NONE).getValue();
 
-        System.out.printf(
-            "Recognized sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
+        System.out.printf("Recognized sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
             documentSentiment.getSentimentLabel(),
             documentSentiment.getSentimentScorePerLabel().getPositiveScore(),
             documentSentiment.getSentimentScorePerLabel().getNeutralScore(),
@@ -831,8 +810,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = analyzedBatchResult.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Analyzed sentiment for each of document from a batch of documents
@@ -874,8 +852,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = analyzedBatchResult.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Analyzed sentiment for each of document from a batch of documents
@@ -917,8 +894,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = analyzedBatchResult.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Analyzed sentiment for each of document from a batch of documents
@@ -962,8 +938,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = analyzedBatchResult.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Analyzed sentiment for each of document from a batch of documents

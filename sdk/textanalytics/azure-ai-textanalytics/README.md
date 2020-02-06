@@ -125,7 +125,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 #### Rotate existing subscription key
 The Azure Text Analytics client library provide a way to rotate the existing subscription key.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L175-L181 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L154-L160 -->
 ```java
 TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{expired_subscription_key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -215,80 +215,59 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 ### Detect language
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L75-L82 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L75-L78 -->
 ```java
 String inputText = "Bonjour tout le monde";
-
-for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inputText).getDetectedLanguages()) {
-    System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
-        detectedLanguage.getName(),
-        detectedLanguage.getIso6391Name(),
-        detectedLanguage.getScore());
-}
+DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
+System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
+    detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
 ```
 
 ### Recognize entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L89-L98 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L85-L89 -->
 ```java
 String text = "Satya Nadella is the CEO of Microsoft";
-
-for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text).getEntities()) {
-    System.out.printf(
-        "Recognized Categorized Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
-        entity.getText(),
-        entity.getCategory(),
-        entity.getSubCategory(),
-        entity.getScore());
+for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text)) {
+    System.out.printf("Recognized Categorized Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
+        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
 }
 ```
 
 ### Recognize PII (Personally Identifiable Information) entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L105-L114 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L96-L100 -->
 ```java
 String text = "My SSN is 555-55-5555";
-
-for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text).getEntities()) {
-    System.out.printf(
-        "Recognized PII Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
-        entity.getText(),
-        entity.getCategory(),
-        entity.getSubCategory(),
-        entity.getScore());
+for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
+    System.out.printf("Recognized PII Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
+        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
 }
 ```
 
 ### Recognize linked entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L121-L128 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L107-L111 -->
 
 ```java
 String text = "Old Faithful is a geyser at Yellowstone Park.";
-
-for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text).getLinkedEntities()) {
+for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
     System.out.printf("Recognized Linked Entity: %s, Url: %s, Data Source: %s.%n",
-        linkedEntity.getName(),
-        linkedEntity.getUrl(),
-        linkedEntity.getDataSource());
+        linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
 }
 ```
 ### Extract key phrases
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L135-L139 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L118-L121 -->
 ```java
 String text = "My cat might need to see a veterinarian.";
-
-for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text).getKeyPhrases()) {
+for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
     System.out.printf("Recognized phrases: %s.%n", keyPhrase);
 }
 ```
 
 ### Analyze sentiment
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L146-L152 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L128-L131 -->
 ```java
 String text = "The hotel was dark and unclean.";
-
-for (TextSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).getSentenceSentiments()) {
-    System.out.printf(
-        "Analyzed Sentence Sentiment class: %s.%n",
-        textSentiment.getTextSentimentClass());
+for (SentenceSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).getSentenceSentiments()) {
+    System.out.printf("Analyzed Sentence Sentiment class: %s.%n", textSentiment.getSentimentLabel());
 }
 ```
 
@@ -298,7 +277,7 @@ Text Analytics clients raise exceptions. For example, if you try to detect the l
 document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L159-L168 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L138-L147 -->
 ```java
 List<DetectLanguageInput> inputs = Arrays.asList(
     new DetectLanguageInput("1", "This is written in English.", "us"),

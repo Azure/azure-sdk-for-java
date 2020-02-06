@@ -73,13 +73,9 @@ public class ReadmeSamples {
      */
     public void detectLanguages() {
         String inputText = "Bonjour tout le monde";
-
         DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
         System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
-            detectedLanguage.getName(),
-            detectedLanguage.getIso6391Name(),
-            detectedLanguage.getScore());
-
+            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
     }
 
     /**
@@ -87,14 +83,9 @@ public class ReadmeSamples {
      */
     public void recognizeCategorizedEntity() {
         String text = "Satya Nadella is the CEO of Microsoft";
-
         for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text)) {
-            System.out.printf(
-                "Recognized Categorized Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
-                entity.getText(),
-                entity.getCategory(),
-                entity.getSubCategory(),
-                entity.getScore());
+            System.out.printf("Recognized Categorized Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
         }
     }
 
@@ -103,14 +94,9 @@ public class ReadmeSamples {
      */
     public void recognizePiiEntity() {
         String text = "My SSN is 555-55-5555";
-
         for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
-            System.out.printf(
-                "Recognized PII Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
-                entity.getText(),
-                entity.getCategory(),
-                entity.getSubCategory(),
-                entity.getScore());
+            System.out.printf("Recognized PII Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
         }
     }
 
@@ -119,12 +105,9 @@ public class ReadmeSamples {
      */
     public void recognizeLinkedEntity() {
         String text = "Old Faithful is a geyser at Yellowstone Park.";
-
         for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
             System.out.printf("Recognized Linked Entity: %s, Url: %s, Data Source: %s.%n",
-                linkedEntity.getName(),
-                linkedEntity.getUrl(),
-                linkedEntity.getDataSource());
+                linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
         }
     }
 
@@ -133,7 +116,6 @@ public class ReadmeSamples {
      */
     public void extractKeyPhrases() {
         String text = "My cat might need to see a veterinarian.";
-
         for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrase);
         }
@@ -144,11 +126,8 @@ public class ReadmeSamples {
      */
     public void analyzeSentiment() {
         String text = "The hotel was dark and unclean.";
-
         for (SentenceSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).getSentenceSentiments()) {
-            System.out.printf(
-                "Analyzed Sentence Sentiment class: %s.%n",
-                textSentiment.getSentimentLabel());
+            System.out.printf("Analyzed Sentence Sentiment class: %s.%n", textSentiment.getSentimentLabel());
         }
     }
 
