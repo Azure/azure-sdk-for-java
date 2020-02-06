@@ -45,7 +45,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             .build();
 
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .pipeline(pipeline)
             .buildClient();
@@ -58,7 +58,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void createTextAnalyticsClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.instantiation
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.instantiation

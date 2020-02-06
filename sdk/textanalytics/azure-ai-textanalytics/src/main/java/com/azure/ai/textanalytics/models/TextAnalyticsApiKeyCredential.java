@@ -3,42 +3,49 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.Objects;
 
 /**
- * Subscription key credential that shared across cognitive services, or restrict to single service.
+ * API key credential that shared across cognitive services, or restrict to single service.
  *
- * <p>Be able to rotate an existing subscription key</p>
+ * <p>Be able to rotate an existing API key</p>
  * {@codesnippet com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential}
  *
  */
 public final class TextAnalyticsApiKeyCredential {
-    private volatile String subscriptionKey;
+    private final ClientLogger logger = new ClientLogger(TextAnalyticsApiKeyCredential.class);
+    private volatile String apiKey;
 
     /**
-     * Creates a {@link TextAnalyticsApiKeyCredential} model that describes subscription key for authentication.
+     * Creates a {@link TextAnalyticsApiKeyCredential} model that describes API key for authentication.
      *
-     * @param subscriptionKey the subscription key for authentication
+     * @param apiKey the API key for authentication
      */
-    public TextAnalyticsApiKeyCredential(String subscriptionKey) {
-        this.subscriptionKey = Objects.requireNonNull(subscriptionKey, "`subscriptionKey` cannot be null.");
+    public TextAnalyticsApiKeyCredential(String apiKey) {
+        Objects.requireNonNull(apiKey, "`apiKey` cannot be null.");
+        if (apiKey.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'apiKey' cannot be empty."));
+        }
+        this.apiKey = apiKey;
     }
 
     /**
-     * Get the subscription key.
+     * Get the API key.
      *
-     * @return the subscription key
+     * @return the API key
      */
-    public String getSubscriptionKey() {
-        return this.subscriptionKey;
+    public String getApiKey() {
+        return this.apiKey;
     }
 
     /**
-     * Set the subscription key.
+     * Set the API key.
      *
-     * @param subscriptionKey the subscription key for authentication
+     * @param apiKey the API key for authentication
      */
-    public void updateCredential(String subscriptionKey) {
-        this.subscriptionKey = Objects.requireNonNull(subscriptionKey, "`subscriptionKey` cannot be null.");
+    public void updateCredential(String apiKey) {
+        this.apiKey = Objects.requireNonNull(apiKey, "`apiKey` cannot be null.");
     }
 }

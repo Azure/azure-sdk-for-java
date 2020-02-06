@@ -33,8 +33,8 @@ The following sections provide several code snippets covering some of the most c
 - [Extract key phrases in text with asynchronous client][async_sample_key_phrases]
 - [Analyze sentiment in text][sample_sentiment]
 - [Analyze sentiment in text with asynchronous client][async_sample_sentiment]
-- [Rotate subscription key][sample_rotate_key]
-- [Rotate subscription key with asynchronous client][async_sample_rotate_key]
+- [Rotate API key][sample_rotate_key]
+- [Rotate API key with asynchronous client][async_sample_rotate_key]
 
 Batch Samples:
 - [Detect language for a batch of documents][sample_detect_language_batch]
@@ -79,7 +79,7 @@ Guidelines](../../CONTRIBUTING.md) for more information.
 [async_sample_key_phrases_batch]: java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocumentsAsync.java
 [async_sample_pii_entities]: java/com/azure/ai/textanalytics/RecognizePiiAsync.java
 [async_sample_pii_entities_batch]: java/com/azure/ai/textanalytics/batch/RecognizePiiBatchDocumentsAsync.java
-[async_sample_rotate_key]: java/com/azure/ai/textanalytics/RotateSubscriptionKeyAsync.java
+[async_sample_rotate_key]: java/com/azure/ai/textanalytics/RotateApiKeyAsync.java
 [async_sample_sentiment]: java/com/azure/ai/textanalytics/AnalyzeSentimentAsync.java
 [async_sample_sentiment_batch]: java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocumentsAsync.java
 
@@ -93,7 +93,7 @@ Guidelines](../../CONTRIBUTING.md) for more information.
 [sample_key_phrases_batch]: java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
 [sample_pii_entities]: java/com/azure/ai/textanalytics/RecognizePii.java
 [sample_pii_entities_batch]: java/com/azure/ai/textanalytics/batch/RecognizePiiBatchDocuments.java
-[sample_rotate_key]: java/com/azure/ai/textanalytics/RotateSubscriptionKey.java
+[sample_rotate_key]: java/com/azure/ai/textanalytics/RotateApiKey.java
 [sample_sentiment]: java/com/azure/ai/textanalytics/AnalyzeSentiment.java
 [sample_sentiment_batch]: java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
 
