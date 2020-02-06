@@ -588,7 +588,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosAsyncDatabase database = client.getDatabase(databaseId).read().block().getDatabase();
         List<CosmosUserProperties> res = database
                 .queryUsers(String.format("SELECT * FROM root r where r.id = '%s'", userId), null)
-                .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .collectList().block();
         if (!res.isEmpty()) {
             deleteUser(database, userId);

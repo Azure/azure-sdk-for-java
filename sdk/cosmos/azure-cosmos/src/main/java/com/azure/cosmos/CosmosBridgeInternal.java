@@ -20,6 +20,10 @@ public class CosmosBridgeInternal {
         return client.getDocClientWrapper();
     }
 
+    public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncDatabase cosmosAsyncDatabase) {
+        return cosmosAsyncDatabase.getDocClientWrapper();
+    }
+
     public static CosmosAsyncDatabase getCosmosDatabaseWithNewClient(CosmosAsyncDatabase cosmosDatabase,
                                                                      CosmosAsyncClient client) {
         return new CosmosAsyncDatabase(cosmosDatabase.getId(), client);

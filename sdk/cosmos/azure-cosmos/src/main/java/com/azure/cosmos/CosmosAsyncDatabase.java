@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.Resource.validateResource;
@@ -111,7 +110,7 @@ public class CosmosAsyncDatabase {
      * created container. In case of failure the {@link Mono} will error.
      *
      * @param containerProperties the container properties.
-     * @return a {@link Flux} containing the single cosmos container response with
+     * @return a {@link Mono} containing the single cosmos container response with
      * the created container or an error.
      * @throws IllegalArgumentException containerProperties cannot be null
      */
@@ -128,7 +127,7 @@ public class CosmosAsyncDatabase {
      *
      * @param containerProperties the container properties.
      * @param throughput the throughput for the container
-     * @return a {@link Flux} containing the single cosmos container response with
+     * @return a {@link Mono} containing the single cosmos container response with
      * the created container or an error.
      * @throws IllegalArgumentException thown if containerProerties are null
      */
@@ -152,7 +151,7 @@ public class CosmosAsyncDatabase {
      *
      * @param containerProperties the containerProperties.
      * @param options the cosmos container request options
-     * @return a {@link Flux} containing the cosmos container response with the
+     * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      * @throws IllegalArgumentException containerProperties can not be null
      */
@@ -180,7 +179,7 @@ public class CosmosAsyncDatabase {
      * @param containerProperties the containerProperties.
      * @param throughput the throughput for the container
      * @param options the cosmos container request options
-     * @return a {@link Flux} containing the cosmos container response with the
+     * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      * @throws IllegalArgumentException containerProperties cannot be null
      */
@@ -203,7 +202,7 @@ public class CosmosAsyncDatabase {
      *
      * @param id the cosmos container id
      * @param partitionKeyPath the partition key path
-     * @return a {@link Flux} containing the cosmos container response with the
+     * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
     public Mono<CosmosAsyncContainerResponse> createContainer(String id, String partitionKeyPath) {
@@ -220,7 +219,7 @@ public class CosmosAsyncDatabase {
      * @param id the cosmos container id
      * @param partitionKeyPath the partition key path
      * @param throughput the throughput for the container
-     * @return a {@link Flux} containing the cosmos container response with the
+     * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
     public Mono<CosmosAsyncContainerResponse> createContainer(String id, String partitionKeyPath, int throughput) {
@@ -277,7 +276,7 @@ public class CosmosAsyncDatabase {
      *
      * @param id the cosmos container id
      * @param partitionKeyPath the partition key path
-     * @return a {@link Flux} containing the cosmos container response with the
+     * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
     public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath) {
@@ -297,7 +296,7 @@ public class CosmosAsyncDatabase {
      * @param id the cosmos container id
      * @param partitionKeyPath the partition key path
      * @param throughput the throughput for the container
-     * @return a {@link Flux} containing the cosmos container response with the
+     * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
     public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath,
@@ -474,96 +473,102 @@ public class CosmosAsyncDatabase {
     /**
      * Reads all cosmos users in a database.
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the read cosmos users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * read cosmos users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> readAllUsers() {
+    public CosmosContinuablePagedFlux<CosmosUserProperties> readAllUsers() {
         return readAllUsers(new FeedOptions());
     }
 
     /**
      * Reads all cosmos users in a database.
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the read cosmos users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * read cosmos users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> readAllUsers(FeedOptions options) {
-        return getDocClientWrapper().readUsers(getLink(), options).map(response -> BridgeInternal.createFeedResponse(
-            CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
+    public CosmosContinuablePagedFlux<CosmosUserProperties> readAllUsers(FeedOptions options) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return getDocClientWrapper().readUsers(getLink(), options).map(response -> BridgeInternal.createFeedResponse(
+                CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
+        });
     }
 
     /**
      * Query for cosmos users in a database.
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the obtained users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param query query as string
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * obtained users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> queryUsers(String query) {
-        return queryUsers(query, null);
+    public CosmosContinuablePagedFlux<CosmosUserProperties> queryUsers(String query) {
+        return queryUsers(query, new FeedOptions());
     }
 
     /**
      * Query for cosmos users in a database.
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the obtained users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param query query as string
      * @param options the feed options
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * obtained users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> queryUsers(String query, FeedOptions options) {
+    public CosmosContinuablePagedFlux<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
         return queryUsers(new SqlQuerySpec(query), options);
     }
 
     /**
      * Query for cosmos users in a database.
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the obtained users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * obtained users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec) {
-        return queryUsers(querySpec, null);
+    public CosmosContinuablePagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec) {
+        return queryUsers(querySpec, new FeedOptions());
     }
 
     /**
      * Query for cosmos users in a database.
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the obtained users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * obtained users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
-        return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
-                   .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                       CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
-                       response.queryMetrics()));
+    public CosmosContinuablePagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
+                                        .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
+                                            CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
+                                            response.queryMetrics()));
+        });
     }
 
     public CosmosAsyncUser getUser(String id) {

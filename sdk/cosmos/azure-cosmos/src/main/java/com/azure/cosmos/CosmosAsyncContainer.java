@@ -358,24 +358,6 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Query for documents in a items in a container
-     * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
-     * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
-     *
-     * @param changeFeedOptions the feed options.
-     * @return a {@link Flux} containing one or several feed response pages of the
-     * obtained items or an error.
-     */
-    public Flux<FeedResponse<CosmosItemProperties>> queryChangeFeedItems(ChangeFeedOptions changeFeedOptions) {
-        return getDatabase().getDocClientWrapper().queryDocumentChangeFeed(getLink(), changeFeedOptions)
-                   .map(response -> new FeedResponse<CosmosItemProperties>(
-                       CosmosItemProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
-                       false));
-    }
-
-    /**
      * Reads an item.
      * <p>
      * After subscription the operation will be performed.

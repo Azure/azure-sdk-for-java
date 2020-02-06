@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosDatabaseRequestOptions;
@@ -28,6 +30,8 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 
@@ -79,8 +83,18 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
     @Override
     public Flux<FeedResponse<CosmosItemProperties>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink, ChangeFeedOptions feedOptions) {
-        return collectionLink.queryChangeFeedItems(feedOptions)
-            .publishOn(this.rxScheduler);
+        AsyncDocumentClient clientWrapper =
+            CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
+        Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux =
+            clientWrapper.queryDocumentChangeFeed(BridgeInternal.extractContainerSelfLink(collectionLink), feedOptions)
+                                                                    .map(response -> {
+                                                                        List<CosmosItemProperties> results = response.getResults()
+                                                                                                                     .stream()
+                                                                                                                     .map(document -> new CosmosItemProperties(document.toJson()))
+                                                                                                                     .collect(Collectors.toList());
+                                                                        return BridgeInternal.toFeedResponsePage(results, response.getResponseHeaders(), false);
+                                                                    });
+        return feedResponseFlux.publishOn(this.rxScheduler);
     }
 
     @Override

@@ -5,10 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Iterator;
 
 /**
  * Perform read and delete databases, update database throughput, and perform operations on child resources in
@@ -359,64 +356,64 @@ public class CosmosDatabase {
     }
 
     /**
-     * Read all users iterator.
+     * Read all users {@link IterableStream}.
      *
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> readAllUsers() {
-        return getFeedIterator(databaseWrapper.readAllUsers());
+    public IterableStream<FeedResponse<CosmosUserProperties>> readAllUsers() {
+        return getFeedIterableStream(databaseWrapper.readAllUsers(), 1);
     }
 
     /**
-     * Read all users iterator.
+     * Read all users {@link IterableStream}.
      *
      * @param options the options
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> readAllUsers(FeedOptions options) {
-        return getFeedIterator(databaseWrapper.readAllUsers(options));
+    public IterableStream<FeedResponse<CosmosUserProperties>> readAllUsers(FeedOptions options) {
+        return getFeedIterableStream(databaseWrapper.readAllUsers(options), 1);
     }
 
     /**
-     * Query users iterator.
+     * Query users {@link IterableStream}.
      *
      * @param query the query
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(String query) {
-        return getFeedIterator(databaseWrapper.queryUsers(query));
+    public IterableStream<FeedResponse<CosmosUserProperties>> queryUsers(String query) {
+        return getFeedIterableStream(databaseWrapper.queryUsers(query), 1);
     }
 
     /**
-     * Query users iterator.
+     * Query users {@link IterableStream}.
      *
      * @param query the query
      * @param options the options
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(String query, FeedOptions options) {
-        return getFeedIterator(databaseWrapper.queryUsers(query, options));
+    public IterableStream<FeedResponse<CosmosUserProperties>> queryUsers(String query, FeedOptions options) {
+        return getFeedIterableStream(databaseWrapper.queryUsers(query, options), 1);
     }
 
     /**
-     * Query users iterator.
+     * Query users {@link IterableStream}.
      *
      * @param querySpec the query spec
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec) {
-        return getFeedIterator(databaseWrapper.queryUsers(querySpec));
+    public IterableStream<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec) {
+        return getFeedIterableStream(databaseWrapper.queryUsers(querySpec));
     }
 
     /**
-     * Query users iterator.
+     * Query users {@link IterableStream}.
      *
      * @param querySpec the query spec
      * @param options the options
-     * @return the iterator
+     * @return the {@link IterableStream}
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
-        return getFeedIterator(databaseWrapper.queryUsers(querySpec, options));
+    public IterableStream<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+        return getFeedIterableStream(databaseWrapper.queryUsers(querySpec, options), 1);
     }
 
     /**
@@ -479,10 +476,6 @@ public class CosmosDatabase {
                 throw Exceptions.propagate(ex);
             }
         }
-    }
-
-    private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
-        return itemFlux.toIterable(1).iterator();
     }
 
     private <T> IterableStream<FeedResponse<T>> getFeedIterableStream(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux, int batchSize) {
