@@ -143,6 +143,7 @@ class APISpec extends Specification {
         Hooks.onOperatorDebug()
         System.setProperty("org.slf4j.simpleLogger.log.reactor.core", "trace")
         System.setProperty("org.slf4j.simpleLogger.log.com.azure.storage", "trace")
+        System.setProperty("AZURE_LOG_LEVEL", "1")
         testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)
