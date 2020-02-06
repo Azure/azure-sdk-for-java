@@ -16,6 +16,28 @@ jobs:
 
     steps:
       - task: Maven@3
+        displayName: Use the latest package version from the dev feed
+        inputs:
+          mavenPomFile: $(PomFile)
+          goals: 'versions:use-latest-versions'
+          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - task: Maven@3
+        displayName: Dependency tree
+        inputs:
+          mavenPomFile: $(PomFile)
+          goals: 'dependency:tree'
+          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - task: Maven@3
         displayName: 'Build and Package'
         inputs:
           mavenPomFile: $(PomFile)
