@@ -337,7 +337,7 @@ def main():
     optional.add_argument('--prep-source-testing', '--pst', action='store_true', help='prep the version file for source testing')
     optional.add_argument('--increment-version', '--iv', action='store_true', help='increment the version for a given group/artifact')
     optional.add_argument('--verify-version', '--vv', action='store_true', help='verify the version for a given group/artifact')
-    optional.add_argument('--set-dev-zero-version', '-z', action='store_true', help='Set a zero dev build version for packages that do not already have dev versions set (should be run after setting dev versions for other packages)')
+    optional.add_argument('--set-dev-zero-version', '--sdzv', action='store_true', help='Set a zero dev build version for packages that do not already have dev versions set (should be run after setting dev versions for other packages)')
     optional.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='show this help message and exit')
 
     args = parser.parse_args()
