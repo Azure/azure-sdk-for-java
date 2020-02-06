@@ -139,8 +139,6 @@
                 --add-opens com.azure.search/com.azure.search.models=ALL-UNNAMED
                 --add-opens com.azure.search/com.azure.search.implementation=ALL-UNNAMED
                 --add-opens com.azure.search/com.azure.search.implementation.models=ALL-UNNAMED
-                --add-opens com.azure.search/com.azure.search.test.environment.models=com.fasterxml.jackson.databind
-                --add-opens com.azure.search/com.azure.search.test.environment.models=ALL-UNNAMED
                 --add-reads com.azure.core=ALL-UNNAMED
                 --add-reads com.azure.core.test=ALL-UNNAMED
                 --add-reads com.azure.core.http.netty=ALL-UNNAMED
