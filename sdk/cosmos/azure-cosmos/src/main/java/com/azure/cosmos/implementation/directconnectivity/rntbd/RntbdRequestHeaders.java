@@ -614,7 +614,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
         if (StringUtils.isNotEmpty(value)) {
 
-            final ConsistencyLevel level = EnumUtils.getEnumIgnoreCase(ConsistencyLevel.class, value);
+            final ConsistencyLevel level = ConsistencyLevel.fromServiceSerializedFormat(value);
 
             if (level == null) {
                 final String reason = String.format(Locale.ROOT, RMResources.InvalidRequestHeaderValue,
@@ -1004,6 +1004,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
             // not "apps/appName/partitions/partitionKey/replicas/replicaId/dbs/dbName"
 
             final String address = request.getResourceAddress();
+            // TODO: this is a reqex. UrlTrim=/+, requires some work to remove the regex portion
             final String[] fragments = address.split(UrlTrim);
             int count = fragments.length;
             int index = 0;

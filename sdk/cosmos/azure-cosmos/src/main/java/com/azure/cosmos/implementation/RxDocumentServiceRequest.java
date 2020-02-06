@@ -19,6 +19,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
@@ -39,7 +40,7 @@ public class RxDocumentServiceRequest {
     private final String resourceAddress;
     public volatile boolean forceNameCacheRefresh;
     private volatile URI endpointOverride = null;
-    private final String activityId;
+    private final UUID activityId;
     private volatile String resourceFullName;
 
     private volatile String originalSessionToken;
@@ -50,7 +51,7 @@ public class RxDocumentServiceRequest {
 
     private Flux<byte[]> contentObservable;
     private byte[] byteContent;
-    
+
     // NOTE: TODO: these fields are copied from .Net SDK
     // some of these fields are missing from the main java sdk service request
     // so it means most likely the corresponding features are also missing from the main sdk
@@ -103,7 +104,7 @@ public class RxDocumentServiceRequest {
         this.resourceType = resourceType;
         this.byteContent = byteContent;
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = Utils.randomUUID().toString();
+        this.activityId = Utils.randomUUID();
         this.isFeed = false;
         this.isNameBased = isNameBased;
         if (!isNameBased) {
@@ -118,7 +119,7 @@ public class RxDocumentServiceRequest {
 
     /**
      * Creates a AbstractDocumentServiceRequest
-     * 
+     *
      * @param operationType     the operation type.
      * @param resourceIdOrFullName        the request id or full name.
      * @param resourceType      the resource type.
@@ -135,7 +136,7 @@ public class RxDocumentServiceRequest {
         this.resourceType = resourceType;
         this.requestContext.sessionToken = null;
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = Utils.randomUUID().toString();
+        this.activityId = Utils.randomUUID();
         this.isFeed = false;
         PathInfo pathInfo = new PathInfo(false, null, null, false);
         if (StringUtils.isNotEmpty(path)) {
@@ -353,7 +354,7 @@ public class RxDocumentServiceRequest {
             Map<String, String> headers) {
         return create(operation, resourceType, relativePath, resource, headers, (RequestOptions)null);
     }
-    
+
     /**
      * Creates a DocumentServiceRequest with a resource.
      *
@@ -731,7 +732,7 @@ public class RxDocumentServiceRequest {
         // TODO(pushi): Improve the code and remove the hack.
         path = path + '=';
 
-        // The path will be in the form of 
+        // The path will be in the form of
         // /[resourceType]/[resourceId]/ or
         // /[resourceType]/[resourceId]/[resourceType]/
         // The result of split will be in the form of
@@ -854,7 +855,7 @@ public class RxDocumentServiceRequest {
         this.endpointOverride = endpointOverride;
     }
 
-    public String getActivityId() {
+    public UUID getActivityId() {
         return this.activityId;
     }
 
