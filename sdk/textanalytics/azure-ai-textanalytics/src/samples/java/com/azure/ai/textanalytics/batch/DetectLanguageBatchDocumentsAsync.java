@@ -43,7 +43,7 @@ public class DetectLanguageBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Detecting batch languages
-        client.detectBatchLanguagesWithResponse(inputs, requestOptions).subscribe(
+        client.detectBatchLanguageWithResponse(inputs, requestOptions).subscribe(
             result -> {
                 final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = result.getValue();
                 System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
@@ -52,7 +52,7 @@ public class DetectLanguageBatchDocumentsAsync {
                 final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
                 System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
+                    batchStatistics.getInvalidDocumentCount(),
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 

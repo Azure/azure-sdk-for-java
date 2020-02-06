@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.eventgrid.v2020_04_01_preview;
 
 import java.util.Map;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -20,6 +21,20 @@ public class TopicUpdateParameters {
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    /**
+     * This determines if IP filtering rules ought to be evaluated or not. By
+     * default it will not evaluate and will allow traffic from all IPs.
+     */
+    @JsonProperty(value = "allowTrafficFromAllIPs")
+    private Boolean allowTrafficFromAllIPs;
+
+    /**
+     * This determines the IP filtering rules that ought be applied when events
+     * are received on this domain.
+     */
+    @JsonProperty(value = "inboundIpRules")
+    private List<InboundIpRule> inboundIpRules;
 
     /**
      * Get tags of the resource.
@@ -38,6 +53,46 @@ public class TopicUpdateParameters {
      */
     public TopicUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get this determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs.
+     *
+     * @return the allowTrafficFromAllIPs value
+     */
+    public Boolean allowTrafficFromAllIPs() {
+        return this.allowTrafficFromAllIPs;
+    }
+
+    /**
+     * Set this determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs.
+     *
+     * @param allowTrafficFromAllIPs the allowTrafficFromAllIPs value to set
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withAllowTrafficFromAllIPs(Boolean allowTrafficFromAllIPs) {
+        this.allowTrafficFromAllIPs = allowTrafficFromAllIPs;
+        return this;
+    }
+
+    /**
+     * Get this determines the IP filtering rules that ought be applied when events are received on this domain.
+     *
+     * @return the inboundIpRules value
+     */
+    public List<InboundIpRule> inboundIpRules() {
+        return this.inboundIpRules;
+    }
+
+    /**
+     * Set this determines the IP filtering rules that ought be applied when events are received on this domain.
+     *
+     * @param inboundIpRules the inboundIpRules value to set
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withInboundIpRules(List<InboundIpRule> inboundIpRules) {
+        this.inboundIpRules = inboundIpRules;
         return this;
     }
 
