@@ -5,10 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Iterator;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -237,7 +234,7 @@ public class CosmosContainer {
     }
 
     /**
-     * Read all items iterator.
+     * Read all items {@link IterableStream}.
      *
      * @param <T> the type parameter
      * @param options the options
@@ -249,7 +246,7 @@ public class CosmosContainer {
     }
 
     /**
-     * Query items iterator.
+     * Query items {@link IterableStream}.
      *
      * @param <T> the type parameter
      * @param query the query
@@ -262,7 +259,7 @@ public class CosmosContainer {
     }
 
     /**
-     * Query items iterator.
+     * Query items {@link IterableStream}.
      *
      * @param <T> the type parameter
      * @param querySpec the query spec
@@ -272,16 +269,6 @@ public class CosmosContainer {
      */
     public <T> IterableStream<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
         return getFeedIterableStream(this.asyncContainer.queryItems(querySpec, options, klass));
-    }
-
-    /**
-     * Query change feed items iterator.
-     *
-     * @param changeFeedOptions the change feed options
-     * @return the iterator
-     */
-    public Iterator<FeedResponse<CosmosItemProperties>> queryChangeFeedItems(ChangeFeedOptions changeFeedOptions) {
-        return getFeedIterator(this.asyncContainer.queryChangeFeedItems(changeFeedOptions));
     }
 
     /**
@@ -363,10 +350,6 @@ public class CosmosContainer {
      */
     private <T> CosmosItemResponse<T> convertResponse(CosmosAsyncItemResponse response) {
         return new CosmosItemResponse<T>(response);
-    }
-
-    private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
-        return itemFlux.toIterable(1).iterator();
     }
 
     private <T> IterableStream<FeedResponse<T>> getFeedIterableStream(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {

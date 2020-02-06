@@ -71,6 +71,10 @@ public class BridgeInternal {
         return new FeedResponse<T>(response.getQueryResponse(cls), response.getResponseHeaders());
     }
 
+    public static <T extends Resource> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
+        return new FeedResponse<>(results, headers, noChanges);
+    }
+
     public static <T extends Resource> FeedResponse<T> toChaneFeedResponsePage(RxDocumentServiceResponse response,
                                                                                Class<T> cls) {
         return new FeedResponse<T>(noChanges(response) ? Collections.emptyList() : response.getQueryResponse(cls),
