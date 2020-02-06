@@ -873,7 +873,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.forceCloseAllHandles
         shareFileAsyncClient.forceCloseAllHandles().subscribe(handlesClosedInfo ->
             System.out.printf("Closed %d open handles on the file.%nFailed to close %d open handles on the file%n",
-                handlesClosedInfo.getClosedHandles(), handlesClosedInfo.getFailedHandles()));
+                handlesClosedInfo.getClosedHandles(), handlesClosedInfo.getFailedToCloseHandles()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.forceCloseAllHandles
     }
 

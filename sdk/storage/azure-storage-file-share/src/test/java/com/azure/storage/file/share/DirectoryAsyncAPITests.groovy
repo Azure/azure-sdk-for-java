@@ -369,7 +369,7 @@ class DirectoryAsyncAPITests extends APISpec {
         StepVerifier.create(primaryDirectoryAsyncClient.forceCloseHandle("1"))
             .assertNext {
                 assert it.getClosedHandles() == 0
-                assert it.getFailedHandles() == 0
+                assert it.getFailedToCloseHandles() == 0
             }.verifyComplete()
     }
 
@@ -390,7 +390,7 @@ class DirectoryAsyncAPITests extends APISpec {
         StepVerifier.create(primaryDirectoryAsyncClient.forceCloseAllHandles(false))
             .assertNext {
                 assert it.getClosedHandles() == 0
-                assert it.getFailedHandles() == 0
+                assert it.getFailedToCloseHandles() == 0
             }.verifyComplete()
     }
 

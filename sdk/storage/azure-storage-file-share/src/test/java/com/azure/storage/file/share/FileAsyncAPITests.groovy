@@ -7,7 +7,6 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.polling.PollerFlux
-import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareRequestConditions
@@ -1136,7 +1135,7 @@ class FileAsyncAPITests extends APISpec {
         StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("1"))
             .assertNext {
                 assert it.getClosedHandles() == 0
-                assert it.getFailedHandles() == 0
+                assert it.getFailedToCloseHandles() == 0
             }.verifyComplete()
     }
 
@@ -1157,7 +1156,7 @@ class FileAsyncAPITests extends APISpec {
         StepVerifier.create(primaryFileAsyncClient.forceCloseAllHandles())
             .assertNext {
                 assert it.getClosedHandles() == 0
-                assert it.getFailedHandles() == 0
+                assert it.getFailedToCloseHandles() == 0
             }.verifyComplete()
     }
 

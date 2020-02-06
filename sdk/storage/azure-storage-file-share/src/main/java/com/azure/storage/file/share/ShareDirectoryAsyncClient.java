@@ -659,7 +659,7 @@ public class ShareDirectoryAsyncClient {
             return withContext(context -> forceCloseAllHandlesWithTimeout(recursive, null, context)
                 .reduce(new CloseHandlesInfo(0, 0),
                     (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
-                        accu.getFailedHandles() + next.getFailedHandles())));
+                        accu.getFailedToCloseHandles() + next.getFailedToCloseHandles())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

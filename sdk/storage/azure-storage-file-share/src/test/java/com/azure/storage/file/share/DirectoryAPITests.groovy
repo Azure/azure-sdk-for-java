@@ -386,7 +386,7 @@ class DirectoryAPITests extends APISpec {
 
         then:
         handlesClosedInfo.getClosedHandles() == 0
-        handlesClosedInfo.getFailedHandles() == 0
+        handlesClosedInfo.getFailedToCloseHandles() == 0
         notThrown(ShareStorageException)
     }
 
@@ -411,7 +411,7 @@ class DirectoryAPITests extends APISpec {
         then:
         notThrown(ShareStorageException)
         handlesClosedInfo.getClosedHandles() == 0
-        handlesClosedInfo.getFailedHandles() == 0
+        handlesClosedInfo.getFailedToCloseHandles() == 0
     }
 
     def "Create sub directory"() {
