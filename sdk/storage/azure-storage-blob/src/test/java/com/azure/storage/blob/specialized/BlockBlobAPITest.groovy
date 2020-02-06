@@ -649,11 +649,8 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         def outFile = new File(file.getPath().toString() + "result")
-        outFile.createNewFile()
-
-        def outStream = new FileOutputStream(outFile)
-        outStream.write(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.download()).block())
-        outStream.close()
+        StepVerifier.create(blobAsyncClient.downloadToFile(outFile.getPath(), true))
+            .verifyComplete()
 
         compareFiles(file, outFile, 0, fileSize)
         StepVerifier.create(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED))
