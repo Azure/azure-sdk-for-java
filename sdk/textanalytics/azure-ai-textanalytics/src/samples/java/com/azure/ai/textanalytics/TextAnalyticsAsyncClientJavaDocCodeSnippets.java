@@ -71,7 +71,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string
         String inputText = "Bonjour tout le monde";
         textAnalyticsAsyncClient.detectLanguage(inputText).subscribe(detectedLanguage ->
-            System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
+            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
                 detectedLanguage.getName(),
                 detectedLanguage.getIso6391Name(),
                 detectedLanguage.getScore()));
@@ -87,7 +87,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         String countryHint = "US";
         textAnalyticsAsyncClient.detectLanguageWithResponse(input, countryHint).subscribe(detectedLanguageResponse -> {
             final DetectedLanguage detectedLanguage = detectedLanguageResponse.getValue();
-            System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
+            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
                 detectedLanguage.getName(),
                 detectedLanguage.getIso6391Name(),
                 detectedLanguage.getScore());

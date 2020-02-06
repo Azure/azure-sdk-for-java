@@ -120,7 +120,7 @@ public final class TextAnalyticsAsyncClient {
      * certainty that the identified language is true.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Detects languages in a text. Subscribes to the call asynchronously and prints out the detected language
+     * <p>Detects language in a text. Subscribes to the call asynchronously and prints out the detected language
      * details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string}
@@ -142,7 +142,7 @@ public final class TextAnalyticsAsyncClient {
      * close to one indicate 100% certainty that the identified language is true.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Detects languages with http response in a text with a provided country hint. Subscribes to the call
+     * <p>Detects language with http response in a text with a provided country hint. Subscribes to the call
      * asynchronously and prints out the detected language details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#string-string}
@@ -179,7 +179,7 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs The list of texts to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * {@link DetectLanguageResult detected language}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -202,7 +202,7 @@ public final class TextAnalyticsAsyncClient {
      * 3166-1 alpha-2. Defaults to "US" if not specified.
      *
      * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * {@link DetectLanguageResult detected language}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -229,7 +229,7 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * {@link DetectLanguageResult detected language}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -243,7 +243,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language for a batch of input.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Detects languages in a text. Subscribes to the call asynchronously and prints out the detected language
+     * <p>Detects language in a text. Subscribes to the call asynchronously and prints out the detected language
      * details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectBatchLanguagesWithResponse#List-TextAnalyticsRequestOptions}
@@ -253,7 +253,7 @@ public final class TextAnalyticsAsyncClient {
      * and show statistics.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
+     * {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected language}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */

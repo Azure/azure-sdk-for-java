@@ -74,7 +74,7 @@ public class ReadmeSamples {
     public void detectLanguages() {
         String inputText = "Bonjour tout le monde";
         DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
-        System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
+        System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
             detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
     }
 
@@ -125,9 +125,9 @@ public class ReadmeSamples {
      * Code snippet for analyzing sentiment of a text.
      */
     public void analyzeSentiment() {
-        String text = "The hotel was dark and unclean.";
+        String text = "The hotel was dark and unclean. I like microsoft.";
         for (SentenceSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).getSentenceSentiments()) {
-            System.out.printf("Analyzed Sentence Sentiment class: %s.%n", textSentiment.getSentimentLabel());
+            System.out.printf("Analyzed Sentence Sentiment: %s.%n", textSentiment.getSentimentLabel());
         }
     }
 

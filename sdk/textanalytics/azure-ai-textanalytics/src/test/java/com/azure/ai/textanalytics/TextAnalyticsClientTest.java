@@ -75,7 +75,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test Detect batch languages for List of String input with country Hint.
+     * Test detect batch languages for a list of string input with country hint.
      */
     @Test
     public void detectLanguagesBatchListCountryHint() {
@@ -85,7 +85,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test Detect batch languages for List of String input.
+     * Test detect batch languages for a list of string input.
      */
     @Test
     public void detectLanguagesBatchStringInput() {

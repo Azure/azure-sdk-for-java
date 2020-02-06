@@ -219,7 +219,7 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```java
 String inputText = "Bonjour tout le monde";
 DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
-System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
+System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
     detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
 ```
 

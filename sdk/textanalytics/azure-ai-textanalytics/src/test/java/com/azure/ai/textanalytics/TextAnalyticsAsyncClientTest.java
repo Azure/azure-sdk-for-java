@@ -111,8 +111,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectSingleTextLanguage() {
         DetectedLanguage primaryLanguage = new DetectedLanguage("English", "en", 1.0);
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response -> validateDetectedLanguages(Collections.singletonList(primaryLanguage),
-                Collections.singletonList(response)))
+            .assertNext(response -> validatePrimaryLanguage(primaryLanguage, response))
             .verifyComplete();
     }
 
@@ -143,8 +142,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageFaultyText() {
         DetectedLanguage primaryLanguage = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0);
         StepVerifier.create(client.detectLanguage("!@#%%"))
-            .assertNext(response -> validateDetectedLanguages(Collections.singletonList(primaryLanguage),
-                Collections.singletonList(response)))
+            .assertNext(response -> validatePrimaryLanguage(primaryLanguage, response))
             .verifyComplete();
     }
 
@@ -179,6 +177,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForFaultyText() {
         StepVerifier.create(client.recognizeEntities("!@#%%"))
+            .expectNextCount(0)
             .verifyComplete();
     }
 
@@ -243,6 +242,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForFaultyText() {
         StepVerifier.create(client.recognizeLinkedEntities("!@#%%"))
+            .expectNextCount(0)
             .verifyComplete();
     }
 
@@ -297,6 +297,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizePiiEntitiesForFaultyText() {
         StepVerifier.create(client.recognizePiiEntities("!@#%%"))
+            .expectNextCount(0)
             .verifyComplete();
     }
 
@@ -350,6 +351,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForFaultyText() {
         StepVerifier.create(client.extractKeyPhrases("!@#%%"))
+            .expectNextCount(0)
             .verifyComplete();
     }
 
@@ -487,9 +489,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response -> validateDetectedLanguages(
-                Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
-                Collections.singletonList(response)))
+            .assertNext(response ->
+                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
             .verifyComplete();
     }
 
@@ -542,9 +543,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response -> validateDetectedLanguages(
-                Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
-                Collections.singletonList(response)))
+            .assertNext(response ->
+                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
             .verifyComplete();
     }
 
@@ -581,9 +581,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
         // Action and Assert
         StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage("This is a test English Text"))
-            .assertNext(response -> validateDetectedLanguages(
-                Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
-                Collections.singletonList(response)))
+            .assertNext(response ->
+                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
             .verifyComplete();
     }
 
@@ -608,9 +607,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
         // Action and Assert
         StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage("This is a test English Text"))
-            .assertNext(response -> validateDetectedLanguages(
-                Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
-                Collections.singletonList(response)))
+            .assertNext(response ->
+                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
             .verifyComplete();
     }
 }

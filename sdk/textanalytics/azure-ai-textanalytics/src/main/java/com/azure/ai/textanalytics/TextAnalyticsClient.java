@@ -60,7 +60,7 @@ public final class TextAnalyticsClient {
      * certainty that the identified language is true.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Detects the languages of single input text</p>
+     * <p>Detects the language of single input text</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String}
      *
      * @param text The text to be analyzed.
@@ -77,7 +77,7 @@ public final class TextAnalyticsClient {
      * Scores close to one indicate 100% certainty that the identified language is true.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Detects the languages with http response in a text with a provided country hint.</p>
+     * <p>Detects the language with http response in a text with a provided country hint.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageWithResponse#String-String-Context}
      *
      * @param text The text to be analyzed.
@@ -97,13 +97,13 @@ public final class TextAnalyticsClient {
      * Detects Language for a batch of input.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Detects the languages in a list of text.</p>
+     * <p>Detects the language in a list of text.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguages#List}
      *
      * @param textInputs The list of texts to be analyzed.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
-     * {@link DetectLanguageResult detected languages} with their numeric scores.
+     * {@link DetectLanguageResult detected language} with their numeric scores.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -115,7 +115,7 @@ public final class TextAnalyticsClient {
      * Detects Language for a batch of input with the provided country hint.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Detects the languages with http response in a list of text with a provided country hint.</p>
+     * <p>Detects the language with http response in a list of text with a provided country hint.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguagesWithResponse#List-String-Context}
      *
      * @param textInputs The list of texts to be analyzed.
@@ -124,7 +124,7 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
-     * {@link DetectLanguageResult detected languages} with their numeric scores.
+     * {@link DetectLanguageResult detected language} with their numeric scores.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -137,12 +137,12 @@ public final class TextAnalyticsClient {
      * Detects Language for a batch of input.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Detects the languages in a list of {@link DetectLanguageInput}.</p>
+     * <p>Detects the language in a list of {@link DetectLanguageInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectBatchLanguages#List}
      *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      *
-     * @return A {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
+     * @return A {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected language}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

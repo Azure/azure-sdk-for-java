@@ -443,7 +443,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate the list of detected languages.
+     * Helper method to validate the list of detected language.
      *
      * @param expectedLanguageList detectedLanguages returned by the service.
      * @param actualLanguageList detectedLanguages returned by the API.
@@ -724,7 +724,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedLanguage detectedLanguage returned by the service.
      * @param actualLanguage detectedLanguage returned by the API.
      */
-    private static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
+    static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
         assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
         assertEquals(expectedLanguage.getName(), actualLanguage.getName());
         assertNotNull(actualLanguage.getScore());

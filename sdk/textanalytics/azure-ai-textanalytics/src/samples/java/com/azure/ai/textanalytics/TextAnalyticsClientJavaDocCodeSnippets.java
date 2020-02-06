@@ -71,7 +71,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void detectLanguageSingleText() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String
         final DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage("Bonjour tout le monde");
-        System.out.printf("Detected languages name: %s, ISO 6391 name: %s, score: %s.%n",
+        System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %s.%n",
             detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String
     }
@@ -83,7 +83,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageWithResponse#String-String-Context
         final DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguageWithResponse(
             "This text is in English", "US", Context.NONE).getValue();
-        System.out.printf("Detected languages name: %s, ISO 6391 name: %s, score: %s.%n",
+        System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %s.%n",
             detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageWithResponse#String-String-Context
     }

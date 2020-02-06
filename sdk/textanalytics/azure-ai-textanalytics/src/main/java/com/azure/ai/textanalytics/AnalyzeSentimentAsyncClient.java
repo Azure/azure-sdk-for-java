@@ -122,9 +122,9 @@ class AnalyzeSentimentAsyncClient {
      */
     private AnalyzeSentimentResult convertToTextSentimentResult(final DocumentSentiment documentSentiment) {
         // Document text sentiment
-        final SentimentLabel documentSentimentClass = SentimentLabel.fromString(documentSentiment.
+        final SentimentLabel documentSentimentLabel = SentimentLabel.fromString(documentSentiment.
             getSentiment().toString());
-        if (documentSentimentClass == null) {
+        if (documentSentimentLabel == null) {
             // Not throw exception for an invalid Sentiment type because we should not skip processing the
             // other response. It is a service issue.
             logger.logExceptionAsWarning(
@@ -134,11 +134,11 @@ class AnalyzeSentimentAsyncClient {
         final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getDocumentScores();
 
         // Sentence text sentiment
-        final List<SentenceSentiment> sentenceSentimentTexts = documentSentiment.getSentences().stream()
+        final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences().stream()
             .map(sentenceSentiment -> {
-                SentimentLabel sentimentClass = SentimentLabel.fromString(sentenceSentiment
+                SentimentLabel sentimentLabel = SentimentLabel.fromString(sentenceSentiment
                     .getSentiment().toString());
-                if (sentimentClass == null) {
+                if (sentimentLabel == null) {
                     // Not throw exception for an invalid Sentiment type because we should not skip processing the
                     // other response. It is a service issue.
                     logger.logExceptionAsWarning(
@@ -148,7 +148,7 @@ class AnalyzeSentimentAsyncClient {
                 SentimentConfidenceScorePerLabel confidenceScorePerSentence = sentenceSentiment.getSentenceScores();
 
                 return new SentenceSentiment(
-                    sentimentClass,
+                    sentimentLabel,
                     new SentimentScorePerLabel(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
                     sentenceSentiment.getLength(),
@@ -161,9 +161,9 @@ class AnalyzeSentimentAsyncClient {
             documentSentiment.getStatistics() == null ? null
                 : toTextDocumentStatistics(documentSentiment.getStatistics()), null,
             new com.azure.ai.textanalytics.models.DocumentSentiment(
-                documentSentimentClass,
+                documentSentimentLabel,
                 new SentimentScorePerLabel(confidenceScorePerLabel.getNegative(), confidenceScorePerLabel.getNeutral(),
                     confidenceScorePerLabel.getPositive()),
-                sentenceSentimentTexts));
+                sentenceSentiments));
     }
 }
