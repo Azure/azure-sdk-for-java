@@ -644,7 +644,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         // Block length will be ignored for single shot.
         StepVerifier.create(blobAsyncClient.uploadFromFile(file.getPath(), new ParallelTransferOptions(blockSize, null,
-            null), null, null, null, null))
+            null), null, null, null, null).log())
             .verifyComplete()
 
         then:
@@ -1074,7 +1074,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         def data = getRandomData(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize, numBuffs, null, 4 * Constants.MB)
-        blobAsyncClient.upload(Flux.just(data), parallelTransferOptions, true).block()
+        blobAsyncClient.upload(Flux.just(data), parallelTransferOptions, true).log().block()
         data.position(0)
 
         then:

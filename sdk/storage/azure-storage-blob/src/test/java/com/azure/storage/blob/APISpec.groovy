@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.InterceptorManager
@@ -36,6 +37,7 @@ import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Shared
@@ -138,6 +140,9 @@ class APISpec extends Specification {
     String containerName
 
     def setupSpec() {
+        Hooks.onOperatorDebug()
+        System.setProperty("org.slf4j.simpleLogger.log.reactor.core", "trace")
+        System.setProperty("org.slf4j.simpleLogger.log.com.azure.storage", "trace")
         testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)
@@ -290,6 +295,7 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
+            .httpLogOptions(BlobServiceClientBuilder.getDefaultHttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
