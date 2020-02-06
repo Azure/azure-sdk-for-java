@@ -39,7 +39,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for getting sync client using API key authentication.
+     * Code snippet for getting sync client using the API key authentication.
      */
     public void useApiKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()

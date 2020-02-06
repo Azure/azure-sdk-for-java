@@ -233,7 +233,7 @@ public final class TextAnalyticsClientBuilder {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL.", ex));
         }
 
         if (endpoint.endsWith("/")) {
@@ -254,8 +254,7 @@ public final class TextAnalyticsClientBuilder {
      * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
      */
     public TextAnalyticsClientBuilder apiKey(TextAnalyticsApiKeyCredential apiKeyCredential) {
-        Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
-        this.credential = apiKeyCredential;
+        this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
         return this;
     }
 
@@ -295,8 +294,7 @@ public final class TextAnalyticsClientBuilder {
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public TextAnalyticsClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy, "'policy' cannot be null.");
-        policies.add(policy);
+        policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;
     }
 

@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.Objects;
 
 /**
@@ -13,6 +15,7 @@ import java.util.Objects;
  *
  */
 public final class TextAnalyticsApiKeyCredential {
+    private final ClientLogger logger = new ClientLogger(TextAnalyticsApiKeyCredential.class);
     private volatile String apiKey;
 
     /**
@@ -21,7 +24,11 @@ public final class TextAnalyticsApiKeyCredential {
      * @param apiKey the API key for authentication
      */
     public TextAnalyticsApiKeyCredential(String apiKey) {
-        this.apiKey = Objects.requireNonNull(apiKey, "`apiKey` cannot be null.");
+        Objects.requireNonNull(apiKey, "`apiKey` cannot be null.");
+        if (apiKey.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'apiKey' cannot be empty."));
+        }
+        this.apiKey = apiKey;
     }
 
     /**
