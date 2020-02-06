@@ -1,0 +1,7 @@
+
+description = 'Azure AD Spring Security Integration Spring Boot Sample'
+dependencies {
+    compile group: 'com.microsoft.azure', name: 'azure-active-directory-spring-boot-starter', version:"${azureSpringBootStartersVersion}"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+}

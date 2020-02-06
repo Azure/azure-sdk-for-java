@@ -1,0 +1,6 @@
+
+description = 'Azure Storage Spring Boot Starter Sample'
+dependencies {
+    compile group: 'com.microsoft.azure', name: 'azure-storage-spring-boot-starter', version:"${azureSpringBootStartersVersion}"
+    compile group: 'com.google.code.findbugs', name: 'annotations', version:"3.0.1"
+}

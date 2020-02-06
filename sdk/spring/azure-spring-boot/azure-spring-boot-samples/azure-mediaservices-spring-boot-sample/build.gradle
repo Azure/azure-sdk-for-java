@@ -1,0 +1,5 @@
+
+description = 'Azure Media Services Spring Boot Starter Sample'
+dependencies {
+    compile group: 'com.microsoft.azure', name: 'azure-mediaservices-spring-boot-starter', version:"${azureSpringBootStartersVersion}"
+}

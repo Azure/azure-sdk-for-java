@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <title>Stateless Backend Demo</title>
+</head>
+<body>
+  <div id="app" class="p-1 m-1">
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand" href="#">Stateless Backend Demo</a>
+    </nav>
+    <div id="auth" class="container">
+      <div class="row p-1">
+        <label for="clientId"  class="col">Client-ID:</label>
+        <input id="clientId" v-model="clientId" placeholder="clientId" class="col-4">
+        <label for="tenantId" class="col">Tenant-ID:</label>
+        <input id="tenantId" v-model="tenantId" placeholder="tenantId" class="col-3">
+        <select v-model="tokenType" class="col-2">
+          <option disabled value="">Select token type</option>
+          <option>id_token</option>
+        </select>
+        <a :href="signInUrl" class="btn btn-primary" v-if="!token" class="col-2">Login</a>
+        <a @click="logout()" href="#" class="btn btn-danger" v-if="token" class="col-2">Logout</a>
+      </div>
+      <div class="row p-1">
+        <label for="token" class="col">Token:</label>
+        <textarea v-model="token"  class="col-11"></textarea>
+      </div>
+      <div class="row p-1">
+        <label for="tokenheader" class="col">Token header:</label>
+        <textarea v-model="tokenheader"  class="col-5" readonly="true" rows="5"></textarea>
+        <label for="tokenpayload" class="col">Token payload:</label>
+        <textarea v-model="tokenpayload"  class="col-5" readonly="true" rows="5"></textarea>
+      </div>
+      <div class="row p-1">
+        <button type="button" class="btn btn-primary" @click="publicEndpoint()">Public Endpoint</button>
+        <button type="button" class="btn btn-secondary" @click="authorized()">Authorized</button>
+        <button type="button" class="btn btn-danger" @click="admin()">Admin Endpoint</button>
+      </div>
+      <div class="row p-1">
+        <textarea class="col-12" v-model="log" rows="7"></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js" integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios@0.18.0/dist/axios.min.js" integrity="sha384-U/+EF1mNzvy5eahP9DeB32duTkAmXrePwnRWtuSh1C/bHHhyR1KZCr/aGZBkctpY" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/vue-axios@2.1.4/dist/vue-axios.min.js" integrity="sha384-YoadHAhGpFWrsa9D2SlBUOEYtnmKUkFLN8bYEirDkn7Fg0VwuWyn/8JlkfeupmdP" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script>
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        clientId: 'xxxxxxxx-your-client-id-xxxxxxxxxxxx',
+        tenantId: 'xxxxxxxx-your-tenant-id-xxxxxxxxxxxx',
+        tokenType: 'id_token',
+        token: null,
+        log: null
+      },
+      computed: {
+        signInUrl: function() {
+          return  "https://login.microsoftonline.com/" + this.tenantId +
+            "/oauth2/authorize?" +
+            "client_id=" + this.clientId +
+            "&response_type=" + this.tokenType +
+            "&redirect_uri=" + this.redirect +
+            "&response_mode=fragment" +
+            "&scope=openid"  +
+            "&state=12345" +
+            "&nonce=dummy123";
+        },
+        tokenheader: function () {
+          return this.getTokenPart(0)
+        },
+        tokenpayload: function () {
+          return this.getTokenPart(1)
+        },
+        redirect: function () {
+          return location.protocol + '//' + location.host + location.pathname
+        }
+      },
+      beforeMount: function () {
+        if(window.location.hash) {
+          var params = window.location.hash.substr(1).split('&').reduce(function (result, item) {
+            var parts = item.split('=');
+            result[parts[0]] = parts[1];
+            return result;
+          }, {});
+          this.token = params['id_token'];
+          if (!this.token) {
+            this.token = params['access_token'];
+          }
+        }
+        var comp = this
+        axios.interceptors.request.use(
+            function (config)  {
+              if (comp.token) {
+                config.headers['Authorization'] = `Bearer ${ comp.token }`;
+              }
+              return config;
+            },
+            function (error)  {
+              return Promise.reject(error);
+            }
+        );
+      },
+      methods: {
+        getTokenPart: function (i) {
+          var result = null
+          if (this.token) {
+            var splitted = this.token.split(".")
+            if (splitted.length === 3) {
+              return atob(splitted[i])
+            }
+          }
+          return result
+        },
+        publicEndpoint: function () {
+          this.callApi("/public")
+        },
+        authorized: function () {
+          this.callApi("/authorized")
+        },
+        admin: function () {
+          this.callApi("/admin/demo")
+        },
+        logout: function () {
+          this.token = ""
+        },
+        callApi: function (p) {
+          axios.get(p).then(
+              (response) => {
+            this.log = JSON.stringify(response)
+          },
+              (error) => {
+            this.log = JSON.stringify(error.response)
+          })
+        }
+      }
+    })
+  </script>
+</body>
+</html>

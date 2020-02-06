@@ -1,0 +1,16 @@
+rootProject.name = 'azure-spring-boot-samples'
+include ':azure-active-directory-spring-boot-sample'
+include ':azure-cosmosdb-spring-boot-sample'
+include ':azure-keyvault-secrets-spring-boot-sample'
+include ':azure-mediaservices-spring-boot-sample'
+include ':azure-servicebus-spring-boot-sample'
+include ':azure-storage-spring-boot-sample'
+include ':azure-cloud-foundry-service-sample'
+
+project(':azure-active-directory-spring-boot-sample').projectDir = "$rootDir/azure-active-directory-spring-boot-sample" as File
+project(':azure-cosmosdb-spring-boot-sample').projectDir = "$rootDir/azure-cosmosdb-spring-boot-sample" as File
+project(':azure-keyvault-secrets-spring-boot-sample').projectDir = "$rootDir/azure-keyvault-secrets-spring-boot-sample" as File
+project(':azure-mediaservices-spring-boot-sample').projectDir = "$rootDir/azure-mediaservices-spring-boot-sample" as File
+project(':azure-servicebus-spring-boot-sample').projectDir = "$rootDir/azure-servicebus-spring-boot-sample" as File
+project(':azure-storage-spring-boot-sample').projectDir = "$rootDir/azure-storage-spring-boot-sample" as File
+project(':azure-cloud-foundry-service-sample').projectDir = "$rootDir/azure-cloud-foundry-service-sample" as File

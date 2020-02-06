@@ -1,0 +1,31 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+pr: none
+
+variables: 
+- group: nexus-snapshot-repository
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: Maven@3
+  displayName: Daily Snapshot Publish
+  inputs:
+    mavenPomFile: 'pom.xml'
+    options: '-DskipITs -s .maven/settings.xml -DaltDeploymentRepository=nexus-snapshots::default::https://oss.sonatype.org/content/repositories/snapshots/ -pl !azure-spring-boot-samples,!azure-spring-boot-tests'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'clean deploy'
+  env:
+    NEXUS_USER: $(nexus_user)
+    NEXUS_PASSWORD: $(nexus_password)

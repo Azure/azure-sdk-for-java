@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>azure-spring-boot-tests</artifactId>
+        <groupId>com.microsoft.azure</groupId>
+        <version>2.2.3-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>azure-spring-boot-test-core</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.rootdir>${project.basedir}/../..</project.rootdir>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-cosmos</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.cobertura</groupId>
+            <artifactId>cobertura</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cverges.expect4j</groupId>
+            <artifactId>expect4j</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

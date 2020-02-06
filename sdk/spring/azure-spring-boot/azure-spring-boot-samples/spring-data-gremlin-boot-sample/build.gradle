@@ -1,0 +1,5 @@
+
+description = 'Spring Boot Starter for Spring Data Gremlin'
+dependencies {
+    compile group: 'com.microsoft.spring.data.gremlin', name: 'spring-data-gremlin-boot-starter', version:"${azureSpringBootStartersVersion}"
+}

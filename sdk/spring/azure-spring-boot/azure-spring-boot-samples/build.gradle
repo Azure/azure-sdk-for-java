@@ -1,0 +1,43 @@
+buildscript {
+    ext {
+        springBootVersion = '2.2.0.RELEASE'
+    }
+    repositories {
+        maven { url "http://repo.spring.io/libs-milestone" }
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+    apply plugin: 'maven'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.microsoft.azure'
+    version = '0.0.1-SNAPSHOT'
+
+    ext {
+        azureSpringBootStartersVersion = '2.2.0'
+        commonsioVersion = '2.3'
+    }
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter>
+    <Class name="com.microsoft.azure.spring.support.GetHashMac"/>
+    <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+    <Bug pattern="Unwritten field"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_NEEDS_THIS"/>
+    <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
+    <Bug pattern="RE_POSSIBLE_UNINTENDED_PATTERN"/>
+
+    <Class name="com.microsoft.azure.telemetry.TelemetrySender"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+</FindBugsFilter>
