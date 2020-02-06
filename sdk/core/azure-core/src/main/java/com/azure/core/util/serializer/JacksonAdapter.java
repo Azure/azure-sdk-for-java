@@ -160,7 +160,7 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
-        if (value == null || value.isEmpty() || value.equals(BOM)) {
+        if (value == null || value.isEmpty() || Arrays.equals(UTF8_BOM, value.getBytes())) {
             return null;
         }
 
