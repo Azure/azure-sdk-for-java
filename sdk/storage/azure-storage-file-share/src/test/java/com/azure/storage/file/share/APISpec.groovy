@@ -45,7 +45,7 @@ class APISpec extends Specification {
 
     public static final String defaultEndpointTemplate = "https://%s.file.core.windows.net/"
 
-    static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
+    static def PREMIUM_STORAGE = "PREMIUM_FILE_STORAGE_"
     static StorageSharedKeyCredential premiumCredential
 
     static def PRIMARY_STORAGE = "AZURE_STORAGE_FILE_"
@@ -194,9 +194,9 @@ class APISpec extends Specification {
 
     ShareServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential) {
         // TODO : Remove this once its no longer preprod
-        if (credential == premiumCredential) {
-            return getServiceAsyncClient(credential, String.format("https://%s.file.preprod.core.windows.net/", credential.getAccountName()), null)
-        }
+//        if (credential == premiumCredential) {
+//            return getServiceAsyncClient(credential, String.format("https://%s.file.preprod.core.windows.net/", credential.getAccountName()), null)
+//        }
         return getServiceAsyncClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
     }
 
@@ -215,9 +215,9 @@ class APISpec extends Specification {
 
     ShareServiceClient getServiceClient(StorageSharedKeyCredential credential) {
         // TODO : Remove this once its no longer preprod
-        if (credential == premiumCredential) {
-            return getServiceClient(credential, String.format("https://%s.file.preprod.core.windows.net/", credential.getAccountName()), null)
-        }
+//        if (credential == premiumCredential) {
+//            return getServiceClient(credential, String.format("https://%s.file.preprod.core.windows.net/", credential.getAccountName()), null)
+//        }
         return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
     }
 
