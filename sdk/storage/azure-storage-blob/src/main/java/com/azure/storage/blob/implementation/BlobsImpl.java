@@ -45,13 +45,13 @@ import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLRespons
 import com.azure.storage.blob.implementation.models.BlobsUndeleteResponse;
 import com.azure.storage.blob.implementation.models.DataLakeStorageErrorException;
 import com.azure.storage.blob.implementation.models.DirectoryHttpHeaders;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
-import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.PathRenameMode;
 import com.azure.storage.blob.models.RehydratePriority;
 import java.net.URL;
