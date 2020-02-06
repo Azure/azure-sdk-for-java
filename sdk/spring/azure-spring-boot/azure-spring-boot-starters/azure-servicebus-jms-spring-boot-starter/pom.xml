@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-spring-boot-parent</artifactId>
+        <version>2.2.3-SNAPSHOT</version>
+        <relativePath>../../azure-spring-boot-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
+
+    <name>Azure Service Bus JMS Spring Boot Starter</name>
+    <description>Spring Boot Starter for Azure Service Bus JMS</description>
+    <url>https://github.com/Microsoft/azure-spring-boot</url>
+
+    <properties>
+        <project.rootdir>${project.basedir}/../..</project.rootdir>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-spring-boot</artifactId>
+        </dependency>
+
+        <!--Spring JMS-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+        </dependency>
+
+        <!--Qpid-->
+        <dependency>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>qpid-jms-client</artifactId>
+        </dependency>
+
+    </dependencies>
+</project>

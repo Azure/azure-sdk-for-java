@@ -1,0 +1,68 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+trigger:
+  branches:
+    include:
+    - master
+    - 2.0.x
+    - 2.1.x
+  paths:
+    exclude:
+    - README.md
+    - appveyor.yml
+pr:
+  branches:
+    include:
+    - master
+    - 2.0.x
+    - 2.1.x
+  paths:
+    exclude:
+    - README.md
+    - appveyor.yml
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: aad-auth
+
+
+jobs:
+- job: CI
+  timeoutInMinutes: 0
+  steps:
+  - task: Maven@3
+    displayName: Maven Build
+    timeoutInMinutes: 0
+    inputs:
+      mavenPomFile: 'pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'clean package verify'
+    env:
+      AZURE_TENANT: $(AZURE_TENANT)
+      AZURE_SUBSCRIPTION: $(AZURE_SUBSCRIPTION)
+      AZURE_CLIENT_ID: $(AZURE_CLIENT_ID)
+      AZURE_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
+      AAD_CLIENT_ID: $(AAD_CLIENT_ID)
+      AAD_CLIENT_SECRET: $(AAD_CLIENT_SECRET)
+      AAD_USER_NAME: $(AAD_USER_NAME)
+      AAD_USER_PASSWORD: $(AAD_USER_PASSWORD)
+
+  - task: Gradle@2
+    displayName: Gradle Build
+    inputs:
+      gradleWrapperFile: 'azure-spring-boot-samples/gradlew'
+      workingDirectory: 'azure-spring-boot-samples'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      tasks: 'build'

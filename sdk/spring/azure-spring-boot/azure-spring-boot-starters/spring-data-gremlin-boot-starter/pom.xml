@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-spring-boot-parent</artifactId>
+        <version>2.2.3-SNAPSHOT</version>
+        <relativePath>../../azure-spring-boot-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>spring-data-gremlin-boot-starter</artifactId>
+
+    <name>Spring Data Gremlin Boot Starter</name>
+    <description>Spring Boot Starter for Spring Data Gremlin</description>
+    <url>https://github.com/Microsoft/azure-spring-boot</url>
+
+    <properties>
+        <project.rootdir>${project.basedir}/../..</project.rootdir>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-spring-boot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.spring.data.gremlin</groupId>
+            <artifactId>spring-data-gremlin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+    </dependencies>
+</project>

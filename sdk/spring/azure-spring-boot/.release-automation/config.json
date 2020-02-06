@@ -1,0 +1,41 @@
+{
+  "releaseVersion": "0.2.3",
+  "moduleNames": [
+    "azure-spring-boot-parent",
+    "azure-spring-boot-bom",
+    "azure-spring-boot",
+    "azure-spring-boot-starter",
+    "azure-active-directory-spring-boot-starter",
+    "azure-cosmosdb-spring-boot-starter",
+    "azure-storage-spring-boot-starter",
+    "azure-keyvault-secrets-spring-boot-starter",
+    "azure-mediaservices-spring-boot-starter",
+    "azure-servicebus-spring-boot-starter",
+    "spring-data-gremlin-boot-starter"
+  ],
+  "groupId": "com.microsoft.azure",
+  "targetFolder": "D:/Signed",
+  "toSignFolder": "//ADXInfra1/ToSign/",
+  "signedFilder": "//ADXInfra1/Signed",
+  "jenkins": {
+    "url": "http://azuresdkci.cloudapp.net/",
+    "username": "ZhijunZhao",
+    "signJar": {
+      "Description": "Spring Boot Starters for Azure services",
+      "Keywords": "azure,starters"
+    }
+  },
+  "nexus": {
+    "username": "zhijzhao",
+    "stagingRepoDescription": "<promoteRequest><data><description>Spring Boot Starters for Azure Services</description></data></promoteRequest>",
+    "createRepoURL": "https://oss.sonatype.org/service/local/staging/profiles/534d15ee3800f4/start",
+    "closeRepoURL": "https://oss.sonatype.org/service/local/staging/profiles/534d15ee3800f4/finish",
+    "deployRepoURL": "https://oss.sonatype.org/service/local/staging/deployByRepositoryId",
+    "repoBaseURL": "https://oss.sonatype.org/service/local/staging/repository"
+  },
+  "passwords": {
+    "jenkins": "",
+    "gpg": "",
+    "nexus": ""
+  }
+}

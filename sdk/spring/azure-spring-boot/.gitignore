@@ -1,0 +1,57 @@
+# Compiled class file
+*.class
+.classpath
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# IntelliJ
+.idea
+*.iml
+.project
+.settings
+
+# Eclipse
+.metadata
+.checkstyle
+.fbExcludeFilterFile
+
+#Spring
+.springBeans
+.factorypath
+
+# Maven
+target
+/bin/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Release automation
+__pycache__
+
+# dll files
+*.dll
+
+# gradle
+.gradle
+**/build/
+azure-spring-boot-samples/**/bin
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
