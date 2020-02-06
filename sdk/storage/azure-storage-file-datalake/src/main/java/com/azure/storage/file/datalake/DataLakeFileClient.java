@@ -147,11 +147,12 @@ public class DataLakeFileClient extends DataLakePathClient {
     }
 
     /**
-     * Creates a new block blob. By default this method will not overwrite an existing blob.
+     * Appends to a file, with the content of the specified file. By default this method will not overwrite an
+     * existing file.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-long}
      *
      * @param filePath Path of the file to upload
      * @throws UncheckedIOException If an I/O error occurs
@@ -161,11 +162,11 @@ public class DataLakeFileClient extends DataLakePathClient {
     }
 
     /**
-     * Creates a new file, or updates the content of an existing file.
+     * Appends to a file, with the content of the specified file.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-boolean}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-long-boolean}
      *
      * @param filePath Path of the file to upload
      * @param overwrite Whether or not to overwrite, should the file already exist
@@ -181,29 +182,30 @@ public class DataLakeFileClient extends DataLakePathClient {
             }
             requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        uploadFromFile(filePath, destOffset, false, false, null, null, requestConditions, null);
+        uploadFromFile(filePath, destOffset, null, null, requestConditions, null);
     }
 
     /**
-     * Creates a new file, or updates the content of an existing file.
+     * Appends to a file, with the content of the specified file.
      * <p>
      * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-long-ParallelTransferOptions-PathHttpHeaders-DataLakeRequestConditions-Duration}
      *
      * @param filePath Path of the file to upload
-     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
-     *        transfers parameter is ignored.
+     * @param fileOffset The position where the data is to be appended.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
+     * @param headers {@link PathHttpHeaders}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, long fileOffset, boolean retainUncommittedData,
-        boolean close, ParallelTransferOptions parallelTransferOptions, PathHttpHeaders headers,
-        DataLakeRequestConditions requestConditions, Duration timeout) {
+    public void uploadFromFile(String filePath, long fileOffset, ParallelTransferOptions parallelTransferOptions,
+        PathHttpHeaders headers, DataLakeRequestConditions requestConditions, Duration timeout) {
         Mono<Void> upload = this.dataLakeFileAsyncClient.uploadFromFile(
-            filePath, fileOffset, retainUncommittedData, close, parallelTransferOptions, headers, requestConditions);
+            filePath, fileOffset, parallelTransferOptions, headers, requestConditions);
 
         try {
             StorageImplUtils.blockWithOptionalTimeout(upload, timeout);

@@ -185,40 +185,45 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     /**
-     * Creates a new file. By default this method will not overwrite an existing file.
+     * Appends to an existing file.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-ParallelTransferOptions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-long-long-ParallelTransferOptions}
      *
      * @param data The data to write to the file. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
+     * @param fileOffset The position where the data is to be appended.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the {@code Flux}.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded file.
      */
-    public Mono<PathInfo> upload(Flux<ByteBuffer> data, long fileOffset, long length, boolean retainUncommittedData,
-        boolean close, ParallelTransferOptions parallelTransferOptions) {
-        return upload(data, fileOffset, length, retainUncommittedData, close, parallelTransferOptions, false);
+    public Mono<PathInfo> upload(Flux<ByteBuffer> data, long fileOffset, long length,
+        ParallelTransferOptions parallelTransferOptions) {
+        return upload(data, fileOffset, length, parallelTransferOptions, false);
     }
 
     /**
-     * Creates a new file, or updates the content of an existing file.
+     * Appends to an existing file.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-ParallelTransferOptions-boolean}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-long-long-ParallelTransferOptions-boolean}
      *
      * @param data The data to write to the file. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
+     * @param fileOffset The position where the data is to be appended.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the {@code Flux}.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param overwrite Whether or not to overwrite, should the file already exist.
      * @return A reactive response containing the information of the uploaded file.
      */
-    public Mono<PathInfo> upload(Flux<ByteBuffer> data, long fileOffset, long length, boolean retainUncommittedData,
-        boolean close, ParallelTransferOptions parallelTransferOptions,
-        boolean overwrite) {
+    public Mono<PathInfo> upload(Flux<ByteBuffer> data, long fileOffset, long length,
+        ParallelTransferOptions parallelTransferOptions, boolean overwrite) {
 
         Mono<Void> overwriteCheck;
         DataLakeRequestConditions requestConditions;
@@ -235,34 +240,35 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
 
         return overwriteCheck
-            .then(uploadWithResponse(data, fileOffset, length, retainUncommittedData, close,
-                parallelTransferOptions, null, requestConditions))
+            .then(uploadWithResponse(data, fileOffset, length, parallelTransferOptions, null, requestConditions))
             .flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Creates a new file, or updates the content of an existing file.
+     * Appends to an existing file.
      * <p>
      * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-long-ParallelTransferOptions-PathHttpHeaders-DataLakeRequestConditions}
      *
      * <p><strong>Using Progress Reporting</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions.ProgressReporter}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-long-ParallelTransferOptions-PathHttpHeaders-DataLakeRequestConditions.ProgressReporter}
      *
      * @param data The data to write to the file. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
+     * @param fileOffset The position where the data is to be appended.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the {@code Flux}.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link PathHttpHeaders}
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the information of the uploaded file.
      */
-    public Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data,
-        long fileOffset, long length, boolean retainUncommittedData, boolean close,
+    public Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
         ParallelTransferOptions parallelTransferOptions, PathHttpHeaders headers,
         DataLakeRequestConditions requestConditions) {
         try {
@@ -273,13 +279,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
 
             Function<Flux<ByteBuffer>, Mono<Response<PathInfo>>> uploadInChunksFunction = (stream) ->
-                uploadInChunks(stream, fileOffset, length, retainUncommittedData, close,
-                    validatedParallelTransferOptions, headers, validatedRequestConditions);
+                uploadInChunks(stream, fileOffset, length, validatedParallelTransferOptions, headers,
+                    validatedRequestConditions);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<PathInfo>>> uploadFullMethod =
                 (stream, lengthUploaded) -> uploadWithResponse(ProgressReporter
                         .addProgressReporting(stream, validatedParallelTransferOptions.getProgressReceiver()),
-                    fileOffset, length, retainUncommittedData, close, headers, validatedRequestConditions);
+                    fileOffset, length, headers, validatedRequestConditions);
 
             return UploadUtils.determineUploadFullOrChunked(data, validatedParallelTransferOptions,
                 uploadInChunksFunction, uploadFullMethod);
@@ -289,8 +295,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     private Mono<Response<PathInfo>> uploadInChunks(Flux<ByteBuffer> data, long fileOffset, long length,
-        boolean retainUncommittedData, boolean close, ParallelTransferOptions parallelTransferOptions,
-        PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions) {
+        ParallelTransferOptions parallelTransferOptions, PathHttpHeaders httpHeaders,
+        DataLakeRequestConditions requestConditions) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
         Lock progressLock = new ReentrantLock();
@@ -328,24 +334,24 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                     .flux();
             })
             .last()
-            .flatMap(resp -> flushWithResponse(length, retainUncommittedData, close, httpHeaders, requestConditions));
+            .flatMap(resp -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
     }
 
     private Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
-        boolean retainUncommittedData, boolean close, PathHttpHeaders httpHeaders,
+        PathHttpHeaders httpHeaders,
         DataLakeRequestConditions requestConditions) {
         return appendWithResponse(data, fileOffset, length, null, requestConditions.getLeaseId())
-            .flatMap(resp -> flushWithResponse(fileOffset + length, retainUncommittedData, close, httpHeaders,
+            .flatMap(resp -> flushWithResponse(fileOffset + length, false, false, httpHeaders,
                 requestConditions));
     }
 
     /**
-     * Creates a new file with the content of the specified file. By default this method will not overwrite an
+     * Appends to a file, with the content of the specified file. By default this method will not overwrite an
      * existing file.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFile#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFile#String-long}
      *
      * @param filePath Path to the upload file
      * @return An empty response
@@ -360,12 +366,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     /**
-     * Creates a new file, or updates the content of an existing file, with the content of the specified
-     * file.
+     * Appends to a file, with the content of the specified file.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFile#String-boolean}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFile#String-long-boolean}
      *
      * @param filePath Path to the upload file
      * @param overwrite Whether or not to overwrite, should the file already exist.
@@ -389,21 +394,20 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                     .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
             }
 
-            return overwriteCheck.then(uploadFromFile(filePath, destOffset, false, false, null, null, requestConditions));
+            return overwriteCheck.then(uploadFromFile(filePath, destOffset, null, null, requestConditions));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Creates a new file, or updates the content of an existing file, with the content of the specified
-     * file.
+     * Appends to a file, with the content of the specified file.
      * <p>
      * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFile#String-ParallelTransferOptions-PathHttpHeaders-Map-AccessTier-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFile#String-long-ParallelTransferOptions-PathHttpHeaders-DataLakeRequestConditions}
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
@@ -413,9 +417,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public Mono<Void> uploadFromFile(String filePath, long fileOffset, boolean retainUncommittedData,
-        boolean close, ParallelTransferOptions parallelTransferOptions, PathHttpHeaders headers,
-        DataLakeRequestConditions requestConditions) {
+    public Mono<Void> uploadFromFile(String filePath, long fileOffset, ParallelTransferOptions parallelTransferOptions,
+        PathHttpHeaders headers, DataLakeRequestConditions requestConditions) {
         Integer originalBlockSize = (parallelTransferOptions == null)
             ? null
             : parallelTransferOptions.getBlockSize();
@@ -434,12 +437,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
                         // If the file is larger than 256MB chunk it and stage it as blocks.
                         if (uploadInBlocks(filePath, finalParallelTransferOptions.getMaxSingleUploadSize())) {
-                            return uploadBlocks(fileOffset, fileSize, retainUncommittedData, close,
-                                finalParallelTransferOptions, originalBlockSize, headers, requestConditions, channel);
+                            return uploadBlocks(fileOffset, fileSize, finalParallelTransferOptions, originalBlockSize,
+                                headers, requestConditions, channel);
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
-                            return uploadWithResponse(FluxUtil.readFile(channel), fileOffset, fileSize, retainUncommittedData,
-                                close, parallelTransferOptions, headers, requestConditions)
+                            return uploadWithResponse(FluxUtil.readFile(channel), fileOffset, fileSize,
+                                parallelTransferOptions, headers, requestConditions)
                                 .then();
                         }
                     } catch (IOException ex) {
@@ -465,9 +468,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         return retVal;
     }
 
-    private Mono<Void> uploadBlocks(long fileOffset, long fileSize, boolean retainUncommittedData,
-        boolean close, ParallelTransferOptions parallelTransferOptions, Integer originalBlockSize,
-        PathHttpHeaders headers, DataLakeRequestConditions requestConditions, AsynchronousFileChannel channel) {
+    private Mono<Void> uploadBlocks(long fileOffset, long fileSize, ParallelTransferOptions parallelTransferOptions,
+        Integer originalBlockSize, PathHttpHeaders headers, DataLakeRequestConditions requestConditions,
+        AsynchronousFileChannel channel) {
         final DataLakeRequestConditions finalRequestConditions = (requestConditions == null)
             ? new DataLakeRequestConditions() : requestConditions;
         // parallelTransferOptions are finalized in the calling method.
@@ -486,7 +489,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                     finalRequestConditions.getLeaseId());
             })
             .then(Mono.defer(() ->
-                flushWithResponse(fileSize, retainUncommittedData, close, headers, requestConditions)))
+                flushWithResponse(fileSize, false, false, headers, requestConditions)))
             .then();
     }
 
