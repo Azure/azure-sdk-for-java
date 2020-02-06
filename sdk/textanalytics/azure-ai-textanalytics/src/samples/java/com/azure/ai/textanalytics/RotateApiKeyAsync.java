@@ -8,19 +8,19 @@ import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to rotate the existing subscription key of text analytics client
+ * Sample demonstrates how to rotate the existing API key of text analytics client
  */
-public class RotateSubscriptionKeyAsync {
+public class RotateApiKeyAsync {
 
     /**
-     * Main method to invoke this demo about how to rotate the existing subscription key of text analytics client.
+     * Main method to invoke this demo about how to rotate the existing API key of text analytics client.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{invalid_subscription_key}");
+        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(credential)
+            .apiKey(credential)
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -36,8 +36,8 @@ public class RotateSubscriptionKeyAsync {
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));
 
-        // Update the subscription key
-        credential.updateCredential("{valid_subscription_key}");
+        // Update the API key
+        credential.updateCredential("{valid_api_key}");
 
         client.extractKeyPhrases(text).subscribe(
             result -> {
