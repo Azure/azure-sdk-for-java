@@ -160,7 +160,7 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
-        if (value == null || value.isEmpty() || Arrays.equals(UTF8_BOM, value.getBytes())) {
+        if (value == null || value.isEmpty() || Arrays.equals(UTF8_BOM, value.getBytes(StandardCharsets.UTF_8))) {
             return null;
         }
 
@@ -169,7 +169,7 @@ public class JacksonAdapter implements SerializerAdapter {
          * begin an XML chunk and will cause a parsing exception to be thrown.
          */
         if (encoding == SerializerEncoding.XML) {
-            byte[] valueBytes = value.getBytes();
+            byte[] valueBytes = value.getBytes(StandardCharsets.UTF_8);
             if (valueBytes[0] == UTF8_BOM[0] && valueBytes[1] == UTF8_BOM[1] && valueBytes[2] == UTF8_BOM[2]) {
                 value = new String(Arrays.copyOfRange(valueBytes, 3, valueBytes.length), StandardCharsets.UTF_8);
             }
