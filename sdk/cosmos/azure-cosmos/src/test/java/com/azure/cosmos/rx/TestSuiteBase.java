@@ -21,6 +21,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosDatabaseProperties;
@@ -168,7 +169,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         @Override
-        public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec query) {
+        public CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec query) {
             return client.queryDatabases(query, null);
         }
 
@@ -620,7 +621,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     static protected CosmosAsyncDatabase createDatabaseIfNotExists(CosmosAsyncClient client, String databaseId) {
         List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null)
-                                                   .flatMap(p -> Flux.fromIterable(p.getResults()))
                                                    .collectList()
                                                    .block();
         if (res.size() != 0) {

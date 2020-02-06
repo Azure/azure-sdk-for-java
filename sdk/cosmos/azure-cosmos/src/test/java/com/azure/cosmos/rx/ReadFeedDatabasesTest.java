@@ -4,6 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosDatabaseProperties;
 import com.azure.cosmos.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.FeedOptions;
@@ -38,11 +39,11 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
     public void readDatabases() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        int maxItemCount = 2;
 
-        Flux<FeedResponse<CosmosDatabaseProperties>> feedObservable = client.readAllDatabases(options);
+        CosmosContinuablePagedFlux<CosmosDatabaseProperties> feedObservable = client.readAllDatabases(options);
 
-        int expectedPageSize = (allDatabases.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (allDatabases.size() + maxItemCount - 1) / maxItemCount;
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .totalSize(allDatabases.size())
                 .exactlyContainsInAnyOrder(allDatabases.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
@@ -51,16 +52,14 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedDatabasesTest() throws URISyntaxException {
         client = clientBuilder().buildAsyncClient();
         allDatabases = client.readAllDatabases(null)
-                             .map(frp -> frp.getResults())
                              .collectList()
-                             .map(list -> list.stream().flatMap(x -> x.stream()).collect(Collectors.toList()))
                              .block();
         for(int i = 0; i < 5; i++) {
             createdDatabases.add(createDatabase(client));
