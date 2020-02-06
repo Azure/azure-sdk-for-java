@@ -26,9 +26,11 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -62,7 +64,7 @@ public class JacksonAdapter implements SerializerAdapter {
     /*
      * BOM header from some response bodies. To be removed in deserialization.
      */
-    private static final String BOM = "\uFEFF";
+    private static final byte[] UTF8_BOM = { -17, -69, -65 };
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
@@ -161,9 +163,16 @@ public class JacksonAdapter implements SerializerAdapter {
         if (value == null || value.isEmpty() || value.equals(BOM)) {
             return null;
         }
-        // Remove BOM
-        if (value.startsWith(BOM)) {
-            value = value.replaceFirst(BOM, "");
+
+        /*
+         * When the serialization encoding is XML check for and remove a leading BOM. This is an illegal character to
+         * begin an XML chunk and will cause a parsing exception to be thrown.
+         */
+        if (encoding == SerializerEncoding.XML) {
+            byte[] valueBytes = value.getBytes();
+            if (valueBytes[0] == UTF8_BOM[0] && valueBytes[1] == UTF8_BOM[1] && valueBytes[2] == UTF8_BOM[2]) {
+                value = new String(Arrays.copyOfRange(valueBytes, 3, valueBytes.length), StandardCharsets.UTF_8);
+            }
         }
 
         final JavaType javaType = createJavaType(type);
