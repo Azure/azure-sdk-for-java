@@ -5,6 +5,8 @@ jobs:
       - name: PomFile
         value: eng/smoke-tests/pom.xml
 
+    timeoutInMinutes: 5
+
     strategy:
       matrix:
         Java 8:
@@ -20,14 +22,14 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'versions:use-latest-versions'
-          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests'
+          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests "-Dincludes=com.azure:*"'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
       - task: Maven@3
-        displayName: Dependency tree
+        displayName: Show dependency tree
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'dependency:tree'
