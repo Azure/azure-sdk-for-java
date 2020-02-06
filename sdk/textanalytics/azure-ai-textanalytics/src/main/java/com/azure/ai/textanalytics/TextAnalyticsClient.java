@@ -16,6 +16,8 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsException;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.annotation.ReturnType;
@@ -181,8 +183,10 @@ public final class TextAnalyticsClient {
      *
      * @param text the text to recognize entities for.
      *
-     * @return the {@link CategorizedEntity categorized entity} of the text.
+     * @return the {@link PagedIterable} containing the {@link CategorizedEntity categorized entities} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CategorizedEntity> recognizeEntities(String text) {
@@ -202,8 +206,10 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link CategorizedEntity categorized entity} of the text.
+     * @return A {@link PagedIterable} containing the {@link CategorizedEntity categorized entities} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CategorizedEntity> recognizeEntities(String text, String language, Context context) {
@@ -302,9 +308,10 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String}
      *
      * @param text the text to recognize PII entities for.
-     * @return A {@link PiiEntity PII entity} of the text.
+     * @return A {@link PagedIterable} containing the {@link PiiEntity PII entities} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PiiEntity> recognizePiiEntities(String text) {
@@ -318,16 +325,17 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the PII entities with http response in a text with a provided language representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#String-String-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-Context}
      *
      * @param text the text to recognize PII entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} whose {@link Response#getValue() value} has the
-     * {@link PiiEntity PII entity} of the text.
+     * @return A {@link PagedIterable} containing the {@link PiiEntity PII entities} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PiiEntity> recognizePiiEntities(String text, String language, Context context) {
@@ -351,7 +359,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntities(List<String> textInputs) {
-        return recognizePiiEntities(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
+        return recognizePiiEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -373,7 +381,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntities(
+    public Response<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(textInputs, language,
             context).block();
@@ -435,8 +443,10 @@ public final class TextAnalyticsClient {
      *
      * @param text the text to recognize linked entities for.
      *
-     * @return A {@link LinkedEntity linked entity} of the text.
+     * @return A {@link PagedIterable} containing the {@link LinkedEntity linked entities} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedEntity> recognizeLinkedEntities(String text) {
@@ -449,16 +459,17 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the linked entities with http response in a text with a provided language representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesWithResponse#String-String-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String-String-Context}
      *
      * @param text the text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} whose {@link Response#getValue() value} has the
-     * {@link LinkedEntity linked entity} of the text.
+     * @return A {@link PagedIterable} containing the {@link LinkedEntity linked entities} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedEntity> recognizeLinkedEntities(String text, String language, Context context) {
@@ -482,7 +493,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntities(List<String> textInputs) {
-        return recognizeLinkedEntities(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
+        return recognizeLinkedEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -504,7 +515,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntities(
+    public Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs, language,
             context).block();
@@ -563,8 +574,10 @@ public final class TextAnalyticsClient {
      *
      * @param text the text to be analyzed.
      *
-     * @return A {@link ExtractKeyPhraseResult key phrases} of the text.
+     * @return A {@link PagedIterable} containing the key phrases of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> extractKeyPhrases(String text) {
@@ -577,16 +590,17 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Extracts key phrases with http response in a text with a provided language representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesWithResponse#String-String-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context}
      *
      * @param text the text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} whose {@link Response#getValue() value} has the
-     * {@link ExtractKeyPhraseResult key phrases} of the text.
+     * @return A {@link PagedIterable} containing the key phrases of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> extractKeyPhrases(String text, String language, Context context) {
@@ -607,7 +621,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhrases(List<String> textInputs) {
-        return extractKeyPhrases(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
+        return extractKeyPhrasesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
     /**
@@ -628,7 +642,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrases(
+    public Response<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(
         List<String> textInputs, String language, Context context) {
         return client.extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(textInputs, language, context).block();
     }
@@ -684,9 +698,11 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String}
      *
      * @param text the text to be analyzed.
-     * @return the {@link AnalyzeSentimentResult text sentiments} of the text.
+     *
+     * @return the {@link DocumentSentiment document sentiment} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String text) {
@@ -706,8 +722,9 @@ public final class TextAnalyticsClient {
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link AnalyzeSentimentResult text sentiments} of the text.
+     * @return A {@link Response} containing the {@link DocumentSentiment document sentiment} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentSentiment> analyzeSentimentWithResponse(String text, String language, Context context) {

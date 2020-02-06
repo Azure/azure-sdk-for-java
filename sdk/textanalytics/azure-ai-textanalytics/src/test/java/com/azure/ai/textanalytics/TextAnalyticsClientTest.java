@@ -256,7 +256,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizePiiEntitiesForListLanguageHint() {
         recognizePiiLanguageHintRunner((inputs, language) ->
             validatePiiEntity(false, getExpectedBatchPiiEntities(),
-                client.recognizePiiEntities(inputs, language, Context.NONE).getValue()));
+                client.recognizePiiEntitiesWithResponse(inputs, language, Context.NONE).getValue()));
     }
 
     @Test
@@ -301,7 +301,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeLinkedEntitiesForListLanguageHint() {
         recognizeLinkedLanguageHintRunner((inputs, language) ->
             validateLinkedEntity(false, getExpectedBatchLinkedEntities(),
-                client.recognizeLinkedEntities(inputs, language, Context.NONE).getValue()));
+                client.recognizeLinkedEntitiesWithResponse(inputs, language, Context.NONE).getValue()));
     }
 
     @Test
@@ -343,7 +343,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void extractKeyPhrasesForListLanguageHint() {
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
             validateExtractKeyPhrase(false, getExpectedBatchKeyPhrases(),
-                client.extractKeyPhrases(inputs, language, Context.NONE).getValue()));
+                client.extractKeyPhrasesWithResponse(inputs, language, Context.NONE).getValue()));
     }
 
     // Sentiment

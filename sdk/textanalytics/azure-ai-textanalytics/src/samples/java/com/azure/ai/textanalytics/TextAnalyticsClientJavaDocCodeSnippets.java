@@ -358,12 +358,12 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      * Code snippet for {@link TextAnalyticsClient#recognizePiiEntities(String, String, Context)}
      */
     public void recognizePiiEntitiesSingleTextWithResponse() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#String-String-Context
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-Context
         for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555", "en", Context.NONE)) {
             System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                 entity.getText(), entity.getCategory(), entity.getScore());
         }
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#String-String-Context
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-Context
     }
 
     /**
@@ -392,14 +392,14 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntities(List, String, Context)}
+     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesWithResponse(List, String, Context)}
      */
     public void recognizePiiEntitiesListTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#List-String-Context
         final List<String> textInputs = Arrays.asList("My SSN is 555-55-5555", "Visa card 4111 1111 1111 1111");
 
         final DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntitiesResults =
-            textAnalyticsClient.recognizePiiEntities(textInputs, "en", Context.NONE).getValue();
+            textAnalyticsClient.recognizePiiEntitiesWithResponse(textInputs, "en", Context.NONE).getValue();
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizePiiEntitiesResults.getStatistics();
@@ -490,13 +490,13 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      * Code snippet for {@link TextAnalyticsClient#recognizeLinkedEntities(String, String, Context)}
      */
     public void recognizeLinkedEntitiesSingleTextWithResponse() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesWithResponse#String-String-Context
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String-String-Context
         for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(
             "Old Faithful is a geyser at Yellowstone Park.", "en", Context.NONE)) {
             System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
         }
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesWithResponse#String-String-Context
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String-String-Context
     }
 
     /**
@@ -527,7 +527,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeLinkedEntities(List, String, Context)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeLinkedEntitiesWithResponse(List, String, Context)}
      */
     public void recognizeLinkedEntitiesListTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesWithResponse#List-String-Context
@@ -536,7 +536,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "Mount Shasta has lenticular clouds.");
 
         final DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults =
-            textAnalyticsClient.recognizeLinkedEntities(textInputs, "en", Context.NONE).getValue();
+            textAnalyticsClient.recognizeLinkedEntitiesWithResponse(textInputs, "en", Context.NONE).getValue();
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
@@ -628,12 +628,12 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      * Code snippet for {@link TextAnalyticsClient#extractKeyPhrases(String, String, Context)}
      */
     public void extractKeyPhrasesSingleTextWithResponse() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesWithResponse#String-String-Context
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context
         for (String keyPhrases : textAnalyticsClient.extractKeyPhrases(
             "My cat might need to see a veterinarian.", "en", Context.NONE)) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrases);
         }
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesWithResponse#String-String-Context
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context
     }
 
     /**
@@ -668,7 +668,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#extractKeyPhrases(List, String, Context)}
+     * Code snippet for {@link TextAnalyticsClient#extractKeyPhrasesWithResponse(List, String, Context)}
      */
     public void extractKeyPhrasesListTextWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesWithResponse#List-String-Context
@@ -679,7 +679,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Extracting batch key phrases
         final DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhraseResults =
-            textAnalyticsClient.extractKeyPhrases(textInputs, "en", Context.NONE).getValue();
+            textAnalyticsClient.extractKeyPhrasesWithResponse(textInputs, "en", Context.NONE).getValue();
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
