@@ -13,8 +13,6 @@ import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.implementation.Utils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -116,14 +114,14 @@ public class BasicDemo {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class).byPage();
+        CosmosContinuablePagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
 
-        queryFlux.publishOn(Schedulers.elastic())
-            .toIterable()
-            .forEach(cosmosItemFeedResponse ->
-                     {
-                         log(cosmosItemFeedResponse.getResults());
-                     });
+        queryFlux.byPage()
+                 .publishOn(Schedulers.elastic())
+                 .toIterable()
+                 .forEach(cosmosItemFeedResponse -> {
+                     log(cosmosItemFeedResponse.getResults());
+                 });
 
     }
 
@@ -136,8 +134,8 @@ public class BasicDemo {
         String continuation = null;
         do {
             options.requestContinuation(continuation);
-            Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class).byPage();
-            FeedResponse<TestObject> page = queryFlux.blockFirst();
+            CosmosContinuablePagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
+            FeedResponse<TestObject> page = queryFlux.byPage().blockFirst();
             assert page != null;
             log(page.getResults());
             continuation = page.getContinuationToken();

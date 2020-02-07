@@ -6,9 +6,9 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -17,9 +17,7 @@ import com.azure.cosmos.implementation.TestUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,13 +50,13 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
-        Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
+        int maxItemCount = 5;
+        CosmosContinuablePagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
         List<CosmosUserDefinedFunctionProperties> expectedDocs = createdUDF.stream().filter(sp -> filterId.equals(sp.getId()) ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
-        int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
                 .totalSize(expectedDocs.size())
@@ -68,7 +66,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -77,7 +75,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         
-        Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
+        CosmosContinuablePagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
                 .containsExactly(new ArrayList<>())
@@ -85,7 +83,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -93,13 +91,14 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(3);
+
+        int maxItemCount = 3;
         
-        Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
+        CosmosContinuablePagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
         List<CosmosUserDefinedFunctionProperties> expectedDocs = createdUDF;
 
-        int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator
                 .Builder<CosmosUserDefinedFunctionProperties>()
@@ -111,7 +110,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -119,14 +118,14 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
         
-        Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
+        CosmosContinuablePagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(CosmosClientException.class)
                 .statusCode(400)
                 .notNullActivityId()
                 .build();
-        validateQueryFailure(queryObservable, validator);
+        validateQueryFailure(queryObservable.byPage(), validator);
     }
 
     public CosmosUserDefinedFunctionProperties createUserDefinedFunction(CosmosAsyncContainer cosmosContainer) {
