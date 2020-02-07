@@ -17,7 +17,7 @@ import com.microsoft.azure.management.datamigration.v2018_07_15_preview.implemen
  * Properties for the command that completes online migration for an Azure SQL
  * Database Managed Instance.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType", defaultImpl = MigrateMISyncCompleteCommandProperties.class)
 @JsonTypeName("Migrate.SqlServer.AzureDbSqlMi.Complete")
 public class MigrateMISyncCompleteCommandProperties extends CommandPropertiesInner {
     /**

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError.class)
 @JsonTypeName("DatabaseLevelErrorOutput")
 public class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError extends MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput {
     /**

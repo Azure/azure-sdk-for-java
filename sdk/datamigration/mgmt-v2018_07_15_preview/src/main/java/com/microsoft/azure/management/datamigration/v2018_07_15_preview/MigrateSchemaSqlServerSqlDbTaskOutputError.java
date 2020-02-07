@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The MigrateSchemaSqlServerSqlDbTaskOutputError model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateSchemaSqlServerSqlDbTaskOutputError.class)
 @JsonTypeName("SchemaErrorOutput")
 public class MigrateSchemaSqlServerSqlDbTaskOutputError extends MigrateSchemaSqlServerSqlDbTaskOutput {
     /**

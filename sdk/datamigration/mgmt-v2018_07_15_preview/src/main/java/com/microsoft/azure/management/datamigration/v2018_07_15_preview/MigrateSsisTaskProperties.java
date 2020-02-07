@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Properties for task that migrates SSIS packages from SQL Server databases to
  * Azure SQL Database Managed Instance.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = MigrateSsisTaskProperties.class)
 @JsonTypeName("Migrate.Ssis")
 public class MigrateSsisTaskProperties extends ProjectTaskProperties {
     /**

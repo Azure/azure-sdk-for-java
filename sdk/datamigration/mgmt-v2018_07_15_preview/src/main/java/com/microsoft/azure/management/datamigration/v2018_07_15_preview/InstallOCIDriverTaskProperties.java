@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Properties for the task that installs an OCI driver.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = InstallOCIDriverTaskProperties.class)
 @JsonTypeName("Service.Install.OCI")
 public class InstallOCIDriverTaskProperties extends ProjectTaskProperties {
     /**

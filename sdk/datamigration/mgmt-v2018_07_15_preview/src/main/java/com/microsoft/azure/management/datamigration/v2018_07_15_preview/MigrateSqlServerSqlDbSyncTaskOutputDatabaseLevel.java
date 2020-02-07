@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel.class)
 @JsonTypeName("DatabaseLevelOutput")
 public class MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel extends MigrateSqlServerSqlDbSyncTaskOutput {
     /**
@@ -41,7 +41,9 @@ public class MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel extends MigrateSql
      * Migration state that this database is in. Possible values include:
      * 'UNDEFINED', 'CONFIGURING', 'INITIALIAZING', 'STARTING', 'RUNNING',
      * 'READY_TO_COMPLETE', 'COMPLETING', 'COMPLETE', 'CANCELLING',
-     * 'CANCELLED', 'FAILED'.
+     * 'CANCELLED', 'FAILED', 'VALIDATING', 'VALIDATION_COMPLETE',
+     * 'VALIDATION_FAILED', 'RESTORE_IN_PROGRESS', 'RESTORE_COMPLETED',
+     * 'BACKUP_IN_PROGRESS', 'BACKUP_COMPLETED'.
      */
     @JsonProperty(value = "migrationState", access = JsonProperty.Access.WRITE_ONLY)
     private SyncDatabaseMigrationReportingState migrationState;
@@ -140,7 +142,7 @@ public class MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel extends MigrateSql
     }
 
     /**
-     * Get migration state that this database is in. Possible values include: 'UNDEFINED', 'CONFIGURING', 'INITIALIAZING', 'STARTING', 'RUNNING', 'READY_TO_COMPLETE', 'COMPLETING', 'COMPLETE', 'CANCELLING', 'CANCELLED', 'FAILED'.
+     * Get migration state that this database is in. Possible values include: 'UNDEFINED', 'CONFIGURING', 'INITIALIAZING', 'STARTING', 'RUNNING', 'READY_TO_COMPLETE', 'COMPLETING', 'COMPLETE', 'CANCELLING', 'CANCELLED', 'FAILED', 'VALIDATING', 'VALIDATION_COMPLETE', 'VALIDATION_FAILED', 'RESTORE_IN_PROGRESS', 'RESTORE_COMPLETED', 'BACKUP_IN_PROGRESS', 'BACKUP_COMPLETED'.
      *
      * @return the migrationState value
      */

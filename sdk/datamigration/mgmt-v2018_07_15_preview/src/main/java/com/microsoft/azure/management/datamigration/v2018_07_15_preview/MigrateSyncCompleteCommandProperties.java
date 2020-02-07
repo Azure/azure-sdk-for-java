@@ -16,7 +16,7 @@ import com.microsoft.azure.management.datamigration.v2018_07_15_preview.implemen
 /**
  * Properties for the command that completes sync migration for a database.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType", defaultImpl = MigrateSyncCompleteCommandProperties.class)
 @JsonTypeName("Migrate.Sync.Complete.Database")
 public class MigrateSyncCompleteCommandProperties extends CommandPropertiesInner {
     /**

@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Properties for the task that validates connection to Azure SQL Database
  * Managed Instance.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = ConnectToTargetSqlMISyncTaskProperties.class)
 @JsonTypeName("ConnectToTarget.AzureSqlDbMI.Sync.LRS")
 public class ConnectToTargetSqlMISyncTaskProperties extends ProjectTaskProperties {
     /**
