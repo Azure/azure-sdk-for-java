@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntity;
@@ -19,7 +20,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -69,14 +70,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void detectLanguages() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string
         String inputText = "Bonjour tout le monde";
-        textAnalyticsAsyncClient.detectLanguage(inputText).subscribe(detectLanguageResult -> {
-            for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-                System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
-                    detectedLanguage.getName(),
-                    detectedLanguage.getIso6391Name(),
-                    detectedLanguage.getScore());
-            }
-        });
+        textAnalyticsAsyncClient.detectLanguage(inputText).subscribe(detectedLanguage ->
+            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
+                detectedLanguage.getName(),
+                detectedLanguage.getIso6391Name(),
+                detectedLanguage.getScore()));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string
     }
 
@@ -87,13 +85,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#string-string
         String input = "This text is in English";
         String countryHint = "US";
-        textAnalyticsAsyncClient.detectLanguageWithResponse(input, countryHint).subscribe(detectLanguageResult -> {
-            for (DetectedLanguage detectedLanguage : detectLanguageResult.getValue().getDetectedLanguages()) {
-                System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
-                    detectedLanguage.getName(),
-                    detectedLanguage.getIso6391Name(),
-                    detectedLanguage.getScore());
-            }
+        textAnalyticsAsyncClient.detectLanguageWithResponse(input, countryHint).subscribe(detectedLanguageResponse -> {
+            final DetectedLanguage detectedLanguage = detectedLanguageResponse.getValue();
+            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
+                detectedLanguage.getName(),
+                detectedLanguage.getIso6391Name(),
+                detectedLanguage.getScore());
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#string-string
     }
@@ -102,7 +99,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link TextAnalyticsAsyncClient#detectLanguage(List)}
      */
     public void detectLanguagesStringList() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguages#List
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#List
         final List<String> textInputs = Arrays.asList(
             "This is written in English", "Este es un document escrito en Español.");
         textAnalyticsAsyncClient.detectLanguage(textInputs).subscribe(detectedBatchResult -> {
@@ -121,14 +118,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 }
             }
         });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguages#List
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#List
     }
 
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#detectLanguageWithResponse(List, String)}
      */
     public void detectLanguagesWithResponse() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguagesWithResponse#List-String
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#List-String
         final List<String> textInputs1 = Arrays.asList(
             "This is written in English", "Este es un document escrito en Español.");
         textAnalyticsAsyncClient.detectLanguageWithResponse(textInputs1, "US").subscribe(response -> {
@@ -149,7 +146,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 }
             }
         });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguagesWithResponse#List-String
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#List-String
     }
 
     /**
@@ -224,35 +221,26 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void recognizeEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
         String inputText = "Satya Nadella is the CEO of Microsoft";
-        textAnalyticsAsyncClient.recognizeEntities(inputText).subscribe(recognizeEntitiesResult -> {
-            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
-                System.out.printf(
-                    "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
-                    entity.getText(),
-                    entity.getCategory(),
-                    entity.getScore());
-            }
-        });
+        textAnalyticsAsyncClient.recognizeEntities(inputText)
+            .subscribe(entity -> System.out.printf("Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
+                entity.getText(),
+                entity.getCategory(),
+                entity.getScore()));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesWithResponse(String, String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntities(String, String)}
      */
     public void recognizeEntitiesWithResponse() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#string-string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string
         String inputText1 = "Satya Nadella is the CEO of Microsoft";
-        textAnalyticsAsyncClient.recognizeEntitiesWithResponse(inputText1, "en")
-            .subscribe(recognizeEntitiesResult -> {
-                for (CategorizedEntity entity : recognizeEntitiesResult.getValue().getEntities()) {
-                    System.out.printf(
-                        "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
-                        entity.getText(),
-                        entity.getCategory(),
-                        entity.getScore());
-                }
-            });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#string-string
+        textAnalyticsAsyncClient.recognizeEntities(inputText1, "en")
+            .subscribe(entity -> System.out.printf("Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
+                entity.getText(),
+                entity.getCategory(),
+                entity.getScore()));
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string
     }
 
     /**
@@ -270,10 +258,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
-            for (RecognizeEntityResult recognizeEntityResult : recognizeEntitiesResults) {
-                for (CategorizedEntity entity : recognizeEntityResult.getEntities()) {
-                    System.out.printf(
-                        "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
+            for (RecognizeEntityResult recognizeEntitiesResult : recognizeEntitiesResults) {
+                for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
+                    System.out.printf("Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -387,45 +374,35 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
         String inputText = "My SSN is 555-55-5555";
-        textAnalyticsAsyncClient.recognizePiiEntities(inputText).subscribe(recognizeEntitiesResult -> {
-            for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                System.out.printf(
-                    "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
-                    entity.getText(),
-                    entity.getCategory(),
-                    entity.getScore());
-            }
-        });
+        textAnalyticsAsyncClient.recognizePiiEntities(inputText).subscribe(piiEntity -> System.out.printf(
+            "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
+            piiEntity.getText(),
+            piiEntity.getCategory(),
+            piiEntity.getScore()));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntitiesWithResponse(String, String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(String, String)}
      */
     public void recognizePiiEntitiesWithResponse() {
 
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#string-string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string
         String inputText1 = "My SSN is 555-55-5555";
-        textAnalyticsAsyncClient.recognizePiiEntitiesWithResponse(inputText1, "en")
-            .subscribe(recognizeEntitiesResult -> {
-                for (PiiEntity entity : recognizeEntitiesResult.getValue().getEntities()) {
-                    System.out.printf(
-                        "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
-                        entity.getText(),
-                        entity.getCategory(),
-                        entity.getScore());
-                }
-            });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#string-string
+        textAnalyticsAsyncClient.recognizePiiEntities(inputText1, "en")
+            .subscribe(entity -> System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
+                entity.getText(),
+                entity.getCategory(),
+                entity.getScore()));
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string
     }
 
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(List)}
      */
     public void recognizePiiEntitiesStringList() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list-string
-        List<String> textInputs = Arrays.asList(
-            "My SSN is 555-55-5555.", "Visa card 0111 1111 1111 1111.");
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list
+        List<String> textInputs = Arrays.asList("My SSN is 555-55-5555.", "Visa card 0111 1111 1111 1111.");
 
         textAnalyticsAsyncClient.recognizePiiEntities(textInputs).subscribe(recognizeEntitiesResults -> {
 
@@ -437,15 +414,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (RecognizePiiEntityResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                    System.out.printf(
-                        "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
+                    System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
                 }
             }
         });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list-string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list
     }
 
     /**
@@ -467,8 +443,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (RecognizePiiEntityResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                    System.out.printf(
-                        "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
+                    System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -497,8 +472,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (RecognizePiiEntityResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                    System.out.printf(
-                        "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
+                    System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -533,8 +507,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 for (RecognizePiiEntityResult recognizeEntitiesResult : recognizeEntitiesResults) {
                     for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                        System.out.printf(
-                            "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
+                        System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
                             entity.getText(),
                             entity.getCategory(),
                             entity.getScore());
@@ -552,34 +525,28 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
         String inputText = "Old Faithful is a geyser at Yellowstone Park.";
-        textAnalyticsAsyncClient.recognizeLinkedEntities(inputText).subscribe(recognizeEntitiesResult -> {
-            for (LinkedEntity linkedEntity : recognizeEntitiesResult.getEntities()) {
-                System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
-                    linkedEntity.getName(),
-                    linkedEntity.getUrl(),
-                    linkedEntity.getDataSource());
-            }
-        });
+        textAnalyticsAsyncClient.recognizeLinkedEntities(inputText).subscribe(linkedEntity ->
+            System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
+                linkedEntity.getName(),
+                linkedEntity.getUrl(),
+                linkedEntity.getDataSource()));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesWithResponse(String, String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntities(String, String)}
      */
     public void recognizeLinkedEntitiesWithResponse() {
 
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#string-string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string
         String inputText1 = "Old Faithful is a geyser at Yellowstone Park.";
-        textAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse(inputText1, "en")
-            .subscribe(linkedEntitiesResultResponse -> {
-                for (LinkedEntity linkedEntity : linkedEntitiesResultResponse.getValue().getEntities()) {
-                    System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
-                        linkedEntity.getName(),
-                        linkedEntity.getUrl(),
-                        linkedEntity.getDataSource());
-                }
-            });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#string-string
+        textAnalyticsAsyncClient.recognizeLinkedEntities(inputText1, "en")
+            .subscribe(linkedEntity ->
+                System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
+                    linkedEntity.getName(),
+                    linkedEntity.getUrl(),
+                    linkedEntity.getDataSource()));
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string
     }
 
     /**
@@ -639,7 +606,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#List-String
-
     }
 
     /**
@@ -715,27 +681,20 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void extractKeyPhrases() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string
         String inputText = "Bonjour tout le monde";
-        textAnalyticsAsyncClient.extractKeyPhrases(inputText).subscribe(extractKeyPhraseResult -> {
-            for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
-                System.out.printf("Recognized phrases: %s.%n", keyPhrase);
-            }
-        });
+        textAnalyticsAsyncClient.extractKeyPhrases(inputText).subscribe(keyPhrase ->
+            System.out.printf("Recognized phrases: %s.%n", keyPhrase));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrasesWithResponse(String, String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrases(String, String)}
      */
     public void extractKeyPhrasesWithResponse() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesWithResponse#string-string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string-string
         String inputText1 = "Bonjour tout le monde";
-        textAnalyticsAsyncClient.extractKeyPhrasesWithResponse(inputText1, "fr")
-            .subscribe(keyPhraseResultResponse -> {
-                for (String keyPhrase : keyPhraseResultResponse.getValue().getKeyPhrases()) {
-                    System.out.printf("Recognized phrases: %s.%n", keyPhrase);
-                }
-            });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesWithResponse#string-string
+        textAnalyticsAsyncClient.extractKeyPhrases(inputText1, "fr")
+            .subscribe(keyPhrase -> System.out.printf("Recognized phrases: %s.%n", keyPhrase));
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string-string
     }
 
     /**
@@ -856,19 +815,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void analyzeSentiment() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string
         String inputText = "The hotel was dark and unclean.";
-        textAnalyticsAsyncClient.analyzeSentiment(inputText).subscribe(analyzeSentimentResult -> {
-            TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-            System.out.printf(
-                "Recognized sentiment class: %s.%n",
-                documentSentiment.getTextSentimentClass());
+        textAnalyticsAsyncClient.analyzeSentiment(inputText).subscribe(documentSentiment -> {
+            System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
 
-            for (TextSentiment textSentiment : analyzeSentimentResult.getSentenceSentiments()) {
+            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf(
                     "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                    textSentiment.getTextSentimentClass(),
-                    textSentiment.getPositiveScore(),
-                    textSentiment.getNeutralScore(),
-                    textSentiment.getNegativeScore());
+                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentScores().getPositive(),
+                    sentenceSentiment.getSentimentScores().getNeutral(),
+                    sentenceSentiment.getSentimentScores().getNegative());
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string
@@ -881,21 +837,17 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#string-string
         String inputText1 = "The hotel was dark and unclean.";
         textAnalyticsAsyncClient.analyzeSentimentWithResponse(inputText1, "en")
-            .subscribe(analyzeSentimentResult -> {
-                AnalyzeSentimentResult sentimentResult = analyzeSentimentResult.getValue();
-                TextSentiment documentSentiment = sentimentResult.getDocumentSentiment();
-                System.out.printf(
-                    "Recognized sentiment class: %s.%n",
-                    documentSentiment.getTextSentimentClass());
+            .subscribe(response -> {
+                DocumentSentiment documentSentiment = response.getValue();
+                System.out.printf("Recognized sentiment class: %s.%n", documentSentiment.getSentiment());
 
-                for (TextSentiment textSentiment : sentimentResult.getSentenceSentiments()) {
-                    System.out.printf(
-                        "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
+                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
+                    System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
                             + "negative score: %s.%n",
-                        textSentiment.getTextSentimentClass(),
-                        textSentiment.getPositiveScore(),
-                        textSentiment.getNeutralScore(),
-                        textSentiment.getNegativeScore());
+                        sentenceSentiment.getSentiment(),
+                        sentenceSentiment.getSentimentScores().getPositive(),
+                        sentenceSentiment.getSentimentScores().getNeutral(),
+                        sentenceSentiment.getSentimentScores().getNegative());
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#string-string
@@ -919,16 +871,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (AnalyzeSentimentResult analyzeSentimentResult : analyzeSentimentResults) {
                 System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-                TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                 System.out.printf("Recognized document sentiment: %s.%n",
-                    documentSentiment.getTextSentimentClass());
-                for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
+                    documentSentiment.getSentiment());
+                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
                             + "negative score: %s.%n",
-                        sentenceSentiment.getTextSentimentClass(),
-                        sentenceSentiment.getPositiveScore(),
-                        sentenceSentiment.getNeutralScore(),
-                        sentenceSentiment.getNegativeScore());
+                        sentenceSentiment.getSentiment(),
+                        sentenceSentiment.getSentimentScores().getPositive(),
+                        sentenceSentiment.getSentimentScores().getNeutral(),
+                        sentenceSentiment.getSentimentScores().getNegative());
                 }
             }
         });
@@ -954,16 +906,15 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (AnalyzeSentimentResult analyzeSentimentResult : analyzeSentimentResults) {
                 System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-                TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                System.out.printf("Recognized document sentiment: %s.%n",
-                    documentSentiment.getTextSentimentClass());
-                for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
+                DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
+                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
                             + "negative score: %s.%n",
-                        sentenceSentiment.getTextSentimentClass(),
-                        sentenceSentiment.getPositiveScore(),
-                        sentenceSentiment.getNeutralScore(),
-                        sentenceSentiment.getNegativeScore());
+                        sentenceSentiment.getSentiment(),
+                        sentenceSentiment.getSentimentScores().getPositive(),
+                        sentenceSentiment.getSentimentScores().getNeutral(),
+                        sentenceSentiment.getSentimentScores().getNegative());
                 }
             }
         });
@@ -989,16 +940,15 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (AnalyzeSentimentResult analyzeSentimentResult : analyzeSentimentResults) {
                 System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-                TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                System.out.printf("Recognized document sentiment: %s.%n",
-                    documentSentiment.getTextSentimentClass());
-                for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
+                DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
+                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
                             + "negative score: %s.%n",
-                        sentenceSentiment.getTextSentimentClass(),
-                        sentenceSentiment.getPositiveScore(),
-                        sentenceSentiment.getNeutralScore(),
-                        sentenceSentiment.getNegativeScore());
+                        sentenceSentiment.getSentiment(),
+                        sentenceSentiment.getSentimentScores().getPositive(),
+                        sentenceSentiment.getSentimentScores().getNeutral(),
+                        sentenceSentiment.getSentimentScores().getNegative());
                 }
             }
         });
@@ -1030,16 +980,15 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 for (AnalyzeSentimentResult analyzeSentimentResult : analyzeSentimentResults) {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-                    TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                    System.out.printf("Recognized document sentiment: %s.%n",
-                        documentSentiment.getTextSentimentClass());
-                    for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
+                    DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                    System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
+                    for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                         System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
                                 + "negative score: %s.%n",
-                            sentenceSentiment.getTextSentimentClass(),
-                            sentenceSentiment.getPositiveScore(),
-                            sentenceSentiment.getNeutralScore(),
-                            sentenceSentiment.getNegativeScore());
+                            sentenceSentiment.getSentiment(),
+                            sentenceSentiment.getSentimentScores().getPositive(),
+                            sentenceSentiment.getSentimentScores().getNeutral(),
+                            sentenceSentiment.getSentimentScores().getNegative());
                     }
                 }
             });

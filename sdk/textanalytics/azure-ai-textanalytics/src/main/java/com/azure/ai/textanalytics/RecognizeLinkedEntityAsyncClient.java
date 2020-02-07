@@ -14,6 +14,9 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -49,13 +52,25 @@ class RecognizeLinkedEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<RecognizeLinkedEntityResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
-        Context context) {
+    Mono<PagedResponse<com.azure.ai.textanalytics.models.LinkedEntity>> recognizeLinkedEntitiesWithResponse(
+        String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return recognizeBatchLinkedEntitiesWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(Transforms::processSingleResponseErrorResult);
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                Transforms.processSingleResponseErrorResult(response).getValue().getLinkedEntities(),
+                null,
+                null
+            ));
+    }
+
+    PagedFlux<com.azure.ai.textanalytics.models.LinkedEntity> recognizeLinkedEntities(
+        String text, String language, Context context) {
+        return new PagedFlux<>(() -> recognizeLinkedEntitiesWithResponse(text, language, context));
     }
 
     Mono<Response<DocumentResultCollection<RecognizeLinkedEntityResult>>> recognizeLinkedEntitiesWithResponse(

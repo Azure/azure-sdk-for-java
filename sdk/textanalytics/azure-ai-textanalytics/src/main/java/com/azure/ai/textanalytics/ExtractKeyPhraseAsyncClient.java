@@ -12,6 +12,9 @@ import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -46,13 +49,23 @@ class ExtractKeyPhraseAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language,
-        Context context) {
+    Mono<PagedResponse<String>> extractKeyPhrasesWithResponse(String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return extractBatchKeyPhrasesWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(Transforms::processSingleResponseErrorResult);
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                Transforms.processSingleResponseErrorResult(response).getValue().getKeyPhrases(),
+                null,
+                null
+            ));
+    }
+
+    PagedFlux<String> extractKeyPhrases(String text, String language, Context context) {
+        return new PagedFlux<>(() -> extractKeyPhrasesWithResponse(text, language, context));
     }
 
     Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(

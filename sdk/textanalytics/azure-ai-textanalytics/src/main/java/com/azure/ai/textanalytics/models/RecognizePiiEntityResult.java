@@ -16,7 +16,7 @@ public final class RecognizePiiEntityResult extends DocumentResult {
     private final List<PiiEntity> entities;
 
     /**
-     * Creates a {@code RecognizePiiEntityResult} model that describes recognized entities result
+     * Creates a {@code RecognizePiiEntityResult} model that describes recognized entities result.
      *
      * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
@@ -30,7 +30,7 @@ public final class RecognizePiiEntityResult extends DocumentResult {
     }
 
     /**
-     * Get a list of PII entities
+     * Get a list of PII entities.
      *
      * @return a list of {@link PiiEntity}
      */

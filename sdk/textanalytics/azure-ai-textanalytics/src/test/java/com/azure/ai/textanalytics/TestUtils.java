@@ -9,18 +9,20 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.SentimentScorePerLabel;
 import com.azure.ai.textanalytics.models.RecognizeEntityResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.models.TextSentimentClass;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SentimentLabel;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,6 +65,13 @@ final class TestUtils {
             new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"),
             new DetectLanguageInput("1", DETECT_LANGUAGE_INPUTS.get(1)),
             new DetectLanguageInput("2", DETECT_LANGUAGE_INPUTS.get(2), "US")
+        );
+    }
+
+    static List<DetectLanguageInput> getDuplicateIdDetectLanguageInputs() {
+        return Arrays.asList(
+            new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"),
+            new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US")
         );
     }
 
@@ -197,27 +206,27 @@ final class TestUtils {
      * Helper method to get the expected Batch Text Sentiments
      */
     static DocumentResultCollection<AnalyzeSentimentResult> getExpectedBatchTextSentiment() {
-        final TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
-        final TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(67, 1);
+        final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
 
-        final TextSentiment expectedDocumentSentiment = new TextSentiment(TextSentimentClass.MIXED,
-            0.0, 0.0, 0.0, 66, 0);
-
-        final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResult("0", textDocumentStatistics1,
-            null,
-            expectedDocumentSentiment,
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(SentimentLabel.MIXED,
+            new SentimentScorePerLabel(0.0, 0.0, 0.0),
             Arrays.asList(
-                new TextSentiment(TextSentimentClass.NEGATIVE, 0.0, 0.0, 0.0, 31, 0),
-                new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.0, 35, 32)
+                new SentenceSentiment(SentimentLabel.NEGATIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(SentimentLabel.POSITIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 35, 32)
             ));
 
-        final AnalyzeSentimentResult analyzeSentimentResult2 = new AnalyzeSentimentResult("1", textDocumentStatistics2,
-            null,
-            expectedDocumentSentiment,
+        final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentiment(SentimentLabel.MIXED,
+            new SentimentScorePerLabel(0.0, 0.0, 0.0),
             Arrays.asList(
-                new TextSentiment(TextSentimentClass.POSITIVE, 0.0, 0.0, 0.0, 35, 0),
-                new TextSentiment(TextSentimentClass.NEGATIVE, 0.0, 0.0, 0.0, 31, 36)
+                new SentenceSentiment(SentimentLabel.POSITIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 35, 0),
+                new SentenceSentiment(SentimentLabel.NEGATIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 31, 36)
             ));
+
+        final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResult("0",
+            textDocumentStatistics, null, expectedDocumentSentiment);
+
+        final AnalyzeSentimentResult analyzeSentimentResult2 = new AnalyzeSentimentResult("1",
+            textDocumentStatistics, null, expectedDocumentSentiment2);
 
         return new DocumentResultCollection<>(Arrays.asList(analyzeSentimentResult1, analyzeSentimentResult2),
             DEFAULT_MODEL_VERSION,

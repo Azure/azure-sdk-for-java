@@ -13,6 +13,9 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -48,13 +51,23 @@ class RecognizePiiEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<RecognizePiiEntityResult>> recognizePiiEntitiesWithResponse(String text, String language,
-        Context context) {
+    Mono<PagedResponse<PiiEntity>> recognizePiiEntitiesWithResponse(String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return recognizeBatchPiiEntitiesWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(Transforms::processSingleResponseErrorResult);
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                Transforms.processSingleResponseErrorResult(response).getValue().getEntities(),
+                null,
+                null
+            ));
+    }
+
+    PagedFlux<PiiEntity> recognizePiiEntities(String text, String language, Context context) {
+        return new PagedFlux<>(() -> recognizePiiEntitiesWithResponse(text, language, context));
     }
 
     Mono<Response<DocumentResultCollection<RecognizePiiEntityResult>>> recognizePiiEntitiesWithResponse(
@@ -103,7 +116,7 @@ class RecognizePiiEntityAsyncClient {
         for (DocumentError documentError : entitiesResult.getErrors()) {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 toTextAnalyticsError(documentError.getError());
-            recognizePiiEntityResults.add(new RecognizePiiEntityResult(documentError.getId(), null, error, null));
+            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null, error, null));
         }
 
         return new DocumentResultCollection<>(recognizePiiEntityResults,

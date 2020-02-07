@@ -16,7 +16,7 @@ public final class RecognizeEntityResult extends DocumentResult {
     private final List<CategorizedEntity> entities;
 
     /**
-     * Creates a {@code RecognizeEntitiesResult} model that describes recognized entities result
+     * Creates a {@code RecognizeEntitiesResult} model that describes recognized entities result.
      *
      * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
@@ -30,7 +30,7 @@ public final class RecognizeEntityResult extends DocumentResult {
     }
 
     /**
-     * Get a list of categorized entities string
+     * Get a list of categorized entities string.
      *
      * @return a list of {@link CategorizedEntity}
      */

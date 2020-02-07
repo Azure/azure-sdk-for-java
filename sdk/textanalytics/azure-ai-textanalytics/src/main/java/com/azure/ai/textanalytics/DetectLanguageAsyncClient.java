@@ -45,12 +45,13 @@ class DetectLanguageAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
+    Mono<Response<DetectedLanguage>> detectLanguageWithResponse(String text, String countryHint, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
         List<DetectLanguageInput> languageInputs = Collections.singletonList(new DetectLanguageInput("0",
             text, countryHint));
         return detectBatchLanguagesWithResponse(languageInputs, null, context)
-            .map(Transforms::processSingleResponseErrorResult);
+            .map(response -> new SimpleResponse<>(response,
+                Transforms.processSingleResponseErrorResult(response).getValue().getPrimaryLanguage()));
     }
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> textInputs,
@@ -76,7 +77,7 @@ class DetectLanguageAsyncClient {
             options == null ? null : options.showStatistics(), context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of detected language output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to detect languages - {}", error))
+            .doOnError(error -> logger.warning("Failed to detect language - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
