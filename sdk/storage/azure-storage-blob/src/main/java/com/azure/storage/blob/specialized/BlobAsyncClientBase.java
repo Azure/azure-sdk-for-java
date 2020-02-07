@@ -622,10 +622,15 @@ public class BlobAsyncClientBase {
     public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         try {
+            /*
+             * Extract the response and add another 'onNext' operation to the data stream to perform a deep copy. This
+             * will make the returned stream resilient to buffered pools that may attempt to reclaim the backing buffer.
+             * This protects against scenarios where the stream is captured and saved for later.
+             */
             return withContext(context ->
                 downloadWithResponse(range, options, requestConditions, getRangeContentMd5, context))
                 .map(response -> new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), response.getValue().map(StorageImplUtils::deepCloneBuffer),
+                    response.getHeaders(), StorageImplUtils.deepCloneStreamBuffers(response.getValue()),
                     response.getDeserializedHeaders()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -967,7 +972,7 @@ public class BlobAsyncClientBase {
         AtomicLong totalProgress) {
 
         // Extract the body.
-        Flux<ByteBuffer> data = response.getValue().map(StorageImplUtils::deepCloneBuffer);
+        Flux<ByteBuffer> data = StorageImplUtils.deepCloneStreamBuffers(response.getValue());
 
         // Report progress as necessary.
         data = ProgressReporter.addParallelProgressReporting(data,

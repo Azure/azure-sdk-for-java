@@ -4,6 +4,9 @@
 - Added ability to access BlobProperties from BlobInputStream.
 - Modified downloadToFile to populate BlobProperties.blobSize to be the actual blob size instead of the content length of the first range. 
 
+## 12.3.1 (2020-02-07)
+- Fixed a bug in the download stream where the under where a buffer would be reclaimed before consumption. This issue occurs in scenarios where the stream is captured for later consumption.
+
 ## 12.3.0 (2020-01-16)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.3.0/sdk/storage/azure-storage-blob/README.md)

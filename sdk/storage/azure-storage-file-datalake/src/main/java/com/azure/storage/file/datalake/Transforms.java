@@ -28,6 +28,7 @@ import com.azure.storage.file.datalake.models.CopyStatusType;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
+import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.FileReadHeaders;
@@ -45,7 +46,6 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
-import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 
@@ -285,8 +285,13 @@ class Transforms {
         if (r == null) {
             return null;
         }
+
+        /*
+         * Deep clone the buffers in the stream, this will make it  resilient to buffered pools that may attempt to
+         * reclaim the backing buffer. This protects against scenarios where the stream is captured and saved for later.
+         */
         return new FileReadAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-            r.getValue().map(StorageImplUtils::deepCloneBuffer),
+            StorageImplUtils.deepCloneStreamBuffers(r.getValue()),
             Transforms.toPathReadHeaders(r.getDeserializedHeaders()));
     }
 

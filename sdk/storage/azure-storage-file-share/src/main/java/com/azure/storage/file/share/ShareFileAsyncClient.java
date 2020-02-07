@@ -536,9 +536,14 @@ public class ShareFileAsyncClient {
      */
     public Mono<ShareFileDownloadAsyncResponse> downloadWithResponse(ShareFileRange range, Boolean rangeGetContentMD5) {
         try {
+            /*
+             * Extract the response and add another 'onNext' operation to the data stream to perform a deep copy. This
+             * will make the returned stream resilient to buffered pools that may attempt to reclaim the backing buffer.
+             * This protects against scenarios where the stream is captured and saved for later.
+             */
             return withContext(context -> downloadWithResponse(range, rangeGetContentMD5, context))
                 .map(response -> new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), response.getValue().map(StorageImplUtils::deepCloneBuffer),
+                    response.getHeaders(), StorageImplUtils.deepCloneStreamBuffers(response.getValue()),
                     response.getDeserializedHeaders()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

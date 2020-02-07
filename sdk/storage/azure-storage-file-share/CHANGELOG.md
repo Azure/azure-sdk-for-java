@@ -4,6 +4,9 @@
 - Fixed bug in ShareClient.getStatistics where shareUsageInGB was not properly converted. Added parameter to ShareStatistics to include a shareUsageInBytes parameter.
 - Fixed bug where ShareDirectoryAsyncClient.getFileClient appended an extra / for files in the root directory.
 
+## 12.1.1 (2020-02-07)
+- Fixed a bug in the download stream where the under where a buffer would be reclaimed before consumption. This issue occurs in scenarios where the stream is captured for later consumption.
+
 ## 12.1.0 (2020-01-08)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.1.0/sdk/storage/azure-storage-file-share/README.md)
