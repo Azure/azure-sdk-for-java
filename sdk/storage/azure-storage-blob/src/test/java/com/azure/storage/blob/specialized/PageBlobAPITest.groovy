@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.PageBlobRequestConditions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberActionType
+import org.junit.Ignore
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -810,6 +811,10 @@ class PageBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    /* Uncomment any managed disk lines if a managed disk account is available to be tested. They are difficult to
+     acquire so we do not run them in the nightly live run tests. */
+
+    @Ignore
     def "Get page ranges diff prev snapshot url"() {
         setup:
         BlobContainerClient managedDiskContainer = managedDiskServiceClient.getBlobContainerClient(generateContainerName())
