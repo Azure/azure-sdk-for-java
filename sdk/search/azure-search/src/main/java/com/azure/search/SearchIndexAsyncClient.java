@@ -5,7 +5,6 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import org.apache.http.HttpStatus;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -48,6 +47,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public class SearchIndexAsyncClient {
+
+    /*
+     * Representation of the Multi-Status HTTP response code.
+     */
+    private static final int MULTI_STATUS_CODE = 207;
 
     /**
      * The lazily-created serializer for search index client.
@@ -702,7 +706,7 @@ public class SearchIndexAsyncClient {
         return restClient.documents()
             .indexWithRestResponseAsync(batch, context)
             .handle((res, sink) -> {
-                if (res.getStatusCode() == HttpStatus.SC_MULTI_STATUS) {
+                if (res.getStatusCode() == MULTI_STATUS_CODE) {
                     IndexBatchException ex = new IndexBatchException(res.getValue());
                     sink.error(ex);
                 } else {
