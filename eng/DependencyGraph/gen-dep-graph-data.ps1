@@ -100,6 +100,7 @@ $DependencyHash = @{}
 Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     $pomFile = $_.FullName
     $xmlPomFile = $null
+    Write-Host "Processing POM file: $($pomFile)"
 
     if ($ParentPomFilesToIgnore -contains $pomFile)
     {
@@ -123,6 +124,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     # Create the library entry and add it to the hash
     $libKey = "$($xmlPomFile.project.groupId):$($xmlPomFile.project.artifactId):$($xmlPomFile.project.version)"
     [Library]$lib = [Library]::new($xmlPomFile.project.groupId, $xmlPomFile.project.artifactId, $xmlPomFile.project.version)
+    Write-Host "adding $($libKey) to LibraryHash"
     $LibraryHash.Add($libKey, $lib)
 
     # Dependencies can be inserted into the hash for a given library before the library, itself
