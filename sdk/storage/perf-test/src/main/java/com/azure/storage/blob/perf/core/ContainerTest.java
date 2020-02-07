@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.perf.core;
 
-import com.azure.core.test.perf.PerfStressOptions;
+import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 

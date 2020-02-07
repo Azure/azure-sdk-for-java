@@ -10,6 +10,4 @@ module com.azure.core.test.perf {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires com.azure.core;
-//    requires transitive com.fasterxml.jackson.core;
-//    opens com.azure.core.test.perf to com.fasterxml.jackson.databind;
 }

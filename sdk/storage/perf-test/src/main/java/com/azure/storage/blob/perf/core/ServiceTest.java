@@ -3,9 +3,9 @@
 
 package com.azure.storage.blob.perf.core;
 
-import com.azure.core.test.perf.PerfStressHttpClient;
-import com.azure.core.test.perf.PerfStressOptions;
-import com.azure.core.test.perf.PerfStressTest;
+import com.azure.perf.test.core.PerfStressHttpClient;
+import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.perf.test.core.PerfStressTest;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;

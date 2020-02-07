@@ -10,8 +10,8 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import com.azure.core.test.perf.RandomStream;
-import com.azure.core.test.perf.SizeOptions;
+import com.azure.perf.test.core.RandomStream;
+import com.azure.perf.test.core.SizeOptions;
 import com.azure.storage.blob.perf.core.RandomBlobTest;
 import reactor.core.publisher.Mono;
 

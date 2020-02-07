@@ -1263,7 +1263,7 @@
     <module>sdk/core/azure-core-http-netty</module>
     <module>sdk/core/azure-core-http-okhttp</module>
     <module>sdk/core/azure-core-test</module>
-    <module>common/azure-core-test-perf</module>
+    <module>common/perf-test-core</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
     <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>

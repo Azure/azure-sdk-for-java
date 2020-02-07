@@ -11,12 +11,12 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-core-test-perf</artifactId>
+  <artifactId>perf-test-core</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
 
-  <name>Microsoft Azure Java Core Test Library</name>
-  <description>This package contains core test types for Azure Java clients.</description>
+  <name>Microsoft Azure Java Performance Test Library</name>
+  <description>This package contains performance test types for Azure Java clients.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -31,18 +31,6 @@
     <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
   </scm>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.fasterxml.jackson</groupId>
-        <artifactId>jackson-bom</artifactId>
-        <version>2.10.0</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <build>
     <plugins>
@@ -61,16 +49,17 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+      <version>2.10.1</version>  <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.beust</groupId>
       <artifactId>jcommander</artifactId>
-      <version>1.78</version>
+      <version>1.78</version> <!-- {x-version-update;com.beust:jcommander;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.2.0</version>
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
   </dependencies>
 </project>

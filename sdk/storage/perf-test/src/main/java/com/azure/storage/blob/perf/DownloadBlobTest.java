@@ -6,18 +6,18 @@ package com.azure.storage.blob.perf;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.azure.core.test.perf.RandomFlux;
-import com.azure.core.test.perf.SizeOptions;
+import com.azure.perf.test.core.RandomFlux;
+import com.azure.perf.test.core.SizeOptions;
 import com.azure.storage.blob.*;
 import com.azure.storage.blob.perf.core.ContainerTest;
 
 import reactor.core.publisher.Mono;
 
-public class DownloadTest extends ContainerTest<SizeOptions> {
+public class DownloadBlobTest extends ContainerTest<SizeOptions> {
     private final BlobClient blobClient;
     private final BlobAsyncClient blobAsyncClient;
 
-    public DownloadTest(SizeOptions options) {
+    public DownloadBlobTest(SizeOptions options) {
         super(options);
         String blobName = "downloadTest";
         blobClient = blobContainerClient.getBlobClient(blobName);

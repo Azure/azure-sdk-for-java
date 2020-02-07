@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.test.perf;
+package com.azure.perf.test.core;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -43,9 +43,9 @@ public class PerfStressProgram {
         List<Class<?>> classList = new ArrayList<>(Arrays.asList(classes));
 
         try {
-            classList.add(Class.forName("com.azure.core.test.perf.NoOpTest"));
-            classList.add(Class.forName("com.azure.core.test.perf.ExceptionTest"));
-            classList.add(Class.forName("com.azure.core.test.perf.SleepTest"));
+            classList.add(Class.forName("com.azure.perf.test.core.NoOpTest"));
+            classList.add(Class.forName("com.azure.perf.test.core.ExceptionTest"));
+            classList.add(Class.forName("com.azure.perf.test.core.SleepTest"));
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

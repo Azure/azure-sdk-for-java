@@ -5,7 +5,7 @@ package com.azure.storage.blob.perf;
 
 import java.util.UUID;
 
-import com.azure.core.test.perf.CountOptions;
+import com.azure.perf.test.core.CountOptions;
 import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

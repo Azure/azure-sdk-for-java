@@ -6,8 +6,8 @@ package com.azure.storage.blob.perf;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.azure.core.test.perf.RandomStream;
-import com.azure.core.test.perf.SizeOptions;
+import com.azure.perf.test.core.RandomStream;
+import com.azure.perf.test.core.SizeOptions;
 import com.azure.storage.blob.perf.core.RandomBlobTest;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 
