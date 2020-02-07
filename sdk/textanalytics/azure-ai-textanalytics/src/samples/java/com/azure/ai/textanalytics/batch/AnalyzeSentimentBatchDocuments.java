@@ -44,12 +44,12 @@ public class AnalyzeSentimentBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Analyzing batch sentiments
-        DocumentResultCollection<AnalyzeSentimentResult> analyzedBatchResult = client.analyzeSentimentBatchWithResponse(
+        DocumentResultCollection<AnalyzeSentimentResult> sentimentBatchResult = client.analyzeSentimentBatchWithResponse(
             inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s%n", analyzedBatchResult.getModelVersion());
+        System.out.printf("Model version: %s%n", sentimentBatchResult.getModelVersion());
 
         // Batch statistics
-        final TextDocumentBatchStatistics batchStatistics = analyzedBatchResult.getStatistics();
+        final TextDocumentBatchStatistics batchStatistics = sentimentBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getInvalidDocumentCount(),
@@ -57,7 +57,7 @@ public class AnalyzeSentimentBatchDocuments {
             batchStatistics.getValidDocumentCount());
 
         // Analyzed sentiment for each of document from a batch of documents
-        for (AnalyzeSentimentResult analyzeSentimentResult : analyzedBatchResult) {
+        for (AnalyzeSentimentResult analyzeSentimentResult : sentimentBatchResult) {
             System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
             // Erroneous document
             if (analyzeSentimentResult.isError()) {

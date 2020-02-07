@@ -156,7 +156,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<DetectLanguageResult>> detectLanguageBatchWithResponse(
         List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.detectLanguageAsyncClient.detectBatchLanguageWithResponse(textInputs, options, context).block();
+        return client.detectLanguageAsyncClient.detectLanguageBatchWithResponse(textInputs, options, context).block();
     }
 
     // Categorized Entity
@@ -187,7 +187,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities with http response in a text with a provided language representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesWithResponse#String-String-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#String-String-Context}
      *
      * @param text the text to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
@@ -266,7 +266,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntitiesBatchWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizeEntityAsyncClient.recognizeBatchEntitiesWithResponse(textInputs, options,
+        return client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithResponse(textInputs, options,
             context).block();
     }
 
@@ -384,7 +384,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntitiesBatchWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizePiiEntityAsyncClient.recognizeBatchPiiEntitiesWithResponse(textInputs, options,
+        return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesBatchWithResponse(textInputs, options,
             context).block();
     }
 
@@ -501,7 +501,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesBatchWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizeLinkedEntityAsyncClient.recognizeBatchLinkedEntitiesWithResponse(textInputs, options,
+        return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatchWithResponse(textInputs, options,
             context).block();
     }
 
@@ -612,7 +612,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrasesBatchWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.extractKeyPhraseAsyncClient.extractBatchKeyPhrasesWithResponse(textInputs, options,
+        return client.extractKeyPhraseAsyncClient.extractKeyPhrasesBatchWithResponse(textInputs, options,
             context).block();
     }
 
@@ -725,7 +725,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<AnalyzeSentimentResult>> analyzeSentimentBatchWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.analyzeSentimentAsyncClient.analyzeBatchSentimentWithResponse(textInputs, options,
+        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithResponse(textInputs, options,
             context).block();
     }
 }

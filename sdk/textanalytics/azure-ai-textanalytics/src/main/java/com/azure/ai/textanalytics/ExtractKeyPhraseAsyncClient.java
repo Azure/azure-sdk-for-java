@@ -52,7 +52,7 @@ class ExtractKeyPhraseAsyncClient {
     Mono<PagedResponse<String>> extractKeyPhrasesWithResponse(String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
-        return extractBatchKeyPhrasesWithResponse(
+        return extractKeyPhrasesBatchWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
             .map(response -> new PagedResponseBase<>(
                 response.getRequest(),
@@ -74,10 +74,10 @@ class ExtractKeyPhraseAsyncClient {
 
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
-        return extractBatchKeyPhrasesWithResponse(documentInputs, options, context);
+        return extractKeyPhrasesBatchWithResponse(documentInputs, options, context);
     }
 
-    Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
+    Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesBatchWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 

@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -49,7 +50,7 @@ class DetectLanguageAsyncClient {
         Objects.requireNonNull(text, "'text' cannot be null.");
         List<DetectLanguageInput> languageInputs = Collections.singletonList(new DetectLanguageInput("0",
             text, countryHint));
-        return detectBatchLanguagesWithResponse(languageInputs, null, context)
+        return detectLanguageBatchWithResponse(languageInputs, null, context)
             .map(response -> new SimpleResponse<>(response,
                 Transforms.processSingleResponseErrorResult(response).getValue().getPrimaryLanguage()));
     }
@@ -60,10 +61,10 @@ class DetectLanguageAsyncClient {
         List<DetectLanguageInput> detectLanguageInputs = mapByIndex(textInputs, (index, value) ->
             new DetectLanguageInput(index, value, countryHint));
 
-        return detectBatchLanguageWithResponse(detectLanguageInputs, options, context);
+        return detectLanguageBatchWithResponse(detectLanguageInputs, options, context);
     }
 
-    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguageWithResponse(
+    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguageBatchWithResponse(
         List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
@@ -97,7 +98,8 @@ class DetectLanguageAsyncClient {
             List<com.azure.ai.textanalytics.implementation.models.DetectedLanguage> detectedLanguages =
                 documentLanguage.getDetectedLanguages();
             if (detectedLanguages.size() >= 1) {
-                // choose the highest score one
+                detectedLanguages.sort(
+                    Comparator.comparing(com.azure.ai.textanalytics.implementation.models.DetectedLanguage::getScore));
                 com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguageResult =
                     detectedLanguages.get(0);
                 primaryLanguage = new DetectedLanguage(detectedLanguageResult.getName(),

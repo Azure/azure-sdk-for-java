@@ -16,11 +16,11 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -394,12 +394,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
-            for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                    System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
-                        entity.getText(),
-                        entity.getCategory(),
-                        entity.getScore());
+                for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
+                    for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
+                        System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
+                            entity.getText(),
+                            entity.getCategory(),
+                            entity.getScore());
+                    }
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatchWithResponse#list-String-TextAnalyticsRequestOptions
