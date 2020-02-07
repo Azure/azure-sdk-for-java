@@ -50,8 +50,6 @@ org.powermock:powermock-module-junit4;2.0.2
 org.slf4j:slf4j-api;1.7.28
 org.slf4j:slf4j-log4j12;1.7.0
 org.slf4j:slf4j-simple;1.7.25
-com.beust:jcommander;1.78
-
 
 ## Test dependency versions
 cglib:cglib-nodep;3.2.7
