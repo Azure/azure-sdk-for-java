@@ -1,0 +1,96 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.file.core.windows.net/filesasclienttestsfilesasnetworktestuploadfails035865738?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3c987ad0-40ee-4aee-9b3c-ca497b37ec2a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7780FD06E43C6",
+      "Last-Modified" : "Tue, 03 Dec 2019 16:42:41 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "afed10f9-e01a-001e-59f8-a97ee3000000",
+      "Date" : "Tue, 03 Dec 2019 16:42:40 GMT",
+      "x-ms-client-request-id" : "3c987ad0-40ee-4aee-9b3c-ca497b37ec2a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.file.core.windows.net/filesasclienttestsfilesasnetworktestuploadfails035865738/filename",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b4c65739-2b44-49c2-8ae7-0ba57922072d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "15581347578553677299*8114634751575874941",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-12-03T16:42:41.3937251Z",
+      "Last-Modified" : "Tue, 03 Dec 2019 16:42:41 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 03 Dec 2019 16:42:40 GMT",
+      "ETag" : "0x8D7780FD07D6A63",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-12-03T16:42:41.3937251Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "afed10fb-e01a-001e-5af8-a97ee3000000",
+      "x-ms-client-request-id" : "b4c65739-2b44-49c2-8ae7-0ba57922072d",
+      "x-ms-file-last-write-time" : "2019-12-03T16:42:41.3937251Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.file.core.windows.net/filesasclienttestsfilesasnetworktestuploadfails035865738/filename?comp=range&sv=2019-02-02&spr=https%2Chttp&st=2019-12-02T16%3A42%3A41Z&se=2019-12-04T16%3A42%3A41Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1e975055-b2ed-416f-86cd-269521410521",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthorizationPermissionMismatch",
+      "retry-after" : "0",
+      "Content-Length" : "279",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "afed10fc-e01a-001e-5bf8-a97ee3000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:afed10fc-e01a-001e-5bf8-a97ee3000000\nTime:2019-12-03T16:42:41.4814328Z</Message></Error>",
+      "Date" : "Tue, 03 Dec 2019 16:42:40 GMT",
+      "x-ms-client-request-id" : "1e975055-b2ed-416f-86cd-269521410521",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://gapradev.file.core.windows.net/filesasclienttestsfilesasnetworktestuploadfails035865738/filename?sv=2019-02-02&spr=https%2Chttp&st=2019-12-02T16%3A42%3A41Z&se=2019-12-04T16%3A42%3A41Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "a2c711b5-a161-4a96-a14e-27f13a649684"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "afed10fd-e01a-001e-5cf8-a97ee3000000",
+      "Date" : "Tue, 03 Dec 2019 16:42:40 GMT",
+      "x-ms-client-request-id" : "a2c711b5-a161-4a96-a14e-27f13a649684"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "filesasclienttestsfilesasnetworktestuploadfails035865738", "2019-12-03T16:42:41.404028Z", "2019-12-03T16:42:41.404028Z" ]
+}

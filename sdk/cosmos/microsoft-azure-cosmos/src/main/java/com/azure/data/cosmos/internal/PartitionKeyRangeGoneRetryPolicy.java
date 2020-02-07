@@ -64,28 +64,30 @@ public class PartitionKeyRangeGoneRetryPolicy implements IDocumentClientRetryPol
             if (this.feedOptions != null) {
                 request.properties = this.feedOptions.properties();
             }
-            Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
 
-            return collectionObs.flatMap(collection -> {
+            return collectionObs.flatMap(collectionValueHolder -> {
 
-                Mono<CollectionRoutingMap> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(collection.resourceId(), null, request.properties);
+                Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(collectionValueHolder.v.resourceId(),
+                    null, request.properties);
 
-                Mono<CollectionRoutingMap> refreshedRoutingMapObs = routingMapObs.flatMap(routingMap -> {
-                    // Force refresh.
-                    return this.partitionKeyRangeCache.tryLookupAsync(
-                            collection.resourceId(),
-                            routingMap,
+                Mono<Utils.ValueHolder<CollectionRoutingMap>> refreshedRoutingMapObs = routingMapObs.flatMap(routingMapValueHolder -> {
+                    if (routingMapValueHolder.v != null) {
+                        // Force refresh.
+                        return this.partitionKeyRangeCache.tryLookupAsync(
+                            collectionValueHolder.v.resourceId(),
+                            routingMapValueHolder.v,
                             request.properties);
-                }).switchIfEmpty(Mono.defer(Mono::empty));
+                    } else {
+                        return Mono.just(new Utils.ValueHolder<>(null));
+                    }
+            });
 
                 //  TODO: Check if this behavior can be replaced by doOnSubscribe
                 return refreshedRoutingMapObs.flatMap(rm -> {
                     this.retried = true;
                     return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
-                }).switchIfEmpty(Mono.defer(() -> {
-                    this.retried = true;
-                    return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
-                }));
+                });
 
             });
 

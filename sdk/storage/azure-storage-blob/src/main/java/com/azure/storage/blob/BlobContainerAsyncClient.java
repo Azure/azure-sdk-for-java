@@ -20,6 +20,7 @@ import com.azure.storage.blob.implementation.models.ContainerGetAccountInfoHeade
 import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobItem;
@@ -30,11 +31,16 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -666,7 +672,41 @@ public final class BlobContainerAsyncClient {
      */
     public PagedFlux<BlobItem> listBlobs(ListBlobsOptions options) {
         try {
-            return listBlobsFlatWithOptionalTimeout(options, null);
+            return listBlobsFlatWithOptionalTimeout(options, null, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the blobs in this container lazily as needed. The directories are
+     * flattened and only actual blobs and no directories are returned.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob on the
+     * root level 'bar', will return
+     *
+     * <ul>
+     * <li>foo/foo1
+     * <li>foo/foo2
+     * <li>bar
+     * </ul>
+     *
+     *
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.listBlobs#ListBlobsOptions-String}
+     *
+     * @param options {@link ListBlobsOptions}
+     * @param continuationToken Identifies the portion of the list to be returned with the next list operation.
+     * @return A reactive response emitting the listed blobs, flattened.
+     */
+    public PagedFlux<BlobItem> listBlobs(ListBlobsOptions options, String continuationToken) {
+        try {
+            return listBlobsFlatWithOptionalTimeout(options, continuationToken, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -681,7 +721,8 @@ public final class BlobContainerAsyncClient {
      * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return A reactive response emitting the listed blobs, flattened.
      */
-    PagedFlux<BlobItem> listBlobsFlatWithOptionalTimeout(ListBlobsOptions options, Duration timeout) {
+    PagedFlux<BlobItem> listBlobsFlatWithOptionalTimeout(ListBlobsOptions options, String continuationToken,
+        Duration timeout) {
         Function<String, Mono<PagedResponse<BlobItem>>> func =
             marker -> listBlobsFlatSegment(marker, options, timeout)
                 .map(response -> {
@@ -698,7 +739,7 @@ public final class BlobContainerAsyncClient {
                         response.getDeserializedHeaders());
                 });
 
-        return new PagedFlux<>(() -> func.apply(null), func);
+        return new PagedFlux<>(() -> func.apply(continuationToken), func);
     }
 
     /*
@@ -900,6 +941,44 @@ public final class BlobContainerAsyncClient {
             });
     }
 
+    /**
+     * Generates a user delegation SAS for the container using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to
+     * get a user delegation key.
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
+            .generateUserDelegationSas(userDelegationKey, getAccountName());
+    }
+
+    /**
+     * Generates a service SAS for the container using the specified {@link BlobServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.generateSas#BlobServiceSasSignatureValues}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+    }
 
     private boolean validateNoETag(BlobRequestConditions modifiedRequestConditions) {
         if (modifiedRequestConditions == null) {

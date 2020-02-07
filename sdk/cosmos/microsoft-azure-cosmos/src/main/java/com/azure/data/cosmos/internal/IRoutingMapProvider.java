@@ -22,9 +22,9 @@ public interface IRoutingMapProvider {
         /// <param name="range">This method will return all ranges which overlap this range.</param>
         /// <param name="forceRefresh">Whether forcefully refreshing the routing map is necessary</param>
         /// <returns>List of effective partition key ranges for a collection or null if collection doesn't exist.</returns>
-        Mono<List<PartitionKeyRange>> tryGetOverlappingRangesAsync(String collectionResourceId, Range<String> range,
+        Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(String collectionResourceId, Range<String> range,
                                                                    boolean forceRefresh /* = false */, Map<String, Object> properties);
 
-        Mono<PartitionKeyRange> tryGetPartitionKeyRangeByIdAsync(String collectionResourceId, String partitionKeyRangeId,
+        Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetPartitionKeyRangeByIdAsync(String collectionResourceId, String partitionKeyRangeId,
                                                                    boolean forceRefresh /* = false */, Map<String, Object> properties);
 }

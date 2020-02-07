@@ -4,8 +4,8 @@
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.guava27.Strings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.base.Strings;
 import io.netty.buffer.ByteBuf;
 
 import java.util.UUID;
@@ -38,7 +38,7 @@ public final class RntbdRequest {
     @JsonIgnore
     @SuppressWarnings("unchecked")
     public <T> T getHeader(final RntbdRequestHeader header) {
-        return (T)this.headers.get(header).getValue();
+        return (T) this.headers.get(header).getValue();
     }
 
     public Long getTransportRequestId() {

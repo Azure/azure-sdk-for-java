@@ -15,11 +15,14 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.CoreUtils;
+import java.util.Map;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -55,10 +58,20 @@ public class EventHubReactorConnectionTest {
     @Mock
     private ReactorHandlerProvider handlerProvider;
     private ConnectionOptions connectionOptions;
+    private static String product;
+    private static String clientVersion;
+
+    @BeforeAll
+    public static void init() throws Exception {
+        Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
+        product = properties.get("name");
+        clientVersion = properties.get("version");
+    }
 
     @BeforeEach
     public void setup() throws IOException {
-        final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
+        final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, product,
+            clientVersion);
 
         MockitoAnnotations.initMocks(this);
 
@@ -78,15 +91,17 @@ public class EventHubReactorConnectionTest {
         when(reactorProvider.createReactor(connectionHandler.getConnectionId(), connectionHandler.getMaxFrameSize()))
             .thenReturn(reactor);
 
-        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, proxy))
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, proxy, product,
+            clientVersion))
             .thenReturn(connectionHandler);
     }
 
     @Test
     public void getsManagementChannel() {
         // Arrange
-        final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID, connectionOptions,
-            reactorProvider, handlerProvider, tokenManagerProvider, messageSerializer);
+        final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID,
+            connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider, messageSerializer, product,
+            clientVersion);
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())

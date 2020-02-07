@@ -32,19 +32,6 @@ public class IssuerProperties {
     String name;
 
     /**
-     * Creates a new IssuerProperties instance.
-     *
-     * @param name Name of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
-     * @param provider The issuer provider.
-     */
-    public IssuerProperties(String name, String provider) {
-        this.name = name;
-        this.provider = provider;
-    }
-
-    IssuerProperties() { }
-
-    /**
      * Get the id of the issuer.
      * @return the identifier.
      */
@@ -66,6 +53,16 @@ public class IssuerProperties {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Set the issuer provider
+     * @param provider The issuer provider.
+     * @return the updated IssuerProperties object
+     */
+    public IssuerProperties setProvider(String provider) {
+        this.provider = provider;
+        return this;
     }
 
     @JsonProperty(value = "id")

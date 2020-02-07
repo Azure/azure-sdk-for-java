@@ -6,6 +6,8 @@ package com.azure.storage.common.sas;
 import com.azure.storage.common.Utility;
 
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.function.Function;
@@ -16,7 +18,10 @@ import java.util.function.Function;
  * object to be constructed as part of a URL or it can be encoded into a {@code String} and appended to a URL directly
  * (though caution should be taken here in case there are existing query parameters, which might affect the appropriate
  * means of appending these query parameters). NOTE: Instances of this class are immutable to ensure thread safety.
+ * @deprecated Please use the generateSas method on the desired client after initializing the appropriate
+ * SasSignatureValues object.
  */
+@Deprecated
 public abstract class BaseSasQueryParameters {
 
     protected String version;
@@ -39,7 +44,9 @@ public abstract class BaseSasQueryParameters {
      * @param queryParamsMap All query parameters for the request as key-value pairs
      * @param removeSASParametersFromMap When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     public BaseSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
         this.version = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICE_VERSION,
             removeSASParametersFromMap);
@@ -64,7 +71,9 @@ public abstract class BaseSasQueryParameters {
      * @param name The name of parameter to find.
      * @param remove Whether or not to remove the parameter from the map.
      * @return A String representing the query parameter
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     protected String getQueryParameter(Map<String, String[]> parameters, String name, boolean remove) {
         return getQueryParameter(parameters, name, remove, value -> value);
     }
@@ -78,7 +87,9 @@ public abstract class BaseSasQueryParameters {
      * @param remove Whether or not to remove the parameter from the map.
      * @param converter Function that transforms the value to a String.
      * @return The object
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     protected <T> T getQueryParameter(Map<String, String[]> parameters, String name, boolean remove, Function<String,
         T> converter) {
         String[] parameterValue = parameters.get(name);
@@ -105,7 +116,9 @@ public abstract class BaseSasQueryParameters {
      * {@code null}.
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     public BaseSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, SasIpRange sasIpRange, String permissions, String signature) {
         this.version = version;
@@ -119,49 +132,63 @@ public abstract class BaseSasQueryParameters {
 
     /**
      * @return The storage version
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     public String getVersion() {
         return version;
     }
 
     /**
      * @return The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SasProtocol} for more details.
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     public SasProtocol getProtocol() {
         return protocol;
     }
 
     /**
      * @return The start time for this SAS token or {@code null}.
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     public OffsetDateTime getStartTime() {
         return startTime;
     }
 
     /**
      * @return The expiry time for this SAS token.
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     public OffsetDateTime getExpiryTime() {
         return expiryTime;
     }
 
     /**
      * @return {@link SasIpRange}
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     public SasIpRange getSasIpRange() {
         return sasIpRange;
     }
 
     /**
      * @return Please refer to *SASPermission classes for more details.
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     public String getPermissions() {
         return permissions;
     }
 
     /**
      * @return The signature for the SAS token.
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     public String getSignature() {
         return signature;
     }
@@ -172,14 +199,11 @@ public abstract class BaseSasQueryParameters {
      * @param sb The {@code StringBuilder} to append to.
      * @param param The {@code String} parameter to append.
      * @param value The value of the parameter to append.
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     protected void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
-        if (value != null) {
-            if (sb.length() != 0) {
-                sb.append('&');
-            }
-            sb.append(Utility.urlEncode(param)).append('=').append(Utility.urlEncode(value.toString()));
-        }
+        SasImplUtils.tryAppendQueryParameter(sb, param, value);
     }
 
     /**
@@ -187,19 +211,20 @@ public abstract class BaseSasQueryParameters {
      *
      * @param dateTime The SAS date time.
      * @return A String representing the SAS date time.
+     * @deprecated Please use SasSignatureValues
      */
+    @Deprecated
     protected String formatQueryParameterDate(OffsetDateTime dateTime) {
-        if (dateTime == null) {
-            return null;
-        } else {
-            return Constants.ISO_8601_UTC_DATE_FORMATTER.format(dateTime);
-        }
+        return SasImplUtils.formatQueryParameterDate(dateTime);
     }
 
     /**
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
      * @return A {@code String} representing all SAS query parameters.
+     * @deprecated Please use the generateSas method on the desired client after initializing the appropriate
+     * SasSignatureValues object.
      */
+    @Deprecated
     public abstract String encode();
 }

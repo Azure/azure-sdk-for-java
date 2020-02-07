@@ -17,6 +17,7 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2019_06_01.implementation.StorageManager;
+import com.microsoft.azure.management.storage.v2019_06_01.implementation.SkuInner;
 
 /**
  * Type representing BlobServiceProperties.
@@ -56,6 +57,11 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the sku value.
+     */
+    SkuInner sku();
 
     /**
      * @return the type value.
@@ -145,7 +151,7 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
         interface WithDeleteRetentionPolicy {
             /**
              * Specifies deleteRetentionPolicy.
-             * @param deleteRetentionPolicy The blob service properties for soft delete
+             * @param deleteRetentionPolicy The blob service properties for blob soft delete
              * @return the next definition stage
              */
             WithCreate withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy);
@@ -223,7 +229,7 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
         interface WithDeleteRetentionPolicy {
             /**
              * Specifies deleteRetentionPolicy.
-             * @param deleteRetentionPolicy The blob service properties for soft delete
+             * @param deleteRetentionPolicy The blob service properties for blob soft delete
              * @return the next update stage
              */
             Update withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy);

@@ -5,6 +5,7 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 
 import java.util.regex.Pattern;
 
@@ -31,6 +32,8 @@ public class ModelHelper {
                 : other.getBlockSize(),
             other.getNumBuffers() == null ? Integer.valueOf(BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS)
                 : other.getNumBuffers(),
-            other.getProgressReceiver());
+            other.getProgressReceiver(),
+            other.getMaxSingleUploadSize() == null ? Integer.valueOf(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES)
+                : other.getMaxSingleUploadSize());
     }
 }

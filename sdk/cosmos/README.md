@@ -1,4 +1,4 @@
-# Java SDK for SQL API of Azure Cosmos DB
+﻿# Java SDK for SQL API of Azure Cosmos DB
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmos.svg)](https://search.maven.org/artifact/com.microsoft.azure/azure-cosmos)
 [![Known Vulnerabilities](https://snyk.io/test/github/Azure/azure-cosmosdb-java/badge.svg?targetFile=sdk%2Fpom.xml)](https://snyk.io/test/github/Azure/azure-cosmosdb-java?targetFile=sdk%2Fpom.xml)
@@ -92,7 +92,7 @@ For example, using maven, you can add the following dependency to your maven pom
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>3.4.0</version>
+  <version>3.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -226,6 +226,47 @@ and add the following dependency to your project maven dependencies:
 ```
 
 For other platforms (Redhat, Windows, Mac, etc) please refer to these instructions https://netty.io/wiki/forked-tomcat-native.html
+
+### Using system properties to modify default Direct TCP options
+
+We have added the ability to modify the default Direct TCP options utilized by the SDK. In priority order we will take default Direct TCP options from:
+
+1. The JSON value of system property `azure.cosmos.directTcp.defaultOptions`.
+   Example: 
+   ```bash
+   java -Dazure.cosmos.directTcp.defaultOptions={\"idleEndpointTimeout\":\"PT24H\"} -jar target/cosmosdb-sdk-testing-1.0-jar-with-dependencies.jar Direct 10 0 Read
+   ```
+
+2. The contents of the JSON file located by system property `azure.cosmos.directTcp.defaultOptionsFile`.
+   Example: 
+   ```
+   java -Dazure.cosmos.directTcp.defaultOptionsFile=/path/to/default/options/file -jar Direct 10 0 Query
+   ```
+
+3. The contents of the JSON resource file named `azure.cosmos.directTcp.defaultOptions.json`.
+   Specifically, the resource file is read from this stream: 
+   ```java
+   RntbdTransportClient.class.getClassLoader().getResourceAsStream("azure.cosmos.directTcp.defaultOptions.json")
+   ```
+   Example: Contents of resource file `azure.cosmos.directTcp.defaultOptions.json`.
+   ```json
+   {
+     "bufferPageSize": 8192,
+     "connectionTimeout": "PT1M",
+     "idleChannelTimeout": "PT0S",
+     "idleEndpointTimeout": "PT1M10S",
+     "maxBufferCapacity": 8388608,
+     "maxChannelsPerEndpoint": 10,
+     "maxRequestsPerChannel": 30,
+     "receiveHangDetectionTime": "PT1M5S",
+     "requestExpiryInterval": "PT5S",
+     "requestTimeout": "PT1M",
+     "requestTimerResolution": "PT0.5S",
+     "sendHangDetectionTime": "PT10S",
+     "shutdownTimeout": "PT15S"
+   }
+
+Values that are in error are ignored.
 
 ### Common Perf Tips
 

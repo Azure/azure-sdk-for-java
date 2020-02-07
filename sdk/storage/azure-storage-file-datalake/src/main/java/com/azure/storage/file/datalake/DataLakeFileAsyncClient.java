@@ -12,9 +12,11 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -41,7 +43,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  * {@link DataLakeFileSystemAsyncClient#getFileAsyncClient(String)}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure
  * Docs</a> for more information.
  */
 public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
@@ -216,6 +220,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
+     * <p>By default this method will not overwrite existing data.</p>
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
@@ -231,7 +236,37 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     public Mono<PathInfo> flush(long position) {
         try {
-            return flushWithResponse(position, false, false, null, null).flatMap(FluxUtil::toMono);
+            return flush(position, false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Flushes (writes) data previously appended to the file through a call to append.
+     * The previously uploaded data must be contiguous.
+     *
+     * <p><strong>Code Samples>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long-boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * Docs</a></p>
+     *
+     * @param position The length of the file after all data has been written.
+     * @param overwrite Whether or not to overwrite, should data exist on the file.
+     *
+     * @return A reactive response containing the information of the created resource.
+     */
+    public Mono<PathInfo> flush(long position, boolean overwrite) {
+        try {
+            DataLakeRequestConditions requestConditions = null;
+            if (!overwrite) {
+                requestConditions = new DataLakeRequestConditions()
+                    .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+            return flushWithResponse(position, false, false, null, requestConditions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -328,7 +363,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         try {
             return blockBlobAsyncClient.downloadWithResponse(Transforms.toBlobRange(range),
                 Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
-                getRangeContentMd5).map(Transforms::toFileReadAsyncResponse);
+                getRangeContentMd5).map(Transforms::toFileReadAsyncResponse)
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -342,16 +378,18 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.rename#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.rename#String-String}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
      * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
      * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the new file created.
      */
-    public Mono<DataLakeFileAsyncClient> rename(String destinationPath) {
+    public Mono<DataLakeFileAsyncClient> rename(String destinationFileSystem, String destinationPath) {
         try {
-            return renameWithResponse(destinationPath, null, null).flatMap(FluxUtil::toMono);
+            return renameWithResponse(destinationFileSystem, destinationPath, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -363,8 +401,10 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
      * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
      * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
@@ -373,11 +413,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeFileAsyncClient} used to interact with the file created.
      */
-    public Mono<Response<DataLakeFileAsyncClient>> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions) {
+    public Mono<Response<DataLakeFileAsyncClient>> renameWithResponse(String destinationFileSystem,
+        String destinationPath, DataLakeRequestConditions sourceRequestConditions,
+        DataLakeRequestConditions destinationRequestConditions) {
         try {
-            return withContext(context -> renameWithResponse(destinationPath, sourceRequestConditions,
-                destinationRequestConditions, context)).map(response -> new SimpleResponse<>(response,
+            return withContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
+                sourceRequestConditions, destinationRequestConditions, context))
+                .map(response -> new SimpleResponse<>(response,
                     new DataLakeFileAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

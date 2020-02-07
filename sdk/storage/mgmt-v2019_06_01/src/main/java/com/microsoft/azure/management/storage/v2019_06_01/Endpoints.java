@@ -52,6 +52,18 @@ public class Endpoints {
     private String dfs;
 
     /**
+     * Gets the microsoft routing storage endpoints.
+     */
+    @JsonProperty(value = "microsoftEndpoints")
+    private StorageAccountMicrosoftEndpoints microsoftEndpoints;
+
+    /**
+     * Gets the internet routing storage endpoints.
+     */
+    @JsonProperty(value = "internetEndpoints")
+    private StorageAccountInternetEndpoints internetEndpoints;
+
+    /**
      * Get gets the blob endpoint.
      *
      * @return the blob value
@@ -103,6 +115,46 @@ public class Endpoints {
      */
     public String dfs() {
         return this.dfs;
+    }
+
+    /**
+     * Get gets the microsoft routing storage endpoints.
+     *
+     * @return the microsoftEndpoints value
+     */
+    public StorageAccountMicrosoftEndpoints microsoftEndpoints() {
+        return this.microsoftEndpoints;
+    }
+
+    /**
+     * Set gets the microsoft routing storage endpoints.
+     *
+     * @param microsoftEndpoints the microsoftEndpoints value to set
+     * @return the Endpoints object itself.
+     */
+    public Endpoints withMicrosoftEndpoints(StorageAccountMicrosoftEndpoints microsoftEndpoints) {
+        this.microsoftEndpoints = microsoftEndpoints;
+        return this;
+    }
+
+    /**
+     * Get gets the internet routing storage endpoints.
+     *
+     * @return the internetEndpoints value
+     */
+    public StorageAccountInternetEndpoints internetEndpoints() {
+        return this.internetEndpoints;
+    }
+
+    /**
+     * Set gets the internet routing storage endpoints.
+     *
+     * @param internetEndpoints the internetEndpoints value to set
+     * @return the Endpoints object itself.
+     */
+    public Endpoints withInternetEndpoints(StorageAccountInternetEndpoints internetEndpoints) {
+        this.internetEndpoints = internetEndpoints;
+        return this;
     }
 
 }

@@ -5,6 +5,7 @@ package com.azure.data.cosmos;
 
 
 import com.azure.data.cosmos.internal.Constants;
+import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -41,12 +42,12 @@ public final class ConsistencyPolicy extends JsonSerializable {
     public ConsistencyLevel defaultConsistencyLevel() {
 
         ConsistencyLevel result = ConsistencyPolicy.DEFAULT_DEFAULT_CONSISTENCY_LEVEL;
+        String consistencyLevelString = super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL);
         try {
-            result = ConsistencyLevel.valueOf(
-                    StringUtils.upperCase(super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL)));
+            result = ConsistencyLevel.valueOf(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistencyLevelString));
         } catch (IllegalArgumentException e) {
             // ignore the exception and return the default
-            this.getLogger().warn("Unknown consistency level {}, value ignored.", super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL));
+            this.getLogger().warn("Unknown consistency level {}, value ignored.", consistencyLevelString);
         }
         return result;
     }

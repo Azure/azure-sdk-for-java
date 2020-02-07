@@ -7,35 +7,40 @@ import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timeout;
 import io.netty.util.Timer;
 import io.netty.util.TimerTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public final class RntbdRequestTimer implements AutoCloseable {
 
-    private static final long FIVE_MILLISECONDS = 5000000L;
-    private final long requestTimeout;
+    private static final Logger logger = LoggerFactory.getLogger(RntbdRequestTimer.class);
+    private final long requestTimeoutInNanos;
     private final Timer timer;
 
-    public RntbdRequestTimer(final long requestTimeout) {
-
-        // Inspection of the HashWheelTimer code indicates that our choice of a 5 millisecond timer resolution ensures
-        // a request will timeout within 10 milliseconds of the specified requestTimeout interval. This is because
-        // cancellation of a timeout takes two timer resolution units to complete.
-
-        this.timer = new HashedWheelTimer(FIVE_MILLISECONDS, TimeUnit.NANOSECONDS);
-        this.requestTimeout = requestTimeout;
+    public RntbdRequestTimer(final long requestTimeoutInNanos, final long requestTimerResolutionInNanos) {
+        // The HashWheelTimer code shows that cancellation of a timeout takes two timer resolution units to complete.
+        this.timer = new HashedWheelTimer(requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
+        this.requestTimeoutInNanos = requestTimeoutInNanos;
     }
 
-    public long getRequestTimeout(TimeUnit unit) {
-        return unit.convert(requestTimeout, TimeUnit.NANOSECONDS);
+    public long getRequestTimeout(final TimeUnit unit) {
+        return unit.convert(requestTimeoutInNanos, TimeUnit.NANOSECONDS);
     }
 
     @Override
-    public void close() throws RuntimeException {
-        this.timer.stop();
+    public void close() {
+        final Set<Timeout> timeouts = this.timer.stop();
+        if (logger.isDebugEnabled()) {
+            final int count = timeouts.size();
+            if (count > 0) {
+                logger.debug("request expiration tasks cancelled: {}", count);
+            }
+        }
     }
 
     public Timeout newTimeout(final TimerTask task) {
-        return this.timer.newTimeout(task, this.requestTimeout, TimeUnit.NANOSECONDS);
+        return this.timer.newTimeout(task, this.requestTimeoutInNanos, TimeUnit.NANOSECONDS);
     }
 }

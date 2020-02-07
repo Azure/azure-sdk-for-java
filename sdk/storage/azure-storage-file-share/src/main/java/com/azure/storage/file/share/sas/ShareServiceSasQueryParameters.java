@@ -19,7 +19,10 @@ import java.util.Map;
  * {@code String} and appended to a URL directly (though caution should be taken here in case there are existing query
  * parameters, which might affect the appropriate means of appending these query parameters). NOTE: Instances of this
  * class are immutable to ensure thread safety.
+ * @deprecated Please use the generateSas method on the desired file/share client after initializing
+ * {@link ShareServiceSasSignatureValues}.
  */
+@Deprecated
 public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters {
 
     private final String identifier;
@@ -42,7 +45,9 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
      * @param queryParamsMap All query parameters for the request as key-value pairs
      * @param removeSasParametersFromMap When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
+     * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
+    @Deprecated
     public ShareServiceSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSasParametersFromMap) {
         super(queryParamsMap, removeSasParametersFromMap);
         this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
@@ -75,7 +80,9 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
      * @param resource A {@code String} representing the storage share or file (only for Service SAS).
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
+     * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
+    @Deprecated
     ShareServiceSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, SasIpRange sasIpRange, String identifier, String resource, String permissions,
         String signature, String cacheControl, String contentDisposition, String contentEncoding,
@@ -95,49 +102,63 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
      * @return The signed identifier (only for {@link ShareServiceSasSignatureValues}) or {@code null}. Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
+     * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
+    @Deprecated
     public String getIdentifier() {
         return identifier;
     }
 
     /**
      * @return The storage share or file (only for {@link ShareServiceSasSignatureValues}).
+     * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
+    @Deprecated
     public String getResource() {
         return resource;
     }
 
     /**
      * @return The Cache-Control header value when a client accesses the resource with this sas token.
+     * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
+    @Deprecated
     public String getCacheControl() {
         return cacheControl;
     }
 
     /**
      * @return The Content-Disposition header value when a client accesses the resource with this sas token.
+     * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
+    @Deprecated
     public String getContentDisposition() {
         return contentDisposition;
     }
 
     /**
      * @return The Content-Encoding header value when a client accesses the resource with this sas token.
+     * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
+    @Deprecated
     public String getContentEncoding() {
         return contentEncoding;
     }
 
     /**
      * @return The Content-Language header value when a client accesses the resource with this sas token.
+     * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
+    @Deprecated
     public String getContentLanguage() {
         return contentLanguage;
     }
 
     /**
      * @return The Content-Type header value when a client accesses the resource with this sas token.
+     * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
+    @Deprecated
     public String getContentType() {
         return contentType;
     }
@@ -146,7 +167,10 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
      * @return A {@code String} representing all SAS query parameters.
+     * @deprecated Please use the generateSas method on the desired file/share client after initializing
+     * {@link ShareServiceSasSignatureValues}.
      */
+    @Deprecated
     public String encode() {
         /*
          We should be url-encoding each key and each value, but because we know all the keys and values will encode to

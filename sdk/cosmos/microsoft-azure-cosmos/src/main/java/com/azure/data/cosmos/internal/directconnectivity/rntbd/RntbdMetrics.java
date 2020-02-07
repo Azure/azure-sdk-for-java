@@ -24,6 +24,7 @@ import io.micrometer.core.instrument.dropwizard.DropwizardMeterRegistry;
 import io.micrometer.core.instrument.util.HierarchicalNameMapper;
 import io.micrometer.core.lang.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -148,9 +149,9 @@ public final class RntbdMetrics {
 
             consoleLoggingRegistry = new DropwizardMeterRegistry(dropwizardConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
                 @Override
-                @Nullable
+                @Nonnull
                 protected Double nullGaugeValue() {
-                    return null;
+                    return Double.NaN;
                 }
             };
 

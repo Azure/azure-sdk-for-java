@@ -633,9 +633,10 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(512)
 
         when:
-        primaryFileClient.forceCloseHandle("1")
+        def handlesClosedInfo = primaryFileClient.forceCloseHandle("1")
 
         then:
+        handlesClosedInfo.getClosedHandles() == 0
         notThrown(ShareStorageException)
     }
 
@@ -655,11 +656,11 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(512)
 
         when:
-        def numberOfHandlesClosed = primaryFileClient.forceCloseAllHandles(null, null)
+        def handlesClosedInfo = primaryFileClient.forceCloseAllHandles(null, null)
 
         then:
         notThrown(ShareStorageException)
-        numberOfHandlesClosed == 0
+        handlesClosedInfo.getClosedHandles() == 0
     }
 
     def "Get snapshot id"() {

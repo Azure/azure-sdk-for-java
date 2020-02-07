@@ -65,6 +65,10 @@ public class Configs {
         this.sslContext = sslContextInit();
     }
 
+    public static int getCPUCnt() {
+        return CPU_CNT;
+    }
+
     private SslContext sslContextInit() {
         try {
             SslProvider sslProvider = SslContext.defaultClientProvider();

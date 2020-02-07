@@ -55,11 +55,14 @@ import static com.azure.security.keyvault.keys.models.KeyType.OCT;
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+    static final String SECRETS_COLLECTION = "secrets";
     JsonWebKey key;
     private final CryptographyService service;
-    private final CryptographyServiceClient cryptographyServiceClient;
+    private CryptographyServiceClient cryptographyServiceClient;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
     private final ClientLogger logger = new ClientLogger(CryptographyAsyncClient.class);
+    private String keyCollection;
+    private final String keyId;
 
     /**
      * Creates a CryptographyAsyncClient that uses {@code pipeline} to service requests
@@ -81,6 +84,7 @@ public class CryptographyAsyncClient {
             throw new IllegalArgumentException("Json Web Key's key type property is not configured");
         }
         this.key = key;
+        this.keyId = key.getId();
         service = RestProxy.create(CryptographyService.class, pipeline);
         if (!Strings.isNullOrEmpty(key.getId())) {
             unpackAndValidateId(key.getId());
@@ -100,6 +104,7 @@ public class CryptographyAsyncClient {
      */
     CryptographyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
         unpackAndValidateId(keyId);
+        this.keyId = keyId;
         service = RestProxy.create(CryptographyService.class, pipeline);
         cryptographyServiceClient = new CryptographyServiceClient(keyId, service);
         this.key = null;
@@ -119,6 +124,10 @@ public class CryptographyAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The Json Web Key Type: %s is not supported.", key.getKeyType().toString())));
         }
+    }
+
+    Mono<String> getKeyId() {
+        return Mono.defer(() -> Mono.just(keyId));
     }
 
     /**
@@ -166,6 +175,14 @@ public class CryptographyAsyncClient {
 
     Mono<Response<KeyVaultKey>> getKeyWithResponse(Context context) {
         return cryptographyServiceClient.getKey(context);
+    }
+
+    Mono<JsonWebKey> getSecretKey() {
+        try {
+            return withContext(context -> cryptographyServiceClient.getSecretKey(context)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -591,6 +608,7 @@ public class CryptographyAsyncClient {
             String endpoint = url.getProtocol() + "://" + url.getHost();
             String keyName = (tokens.length >= 3 ? tokens[2] : null);
             String version = (tokens.length >= 4 ? tokens[3] : null);
+            this.keyCollection = (tokens.length >= 2 ? tokens[1] : null);
             if (Strings.isNullOrEmpty(endpoint)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Key endpoint in key id is invalid"));
             } else if (Strings.isNullOrEmpty(keyName)) {
@@ -609,10 +627,14 @@ public class CryptographyAsyncClient {
 
     private boolean ensureValidKeyAvailable() {
         boolean keyAvailableLocally = true;
-        if (this.key == null) {
+        if (this.key == null && keyCollection != null) {
             try {
-                KeyVaultKey keyVaultKey = getKey().block();
-                this.key = keyVaultKey.getKey();
+                if (keyCollection.equals(SECRETS_COLLECTION)) {
+                    this.key = getSecretKey().block();
+                } else {
+                    KeyVaultKey keyVaultKey = getKey().block();
+                    this.key = keyVaultKey.getKey();
+                }
                 keyAvailableLocally = this.key.isValid();
                 initializeCryptoClients();
             } catch (HttpResponseException | NullPointerException e) {
@@ -626,5 +648,9 @@ public class CryptographyAsyncClient {
 
     CryptographyServiceClient getCryptographyServiceClient() {
         return cryptographyServiceClient;
+    }
+
+    void setCryptographyServiceClient(CryptographyServiceClient serviceClient) {
+        this.cryptographyServiceClient = serviceClient;
     }
 }

@@ -7,6 +7,8 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
+import com.azure.storage.queue.sas.QueueSasPermission;
+import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -489,5 +491,20 @@ public class QueueAsyncJavaDocCodeSamples {
         String queueName = client.getQueueName();
         System.out.println("The name of the queue is " + queueName);
         // END: com.azure.storage.queue.queueAsyncClient.getQueueName
+    }
+
+    /**
+     * Code snippet for {@link QueueAsyncClient#generateSas(QueueServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.generateSas#QueueServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        QueueSasPermission permission = new QueueSasPermission().setReadPermission(true);
+
+        QueueServiceSasSignatureValues values = new QueueServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.queue.QueueAsyncClient.generateSas#QueueServiceSasSignatureValues
     }
 }

@@ -41,6 +41,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final ConnectionPolicy connectionPolicy;
     private final DatabaseAccountManagerInternal owner;
     private final AtomicBoolean isRefreshing;
+    private final AtomicBoolean refreshInBackground;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Scheduler scheduler = Schedulers.fromExecutor(executor);
     private volatile boolean isClosed;
@@ -63,6 +64,7 @@ public class GlobalEndpointManager implements AutoCloseable {
             this.connectionPolicy = connectionPolicy;
 
             this.isRefreshing = new AtomicBoolean(false);
+            this.refreshInBackground = new AtomicBoolean(false);
             this.isClosed = false;
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
@@ -129,9 +131,24 @@ public class GlobalEndpointManager implements AutoCloseable {
         logger.debug("GlobalEndpointManager closed.");
     }
 
-    public Mono<Void> refreshLocationAsync(DatabaseAccount databaseAccount) {
+    public Mono<Void> refreshLocationAsync(DatabaseAccount databaseAccount, boolean forceRefresh) {
         return Mono.defer(() -> {
             logger.debug("refreshLocationAsync() invoked");
+
+            if (forceRefresh) {
+                Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
+                    this.defaultEndpoint,
+                    new ArrayList<>(this.connectionPolicy.preferredLocations()),
+                    this::getDatabaseAccountAsync);
+
+                return databaseAccountObs.map(dbAccount -> {
+                    this.locationCache.onDatabaseAccountRead(dbAccount);
+                    return dbAccount;
+                }).flatMap(dbAccount -> {
+                    return Mono.empty();
+                });
+            }
+
             if (!isRefreshing.compareAndSet(false, true)) {
                 logger.debug("in the middle of another refresh. Not invoking a new refresh.");
                 return Mono.empty();
@@ -164,17 +181,23 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     return databaseAccountObs.map(dbAccount -> {
                         this.locationCache.onDatabaseAccountRead(dbAccount);
+                        this.isRefreshing.set(false);
                         return dbAccount;
                     }).flatMap(dbAccount -> {
                         // trigger a startRefreshLocationTimerAsync don't wait on it.
-                        this.startRefreshLocationTimerAsync();
+                        if (!this.refreshInBackground.get()) {
+                            this.startRefreshLocationTimerAsync();
+                        }
                         return Mono.empty();
                     });
                 }
 
                 // trigger a startRefreshLocationTimerAsync don't wait on it.
-                this.startRefreshLocationTimerAsync();
+                if (!this.refreshInBackground.get()) {
+                    this.startRefreshLocationTimerAsync();
+                }
 
+                this.isRefreshing.set(false);
                 return Mono.empty();
             } else {
                 logger.debug("shouldRefreshEndpoints: false, nothing to do.");
@@ -201,6 +224,8 @@ public class GlobalEndpointManager implements AutoCloseable {
 
         int delayInMillis = initialization ? 0: this.backgroundRefreshLocationTimeIntervalInMS;
 
+        this.refreshInBackground.set(true);
+
         return Mono.delay(Duration.ofMillis(delayInMillis))
                 .flatMap(
                         t -> {
@@ -216,6 +241,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                             return databaseAccountObs.flatMap(dbAccount -> {
                                 logger.debug("db account retrieved");
+                                this.refreshInBackground.set(false);
                                 return this.refreshLocationPrivateAsync(dbAccount);
                             });
                         }).onErrorResume(ex -> {

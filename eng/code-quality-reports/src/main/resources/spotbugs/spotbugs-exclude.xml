@@ -492,6 +492,7 @@
       <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
       <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
+      <Class name="com.azure.security.keyvault.keys.cryptography.SecretKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
@@ -500,7 +501,7 @@
       <Class name="com.azure.security.keyvault.certificates.models.IssuerProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateIssuer"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
-      <Class name="com.azure.security.keyvault.certificates.models.LifeTimeAction"/>
+      <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
@@ -531,6 +532,10 @@
         <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
         <Method name="clone"/>
       </And>
+      <And>
+          <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
+          <Method name="decode"/>
+      </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -558,7 +563,7 @@
   <Match>
     <Or>
       <Class name="~.*JavaDoc(CodeSnippets|CodeSamples|Samples)"/>
-      <Class name="com.azure.storage.blob.batch.ReadmeCodeSamples"/>
+      <Class name="~.*ReadmeSamples"/>
       <Class name="com.azure.storage.file.datalake.GetSetAccessControlExample"/>
     </Or>
     <Bug pattern="DLS_DEAD_LOCAL_STORE,
@@ -651,7 +656,28 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
-  <!-- Initial implementation of JacksonDeserializer is using an inline class in registerCustomDeserializer-->
+
+  <!-- Azure search has generated code mixed with hand-written in these packages -->
+  <Match>
+    <And>
+      <Package name="~com\.azure\.search\.(implementation|models)(.*)"/>
+      <Not>
+        <Or>
+          <!-- Hand-written classes should be specified here to be checked  -->
+          <Class name="com.azure.search.implementation.GeoPointDeserializer"/>
+          <Class name="com.azure.search.implementation.Iso8601DateDeserializer"/>
+          <Class name="com.azure.search.implementation.SerializationUtil"/>
+          <Class name="com.azure.search.models.CoordinateSystem"/>
+          <Class name="com.azure.search.models.GeoPoint"/>
+          <Class name="com.azure.search.models.IndexBatch"/>
+          <Class name="com.azure.search.models.ValueFacetResult"/>
+          <Class name="com.azure.search.models.RangeFacetResult"/>
+        </Or>
+      </Not>
+    </And>
+  </Match>
+
+  <!-- Initial implementation of JacksonDeserializer is using an inline class-->
   <Match>
     <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
@@ -700,6 +726,16 @@
     <Class name="com.azure.core.util.polling.PollingContext"/>
     <Method name="clone"/>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.core.util.paging.PagedFluxCoreJavaDocCodeSnippets"/>
+    </Or>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,
+    SIC_INNER_SHOULD_BE_STATIC_ANON,
+    UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS,
+    NP_BOOLEAN_RETURN_NULL"/>
   </Match>
 
 </FindBugsFilter>

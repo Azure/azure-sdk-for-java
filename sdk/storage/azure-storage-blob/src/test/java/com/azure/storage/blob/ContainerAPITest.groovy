@@ -24,6 +24,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
+import reactor.test.StepVerifier
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -668,22 +669,17 @@ class ContainerAPITest extends APISpec {
         normal.create(512)
 
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
-
-        def poller = copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(1))
-        poller.waitForCompletion()
+        copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(5)).waitForCompletion()
 
         def metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient()
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
         metadataBlob.createWithResponse(512, null, null, metadata, null, null, null)
 
-        def snapshotTime = normal.createSnapshot().getSnapshotId()
-
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
+        uncommittedBlob.stageBlock(getBlockID(), defaultInputStream.get(), defaultData.remaining())
 
-        uncommittedBlob.stageBlock("0000", defaultInputStream.get(), defaultData.remaining())
-
-        return snapshotTime
+        return normal.createSnapshot().getSnapshotId()
     }
 
     def "List blobs flat options copy"() {
@@ -817,7 +813,9 @@ class ContainerAPITest extends APISpec {
 
         expect: "Get first page of blob listings (sync and async)"
         cc.listBlobs(options, null).iterableByPage().iterator().next().getValue().size() == PAGE_SIZE
-        ccAsync.listBlobs(options).byPage().blockFirst().getValue().size() == PAGE_SIZE
+        StepVerifier.create(ccAsync.listBlobs(options).byPage().limitRequest(1))
+            .assertNext({ assert it.getValue().size() == PAGE_SIZE })
+            .verifyComplete()
     }
 
     def "List blobs flat options fail"() {
@@ -852,6 +850,42 @@ class ContainerAPITest extends APISpec {
         def pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE))
         def pagedResponse1 = pagedFlux.byPage().blockFirst()
         def pagedResponse2 = pagedFlux.byPage(pagedResponse1.getContinuationToken()).blockFirst()
+
+        then:
+        pagedResponse1.getValue().size() == PAGE_SIZE
+        pagedResponse2.getValue().size() == NUM_BLOBS - PAGE_SIZE
+        pagedResponse2.getContinuationToken() == null
+    }
+
+    def "List blobs flat marker overload"() {
+        setup:
+        def NUM_BLOBS = 10
+        def PAGE_SIZE = 6
+        for (int i = 0; i < NUM_BLOBS; i++) {
+            def bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+            bc.create(512)
+        }
+
+        when: "list blobs with sync client"
+        def pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE), null)
+        def pagedSyncResponse1 = pagedIterable.iterableByPage().iterator().next()
+
+        pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE),
+            pagedSyncResponse1.getContinuationToken(), null)
+        def pagedSyncResponse2 = pagedIterable.iterableByPage().iterator().next()
+
+        then:
+        pagedSyncResponse1.getValue().size() == PAGE_SIZE
+        pagedSyncResponse2.getValue().size() == NUM_BLOBS - PAGE_SIZE
+        pagedSyncResponse2.getContinuationToken() == null
+
+
+        when: "list blobs with async client"
+        def pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE))
+        def pagedResponse1 = pagedFlux.byPage().blockFirst()
+        pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE),
+            pagedResponse1.getContinuationToken())
+        def pagedResponse2 = pagedFlux.byPage().blockFirst()
 
         then:
         pagedResponse1.getValue().size() == PAGE_SIZE
@@ -1045,12 +1079,10 @@ class ContainerAPITest extends APISpec {
         def uncommittedName = "u" + generateBlobName()
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
-        when:
-        // use async client, as there is no paging functionality for sync yet
-        def blobs = ccAsync.listBlobsByHierarchy("", options).byPage().blockFirst()
-
-        then:
-        blobs.getValue().size() == 1
+        expect:
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage().limitRequest(1))
+            .assertNext({ assert it.getValue().size() == 1 })
+            .verifyComplete()
     }
 
     @Unroll

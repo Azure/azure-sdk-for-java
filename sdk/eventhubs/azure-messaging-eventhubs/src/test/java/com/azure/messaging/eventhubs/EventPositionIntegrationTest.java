@@ -239,32 +239,6 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Tests that we can get an event using the inclusive offset.
-     */
-    @Test
-    public void receiveMessageFromOffsetInclusive() {
-        // Arrange
-        final EventData[] events = EVENTS_PUSHED.get();
-        final EventData expectedEvent = events[4];
-        final EventPosition position = EventPosition.fromOffset(expectedEvent.getOffset());
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
-
-        // Act & Assert
-        try {
-            StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position).map(PartitionEvent::getData)
-                .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
-                .take(1))
-                .assertNext(event -> {
-                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
-                }).verifyComplete();
-        } finally {
-            dispose(consumer);
-        }
-    }
-
-    /**
      * Tests that we can get an event using the non-inclusive offset.
      */
     @Test

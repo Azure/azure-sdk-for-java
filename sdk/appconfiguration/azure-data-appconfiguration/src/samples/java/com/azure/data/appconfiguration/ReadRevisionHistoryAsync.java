@@ -36,7 +36,7 @@ public class ReadRevisionHistoryAsync {
         final List<ConfigurationSetting> settings = Flux.concat(
             client.addConfigurationSetting(key, null, "world"),
             client.setConfigurationSetting(key, null, "newValue"))
-            .then(client.listRevisions(new SettingSelector().setKeys(key)).collectList())
+            .then(client.listRevisions(new SettingSelector().setKeyFilter(key)).collectList())
             .block();
 
         // Cleaning up after ourselves by deleting the values.

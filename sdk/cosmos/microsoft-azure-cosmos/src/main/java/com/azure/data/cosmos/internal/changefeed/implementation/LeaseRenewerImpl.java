@@ -65,8 +65,10 @@ class LeaseRenewerImpl implements LeaseRenewer {
             .doOnError(throwable -> {
                 if (throwable instanceof LeaseLostException) {
                     logger.info("Partition {}: renew lease loop failed.", this.lease.getLeaseToken(), throwable);
+                    this.resultException = (LeaseLostException) throwable;
                 } else {
                     logger.error("Partition {}: renew lease loop failed.", this.lease.getLeaseToken(), throwable);
+                    this.resultException = new RuntimeException(throwable);
                 }
             });
     }

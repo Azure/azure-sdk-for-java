@@ -13,6 +13,7 @@ import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.UserAgentContainer;
+import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
 import com.azure.data.cosmos.internal.caches.RxPartitionKeyRangeCache;
 import com.azure.data.cosmos.internal.http.HttpClient;
@@ -91,7 +92,7 @@ public class GlobalAddressResolverTest {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.id(UUID.randomUUID().toString());
         collectionCache = Mockito.mock(RxCollectionCache.class);
-        Mockito.when(collectionCache.resolveCollectionAsync(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(collectionDefinition));
+        Mockito.when(collectionCache.resolveCollectionAsync(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(new Utils.ValueHolder<>(collectionDefinition)));
         routingMapProvider = Mockito.mock(RxPartitionKeyRangeCache.class);
         userAgentContainer = Mockito.mock(UserAgentContainer.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
@@ -148,7 +149,7 @@ public class GlobalAddressResolverTest {
         List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();
         partitionKeyRanges.add(range);
         Mockito.when(collectionRoutingMap.getOrderedPartitionKeyRanges()).thenReturn(partitionKeyRanges);
-        Mono<CollectionRoutingMap> collectionRoutingMapSingle = Mono.just(collectionRoutingMap);
+        Mono<Utils.ValueHolder<CollectionRoutingMap>> collectionRoutingMapSingle = Mono.just(new Utils.ValueHolder<>(collectionRoutingMap));
         Mockito.when(routingMapProvider.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(collectionRoutingMapSingle);
 
         List<PartitionKeyRangeIdentity> ranges = new ArrayList<>();

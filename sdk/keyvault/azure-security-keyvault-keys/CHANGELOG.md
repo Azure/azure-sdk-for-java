@@ -1,5 +1,18 @@
 # Release History
-## 4.0.0 (2019-10-31)
+
+## 4.2.0-beta.1 (Unreleased)
+
+
+## 4.1.0 (2020-01-07)
+- Fixes the logic of `getKeyId()` method in `KeyEncryptionKeyClient` and `KeyEncryptionKeyAsyncClient` to ensure key id is available in all scenarios.
+- Update azure-core dependency to version 1.2.0.
+
+## 4.0.1 (2019-12-06)
+
+### Major changes
+- `KeyEncryptionKeyClientBuilder.buildKeyEncryptionKey` and `KeyEncryptionKeyClientBuilder.buildAsyncKeyEncryptionKey`supports consumption of a secret id representing the symmetric key stored in the Key Vault as a secret.
+- Dropped third party dependency on apache commons codec library.
+
 
 ### Breaking changes
 - Key has been renamed to KeyVaultKey to avoid ambiguity with other libraries and to yield better search results.

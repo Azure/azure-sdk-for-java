@@ -366,7 +366,9 @@ class DirectoryAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.forceCloseHandle("1"))
-            .verifyComplete()
+            .assertNext {
+                assert it.getClosedHandles() == 0
+            }.verifyComplete()
     }
 
     def "Force close handle invalid handle ID"() {
@@ -384,7 +386,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.forceCloseAllHandles(false))
-            .assertNext({ it == 0 })
+            .assertNext({ it.getClosedHandles() == 0 })
             .verifyComplete()
     }
 

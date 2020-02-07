@@ -28,7 +28,7 @@ import com.azure.storage.file.datalake.implementation.models.FileSystemsGetPrope
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsSetPropertiesResponse;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
@@ -67,27 +67,27 @@ public final class FileSystemsImpl {
     private interface FileSystemsService {
         @Put("{filesystem}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<FileSystemsCreateResponse> create(@HostParam("url") String url, @HeaderParam("x-ms-properties") String properties, @QueryParam("resource") String resource, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
 
         @Patch("{filesystem}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<FileSystemsSetPropertiesResponse> setProperties(@HostParam("url") String url, @HeaderParam("x-ms-properties") String properties, @QueryParam("resource") String resource, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
         @Head("{filesystem}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<FileSystemsGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("resource") String resource, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
 
         @Delete("{filesystem}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<FileSystemsDeleteResponse> delete(@HostParam("url") String url, @QueryParam("resource") String resource, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
         @Get("{filesystem}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<FileSystemsListPathsResponse> listPaths(@PathParam("filesystem") String fileSystem, @HostParam("url") String url, @QueryParam("continuation") String continuation, @QueryParam("directory") String path, @QueryParam("recursive") boolean recursive, @QueryParam("maxResults") Integer maxResults, @QueryParam("upn") Boolean upn, @QueryParam("resource") String resource, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
     }
 

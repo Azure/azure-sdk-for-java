@@ -327,23 +327,13 @@ public class SecretClientTest extends SecretClientTestBase {
                 }
             }
 
-            sleepInRecordMode(60000);
-            Iterable<DeletedSecret> deletedSecrets =  client.listDeletedSecrets();
-            for (DeletedSecret actualSecret : deletedSecrets) {
-                if (secrets.containsKey(actualSecret.getName())) {
-                    assertNotNull(actualSecret.getDeletedOn());
-                    assertNotNull(actualSecret.getRecoveryId());
-                    secrets.remove(actualSecret.getName());
-                }
-            }
-
-            assertEquals(0, secrets.size());
-
+            sleepInRecordMode(300000);
+            Iterable<DeletedSecret> deletedSecrets = client.listDeletedSecrets();
+            assertTrue(deletedSecrets.iterator().hasNext());
             for (DeletedSecret deletedSecret : deletedSecrets) {
-                client.purgeDeletedSecret(deletedSecret.getName());
-                pollOnSecretPurge(deletedSecret.getName());
+                assertNotNull(deletedSecret.getDeletedOn());
+                assertNotNull(deletedSecret.getRecoveryId());
             }
-            sleepInRecordMode(10000);
         });
     }
 

@@ -15,7 +15,6 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
       - hotfix/*
       - release/*
   paths:
@@ -43,5 +42,6 @@ stages:
       ServiceDirectory: servicebus
       Artifacts:
         - name: azure-servicebus
+          groupId: com.microsoft.azure
           safeName: azureservicebus
           stagingProfileId: 534d15ee3800f4

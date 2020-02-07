@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import com.microsoft.azure.management.storage.v2019_06_01.PrivateEndpointConnection;
 import java.util.List;
 import com.microsoft.azure.management.storage.v2019_06_01.ProvisioningState;
-import com.microsoft.azure.management.storage.v2019_06_01.Sku;
+import com.microsoft.azure.management.storage.v2019_06_01.RoutingPreference;
 import com.microsoft.azure.management.storage.v2019_06_01.AccountStatus;
 import rx.functions.Func1;
 
@@ -184,6 +184,11 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
+    public RoutingPreference routingPreference() {
+        return this.inner().routingPreference();
+    }
+
+    @Override
     public Endpoints secondaryEndpoints() {
         return this.inner().secondaryEndpoints();
     }
@@ -194,13 +199,8 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
-    public Sku sku() {
-        SkuInner inner = this.inner().sku();
-        if (inner != null) {
-            return  new SkuImpl(inner, manager());
-        } else {
-            return null;
-        }
+    public SkuInner sku() {
+        return this.inner().sku();
     }
 
     @Override
@@ -315,6 +315,16 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
             this.createParameter.withNetworkRuleSet(networkRuleSet);
         } else {
             this.updateParameter.withNetworkRuleSet(networkRuleSet);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withRoutingPreference(RoutingPreference routingPreference) {
+        if (isInCreateMode()) {
+            this.createParameter.withRoutingPreference(routingPreference);
+        } else {
+            this.updateParameter.withRoutingPreference(routingPreference);
         }
         return this;
     }

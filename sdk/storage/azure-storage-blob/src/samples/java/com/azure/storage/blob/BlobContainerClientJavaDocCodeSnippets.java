@@ -15,6 +15,9 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -32,6 +35,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
     private String proposedId = "proposedId";
     private int leaseDuration = (int) Duration.ofSeconds(30).getSeconds();
     private Duration timeout = Duration.ofSeconds(30);
+    private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
      * Code snippet for {@link BlobContainerClient#getBlobClient(String)}
@@ -301,6 +305,28 @@ public class BlobContainerClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlobContainerClient#listBlobs(ListBlobsOptions, String, Duration)}
+     */
+    public void listBlobsFlat3() {
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-String-Duration
+        ListBlobsOptions options = new ListBlobsOptions()
+            .setPrefix("prefixToMatch")
+            .setDetails(new BlobListDetails()
+                .setRetrieveDeletedBlobs(true)
+                .setRetrieveSnapshots(true));
+
+        String continuationToken = "continuationToken";
+
+        client.listBlobs(options, continuationToken, timeout).forEach(blob ->
+            System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
+                blob.getName(),
+                blob.isPrefix(),
+                blob.isDeleted(),
+                blob.getSnapshot()));
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-String-Duration
+    }
+
+    /**
      * Code snippet for {@link BlobContainerClient#listBlobsByHierarchy(String)}
      */
     public void listBlobsHierarchy() {
@@ -359,5 +385,31 @@ public class BlobContainerClientJavaDocCodeSnippets {
         String containerName = client.getBlobContainerName();
         System.out.println("The name of the blob is " + containerName);
         // END: com.azure.storage.blob.BlobContainerClient.getBlobContainerName
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerClient#generateUserDelegationSas(BlobServiceSasSignatureValues, UserDelegationKey)}
+     * and {@link BlobContainerClient#generateSas(BlobServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        BlobContainerSasPermission permission = new BlobContainerSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues
+
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        BlobContainerSasPermission myPermission = new BlobContainerSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey);
+        // END: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
     }
 }

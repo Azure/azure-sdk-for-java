@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.DatabaseForTest;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.Offer;
 import com.azure.data.cosmos.internal.Paths;
@@ -425,6 +426,26 @@ public class CosmosContainer {
                     return database.getDocClientWrapper().readOffer(offerFeedResponse.results().get(0).selfLink())
                             .single();
                 }).map(cosmosOfferResponse -> cosmosOfferResponse.getResource().getThroughput());
+    }
+
+    /**
+     * Gets the min throughput to which this container can be scaled down to
+     * 
+     * @return a {@link Mono} containing min throughput or an error.
+     */
+    public Mono<Integer> readMinThroughput() {
+        return this.read().flatMap(cosmosContainerResponse -> database.getDocClientWrapper()
+            .queryOffers(
+                new SqlQuerySpec("select * from c where c.offerResourceId = @OFFER_RESOURCE_ID",
+                new SqlParameterList(new SqlParameter("@OFFER_RESOURCE_ID", cosmosContainerResponse.resourceSettings().resourceId()))), new FeedOptions())
+            .single()).flatMap(offerFeedResponse -> {
+                if (offerFeedResponse.results().isEmpty()) {
+                    return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                            "No offers found for the resource"));
+                }
+                return database.getDocClientWrapper().readOffer(offerFeedResponse.results().get(0).selfLink())
+                        .single();
+            }).map(cosmosOfferResponse -> Integer.parseInt(cosmosOfferResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OFFER_MIN_THROUGHPUT)));
     }
 
     /**

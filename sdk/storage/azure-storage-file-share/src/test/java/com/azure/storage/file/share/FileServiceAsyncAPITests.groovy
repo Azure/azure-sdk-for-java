@@ -211,13 +211,14 @@ class FileServiceAsyncAPITests extends APISpec {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
             assert FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.getValue())
         }.verifyComplete()
+
         setPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 202)
         }.verifyComplete()
 
         getPropertiesAfterVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.getValue())
+            assert FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, it.getValue())
         }.verifyComplete()
     }
 

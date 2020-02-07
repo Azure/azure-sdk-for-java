@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import reactor.core.publisher.Flux;
 
@@ -40,6 +41,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     private int blockSize = 50;
     private int numBuffers = 2;
     private String filePath = "filePath";
+    private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
      * Code snippet for {@link BlobAsyncClient#exists()}
@@ -505,5 +507,4 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
         // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
     }
-
 }

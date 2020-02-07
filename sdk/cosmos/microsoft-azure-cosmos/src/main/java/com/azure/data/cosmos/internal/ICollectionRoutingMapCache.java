@@ -13,14 +13,14 @@ import java.util.Map;
  * This is meant to be internally used only by our sdk.
  **/
 public interface ICollectionRoutingMapCache {
-    default Mono<CollectionRoutingMap> tryLookupAsync(
+    default Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(
             String collectionRid,
             CollectionRoutingMap previousValue,
             Map<String, Object> properties) {
         return tryLookupAsync(collectionRid, previousValue, false, properties);
     }
 
-    Mono<CollectionRoutingMap> tryLookupAsync(
+    Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(
             String collectionRid,
             CollectionRoutingMap previousValue,
             boolean forceRefreshCollectionRoutingMap,

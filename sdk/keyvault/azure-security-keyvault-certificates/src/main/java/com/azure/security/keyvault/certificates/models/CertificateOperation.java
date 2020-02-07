@@ -4,14 +4,30 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 
 /**
  * A certificate operation is returned in case of long running service requests.
  */
 public final class CertificateOperation {
+
+    private final ClientLogger logger = new ClientLogger(CertificateOperation.class);
+
+    /**
+     * URL for the Azure KeyVault service.
+     */
+    private String vaultUrl;
+
+    /**
+     * The Certificate name.
+     */
+    private String name;
+
     /**
      * The certificate id.
      */
@@ -33,7 +49,7 @@ public final class CertificateOperation {
      * Indicates if the certificates generated under this policy should be
      * published to certificate transparency logs.
      */
-    private Boolean certificateTransparency;
+    private boolean certificateTransparency;
 
     /**
      * The certificate signing request (CSR) that is being used in the
@@ -110,7 +126,7 @@ public final class CertificateOperation {
      *
      * @return the certificateTransparency status.
      */
-    public Boolean getCertificateTransparency() {
+    public boolean isCertificateTransparent() {
         return this.certificateTransparency;
     }
 
@@ -177,10 +193,43 @@ public final class CertificateOperation {
         return this.requestId;
     }
 
+    /**
+     * Get the URL for the Azure KeyVault service.
+     *
+     * @return the value of the URL for the Azure KeyVault service.
+     */
+    public String getVaultUrl() {
+        return this.vaultUrl;
+    }
+
+    /**
+     * Get the certificate name.
+     *
+     * @return the name of the certificate.
+     */
+    public String getName() {
+        return this.name;
+    }
+
     @JsonProperty("issuer")
     private void unpackIssuerParameters(Map<String, Object> issuerParameters) {
         issuerName = (String) issuerParameters.get("name");
         certificateType =  (String) issuerParameters.get("cty");
-        certificateTransparency = (Boolean) issuerParameters.get("cert_transparency");
+        certificateTransparency = issuerParameters.get("cert_transparency") != null ? (Boolean) issuerParameters.get("cert_transparency") : false;
+    }
+
+    @JsonProperty(value = "id")
+    void unpackId(String id) {
+        if (id != null && id.length() > 0) {
+            this.id = id;
+            try {
+                URL url = new URL(id);
+                String[] tokens = url.getPath().split("/");
+                this.vaultUrl = (tokens.length >= 2 ? tokens[1] : null);
+                this.name = (tokens.length >= 3 ? tokens[2] : null);
+            } catch (MalformedURLException e) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
+            }
+        }
     }
 }

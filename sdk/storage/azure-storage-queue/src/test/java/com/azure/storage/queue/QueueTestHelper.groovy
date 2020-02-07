@@ -128,7 +128,7 @@ class QueueTestHelper {
 
     static void sleepInRecord(Duration time) {
         String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE")
-        if ("RECORD".equalsIgnoreCase(azureTestMode)) {
+        if (!"PLAYBACK".equalsIgnoreCase(azureTestMode)) {
             sleep(time)
         }
     }

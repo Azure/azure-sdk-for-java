@@ -1,5 +1,19 @@
 # Release History
-## Version 12.0.0 (2019-10-31)
+
+## 12.4.0-beta.1 (Unreleased)
+
+
+## 12.3.0 (2020-01-15)
+
+## 12.2.0 (2020-01-08)
+
+## 12.2.0-beta.1 (2019-12-18)
+- Added generateSas methods on service clients to improve discoverability and convenience of sas. Deprecated setters of required parameters, generateSasQueryParameters methods on AccountSasSignatureValues to direct users to using the methods added on clients.
+
+## 12.1.0 (2019-12-04)
+- Upgraded to version 1.1.0 of Azure Core.
+
+## 12.0.0 (2019-10-31)
 - Removed BaseClientBuilder
 - Renamed RequestRetryOptions maxTries, tryTimeout, secondaryHost, retryDelayInMs, maxRetryDelayInMs to getMaxTries, getTryTimeout, getSecondaryHosy, getRetryDelayInMs, getMaxRetryDelayInMs
 - Renamed IpRange to SasIpRange

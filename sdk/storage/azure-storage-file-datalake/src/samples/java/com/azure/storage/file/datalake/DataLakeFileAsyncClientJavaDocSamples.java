@@ -25,6 +25,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
     private DataLakeFileAsyncClient client = JavaDocCodeSnippetsHelpers.getFileAsyncClient(fileName);
     private String leaseId = "leaseId";
     private String destinationPath = "destinationPath";
+    private String fileSystemName = "fileSystemName";
     private Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap("data".getBytes(StandardCharsets.UTF_8)));
     private long length = 4L;
     private long position = 4L;
@@ -50,24 +51,24 @@ public class DataLakeFileAsyncClientJavaDocSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileAsyncClient#rename(String)} and
-     * {@link DataLakeFileAsyncClient#renameWithResponse(String, DataLakeRequestConditions, DataLakeRequestConditions)}
+     * Code snippets for {@link DataLakeFileAsyncClient#rename(String, String)} and
+     * {@link DataLakeFileAsyncClient#renameWithResponse(String, String, DataLakeRequestConditions, DataLakeRequestConditions)}
      */
     public void renameCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.rename#String
-        DataLakeFileAsyncClient renamedClient = client.rename(destinationPath).block();
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.rename#String-String
+        DataLakeFileAsyncClient renamedClient = client.rename(fileSystemName, destinationPath).block();
         System.out.println("Directory Client has been renamed");
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.rename#String
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.rename#String-String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions
         DataLakeRequestConditions sourceRequestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
         DataLakeRequestConditions destinationRequestConditions = new DataLakeRequestConditions();
 
-        DataLakeFileAsyncClient newRenamedClient = client.renameWithResponse(destinationPath, sourceRequestConditions,
-            destinationRequestConditions).block().getValue();
+        DataLakeFileAsyncClient newRenamedClient = client.renameWithResponse(fileSystemName, destinationPath,
+            sourceRequestConditions, destinationRequestConditions).block().getValue();
         System.out.println("Directory Client has been renamed");
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions
     }
 
     /**
@@ -135,6 +136,12 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         client.flush(position).subscribe(response ->
             System.out.println("Flush data completed"));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long-boolean
+        boolean overwrite = true;
+        client.flush(position, overwrite).subscribe(response ->
+            System.out.println("Flush data completed"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions
         FileRange range = new FileRange(1024, 2048L);

@@ -22,6 +22,7 @@ import com.microsoft.azure.management.storage.v2019_06_01.NetworkRuleSet;
 import com.microsoft.azure.management.storage.v2019_06_01.GeoReplicationStats;
 import com.microsoft.azure.management.storage.v2019_06_01.LargeFileSharesState;
 import java.util.List;
+import com.microsoft.azure.management.storage.v2019_06_01.RoutingPreference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -190,6 +191,13 @@ public class StorageAccountInner extends Resource {
      */
     @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /**
+     * Maintains information about the network routing choice opted by the user
+     * for data transfer.
+     */
+    @JsonProperty(value = "properties.routingPreference")
+    private RoutingPreference routingPreference;
 
     /**
      * Get gets the SKU.
@@ -451,6 +459,26 @@ public class StorageAccountInner extends Resource {
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.privateEndpointConnections;
+    }
+
+    /**
+     * Get maintains information about the network routing choice opted by the user for data transfer.
+     *
+     * @return the routingPreference value
+     */
+    public RoutingPreference routingPreference() {
+        return this.routingPreference;
+    }
+
+    /**
+     * Set maintains information about the network routing choice opted by the user for data transfer.
+     *
+     * @param routingPreference the routingPreference value to set
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withRoutingPreference(RoutingPreference routingPreference) {
+        this.routingPreference = routingPreference;
+        return this;
     }
 
 }

@@ -22,6 +22,9 @@ public final class ContentKeyPolicyFairPlayRentalAndLeaseKeyType extends Expanda
     /** Static value Undefined for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
     public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType UNDEFINED = fromString("Undefined");
 
+    /** Static value DualExpiry for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
+    public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType DUAL_EXPIRY = fromString("DualExpiry");
+
     /** Static value PersistentUnlimited for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
     public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType PERSISTENT_UNLIMITED = fromString("PersistentUnlimited");
 

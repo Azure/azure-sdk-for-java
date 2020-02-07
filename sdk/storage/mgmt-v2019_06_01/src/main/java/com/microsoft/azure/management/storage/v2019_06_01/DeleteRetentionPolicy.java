@@ -11,24 +11,24 @@ package com.microsoft.azure.management.storage.v2019_06_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The blob service properties for soft delete.
+ * The service properties for soft delete.
  */
 public class DeleteRetentionPolicy {
     /**
-     * Indicates whether DeleteRetentionPolicy is enabled for the Blob service.
+     * Indicates whether DeleteRetentionPolicy is enabled.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
-     * Indicates the number of days that the deleted blob should be retained.
+     * Indicates the number of days that the deleted item should be retained.
      * The minimum specified value can be 1 and the maximum value can be 365.
      */
     @JsonProperty(value = "days")
     private Integer days;
 
     /**
-     * Get indicates whether DeleteRetentionPolicy is enabled for the Blob service.
+     * Get indicates whether DeleteRetentionPolicy is enabled.
      *
      * @return the enabled value
      */
@@ -37,7 +37,7 @@ public class DeleteRetentionPolicy {
     }
 
     /**
-     * Set indicates whether DeleteRetentionPolicy is enabled for the Blob service.
+     * Set indicates whether DeleteRetentionPolicy is enabled.
      *
      * @param enabled the enabled value to set
      * @return the DeleteRetentionPolicy object itself.
@@ -48,7 +48,7 @@ public class DeleteRetentionPolicy {
     }
 
     /**
-     * Get indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.
+     * Get indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and the maximum value can be 365.
      *
      * @return the days value
      */
@@ -57,7 +57,7 @@ public class DeleteRetentionPolicy {
     }
 
     /**
-     * Set indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.
+     * Set indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and the maximum value can be 365.
      *
      * @param days the days value to set
      * @return the DeleteRetentionPolicy object itself.

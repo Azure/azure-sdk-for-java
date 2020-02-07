@@ -12,7 +12,6 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
-import org.apache.qpid.proton.engine.Session;
 
 import static com.azure.core.amqp.implementation.AmqpErrorCode.TRACKING_ID_PROPERTY;
 
@@ -36,8 +35,6 @@ abstract class LinkHandler extends Handler {
             getConnectionId(), link.getName(),
             condition != null ? condition.getCondition() : ClientConstants.NOT_APPLICABLE,
             condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
-
-        closeSession(link, link.getCondition());
     }
 
     @Override
@@ -89,7 +86,7 @@ abstract class LinkHandler extends Handler {
             condition != null ? condition.getCondition() : ClientConstants.NOT_APPLICABLE,
             condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
 
-        if (condition != null) {
+        if (condition != null && condition.getCondition() != null) {
             final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
                 condition.getDescription(), getErrorContext(link));
 
@@ -97,20 +94,6 @@ abstract class LinkHandler extends Handler {
         }
 
         onNext(EndpointState.CLOSED);
-    }
-
-    private void closeSession(Link link, ErrorCondition condition) {
-        final Session session = link.getSession();
-
-        if (session != null && session.getLocalState() != EndpointState.CLOSED) {
-            logger.info("closeSession connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
-                getConnectionId(), link.getName(),
-                condition != null ? condition.getCondition() : ClientConstants.NOT_APPLICABLE,
-                condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
-
-            session.setCondition(condition);
-            session.close();
-        }
     }
 
     private void handleRemoteLinkClosed(final Event event) {
@@ -123,6 +106,5 @@ abstract class LinkHandler extends Handler {
         }
 
         processOnClose(link, condition);
-        closeSession(link, condition);
     }
 }

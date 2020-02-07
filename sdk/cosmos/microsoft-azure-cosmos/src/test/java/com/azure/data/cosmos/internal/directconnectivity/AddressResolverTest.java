@@ -16,6 +16,7 @@ import com.azure.data.cosmos.NotFoundException;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
 import com.azure.data.cosmos.internal.routing.CollectionRoutingMap;
 import com.azure.data.cosmos.internal.routing.IServerIdentity;
@@ -319,7 +320,7 @@ public class AddressResolverTest {
                 currentCollection.setValue(collectionAfterRefresh);
                 AddressResolverTest.this.collectionCacheRefreshedCount++;
                 request.forceNameCacheRefresh = false;
-                return Mono.just(currentCollection.getValue());
+                return Mono.just(new Utils.ValueHolder<>(currentCollection.getValue()));
             }
 
             if (request.forceNameCacheRefresh && collectionAfterRefresh == null) {
@@ -335,10 +336,10 @@ public class AddressResolverTest {
             }
 
             if (!request.forceNameCacheRefresh && currentCollection.getValue() != null) {
-                return Mono.just(currentCollection.getValue());
+                return Mono.just(new Utils.ValueHolder<>(currentCollection.getValue()));
             }
 
-            return Mono.empty();
+            return new Utils.ValueHolder<>(null);
         }).when(this.collectionCache).resolveCollectionAsync(Mockito.any(RxDocumentServiceRequest.class));
 
         // Routing map cache
@@ -359,7 +360,7 @@ public class AddressResolverTest {
             CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(1, CollectionRoutingMap.class);
 
             if (previousValue == null) {
-                return Mono.justOrEmpty(currentRoutingMap.get(collectionRid));
+                return Mono.just(new Utils.ValueHolder<>(currentRoutingMap.get(collectionRid)));
             }
 
             if (previousValue != null && currentRoutingMap.containsKey(previousValue.getCollectionUniqueId()) &&
@@ -383,7 +384,7 @@ public class AddressResolverTest {
                 }
 
 
-                return Mono.justOrEmpty(currentRoutingMap.get(collectionRid));
+                return Mono.just(new Utils.ValueHolder<>(currentRoutingMap.get(collectionRid)));
             }
 
             return Mono.error(new NotImplementedException("not mocked"));
@@ -403,7 +404,7 @@ public class AddressResolverTest {
             Boolean forceRefresh = invocationOnMock.getArgumentAt(2, Boolean.class);
 
             if (!forceRefresh) {
-                return Mono.justOrEmpty(currentAddresses.get(findMatchingServiceIdentity(currentAddresses, pkri)));
+                return Mono.just(new Utils.ValueHolder<>(currentAddresses.get(findMatchingServiceIdentity(currentAddresses, pkri))));
             } else {
 
                 ServiceIdentity si;
@@ -427,7 +428,7 @@ public class AddressResolverTest {
                 }
 
                 // TODO: what to return in this case if it is null!!
-                return Mono.justOrEmpty(currentAddresses.get(si));
+                return Mono.just(new Utils.ValueHolder<>(currentAddresses.get(si)));
             }
         }).when(fabricAddressCache).tryGetAddresses(Mockito.any(RxDocumentServiceRequest.class), Mockito.any(PartitionKeyRangeIdentity.class), Mockito.anyBoolean());
     }

@@ -61,17 +61,16 @@ public class RenameCollectionAwareClientRetryPolicy implements IDocumentClientRe
                     request.forceNameCacheRefresh = true;
                     request.requestContext.resolvedCollectionRid = null;
 
-                    Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+                    Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
 
-                    return collectionObs.flatMap(collectionInfo -> {
-                        if (!StringUtils.isEmpty(oldCollectionRid) && !StringUtils.isEmpty(collectionInfo.resourceId())) {
+                    return collectionObs.flatMap(collectionValueHolder -> {
+                        if (collectionValueHolder.v == null) {
+                            logger.warn("Can't recover from session unavailable exception because resolving collection name {} returned null", request.getResourceAddress());
+                        } else if (!StringUtils.isEmpty(oldCollectionRid) && !StringUtils.isEmpty(collectionValueHolder.v.resourceId())) {
                             return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
                         }
                         return Mono.just(shouldRetryResult);
-                    }).switchIfEmpty(Mono.defer(() -> {
-                        logger.warn("Can't recover from session unavailable exception because resolving collection name {} returned null", request.getResourceAddress());
-                        return Mono.just(shouldRetryResult);
-                    })).onErrorResume(throwable -> {
+                    }).onErrorResume(throwable -> {
                         // When resolveCollectionAsync throws an exception ignore it because it's an attempt to recover an existing
                         // error. When the recovery fails we return ShouldRetryResult.noRetry and propagate the original exception to the client
 

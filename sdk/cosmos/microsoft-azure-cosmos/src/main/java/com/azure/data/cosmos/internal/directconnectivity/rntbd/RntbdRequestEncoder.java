@@ -39,7 +39,7 @@ public final class RntbdRequestEncoder extends MessageToByteEncoder {
     @Override
     protected void encode(final ChannelHandlerContext context, final Object message, final ByteBuf out) throws Exception {
 
-        final RntbdRequest request = RntbdRequest.from((RntbdRequestArgs)message);
+        final RntbdRequest request = RntbdRequest.from((RntbdRequestArgs) message);
         final int start = out.writerIndex();
 
         try {

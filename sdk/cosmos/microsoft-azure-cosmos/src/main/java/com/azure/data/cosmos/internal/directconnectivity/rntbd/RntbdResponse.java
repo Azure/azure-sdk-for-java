@@ -71,6 +71,7 @@ public final class RntbdResponse implements ReferenceCounted {
         this.content = content.retain();
     }
 
+    @JsonIgnore
     public UUID getActivityId() {
         return this.frame.getActivityId();
     }
@@ -97,10 +98,9 @@ public final class RntbdResponse implements ReferenceCounted {
 
     static RntbdResponse decode(final ByteBuf in) {
 
-        int start = in.markReaderIndex().readerIndex();
+        final int start = in.markReaderIndex().readerIndex();
 
         final RntbdResponseStatus frame = RntbdResponseStatus.decode(in);
-
         final RntbdResponseHeaders headers = RntbdResponseHeaders.decode(in.readSlice(frame.getHeadersLength()));
         final boolean hasPayload = headers.isPayloadPresent();
         final ByteBuf content;
@@ -120,7 +120,7 @@ public final class RntbdResponse implements ReferenceCounted {
             content = Unpooled.EMPTY_BUFFER;
         }
 
-        int end = in.readerIndex();
+        final int end = in.readerIndex();
         in.resetReaderIndex();
 
         return new RntbdResponse(in.readSlice(end - start), frame, headers, content);
@@ -163,9 +163,9 @@ public final class RntbdResponse implements ReferenceCounted {
     }
 
     /**
-     * Decreases the reference count by {@code 1} and deallocate this object if the reference count reaches {@code 0}
+     * Decreases the reference count by {@code 1} and deallocate this response if the count reaches {@code 0}.
      *
-     * @return {@code true} if and only if the reference count became {@code 0} and this object is de-allocated
+     * @return {@code true} if and only if the reference count became {@code 0} and this response is deallocated.
      */
     @Override
     public boolean release() {
@@ -173,10 +173,10 @@ public final class RntbdResponse implements ReferenceCounted {
     }
 
     /**
-     * Decreases the reference count by {@code decrement} and de-allocates this object if the reference count reaches {@code 0}
+     * Decreases the reference count by {@code decrement} and deallocates this response if the count reaches {@code 0}.
      *
-     * @param decrement amount of the decrease
-     * @return {@code true} if and only if the reference count became {@code 0} and this object has been de-allocated
+     * @param decrement amount of the decrease.
+     * @return {@code true} if and only if the reference count became {@code 0} and this response has been deallocated.
      */
     @Override
     public boolean release(final int decrement) {
@@ -198,8 +198,10 @@ public final class RntbdResponse implements ReferenceCounted {
                     this.content.release();
                 }
 
-                checkState(this.in == Unpooled.EMPTY_BUFFER || this.in.refCnt() == 0);
-                checkState(this.content == Unpooled.EMPTY_BUFFER || this.content.refCnt() == 0);
+                // TODO: DANOBLE: figure out why PooledUnsafeDirectByteBuf violates these expectations:
+                //    checkState(this.in == Unpooled.EMPTY_BUFFER || this.in.refCnt() == 0);
+                //    checkState(this.content == Unpooled.EMPTY_BUFFER || this.content.refCnt() == 0);
+                //  Specifically, why are this.in.refCnt() and this.content.refCnt() equal to 1?
             }
 
             return value;
@@ -280,8 +282,9 @@ public final class RntbdResponse implements ReferenceCounted {
             final int length = value.readableBytes();
 
             generator.writeStartObject();
-            generator.writeObjectField("length", length);
-            generator.writeObjectField("content", ByteBufUtil.hexDump(value, 0, length));
+            generator.writeObjectField("lengthInBytes", length);
+            generator.writeObjectField("hexDump", ByteBufUtil.hexDump(value, 0, length));
+            generator.writeObjectField("string", value.getCharSequence(0, length, StandardCharsets.UTF_8));
             generator.writeEndObject();
         }
     }

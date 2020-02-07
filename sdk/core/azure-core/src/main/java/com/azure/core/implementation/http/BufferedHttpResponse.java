@@ -5,6 +5,7 @@ package com.azure.core.implementation.http;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -17,7 +18,7 @@ import java.nio.charset.StandardCharsets;
  */
 public final class BufferedHttpResponse extends HttpResponse {
     private final HttpResponse innerHttpResponse;
-    private final Mono<byte[]> cachedBody;
+    private final Flux<ByteBuffer> cachedBody;
 
     /**
      * Creates a buffered HTTP response.
@@ -27,7 +28,10 @@ public final class BufferedHttpResponse extends HttpResponse {
     public BufferedHttpResponse(HttpResponse innerHttpResponse) {
         super(innerHttpResponse.getRequest());
         this.innerHttpResponse = innerHttpResponse;
-        this.cachedBody = innerHttpResponse.getBodyAsByteArray().cache();
+        this.cachedBody = FluxUtil.collectBytesInByteBufferStream(innerHttpResponse.getBody())
+            .map(ByteBuffer::wrap)
+            .flux()
+            .cache();
     }
 
     @Override
@@ -46,13 +50,13 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Mono<byte[]> getBodyAsByteArray() {
+    public Flux<ByteBuffer> getBody() {
         return cachedBody;
     }
 
     @Override
-    public Flux<ByteBuffer> getBody() {
-        return getBodyAsByteArray().flatMapMany(bytes -> Flux.just(ByteBuffer.wrap(bytes)));
+    public Mono<byte[]> getBodyAsByteArray() {
+        return cachedBody.next().map(ByteBuffer::array);
     }
 
     @Override

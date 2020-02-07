@@ -5,6 +5,8 @@ module com.azure.core.tracing.opentelemetry {
     requires transitive com.azure.core;
     requires opentelemetry.api;
 
+    opens com.azure.core.tracing.opentelemetry to com.fasterxml.jackson.databind;
+
     exports com.azure.core.tracing.opentelemetry;
 
     provides com.azure.core.util.tracing.Tracer

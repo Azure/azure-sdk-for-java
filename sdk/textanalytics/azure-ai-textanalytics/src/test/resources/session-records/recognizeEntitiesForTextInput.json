@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/entities/recognition/general",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9d68d9ec-caee-470e-b90a-e9248e7e112c",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "21",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
+      "apim-request-id" : "3606bada-cdf7-459e-b27f-3076fad38893",
+      "x-aml-ta-request-id" : "4f5d9ea4-038b-4da3-a865-86edf7104b51",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"Seattle\",\"type\":\"Location\",\"offset\":26,\"length\":7,\"score\":0.80624294281005859},{\"text\":\"last week\",\"type\":\"DateTime\",\"subtype\":\"DateRange\",\"offset\":34,\"length\":9,\"score\":0.8}]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
+      "Date" : "Tue, 17 Dec 2019 22:35:06 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -21,7 +21,10 @@ import java.util.Map;
  * appended to a URL directly (though caution should be taken here in case there are existing query parameters, which
  * might affect the appropriate means of appending these query parameters). NOTE: Instances of this class are immutable
  * to ensure thread safety.
+ * @deprecated Please use the generateSas method on the desired blob/container client after initializing
+ * {@link BlobServiceSasSignatureValues}.
  */
+@Deprecated
 public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters {
 
     private final String identifier;
@@ -56,7 +59,9 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
      * @param queryParamsMap All query parameters for the request as key-value pairs
      * @param removeSasParametersFromMap When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public BlobServiceSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSasParametersFromMap) {
         super(queryParamsMap, removeSasParametersFromMap);
         this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
@@ -101,7 +106,9 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
      * @param resource A {@code String} representing the storage container or blob (only for Service SAS).
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     BlobServiceSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, SasIpRange sasIpRange, String identifier, String resource, String permissions,
         String signature, String cacheControl, String contentDisposition, String contentEncoding,
@@ -137,95 +144,122 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
      * @return The signed identifier (only for {@link BlobServiceSasSignatureValues}) or {@code null}. Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public String getIdentifier() {
         return identifier;
     }
 
     /**
      * @return The storage container or blob (only for {@link BlobServiceSasSignatureValues}).
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public String getResource() {
         return resource;
     }
 
     /**
      * @return The Cache-Control header value when a client accesses the resource with this sas token.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public String getCacheControl() {
         return cacheControl;
     }
 
     /**
      * @return The Content-Disposition header value when a client accesses the resource with this sas token.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public String getContentDisposition() {
         return contentDisposition;
     }
 
     /**
      * @return The Content-Encoding header value when a client accesses the resource with this sas token.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public String getContentEncoding() {
         return contentEncoding;
     }
 
     /**
      * @return The Content-Language header value when a client accesses the resource with this sas token.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public String getContentLanguage() {
         return contentLanguage;
     }
 
     /**
      * @return The Content-Type header value when a client accesses the resource with this sas token.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public String getContentType() {
         return contentType;
     }
 
     /**
      * @return the object ID of the key.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public String getKeyObjectId() {
         return keyObjectId;
     }
 
     /**
      * @return the tenant ID of the key.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public String getKeyTenantId() {
         return keyTenantId;
     }
 
     /**
      * @return the datetime when the key becomes active.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public OffsetDateTime getKeyStart() {
         return keyStart;
     }
 
     /**
      * @return the datetime when the key expires.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public OffsetDateTime getKeyExpiry() {
         return keyExpiry;
     }
 
     /**
      * @return the services that are permitted by the key.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public String getKeyService() {
         return keyService;
     }
 
     /**
      * @return the service version that created the key.
+     * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
+    @Deprecated
     public String getKeyVersion() {
         return keyVersion;
     }
 
+    @Deprecated
     UserDelegationKey userDelegationKey() {
         return new UserDelegationKey()
             .setSignedExpiry(this.keyExpiry)
@@ -240,7 +274,10 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
      * @return A {@code String} representing all SAS query parameters.
+     * @deprecated Please use the generateSas method on the desired blob/container client after initializing
+     * {@link BlobServiceSasSignatureValues}.
      */
+    @Deprecated
     public String encode() {
         /*
          We should be url-encoding each key and each value, but because we know all the keys and values will encode to

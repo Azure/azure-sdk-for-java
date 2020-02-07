@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.never;
@@ -32,7 +33,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TracerProviderTest {
-    private static final String METHOD_NAME = "Azure.eventhubs.send";
+    private static final String METHOD_NAME = "EventHubs.send";
 
     @Mock
     private Tracer tracer;
@@ -193,5 +194,41 @@ public class TracerProviderTest {
     public void addSpanLinks() {
         // Act
         assertThrows(NullPointerException.class, () -> tracerProvider.addSpanLinks(null));
+    }
+
+    @Test
+    public void getSpanBuilderReturnsUpdatedContext() {
+        // Arrange
+        final String spanBuilderKey = "spanBuilder-key";
+        final String spanBuilderValue = "spanBuilder-value";
+
+        final String spanBuilderKey1 = "spanBuilder-key1";
+        final String spanBuilderValue1 = "spanBuilder-value1";
+        final Context startingContext = Context.NONE;
+
+        when(tracer.getSharedSpanBuilder(anyString(), any())).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(spanBuilderKey, spanBuilderValue);
+            }
+        );
+        when(tracer2.getSharedSpanBuilder(anyString(), any())).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(spanBuilderKey1, spanBuilderValue1);
+            }
+        );
+
+        // Act
+        final Context updatedContext = tracerProvider.getSharedSpanBuilder(startingContext);
+
+        // Assert
+        final Optional<Object> spanBuilderData = updatedContext.getData(spanBuilderKey);
+        Assertions.assertTrue(spanBuilderData.isPresent());
+        Assertions.assertEquals(spanBuilderValue, spanBuilderData.get());
+
+        final Optional<Object> spanBuilderData1 = updatedContext.getData(spanBuilderKey1);
+        Assertions.assertTrue(spanBuilderData1.isPresent());
+        Assertions.assertEquals(spanBuilderValue1, spanBuilderData1.get());
     }
 }

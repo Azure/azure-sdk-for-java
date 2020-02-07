@@ -124,7 +124,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         return client.getPartitionKeyRangeCache().tryGetPartitionKeyRangeByIdAsync(resourceId,
             partitionKeyRangeIdInternal,
             false,
-            null).flatMap(partitionKeyRange -> Mono.just(Collections.singletonList(partitionKeyRange)));
+            null).flatMap(partitionKeyRange -> Mono.just(Collections.singletonList(partitionKeyRange.v)));
     }
 
     protected Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeInternalAsyncFunc() {

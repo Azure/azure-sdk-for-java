@@ -1,0 +1,42 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesastestsaccountsasnetworkonendpoint060038138476?sv=2019-02-02&se=2019-12-12T23%3A50%3A56Z&sp=rwdlc&sig=REDACTED&ss=q&srt=sco",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "05b3dc64-1f01-47f7-8dbd-c5ad3446c80d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "af49d1ba-0003-0036-2b7d-b09d24000000",
+      "Date" : "Wed, 11 Dec 2019 23:50:56 GMT",
+      "x-ms-client-request-id" : "05b3dc64-1f01-47f7-8dbd-c5ad3446c80d"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queuesastestsaccountsasnetworkonendpoint060038138476?sv=2019-02-02&se=2019-12-12T23%3A50%3A56Z&sp=rwdlc&sig=REDACTED&ss=q&srt=sco",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d1f6acae-c7b9-49f5-adc0-5e5533c7884f"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "af49d1c3-0003-0036-337d-b09d24000000",
+      "Date" : "Wed, 11 Dec 2019 23:50:56 GMT",
+      "x-ms-client-request-id" : "d1f6acae-c7b9-49f5-adc0-5e5533c7884f"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "queuesastestsaccountsasnetworkonendpoint55885094d230", "2019-12-11T23:50:56.289439400Z", "queuesastestsaccountsasnetworkonendpoint060038138476" ]
+}
