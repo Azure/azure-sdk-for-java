@@ -49,7 +49,7 @@ class RecognizePiiEntityAsyncClient {
     }
 
     Mono<Response<RecognizePiiEntityResult>> recognizePiiEntitiesWithResponse(String text, String language,
-                                                                              Context context) {
+        Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return recognizeBatchPiiEntitiesWithResponse(

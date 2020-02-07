@@ -665,7 +665,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeLinkedEntityResult>> recognizeLinkedEntitiesWithResponse(String text,
-                                                                                           String language) {
+        String language) {
         try {
             return withContext(context -> recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(text,
                 language, context));

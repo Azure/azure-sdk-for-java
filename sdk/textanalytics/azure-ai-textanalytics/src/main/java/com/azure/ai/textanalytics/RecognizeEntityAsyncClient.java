@@ -48,8 +48,7 @@ class RecognizeEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<RecognizeEntityResult>> recognizeEntitiesWithResponse(String text, String language,
-                                                                        Context context) {
+    Mono<Response<RecognizeEntityResult>> recognizeEntitiesWithResponse(String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return recognizeBatchEntitiesWithResponse(

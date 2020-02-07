@@ -325,7 +325,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizePiiEntityResult> recognizePiiEntitiesWithResponse(String text, String language,
-                                                                               Context context) {
+        Context context) {
         return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(text, language, context).block();
     }
 
@@ -457,7 +457,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizeLinkedEntityResult> recognizeLinkedEntitiesWithResponse(String text, String language,
-                                                                                     Context context) {
+        Context context) {
         return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(text, language,
             context).block();
     }

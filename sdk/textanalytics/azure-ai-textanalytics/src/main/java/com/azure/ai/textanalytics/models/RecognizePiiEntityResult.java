@@ -24,7 +24,7 @@ public final class RecognizePiiEntityResult extends DocumentResult {
      * @param entities a list of {@link PiiEntity}
      */
     public RecognizePiiEntityResult(String id, TextDocumentStatistics textDocumentStatistics,
-                                    TextAnalyticsError error, List<PiiEntity> entities) {
+        TextAnalyticsError error, List<PiiEntity> entities) {
         super(id, textDocumentStatistics, error);
         this.entities = entities == null ? new ArrayList<>() : entities;
     }

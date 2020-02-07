@@ -50,7 +50,7 @@ class RecognizeLinkedEntityAsyncClient {
     }
 
     Mono<Response<RecognizeLinkedEntityResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
-                                                                                    Context context) {
+        Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return recognizeBatchLinkedEntitiesWithResponse(

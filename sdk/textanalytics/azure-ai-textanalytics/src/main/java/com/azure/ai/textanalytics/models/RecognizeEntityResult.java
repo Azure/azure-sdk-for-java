@@ -24,7 +24,7 @@ public final class RecognizeEntityResult extends DocumentResult {
      * @param entities a list of {@link CategorizedEntity}
      */
     public RecognizeEntityResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
-                                 List<CategorizedEntity> entities) {
+        List<CategorizedEntity> entities) {
         super(id, textDocumentStatistics, error);
         this.entities = entities == null ? new ArrayList<>() : entities;
     }
