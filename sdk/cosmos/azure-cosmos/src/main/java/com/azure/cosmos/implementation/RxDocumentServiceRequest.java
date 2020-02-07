@@ -1074,7 +1074,7 @@ public class RxDocumentServiceRequest {
             return Flux.empty();
         }
 
-        return Flux.just(Unpooled.wrappedBuffer(byteBuffer));
+        return Flux.just(Unpooled.wrappedBuffer(getByteBuffer()));
     }
 
     public byte[] copyContentAsByteArray() {
@@ -1083,14 +1083,17 @@ public class RxDocumentServiceRequest {
         }
 
         try {
-            return IOUtils.toByteArray(new ByteBufferBackedInputStream(byteBuffer));
+            return IOUtils.toByteArray(new ByteBufferBackedInputStream(getByteBuffer()));
         } catch (IOException e) {
            throw new IllegalArgumentException(e);
         }
     }
 
     public ByteBuffer getByteBuffer() {
-        return byteBuffer;
+        if (this.byteBuffer != null) {
+            this.byteBuffer.rewind();
+        }
+        return this.byteBuffer;
     }
 
     public RxDocumentServiceRequest clone() {
