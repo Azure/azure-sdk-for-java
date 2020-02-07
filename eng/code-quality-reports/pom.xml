@@ -15,13 +15,8 @@
 
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
 
-    <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
-    <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
-
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-
-    <junit.version>4.12</junit.version>
   </properties>
 
   <distributionManagement>
