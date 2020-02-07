@@ -15,7 +15,6 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import com.beust.jcommander.JCommander;
-import com.beust.jcommander.JCommander.Builder;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -62,13 +61,12 @@ public class PerfStressProgram {
             }
         }).toArray(i -> new PerfStressOptions[i]);
 
-        Builder builder = JCommander.newBuilder();
+        JCommander jc = new JCommander();
 
         for (int i = 0; i < commands.length; i++) {
-            builder.addCommand(commands[i], options[i]);
+            jc.addCommand(commands[i], options[i]);
         }
 
-        JCommander jc = builder.build();
 
         jc.parse(args);
 

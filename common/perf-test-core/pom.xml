@@ -13,7 +13,7 @@
   <groupId>com.azure</groupId>
   <artifactId>perf-test-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
 
   <name>Microsoft Azure Java Performance Test Library</name>
   <description>This package contains performance test types for Azure Java clients.</description>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.beust</groupId>
       <artifactId>jcommander</artifactId>
-      <version>1.78</version> <!-- {x-version-update;com.beust:jcommander;external_dependency} -->
+      <version>1.58</version> <!-- {x-version-update;com.beust:jcommander;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
