@@ -23,7 +23,7 @@
 hs_err_pid*
 
 # IntelliJ
-.idea
+azure-spring-boot-build/.idea
 *.iml
 .project
 .settings

@@ -11,10 +11,10 @@
         <relativePath>../../azure-spring-boot-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>azure-mediaservices-spring-boot-starter</artifactId>
+    <artifactId>azure-spring-boot-starter</artifactId>
 
-    <name>Azure Media Services Spring Boot Starter</name>
-    <description>Spring Boot Starter for Azure Media service</description>
+    <name>Azure Spring Boot Starter</name>
+    <description>Core starter, including auto-configuration support</description>
     <url>https://github.com/Microsoft/azure-spring-boot</url>
 
     <properties>
@@ -33,10 +33,6 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-spring-boot</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-media</artifactId>
         </dependency>
     </dependencies>
 </project>
