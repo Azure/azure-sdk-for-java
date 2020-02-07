@@ -23,7 +23,8 @@ public final class BlobContainerProperties {
     private final PublicAccessType blobPublicAccess;
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
-    private final BlobContainerEncryptionScope blobContainerEncryptionScope;
+    private final String defaultEncryptionScope;
+    private final Boolean encryptionScopeOverridePrevented;
 
     /**
      * Constructs a {@link BlobContainerProperties}.
@@ -59,12 +60,13 @@ public final class BlobContainerProperties {
      * @param hasImmutabilityPolicy Flag indicating if the container has an immutability policy set on it.
      * @param hasLegalHold Flag indicating if the container has a legal hold.
      * @param defaultEncryptionScope The container's default encryption scope to encrypt blobs with.
-     * @param denyEncryptionScopeOverride Whether or not a container's default encryption scope can be overriden
+     * @param encryptionScopeOverridePrevented Whether or not a container's default encryption scope can be overriden
      */
     public BlobContainerProperties(final Map<String, String> metadata, final String eTag,
         final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
         final LeaseStatusType leaseStatus, final PublicAccessType blobPublicAccess, final boolean hasImmutabilityPolicy,
-        final boolean hasLegalHold, final String defaultEncryptionScope, final Boolean denyEncryptionScopeOverride) {
+        final boolean hasLegalHold, final String defaultEncryptionScope,
+        final Boolean encryptionScopeOverridePrevented) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
@@ -74,9 +76,8 @@ public final class BlobContainerProperties {
         this.blobPublicAccess = blobPublicAccess;
         this.hasImmutabilityPolicy = hasImmutabilityPolicy;
         this.hasLegalHold = hasLegalHold;
-        this.blobContainerEncryptionScope = new BlobContainerEncryptionScope()
-            .setDefaultEncryptionScope(defaultEncryptionScope)
-            .setEncryptionScopeOverridePrevented(denyEncryptionScopeOverride);
+        this.defaultEncryptionScope = defaultEncryptionScope;
+        this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
     }
 
     /**
@@ -143,9 +144,16 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * @return the container's encryption scope
+     * @return the container's default encryption scope
      */
-    public BlobContainerEncryptionScope getBlobContainerEncryptionScope() {
-        return blobContainerEncryptionScope;
+    public String getDefaultEncryptionScope() {
+        return defaultEncryptionScope;
+    }
+
+    /**
+     * @return the container's deny encryption scope override property.
+     */
+    public Boolean isEncryptionScopeOverridePrevented() {
+        return encryptionScopeOverridePrevented;
     }
 }
