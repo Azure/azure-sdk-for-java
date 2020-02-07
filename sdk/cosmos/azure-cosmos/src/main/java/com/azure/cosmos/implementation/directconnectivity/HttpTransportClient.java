@@ -108,7 +108,7 @@ public class HttpTransportClient extends TransportClient {
 
             ResourceOperation resourceOperation = new ResourceOperation(request.getOperationType(), request.getResourceType());
             // uuid correlation manager
-            String activityId = request.getActivityId();
+            String activityId = request.getActivityId().toString();
 
             if (resourceOperation.operationType == OperationType.Recreate) {
                 Map<String, String> errorResponseHeaders = new HashMap<>();

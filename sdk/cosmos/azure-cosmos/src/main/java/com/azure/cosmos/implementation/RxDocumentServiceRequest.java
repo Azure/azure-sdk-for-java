@@ -24,6 +24,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
@@ -44,7 +45,7 @@ public class RxDocumentServiceRequest {
     private final String resourceAddress;
     public volatile boolean forceNameCacheRefresh;
     private volatile URI endpointOverride = null;
-    private final String activityId;
+    private final UUID activityId;
     private volatile String resourceFullName;
 
     private volatile String originalSessionToken;
@@ -127,7 +128,7 @@ public class RxDocumentServiceRequest {
         this.resourceType = resourceType;
         this.byteBuffer = byteBuffer;
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = Utils.randomUUID().toString();
+        this.activityId = Utils.randomUUID();
         this.isFeed = false;
         this.isNameBased = isNameBased;
         if (!isNameBased) {
@@ -159,7 +160,7 @@ public class RxDocumentServiceRequest {
         this.resourceType = resourceType;
         this.requestContext.sessionToken = null;
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = Utils.randomUUID().toString();
+        this.activityId = Utils.randomUUID();
         this.isFeed = false;
         PathInfo pathInfo = new PathInfo(false, null, null, false);
         if (StringUtils.isNotEmpty(path)) {
@@ -930,7 +931,7 @@ public class RxDocumentServiceRequest {
         this.endpointOverride = endpointOverride;
     }
 
-    public String getActivityId() {
+    public UUID getActivityId() {
         return this.activityId;
     }
 

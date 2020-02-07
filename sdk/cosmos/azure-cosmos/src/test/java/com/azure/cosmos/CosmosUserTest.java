@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.core.util.IterableStream;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -11,7 +11,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -87,11 +86,11 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        Iterator<FeedResponse<CosmosUserProperties>> feedResponseIterator = createdDatabase.readAllUsers();
-        assertThat(feedResponseIterator.hasNext()).isTrue();
+        IterableStream<FeedResponse<CosmosUserProperties>> feedResponseIterator = createdDatabase.readAllUsers();
+        assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
-        Iterator<FeedResponse<CosmosUserProperties>> feedResponseIterator2 = createdDatabase.readAllUsers(new FeedOptions());
-        assertThat(feedResponseIterator2.hasNext()).isTrue();
+        IterableStream<FeedResponse<CosmosUserProperties>> feedResponseIterator2 = createdDatabase.readAllUsers(new FeedOptions());
+        assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
 
     }
 
@@ -104,14 +103,14 @@ public class CosmosUserTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", userProperties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        Iterator<FeedResponse<CosmosUserProperties>> feedResponseIterator1 =
+        IterableStream<FeedResponse<CosmosUserProperties>> feedResponseIterator1 =
                 createdDatabase.queryUsers(query, feedOptions);
-        assertThat(feedResponseIterator1.hasNext()).isTrue();
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        Iterator<FeedResponse<CosmosUserProperties>> feedResponseIterator2 =
+        IterableStream<FeedResponse<CosmosUserProperties>> feedResponseIterator2 =
                 createdDatabase.queryUsers(query, feedOptions);
-        assertThat(feedResponseIterator2.hasNext()).isTrue();
+        assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
 
     }
 

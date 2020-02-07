@@ -47,7 +47,7 @@ public final class RntbdRequestArgs {
 
     public RntbdRequestArgs(final RxDocumentServiceRequest serviceRequest, final URI physicalAddress) {
         this.sample = Timer.start();
-        this.activityId = UUID.fromString(serviceRequest.getActivityId());
+        this.activityId = serviceRequest.getActivityId();
         this.timeCreated = OffsetDateTime.now();
         this.nanoTimeCreated = System.nanoTime();
         this.lifetime = Stopwatch.createStarted();
