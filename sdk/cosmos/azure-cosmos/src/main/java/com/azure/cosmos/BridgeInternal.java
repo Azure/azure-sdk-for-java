@@ -58,10 +58,6 @@ public class BridgeInternal {
     }
 
 
-    public static String toJsonString(Object document, ObjectMapper mapper) {
-        return CosmosItemProperties.toJsonString(document, mapper);
-    }
-
     public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
         return CosmosItemProperties.serializeJsonToByteBuffer(document, mapper);
     }
