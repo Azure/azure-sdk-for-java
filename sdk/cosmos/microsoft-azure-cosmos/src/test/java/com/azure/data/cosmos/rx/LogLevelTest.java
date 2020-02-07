@@ -11,7 +11,6 @@ import com.azure.data.cosmos.CosmosItemResponse;
 import com.azure.data.cosmos.CosmosResponseValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.WriterAppender;
 import org.apache.logging.log4j.core.config.AppenderRef;
@@ -19,36 +18,21 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.LoggerConfig;
-import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
-import org.apache.logging.log4j.core.config.builder.api.LayoutComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 import org.apache.logging.log4j.core.layout.PatternLayout;
-import org.apache.logging.log4j.simple.SimpleLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import reactor.core.publisher.Mono;
 
 import java.io.StringWriter;
-import java.lang.reflect.Method;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -76,40 +60,7 @@ public class LogLevelTest extends TestSuiteBase {
 
     @AfterMethod(groups = { "simple" })
     public void afterMethod() {
-//        final LoggerContext context = (LoggerContext) LogManager.getContext(false);
-//        final Configuration configuration = context.getConfiguration();
-//
-//        final Appender existingAppender = configuration.getAppender(APPENDER_NAME);
-//        if (existingAppender != null) {
-//            configuration.getAppenders().remove(APPENDER_NAME);
-//            existingAppender.stop();
-//        }
-//
-//        Set<String> loggers = new HashSet<>();
-//        loggers.add(COSMOS_DB_LOGGING_CATEGORY);
-//        loggers.add(NETWORK_LOGGING_CATEGORY);
-//
-//        configuration.getLoggers().values().stream()
-//            .filter(x -> loggers.contains(x.getName()))
-//            .forEach(loggerConfig -> {
-//                System.out.printf("Removing existing logger config: '%s'.%n", loggerConfig.getName());
-//                configuration.removeLogger(loggerConfig.getName());
-//                loggerConfig.stop();
-//            });
-//
-//        ArrayList<org.apache.logging.log4j.core.Logger> existingLoggers = new ArrayList<>(context.getLoggers());
-//        existingLoggers.stream().filter(l -> loggers.contains(l.getName())).forEach(l -> {
-//            System.out.println("Removing logger: " + l.getName());
-//        });
-    }
-
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT)
-    public void afterClass() throws URISyntaxException {
-        URL resource = this.getClass().getClassLoader().getResource("log4j2-test.properties");
-
-        Assert.assertNotNull(resource);
-        ConfigurationSource configurationSource = ConfigurationSource.fromUri(resource.toURI());
-        Configurator.initialize(null, configurationSource);
+        resetLoggingConfiguration();
     }
 
     /**
@@ -341,6 +292,35 @@ public class LogLevelTest extends TestSuiteBase {
     }
 
     /**
+     * Resets the logging configuration.
+     */
+    static void resetLoggingConfiguration() {
+        final URL resource = LogLevelTest.class.getClassLoader().getResource("log4j2-test.properties");
+
+        Assert.assertNotNull(resource);
+
+        final ConfigurationSource defaultConfigurationSource;
+        try {
+            defaultConfigurationSource = ConfigurationSource.fromUri(resource.toURI());
+        } catch (URISyntaxException e) {
+            Assert.fail("Should have been able to load test properties from '" + resource + "'. Exception" + e );
+            return;
+        }
+
+        final Configuration defaultConfiguration = ConfigurationBuilderFactory.newConfigurationBuilder()
+            .setConfigurationSource(defaultConfigurationSource)
+            .build();
+
+        // Stopping the old context so we can reinitialise it.
+        final LoggerContext oldContext = (LoggerContext) LogManager.getContext(false);
+        oldContext.stop();
+
+        final LoggerContext context = Configurator.initialize(defaultConfiguration);
+
+        Assert.assertNotSame(oldContext, context);
+    }
+
+    /**
      * Adds a {@link WriterAppender} to the
      *
      * @param loggerName
@@ -368,7 +348,6 @@ public class LogLevelTest extends TestSuiteBase {
 
         org.apache.logging.log4j.core.Logger logger = context.getLogger(loggerName);
         configuration.addLoggerAppender(logger, appender);
-        context.updateLoggers();
 
         // Enable this if you want to see the logging to console.
         // logger.addAppender(configuration.getAppender("STDOUT"));
