@@ -5,19 +5,27 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsClientOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsException;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -26,6 +34,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
@@ -62,7 +71,7 @@ public final class TextAnalyticsAsyncClient {
      * @param serviceVersion The versions of Azure Text Analytics supported by this client library.
      * @param clientOptions The {@link TextAnalyticsClientOptions client option} contains
      * {@link TextAnalyticsClientOptions#getDefaultLanguage default language} and
-     * {@link TextAnalyticsClientOptions#getDefaultCountryHint()} default country hint} that could be used as default
+     * {@link TextAnalyticsClientOptions#getDefaultCountryHint default country hint} that could be used as default
      * values for each request.
      */
     TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion,
@@ -111,26 +120,21 @@ public final class TextAnalyticsAsyncClient {
      * certainty that the identified language is true.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Detects languages in a text. Subscribes to the call asynchronously and prints out the detected language
+     * <p>Detects language in a text. Subscribes to the call asynchronously and prints out the detected language
      * details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string}
      *
      * @param text The text to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link DetectLanguageResult detected language} of the text.
+     * @return A {@link Mono} containing the {@link DetectedLanguage detected language} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectLanguageResult> detectLanguage(String text) {
-        try {
-            return detectLanguageWithResponse(text, defaultCountryHint).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Mono<DetectedLanguage> detectLanguage(String text) {
+        return detectLanguageWithResponse(text, defaultCountryHint).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -138,7 +142,7 @@ public final class TextAnalyticsAsyncClient {
      * close to one indicate 100% certainty that the identified language is true.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Detects languages with http response in a text with a provided country hint. Subscribes to the call
+     * <p>Detects language with http response in a text with a provided country hint. Subscribes to the call
      * asynchronously and prints out the detected language details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#string-string}
@@ -148,14 +152,13 @@ public final class TextAnalyticsAsyncClient {
      * specified.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link DetectLanguageResult detected language} of the text.
+     * {@link DetectedLanguage detected language} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint) {
+    public Mono<Response<DetectedLanguage>> detectLanguageWithResponse(String text, String countryHint) {
         try {
             return withContext(context ->
                 detectLanguageAsyncClient.detectLanguageWithResponse(text, countryHint, context));
@@ -171,22 +174,18 @@ public final class TextAnalyticsAsyncClient {
      * <p>Detects languages in a list of string inputs. Subscribes to the call asynchronously and prints out the
      * detected language details when a response is received.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguages#List}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#List}
      *
      * @param textInputs The list of texts to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * {@link DetectLanguageResult detected language}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguage(List<String> textInputs) {
-        try {
-            return detectLanguageWithResponse(textInputs, defaultCountryHint).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return detectLanguageWithResponse(textInputs, defaultCountryHint).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -196,14 +195,14 @@ public final class TextAnalyticsAsyncClient {
      * <p>Detects languages in a list of string inputs with a provided country hint for the batch. Subscribes to the
      * call asynchronously and prints out the detected language details when a response is received.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguagesWithResponse#List-String}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#List-String}
      *
      * @param textInputs The list of texts to be analyzed.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO
      * 3166-1 alpha-2. Defaults to "US" if not specified.
      *
      * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * {@link DetectLanguageResult detected language}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -230,25 +229,21 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * {@link DetectLanguageResult detected language}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguage(
         List<DetectLanguageInput> textInputs) {
-        try {
-            return detectBatchLanguageWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return detectBatchLanguageWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Returns the detected language for a batch of input.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Detects languages in a text. Subscribes to the call asynchronously and prints out the detected language
+     * <p>Detects language in a text. Subscribes to the call asynchronously and prints out the detected language
      * details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectBatchLanguagesWithResponse#List-TextAnalyticsRequestOptions}
@@ -258,7 +253,7 @@ public final class TextAnalyticsAsyncClient {
      * and show statistics.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
+     * {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected language}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -287,19 +282,14 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param text the text to recognize entities for.
      *
-     * @return A {@link Mono} containing the {@link RecognizeEntitiesResult categorized entity} of the text.
+     * @return A {@link PagedFlux} containing the {@link CategorizedEntity categorized entities} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizeEntitiesResult> recognizeEntities(String text) {
-        try {
-            return recognizeEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<CategorizedEntity> recognizeEntities(String text) {
+        return recognizeEntities(text, defaultLanguage);
     }
 
     /**
@@ -311,26 +301,24 @@ public final class TextAnalyticsAsyncClient {
      * <p>Recognize entities in a text with provided language hint. Subscribes to the call asynchronously and prints out
      * the entity details when a response is received.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesWithResponse#string-string}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string}
      *
      * @param text the text to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizeEntitiesResult categorized entity} of the text.
+     * @return A {@link PagedFlux} containing the {@link CategorizedEntity categorized entities} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<CategorizedEntity> recognizeEntities(String text, String language) {
         try {
-            return withContext(context ->
-                recognizeEntityAsyncClient.recognizeEntitiesWithResponse(text, language, context));
+            return new PagedFlux<>(() -> withContext(context ->
+                recognizeEntityAsyncClient.recognizeEntitiesWithResponse(text, language, context)));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -352,11 +340,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntities(List<String> textInputs) {
-        try {
-            return recognizeEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -407,11 +391,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeBatchEntities(
         List<TextDocumentInput> textInputs) {
-        try {
-            return recognizeBatchEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeBatchEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -456,19 +436,14 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param text the text to recognize PII entities for.
      *
-     * @return A {@link Mono} containing the {@link RecognizePiiEntitiesResult PII entity} of the text.
+     * @return A {@link PagedFlux} containing the {@link PiiEntity PII entities} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizePiiEntitiesResult> recognizePiiEntities(String text) {
-        try {
-            return recognizePiiEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PiiEntity> recognizePiiEntities(String text) {
+        return recognizePiiEntities(text, defaultLanguage);
     }
 
     /**
@@ -479,26 +454,24 @@ public final class TextAnalyticsAsyncClient {
      * <p>Recognize PII entities in a text with provided language hint. Subscribes to the call asynchronously and
      * prints out the entity details when a response is received.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesWithResponse#string-string}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string}
      *
      * @param text the text to recognize PII entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizePiiEntitiesResult PII entity} of the text.
+     * @return A {@link PagedFlux} containing the {@link PiiEntity PII entities} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PiiEntity> recognizePiiEntities(String text, String language) {
         try {
-            return withContext(context -> recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(text, language,
-                context));
+            return new PagedFlux<>(() -> withContext(context ->
+                recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(text, language, context)));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -510,7 +483,7 @@ public final class TextAnalyticsAsyncClient {
      * <p>Recognize PII entities in a list of string inputs. Subscribes to the call asynchronously and prints out the
      * entity details when a response is received.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list-string}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#list}
      *
      * @param textInputs A list of text to recognize PII entities for.
      *
@@ -521,12 +494,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntities(List<String> textInputs) {
-        try {
-            return recognizePiiEntitiesWithResponse(textInputs, defaultLanguage)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizePiiEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -579,11 +547,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizeBatchPiiEntities(
         List<TextDocumentInput> textInputs) {
-        try {
-            return recognizeBatchPiiEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeBatchPiiEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -628,19 +592,14 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param text the text to recognize linked entities for.
      *
-     * @return A {@link Mono} containing the {@link RecognizeLinkedEntitiesResult linked entity} of the text.
+     * @return A {@link PagedFlux} containing the {@link LinkedEntity linked entities} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizeLinkedEntitiesResult> recognizeLinkedEntities(String text) {
-        try {
-            return recognizeLinkedEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<LinkedEntity> recognizeLinkedEntities(String text) {
+        return recognizeLinkedEntities(text, defaultLanguage);
     }
 
     /**
@@ -650,27 +609,24 @@ public final class TextAnalyticsAsyncClient {
      * <p>Recognize linked entities in a text with provided language hint. Subscribes to the call asynchronously
      * and prints out the entity details when a response is received.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse#string-string}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string}
      *
      * @param text the text to recognize linked entities for.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
+     * @return A {@link PagedFlux} containing the {@link LinkedEntity linked entities} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(String text,
-        String language) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<LinkedEntity> recognizeLinkedEntities(String text, String language) {
         try {
-            return withContext(context -> recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(text,
-                language, context));
+            return new PagedFlux<>(() -> withContext(context ->
+                recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(text, language, context)));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -693,12 +649,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntities(
         List<String> textInputs) {
-        try {
-            return recognizeLinkedEntitiesWithResponse(textInputs, defaultLanguage)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeLinkedEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -749,11 +700,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeBatchLinkedEntities(
         List<TextDocumentInput> textInputs) {
-        try {
-            return recognizeBatchLinkedEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeBatchLinkedEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -777,7 +724,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>>
         recognizeBatchLinkedEntitiesWithResponse(List<TextDocumentInput> textInputs,
-        TextAnalyticsRequestOptions options) {
+            TextAnalyticsRequestOptions options) {
         try {
             return withContext(context -> recognizeLinkedEntityAsyncClient.recognizeBatchLinkedEntitiesWithResponse(
                 textInputs, options, context));
@@ -797,19 +744,14 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param text the text to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link ExtractKeyPhraseResult key phrases} of the text.
+     * @return A {@link PagedFlux} containing the key phrases of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExtractKeyPhraseResult> extractKeyPhrases(String text) {
-        try {
-            return extractKeyPhrasesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> extractKeyPhrases(String text) {
+        return extractKeyPhrases(text, defaultLanguage);
     }
 
     /**
@@ -819,26 +761,24 @@ public final class TextAnalyticsAsyncClient {
      * <p>Extract key phrases in a text with a provided language. Subscribes to the call asynchronously and prints
      * out the key phrases when a response is received.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesWithResponse#string-string}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string-string}
      *
      * @param text the text to be analyzed.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link ExtractKeyPhraseResult key phrases} of the text.
+     * @return A {@link PagedFlux} containing the key phrases of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> extractKeyPhrases(String text, String language) {
         try {
-            return withContext(context -> extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(text, language,
-                context));
+            return new PagedFlux<>(() -> withContext(context ->
+                extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(text, language, context)));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -859,11 +799,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrases(List<String> textInputs) {
-        try {
-            return extractKeyPhrasesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return extractKeyPhrasesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -913,11 +849,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<ExtractKeyPhraseResult>> extractBatchKeyPhrases(
         List<TextDocumentInput> textInputs) {
-        try {
-            return extractBatchKeyPhrasesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return extractBatchKeyPhrasesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -961,14 +893,13 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param text the text to be analyzed.
      *
-     * @return A {@link Mono} containing the {@link AnalyzeSentimentResult text sentiment} of the text.
+     * @return A {@link Mono} containing the {@link DocumentSentiment document sentiment} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeSentimentResult> analyzeSentiment(String text) {
+    public Mono<DocumentSentiment> analyzeSentiment(String text) {
         try {
             return analyzeSentimentWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -990,14 +921,13 @@ public final class TextAnalyticsAsyncClient {
      * English as default.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link AnalyzeSentimentResult text sentiment} of the text.
+     * {@link DocumentSentiment document sentiment} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnalyzeSentimentResult>> analyzeSentimentWithResponse(String text, String language) {
+    public Mono<Response<DocumentSentiment>> analyzeSentimentWithResponse(String text, String language) {
         try {
             return withContext(context ->
                 analyzeSentimentAsyncClient.analyzeSentimentWithResponse(text, language, context));

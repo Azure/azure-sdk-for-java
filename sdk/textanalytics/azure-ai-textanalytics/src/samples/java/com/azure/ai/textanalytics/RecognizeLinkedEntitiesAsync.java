@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -28,14 +27,10 @@ public class RecognizeLinkedEntitiesAsync {
         String text = "Old Faithful is a geyser at Yellowstone Park.";
 
         client.recognizeLinkedEntities(text).subscribe(
-            result -> {
-                for (LinkedEntity linkedEntity : result.getLinkedEntities()) {
-                    System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
-                        linkedEntity.getName(),
-                        linkedEntity.getUrl(),
-                        linkedEntity.getDataSource());
-                }
-            },
+            linkedEntity -> System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
+                linkedEntity.getName(),
+                linkedEntity.getUrl(),
+                linkedEntity.getDataSource()),
             error -> System.err.println("There was an error recognizing linked entity of the text." + error),
             () -> System.out.println("Linked entity recognized."));
 

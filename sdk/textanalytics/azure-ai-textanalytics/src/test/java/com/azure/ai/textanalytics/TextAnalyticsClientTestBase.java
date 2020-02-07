@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
@@ -17,13 +18,13 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -56,10 +57,10 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -273,11 +274,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void detectLanguageDuplicateIdRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(TestUtils.getDetectLanguageInputs(), null);
+        testRunner.accept(TestUtils.getDuplicateIdDetectLanguageInputs(), null);
     }
 
     void detectLanguagesCountryHintRunner(BiConsumer<List<String>, String> testRunner) {
-        testRunner.accept(DETECT_LANGUAGE_INPUTS, "en");
+        testRunner.accept(DETECT_LANGUAGE_INPUTS, "US");
     }
 
     void detectLanguageStringInputRunner(Consumer<List<String>> testRunner) {
@@ -439,12 +440,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         DocumentResultCollection<AnalyzeSentimentResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
             validateAnalysedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment());
-            validateAnalysedSentenceSentiment(expectedItem.getSentenceSentiments(), actualItem.getSentenceSentiments());
         });
     }
 
     /**
-     * Helper method to validate the list of detected languages.
+     * Helper method to validate the list of detected language.
      *
      * @param expectedLanguageList detectedLanguages returned by the service.
      * @param actualLanguageList detectedLanguages returned by the API.
@@ -588,13 +588,27 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentimentList a list of analyzed sentence sentiment returned by the service.
      * @param actualSentimentList a list of analyzed sentence sentiment returned by the API.
      */
-    static void validateAnalysedSentenceSentiment(List<TextSentiment> expectedSentimentList,
-        List<TextSentiment> actualSentimentList) {
+    static void validateAnalysedSentenceSentiment(List<SentenceSentiment> expectedSentimentList,
+        List<SentenceSentiment> actualSentimentList) {
 
         assertEquals(expectedSentimentList.size(), actualSentimentList.size());
         for (int i = 0; i < expectedSentimentList.size(); i++) {
-            validateAnalysedSentiment(expectedSentimentList.get(i), actualSentimentList.get(i));
+            validateSentenceSentiment(expectedSentimentList.get(i), actualSentimentList.get(i));
         }
+    }
+
+    /**
+     * Helper method to validate one pair of analysed sentiments. Can't really validate score numbers because it
+     * frequently changed by background model computation.
+     *
+     * @param expectedSentiment analyzed sentence sentiment returned by the service.
+     * @param actualSentiment analyzed sentence sentiment returned by the API.
+     */
+    static void validateSentenceSentiment(SentenceSentiment expectedSentiment, SentenceSentiment actualSentiment) {
+        assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
+        // score per label doesn't need to verify since service can return it with different values
+        assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
+        assertTrue(actualSentiment.getLength() > 0);
     }
 
     /**
@@ -604,10 +618,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentiment analyzed document sentiment returned by the service.
      * @param actualSentiment analyzed document sentiment returned by the API.
      */
-    static void validateAnalysedSentiment(TextSentiment expectedSentiment, TextSentiment actualSentiment) {
-        assertEquals(expectedSentiment.getTextSentimentClass(), actualSentiment.getTextSentimentClass());
-        assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
-        assertTrue(actualSentiment.getLength() > 0);
+    static void validateAnalysedSentiment(DocumentSentiment expectedSentiment, DocumentSentiment actualSentiment) {
+        assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
+        validateAnalysedSentenceSentiment(expectedSentiment.getSentences(), expectedSentiment.getSentences());
     }
 
     /**
@@ -712,7 +725,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedLanguage detectedLanguage returned by the service.
      * @param actualLanguage detectedLanguage returned by the API.
      */
-    private static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
+    static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
         assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
         assertEquals(expectedLanguage.getName(), actualLanguage.getName());
         assertNotNull(actualLanguage.getScore());

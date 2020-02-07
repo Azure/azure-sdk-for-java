@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -29,18 +28,14 @@ public class RecognizePiiAsync {
         String text = "My SSN is 555-55-5555";
 
         client.recognizePiiEntities(text).subscribe(
-            result -> {
-                for (PiiEntity entity : result.getEntities()) {
-                    System.out.printf(
-                        "Recognized personal identifiable information entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
-                        entity.getText(),
-                        entity.getCategory(),
-                        entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                        entity.getOffset(),
-                        entity.getLength(),
-                        entity.getScore());
-                }
-            },
+            entity -> System.out.printf(
+                "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                entity.getText(),
+                entity.getCategory(),
+                entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
+                entity.getOffset(),
+                entity.getLength(),
+                entity.getScore()),
             error -> System.err.println("There was an error recognizing PII entities of the text." + error),
             () -> System.out.println("PII entities recognized."));
 

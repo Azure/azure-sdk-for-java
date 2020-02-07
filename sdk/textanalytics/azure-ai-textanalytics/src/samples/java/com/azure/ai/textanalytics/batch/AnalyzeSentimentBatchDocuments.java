@@ -6,11 +6,12 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.core.util.Context;
 
@@ -64,20 +65,18 @@ public class AnalyzeSentimentBatchDocuments {
                 continue;
             }
             // Valid document
-            final TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-            System.out.printf("Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
-                documentSentiment.getTextSentimentClass(),
-                documentSentiment.getPositiveScore(),
-                documentSentiment.getNeutralScore(),
-                documentSentiment.getNegativeScore(),
-                documentSentiment.getLength(),
-                documentSentiment.getOffset());
-            for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
+            final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+            System.out.printf("Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
+                documentSentiment.getSentiment(),
+                documentSentiment.getSentimentScores().getPositive(),
+                documentSentiment.getSentimentScores().getNeutral(),
+                documentSentiment.getSentimentScores().getNegative());
+            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
-                    sentenceSentiment.getTextSentimentClass(),
-                    sentenceSentiment.getPositiveScore(),
-                    sentenceSentiment.getNeutralScore(),
-                    sentenceSentiment.getNegativeScore(),
+                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentScores().getPositive(),
+                    sentenceSentiment.getSentimentScores().getNeutral(),
+                    sentenceSentiment.getSentimentScores().getNegative(),
                     sentenceSentiment.getLength(),
                     sentenceSentiment.getOffset());
             }

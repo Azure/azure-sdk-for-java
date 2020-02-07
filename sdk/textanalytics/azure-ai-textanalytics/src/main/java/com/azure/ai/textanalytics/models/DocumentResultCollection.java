@@ -18,7 +18,7 @@ public final class DocumentResultCollection<T> extends IterableStream<T> {
     private final TextDocumentBatchStatistics statistics;
 
     /**
-     * Create a document result collection
+     * Create a document result collection.
      *
      * @param iterable a generic iterable that takes type T
      * @param modelVersion model version
@@ -31,7 +31,7 @@ public final class DocumentResultCollection<T> extends IterableStream<T> {
     }
 
     /**
-     * Get model version
+     * Get model version.
      *
      * @return model version
      */
@@ -40,7 +40,7 @@ public final class DocumentResultCollection<T> extends IterableStream<T> {
     }
 
     /**
-     * Get statistics of the batch documents
+     * Get statistics of the batch documents.
      *
      * @return the statistics of the batch documents
      */

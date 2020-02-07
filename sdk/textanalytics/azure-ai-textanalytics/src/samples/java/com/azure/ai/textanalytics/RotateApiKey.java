@@ -35,7 +35,7 @@ public class RotateApiKey {
         // Update the API key
         credential.updateCredential("{valid_api_key}");
 
-        for (String keyPhrase : client.extractKeyPhrases(text).getKeyPhrases()) {
+        for (String keyPhrase : client.extractKeyPhrases(text)) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrase);
         }
     }

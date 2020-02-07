@@ -16,7 +16,7 @@ public final class RecognizeLinkedEntitiesResult extends DocumentResult {
     private final List<LinkedEntity> linkedEntities;
 
     /**
-     * Creates a {@code RecognizeLinkedEntitiesResult} model that describes recognized linked entities result
+     * Creates a {@code RecognizeLinkedEntitiesResult} model that describes recognized linked entities result.
      *
      * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
@@ -30,7 +30,7 @@ public final class RecognizeLinkedEntitiesResult extends DocumentResult {
     }
 
     /**
-     * Get a list of linked entities
+     * Get a list of linked entities.
      *
      * @return a list of linked entities.
      */
