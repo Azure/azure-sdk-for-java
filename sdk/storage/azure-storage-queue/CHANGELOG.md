@@ -1,5 +1,8 @@
 # Release History
 
+## 12.3.0-beta.1 (Unreleased)
+
+
 ## 12.2.0 (2020-01-08)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.2.0/sdk/storage/azure-storage-file-queue/README.md)
