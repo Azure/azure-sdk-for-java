@@ -171,7 +171,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language for a batch of input.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Detects languages in a list of string inputs. Subscribes to the call asynchronously and prints out the
+     * <p>Detects language in a list of string inputs. Subscribes to the call asynchronously and prints out the
      * detected language details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#List}
@@ -192,7 +192,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language for a batch of input with the provided country hint.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Detects languages in a list of string inputs with a provided country hint for the batch. Subscribes to the
+     * <p>Detects language in a list of string inputs with a provided country hint for the batch. Subscribes to the
      * call asynchronously and prints out the detected language details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatchWithResponse#List-String-TextAnalyticsRequestOptions}
@@ -212,8 +212,8 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguageBatchWithResponse(
         List<String> textInputs, String countryHint, TextAnalyticsRequestOptions options) {
         try {
-            return withContext(context -> detectLanguageAsyncClient.detectLanguageWithResponse(textInputs, countryHint,
-                options, context));
+            return withContext(context -> detectLanguageAsyncClient.detectLanguageBatchWithResponse(textInputs,
+                countryHint, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -133,7 +133,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<DetectLanguageResult>> detectLanguageBatchWithResponse(
         List<String> textInputs, String countryHint, TextAnalyticsRequestOptions options, Context context) {
-        return client.detectLanguageAsyncClient.detectLanguageWithResponse(textInputs, countryHint, options,
+        return client.detectLanguageAsyncClient.detectLanguageBatchWithResponse(textInputs, countryHint, options,
             context).block();
     }
 

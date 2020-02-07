@@ -55,8 +55,8 @@ class DetectLanguageAsyncClient {
                 Transforms.processSingleResponseErrorResult(response).getValue().getPrimaryLanguage()));
     }
 
-    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguageWithResponse(List<String> textInputs,
-        String countryHint, TextAnalyticsRequestOptions options, Context context) {
+    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguageBatchWithResponse(
+        List<String> textInputs, String countryHint, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         List<DetectLanguageInput> detectLanguageInputs = mapByIndex(textInputs, (index, value) ->
             new DetectLanguageInput(index, value, countryHint));
