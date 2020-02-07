@@ -45,7 +45,7 @@ Java SDKs for Azure releases a BOM (Bill of Materials) which deals with inter-ar
 
 #### Individual Dependency
 
-If targeting a specific version of App Configuration you could forgo using the BOM and include it as an individual dependency.
+If targeting a specific version of App Configuration you could forgo using the BOM and include it as an individual dependency. Using individual dependencies will require management of inter-artifact dependencies.
 
 [//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;current})
 ```xml
@@ -362,11 +362,7 @@ Clear read-only from a configuration setting.
 ConfigurationSetting setting = configurationClient.setReadOnly("some_key", "some_label", false);
 ```
 
-## Troubleshooting
-
-### General
-
-When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a configuration setting that doesn't exist in your configuration store, a `404` error is returned, indicating `Not Found`.
+### Adding Custom Headers
 
 App Configuration provides a way to define customized headers through `Context` object in the public API. 
 
@@ -383,18 +379,22 @@ configurationClient.addConfigurationSettingWithResponse(
     new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
 // Above three HttpHeader will be added in outgoing HttpRequest.
 ```
+
 For more detail information, check out the [AddHeadersFromContextPolicy][add_headers_from_context_policy]
 
-### Default HTTP Client
-All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
-the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+## Troubleshooting
 
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
-operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
-better performance compared to the default SSL implementation within the JDK. For more information, including how to 
-reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+### General
+
+When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a configuration setting that doesn't exist in your configuration store, a `404` error is returned, indicating `Not Found`.
+
+### Enabling Logging
+
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expidite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+
+### Default HTTP Client
+
+By default a Netty based HTTP client will be used, for more infomration on configuring or changing the HTTP client is detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
 
 ## Next steps
 
@@ -423,6 +423,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [default_cred_ref]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-identity/1.0.1/com/azure/identity/DefaultAzureCredential.html
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/
 [package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
