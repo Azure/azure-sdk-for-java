@@ -264,9 +264,9 @@ for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
 ### Analyze sentiment
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L128-L131 -->
 ```java
-String text = "The hotel was dark and unclean.";
+String text = "The hotel was dark and unclean. I like microsoft.";
 for (SentenceSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).getSentenceSentiments()) {
-    System.out.printf("Analyzed Sentence Sentiment class: %s.%n", textSentiment.getSentimentLabel());
+    System.out.printf("Analyzed Sentence Sentiment: %s.%n", textSentiment.getSentimentLabel());
 }
 ```
 
