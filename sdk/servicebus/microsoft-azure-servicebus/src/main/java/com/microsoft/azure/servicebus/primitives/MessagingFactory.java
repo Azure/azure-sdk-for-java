@@ -249,15 +249,19 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
         return this.clientSettings.getRetryPolicy();
     }
 
+    /**
+     * Gets client settings for this messaging factory instance
+     * @return client settings for this messaging factory instance
+     */
     public ClientSettings getClientSettings() {
         return this.clientSettings;
     }
 
     /**
-     * Creates a messaging factory instance from namesapce name and client settings.
+     * Creates a messaging factory instance from namesapce name and client settings
      * @param sbNamespaceName name of the namespace
      * @param clientSettings clientsettings for the factory
-     * @return a completablefuture whose result is messagingfactory instance when its execution completes.
+     * @return a completablefuture whose result is messagingfactory instance when its execution completes
      * @deprecated Deprecating as spelling is wrong. Replaced by {@link #createFromNamespaceNameAsync(String, ClientSettings)}
      */
     @Deprecated
@@ -265,15 +269,21 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
         return createFromNamespaceEndpointURIAsync(Util.convertNamespaceToEndPointURI(sbNamespaceName), clientSettings);
     }
     
+    /**
+     * Creates a messaging factory instance from namesapce name and client settings
+     * @param sbNamespaceName name of the namespace
+     * @param clientSettings clientsettings for the factory
+     * @return a completablefuture whose result is messagingfactory instance when its execution completes
+     */
     public static CompletableFuture<MessagingFactory> createFromNamespaceNameAsync(String sbNamespaceName, ClientSettings clientSettings) {
         return createFromNamespaceEndpointURIAsync(Util.convertNamespaceToEndPointURI(sbNamespaceName), clientSettings);
     }
     
     /**
-     * Creates a messaging factory instance from namesapce endpoint URI and client settings.
+     * Creates a messaging factory instance from namesapce endpoint URI and client settings
      * @param namespaceEndpointURI Endpoint URI of the namespace
      * @param clientSettings clientsettings for the factory
-     * @return a completablefuture whose result is messagingfactory instance when its execution completes.
+     * @return a completablefuture whose result is messagingfactory instance when its execution completes
      * @deprecated Deprecating as spelling is wrong. Replaced by {@link #createFromNamespaceEndpointURIAsync(URI, ClientSettings)}
      */
     @Deprecated
@@ -281,6 +291,12 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
     	return createFromNamespaceEndpointURIAsync(namespaceEndpointURI, clientSettings);
     }
 
+    /**
+     * Creates a messaging factory instance from namesapce endpoint URI and client settings
+     * @param namespaceEndpointURI Endpoint URI of the namespace
+     * @param clientSettings clientsettings for the factory
+     * @return a completablefuture whose result is messagingfactory instance when its execution completes
+     */
     public static CompletableFuture<MessagingFactory> createFromNamespaceEndpointURIAsync(URI namespaceEndpointURI, ClientSettings clientSettings) {
         if (TRACE_LOGGER.isInfoEnabled()) {
             TRACE_LOGGER.info("Creating messaging factory from namespace endpoint uri '{}'", namespaceEndpointURI.toString());
@@ -297,10 +313,26 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
         return messagingFactory.factoryOpenFuture;
     }
 
+    /**
+     * Creates a messaging factory instance from namesapce name and client settings
+     * @param sbNamespaceName name of the namespace
+     * @param clientSettings clientsettings for the factory
+     * @return an instance of MessagingFactory
+     * @throws InterruptedException if blocking thread is interrupted
+     * @throws ServiceBusException if a connection couldn't be established to the namespace
+     */
     public static MessagingFactory createFromNamespaceName(String sbNamespaceName, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return completeFuture(createFromNamespaceNameAsync(sbNamespaceName, clientSettings));
     }
     
+    /**
+     * Creates a messaging factory instance from namesapce endpoint URI and client settings
+     * @param namespaceEndpointURI Endpoint URI of the namespace
+     * @param clientSettings clientsettings for the factory
+     * @return an instance of MessagingFactory
+     * @throws InterruptedException if blocking thread is interrupted
+     * @throws ServiceBusException if a connection couldn't be established to the namespace
+     */
     public static MessagingFactory createFromNamespaceEndpointURI(URI namespaceEndpointURI, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return completeFuture(createFromNamespaceEndpointURIAsync(namespaceEndpointURI, clientSettings));
     }
