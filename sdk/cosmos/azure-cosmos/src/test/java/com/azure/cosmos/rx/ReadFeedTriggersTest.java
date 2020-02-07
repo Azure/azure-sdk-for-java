@@ -5,9 +5,9 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosTriggerProperties;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.TriggerOperation;
 import com.azure.cosmos.TriggerType;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -15,9 +15,7 @@ import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +40,8 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosTriggerProperties>> feedObservable = createdCollection.getScripts().readAllTriggers(options);
-
+        CosmosContinuablePagedFlux<CosmosTriggerProperties> feedObservable = createdCollection.getScripts().readAllTriggers(options);
+        int maxItemCount = 2;
         int expectedPageSize = (createdTriggers.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
@@ -54,7 +52,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

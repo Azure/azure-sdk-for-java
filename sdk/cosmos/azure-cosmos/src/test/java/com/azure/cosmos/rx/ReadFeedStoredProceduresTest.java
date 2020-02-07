@@ -5,18 +5,16 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosStoredProcedureProperties;
 import com.azure.cosmos.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +37,12 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     public void readStoredProcedures() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        int maxItemCount = 2;
 
-        Flux<FeedResponse<CosmosStoredProcedureProperties>> feedObservable = createdCollection.getScripts()
-                .readAllStoredProcedures(options);
+        CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> feedObservable = createdCollection.getScripts()
+                                                                                                      .readAllStoredProcedures(options);
 
-        int expectedPageSize = (createdStoredProcedures.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (createdStoredProcedures.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .totalSize(createdStoredProcedures.size())
@@ -54,7 +52,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
