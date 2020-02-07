@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk681740256feb.search-dogfood.windows-int.net/indexes('hotels')/docs/search.post.search?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "5ef6979f-6495-409e-894f-5b1cf1293ef6",
+      "StatusCode" : "400",
+      "Date" : "Tue, 24 Dec 2019 17:55:13 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "140",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "141",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'.\\r\\nParameter name: $filter\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

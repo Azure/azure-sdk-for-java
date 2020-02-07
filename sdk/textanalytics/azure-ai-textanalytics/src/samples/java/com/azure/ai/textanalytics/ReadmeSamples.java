@@ -6,7 +6,8 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
@@ -38,21 +39,21 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for  getting sync client using subscription key authentication.
+     * Code snippet for getting sync client using the API key authentication.
      */
-    public void useSubscriptionKeySyncClient() {
+    public void useApiKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
 
     /**
-     * Code snippet for getting async client using subscription key authentication.
+     * Code snippet for getting async client using API key authentication.
      */
-    public void useSubscriptionKeyAsyncClient() {
+    public void useApiKeyAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
     }
@@ -82,33 +83,33 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for recognizing named entity in a text.
+     * Code snippet for recognizing Category entity in a text.
      */
-    public void recognizeNamedEntity() {
+    public void recognizeCategorizedEntity() {
         String text = "Satya Nadella is the CEO of Microsoft";
 
-        for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEntities()) {
+        for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text).getEntities()) {
             System.out.printf(
-                "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                "Recognized Categorized Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
                 entity.getText(),
-                entity.getType(),
-                entity.getSubtype(),
+                entity.getCategory(),
+                entity.getSubCategory(),
                 entity.getScore());
         }
     }
 
     /**
-     * Code snippet for recognizing pii entity in a text.
+     * Code snippet for recognizing PII entity in a text.
      */
     public void recognizePiiEntity() {
         String text = "My SSN is 555-55-5555";
 
-        for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getNamedEntities()) {
+        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text).getEntities()) {
             System.out.printf(
-                "Recognized PII Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+                "Recognized PII Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
                 entity.getText(),
-                entity.getType(),
-                entity.getSubtype(),
+                entity.getCategory(),
+                entity.getSubCategory(),
                 entity.getScore());
         }
     }
@@ -157,7 +158,7 @@ public class ReadmeSamples {
     public void handlingException() {
         List<DetectLanguageInput> inputs = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "us"),
-            new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
+            new DetectLanguageInput("1", "Este es un document escrito en Español.", "es")
         );
 
         try {
@@ -168,15 +169,15 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for rotating subscription key of the client
+     * Code snippet for rotating API key of the client
      */
-    public void rotatingSubscriptionKey() {
-        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{expired_subscription_key}");
+    public void rotatingApiKey() {
+        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(credential)
+            .apiKey(credential)
             .endpoint("{endpoint}")
             .buildClient();
 
-        credential.updateCredential("{new_subscription_key}");
+        credential.updateCredential("{new_api_key}");
     }
 }

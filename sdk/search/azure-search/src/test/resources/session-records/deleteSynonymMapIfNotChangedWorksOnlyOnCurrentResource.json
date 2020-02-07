@@ -1,0 +1,91 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdkdc661989cfeb.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "4f6a94d7-b616-4a27-acc7-97307748c27f",
+      "StatusCode" : "201",
+      "Date" : "Tue, 24 Dec 2019 17:58:59 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7889AF3FC67A8\"",
+      "elapsed-time" : "36",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "231",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkdc661989cfeb.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7889AF3FC67A8\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdkdc661989cfeb.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdkdc661989cfeb.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "4d680dbd-8e0c-463e-a4fb-43cbcf115312",
+      "StatusCode" : "200",
+      "Date" : "Tue, 24 Dec 2019 17:58:59 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7889AF415E877\"",
+      "elapsed-time" : "14",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "231",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkdc661989cfeb.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7889AF415E877\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdkdc661989cfeb.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "0cff8462-1d13-497e-b2ac-2767e353c424",
+      "StatusCode" : "412",
+      "Date" : "Tue, 24 Dec 2019 17:58:59 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "7",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "160",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The precondition given in one of the request headers evaluated to false. No change was made to the resource from this request.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdkdc661989cfeb.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "10",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "e836bd5c-40f0-4084-b7ca-db9d3b25860b",
+      "StatusCode" : "204",
+      "Date" : "Tue, 24 Dec 2019 17:58:59 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

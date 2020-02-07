@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -20,7 +20,7 @@ public class RecognizeEntitiesAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -29,12 +29,12 @@ public class RecognizeEntitiesAsync {
 
         client.recognizeEntities(text).subscribe(
             result -> {
-                for (NamedEntity entity : result.getNamedEntities()) {
+                for (CategorizedEntity entity : result.getEntities()) {
                     System.out.printf(
-                        "Recognized entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
+                        "Recognized entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
                         entity.getText(),
-                        entity.getType(),
-                        entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
+                        entity.getCategory(),
+                        entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
                         entity.getOffset(),
                         entity.getLength(),
                         entity.getScore());

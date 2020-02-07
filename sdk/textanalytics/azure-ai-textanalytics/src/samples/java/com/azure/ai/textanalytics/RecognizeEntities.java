@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
@@ -18,19 +18,19 @@ public class RecognizeEntities {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
         // The text that need be analysed.
         String text = "Satya Nadella is the CEO of Microsoft";
 
-        for (NamedEntity entity : client.recognizeEntities(text).getNamedEntities()) {
+        for (CategorizedEntity entity : client.recognizeEntities(text).getEntities()) {
             System.out.printf(
-                "Recognized entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
+                "Recognized entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
                 entity.getText(),
-                entity.getType(),
-                entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
+                entity.getCategory(),
+                entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
                 entity.getOffset(),
                 entity.getLength(),
                 entity.getScore());

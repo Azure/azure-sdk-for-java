@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -11,7 +12,7 @@ import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
@@ -33,10 +34,13 @@ import java.util.stream.IntStream;
 final class TestUtils {
     private static final String DEFAULT_MODEL_VERSION = "2019-10-01";
 
+    static final String INVALID_URL = "htttttttps://localhost:8080";
+    static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
+
     static final List<String> SENTIMENT_INPUTS = Arrays.asList("The hotel was dark and unclean. The restaurant had amazing gnocchi.",
         "The restaurant had amazing gnocchi. The hotel was dark and unclean.");
 
-    static final List<String> NAMED_ENTITY_INPUTS = Arrays.asList(
+    static final List<String> CATEGORIZED_ENTITY_INPUTS = Arrays.asList(
         "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
     static final List<String> LINKED_ENTITY_INPUTS = Arrays.asList(
@@ -95,21 +99,21 @@ final class TestUtils {
     }
 
     /**
-     * Helper method to get the expected Batch Named Entities
+     * Helper method to get the expected Batch Categorized Entities
      */
-    static DocumentResultCollection<RecognizeEntitiesResult> getExpectedBatchNamedEntities() {
-        NamedEntity namedEntity1 = new NamedEntity("Seattle", "Location", null, 26, 7, 0.0);
-        NamedEntity namedEntity2 = new NamedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
-        NamedEntity namedEntity3 = new NamedEntity("Microsoft", "Organization", null, 10, 9, 0.0);
+    static DocumentResultCollection<RecognizeEntitiesResult> getExpectedBatchCategorizedEntities() {
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", "Organization", null, 10, 9, 0.0);
 
-        List<NamedEntity> namedEntityList1 = Arrays.asList(namedEntity1, namedEntity2);
-        List<NamedEntity> namedEntityList2 = Collections.singletonList(namedEntity3);
+        List<CategorizedEntity> categorizedEntityList1 = Arrays.asList(categorizedEntity1, categorizedEntity2);
+        List<CategorizedEntity> categorizedEntityList2 = Collections.singletonList(categorizedEntity3);
 
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(20, 1);
 
-        RecognizeEntitiesResult recognizeEntitiesResult1 = new RecognizeEntitiesResult("0", textDocumentStatistics1, null, namedEntityList1);
-        RecognizeEntitiesResult recognizeEntitiesResult2 = new RecognizeEntitiesResult("1", textDocumentStatistics2, null, namedEntityList2);
+        RecognizeEntitiesResult recognizeEntitiesResult1 = new RecognizeEntitiesResult("0", textDocumentStatistics1, null, categorizedEntityList1);
+        RecognizeEntitiesResult recognizeEntitiesResult2 = new RecognizeEntitiesResult("1", textDocumentStatistics2, null, categorizedEntityList2);
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<RecognizeEntitiesResult> recognizeEntitiesResultList = Arrays.asList(recognizeEntitiesResult1, recognizeEntitiesResult2);
@@ -121,17 +125,17 @@ final class TestUtils {
      * Helper method to get the expected Batch PII Entities
      */
     static DocumentResultCollection<RecognizePiiEntitiesResult> getExpectedBatchPiiEntities() {
-        NamedEntity namedEntity1 = new NamedEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
-        NamedEntity namedEntity2 = new NamedEntity("111000025", "ABA Routing Number", "", 18, 9, 0.0);
+        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
+        PiiEntity piiEntity2 = new PiiEntity("111000025", "ABA Routing Number", "", 18, 9, 0.0);
 
-        List<NamedEntity> namedEntityList1 = Collections.singletonList(namedEntity1);
-        List<NamedEntity> namedEntityList2 = Collections.singletonList(namedEntity2);
+        List<PiiEntity> piiEntityList = Collections.singletonList(piiEntity1);
+        List<PiiEntity> piiEntityList1 = Collections.singletonList(piiEntity2);
 
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(105, 1);
 
-        RecognizePiiEntitiesResult recognizeEntitiesResult1 = new RecognizePiiEntitiesResult("0", textDocumentStatistics1, null, namedEntityList1);
-        RecognizePiiEntitiesResult recognizeEntitiesResult2 = new RecognizePiiEntitiesResult("1", textDocumentStatistics2, null, namedEntityList2);
+        RecognizePiiEntitiesResult recognizeEntitiesResult1 = new RecognizePiiEntitiesResult("0", textDocumentStatistics1, null, piiEntityList);
+        RecognizePiiEntitiesResult recognizeEntitiesResult2 = new RecognizePiiEntitiesResult("1", textDocumentStatistics2, null, piiEntityList1);
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<RecognizePiiEntitiesResult> recognizeEntitiesResultList = Arrays.asList(recognizeEntitiesResult1, recognizeEntitiesResult2);

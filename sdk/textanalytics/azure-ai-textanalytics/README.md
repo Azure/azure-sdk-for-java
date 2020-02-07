@@ -16,7 +16,7 @@ and includes six main functions:
 ### Prerequisites
 - Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Cognitive Services or Text Analytics account](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows) to use this package.
+- [Cognitive Services or Text Analytics account][text_analytics_account] to use this package.
 
 ### Adding the package to your product
 
@@ -31,12 +31,11 @@ and includes six main functions:
 [//]: # ({x-version-update-end})
 
 ### Create a Text Analytics resource
-Text Analytics supports both [multi-service and single-service access](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows). Create a Cognitive Services resource if you plan
-to access multiple cognitive services under a single endpoint/key. For Text Analytics access only, create a Text Analytics resource.
+Text Analytics supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
+resource if you plan to access multiple cognitive services under a single endpoint/key. For Text Analytics access only,
+create a Text Analytics resource.
 
-You can create either resource using the
-[Azure Portal](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource)
-or [Azure CLI](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows).
+You can create either resource using the [Azure Portal][create_new_resource] or [Azure CLI][azure_cli].
 Below is an example of how you can create a Text Analytics resource using the CLI:
 
 ```bash
@@ -56,51 +55,51 @@ az cognitiveservices account create \
     --yes
 ```
 ### Authenticate the client
-In order to interact with the Text Analytics service, you'll need to create an instance of the [TextAnalyticsClient](#create-a-client) class. You would need an **endpoint** and **subscription key** to instantiate a client object.
+In order to interact with the Text Analytics service, you'll need to create an instance of the 
+`TextAnalyticsClient` class. You would need an **endpoint** and **API key** to instantiate a client object.
+And they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in your created
+Text Analytics resource. 
 
 #### Get credentials
 ##### Types of credentials
-The `subscriptionKey` parameter may be provided as the subscription key to your resource or as a token from Azure Active Directory.
-See the full details regarding [authentication](https://docs.microsoft.com/azure/cognitive-services/authentication) of 
-cognitive services.
+The authentication credential may be provided as the API key to your resource or as a token from Azure Active Directory.
+See the full details regarding [authentication][authentication] of cognitive services.
 
-1. To use a [subscription key](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource), 
-   provide the key as a string. This can be found in the Azure Portal under the "Quickstart" 
-   section or by running the following Azure CLI command:
+1. To use an [API key][api_key], provide the key as a string. This can be found in the [Azure Portal][azure_portal] 
+   under the "Quickstart" section or by running the following Azure CLI command:
 
     ```bash
     az cognitiveservices account keys list --name "resource-name" --resource-group "resource-group-name"
     ```
     
     Use the key as the credential parameter to authenticate the client:
-    <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L44-L47 -->
+    <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L45-L48 -->
     ```java
     TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-        .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+        .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
         .endpoint("{endpoint}")
         .buildClient();
     ```
 
-2. To use an [Azure Active Directory (AAD) token credential](https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory),
-   provide an instance of the desired credential type obtained from the
-   [azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#credentials) library.
-   Note that regional endpoints do not support AAD authentication. Create a [custom subdomain](https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain) 
+2. To use an [Azure Active Directory (AAD) token credential][aad_credential],
+   provide an instance of the desired credential type obtained from the [azure-identity][azure_identity] library.
+   Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] 
    name for your resource in order to use this type of authentication.
 
    Authentication with AAD requires some initial setup:
-   * [Install azure-identity](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#install-the-package)
-   * [Register a new AAD application](https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal)
-   * [Grant access](https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal) to Text Analytics by assigning the `"Cognitive Services User"` role to your service principal.
+   * [Install azure-identity][install_azure_identity]
+   * [Register a new AAD application][register_AAD_application]
+   * [Grant access][grant_access] to Text Analytics by assigning the `"Cognitive Services User"` role to your service principal.
    
-   After setup, you can choose which type of [credential](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#credentials) from azure.identity to use. 
-   As an example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#defaultazurecredential)
+   After setup, you can choose which type of [credential][credential_type] from azure.identity to use. 
+   As an example, [DefaultAzureCredential][default_azure_credential]
    can be used to authenticate the client:
 
    Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
    AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET
 
    Use the returned token credential to authenticate the client:
-   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L64-L67 -->
+   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L65-L68 -->
     ```java
     TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
         .endpoint("{endpoint}")
@@ -112,28 +111,28 @@ cognitive services.
 The Azure Text Analytics client library for Java allows you to engage with the Text Analytics service to 
 analyze sentiment, recognize entities, detect language, and extract key phrases from text.
 To create a client object, you will need the cognitive services or text analytics endpoint to 
-your resource and a subscription key that allows you access:
+your resource and an API key that allows you access:
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L44-L47 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L45-L48 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+    .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
 
-#### Rotate existing subscription key
-The Azure Text Analytics client library provide a way to rotate the existing subscription key.
+#### Rotate existing API key
+The Azure Text Analytics client library provides a way to rotate the existing API key.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L174-L180 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L175-L181 -->
 ```java
-TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{expired_subscription_key}");
+TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(credential)
+    .apiKey(credential)
     .endpoint("{endpoint}")
     .buildClient();
 
-credential.updateCredential("{new_subscription_key}");
+credential.updateCredential("{new_api_key}");
 ```
 ## Key concepts
 
@@ -161,13 +160,13 @@ indicate that the documents in the batch are written in different languages.
 
 The following are types of text analysis that the service offers:
 
-1. [Sentiment Analysis](https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-sentiment-analysis)
+1. [Sentiment Analysis][sentiment_analysis]
     
     Use sentiment analysis to find out what customers think of your brand or topic by analyzing raw text for clues about positive or negative sentiment.
     Scores closer to `1` indicate positive sentiment, while scores closer to `0` indicate negative sentiment.
     Sentiment analysis returns scores and labels at a document and sentence level.
 
-2. [Named Entity Recognition](https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking)
+2. [Named Entity Recognition][named_entity_recognition]
     
     Use named entity recognition (NER) to identify different entities in text and categorize them into pre-defined classes, or types.
     Entity recognition in the client library provides three different methods depending on what you are interested in.
@@ -176,21 +175,21 @@ The following are types of text analysis that the service offers:
     * `recognizeLinkedEntities()` can be used to identify and disambiguate the identity of an entity found in text (For example, determining whether
     "Mars" is being used as the planet or as the Roman god of war). This process uses Wikipedia as the knowledge base to which recognized entities are linked.
     
-    See a full list of [Named Entity Recognition Types](https://docs.microsoft.com/azure/cognitive-services/text-analytics/named-entity-types?tabs=personal).
+    See a full list of [Named Entity Recognition Types][named_entity_recognition_types].
 
-3. [Language Detection](https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-language-detection)
+3. [Language Detection][language_detection]
     
     Detect the language of the input text and report a single language code for every document submitted on the request. 
     The language code is paired with a score indicating the strength of the score.
     A wide range of languages, variants, dialects, and some regional/cultural languages are supported -
-    see [supported languages](https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support#language-detection) for full details.
+    see [supported languages][supported_languages] for full details.
 
-4. [Key Phrase Extraction](https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-keyword-extraction)
+4. [Key Phrase Extraction][key_phrase_extraction]
     
     Extract key phrases to quickly identify the main points in text. 
     For example, for the input text "The food was delicious and there were wonderful staff", the main talking points returned: "food" and "wonderful staff".
 
-See [Language and regional support](https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support) for what is currently available for each operation.
+See [Language and regional support][language_regional_support] for what is currently available for each operation.
 
 ## Examples
 The following sections provide several code snippets covering some of the most common text analytics tasks, including:
@@ -199,23 +198,23 @@ The following sections provide several code snippets covering some of the most c
 Text analytics support both synchronous and asynchronous client creation by using
 `TextAnalyticsClientBuilder`,
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L44-L47 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L45-L48 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+    .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L54-L57 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L55-L58 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+    .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildAsyncClient();
 ```
 
 ### Detect language
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L74-L81 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L75-L82 -->
 ```java
 String inputText = "Bonjour tout le monde";
 
@@ -228,37 +227,37 @@ for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inpu
 ```
 
 ### Recognize entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L88-L97 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L89-L98 -->
 ```java
 String text = "Satya Nadella is the CEO of Microsoft";
 
-for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEntities()) {
+for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text).getEntities()) {
     System.out.printf(
-        "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+        "Recognized Categorized Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
         entity.getText(),
-        entity.getType(),
-        entity.getSubtype(),
+        entity.getCategory(),
+        entity.getSubCategory(),
         entity.getScore());
 }
 ```
 
-### Recognize PII(Personally Identifiable Information) entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L104-L113 -->
+### Recognize PII (Personally Identifiable Information) entity
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L105-L114 -->
 ```java
 String text = "My SSN is 555-55-5555";
 
-for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getNamedEntities()) {
+for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text).getEntities()) {
     System.out.printf(
-        "Recognized PII Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
+        "Recognized PII Entity: %s, Category: %s, SubCategory: %s, Score: %s.%n",
         entity.getText(),
-        entity.getType(),
-        entity.getSubtype(),
+        entity.getCategory(),
+        entity.getSubCategory(),
         entity.getScore());
 }
 ```
 
 ### Recognize linked entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L120-L127 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L121-L128 -->
 
 ```java
 String text = "Old Faithful is a geyser at Yellowstone Park.";
@@ -271,7 +270,7 @@ for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(tex
 }
 ```
 ### Extract key phrases
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L134-L138 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L135-L139 -->
 ```java
 String text = "My cat might need to see a veterinarian.";
 
@@ -281,7 +280,7 @@ for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text).getKeyPhrase
 ```
 
 ### Analyze sentiment
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L145-L151 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L146-L152 -->
 ```java
 String text = "The hotel was dark and unclean.";
 
@@ -298,11 +297,11 @@ Text Analytics clients raise exceptions. For example, if you try to detect the l
 document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L167 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L159-L168 -->
 ```java
 List<DetectLanguageInput> inputs = Arrays.asList(
     new DetectLanguageInput("1", "This is written in English.", "us"),
-    new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
+    new DetectLanguageInput("1", "Este es un document escrito en Español.", "es")
 );
 
 try {
@@ -316,7 +315,7 @@ try {
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
 example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
 be found here: [log levels][LogLevels].
-
+git add 
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
@@ -340,16 +339,39 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
+[aad_credential]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
+[api_key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [api_reference_doc]: https://aka.ms/azsdk-java-textanalytics-ref-docs
+[authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
+[azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
+[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#credentials
+[azure_portal]: https://ms.portal.azure.com
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[create_new_resource]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
+[credential_type]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#credentials
+[custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
+[default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#defaultazurecredential
+[grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[install_azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#install-the-package
+[key_phrase_extraction]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-keyword-extraction
+[language_detection]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-language-detection
+[language_regional_support]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support
+[named_entity_recognition]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking
+[named_entity_recognition_types]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/named-entity-types?tabs=personal
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-textanalytics
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview
+[register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [samples_readme]: src/samples/README.md
+[service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
+[sentiment_analysis]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-sentiment-analysis
 [source_code]: src
+[supported_language]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support#language-detection
+[text_analytics_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

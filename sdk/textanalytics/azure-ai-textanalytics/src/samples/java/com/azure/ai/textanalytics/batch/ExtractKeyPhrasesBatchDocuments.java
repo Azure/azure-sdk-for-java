@@ -28,7 +28,7 @@ public class ExtractKeyPhrasesBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
@@ -49,7 +49,7 @@ public class ExtractKeyPhrasesBatchDocuments {
         final TextDocumentBatchStatistics batchStatistics = extractedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
-            batchStatistics.getErroneousDocumentCount(),
+            batchStatistics.getInvalidDocumentCount(),
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 

@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk624337555549.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "31666d10-898f-4e91-b891-53fea248748e",
+      "StatusCode" : "404",
+      "Date" : "Tue, 24 Dec 2019 06:59:18 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "45",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "134",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob' was found in a service named 'azs-sdk624337555549'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdk624337555549.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "bbedd618-1f92-4723-b1b9-bda43664d97f",
+      "StatusCode" : "404",
+      "Date" : "Tue, 24 Dec 2019 06:59:19 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "22",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "127",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'azs-java-test-blob' was found in service 'azs-sdk624337555549'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

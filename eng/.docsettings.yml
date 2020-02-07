@@ -141,6 +141,8 @@ known_content_issues:
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['sdk/storage/azure-storage-file-share/swagger/README.md','has other required sections']
+  - ['sdk/search/azure-search/src/test/README.md', '#3113']
+  - ['sdk/search/open-api/readme.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample
