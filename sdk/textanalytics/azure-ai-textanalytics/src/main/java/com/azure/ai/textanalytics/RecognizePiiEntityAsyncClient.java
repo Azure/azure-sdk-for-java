@@ -116,7 +116,7 @@ class RecognizePiiEntityAsyncClient {
         for (DocumentError documentError : entitiesResult.getErrors()) {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 toTextAnalyticsError(documentError.getError());
-            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null, error, null));
+            recognizePiiEntityResults.add(new RecognizePiiEntityResult(documentError.getId(), null, error, null));
         }
 
         return new DocumentResultCollection<>(recognizePiiEntityResults,
