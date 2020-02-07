@@ -18,6 +18,35 @@ Use the client library for App Configuration to create and manage application co
 
 ### Adding the package to your product
 
+#### Managed Dependencies
+
+Java SDKs for Azure releases a BOM (Bill of Materials) which deals with inter-artifact dependencies and is the recommended way to consume artifacts. The BOM contains a set of artifacts that have been verified to share a common set of dependencies. The following is how to include App Configuration in your product when using the BOM.
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>1.0.0-beta.1</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+
+<dependencies>
+    <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-data-appconfiguration</artifactId>
+    </dependency>
+</dependencies>
+```
+
+#### Individual Dependency
+
+If targeting a specific version of App Configuration you could forgo using the BOM and include it as an individual dependency.
+
 [//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;current})
 ```xml
 <dependency>
