@@ -22,7 +22,6 @@ import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFact
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -37,6 +36,7 @@ import java.net.URL;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class LogLevelTest extends TestSuiteBase {
     public final static String COSMOS_DB_LOGGING_CATEGORY = "com.azure.data.cosmos";
@@ -82,8 +82,8 @@ public class LogLevelTest extends TestSuiteBase {
 
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.DEBUG, APPENDER_NAME, consoleWriter);
 
-        Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
-        Assert.assertTrue(logger.isDebugEnabled());
+        final Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
+        assertThat(logger.isDebugEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -140,7 +140,7 @@ public class LogLevelTest extends TestSuiteBase {
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.TRACE, APPENDER_NAME, consoleWriter);
 
         Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
-        Assert.assertTrue(logger.isTraceEnabled());
+        assertThat(logger.isTraceEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -170,7 +170,7 @@ public class LogLevelTest extends TestSuiteBase {
         addAppenderAndLogger(COSMOS_DB_LOGGING_CATEGORY, Level.INFO, APPENDER_NAME, consoleWriter);
 
         Logger logger = LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY);
-        Assert.assertTrue(logger.isInfoEnabled());
+        assertThat(logger.isInfoEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -214,8 +214,8 @@ public class LogLevelTest extends TestSuiteBase {
         org.apache.logging.log4j.core.Logger logger = context.getLogger(NETWORK_LOGGING_CATEGORY);
         logger.addAppender(appender);
 
-        Assert.assertTrue(LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY).isDebugEnabled());
-        Assert.assertTrue(LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY).isInfoEnabled());
+        assertThat(LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY).isDebugEnabled()).isTrue();
+        assertThat(LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY).isInfoEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -244,7 +244,7 @@ public class LogLevelTest extends TestSuiteBase {
 
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.ERROR, APPENDER_NAME, consoleWriter);
         Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
-        Assert.assertTrue(logger.isErrorEnabled());
+        assertThat(logger.isErrorEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -273,7 +273,7 @@ public class LogLevelTest extends TestSuiteBase {
 
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.INFO, APPENDER_NAME, consoleWriter);
         Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
-        Assert.assertTrue(logger.isInfoEnabled());
+        assertThat(logger.isInfoEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -304,13 +304,13 @@ public class LogLevelTest extends TestSuiteBase {
     static void resetLoggingConfiguration() {
         final URL resource = LogLevelTest.class.getClassLoader().getResource("log4j2-test.properties");
 
-        Assert.assertNotNull(resource);
+        assertThat(resource).isNotNull();
 
         final ConfigurationSource defaultConfigurationSource;
         try {
             defaultConfigurationSource = ConfigurationSource.fromUri(resource.toURI());
         } catch (URISyntaxException e) {
-            Assert.fail("Should have been able to load test properties from '" + resource + "'. Exception" + e );
+            fail("Should have been able to load test properties from: " + resource, e);
             return;
         }
 
@@ -324,7 +324,7 @@ public class LogLevelTest extends TestSuiteBase {
 
         final LoggerContext context = Configurator.initialize(defaultConfiguration);
 
-        Assert.assertNotSame(oldContext, context);
+        assertThat(context).isNotSameAs(oldContext);
     }
 
     /**

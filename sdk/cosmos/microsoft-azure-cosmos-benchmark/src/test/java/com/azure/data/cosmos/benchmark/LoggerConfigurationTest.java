@@ -2,8 +2,9 @@ package com.azure.data.cosmos.benchmark;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoggerConfigurationTest {
     /**
@@ -14,8 +15,8 @@ public class LoggerConfigurationTest {
         final Logger logger = LoggerFactory.getLogger("io.netty");
         final Logger logger2 = LoggerFactory.getLogger("io.netty.channel");
 
-        Assert.assertFalse(logger.isErrorEnabled());
-        Assert.assertFalse(logger2.isErrorEnabled());
+        assertThat(logger.isErrorEnabled()).isFalse();
+        assertThat(logger2.isErrorEnabled()).isFalse();
     }
 
     /**
@@ -26,10 +27,10 @@ public class LoggerConfigurationTest {
         final Logger logger = LoggerFactory.getLogger("com.azure.cosmos.internal.query.aggregation");
         final Logger logger2 = LoggerFactory.getLogger("com.azure.cosmos");
 
-        Assert.assertTrue(logger.isInfoEnabled());
-        Assert.assertTrue(logger2.isInfoEnabled());
+        assertThat(logger.isInfoEnabled()).isTrue();
+        assertThat(logger2.isInfoEnabled()).isTrue();
 
-        Assert.assertFalse(logger.isDebugEnabled());
-        Assert.assertFalse(logger2.isDebugEnabled());
+        assertThat(logger.isDebugEnabled()).isFalse();
+        assertThat(logger2.isDebugEnabled()).isFalse();
     }
 }
