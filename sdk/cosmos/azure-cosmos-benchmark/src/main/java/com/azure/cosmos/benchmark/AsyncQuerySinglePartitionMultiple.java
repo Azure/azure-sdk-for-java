@@ -8,7 +8,6 @@ import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
@@ -37,10 +36,10 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Pojo
 
     @Override
     protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws InterruptedException {
-        Flux<FeedResponse<PojoizedJson>> obs = cosmosAsyncContainer.queryItems(SQL_QUERY, options, PojoizedJson.class).byPage();
+        CosmosContinuablePagedFlux<PojoizedJson> obs = cosmosAsyncContainer.queryItems(SQL_QUERY, options, PojoizedJson.class);
 
         concurrencyControlSemaphore.acquire();
 
-        obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
+        obs.byPage().subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
     }
 }
