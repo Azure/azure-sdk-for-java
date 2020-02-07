@@ -1094,7 +1094,8 @@ public class RxDocumentServiceRequest {
 
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
-        rxDocumentServiceRequest.setByteBuffer(this.getByteBuffer());
+        // TODO: this may require cloning data too?
+        rxDocumentServiceRequest.setByteBuffer(wrapByteBuffer(toByteArray(this.getByteBuffer())));
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
         rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());
         rxDocumentServiceRequest.setEndpointOverride(this.getEndpointOverride());
@@ -1143,6 +1144,17 @@ public class RxDocumentServiceRequest {
         }
 
         return wrapByteBuffer(Utils.getUTF8Bytes(content));
+    }
+
+    public static byte[] toByteArray(ByteBuffer byteBuffer) {
+        if (byteBuffer == null) {
+            return null;
+        }
+
+        byteBuffer.position(0);
+        byte[] arr = new byte[byteBuffer.limit()];
+        byteBuffer.get(arr);
+        return arr;
     }
 
     private static ByteBuffer wrapByteBuffer(byte[] bytes) {
