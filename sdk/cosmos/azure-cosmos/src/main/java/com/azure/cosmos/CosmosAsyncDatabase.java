@@ -12,6 +12,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.Resource.validateResource;
+import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
  * Perform read and delete databases, update database throughput, and perform operations on child resources
@@ -650,15 +651,4 @@ public class CosmosAsyncDatabase {
         return this.link;
     }
 
-    private void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, FeedOptions feedOptions) {
-        if (pagedFluxOptions == null) {
-            return;
-        }
-        if (pagedFluxOptions.getRequestContinuation() != null) {
-            feedOptions.requestContinuation(pagedFluxOptions.getRequestContinuation());
-        }
-        if (pagedFluxOptions.getMaxItemCount() != null) {
-            feedOptions.maxItemCount(pagedFluxOptions.getMaxItemCount());
-        }
-    }
 }

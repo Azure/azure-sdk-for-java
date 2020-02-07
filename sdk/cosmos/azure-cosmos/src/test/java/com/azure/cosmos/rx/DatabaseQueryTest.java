@@ -5,6 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosDatabaseProperties;
 import com.azure.cosmos.FeedOptions;
@@ -43,15 +44,15 @@ public class DatabaseQueryTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", databaseId1);
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
-        Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options);
+        int maxItemCount = 2;
+        CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryObservable = client.queryDatabases(query, options);
 
         List<CosmosDatabaseProperties> expectedDatabases = createdDatabases.stream()
                                                                            .filter(d -> StringUtils.equals(databaseId1, d.getId()) ).map(d -> d.read().block().getProperties()).collect(Collectors.toList());
 
         assertThat(expectedDatabases).isNotEmpty();
 
-        int expectedPageSize = (expectedDatabases.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDatabases.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .totalSize(expectedDatabases.size())
@@ -61,7 +62,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -72,14 +73,14 @@ public class DatabaseQueryTest extends TestSuiteBase {
                                      databaseId2);
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
-        Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options);
+        int maxItemCount = 2;
+        CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryObservable = client.queryDatabases(query, options);
 
         List<CosmosDatabaseProperties> expectedDatabases = createdDatabases.stream().map(d -> d.read().block().getProperties()).collect(Collectors.toList());
 
         assertThat(expectedDatabases).isNotEmpty();
 
-        int expectedPageSize = (expectedDatabases.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDatabases.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .totalSize(expectedDatabases.size())
@@ -89,7 +90,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -97,7 +98,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options);
+        CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryObservable = client.queryDatabases(query, options);
 
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .containsExactly(new ArrayList<>())
@@ -105,7 +106,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

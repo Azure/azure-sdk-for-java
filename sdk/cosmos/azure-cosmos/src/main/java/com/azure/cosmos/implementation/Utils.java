@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.FeedOptions;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -567,5 +568,17 @@ public class Utils {
         }
 
         return new String(bytes);
+    }
+
+    public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, FeedOptions feedOptions) {
+        if (pagedFluxOptions == null) {
+            return;
+        }
+        if (pagedFluxOptions.getRequestContinuation() != null) {
+            feedOptions.requestContinuation(pagedFluxOptions.getRequestContinuation());
+        }
+        if (pagedFluxOptions.getMaxItemCount() != null) {
+            feedOptions.maxItemCount(pagedFluxOptions.getMaxItemCount());
+        }
     }
 }

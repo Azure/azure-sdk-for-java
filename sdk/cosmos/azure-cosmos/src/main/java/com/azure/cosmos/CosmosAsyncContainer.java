@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 import static com.azure.cosmos.Resource.validateResource;
+import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
  * Provides methods for reading, deleting, and replacing existing Containers.
@@ -629,17 +630,5 @@ public class CosmosAsyncContainer {
 
     String getLink() {
         return this.link;
-    }
-
-    private void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, FeedOptions feedOptions) {
-        if (pagedFluxOptions == null) {
-            return;
-        }
-        if (pagedFluxOptions.getRequestContinuation() != null) {
-            feedOptions.requestContinuation(pagedFluxOptions.getRequestContinuation());
-        }
-        if (pagedFluxOptions.getMaxItemCount() != null) {
-            feedOptions.maxItemCount(pagedFluxOptions.getMaxItemCount());
-        }
     }
 }
