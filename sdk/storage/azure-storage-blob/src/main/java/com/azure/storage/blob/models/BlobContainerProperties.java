@@ -60,12 +60,13 @@ public final class BlobContainerProperties {
      * @param hasImmutabilityPolicy Flag indicating if the container has an immutability policy set on it.
      * @param hasLegalHold Flag indicating if the container has a legal hold.
      * @param defaultEncryptionScope The container's default encryption scope to encrypt blobs with.
-     * @param denyEncryptionScopeOverride Whether or not a container's default encryption scope can be overriden
+     * @param encryptionScopeOverridePrevented Whether or not a container's default encryption scope can be overriden
      */
     public BlobContainerProperties(final Map<String, String> metadata, final String eTag,
         final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
         final LeaseStatusType leaseStatus, final PublicAccessType blobPublicAccess, final boolean hasImmutabilityPolicy,
-        final boolean hasLegalHold, final String defaultEncryptionScope, final Boolean encryptionScopeOverridePrevented) {
+        final boolean hasLegalHold, final String defaultEncryptionScope,
+        final Boolean encryptionScopeOverridePrevented) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
