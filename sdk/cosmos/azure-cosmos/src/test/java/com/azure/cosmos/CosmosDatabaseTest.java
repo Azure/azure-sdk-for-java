@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.IterableStream;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
@@ -157,13 +158,13 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Iterator<FeedResponse<CosmosDatabaseProperties>> readIterator = client.readAllDatabases(options);
+        IterableStream<FeedResponse<CosmosDatabaseProperties>> readIterator = client.readAllDatabases(options);
         // Basic validation
-        assertThat(readIterator.hasNext()).isTrue();
+        assertThat(readIterator.iterator().hasNext()).isTrue();
 
-        Iterator<FeedResponse<CosmosDatabaseProperties>> readIterator1 = client.readAllDatabases();
+        IterableStream<FeedResponse<CosmosDatabaseProperties>> readIterator1 = client.readAllDatabases();
         // Basic validation
-        assertThat(readIterator1.hasNext()).isTrue();
+        assertThat(readIterator1.iterator().hasNext()).isTrue();
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -173,14 +174,14 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.getId = '%s'", createdDatabase.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        Iterator<FeedResponse<CosmosDatabaseProperties>> queryIterator = client.queryDatabases(query, options);
+        IterableStream<FeedResponse<CosmosDatabaseProperties>> queryIterator = client.queryDatabases(query, options);
         // Basic validation
-        assertThat(queryIterator.hasNext()).isTrue();
+        assertThat(queryIterator.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        Iterator<FeedResponse<CosmosDatabaseProperties>> queryIterator1 = client.queryDatabases(querySpec, options);
+        IterableStream<FeedResponse<CosmosDatabaseProperties>> queryIterator1 = client.queryDatabases(querySpec, options);
         // Basic validation
-        assertThat(queryIterator1.hasNext()).isTrue();
+        assertThat(queryIterator1.iterator().hasNext()).isTrue();
     }
 
 

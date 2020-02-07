@@ -84,7 +84,7 @@ public class CosmosDatabaseForTest {
         List<CosmosDatabaseProperties> dbs = client.queryDatabases(
                 new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)",
                                  new SqlParameterList(new SqlParameter("@PREFIX", CosmosDatabaseForTest.SHARED_DB_ID_PREFIX))))
-                                                   .flatMap(page -> Flux.fromIterable(page.getResults())).collectList().block();
+                                                   .collectList().block();
 
         for (CosmosDatabaseProperties db : dbs) {
             assertThat(db.getId()).startsWith(CosmosDatabaseForTest.SHARED_DB_ID_PREFIX);
@@ -103,7 +103,7 @@ public class CosmosDatabaseForTest {
     }
 
     public interface DatabaseManager {
-        Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec query);
+        CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec query);
         Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition);
         CosmosAsyncDatabase getDatabase(String id);
     }
