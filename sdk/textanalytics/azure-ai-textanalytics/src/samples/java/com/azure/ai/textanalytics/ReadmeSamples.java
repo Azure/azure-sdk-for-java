@@ -39,21 +39,21 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for  getting sync client using subscription key authentication.
+     * Code snippet for getting sync client using the API key authentication.
      */
-    public void useSubscriptionKeySyncClient() {
+    public void useApiKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
 
     /**
-     * Code snippet for getting async client using subscription key authentication.
+     * Code snippet for getting async client using API key authentication.
      */
-    public void useSubscriptionKeyAsyncClient() {
+    public void useApiKeyAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
     }
@@ -169,15 +169,15 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for rotating subscription key of the client
+     * Code snippet for rotating API key of the client
      */
-    public void rotatingSubscriptionKey() {
-        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{expired_subscription_key}");
+    public void rotatingApiKey() {
+        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(credential)
+            .apiKey(credential)
             .endpoint("{endpoint}")
             .buildClient();
 
-        credential.updateCredential("{new_subscription_key}");
+        credential.updateCredential("{new_api_key}");
     }
 }

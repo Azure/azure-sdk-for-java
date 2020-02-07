@@ -20,7 +20,7 @@ public class AnalyzeSentimentAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
