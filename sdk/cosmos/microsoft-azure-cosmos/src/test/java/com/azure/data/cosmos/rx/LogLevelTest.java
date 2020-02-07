@@ -30,6 +30,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.UUID;
@@ -321,15 +322,14 @@ public class LogLevelTest extends TestSuiteBase {
     }
 
     /**
-     * Adds a {@link WriterAppender} to the
+     * Adds a {@link WriterAppender} associated with the given {@code loggerName} to the current logging configuration.
      *
-     * @param loggerName
-     * @param logLevel
-     * @param appenderName
-     * @param consoleWriter
+     * @param loggerName Name of the logger to add.
+     * @param logLevel Level for the logger to log at.
+     * @param appenderName The name of the appender.
+     * @param consoleWriter The {@link Writer} associated with the WriterAppender.
      */
-    private void addAppenderAndLogger(String loggerName, Level logLevel, String appenderName,
-        StringWriter consoleWriter) {
+    static void addAppenderAndLogger(String loggerName, Level logLevel, String appenderName, Writer consoleWriter) {
         final LoggerContext context = (LoggerContext) LogManager.getContext(false);
         final Configuration configuration = context.getConfiguration();
         final WriterAppender appender = WriterAppender.createAppender(PatternLayout.createDefaultLayout(configuration),
