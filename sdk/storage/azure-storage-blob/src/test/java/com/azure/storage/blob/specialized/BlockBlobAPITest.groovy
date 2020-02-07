@@ -650,6 +650,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         def outFile = new File(file.getPath().toString() + "result")
         StepVerifier.create(blobAsyncClient.downloadToFile(outFile.getPath(), true))
+            .assertNext({ it != null })
             .verifyComplete()
 
         compareFiles(file, outFile, 0, fileSize)

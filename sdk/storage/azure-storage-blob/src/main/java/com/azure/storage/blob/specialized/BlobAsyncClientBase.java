@@ -649,13 +649,13 @@ public class BlobAsyncClientBase {
         return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, null, range.toHeaderValue(),
             requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
+            requestConditions.getIfNoneMatch(), null, customerProvidedKey, context).log()
             .map(response -> {
                 info.setETag(response.getDeserializedHeaders().getETag());
                 return new ReliableDownload(response, options, info, updatedInfo ->
                     downloadHelper(new BlobRange(updatedInfo.getOffset(), updatedInfo.getCount()), options,
-                        new BlobRequestConditions().setIfMatch(info.getETag()), false, context));
-            });
+                        new BlobRequestConditions().setIfMatch(info.getETag()), false, context).log());
+            }).log();
     }
 
     /**
@@ -808,7 +808,7 @@ public class BlobAsyncClientBase {
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(filePath, openOptions);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
-                downloadRetryOptions, finalConditions, rangeGetContentMd5, context))
+                downloadRetryOptions, finalConditions, rangeGetContentMd5, context)).log()
             .doFinally(signalType -> this.downloadToFileCleanup(channel, filePath, signalType));
     }
 
@@ -863,10 +863,10 @@ public class BlobAsyncClientBase {
                             .flatMap(response ->
                                 writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
                                     totalProgress));
-                    })
+                    }).log()
                     // Only the first download call returns a value.
                     .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
-            });
+            }).log();
     }
 
     private int calculateNumBlocks(long dataSize, long blockLength) {
