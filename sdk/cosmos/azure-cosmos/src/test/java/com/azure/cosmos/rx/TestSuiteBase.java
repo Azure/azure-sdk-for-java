@@ -217,12 +217,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(-1);
-        options.maxItemCount(100);
+        int maxItemCount = 100;
 
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
 
         cosmosContainer.queryItems("SELECT * FROM root", options, CosmosItemProperties.class)
-                       .byPage(100)
+                       .byPage(maxItemCount)
                        .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                         .flatMap(doc -> {
@@ -247,6 +247,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
+                       .byPage(maxItemCount)
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(trigger -> {
@@ -263,6 +264,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryStoredProcedures("SELECT * FROM root", options)
+                       .byPage(maxItemCount)
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(storedProcedure -> {
@@ -280,6 +282,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} udfs ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryUserDefinedFunctions("SELECT * FROM root", options)
+                       .byPage(maxItemCount)
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(udf -> {

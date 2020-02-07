@@ -3,15 +3,15 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.core.util.IterableStream;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -161,9 +161,9 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
         
-        Iterator<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator3 =
+        IterableStream<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator3 =
                 container.getScripts().readAllStoredProcedures(feedOptions);
-        assertThat(feedResponseIterator3.hasNext()).isTrue();
+        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
 
     }
 
@@ -175,14 +175,14 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        Iterator<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator1 =
+        IterableStream<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator1 =
                 container.getScripts().queryStoredProcedures(query, feedOptions);
-        assertThat(feedResponseIterator1.hasNext()).isTrue();
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        Iterator<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator2 =
+        IterableStream<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator2 =
                 container.getScripts().queryStoredProcedures(query, feedOptions);
-        assertThat(feedResponseIterator2.hasNext()).isTrue();
+        assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }
 
     private void validateResponse(CosmosStoredProcedureProperties properties,
