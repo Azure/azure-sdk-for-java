@@ -25,7 +25,7 @@ public class RecognizeLinkedEntities {
         // The text that need be analysed.
         String text = "Old Faithful is a geyser at Yellowstone Park.";
 
-        for (LinkedEntity linkedEntity : client.recognizeLinkedEntities(text).getLinkedEntities()) {
+        for (LinkedEntity linkedEntity : client.recognizeLinkedEntities(text).getEntities()) {
             System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(),
                 linkedEntity.getUrl(),

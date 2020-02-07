@@ -553,7 +553,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
         String inputText = "Old Faithful is a geyser at Yellowstone Park.";
         textAnalyticsAsyncClient.recognizeLinkedEntities(inputText).subscribe(recognizeEntitiesResult -> {
-            for (LinkedEntity linkedEntity : recognizeEntitiesResult.getLinkedEntities()) {
+            for (LinkedEntity linkedEntity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
                     linkedEntity.getName(),
                     linkedEntity.getUrl(),
@@ -572,7 +572,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         String inputText1 = "Old Faithful is a geyser at Yellowstone Park.";
         textAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse(inputText1, "en")
             .subscribe(linkedEntitiesResultResponse -> {
-                for (LinkedEntity linkedEntity : linkedEntitiesResultResponse.getValue().getLinkedEntities()) {
+                for (LinkedEntity linkedEntity : linkedEntitiesResultResponse.getValue().getEntities()) {
                     System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
                         linkedEntity.getName(),
                         linkedEntity.getUrl(),
@@ -600,7 +600,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-                for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getLinkedEntities()) {
+                for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                     System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
                         linkedEntity.getName(),
                         linkedEntity.getUrl(),
@@ -630,7 +630,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-                for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getLinkedEntities()) {
+                for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                     System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
                         linkedEntity.getName(),
                         linkedEntity.getUrl(),
@@ -661,7 +661,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     batchStatistics.getValidDocumentCount());
 
                 for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-                    for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getLinkedEntities()) {
+                    for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                         System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
                             linkedEntity.getName(),
                             linkedEntity.getUrl(),
@@ -697,7 +697,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     batchStatistics.getValidDocumentCount());
 
                 for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-                    for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getLinkedEntities()) {
+                    for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                         System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
                             linkedEntity.getName(),
                             linkedEntity.getUrl(),

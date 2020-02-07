@@ -260,7 +260,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         LinkedEntity linkedEntity1 = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch1), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
         RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResultList = new RecognizeLinkedEntitiesResult("0", null, null, Collections.singletonList(linkedEntity1));
 
-        validateLinkedEntities(recognizeLinkedEntitiesResultList.getLinkedEntities(), client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.").getLinkedEntities());
+        validateLinkedEntities(recognizeLinkedEntitiesResultList.getEntities(), client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.").getEntities());
     }
 
     @Test
@@ -271,7 +271,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForFaultyText() {
-        assertEquals(client.recognizeLinkedEntities("!@#%%").getLinkedEntities().size(), 0);
+        assertEquals(client.recognizeLinkedEntities("!@#%%").getEntities().size(), 0);
     }
 
     @Test

@@ -120,7 +120,7 @@ public class ReadmeSamples {
     public void recognizeLinkedEntity() {
         String text = "Old Faithful is a geyser at Yellowstone Park.";
 
-        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text).getLinkedEntities()) {
+        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text).getEntities()) {
             System.out.printf("Recognized Linked Entity: %s, Url: %s, Data Source: %s.%n",
                 linkedEntity.getName(),
                 linkedEntity.getUrl(),

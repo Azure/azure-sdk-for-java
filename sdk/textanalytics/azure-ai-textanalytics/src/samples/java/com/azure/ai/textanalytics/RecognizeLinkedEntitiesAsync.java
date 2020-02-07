@@ -29,7 +29,7 @@ public class RecognizeLinkedEntitiesAsync {
 
         client.recognizeLinkedEntities(text).subscribe(
             result -> {
-                for (LinkedEntity linkedEntity : result.getLinkedEntities()) {
+                for (LinkedEntity linkedEntity : result.getEntities()) {
                     System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                         linkedEntity.getName(),
                         linkedEntity.getUrl(),

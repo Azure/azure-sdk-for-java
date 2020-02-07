@@ -230,7 +230,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResultList = new RecognizeLinkedEntitiesResult("0", null, null, Collections.singletonList(linkedEntity));
 
         StepVerifier.create(client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week."))
-            .assertNext(response -> validateLinkedEntities(recognizeLinkedEntitiesResultList.getLinkedEntities(), response.getLinkedEntities()))
+            .assertNext(response -> validateLinkedEntities(recognizeLinkedEntitiesResultList.getEntities(), response.getEntities()))
             .verifyComplete();
     }
 
@@ -244,7 +244,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForFaultyText() {
         StepVerifier.create(client.recognizeLinkedEntities("!@#%%"))
-            .assertNext(response -> assertEquals(response.getLinkedEntities().size(), 0))
+            .assertNext(response -> assertEquals(response.getEntities().size(), 0))
             .verifyComplete();
     }
 
