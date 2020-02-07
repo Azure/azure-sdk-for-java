@@ -1075,7 +1075,6 @@ public class RxDocumentServiceRequest {
         return contentObservable;
     }
 
-
     public Flux<ByteBuf> getContentAsByteBufFlux() {
         if (byteBuffer == null) {
             return Flux.empty();
@@ -1162,7 +1161,7 @@ public class RxDocumentServiceRequest {
             return null;
         }
 
-        byteBuffer.position(0);
+        byteBuffer.rewind();
         byte[] arr = new byte[byteBuffer.limit()];
         byteBuffer.get(arr);
         return arr;
