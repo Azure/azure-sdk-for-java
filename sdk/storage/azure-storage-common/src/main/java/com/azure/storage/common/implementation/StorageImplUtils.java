@@ -3,16 +3,21 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -22,12 +27,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 
 import static com.azure.storage.common.Utility.urlDecode;
 
@@ -286,5 +285,27 @@ public class StorageImplUtils {
             nextCopy = (int) Math.min(retrievedBuff.length, writeLength);
             count = source.read(retrievedBuff, 0, nextCopy);
         }
+    }
+
+    /**
+     * Creates a deep clone of the input buffer.
+     *
+     * @param buffer {@link ByteBuffer} to clone.
+     * @return A deep clone of the input buffer.
+     */
+    public static ByteBuffer deepCloneBuffer(ByteBuffer buffer) {
+        /*
+         * Buffer the data contained in the 'ByteBuffer' as it passes through the stream. This resolves an issue where
+         * Reactor Netty begins to release the underlying 'ByteBuf' after the on next operations have completed.
+         */
+        int offset = buffer.position();
+        int size = buffer.remaining();
+        byte[] duplicate = new byte[size];
+
+        for (int i = 0; i < size; i++) {
+            duplicate[i] = buffer.get(i + offset);
+        }
+
+        return ByteBuffer.wrap(duplicate);
     }
 }

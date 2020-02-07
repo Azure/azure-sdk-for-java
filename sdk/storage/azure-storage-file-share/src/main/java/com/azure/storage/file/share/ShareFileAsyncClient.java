@@ -536,7 +536,10 @@ public class ShareFileAsyncClient {
      */
     public Mono<ShareFileDownloadAsyncResponse> downloadWithResponse(ShareFileRange range, Boolean rangeGetContentMD5) {
         try {
-            return withContext(context -> downloadWithResponse(range, rangeGetContentMD5, context));
+            return withContext(context -> downloadWithResponse(range, rangeGetContentMD5, context))
+                .map(response -> new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), response.getValue().map(StorageImplUtils::deepCloneBuffer),
+                    response.getDeserializedHeaders()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

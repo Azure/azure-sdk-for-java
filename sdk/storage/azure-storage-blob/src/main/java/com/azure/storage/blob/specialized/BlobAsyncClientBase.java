@@ -623,7 +623,10 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         try {
             return withContext(context ->
-                downloadWithResponse(range, options, requestConditions, getRangeContentMd5, context));
+                downloadWithResponse(range, options, requestConditions, getRangeContentMd5, context))
+                .map(response -> new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), response.getValue().map(StorageImplUtils::deepCloneBuffer),
+                    response.getDeserializedHeaders()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -964,24 +967,7 @@ public class BlobAsyncClientBase {
         AtomicLong totalProgress) {
 
         // Extract the body.
-        Flux<ByteBuffer> data = response.getValue()
-            .flatMap(buffer -> {
-                /*
-                 * Buffer the data contained in the 'ByteBuffer' as it passes through the stream. This resolves an issue
-                 * where Reactor Netty begins to release the underlying 'ByteBuf' after the on next operations have
-                 * completed, the release buffer may be overwritten before writing to file has completed which leads to
-                 * corrupted files.
-                 */
-                int offset = buffer.position();
-                int size = buffer.remaining();
-                byte[] duplicate = new byte[size];
-
-                for (int i = 0; i < size; i++) {
-                    duplicate[i] = buffer.get(i + offset);
-                }
-
-                return Mono.just(ByteBuffer.wrap(duplicate));
-            });
+        Flux<ByteBuffer> data = response.getValue().map(StorageImplUtils::deepCloneBuffer);
 
         // Report progress as necessary.
         data = ProgressReporter.addParallelProgressReporting(data,
