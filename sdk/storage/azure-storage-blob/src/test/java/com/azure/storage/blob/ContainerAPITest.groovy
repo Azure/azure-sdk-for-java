@@ -125,8 +125,8 @@ class ContainerAPITest extends APISpec {
         response.getValue().getLeaseState() == LeaseStateType.AVAILABLE
         response.getValue().getLeaseStatus() == LeaseStatusType.UNLOCKED
         response.getValue().getMetadata().size() == 0
-        !response.getValue().getBlobContainerEncryptionScope().isEncryptionScopeOverridePrevented()
-        response.getValue().getBlobContainerEncryptionScope().getDefaultEncryptionScope()
+        !response.getValue().isEncryptionScopeOverridePrevented()
+        response.getValue().getDefaultEncryptionScope()
 
     }
 
