@@ -413,7 +413,8 @@ public class BridgeInternal {
         return new CosmosResponseDiagnostics();
     }
 
-    public static void setTransportClientRequestTimelineOnDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics, RequestTimeline requestTimeline) {
+    public static void setTransportClientRequestTimelineOnDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics,
+                                                                      RequestTimeline requestTimeline) {
         cosmosResponseDiagnostics.clientSideRequestStatistics().setTransportClientRequestTimeline(requestTimeline);
     }
 

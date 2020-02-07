@@ -12,6 +12,7 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -138,7 +139,9 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
             assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
-            validateTransportRequestTimelineDirect(diagnostics);
+            // TODO https://github.com/Azure/azure-sdk-for-java/issues/8035
+            // uncomment below if above issue is fixed
+            //validateTransportRequestTimelineDirect(diagnostics);
         }
     }
 

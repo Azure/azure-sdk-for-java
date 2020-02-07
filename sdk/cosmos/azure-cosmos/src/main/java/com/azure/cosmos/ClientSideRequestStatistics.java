@@ -129,9 +129,11 @@ class ClientSideRequestStatistics {
                 this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
                 this.gatewayStatistics.sessionToken = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
                 this.gatewayStatistics.requestCharge = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+                this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
             } else if(exception != null){
                 this.gatewayStatistics.statusCode = exception.getStatusCode();
                 this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
+                this.gatewayStatistics.requestTimeline = this.transportRequestTimeline;
             }
         }
     }
@@ -237,6 +239,7 @@ class ClientSideRequestStatistics {
         public int statusCode;
         public int subStatusCode;
         public String requestCharge;
+        public RequestTimeline requestTimeline;
     }
 
     private static class SystemInformation {
@@ -289,7 +292,6 @@ class ClientSideRequestStatistics {
             generator.writeObjectField("regionsContacted", statistics.regionsContacted);
             generator.writeObjectField("retryContext", statistics.retryContext);
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
-            generator.writeObjectField("transportRequestTimeline", statistics.transportRequestTimeline);
 
             try {
                 SystemInformation systemInformation = new SystemInformation();

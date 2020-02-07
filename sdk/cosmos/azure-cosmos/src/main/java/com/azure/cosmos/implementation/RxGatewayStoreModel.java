@@ -288,6 +288,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                StoreResponse rsp = new StoreResponse(httpResponseStatus,
                                    HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
                                    content);
+                               DirectBridgeInternal.setRequestTimeline(rsp, reactorNettyRequestRecord.takeTimelineSnapshot());
                                if (request.requestContext.cosmosResponseDiagnostics != null) {
                                    BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, request, rsp, null);
                                    DirectBridgeInternal.setCosmosResponseDiagnostics(rsp, request.requestContext.cosmosResponseDiagnostics);
