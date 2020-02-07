@@ -12,9 +12,9 @@ import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -270,8 +270,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
-            for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
+            for (RecognizeEntityResult recognizeEntityResult : recognizeEntitiesResults) {
+                for (CategorizedEntity entity : recognizeEntityResult.getEntities()) {
                     System.out.printf(
                         "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
@@ -292,7 +292,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
         textAnalyticsAsyncClient.recognizeEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
-            DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults = response.getValue();
+            DocumentResultCollection<RecognizeEntityResult> recognizeEntitiesResults = response.getValue();
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
@@ -300,8 +300,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
-            for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
+            for (RecognizeEntityResult recognizeEntityResult : recognizeEntitiesResults) {
+                for (CategorizedEntity entity : recognizeEntityResult.getEntities()) {
                     System.out.printf(
                         "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
@@ -330,8 +330,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
-            for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
+            for (RecognizeEntityResult recognizeEntityResult : recognizeEntitiesResults) {
+                for (CategorizedEntity entity : recognizeEntityResult.getEntities()) {
                     System.out.printf(
                         "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                         entity.getText(),
@@ -358,7 +358,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.recognizeBatchEntitiesWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
-                DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults = response.getValue();
+                DocumentResultCollection<RecognizeEntityResult> recognizeEntitiesResults = response.getValue();
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
@@ -366,8 +366,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
-                for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                    for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
+                for (RecognizeEntityResult recognizeEntityResult : recognizeEntitiesResults) {
+                    for (CategorizedEntity entity : recognizeEntityResult.getEntities()) {
                         System.out.printf(
                             "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
                             entity.getText(),
@@ -435,7 +435,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
-            for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
+            for (RecognizePiiEntityResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
                     System.out.printf(
                         "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
@@ -457,7 +457,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "My SSN is 555-55-5555.", "Visa card 0111 1111 1111 1111.");
 
         textAnalyticsAsyncClient.recognizePiiEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
-            DocumentResultCollection<RecognizePiiEntitiesResult> recognizeEntitiesResults = response.getValue();
+            DocumentResultCollection<RecognizePiiEntityResult> recognizeEntitiesResults = response.getValue();
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
@@ -465,7 +465,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
-            for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
+            for (RecognizePiiEntityResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
                     System.out.printf(
                         "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
@@ -495,7 +495,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
-            for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
+            for (RecognizePiiEntityResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
                     System.out.printf(
                         "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
@@ -523,7 +523,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.recognizeBatchPiiEntitiesWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
-                DocumentResultCollection<RecognizePiiEntitiesResult> recognizeEntitiesResults = response.getValue();
+                DocumentResultCollection<RecognizePiiEntityResult> recognizeEntitiesResults = response.getValue();
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
@@ -531,7 +531,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
-                for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
+                for (RecognizePiiEntityResult recognizeEntitiesResult : recognizeEntitiesResults) {
                     for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
                         System.out.printf(
                             "Recognized PII Entity: %s, Category: %s, Score: %s.%n",
@@ -599,8 +599,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
-            for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-                for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
+            for (RecognizeLinkedEntityResult recognizeLinkedEntityResult : recognizeLinkedEntitiesResults) {
+                for (LinkedEntity linkedEntity : recognizeLinkedEntityResult.getEntities()) {
                     System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
                         linkedEntity.getName(),
                         linkedEntity.getUrl(),
@@ -621,7 +621,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Old Faithful is a geyser at Yellowstone Park.", "Mount Shasta has lenticular clouds.");
 
         textAnalyticsAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs1, "en").subscribe(response -> {
-            DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults = response.getValue();
+            DocumentResultCollection<RecognizeLinkedEntityResult> recognizeLinkedEntitiesResults = response.getValue();
 
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
@@ -629,8 +629,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
 
-            for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-                for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
+            for (RecognizeLinkedEntityResult recognizeLinkedEntityResult : recognizeLinkedEntitiesResults) {
+                for (LinkedEntity linkedEntity : recognizeLinkedEntityResult.getEntities()) {
                     System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
                         linkedEntity.getName(),
                         linkedEntity.getUrl(),
@@ -660,8 +660,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
-                for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-                    for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
+                for (RecognizeLinkedEntityResult recognizeLinkedEntityResult : recognizeLinkedEntitiesResults) {
+                    for (LinkedEntity linkedEntity : recognizeLinkedEntityResult.getEntities()) {
                         System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
                             linkedEntity.getName(),
                             linkedEntity.getUrl(),
@@ -687,7 +687,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.recognizeBatchLinkedEntitiesWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
-                DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults =
+                DocumentResultCollection<RecognizeLinkedEntityResult> recognizeLinkedEntitiesResults =
                     response.getValue();
 
                 // Batch statistics
@@ -696,8 +696,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
-                for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-                    for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
+                for (RecognizeLinkedEntityResult recognizeLinkedEntityResult : recognizeLinkedEntitiesResults) {
+                    for (LinkedEntity linkedEntity : recognizeLinkedEntityResult.getEntities()) {
                         System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
                             linkedEntity.getName(),
                             linkedEntity.getUrl(),

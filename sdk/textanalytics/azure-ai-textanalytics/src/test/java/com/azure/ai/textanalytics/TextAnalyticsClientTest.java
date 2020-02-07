@@ -10,9 +10,9 @@ import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
@@ -155,8 +155,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeEntitiesForTextInput() {
         CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
-        RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(categorizedEntity1, categorizedEntity2));
-        validateCategorizedEntities(recognizeEntitiesResultList.getEntities(),
+        RecognizeEntityResult recognizeEntityResultList = new RecognizeEntityResult("0", null, null, Arrays.asList(categorizedEntity1, categorizedEntity2));
+        validateCategorizedEntities(recognizeEntityResultList.getEntities(),
             client.recognizeEntities("I had a wonderful trip to Seattle last week.").getEntities());
     }
 
@@ -174,9 +174,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
-            DocumentResultCollection<RecognizeEntitiesResult> l = client.recognizeBatchEntities(inputs);
-            for (RecognizeEntitiesResult recognizeEntitiesResult : l) {
-                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getEntities());
+            DocumentResultCollection<RecognizeEntityResult> l = client.recognizeBatchEntities(inputs);
+            for (RecognizeEntityResult recognizeEntityResult : l) {
+                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntityResult.getEntities());
                 assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
             }
         });
@@ -211,8 +211,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizePiiEntitiesForTextInput() {
         PiiEntity piiEntity = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
-        RecognizePiiEntitiesResult recognizePiiEntitiesResult = new RecognizePiiEntitiesResult("0", null, null, Collections.singletonList(piiEntity));
-        validatePiiEntities(recognizePiiEntitiesResult.getEntities(),
+        RecognizePiiEntityResult recognizePiiEntityResult = new RecognizePiiEntityResult("0", null, null, Collections.singletonList(piiEntity));
+        validatePiiEntities(recognizePiiEntityResult.getEntities(),
             client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.").getEntities());
     }
 
@@ -258,9 +258,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeLinkedEntitiesForTextInput() {
         LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
         LinkedEntity linkedEntity1 = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch1), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
-        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResultList = new RecognizeLinkedEntitiesResult("0", null, null, Collections.singletonList(linkedEntity1));
+        RecognizeLinkedEntityResult recognizeLinkedEntityResultList = new RecognizeLinkedEntityResult("0", null, null, Collections.singletonList(linkedEntity1));
 
-        validateLinkedEntities(recognizeLinkedEntitiesResultList.getEntities(), client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.").getEntities());
+        validateLinkedEntities(recognizeLinkedEntityResultList.getEntities(), client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.").getEntities());
     }
 
     @Test

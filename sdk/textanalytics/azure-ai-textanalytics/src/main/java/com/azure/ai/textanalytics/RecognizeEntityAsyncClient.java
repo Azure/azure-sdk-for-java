@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.Response;
@@ -48,8 +48,8 @@ class RecognizeEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language,
-        Context context) {
+    Mono<Response<RecognizeEntityResult>> recognizeEntitiesWithResponse(String text, String language,
+                                                                        Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return recognizeBatchEntitiesWithResponse(
@@ -57,7 +57,7 @@ class RecognizeEntityAsyncClient {
             .map(Transforms::processSingleResponseErrorResult);
     }
 
-    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizeEntityResult>>> recognizeEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
@@ -66,7 +66,7 @@ class RecognizeEntityAsyncClient {
         return recognizeBatchEntitiesWithResponse(documentInputs, null, context);
     }
 
-    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizeEntityResult>>> recognizeBatchEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
@@ -90,11 +90,11 @@ class RecognizeEntityAsyncClient {
      *
      * @return the {@link DocumentResultCollection} of {@link DetectLanguageResult} to be returned by the SDK.
      */
-    private DocumentResultCollection<RecognizeEntitiesResult> toDocumentResultCollection(
+    private DocumentResultCollection<RecognizeEntityResult> toDocumentResultCollection(
         final EntitiesResult entitiesResult) {
-        List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
+        List<RecognizeEntityResult> recognizeEntityResults = new ArrayList<>();
         for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
-            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentEntities.getId(),
+            recognizeEntityResults.add(new RecognizeEntityResult(documentEntities.getId(),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null, documentEntities.getEntities().stream().map(entity ->
@@ -105,10 +105,10 @@ class RecognizeEntityAsyncClient {
         for (DocumentError documentError : entitiesResult.getErrors()) {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 toTextAnalyticsError(documentError.getError());
-            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null, error, null));
+            recognizeEntityResults.add(new RecognizeEntityResult(documentError.getId(), null, error, null));
         }
 
-        return new DocumentResultCollection<>(recognizeEntitiesResults,
+        return new DocumentResultCollection<>(recognizeEntityResults,
             entitiesResult.getModelVersion(), entitiesResult.getStatistics() == null ? null
             : toBatchStatistics(entitiesResult.getStatistics()));
     }

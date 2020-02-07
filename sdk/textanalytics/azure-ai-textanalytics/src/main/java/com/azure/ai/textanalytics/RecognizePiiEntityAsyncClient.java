@@ -10,7 +10,7 @@ import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.Response;
@@ -48,8 +48,8 @@ class RecognizePiiEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language,
-        Context context) {
+    Mono<Response<RecognizePiiEntityResult>> recognizePiiEntitiesWithResponse(String text, String language,
+                                                                              Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return recognizeBatchPiiEntitiesWithResponse(
@@ -57,7 +57,7 @@ class RecognizePiiEntityAsyncClient {
             .map(Transforms::processSingleResponseErrorResult);
     }
 
-    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizePiiEntityResult>>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
@@ -66,7 +66,7 @@ class RecognizePiiEntityAsyncClient {
         return recognizeBatchPiiEntitiesWithResponse(documentInputs, null, context);
     }
 
-    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizePiiEntityResult>>> recognizeBatchPiiEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
@@ -86,13 +86,13 @@ class RecognizePiiEntityAsyncClient {
      *
      * @param entitiesResult the {@link EntitiesResult} returned by the service.
      *
-     * @return the {@link DocumentResultCollection} of {@link RecognizePiiEntitiesResult} to be returned by the SDK.
+     * @return the {@link DocumentResultCollection} of {@link RecognizePiiEntityResult} to be returned by the SDK.
      */
-    private DocumentResultCollection<RecognizePiiEntitiesResult> toPiiDocumentResultCollection(
+    private DocumentResultCollection<RecognizePiiEntityResult> toPiiDocumentResultCollection(
         final EntitiesResult entitiesResult) {
-        List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults = new ArrayList<>();
+        List<RecognizePiiEntityResult> recognizePiiEntityResults = new ArrayList<>();
         for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
-            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(documentEntities.getId(),
+            recognizePiiEntityResults.add(new RecognizePiiEntityResult(documentEntities.getId(),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null, documentEntities.getEntities().stream().map(entity ->
@@ -103,10 +103,10 @@ class RecognizePiiEntityAsyncClient {
         for (DocumentError documentError : entitiesResult.getErrors()) {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 toTextAnalyticsError(documentError.getError());
-            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null, error, null));
+            recognizePiiEntityResults.add(new RecognizePiiEntityResult(documentError.getId(), null, error, null));
         }
 
-        return new DocumentResultCollection<>(recognizePiiEntitiesResults,
+        return new DocumentResultCollection<>(recognizePiiEntityResults,
             entitiesResult.getModelVersion(), entitiesResult.getStatistics() == null ? null
             : toBatchStatistics(entitiesResult.getStatistics()));
     }

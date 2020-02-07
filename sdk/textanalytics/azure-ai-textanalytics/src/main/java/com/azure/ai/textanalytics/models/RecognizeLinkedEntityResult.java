@@ -9,22 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The RecognizeLinkedEntitiesResult model.
+ * The RecognizeLinkedEntityResult model.
  */
 @Immutable
-public final class RecognizeLinkedEntitiesResult extends DocumentResult {
+public final class RecognizeLinkedEntityResult extends DocumentResult {
     private final List<LinkedEntity> entities;
 
     /**
-     * Creates a {@code RecognizeLinkedEntitiesResult} model that describes recognized linked entities result
+     * Creates a {@code RecognizeLinkedEntityResult} model that describes recognized linked entities result
      *
      * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
      * @param error the document error
      * @param entities a list of linked entities
      */
-    public RecognizeLinkedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, List<LinkedEntity> entities) {
+    public RecognizeLinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics,
+                                       TextAnalyticsError error, List<LinkedEntity> entities) {
         super(id, textDocumentStatistics, error);
         this.entities = entities == null ? new ArrayList<>() : entities;
     }

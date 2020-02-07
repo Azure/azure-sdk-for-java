@@ -8,9 +8,9 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
@@ -162,9 +162,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeEntitiesForTextInput() {
         CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
-        RecognizeEntitiesResult recognizeEntitiesResultList = new RecognizeEntitiesResult("0", null, null, Arrays.asList(categorizedEntity1, categorizedEntity2));
+        RecognizeEntityResult recognizeEntityResultList = new RecognizeEntityResult("0", null, null, Arrays.asList(categorizedEntity1, categorizedEntity2));
         StepVerifier.create(client.recognizeEntities("I had a wonderful trip to Seattle last week."))
-            .assertNext(response -> validateCategorizedEntities(recognizeEntitiesResultList.getEntities(), response.getEntities()))
+            .assertNext(response -> validateCategorizedEntities(recognizeEntityResultList.getEntities(), response.getEntities()))
             .verifyComplete();
     }
 
@@ -227,10 +227,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeLinkedEntitiesForTextInput() {
         LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
         LinkedEntity linkedEntity = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
-        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResultList = new RecognizeLinkedEntitiesResult("0", null, null, Collections.singletonList(linkedEntity));
+        RecognizeLinkedEntityResult recognizeLinkedEntityResultList = new RecognizeLinkedEntityResult("0", null, null, Collections.singletonList(linkedEntity));
 
         StepVerifier.create(client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week."))
-            .assertNext(response -> validateLinkedEntities(recognizeLinkedEntitiesResultList.getEntities(), response.getEntities()))
+            .assertNext(response -> validateLinkedEntities(recognizeLinkedEntityResultList.getEntities(), response.getEntities()))
             .verifyComplete();
     }
 
@@ -284,10 +284,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizePiiEntitiesForTextInput() {
         PiiEntity piiEntity = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
-        RecognizePiiEntitiesResult recognizePiiEntitiesResultList = new RecognizePiiEntitiesResult("0", null, null, Collections.singletonList(piiEntity));
+        RecognizePiiEntityResult recognizePiiEntityResultList = new RecognizePiiEntityResult("0", null, null, Collections.singletonList(piiEntity));
 
         StepVerifier.create(client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's."))
-            .assertNext(response -> validatePiiEntities(recognizePiiEntitiesResultList.getEntities(), response.getEntities()))
+            .assertNext(response -> validatePiiEntities(recognizePiiEntityResultList.getEntities(), response.getEntities()))
             .verifyComplete();
     }
 

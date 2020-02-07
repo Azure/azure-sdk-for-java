@@ -8,9 +8,9 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.annotation.ReturnType;
@@ -175,11 +175,11 @@ public final class TextAnalyticsClient {
      *
      * @param text the text to recognize entities for.
      *
-     * @return the {@link RecognizeEntitiesResult categorized entity} of the text.
+     * @return the {@link RecognizeEntityResult categorized entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecognizeEntitiesResult recognizeEntities(String text) {
+    public RecognizeEntityResult recognizeEntities(String text) {
         return recognizeEntitiesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
@@ -196,11 +196,11 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link RecognizeEntitiesResult categorized entity} of the text.
+     * @return A {@link Response} containing the {@link RecognizeEntityResult categorized entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecognizeEntitiesResult> recognizeEntitiesWithResponse(
+    public Response<RecognizeEntityResult> recognizeEntitiesWithResponse(
         String text, String language, Context context) {
         return client.recognizeEntityAsyncClient.recognizeEntitiesWithResponse(text, language, context).block();
     }
@@ -215,11 +215,11 @@ public final class TextAnalyticsClient {
      * @param textInputs A list of texts to recognize entities for.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
-     * {@link RecognizeEntitiesResult categorized entity} of the text.
+     * {@link RecognizeEntityResult categorized entity} of the text.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizeEntitiesResult> recognizeEntities(List<String> textInputs) {
+    public DocumentResultCollection<RecognizeEntityResult> recognizeEntities(List<String> textInputs) {
         return recognizeEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
@@ -235,11 +235,11 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult categorized entity}.
+     * {@link RecognizeEntityResult categorized entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(
+    public Response<DocumentResultCollection<RecognizeEntityResult>> recognizeEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         return client.recognizeEntityAsyncClient.recognizeEntitiesWithResponse(textInputs, language, context).block();
     }
@@ -253,11 +253,11 @@ public final class TextAnalyticsClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
      *
-     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntitiesResult categorized entity}.
+     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntityResult categorized entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizeEntitiesResult> recognizeBatchEntities(
+    public DocumentResultCollection<RecognizeEntityResult> recognizeBatchEntities(
         List<TextDocumentInput> textInputs) {
         return recognizeBatchEntitiesWithResponse(textInputs, null, Context.NONE).getValue();
     }
@@ -275,11 +275,11 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult categorized entity}.
+     * {@link DocumentResultCollection batch} of {@link RecognizeEntityResult categorized entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizeEntitiesResult>> recognizeBatchEntitiesWithResponse(
+    public Response<DocumentResultCollection<RecognizeEntityResult>> recognizeBatchEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         return client.recognizeEntityAsyncClient.recognizeBatchEntitiesWithResponse(textInputs, options,
             context).block();
@@ -296,12 +296,12 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String}
      *
      * @param text the text to recognize PII entities for.
-     * @return A {@link RecognizePiiEntitiesResult PII entity} of the text.
+     * @return A {@link RecognizePiiEntityResult PII entity} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecognizePiiEntitiesResult recognizePiiEntities(String text) {
+    public RecognizePiiEntityResult recognizePiiEntities(String text) {
         return recognizePiiEntitiesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
@@ -320,12 +320,12 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizePiiEntitiesResult PII entity} of the text.
+     * {@link RecognizePiiEntityResult PII entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecognizePiiEntitiesResult> recognizePiiEntitiesWithResponse(String text, String language,
-        Context context) {
+    public Response<RecognizePiiEntityResult> recognizePiiEntitiesWithResponse(String text, String language,
+                                                                               Context context) {
         return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(text, language, context).block();
     }
 
@@ -340,12 +340,12 @@ public final class TextAnalyticsClient {
      *
      * @param textInputs A list of text to recognize PII entities for.
      *
-     * @return A {@link DocumentResultCollection batch} of the {@link RecognizePiiEntitiesResult PII entity}
+     * @return A {@link DocumentResultCollection batch} of the {@link RecognizePiiEntityResult PII entity}
      * of the text.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntities(List<String> textInputs) {
+    public DocumentResultCollection<RecognizePiiEntityResult> recognizePiiEntities(List<String> textInputs) {
         return recognizePiiEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
@@ -364,11 +364,11 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizePiiEntitiesResult PII entity}.
+     * {@link RecognizePiiEntityResult PII entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(
+    public Response<DocumentResultCollection<RecognizePiiEntityResult>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(textInputs, language,
             context).block();
@@ -385,11 +385,11 @@ public final class TextAnalyticsClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      *
-     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntitiesResult PII entity}.
+     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntityResult PII entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizePiiEntitiesResult> recognizeBatchPiiEntities(
+    public DocumentResultCollection<RecognizePiiEntityResult> recognizeBatchPiiEntities(
         List<TextDocumentInput> textInputs) {
         return recognizeBatchPiiEntitiesWithResponse(textInputs, null, Context.NONE).getValue();
     }
@@ -409,11 +409,11 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult PII entity}.
+     * {@link DocumentResultCollection batch} of {@link RecognizeEntityResult PII entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizeBatchPiiEntitiesWithResponse(
+    public Response<DocumentResultCollection<RecognizePiiEntityResult>> recognizeBatchPiiEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         return client.recognizePiiEntityAsyncClient.recognizeBatchPiiEntitiesWithResponse(textInputs, options,
             context).block();
@@ -430,11 +430,11 @@ public final class TextAnalyticsClient {
      *
      * @param text the text to recognize linked entities for.
      *
-     * @return A {@link RecognizeLinkedEntitiesResult linked entity} of the text.
+     * @return A {@link RecognizeLinkedEntityResult linked entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecognizeLinkedEntitiesResult recognizeLinkedEntities(String text) {
+    public RecognizeLinkedEntityResult recognizeLinkedEntities(String text) {
         return recognizeLinkedEntitiesWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
@@ -452,12 +452,12 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
+     * {@link RecognizeLinkedEntityResult linked entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesWithResponse(String text, String language,
-        Context context) {
+    public Response<RecognizeLinkedEntityResult> recognizeLinkedEntitiesWithResponse(String text, String language,
+                                                                                     Context context) {
         return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(text, language,
             context).block();
     }
@@ -473,11 +473,11 @@ public final class TextAnalyticsClient {
      * @param textInputs A list of text to recognize linked entities for.
      *
      * @return A {@link DocumentResultCollection batch} of the
-     * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
+     * {@link RecognizeLinkedEntityResult linked entity} of the text.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntities(List<String> textInputs) {
+    public DocumentResultCollection<RecognizeLinkedEntityResult> recognizeLinkedEntities(List<String> textInputs) {
         return recognizeLinkedEntitiesWithResponse(textInputs, client.getDefaultLanguage(), Context.NONE).getValue();
     }
 
@@ -496,11 +496,11 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeLinkedEntitiesResult linked entity}.
+     * {@link RecognizeLinkedEntityResult linked entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(
+    public Response<DocumentResultCollection<RecognizeLinkedEntityResult>> recognizeLinkedEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs, language,
             context).block();
@@ -516,11 +516,11 @@ public final class TextAnalyticsClient {
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      *
-     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeLinkedEntitiesResult linked entity}.
+     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeLinkedEntityResult linked entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeBatchLinkedEntities(
+    public DocumentResultCollection<RecognizeLinkedEntityResult> recognizeBatchLinkedEntities(
         List<TextDocumentInput> textInputs) {
         return recognizeBatchLinkedEntitiesWithResponse(textInputs, null, Context.NONE).getValue();
     }
@@ -539,11 +539,11 @@ public final class TextAnalyticsClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeLinkedEntitiesResult linked entity}.
+     * {@link DocumentResultCollection batch} of {@link RecognizeLinkedEntityResult linked entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeBatchLinkedEntitiesWithResponse(
+    public Response<DocumentResultCollection<RecognizeLinkedEntityResult>> recognizeBatchLinkedEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         return client.recognizeLinkedEntityAsyncClient.recognizeBatchLinkedEntitiesWithResponse(textInputs, options,
             context).block();

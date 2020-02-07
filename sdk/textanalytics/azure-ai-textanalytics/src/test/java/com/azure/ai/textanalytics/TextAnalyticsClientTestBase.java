@@ -14,9 +14,9 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
@@ -410,21 +410,21 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         });
     }
 
-    static void validateCategorizedEntity(boolean showStatistics, DocumentResultCollection<RecognizeEntitiesResult> expected,
-        DocumentResultCollection<RecognizeEntitiesResult> actual) {
+    static void validateCategorizedEntity(boolean showStatistics, DocumentResultCollection<RecognizeEntityResult> expected,
+        DocumentResultCollection<RecognizeEntityResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateCategorizedEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }
 
-    static void validatePiiEntity(boolean showStatistics, DocumentResultCollection<RecognizePiiEntitiesResult> expected,
-        DocumentResultCollection<RecognizePiiEntitiesResult> actual) {
+    static void validatePiiEntity(boolean showStatistics, DocumentResultCollection<RecognizePiiEntityResult> expected,
+        DocumentResultCollection<RecognizePiiEntityResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validatePiiEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }
 
     static void validateLinkedEntity(boolean showStatistics,
-        DocumentResultCollection<RecognizeLinkedEntitiesResult> expected,
-        DocumentResultCollection<RecognizeLinkedEntitiesResult> actual) {
+        DocumentResultCollection<RecognizeLinkedEntityResult> expected,
+        DocumentResultCollection<RecognizeLinkedEntityResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateLinkedEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }

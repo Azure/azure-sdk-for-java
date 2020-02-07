@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -43,7 +43,7 @@ public class RecognizeEntitiesBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        final DocumentResultCollection<RecognizeEntitiesResult> recognizedBatchResult =
+        final DocumentResultCollection<RecognizeEntityResult> recognizedBatchResult =
             client.recognizeBatchEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
 
@@ -56,15 +56,15 @@ public class RecognizeEntitiesBatchDocuments {
             batchStatistics.getValidDocumentCount());
 
         // Recognized entities for each of document from a batch of documents
-        for (RecognizeEntitiesResult recognizeEntitiesResult : recognizedBatchResult) {
-            System.out.printf("Document ID: %s%n", recognizeEntitiesResult.getId());
+        for (RecognizeEntityResult recognizeEntityResult : recognizedBatchResult) {
+            System.out.printf("Document ID: %s%n", recognizeEntityResult.getId());
             // Erroneous document
-            if (recognizeEntitiesResult.isError()) {
-                System.out.printf("Cannot recognize entities. Error: %s%n", recognizeEntitiesResult.getError().getMessage());
+            if (recognizeEntityResult.isError()) {
+                System.out.printf("Cannot recognize entities. Error: %s%n", recognizeEntityResult.getError().getMessage());
                 continue;
             }
             // Valid document
-            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
+            for (CategorizedEntity entity : recognizeEntityResult.getEntities()) {
                 System.out.printf("Recognized entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
                     entity.getText(),
                     entity.getCategory(),

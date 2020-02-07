@@ -12,7 +12,7 @@ import java.util.List;
  * The RecognizeEntitiesResult model.
  */
 @Immutable
-public final class RecognizeEntitiesResult extends DocumentResult {
+public final class RecognizeEntityResult extends DocumentResult {
     private final List<CategorizedEntity> entities;
 
     /**
@@ -23,8 +23,8 @@ public final class RecognizeEntitiesResult extends DocumentResult {
      * @param error the document error
      * @param entities a list of {@link CategorizedEntity}
      */
-    public RecognizeEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
-        List<CategorizedEntity> entities) {
+    public RecognizeEntityResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
+                                 List<CategorizedEntity> entities) {
         super(id, textDocumentStatistics, error);
         this.entities = entities == null ? new ArrayList<>() : entities;
     }

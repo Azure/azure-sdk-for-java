@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.implementation.models.LinkedEntity;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.Response;
@@ -49,8 +49,8 @@ class RecognizeLinkedEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
-        Context context) {
+    Mono<Response<RecognizeLinkedEntityResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
+                                                                                    Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
         return recognizeBatchLinkedEntitiesWithResponse(
@@ -58,7 +58,7 @@ class RecognizeLinkedEntityAsyncClient {
             .map(Transforms::processSingleResponseErrorResult);
     }
 
-    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizeLinkedEntityResult>>> recognizeLinkedEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
@@ -67,7 +67,7 @@ class RecognizeLinkedEntityAsyncClient {
         return recognizeBatchLinkedEntitiesWithResponse(documentInputs, null, context);
     }
 
-    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeBatchLinkedEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizeLinkedEntityResult>>> recognizeBatchLinkedEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
@@ -101,13 +101,13 @@ class RecognizeLinkedEntityAsyncClient {
      *
      * @param entityLinkingResult the {@link EntityLinkingResult} returned by the service.
      *
-     * @return the {@link DocumentResultCollection} of {@link RecognizeLinkedEntitiesResult} to be returned by the SDK.
+     * @return the {@link DocumentResultCollection} of {@link RecognizeLinkedEntityResult} to be returned by the SDK.
      */
-    private DocumentResultCollection<RecognizeLinkedEntitiesResult> toDocumentResultCollection(
+    private DocumentResultCollection<RecognizeLinkedEntityResult> toDocumentResultCollection(
         final EntityLinkingResult entityLinkingResult) {
-        List<RecognizeLinkedEntitiesResult> linkedEntitiesResults = new ArrayList<>();
+        List<RecognizeLinkedEntityResult> linkedEntitiesResults = new ArrayList<>();
         for (DocumentLinkedEntities documentLinkedEntities : entityLinkingResult.getDocuments()) {
-            linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentLinkedEntities.getId(),
+            linkedEntitiesResults.add(new RecognizeLinkedEntityResult(documentLinkedEntities.getId(),
                 documentLinkedEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentLinkedEntities.getStatistics()),
                 null, mapLinkedEntity(documentLinkedEntities.getEntities())));
@@ -115,7 +115,7 @@ class RecognizeLinkedEntityAsyncClient {
         for (DocumentError documentError : entityLinkingResult.getErrors()) {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 toTextAnalyticsError(documentError.getError());
-            linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null, error, null));
+            linkedEntitiesResults.add(new RecognizeLinkedEntityResult(documentError.getId(), null, error, null));
         }
 
         return new DocumentResultCollection<>(linkedEntitiesResults,

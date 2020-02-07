@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -46,7 +46,7 @@ public class RecognizePiiBatchDocumentsAsync {
         // Recognizing batch entities
         client.recognizeBatchPiiEntitiesWithResponse(inputs, requestOptions).subscribe(
             result -> {
-                final DocumentResultCollection<RecognizePiiEntitiesResult> recognizedBatchResult = result.getValue();
+                final DocumentResultCollection<RecognizePiiEntityResult> recognizedBatchResult = result.getValue();
                 System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
 
                 // Batch statistics
@@ -58,7 +58,7 @@ public class RecognizePiiBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Recognized PII entities for each of document from a batch of documents
-                for (RecognizePiiEntitiesResult piiEntityDocumentResult : recognizedBatchResult) {
+                for (RecognizePiiEntityResult piiEntityDocumentResult : recognizedBatchResult) {
                     System.out.printf("Document ID: %s%n", piiEntityDocumentResult.getId());
                     // Erroneous document
                     if (piiEntityDocumentResult.isError()) {
