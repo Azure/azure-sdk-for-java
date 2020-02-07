@@ -57,6 +57,8 @@ public class ProxyHostTest extends TestSuiteBase {
         httpProxyServer.start();
         // wait for proxy server to be ready
         TimeUnit.SECONDS.sleep(1);
+
+        LogLevelTest.resetLoggingConfiguration();
     }
 
     /**
@@ -131,6 +133,8 @@ public class ProxyHostTest extends TestSuiteBase {
         httpProxyServer.shutDown();
         // wait for proxy server to be shutdown
         TimeUnit.SECONDS.sleep(1);
+
+        LogLevelTest.resetLoggingConfiguration();
     }
 
     @AfterMethod(groups = { "simple" })
