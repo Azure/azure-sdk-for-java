@@ -31,18 +31,18 @@ public class AnalyzeSentimentAsync {
             documentSentiment -> {
                 System.out.printf(
                     "Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                    documentSentiment.getSentimentLabel(),
-                    documentSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                    documentSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                    documentSentiment.getSentimentScorePerLabel().getNegativeScore());
+                    documentSentiment.getSentiment(),
+                    documentSentiment.getSentimentScores().getPositive(),
+                    documentSentiment.getSentimentScores().getNeutral(),
+                    documentSentiment.getSentimentScores().getNegative());
 
-                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
+                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                     System.out.printf(
                         "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                        sentenceSentiment.getSentimentLabel(),
-                        sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                        sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                        sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
+                        sentenceSentiment.getSentiment(),
+                        sentenceSentiment.getSentimentScores().getPositive(),
+                        sentenceSentiment.getSentimentScores().getNeutral(),
+                        sentenceSentiment.getSentimentScores().getNegative());
                 }
             },
             error -> System.err.println("There was an error analyzing sentiment of the text." + error),

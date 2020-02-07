@@ -100,7 +100,7 @@ class AnalyzeSentimentAsyncClient {
         final SentimentResponse sentimentResponse) {
         List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
         for (DocumentSentiment documentSentiment : sentimentResponse.getDocuments()) {
-            analyzeSentimentResults.add(convertToTextSentimentResult(documentSentiment));
+            analyzeSentimentResults.add(convertToAnalyzeSentimentResult(documentSentiment));
         }
         for (DocumentError documentError : sentimentResponse.getErrors()) {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error =
@@ -120,7 +120,7 @@ class AnalyzeSentimentAsyncClient {
      *
      * @return the {@link AnalyzeSentimentResult} to be returned by the SDK.
      */
-    private AnalyzeSentimentResult convertToTextSentimentResult(final DocumentSentiment documentSentiment) {
+    private AnalyzeSentimentResult convertToAnalyzeSentimentResult(final DocumentSentiment documentSentiment) {
         // Document text sentiment
         final SentimentLabel documentSentimentLabel = SentimentLabel.fromString(documentSentiment.
             getSentiment().toString());

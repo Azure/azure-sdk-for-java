@@ -753,18 +753,18 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             textAnalyticsClient.analyzeSentiment("The hotel was dark and unclean.");
 
         System.out.printf("Recognized sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-            documentSentiment.getSentimentLabel(),
-            documentSentiment.getSentimentScorePerLabel().getPositiveScore(),
-            documentSentiment.getSentimentScorePerLabel().getNeutralScore(),
-            documentSentiment.getSentimentScorePerLabel().getNegativeScore());
+            documentSentiment.getSentiment(),
+            documentSentiment.getSentimentScores().getPositive(),
+            documentSentiment.getSentimentScores().getNeutral(),
+            documentSentiment.getSentimentScores().getNegative());
 
-        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
+        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
             System.out.printf(
                 "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                sentenceSentiment.getSentimentLabel(),
-                sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
+                sentenceSentiment.getSentiment(),
+                sentenceSentiment.getSentimentScores().getPositive(),
+                sentenceSentiment.getSentimentScores().getNeutral(),
+                sentenceSentiment.getSentimentScores().getNegative());
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String
     }
@@ -778,18 +778,18 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "The hotel was dark and unclean.", "en", Context.NONE).getValue();
 
         System.out.printf("Recognized sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-            documentSentiment.getSentimentLabel(),
-            documentSentiment.getSentimentScorePerLabel().getPositiveScore(),
-            documentSentiment.getSentimentScorePerLabel().getNeutralScore(),
-            documentSentiment.getSentimentScorePerLabel().getNegativeScore());
+            documentSentiment.getSentiment(),
+            documentSentiment.getSentimentScores().getPositive(),
+            documentSentiment.getSentimentScores().getNeutral(),
+            documentSentiment.getSentimentScores().getNegative());
 
-        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
+        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
             System.out.printf(
                 "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                sentenceSentiment.getSentimentLabel(),
-                sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
+                sentenceSentiment.getSentiment(),
+                sentenceSentiment.getSentimentScores().getPositive(),
+                sentenceSentiment.getSentimentScores().getNeutral(),
+                sentenceSentiment.getSentimentScores().getNegative());
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentWithResponse#String-String-Context
     }
@@ -820,17 +820,17 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
             System.out.printf(
                 "Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                documentSentiment.getSentimentLabel(),
-                documentSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                documentSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                documentSentiment.getSentimentScorePerLabel().getNegativeScore());
-            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
+                documentSentiment.getSentiment(),
+                documentSentiment.getSentimentScores().getPositive(),
+                documentSentiment.getSentimentScores().getNeutral(),
+                documentSentiment.getSentimentScores().getNegative());
+            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf(
                     "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                    sentenceSentiment.getSentimentLabel(),
-                    sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                    sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                    sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
+                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentScores().getPositive(),
+                    sentenceSentiment.getSentimentScores().getNeutral(),
+                    sentenceSentiment.getSentimentScores().getNegative());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#List
@@ -862,17 +862,17 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
             System.out.printf(
                 "Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                documentSentiment.getSentimentLabel(),
-                documentSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                documentSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                documentSentiment.getSentimentScorePerLabel().getNegativeScore());
-            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
+                documentSentiment.getSentiment(),
+                documentSentiment.getSentimentScores().getPositive(),
+                documentSentiment.getSentimentScores().getNeutral(),
+                documentSentiment.getSentimentScores().getNegative());
+            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf(
                     "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                    sentenceSentiment.getSentimentLabel(),
-                    sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                    sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                    sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
+                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentScores().getPositive(),
+                    sentenceSentiment.getSentimentScores().getNeutral(),
+                    sentenceSentiment.getSentimentScores().getNegative());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentWithResponse#List-String-Context
@@ -904,17 +904,17 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
             System.out.printf(
                 "Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                documentSentiment.getSentimentLabel(),
-                documentSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                documentSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                documentSentiment.getSentimentScorePerLabel().getNegativeScore());
-            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
+                documentSentiment.getSentiment(),
+                documentSentiment.getSentimentScores().getPositive(),
+                documentSentiment.getSentimentScores().getNeutral(),
+                documentSentiment.getSentimentScores().getNegative());
+            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf(
                     "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                    sentenceSentiment.getSentimentLabel(),
-                    sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                    sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                    sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
+                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentScores().getPositive(),
+                    sentenceSentiment.getSentimentScores().getNeutral(),
+                    sentenceSentiment.getSentimentScores().getNegative());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeBatchSentiment#List
@@ -948,17 +948,17 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
             System.out.printf(
                 "Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                documentSentiment.getSentimentLabel(),
-                documentSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                documentSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                documentSentiment.getSentimentScorePerLabel().getNegativeScore());
-            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
+                documentSentiment.getSentiment(),
+                documentSentiment.getSentimentScores().getPositive(),
+                documentSentiment.getSentimentScores().getNeutral(),
+                documentSentiment.getSentimentScores().getNegative());
+            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf(
                     "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                    sentenceSentiment.getSentimentLabel(),
-                    sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                    sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                    sentenceSentiment.getSentimentScorePerLabel().getNegativeScore());
+                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentScores().getPositive(),
+                    sentenceSentiment.getSentimentScores().getNeutral(),
+                    sentenceSentiment.getSentimentScores().getNegative());
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeBatchSentimentWithResponse#List-TextAnalyticsRequestOptions-Context

@@ -12,22 +12,22 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentSentiment {
-    private final SentimentLabel sentimentLabel;
-    private final SentimentScorePerLabel sentimentScorePerLabel;
-    private final List<SentenceSentiment> sentenceSentiments;
+    private final SentimentLabel sentiment;
+    private final SentimentScorePerLabel sentimentScores;
+    private final List<SentenceSentiment> sentences;
 
     /**
      * Creates a {@code DocumentSentiment} model that describes the sentiment of the document.
      *
-     * @param sentimentLabel the sentiment label of the document
-     * @param sentimentScorePerLabel the score of sentiment label of the document
-     * @param sentenceSentiments a list of sentence sentiments
+     * @param sentiment the sentiment label of the document
+     * @param sentimentScores the score of sentiment label of the document
+     * @param sentences a list of sentence sentiments
      */
-    public DocumentSentiment(SentimentLabel sentimentLabel, SentimentScorePerLabel sentimentScorePerLabel,
-        List<SentenceSentiment> sentenceSentiments) {
-        this.sentimentLabel = sentimentLabel;
-        this.sentimentScorePerLabel = sentimentScorePerLabel;
-        this.sentenceSentiments = sentenceSentiments;
+    public DocumentSentiment(SentimentLabel sentiment, SentimentScorePerLabel sentimentScores,
+        List<SentenceSentiment> sentences) {
+        this.sentiment = sentiment;
+        this.sentimentScores = sentimentScores;
+        this.sentences = sentences;
     }
 
     /**
@@ -35,8 +35,8 @@ public final class DocumentSentiment {
      *
      * @return the SentimentLabel
      */
-    public SentimentLabel getSentimentLabel() {
-        return sentimentLabel;
+    public SentimentLabel getSentiment() {
+        return sentiment;
     }
 
     /**
@@ -44,8 +44,8 @@ public final class DocumentSentiment {
      *
      * @return the SentimentScorePerLabel
      */
-    public SentimentScorePerLabel getSentimentScorePerLabel() {
-        return sentimentScorePerLabel;
+    public SentimentScorePerLabel getSentimentScores() {
+        return sentimentScores;
     }
 
     /**
@@ -53,7 +53,7 @@ public final class DocumentSentiment {
      *
      * @return a list of sentence sentiments
      */
-    public List<SentenceSentiment> getSentenceSentiments() {
-        return sentenceSentiments;
+    public List<SentenceSentiment> getSentences() {
+        return sentences;
     }
 }

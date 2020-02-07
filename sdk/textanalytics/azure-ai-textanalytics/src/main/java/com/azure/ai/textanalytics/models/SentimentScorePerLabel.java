@@ -32,7 +32,7 @@ public final class SentimentScorePerLabel {
      *
      * @return negative score value
      */
-    public double getNegativeScore() {
+    public double getNegative() {
         return negativeScore;
     }
 
@@ -41,7 +41,7 @@ public final class SentimentScorePerLabel {
      *
      * @return neutral score value
      */
-    public double getNeutralScore() {
+    public double getNeutral() {
         return neutralScore;
     }
 
@@ -50,7 +50,7 @@ public final class SentimentScorePerLabel {
      *
      * @return positive score value
      */
-    public double getPositiveScore() {
+    public double getPositive() {
         return positiveScore;
     }
 }

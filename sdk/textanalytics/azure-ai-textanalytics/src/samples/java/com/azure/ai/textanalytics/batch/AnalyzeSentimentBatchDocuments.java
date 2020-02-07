@@ -67,16 +67,16 @@ public class AnalyzeSentimentBatchDocuments {
             // Valid document
             final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
             System.out.printf("Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                documentSentiment.getSentimentLabel(),
-                documentSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                documentSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                documentSentiment.getSentimentScorePerLabel().getNegativeScore());
-            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentenceSentiments()) {
+                documentSentiment.getSentiment(),
+                documentSentiment.getSentimentScores().getPositive(),
+                documentSentiment.getSentimentScores().getNeutral(),
+                documentSentiment.getSentimentScores().getNegative());
+            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
-                    sentenceSentiment.getSentimentLabel(),
-                    sentenceSentiment.getSentimentScorePerLabel().getPositiveScore(),
-                    sentenceSentiment.getSentimentScorePerLabel().getNeutralScore(),
-                    sentenceSentiment.getSentimentScorePerLabel().getNegativeScore(),
+                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentScores().getPositive(),
+                    sentenceSentiment.getSentimentScores().getNeutral(),
+                    sentenceSentiment.getSentimentScores().getNegative(),
                     sentenceSentiment.getLength(),
                     sentenceSentiment.getOffset());
             }

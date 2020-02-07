@@ -12,21 +12,21 @@ import com.azure.core.annotation.Immutable;
 public final class SentenceSentiment {
     private final int length;
     private final int offset;
-    private final SentimentScorePerLabel sentimentScorePerLabel;
-    private final SentimentLabel sentimentLabel;
+    private final SentimentScorePerLabel sentimentScores;
+    private final SentimentLabel sentiment;
 
     /**
      * Creates a {@code SentenceSentiment} model that describes the sentiment analysis of sentence.
      *
-     * @param sentimentLabel sentiment label of the sentence
-     * @param sentimentScorePerLabel the score of sentiment label of the document
+     * @param sentiment sentiment label of the sentence
+     * @param sentimentScores the score of sentiment label of the sentence
      * @param length length of the sentence
      * @param offset the offset from the start of the sentence
      */
-    public SentenceSentiment(SentimentLabel sentimentLabel, SentimentScorePerLabel sentimentScorePerLabel, int length,
-        int offset) {
-        this.sentimentLabel = sentimentLabel;
-        this.sentimentScorePerLabel = sentimentScorePerLabel;
+    public SentenceSentiment(SentimentLabel sentiment, SentimentScorePerLabel sentimentScores, int length,
+                             int offset) {
+        this.sentiment = sentiment;
+        this.sentimentScores = sentimentScores;
         this.length = length;
         this.offset = offset;
     }
@@ -54,8 +54,8 @@ public final class SentenceSentiment {
      *
      * @return the SentimentLabel
      */
-    public SentimentLabel getSentimentLabel() {
-        return sentimentLabel;
+    public SentimentLabel getSentiment() {
+        return sentiment;
     }
 
     /**
@@ -64,7 +64,7 @@ public final class SentenceSentiment {
      *
      * @return the SentimentScorePerLabel
      */
-    public SentimentScorePerLabel getSentimentScorePerLabel() {
-        return sentimentScorePerLabel;
+    public SentimentScorePerLabel getSentimentScores() {
+        return sentimentScores;
     }
 }
