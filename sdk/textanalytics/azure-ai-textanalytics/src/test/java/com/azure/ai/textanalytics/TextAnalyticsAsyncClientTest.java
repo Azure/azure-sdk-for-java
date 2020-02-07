@@ -71,7 +71,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test Detect batch input languages.
+     * Test to detect language for each {@code DetectLanguageResult} input of a batch.
      */
     @Test
     public void detectLanguagesBatchInput() {
@@ -82,7 +82,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test Detect batch languages for List of String input with country Hint.
+     * Test to detect language for each string input of batch, with given country hint.
      */
     @Test
     public void detectLanguagesBatchListCountryHint() {
@@ -93,7 +93,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test Detect batch languages for List of String input.
+     * Test to detect language for each string input of batch.
      */
     @Test
     public void detectLanguagesBatchStringInput() {
@@ -104,7 +104,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that a single DetectLanguageResult is returned for a text input to detectLanguages.
+     * Verifies that a single DetectedLanguage is returned for a text input to detectLanguage.
      */
     @Test
     public void detectSingleTextLanguage() {
@@ -146,7 +146,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that a Bad request exception is returned for input documents with same ids.
+     * Verifies that a bad request exception is returned for input documents with same ids.
      */
     @Test
     public void detectLanguageDuplicateIdInput() {
@@ -546,7 +546,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test for null service version, which would take take the default service version by default
+     * Test for null service version, which would take the default service version by default
      */
     @Test
     public void nullServiceVersion() {

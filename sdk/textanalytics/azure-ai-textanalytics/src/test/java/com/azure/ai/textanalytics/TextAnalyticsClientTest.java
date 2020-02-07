@@ -98,11 +98,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectSingleTextLanguage() {
-        DetectedLanguage primaryLanguage = new DetectedLanguage("English", "en", 0.0);
-        List<DetectedLanguage> expectedLanguageList = Collections.singletonList(primaryLanguage);
-        validateDetectedLanguages(
-            Collections.singletonList(client.detectLanguage("This is a test English Text")),
-            expectedLanguageList);
+        validatePrimaryLanguage(new DetectedLanguage("English", "en", 0.0),
+            client.detectLanguage("This is a test English Text"));
     }
 
     /**
@@ -129,8 +126,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageFaultyText() {
         DetectedLanguage primaryLanguage = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0);
-        validateDetectedLanguages(Collections.singletonList(client.detectLanguage("!@#%%")),
-            Collections.singletonList(primaryLanguage));
+        validatePrimaryLanguage(client.detectLanguage("!@#%%"), primaryLanguage);
     }
 
     /**
@@ -438,9 +434,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             new TextAnalyticsApiKeyCredential(getApiKey())).buildClient();
 
         // Action and Assert
-        validateDetectedLanguages(
-            Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
-            Collections.singletonList(client.detectLanguage("This is a test English Text")));
+        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
+            client.detectLanguage("This is a test English Text"));
     }
 
     /**
@@ -489,9 +484,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         credential.updateCredential(getApiKey());
 
         // Action and Assert
-        validateDetectedLanguages(
-            Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
-            Collections.singletonList(client.detectLanguage("This is a test English Text")));
+        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
+            client.detectLanguage("This is a test English Text"));
     }
 
     /**
@@ -515,9 +509,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         }
 
         // Action and Assert
-        validateDetectedLanguages(
-            Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
-            Collections.singletonList(clientBuilder.buildClient().detectLanguage("This is a test English Text")));
+        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
+            clientBuilder.buildClient().detectLanguage("This is a test English Text"));
     }
 
     /**
@@ -540,8 +533,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         }
 
         // Action and Assert
-        validateDetectedLanguages(
-            Collections.singletonList(new DetectedLanguage("English", "en", 1.0)),
-            Collections.singletonList(clientBuilder.buildClient().detectLanguage("This is a test English Text")));
+        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
+            clientBuilder.buildClient().detectLanguage("This is a test English Text"));
     }
 }
