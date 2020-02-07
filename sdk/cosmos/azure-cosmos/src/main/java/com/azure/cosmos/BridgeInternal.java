@@ -57,7 +57,6 @@ public class BridgeInternal {
         return Document.FromObject(document, mapper);
     }
 
-
     public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
         return CosmosItemProperties.serializeJsonToByteBuffer(document, mapper);
     }
