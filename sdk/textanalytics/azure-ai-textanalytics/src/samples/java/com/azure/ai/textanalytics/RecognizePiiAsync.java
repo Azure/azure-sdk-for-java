@@ -29,7 +29,7 @@ public class RecognizePiiAsync {
 
         client.recognizePiiEntities(text).subscribe(
             entity -> System.out.printf(
-                "Recognized personal identifiable information entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
                 entity.getText(),
                 entity.getCategory(),
                 entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),

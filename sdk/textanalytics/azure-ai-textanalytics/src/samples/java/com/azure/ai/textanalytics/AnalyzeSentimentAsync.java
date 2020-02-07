@@ -25,7 +25,7 @@ public class AnalyzeSentimentAsync {
             .buildAsyncClient();
 
         // The text that need be analysed.
-        String text = "The hotel was dark and unclean.";
+        String text = "The hotel was dark and unclean. I like Microsoft";
 
         client.analyzeSentiment(text).subscribe(
             documentSentiment -> {

@@ -30,6 +30,5 @@ public class DetectLanguage {
             detectedLanguage.getName(),
             detectedLanguage.getIso6391Name(),
             detectedLanguage.getScore());
-
     }
 }

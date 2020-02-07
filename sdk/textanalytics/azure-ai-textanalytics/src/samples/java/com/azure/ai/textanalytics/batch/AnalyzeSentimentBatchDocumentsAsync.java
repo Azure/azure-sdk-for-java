@@ -67,7 +67,7 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                     }
                     // Valid document
                     final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                    System.out.printf("Analyzed document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
+                    System.out.printf("Analyzed document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
                         documentSentiment.getSentiment(),
                         documentSentiment.getSentimentScores().getPositive(),
                         documentSentiment.getSentimentScores().getNeutral(),

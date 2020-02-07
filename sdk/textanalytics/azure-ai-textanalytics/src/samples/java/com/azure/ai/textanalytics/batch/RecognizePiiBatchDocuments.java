@@ -65,7 +65,7 @@ public class RecognizePiiBatchDocuments {
             }
             // Valid document
             for (PiiEntity entity : piiEntityDocumentResult.getEntities()) {
-                System.out.printf("Recognized personal identifiable information entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
                     entity.getText(),
                     entity.getCategory(),
                     entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),

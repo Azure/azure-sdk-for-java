@@ -24,7 +24,7 @@ public class AnalyzeSentiment {
             .buildClient();
 
         // The text that need be analysed.
-        String text = "The hotel was dark and unclean.";
+        String text = "The hotel was dark and unclean. I like Microsoft.";
 
         final DocumentSentiment documentSentiment = client.analyzeSentiment(text);
         System.out.printf(
