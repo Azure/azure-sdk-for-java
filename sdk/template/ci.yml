@@ -6,7 +6,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/heads/features/android-release-hookup
+      ref: refs/heads/feature/android-release-hookup
     - repository: azure-sdk-tools
       type: github
       name: Azure/azure-sdk-tools
