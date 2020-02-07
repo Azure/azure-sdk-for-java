@@ -163,7 +163,7 @@ public class LogLevelTest extends TestSuiteBase {
 
     //FIXME test is flaky
     @Ignore
-    @Test(timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithTraceLevelAtRoot() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
 
