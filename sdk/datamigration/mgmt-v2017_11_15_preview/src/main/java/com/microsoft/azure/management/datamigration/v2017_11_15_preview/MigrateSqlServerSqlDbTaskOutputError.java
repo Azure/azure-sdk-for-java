@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Task errors for Sql Server to Azure Sql DB migration.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateSqlServerSqlDbTaskOutputError.class)
 @JsonTypeName("ErrorOutput")
 public class MigrateSqlServerSqlDbTaskOutputError extends MigrateSqlServerSqlDbTaskOutput {
     /**
