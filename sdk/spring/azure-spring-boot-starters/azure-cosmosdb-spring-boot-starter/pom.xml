@@ -11,10 +11,10 @@
         <relativePath>../../azure-spring-boot-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>azure-servicebus-spring-boot-starter</artifactId>
+    <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
 
-    <name>Azure Service Bus Spring Boot Starter</name>
-    <description>Spring Boot Starter for Azure Service Bus</description>
+    <name>Azure Cosmos DB Spring Boot Starter</name>
+    <description>Spring Boot Starter for Azure Document DB service</description>
     <url>https://github.com/Microsoft/azure-spring-boot</url>
 
     <properties>
@@ -36,19 +36,8 @@
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-servicebus</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
+            <artifactId>spring-data-cosmosdb</artifactId>
         </dependency>
     </dependencies>
+
 </project>

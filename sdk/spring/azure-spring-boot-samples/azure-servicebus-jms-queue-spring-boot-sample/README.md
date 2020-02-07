@@ -1,6 +1,6 @@
 ## Overview
 
-This sample project demonstrates how to use Spring JMS Topic for Azure Service Bus via Spring Boot Starter `azure-servicebus-jms-spring-boot-starter`. 
+This sample project demonstrates how to use Spring JMS for Azure Service Bus Queue via Spring Boot Starter `azure-servicebus-jms-spring-boot-starter`. 
 
 Running this sample will be charged by Azure. You can check the usage and bill at this [link](https://azure.microsoft.com/en-us/account/).
 
@@ -18,36 +18,32 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 
 1. Go to [Azure portal](https://portal.azure.com/) and create the service by following this [link](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal). 
 
-2. Update [application.properties](./src/main/resources/application.properties)
+2. Update [application.properties](src/main/resources/application.properties)
 
     ```
     # Fill service bus namespace connection string copied from portal
     spring.jms.servicebus.connection-string=[servicebus-namespace-connection-string]
-    
-    # The JMS client id needs to be specified when using topic and durable subscription
-    # Default is empty string
-    spring.jms.servicebus.topic-client-id=[topic-client-id]
     
     # The idle timeout in milliseconds after which the connection will be failed if the peer sends no AMQP frames
     # Default is 1800000
     spring.jms.servicebus.idle-timeout=[idle-timeout]
     ```
 
-3. Specify your topic name and subscription name. Update `TOPIC_NAME` in [TopicSendController](src/main/java/sample/jms/topic/TopicSendController.java) and [TopicReceiveController](src/main/java/sample/jms/topic/TopicReceiveController.java), and `SUBSCRIPTION_NAME` in [TopicReceiveController](src/main/java/sample/jms/topic/TopicReceiveController.java).
-
+3. Specify your queue name. Update `QUEUE_NAME` in [QueueSendController](src/main/java/sample/jms/queue/QueueSendController.java) and [QueueReceiveController](src/main/java/sample/jms/queue/QueueReceiveController.java).
+                                                                                                                                                                                    
 ### How to run
 
 1. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
 
-2. Send a POST request to service bus topic.
+2. Send a POST request to service bus queue.
     ```
-    $ curl -X POST localhost:8080/topic?message=hello
+    $ curl -X POST localhost:8080/queue?message=hello
     ```
-
+    
 3. Verify in your app's logs that a similar message was posted:
     ```
     Sending message
-    Received message from topic: hello
+    Received message from queue: hello
     ```
     
 4. Delete the resources on [Azure Portal](http://ms.portal.azure.com/) to avoid extra charges.
@@ -58,5 +54,4 @@ Please check the following table for reference links of detailed Service Bus usa
 
 Type | Reference Link
 --- | ---
-`Topics` | [https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-java-how-to-use-topics-subscriptions](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-java-how-to-use-topics-subscriptions)
-`Subscriptions` | [https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-java-how-to-use-topics-subscriptions](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-java-how-to-use-topics-subscriptions)
+`Queues` | [https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-java-how-to-use-queues](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-java-how-to-use-queues)
