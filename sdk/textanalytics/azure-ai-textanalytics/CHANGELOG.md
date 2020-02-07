@@ -29,17 +29,26 @@
   `analyzeSentimentWithResponse(String text, String language)` return `Mono<Response<DocumentSentiment>>` with an atomic type `DocumentSentiment`.
 
 - Removed `TextSentiment` class but created `DocumentSentiment` and `SentenceSentiment` instead. `DocumentSentiment` includes a list of `SentenceSentiment`.
-- Renamed `SentimentClass` to `SentimentLabel`.
+
 - Added a new class model `SentimentScorePerLabel` for the scores of sentiment label.  
 - Added a new parameter `TextAnalyticsRequestOptions options` to method overloads accepting a list of text inputs for allowing the users to opt for batch operation statistics.
 - Passing the API key as a string is no longer supported. To use subscription key authentication a new credential class `TextAnalyticsApiKeyCredential("<api_key>")` must be passed in for the `credential` parameter.
-  Rotating API Key is supported by using method `updateCredential()` to update the existing API key in `TextAnalyticsApiKeyCredential`.
 - `detectLanguages()` is renamed to `detectLanguage()`.
 - The `TextAnalyticsError` model has been simplified to an object with only attributes `code`, `message`, and `target`.
-- `NamedEntity` has been renamed to `CategorizedEntity` and its attributes `type` to `category` and `subtype` to `subcategory`.
 - `RecognizePiiEntitiesResult` now contains on the object a list of `PiiEntity` instead of `NamedEntity`.
 - `DetectLanguageResult` no longer has `List<DetectedLanguage> detectedLanguages`. Use `getPrimaryLanguage()` to access the detected language in text.
 - `AnalyzeSentimentResult` no longer takes `List<TextSentiment> sentenceSentiments` and removed `getSentenceSentiments()` 
+- `NamedEntity` has been renamed to `CategorizedEntity` and its attributes `type` to `category` and `subtype` to `subcategory`.
+- Renamed `SentimentClass` to `SentimentLabel`, `getLinkedEntities()` to `getEntities()` and variable `linkedEntities` to `entities`.
+- Renamed `RecognizeEntitiesResult`, `RecognizeLinkedEntitiesResult`, `RecognizePiiEntitiesResult` to `RecognizeEntityResult`, `RecognizeLinkedEntityResult`, `RecognizePiiEntiityResult`, respectively.
+
+**New features**
+
+- Credential class `TextAnalyticsApiKeyCredential` provides an `updateCredential()` method which allows you to update the API key for long-lived clients.
+
+**Fixes and improvements**
+
+- If you try to access a result attribute on a `DocumentError` object, a `TextAnalyticsException` is raised with a custom error message that provides the document ID and error of the invalid document.
 
 ## 1.0.0-beta.1 (2020-01-09)
 Version 1.0.0-beta.1 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic
