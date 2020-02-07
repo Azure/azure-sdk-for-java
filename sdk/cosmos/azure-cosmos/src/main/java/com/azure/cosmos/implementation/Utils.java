@@ -63,6 +63,14 @@ public class Utils {
         Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
     }
 
+    public static byte[] getUTF8BytesSafe(String str) {
+        try {
+            return str.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static byte[] getUTF8Bytes(String str) throws UnsupportedEncodingException {
         return str.getBytes("UTF-8");
     }

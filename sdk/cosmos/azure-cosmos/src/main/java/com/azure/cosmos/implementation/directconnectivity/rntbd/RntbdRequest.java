@@ -30,6 +30,7 @@ public final class RntbdRequest {
         this.frame = frame;
         this.headers = headers;
         this.payload = payload == null ? ByteBuffer.wrap(EMPTY_BYTE_ARRAY) : payload;
+        this.payload.position(0);
     }
 
     public UUID getActivityId() {

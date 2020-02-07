@@ -1102,8 +1102,13 @@ public class RxDocumentServiceRequest {
 
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
+<<<<<<< HEAD
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
         rxDocumentServiceRequest.setByteBuffer(this.getByteBuffer());
+=======
+        // TODO: this may require cloning data too?
+        rxDocumentServiceRequest.setByteBuffer(wrapByteBuffer(toByteArray(this.getByteBuffer())));
+>>>>>>> 0b504e4f26... now works
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
         rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());
         rxDocumentServiceRequest.setEndpointOverride(this.getEndpointOverride());
@@ -1144,6 +1149,25 @@ public class RxDocumentServiceRequest {
         } else {
             return null;
         }
+    }
+
+    private static ByteBuffer wrapByteBuffer(String content) {
+        if (content == null) {
+            return null;
+        }
+
+        return wrapByteBuffer(Utils.getUTF8BytesSafe(content));
+    }
+
+    public static byte[] toByteArray(ByteBuffer byteBuffer) {
+        if (byteBuffer == null) {
+            return null;
+        }
+
+        byteBuffer.position(0);
+        byte[] arr = new byte[byteBuffer.limit()];
+        byteBuffer.get(arr);
+        return arr;
     }
 
     private static ByteBuffer wrapByteBuffer(byte[] bytes) {
