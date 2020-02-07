@@ -76,26 +76,31 @@ public class LogLevelTest extends TestSuiteBase {
 
     @AfterMethod(groups = { "simple" })
     public void afterMethod() {
-        final LoggerContext context = (LoggerContext) LogManager.getContext(false);
-        final Configuration configuration = context.getConfiguration();
-
-        final Appender existingAppender = configuration.getAppender(APPENDER_NAME);
-        if (existingAppender != null) {
-            configuration.getAppenders().remove(APPENDER_NAME);
-            existingAppender.stop();
-        }
-
-        Set<String> loggers = new HashSet<>();
-        loggers.add(COSMOS_DB_LOGGING_CATEGORY);
-        loggers.add(NETWORK_LOGGING_CATEGORY);
-
-        configuration.getLoggers().values().stream()
-            .filter(x -> loggers.contains(x.getName()))
-            .forEach(loggerConfig -> {
-                System.out.printf("Removing existing logger '%s'.%n", loggerConfig.getName());
-                configuration.removeLogger(loggerConfig.getName());
-                loggerConfig.stop();
-            });
+//        final LoggerContext context = (LoggerContext) LogManager.getContext(false);
+//        final Configuration configuration = context.getConfiguration();
+//
+//        final Appender existingAppender = configuration.getAppender(APPENDER_NAME);
+//        if (existingAppender != null) {
+//            configuration.getAppenders().remove(APPENDER_NAME);
+//            existingAppender.stop();
+//        }
+//
+//        Set<String> loggers = new HashSet<>();
+//        loggers.add(COSMOS_DB_LOGGING_CATEGORY);
+//        loggers.add(NETWORK_LOGGING_CATEGORY);
+//
+//        configuration.getLoggers().values().stream()
+//            .filter(x -> loggers.contains(x.getName()))
+//            .forEach(loggerConfig -> {
+//                System.out.printf("Removing existing logger config: '%s'.%n", loggerConfig.getName());
+//                configuration.removeLogger(loggerConfig.getName());
+//                loggerConfig.stop();
+//            });
+//
+//        ArrayList<org.apache.logging.log4j.core.Logger> existingLoggers = new ArrayList<>(context.getLoggers());
+//        existingLoggers.stream().filter(l -> loggers.contains(l.getName())).forEach(l -> {
+//            System.out.println("Removing logger: " + l.getName());
+//        });
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT)
@@ -335,6 +340,14 @@ public class LogLevelTest extends TestSuiteBase {
         return doc;
     }
 
+    /**
+     * Adds a {@link WriterAppender} to the
+     *
+     * @param loggerName
+     * @param logLevel
+     * @param appenderName
+     * @param consoleWriter
+     */
     private void addAppenderAndLogger(String loggerName, Level logLevel, String appenderName,
         StringWriter consoleWriter) {
         final LoggerContext context = (LoggerContext) LogManager.getContext(false);
@@ -342,6 +355,7 @@ public class LogLevelTest extends TestSuiteBase {
         final WriterAppender appender = WriterAppender.createAppender(PatternLayout.createDefaultLayout(configuration),
             null, consoleWriter, appenderName, false, true);
         appender.start();
+        configuration.addAppender(appender);
 
         final AppenderRef[] appenderRefs = new AppenderRef[] {
             AppenderRef.createAppenderRef(appenderName, null, null)
@@ -353,7 +367,8 @@ public class LogLevelTest extends TestSuiteBase {
         context.updateLoggers();
 
         org.apache.logging.log4j.core.Logger logger = context.getLogger(loggerName);
-        logger.addAppender(appender);
+        configuration.addLoggerAppender(logger, appender);
+        context.updateLoggers();
 
         // Enable this if you want to see the logging to console.
         // logger.addAppender(configuration.getAppender("STDOUT"));
