@@ -116,7 +116,7 @@ public final class TextAnalyticsClient {
      * Detects Language for a batch of input with the provided country hint.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Detects the languages with http response in a list of text with a provided country hint.</p>
+     * <p>Detects the language with http response in a list of text with a provided country hint.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs The list of texts to be analyzed.

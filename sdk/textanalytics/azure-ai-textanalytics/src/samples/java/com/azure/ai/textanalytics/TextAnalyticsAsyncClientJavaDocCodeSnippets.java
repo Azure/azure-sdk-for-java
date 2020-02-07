@@ -111,11 +111,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
-                DetectedLanguage primaryLanguage = detectLanguageResult.getPrimaryLanguage();
+                DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                 System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
-                    primaryLanguage.getName(),
-                    primaryLanguage.getIso6391Name(),
-                    primaryLanguage.getScore());
+                    detectedLanguage.getName(),
+                    detectedLanguage.getIso6391Name(),
+                    detectedLanguage.getScore());
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#List
@@ -141,11 +141,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
-                DetectedLanguage primaryLanguage = detectLanguageResult.getPrimaryLanguage();
+                DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                 System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
-                    primaryLanguage.getName(),
-                    primaryLanguage.getIso6391Name(),
-                    primaryLanguage.getScore());
+                    detectedLanguage.getName(),
+                    detectedLanguage.getIso6391Name(),
+                    detectedLanguage.getScore());
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatchWithResponse#List-String-TextAnalyticsRequestOptions
@@ -176,11 +176,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     batchStatistics.getValidDocumentCount());
 
                 for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
-                    DetectedLanguage primaryLanguage = detectLanguageResult.getPrimaryLanguage();
+                    DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                     System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
-                        primaryLanguage.getName(),
-                        primaryLanguage.getIso6391Name(),
-                        primaryLanguage.getScore());
+                        detectedLanguage.getName(),
+                        detectedLanguage.getIso6391Name(),
+                        detectedLanguage.getScore());
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatchWithResponse#List-TextAnalyticsRequestOptions
@@ -384,25 +384,24 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Visa card 0111 1111 1111 1111."
         );
 
-        textAnalyticsAsyncClient.recognizePiiEntitiesBatchWithResponse(textInputs, "US", null)
-            .subscribe(response -> {
-                DocumentResultCollection<RecognizePiiEntitiesResult> recognizeEntitiesResults = response.getValue();
+        textAnalyticsAsyncClient.recognizePiiEntitiesBatchWithResponse(textInputs, "US", null).subscribe(response -> {
+            DocumentResultCollection<RecognizePiiEntitiesResult> recognizeEntitiesResults = response.getValue();
 
-                // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
-                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getTransactionCount(),
-                    batchStatistics.getValidDocumentCount());
+            // Batch statistics
+            TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                batchStatistics.getTransactionCount(),
+                batchStatistics.getValidDocumentCount());
 
-                for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
-                    for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                        System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
-                            entity.getText(),
-                            entity.getCategory(),
-                            entity.getScore());
-                    }
+            for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
+                for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
+                    System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
+                        entity.getText(),
+                        entity.getCategory(),
+                        entity.getScore());
                 }
-            });
+            }
+        });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatchWithResponse#list-String-TextAnalyticsRequestOptions
     }
 
@@ -485,24 +484,23 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Mount Shasta has lenticular clouds."
         );
 
-        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatch(textInputs1)
-            .subscribe(recognizeLinkedEntitiesResults -> {
+        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatch(textInputs1).subscribe(recognizeLinkedEntitiesResults -> {
 
-                // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getTransactionCount(),
-                    batchStatistics.getValidDocumentCount());
+            // Batch statistics
+            TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                batchStatistics.getTransactionCount(),
+                batchStatistics.getValidDocumentCount());
 
-                for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-                    for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getLinkedEntities()) {
-                        System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
-                            linkedEntity.getName(),
-                            linkedEntity.getUrl(),
-                            linkedEntity.getDataSource());
-                    }
+            for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
+                for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getLinkedEntities()) {
+                    System.out.printf("Recognized Linked CategorizedEntity: %s, URL: %s, Data Source: %s.%n",
+                        linkedEntity.getName(),
+                        linkedEntity.getUrl(),
+                        linkedEntity.getDataSource());
                 }
-            });
+            }
+        });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#List
 
     }
@@ -637,22 +635,21 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Hello world. This is some input text that I love.",
             "Bonjour tout le monde");
 
-        textAnalyticsAsyncClient.extractKeyPhrasesBatchWithResponse(textInputs1, "en", null)
-            .subscribe(response -> {
-                DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhraseResults = response.getValue();
+        textAnalyticsAsyncClient.extractKeyPhrasesBatchWithResponse(textInputs1, "en", null).subscribe(response -> {
+            DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhraseResults = response.getValue();
 
-                // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
-                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getTransactionCount(),
-                    batchStatistics.getValidDocumentCount());
+            // Batch statistics
+            TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
+            System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                batchStatistics.getTransactionCount(),
+                batchStatistics.getValidDocumentCount());
 
-                for (ExtractKeyPhraseResult extractKeyPhraseResult : extractKeyPhraseResults) {
-                    for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
-                        System.out.printf("Recognized phrases: %s.%n", keyPhrase);
-                    }
+            for (ExtractKeyPhraseResult extractKeyPhraseResult : extractKeyPhraseResults) {
+                for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
+                    System.out.printf("Recognized phrases: %s.%n", keyPhrase);
                 }
-            });
+            }
+        });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatchWithResponse#List-String-TextAnalyticsRequestOptions
     }
 

@@ -464,8 +464,8 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts. For the list
-     * of supported entity types, check <a href="https://aka.ms/taner"></a>. For a list of enabled languages, check: <a
-     * href="https://aka.ms/talangs"></a>.
+     * of supported entity types, check <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
+     * check: <a href="https://aka.ms/talangs"></a>.
      *
      * <p>Recognize PII entities in a list of string inputs with provided language hint. Subscribes to the call
      * asynchronously and prints out the entity details when a response is received.</p>
@@ -620,7 +620,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>>
         recognizeLinkedEntitiesBatchWithResponse(List<String> textInputs, String language,
-                                             TextAnalyticsRequestOptions options) {
+        TextAnalyticsRequestOptions options) {
         try {
             return withContext(context ->
                 recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs, language, options,

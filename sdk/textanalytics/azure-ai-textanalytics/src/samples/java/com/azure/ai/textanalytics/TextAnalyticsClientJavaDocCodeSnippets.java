@@ -106,9 +106,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (DetectLanguageResult detectLanguageResult : detectLanguageResults) {
-            DetectedLanguage primaryLanguage = detectLanguageResult.getPrimaryLanguage();
+            DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
             System.out.printf("Primary language name: %s, ISO 6391 name: %s, score: %s.%n",
-                primaryLanguage.getName(), primaryLanguage.getIso6391Name(), primaryLanguage.getScore());
+                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#List
     }
@@ -134,9 +134,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         for (DetectLanguageResult detectLanguageResult : detectLanguageResults) {
             System.out.printf("Document ID: %s%n", detectLanguageResult.getId());
-            DetectedLanguage primaryLanguage = detectLanguageResult.getPrimaryLanguage();
+            DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
             System.out.printf("Primary language name: %s, ISO 6391 name: %s, score: %s.%n",
-                primaryLanguage.getName(), primaryLanguage.getIso6391Name(), primaryLanguage.getScore());
+                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context
     }
@@ -164,9 +164,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         for (DetectLanguageResult detectLanguageResult : detectLanguageResults) {
             System.out.printf("Document ID: %s%n", detectLanguageResult.getId());
-            DetectedLanguage primaryLanguage = detectLanguageResult.getPrimaryLanguage();
+            DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
             System.out.printf("Primary language name: %s, ISO 6391 name: %s, score: %s.%n",
-                primaryLanguage.getName(), primaryLanguage.getIso6391Name(), primaryLanguage.getScore());
+                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatchWithResponse#List-TextAnalyticsRequestOptions-Context
     }
@@ -305,7 +305,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizePiiEntitiesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-Context
-        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555", "en", Context.NONE)) {
+        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555", "en",
+            Context.NONE)) {
             System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                 entity.getText(), entity.getCategory(), entity.getScore());
         }
@@ -352,8 +353,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = recognizePiiEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
@@ -402,8 +402,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeLinkedEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String
-        final String textInput = "Old Faithful is a geyser at Yellowstone Park.";
-        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(textInput)) {
+        final String inputText = "Old Faithful is a geyser at Yellowstone Park.";
+        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(inputText)) {
             System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
         }
@@ -415,8 +415,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeLinkedEntitiesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String-String-Context
-        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(
-                "Old Faithful is a geyser at Yellowstone Park.", "en", Context.NONE)) {
+        String inputText = "Old Faithful is a geyser at Yellowstone Park.";
+        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(inputText, "en", Context.NONE)) {
             System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
         }
@@ -461,12 +461,12 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults =
-            textAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse(textInputs, "en", null, Context.NONE).getValue();
+            textAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse(textInputs, "en", null,
+                Context.NONE).getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
@@ -736,13 +736,13 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Analyzing batch sentiments
         DocumentResultCollection<AnalyzeSentimentResult> sentimentBatchResult =
-            textAnalyticsClient.analyzeSentimentBatchWithResponse(textInputs, "en", null, Context.NONE).getValue();
+            textAnalyticsClient.analyzeSentimentBatchWithResponse(textInputs, "en",
+                null, Context.NONE).getValue();
 
         // Batch statistics
 
         TextDocumentBatchStatistics batchStatistics = sentimentBatchResult.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Analyzed sentiment for each of document from a batch of documents
@@ -786,8 +786,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = sentimentBatchResult.getStatistics();
-        System.out.printf(
-            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+        System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Analyzed sentiment for each of document from a batch of documents
