@@ -295,12 +295,11 @@ public final class RntbdResponse implements ReferenceCounted {
 
 
         checkNotNull(context, "context");
-        final int length = content.readableBytes();
 
         return new StoreResponse(
             this.getStatus().code(),
             this.headers.asList(context, this.getActivityId()),
-            length == 0 ? null : toByteArray(this.content)
+            toByteArray(this.content)
         );
     }
 
@@ -310,6 +309,10 @@ public final class RntbdResponse implements ReferenceCounted {
         }
 
         final int length = content.readableBytes();
+        if (length == 0) {
+            return null;
+        }
+
         byte[] bytes = new byte[length];
         content.getBytes(content.readerIndex(), bytes);
 
