@@ -21,3 +21,4 @@ stages:
         SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
+        VerifyVersions: true
