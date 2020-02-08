@@ -41,7 +41,7 @@ public class StorageImplUtilsTest {
         mutatingBuffer[0] = (byte) 0;
 
         // Wait until the deferred write operation has completed.
-        Thread.sleep(5000);
+        Thread.sleep(10000);
 
         assertArrayEquals(HELLO_WORLD_BYTES, delayedWriteStream.internalBuffer);
     }
@@ -63,7 +63,7 @@ public class StorageImplUtilsTest {
         mutatingBuffer[0] = (byte) 0;
 
         // Wait until the deferred write operation has completed.
-        Thread.sleep(5000);
+        Thread.sleep(10000);
 
         assertFalse(Arrays.equals(HELLO_WORLD_BYTES, delayedWriteStream.internalBuffer));
     }
