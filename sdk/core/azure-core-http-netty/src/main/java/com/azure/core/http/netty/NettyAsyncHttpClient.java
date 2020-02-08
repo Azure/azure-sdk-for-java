@@ -48,6 +48,7 @@ class NettyAsyncHttpClient implements HttpClient {
     private final NioEventLoopGroup eventLoopGroup;
     private final Supplier<ProxyHandler> proxyHandlerSupplier;
     private final Pattern nonProxyHostsPattern;
+    private final boolean disableBufferCopy;
 
     final reactor.netty.http.client.HttpClient nettyClient;
 
@@ -55,7 +56,7 @@ class NettyAsyncHttpClient implements HttpClient {
      * Creates default NettyAsyncHttpClient.
      */
     NettyAsyncHttpClient() {
-        this(reactor.netty.http.client.HttpClient.create(), null, null, null);
+        this(reactor.netty.http.client.HttpClient.create(), null, null, null, false);
     }
 
     /**
@@ -67,13 +68,14 @@ class NettyAsyncHttpClient implements HttpClient {
      * proxy.
      */
     NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, NioEventLoopGroup eventLoopGroup,
-        Supplier<ProxyHandler> proxyHandlerSupplier, String nonProxyHosts) {
+        Supplier<ProxyHandler> proxyHandlerSupplier, String nonProxyHosts, boolean disableBufferCopy) {
         this.nettyClient = nettyClient;
         this.eventLoopGroup = eventLoopGroup;
         this.proxyHandlerSupplier = proxyHandlerSupplier;
         this.nonProxyHostsPattern = (nonProxyHosts == null)
             ? null
             : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
+        this.disableBufferCopy = disableBufferCopy;
     }
 
     /**
@@ -90,7 +92,7 @@ class NettyAsyncHttpClient implements HttpClient {
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request))
+            .responseConnection(responseDelegate(request, disableBufferCopy))
             .single();
     }
 
@@ -151,20 +153,23 @@ class NettyAsyncHttpClient implements HttpClient {
      * @return a delegate upon invocation setup Rest response object
      */
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
-        final HttpRequest restRequest) {
+        final HttpRequest restRequest, final boolean disableBufferCopy) {
         return (reactorNettyResponse, reactorNettyConnection) ->
-            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest));
+            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
+                disableBufferCopy));
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
+        private final boolean disableBufferCopy;
 
         ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
-            HttpRequest httpRequest) {
+            HttpRequest httpRequest, boolean disableBufferCopy) {
             super(httpRequest);
             this.reactorNettyResponse = reactorNettyResponse;
             this.reactorNettyConnection = reactorNettyConnection;
+            this.disableBufferCopy = disableBufferCopy;
         }
 
         @Override
@@ -190,7 +195,24 @@ class NettyAsyncHttpClient implements HttpClient {
                 if (!reactorNettyConnection.isDisposed()) {
                     reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
                 }
-            }).map(ByteBuf::nioBuffer);
+            }).map(byteBuf -> {
+                if (this.disableBufferCopy) {
+                    return byteBuf.nioBuffer();
+                }
+                return deepCopyBuffer(byteBuf);
+            });
+        }
+
+        private ByteBuffer deepCopyBuffer(ByteBuf byteBuf) {
+            ByteBuffer buffer = byteBuf.nioBuffer();
+            int offset = buffer.position();
+            int size = buffer.remaining();
+            byte[] duplicate = new byte[size];
+
+            for (int i = 0; i < size; i++) {
+                duplicate[i] = buffer.get(i + offset);
+            }
+            return ByteBuffer.wrap(duplicate);
         }
 
         @Override

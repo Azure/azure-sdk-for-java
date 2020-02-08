@@ -41,6 +41,7 @@ public class NettyAsyncHttpClientBuilder {
     private int port = 80;
     private NioEventLoopGroup nioEventLoopGroup;
     private Configuration configuration;
+    private boolean disableBufferCopy;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
@@ -98,7 +99,7 @@ public class NettyAsyncHttpClientBuilder {
         AtomicReference<ChallengeHolder> proxyChallengeHolder = new AtomicReference<>();
 
         return new NettyAsyncHttpClient(nettyHttpClient, nioEventLoopGroup,
-            () -> getProxyHandler(handler, proxyChallengeHolder), nonProxyHosts);
+            () -> getProxyHandler(handler, proxyChallengeHolder), nonProxyHosts, disableBufferCopy);
     }
 
     /**
@@ -202,5 +203,10 @@ public class NettyAsyncHttpClientBuilder {
                 throw logger.logExceptionAsError(new IllegalStateException(
                     String.format(INVALID_PROXY_MESSAGE, proxyOptions.getType())));
         }
+    }
+
+    public NettyAsyncHttpClientBuilder disableBufferCopy() {
+        this.disableBufferCopy = true;
+        return this;
     }
 }
