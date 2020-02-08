@@ -20,7 +20,6 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
@@ -285,13 +284,7 @@ class Transforms {
         if (r == null) {
             return null;
         }
-
-        /*
-         * Deep clone the buffers in the stream, this will make it  resilient to buffered pools that may attempt to
-         * reclaim the backing buffer. This protects against scenarios where the stream is captured and saved for later.
-         */
-        return new FileReadAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-            StorageImplUtils.deepCloneStreamBuffers(r.getValue()),
+        return new FileReadAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(), r.getValue(),
             Transforms.toPathReadHeaders(r.getDeserializedHeaders()));
     }
 

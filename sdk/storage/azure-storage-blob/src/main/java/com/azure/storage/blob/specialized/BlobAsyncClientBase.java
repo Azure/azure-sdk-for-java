@@ -972,7 +972,7 @@ public class BlobAsyncClientBase {
         AtomicLong totalProgress) {
 
         // Extract the body.
-        Flux<ByteBuffer> data = StorageImplUtils.deepCloneStreamBuffers(response.getValue());
+        Flux<ByteBuffer> data = response.getValue();
 
         // Report progress as necessary.
         data = ProgressReporter.addParallelProgressReporting(data,
