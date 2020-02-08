@@ -96,6 +96,12 @@
         "new": "missing\\-class com\\.azure\\.storage\\.blob\\.(BlobClient|BlobAsyncClient)",
         "exampleUseChainInNewApi": ".*com\\.azure\\.storage\\.blob\\.specialized\\.cryptography\\.EncryptedBlobClientBuilder.*",
         "justification": "Dependencies are not checked. azure-storage-blob is used in the Azure Storage Blobs Cryptography."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.(noLongerInheritsFromClass|nonFinalClassInheritsFromNewClass)",
+        "class": "com.azure.identity.SharedTokenCacheCredentialBuilder",
+        "justification": "SharedTokenCacheCredentialBuilder now inherites AadCredentialBuilderBase instead of CredentialBuilderBase thus being reported. However, AadCredentialBuilderBase also extends CredentialBuilderBase so it's not a breaking change."
       }
     ]
   }
