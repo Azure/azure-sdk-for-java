@@ -56,7 +56,7 @@ public class StorageImplUtilsTest {
 
         DelayedWriteStream delayedWriteStream = new DelayedWriteStream();
 
-        StorageImplUtils.deepCloneStreamBuffers(Flux.just(ByteBuffer.wrap(mutatingBuffer)))
+        Flux.just(ByteBuffer.wrap(mutatingBuffer))
             .doOnNext(buffer -> delayedWriteStream.write(buffer.array()))
             .blockLast();
 
