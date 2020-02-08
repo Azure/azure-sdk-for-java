@@ -2,8 +2,8 @@
 Text Analytics is a cloud-based service that provides advanced natural language processing over raw text, 
 and includes six main functions:
 
-- Language Detection
 - Sentiment Analysis
+- Language Detection
 - Key Phrase Extraction
 - Named Entity Recognition
 - Recognition of Personally Identifiable Information 
@@ -213,6 +213,17 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .buildAsyncClient();
 ```
 
+### Analyze sentiment
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L130-L135 -->
+```java
+String text = "The hotel was dark and unclean. I like microsoft.";
+DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
+System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
+for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
+    System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment());
+}
+```
+
 ### Detect language
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L77-L80 -->
 ```java
@@ -258,17 +269,6 @@ for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(tex
 String text = "My cat might need to see a veterinarian.";
 for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
     System.out.printf("Recognized phrases: %s.%n", keyPhrase);
-}
-```
-
-### Analyze sentiment
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L130-L135 -->
-```java
-String text = "The hotel was dark and unclean. I like microsoft.";
-DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
-System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
-for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-    System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment());
 }
 ```
 
