@@ -44,7 +44,7 @@ public class RecognizePiiBatchDocuments {
 
         // Recognizing batch entities
         final DocumentResultCollection<RecognizePiiEntitiesResult> recognizedBatchResult =
-            client.recognizeBatchPiiEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+            client.recognizePiiEntitiesBatchWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
 
         // Batch statistics
