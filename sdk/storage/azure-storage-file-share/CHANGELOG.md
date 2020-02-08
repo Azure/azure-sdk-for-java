@@ -5,7 +5,7 @@
 - Fixed bug where ShareDirectoryAsyncClient.getFileClient appended an extra / for files in the root directory.
 
 ## 12.1.1 (2020-02-07)
-- Fixed a bug in the download stream where the under where a buffer would be reclaimed before consumption. This issue occurs in scenarios where the stream is captured for later consumption.
+- Fixed a bug in the download stream where the underlying buffer would be reclaimed before consumption. This issue occurs in scenarios where the stream is captured for later consumption.
 
 ## 12.1.0 (2020-01-08)
 This package's
