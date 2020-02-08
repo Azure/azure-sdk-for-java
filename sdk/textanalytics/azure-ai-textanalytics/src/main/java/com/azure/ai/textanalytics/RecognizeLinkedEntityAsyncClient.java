@@ -56,7 +56,7 @@ class RecognizeLinkedEntityAsyncClient {
         String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
-        return recognizeBatchLinkedEntitiesWithResponse(
+        return recognizeLinkedEntitiesBatchWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
             .map(response -> new PagedResponseBase<>(
                 response.getRequest(),
@@ -74,15 +74,15 @@ class RecognizeLinkedEntityAsyncClient {
     }
 
     Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
-        List<String> textInputs, String language, Context context) {
+        List<String> textInputs, String language, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
-        return recognizeBatchLinkedEntitiesWithResponse(documentInputs, null, context);
+        return recognizeLinkedEntitiesBatchWithResponse(documentInputs, options, context);
     }
 
-    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeBatchLinkedEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesBatchWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 

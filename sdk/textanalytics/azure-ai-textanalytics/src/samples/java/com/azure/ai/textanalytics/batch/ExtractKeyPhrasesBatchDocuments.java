@@ -42,7 +42,7 @@ public class ExtractKeyPhrasesBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Extracting batch key phrases
-        final DocumentResultCollection<ExtractKeyPhraseResult> extractedBatchResult = client.extractBatchKeyPhrasesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+        final DocumentResultCollection<ExtractKeyPhraseResult> extractedBatchResult = client.extractKeyPhrasesBatchWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", extractedBatchResult.getModelVersion());
 
         // Batch statistics
