@@ -65,7 +65,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                         continue;
                     }
                     // Valid document
-                    for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getLinkedEntities()) {
+                    for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getEntities()) {
                         System.out.printf("Recognized linked entities: %s, URL: %s, data source: %s%n",
                             linkedEntity.getName(),
                             linkedEntity.getUrl(),

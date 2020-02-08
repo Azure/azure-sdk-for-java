@@ -411,7 +411,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         DocumentResultCollection<RecognizeLinkedEntitiesResult> expected,
         DocumentResultCollection<RecognizeLinkedEntitiesResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateLinkedEntities(expectedItem.getLinkedEntities(), actualItem.getLinkedEntities()));
+            validateLinkedEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }
 
     static void validateExtractKeyPhrase(boolean showStatistics, DocumentResultCollection<ExtractKeyPhraseResult> expected,

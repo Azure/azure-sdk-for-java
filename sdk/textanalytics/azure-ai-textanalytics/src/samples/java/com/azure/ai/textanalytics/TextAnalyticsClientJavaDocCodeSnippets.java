@@ -441,7 +441,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-            for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getLinkedEntities()) {
+            for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                 System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
             }
@@ -470,7 +470,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-            for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getLinkedEntities()) {
+            for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                 System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
             }
@@ -500,7 +500,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
-            for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getLinkedEntities()) {
+            for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                 System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
             }

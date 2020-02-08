@@ -62,7 +62,7 @@ class RecognizeLinkedEntityAsyncClient {
                 response.getRequest(),
                 response.getStatusCode(),
                 response.getHeaders(),
-                Transforms.processSingleResponseErrorResult(response).getValue().getLinkedEntities(),
+                Transforms.processSingleResponseErrorResult(response).getValue().getEntities(),
                 null,
                 null
             ));
