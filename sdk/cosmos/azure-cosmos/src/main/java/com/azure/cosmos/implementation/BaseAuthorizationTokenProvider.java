@@ -13,6 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
@@ -27,6 +28,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
     private final CosmosKeyCredential cosmosKeyCredential;
     private final Mac macInstance;
+    private final AuthTokenCache authTokenCache;
 
     //  stores current master key's hashcode for performance reasons.
     private int masterKeyHashCode;
@@ -34,6 +36,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     public BaseAuthorizationTokenProvider(CosmosKeyCredential cosmosKeyCredential) {
         this.cosmosKeyCredential = cosmosKeyCredential;
         this.macInstance = getMacInstance();
+        this.authTokenCache = new ExpiringAuthTokenCache(Duration.ofSeconds(5 * 60));
     }
 
     private static String getResourceSegment(ResourceType resourceType) {
@@ -84,8 +87,21 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             String resourceIdOrFullName,
             ResourceType resourceType,
             Map<String, String> headers) {
-        return this.generateKeyAuthorizationSignature(verb, resourceIdOrFullName,
+
+        HttpConstants.HttpMethod httpVerb = HttpConstants.HttpMethod.from(verb);
+        ExpiringAuthTokenCache.Request request = new ExpiringAuthTokenCache.Request(httpVerb, resourceIdOrFullName, resourceType, headers);
+
+        authTokenCache.SetOrUpdateAuthToken(request, req -> {
+            System.out.println("generate a new auth token " + request.resourceType.toString() + request.verb.toString() + request.resourceIdOrFullName);
+
+
+            String authorization = this.generateKeyAuthorizationSignature(verb, resourceIdOrFullName,
                 BaseAuthorizationTokenProvider.getResourceSegment(resourceType).toLowerCase(), headers);
+            headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, authorization);
+
+        });
+
+        return request.headers.get(HttpConstants.HttpHeaders.AUTHORIZATION);
     }
 
     /**

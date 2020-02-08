@@ -3,11 +3,56 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.ConsistencyLevel;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Used internally. HTTP constants in the Azure Cosmos DB database service Java
  * SDK.
  */
 public class HttpConstants {
+    public static enum  HttpMethod {
+        GET("GET"), POST("POST"), PUT("PUT"), DELETE("DELETE"), HEAD("HEAD");
+
+        final private String value;
+
+        HttpMethod(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        static private Map<String, HttpMethod> stringValueHashMap = new HashMap<>();
+
+        static {
+            for(HttpMethod cl: HttpMethod.values()) {
+                stringValueHashMap.put(cl.toString(), cl);
+            }
+        }
+
+        public static HttpMethod from(String value) {
+            // this is 100x faster than org.apache.commons.lang3.EnumUtils.getEnum(String)
+            // for more detail refer to https://github.com/moderakh/azure-cosmosdb-benchmark
+//            for (Map.Entry<String, HttpMethod> entry: stringValueHashMap.entrySet()) {
+//                if (StringUtils.equalsIgnoreCase(value, entry.getKey())) {
+//                    return entry.getValue();
+//                }
+//            }
+
+            return stringValueHashMap.get(value);
+
+
+            //throw new IllegalArgumentException("unknown verb: " + value);
+        }
+    }
+
+
     public static class HttpMethods {
         public static final String GET = "GET";
         public static final String POST = "POST";
