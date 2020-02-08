@@ -4,7 +4,6 @@
 package com.azure.storage.common.implementation;
 
 import org.junit.jupiter.api.Test;
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
 import java.io.OutputStream;
@@ -12,7 +11,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -31,23 +29,19 @@ public class StorageImplUtilsTest {
      * consistent.
      */
     @Test
-    public void deepCloneStream() {
+    public void deepCloneStream() throws InterruptedException {
         byte[] mutatingBuffer = Arrays.copyOf(HELLO_WORLD_BYTES, HELLO_WORLD_BYTES.length);
 
         DelayedWriteStream delayedWriteStream = new DelayedWriteStream();
 
-        Disposable disposable = StorageImplUtils.deepCloneStreamBuffers(Flux.just(ByteBuffer.wrap(mutatingBuffer)))
-            .subscribe(buffer -> delayedWriteStream.write(buffer.array()));
-
-        while (!disposable.isDisposed()) {
-            // NO-OP waiting until complete.
-        }
+        StorageImplUtils.deepCloneStreamBuffers(Flux.just(ByteBuffer.wrap(mutatingBuffer)))
+            .doOnNext(buffer -> delayedWriteStream.write(buffer.array()))
+            .blockLast();
 
         mutatingBuffer[0] = (byte) 0;
 
-        while (!delayedWriteStream.writeFuture.isDone()) {
-            // Wait until future is done.
-        }
+        // Wait until the deferred write operation has completed.
+        Thread.sleep(5000);
 
         assertArrayEquals(HELLO_WORLD_BYTES, delayedWriteStream.internalBuffer);
     }
@@ -57,23 +51,19 @@ public class StorageImplUtilsTest {
      * the stream are mutated after the 'onNext' operation chain completes the stream returned won't remain consistent.
      */
     @Test
-    public void mutatingStreamFails() {
+    public void mutatingStreamFails() throws InterruptedException {
         byte[] mutatingBuffer = Arrays.copyOf(HELLO_WORLD_BYTES, HELLO_WORLD_BYTES.length);
 
         DelayedWriteStream delayedWriteStream = new DelayedWriteStream();
 
-        Disposable disposable = Flux.just(ByteBuffer.wrap(mutatingBuffer))
-            .subscribe(buffer -> delayedWriteStream.write(buffer.array()));
-
-        while (!disposable.isDisposed()) {
-            // NO-OP waiting until complete.
-        }
+        StorageImplUtils.deepCloneStreamBuffers(Flux.just(ByteBuffer.wrap(mutatingBuffer)))
+            .doOnNext(buffer -> delayedWriteStream.write(buffer.array()))
+            .blockLast();
 
         mutatingBuffer[0] = (byte) 0;
 
-        while (!delayedWriteStream.writeFuture.isDone()) {
-            // Wait until future is done.
-        }
+        // Wait until the deferred write operation has completed.
+        Thread.sleep(5000);
 
         assertFalse(Arrays.equals(HELLO_WORLD_BYTES, delayedWriteStream.internalBuffer));
     }
@@ -91,7 +81,6 @@ public class StorageImplUtilsTest {
      */
     private static final class DelayedWriteStream extends OutputStream {
         private byte[] internalBuffer;
-        private ScheduledFuture<?> writeFuture;
 
         @Override
         public void write(int b) {
@@ -100,8 +89,7 @@ public class StorageImplUtilsTest {
 
         @Override
         public void write(byte[] b) {
-            writeFuture = Executors.newSingleThreadScheduledExecutor()
-                .schedule(() -> internalBuffer = b, 5, TimeUnit.SECONDS);
+            Executors.newSingleThreadScheduledExecutor().schedule(() -> internalBuffer = b, 5, TimeUnit.SECONDS);
         }
     }
 }
