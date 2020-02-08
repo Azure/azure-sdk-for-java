@@ -13,9 +13,9 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntityResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -236,7 +236,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "I had a wonderful trip to Seattle last week.",
             "I work at Microsoft.");
 
-        final DocumentResultCollection<RecognizeEntityResult> recognizeEntitiesResults =
+        final DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults =
             textAnalyticsClient.recognizeEntities(textInputs);
 
         // Batch statistics
@@ -244,8 +244,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizeEntityResult recognizeEntityResult : recognizeEntitiesResults) {
-            for (CategorizedEntity entity : recognizeEntityResult.getEntities()) {
+        for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -262,7 +262,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "I had a wonderful trip to Seattle last week.",
             "I work at Microsoft.");
 
-        final DocumentResultCollection<RecognizeEntityResult> recognizeEntitiesResults =
+        final DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults =
             textAnalyticsClient.recognizeEntities(textInputs, "en", Context.NONE).getValue();
 
         // Batch statistics
@@ -270,8 +270,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizeEntityResult recognizeEntityResult : recognizeEntitiesResults) {
-            for (CategorizedEntity entity : recognizeEntityResult.getEntities()) {
+        for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -288,7 +288,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
             new TextDocumentInput("1", "I work at Microsoft."));
 
-        final DocumentResultCollection<RecognizeEntityResult> recognizeEntitiesResults =
+        final DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults =
             textAnalyticsClient.recognizeBatchEntities(textDocumentInputs);
 
         // Batch statistics
@@ -296,8 +296,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizeEntityResult recognizeEntityResult : recognizeEntitiesResults) {
-            for (CategorizedEntity entity : recognizeEntityResult.getEntities()) {
+        for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -315,7 +315,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
             new TextDocumentInput("1", "I work at Microsoft."));
 
-        final DocumentResultCollection<RecognizeEntityResult> recognizeEntitiesResults =
+        final DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults =
             textAnalyticsClient.recognizeBatchEntitiesWithResponse(textDocumentInputs,
                 new TextAnalyticsRequestOptions().setShowStatistics(true), Context.NONE).getValue();
 
@@ -324,8 +324,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizeEntityResult recognizeEntityResult : recognizeEntitiesResults) {
-            for (CategorizedEntity entity : recognizeEntityResult.getEntities()) {
+        for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
+            for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                 System.out.printf("Recognized entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -365,7 +365,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#List
         final List<String> textInputs = Arrays.asList("My SSN is 555-55-5555", "Visa card 4111 1111 1111 1111");
 
-        final DocumentResultCollection<RecognizePiiEntityResult> recognizePiiEntitiesResults =
+        final DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntitiesResults =
             textAnalyticsClient.recognizePiiEntities(textInputs);
 
         // Batch statistics
@@ -373,8 +373,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizePiiEntityResult recognizePiiEntityResult : recognizePiiEntitiesResults) {
-            for (PiiEntity entity : recognizePiiEntityResult.getEntities()) {
+        for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
                 System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -389,7 +389,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesWithResponse#List-String-Context
         final List<String> textInputs = Arrays.asList("My SSN is 555-55-5555", "Visa card 4111 1111 1111 1111");
 
-        final DocumentResultCollection<RecognizePiiEntityResult> recognizePiiEntitiesResults =
+        final DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntitiesResults =
             textAnalyticsClient.recognizePiiEntitiesWithResponse(textInputs, "en", Context.NONE).getValue();
 
         // Batch statistics
@@ -397,8 +397,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizePiiEntityResult recognizePiiEntityResult : recognizePiiEntitiesResults) {
-            for (PiiEntity entity : recognizePiiEntityResult.getEntities()) {
+        for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
                 System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -415,7 +415,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "My SSN is 555-55-5555"),
             new TextDocumentInput("1", "Visa card 4111 1111 1111 1111"));
 
-        final DocumentResultCollection<RecognizePiiEntityResult> recognizePiiEntitiesResults =
+        final DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntitiesResults =
             textAnalyticsClient.recognizeBatchPiiEntities(textDocumentInputs);
 
         // Batch statistics
@@ -423,8 +423,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizePiiEntityResult recognizePiiEntityResult : recognizePiiEntitiesResults) {
-            for (PiiEntity entity : recognizePiiEntityResult.getEntities()) {
+        for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
                 System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -442,7 +442,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "My SSN is 555-55-5555"),
             new TextDocumentInput("1", "Visa card 4111 1111 1111 1111"));
 
-        final DocumentResultCollection<RecognizePiiEntityResult> recognizePiiEntitiesResults =
+        final DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntitiesResults =
             textAnalyticsClient.recognizeBatchPiiEntitiesWithResponse(textDocumentInputs,
                 new TextAnalyticsRequestOptions().setShowStatistics(true), Context.NONE).getValue();
 
@@ -452,8 +452,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizePiiEntityResult recognizePiiEntityResult : recognizePiiEntitiesResults) {
-            for (PiiEntity entity : recognizePiiEntityResult.getEntities()) {
+        for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
+            for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
                 System.out.printf("Recognized PII entity: %s, entity Category: %s, score: %s.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
@@ -497,7 +497,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "Old Faithful is a geyser at Yellowstone Park.",
             "Mount Shasta has lenticular clouds.");
 
-        final DocumentResultCollection<RecognizeLinkedEntityResult> recognizeLinkedEntitiesResults =
+        final DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults =
             textAnalyticsClient.recognizeLinkedEntities(textInputs);
 
         // Batch statistics
@@ -505,8 +505,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizeLinkedEntityResult recognizeLinkedEntityResult : recognizeLinkedEntitiesResults) {
-            for (LinkedEntity linkedEntity : recognizeLinkedEntityResult.getEntities()) {
+        for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
+            for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                 System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
             }
@@ -523,7 +523,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "Old Faithful is a geyser at Yellowstone Park.",
             "Mount Shasta has lenticular clouds.");
 
-        final DocumentResultCollection<RecognizeLinkedEntityResult> recognizeLinkedEntitiesResults =
+        final DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults =
             textAnalyticsClient.recognizeLinkedEntitiesWithResponse(textInputs, "en", Context.NONE).getValue();
 
         // Batch statistics
@@ -531,8 +531,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizeLinkedEntityResult recognizeLinkedEntityResult : recognizeLinkedEntitiesResults) {
-            for (LinkedEntity linkedEntity : recognizeLinkedEntityResult.getEntities()) {
+        for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
+            for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                 System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
             }
@@ -550,7 +550,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new TextDocumentInput("2", "Mount Shasta has lenticular clouds.", "en")
         );
 
-        final DocumentResultCollection<RecognizeLinkedEntityResult> recognizeLinkedEntitiesResults =
+        final DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults =
             textAnalyticsClient.recognizeBatchLinkedEntities(textDocumentInputs);
 
         // Batch statistics
@@ -558,8 +558,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizeLinkedEntityResult recognizeLinkedEntityResult : recognizeLinkedEntitiesResults) {
-            for (LinkedEntity linkedEntity : recognizeLinkedEntityResult.getEntities()) {
+        for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
+            for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                 System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
             }
@@ -578,7 +578,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new TextDocumentInput("2", "Mount Shasta has lenticular clouds.", "en")
         );
 
-        final DocumentResultCollection<RecognizeLinkedEntityResult> recognizeLinkedEntitiesResults =
+        final DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults =
             textAnalyticsClient.recognizeBatchLinkedEntitiesWithResponse(textDocumentInputs,
                 new TextAnalyticsRequestOptions().setShowStatistics(true), Context.NONE).getValue();
 
@@ -587,8 +587,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        for (RecognizeLinkedEntityResult recognizeLinkedEntityResult : recognizeLinkedEntitiesResults) {
-            for (LinkedEntity linkedEntity : recognizeLinkedEntityResult.getEntities()) {
+        for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
+            for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                 System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
             }

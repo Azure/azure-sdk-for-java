@@ -10,7 +10,7 @@ import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.PagedFlux;
@@ -70,7 +70,7 @@ class RecognizePiiEntityAsyncClient {
         return new PagedFlux<>(() -> recognizePiiEntitiesWithResponse(text, language, context));
     }
 
-    Mono<Response<DocumentResultCollection<RecognizePiiEntityResult>>> recognizePiiEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
@@ -79,7 +79,7 @@ class RecognizePiiEntityAsyncClient {
         return recognizeBatchPiiEntitiesWithResponse(documentInputs, null, context);
     }
 
-    Mono<Response<DocumentResultCollection<RecognizePiiEntityResult>>> recognizeBatchPiiEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
@@ -99,13 +99,13 @@ class RecognizePiiEntityAsyncClient {
      *
      * @param entitiesResult the {@link EntitiesResult} returned by the service.
      *
-     * @return the {@link DocumentResultCollection} of {@link RecognizePiiEntityResult} to be returned by the SDK.
+     * @return the {@link DocumentResultCollection} of {@link RecognizePiiEntitiesResult} to be returned by the SDK.
      */
-    private DocumentResultCollection<RecognizePiiEntityResult> toPiiDocumentResultCollection(
+    private DocumentResultCollection<RecognizePiiEntitiesResult> toPiiDocumentResultCollection(
         final EntitiesResult entitiesResult) {
-        List<RecognizePiiEntityResult> recognizePiiEntityResults = new ArrayList<>();
+        List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults = new ArrayList<>();
         for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
-            recognizePiiEntityResults.add(new RecognizePiiEntityResult(documentEntities.getId(),
+            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(documentEntities.getId(),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null, documentEntities.getEntities().stream().map(entity ->
@@ -116,10 +116,10 @@ class RecognizePiiEntityAsyncClient {
         for (DocumentError documentError : entitiesResult.getErrors()) {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 toTextAnalyticsError(documentError.getError());
-            recognizePiiEntityResults.add(new RecognizePiiEntityResult(documentError.getId(), null, error, null));
+            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null, error, null));
         }
 
-        return new DocumentResultCollection<>(recognizePiiEntityResults,
+        return new DocumentResultCollection<>(recognizePiiEntitiesResults,
             entitiesResult.getModelVersion(), entitiesResult.getStatistics() == null ? null
             : toBatchStatistics(entitiesResult.getStatistics()));
     }

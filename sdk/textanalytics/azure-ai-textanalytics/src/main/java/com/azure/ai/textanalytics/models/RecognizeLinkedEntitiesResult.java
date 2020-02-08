@@ -9,32 +9,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The RecognizeEntitiesResult model.
+ * The RecognizeLinkedEntitiesResult model.
  */
 @Immutable
-public final class RecognizeEntityResult extends DocumentResult {
-    private final List<CategorizedEntity> entities;
+public final class RecognizeLinkedEntitiesResult extends DocumentResult {
+    private final List<LinkedEntity> entities;
 
     /**
-     * Creates a {@code RecognizeEntitiesResult} model that describes recognized entities result.
+     * Creates a {@code RecognizeLinkedEntitiesResult} model that describes recognized linked entities result.
      *
      * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
      * @param error the document error
-     * @param entities a list of {@link CategorizedEntity}
+     * @param entities a list of linked entities
      */
-    public RecognizeEntityResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
-        List<CategorizedEntity> entities) {
+    public RecognizeLinkedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error, List<LinkedEntity> entities) {
         super(id, textDocumentStatistics, error);
         this.entities = entities == null ? new ArrayList<>() : entities;
     }
 
     /**
-     * Get a list of categorized entities string.
+     * Get a list of linked entities.
      *
-     * @return a list of {@link CategorizedEntity}
+     * @return a list of linked entities.
      */
-    public List<CategorizedEntity> getEntities() {
+    public List<LinkedEntity> getEntities() {
         throwExceptionIfError();
         return entities;
     }

@@ -15,11 +15,11 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
-import com.azure.ai.textanalytics.models.RecognizeEntityResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -80,7 +80,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
-    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeEntityResult returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
+    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeEntitiesResult returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE = "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code. ErrorCodeValue: {invalidCountryHint}";
     static final String INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE = "Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_KEY = "invalid key";
@@ -411,21 +411,21 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         });
     }
 
-    static void validateCategorizedEntity(boolean showStatistics, DocumentResultCollection<RecognizeEntityResult> expected,
-        DocumentResultCollection<RecognizeEntityResult> actual) {
+    static void validateCategorizedEntity(boolean showStatistics, DocumentResultCollection<RecognizeEntitiesResult> expected,
+        DocumentResultCollection<RecognizeEntitiesResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateCategorizedEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }
 
-    static void validatePiiEntity(boolean showStatistics, DocumentResultCollection<RecognizePiiEntityResult> expected,
-        DocumentResultCollection<RecognizePiiEntityResult> actual) {
+    static void validatePiiEntity(boolean showStatistics, DocumentResultCollection<RecognizePiiEntitiesResult> expected,
+        DocumentResultCollection<RecognizePiiEntitiesResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validatePiiEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }
 
     static void validateLinkedEntity(boolean showStatistics,
-        DocumentResultCollection<RecognizeLinkedEntityResult> expected,
-        DocumentResultCollection<RecognizeLinkedEntityResult> actual) {
+        DocumentResultCollection<RecognizeLinkedEntitiesResult> expected,
+        DocumentResultCollection<RecognizeLinkedEntitiesResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateLinkedEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }

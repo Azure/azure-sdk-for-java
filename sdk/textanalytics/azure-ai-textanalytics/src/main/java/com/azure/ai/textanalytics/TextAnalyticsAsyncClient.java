@@ -12,11 +12,11 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.RecognizeEntityResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsClientOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -334,12 +334,12 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs A list of texts to recognize entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntityResult categorized entity} of the text.
+     * {@link RecognizeEntitiesResult categorized entity} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeEntityResult>> recognizeEntities(List<String> textInputs) {
+    public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntities(List<String> textInputs) {
         return recognizeEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
@@ -357,12 +357,12 @@ public final class TextAnalyticsAsyncClient {
      * default.
      *
      * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntityResult categorized entity}.
+     * {@link RecognizeEntitiesResult categorized entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeEntityResult>>> recognizeEntitiesWithResponse(
+    public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
             return withContext(context -> recognizeEntityAsyncClient.recognizeEntitiesWithResponse(textInputs, language,
@@ -384,12 +384,12 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntityResult categorized entity}.
+     * {@link RecognizeEntitiesResult categorized entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeEntityResult>> recognizeBatchEntities(
+    public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeBatchEntities(
         List<TextDocumentInput> textInputs) {
         return recognizeBatchEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
@@ -408,12 +408,12 @@ public final class TextAnalyticsAsyncClient {
      * and show statistics.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeEntityResult categorized entity}.
+     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult categorized entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeEntityResult>>> recognizeBatchEntitiesWithResponse(
+    public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
             return withContext(context ->
@@ -488,12 +488,12 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs A list of text to recognize PII entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizePiiEntityResult PII entity} of the text.
+     * {@link RecognizePiiEntitiesResult PII entity} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizePiiEntityResult>> recognizePiiEntities(List<String> textInputs) {
+    public Mono<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntities(List<String> textInputs) {
         return recognizePiiEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
@@ -512,12 +512,12 @@ public final class TextAnalyticsAsyncClient {
      * English as default.
      *
      * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizePiiEntityResult PII entity}.
+     * {@link RecognizePiiEntitiesResult PII entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizePiiEntityResult>>> recognizePiiEntitiesWithResponse(
+    public Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
             return withContext(context -> recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(textInputs,
@@ -540,12 +540,12 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizePiiEntityResult PII entity}.
+     * {@link RecognizePiiEntitiesResult PII entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizePiiEntityResult>> recognizeBatchPiiEntities(
+    public Mono<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizeBatchPiiEntities(
         List<TextDocumentInput> textInputs) {
         return recognizeBatchPiiEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
@@ -565,12 +565,12 @@ public final class TextAnalyticsAsyncClient {
      * and show statistics.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizePiiEntityResult PII entity}.
+     * {@link DocumentResultCollection batch} of {@link RecognizePiiEntitiesResult PII entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizePiiEntityResult>>> recognizeBatchPiiEntitiesWithResponse(
+    public Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         try {
             return withContext(context ->
@@ -642,12 +642,12 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs A list of text to recognize linked entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeLinkedEntityResult linked entity} of the text.
+     * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeLinkedEntityResult>> recognizeLinkedEntities(
+    public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntities(
         List<String> textInputs) {
         return recognizeLinkedEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
@@ -666,12 +666,12 @@ public final class TextAnalyticsAsyncClient {
      * English as default.
      *
      * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeLinkedEntityResult linked entity}.
+     * {@link RecognizeLinkedEntitiesResult linked entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeLinkedEntityResult>>> recognizeLinkedEntitiesWithResponse(
+    public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
         List<String> textInputs, String language) {
         try {
             return withContext(context ->
@@ -693,12 +693,12 @@ public final class TextAnalyticsAsyncClient {
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeLinkedEntityResult linked entity}.
+     * {@link RecognizeLinkedEntitiesResult linked entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeLinkedEntityResult>> recognizeBatchLinkedEntities(
+    public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeBatchLinkedEntities(
         List<TextDocumentInput> textInputs) {
         return recognizeBatchLinkedEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
@@ -717,12 +717,12 @@ public final class TextAnalyticsAsyncClient {
      * and show statistics.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeLinkedEntityResult linked entity}.
+     * {@link DocumentResultCollection batch} of {@link RecognizeLinkedEntitiesResult linked entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeLinkedEntityResult>>>
+    public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>>
         recognizeBatchLinkedEntitiesWithResponse(List<TextDocumentInput> textInputs,
             TextAnalyticsRequestOptions options) {
         try {

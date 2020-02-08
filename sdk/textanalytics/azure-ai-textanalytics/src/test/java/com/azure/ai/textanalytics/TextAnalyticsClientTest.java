@@ -10,7 +10,7 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentLabel;
 import com.azure.ai.textanalytics.models.SentimentScorePerLabel;
@@ -175,9 +175,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
-            DocumentResultCollection<RecognizeEntityResult> l = client.recognizeBatchEntities(inputs);
-            for (RecognizeEntityResult recognizeEntityResult : l) {
-                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntityResult.getEntities());
+            DocumentResultCollection<RecognizeEntitiesResult> l = client.recognizeBatchEntities(inputs);
+            for (RecognizeEntitiesResult recognizeEntitiesResult : l) {
+                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getEntities());
                 assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
             }
         });

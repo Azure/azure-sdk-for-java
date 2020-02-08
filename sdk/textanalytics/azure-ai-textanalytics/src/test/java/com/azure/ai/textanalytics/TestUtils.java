@@ -14,10 +14,10 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentimentScorePerLabel;
-import com.azure.ai.textanalytics.models.RecognizeEntityResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
@@ -110,7 +110,7 @@ final class TestUtils {
     /**
      * Helper method to get the expected Batch Categorized Entities
      */
-    static DocumentResultCollection<RecognizeEntityResult> getExpectedBatchCategorizedEntities() {
+    static DocumentResultCollection<RecognizeEntitiesResult> getExpectedBatchCategorizedEntities() {
         CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
         CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", "Organization", null, 10, 9, 0.0);
@@ -121,19 +121,19 @@ final class TestUtils {
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(20, 1);
 
-        RecognizeEntityResult recognizeEntityResult1 = new RecognizeEntityResult("0", textDocumentStatistics1, null, categorizedEntityList1);
-        RecognizeEntityResult recognizeEntityResult2 = new RecognizeEntityResult("1", textDocumentStatistics2, null, categorizedEntityList2);
+        RecognizeEntitiesResult recognizeEntitiesResult1 = new RecognizeEntitiesResult("0", textDocumentStatistics1, null, categorizedEntityList1);
+        RecognizeEntitiesResult recognizeEntitiesResult2 = new RecognizeEntitiesResult("1", textDocumentStatistics2, null, categorizedEntityList2);
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
-        List<RecognizeEntityResult> recognizeEntityResultList = Arrays.asList(recognizeEntityResult1, recognizeEntityResult2);
+        List<RecognizeEntitiesResult> recognizeEntitiesResultList = Arrays.asList(recognizeEntitiesResult1, recognizeEntitiesResult2);
 
-        return new DocumentResultCollection<>(recognizeEntityResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
+        return new DocumentResultCollection<>(recognizeEntitiesResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
     }
 
     /**
      * Helper method to get the expected Batch PII Entities
      */
-    static DocumentResultCollection<RecognizePiiEntityResult> getExpectedBatchPiiEntities() {
+    static DocumentResultCollection<RecognizePiiEntitiesResult> getExpectedBatchPiiEntities() {
         PiiEntity piiEntity1 = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
         PiiEntity piiEntity2 = new PiiEntity("111000025", "ABA Routing Number", "", 18, 9, 0.0);
 
@@ -143,11 +143,11 @@ final class TestUtils {
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(105, 1);
 
-        RecognizePiiEntityResult recognizeEntitiesResult1 = new RecognizePiiEntityResult("0", textDocumentStatistics1, null, piiEntityList);
-        RecognizePiiEntityResult recognizeEntitiesResult2 = new RecognizePiiEntityResult("1", textDocumentStatistics2, null, piiEntityList1);
+        RecognizePiiEntitiesResult recognizeEntitiesResult1 = new RecognizePiiEntitiesResult("0", textDocumentStatistics1, null, piiEntityList);
+        RecognizePiiEntitiesResult recognizeEntitiesResult2 = new RecognizePiiEntitiesResult("1", textDocumentStatistics2, null, piiEntityList1);
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
-        List<RecognizePiiEntityResult> recognizeEntitiesResultList = Arrays.asList(recognizeEntitiesResult1, recognizeEntitiesResult2);
+        List<RecognizePiiEntitiesResult> recognizeEntitiesResultList = Arrays.asList(recognizeEntitiesResult1, recognizeEntitiesResult2);
 
         return new DocumentResultCollection<>(recognizeEntitiesResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
     }
@@ -155,7 +155,7 @@ final class TestUtils {
     /**
      * Helper method to get the expected Batch Linked Entities
      */
-    static DocumentResultCollection<RecognizeLinkedEntityResult> getExpectedBatchLinkedEntities() {
+    static DocumentResultCollection<RecognizeLinkedEntitiesResult> getExpectedBatchLinkedEntities() {
         LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
         LinkedEntityMatch linkedEntityMatch2 = new LinkedEntityMatch("Microsoft", 0.0, 9, 10);
 
@@ -175,13 +175,13 @@ final class TestUtils {
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(20, 1);
 
-        RecognizeLinkedEntityResult recognizeLinkedEntityResult1 = new RecognizeLinkedEntityResult("0", textDocumentStatistics1, null, linkedEntityList1);
-        RecognizeLinkedEntityResult recognizeLinkedEntityResult2 = new RecognizeLinkedEntityResult("1", textDocumentStatistics2, null, linkedEntityList2);
+        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult1 = new RecognizeLinkedEntitiesResult("0", textDocumentStatistics1, null, linkedEntityList1);
+        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult2 = new RecognizeLinkedEntitiesResult("1", textDocumentStatistics2, null, linkedEntityList2);
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
-        List<RecognizeLinkedEntityResult> recognizeLinkedEntityResultList = Arrays.asList(recognizeLinkedEntityResult1, recognizeLinkedEntityResult2);
+        List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResultList = Arrays.asList(recognizeLinkedEntitiesResult1, recognizeLinkedEntitiesResult2);
 
-        return new DocumentResultCollection<>(recognizeLinkedEntityResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
+        return new DocumentResultCollection<>(recognizeLinkedEntitiesResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
     }
 
     /**

@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntityResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -45,7 +45,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
         // Recognizing batch entities
         client.recognizeBatchLinkedEntitiesWithResponse(inputs, requestOptions).subscribe(
             result -> {
-                final DocumentResultCollection<RecognizeLinkedEntityResult> recognizedBatchResult = result.getValue();
+                final DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizedBatchResult = result.getValue();
                 System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
 
                 // Batch statistics
@@ -57,7 +57,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Recognized linked entities from a batch of documents
-                for (RecognizeLinkedEntityResult linkedEntityDocumentResult : recognizedBatchResult) {
+                for (RecognizeLinkedEntitiesResult linkedEntityDocumentResult : recognizedBatchResult) {
                     System.out.printf("Document ID: %s%n", linkedEntityDocumentResult.getId());
                     // Erroneous document
                     if (linkedEntityDocumentResult.isError()) {
