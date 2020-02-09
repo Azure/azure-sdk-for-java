@@ -1532,7 +1532,7 @@ class BlockBlobAPITest extends APISpec {
             .verifyError(IllegalArgumentException)
     }
 
-    //@Requires({ liveMode() })
+    @Requires({ liveMode() })
     def "Buffered upload no overwrite interrupted"() {
         setup:
         def smallFile = getRandomFile(50)
