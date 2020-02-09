@@ -415,7 +415,7 @@ public class BlobClientBase {
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
         Context updatedContext = context == null ? Context.NONE.addData(CoreConstants.DISABLE_BUFFER_COPY, true)
-            : context.addData("disable-buffer-copy", true);
+            : context.addData(CoreConstants.DISABLE_BUFFER_COPY, true);
 
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client

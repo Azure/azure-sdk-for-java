@@ -212,9 +212,7 @@ class NettyAsyncHttpClient implements HttpClient {
                 if (this.disableBufferCopy) {
                     return byteBuf.nioBuffer();
                 }
-                ByteBuffer retVal = deepCopyBuffer(byteBuf);
-                byteBuf.release();
-                return retVal;
+                return deepCopyBuffer(byteBuf);
             });
         }
 
