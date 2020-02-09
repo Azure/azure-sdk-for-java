@@ -6,7 +6,9 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
 import spock.lang.Shared
+import spock.lang.Timeout
 
+@Timeout(1200)
 class EncryptedBlobOutputStreamTest extends APISpec {
 
     EncryptedBlobClient bec // encrypted client

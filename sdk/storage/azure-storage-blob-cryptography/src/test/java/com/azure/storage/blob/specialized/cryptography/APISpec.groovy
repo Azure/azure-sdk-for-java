@@ -27,8 +27,10 @@ import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import io.netty.channel.ChannelOption
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.netty.tcp.TcpClient
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
@@ -211,7 +213,11 @@ class APISpec extends Specification {
     }
 
     HttpClient getHttpClient() {
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
+        reactor.netty.http.client.HttpClient httpClient = reactor.netty.http.client.HttpClient.from(
+            TcpClient.create().option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 720000)
+        )
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder(httpClient)
         if (testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
