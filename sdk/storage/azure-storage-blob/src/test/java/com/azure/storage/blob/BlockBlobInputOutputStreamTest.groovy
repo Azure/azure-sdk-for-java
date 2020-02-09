@@ -7,7 +7,7 @@ import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
 import spock.lang.Timeout
 
-@Timeout(600)
+@Timeout(1200)
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
 

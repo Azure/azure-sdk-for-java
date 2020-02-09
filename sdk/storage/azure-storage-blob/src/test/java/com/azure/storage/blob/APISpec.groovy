@@ -36,9 +36,12 @@ import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import io.netty.bootstrap.Bootstrap
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
+import reactor.netty.Connection
+import reactor.netty.resources.ConnectionProvider
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
@@ -142,6 +145,7 @@ class APISpec extends Specification {
     def setupSpec() {
         Hooks.onOperatorDebug()
         System.setProperty("org.slf4j.simpleLogger.log.reactor.core", "trace")
+        System.setProperty("org.slf4j.simpleLogger.log.logging.level.reactor.netty", "trace")
         System.setProperty("org.slf4j.simpleLogger.log.com.azure.storage", "trace")
         System.setProperty("AZURE_LOG_LEVEL", "1")
         testMode = setupTestMode()
@@ -408,7 +412,12 @@ class APISpec extends Specification {
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
-            builder.wiretap(true)
+            builder.wiretap(true).connectionProvider(new ConnectionProvider() {
+                @Override
+                Mono<? extends Connection> acquire(final Bootstrap bootstrap) {
+                    return null
+                }
+            })
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
                 builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))

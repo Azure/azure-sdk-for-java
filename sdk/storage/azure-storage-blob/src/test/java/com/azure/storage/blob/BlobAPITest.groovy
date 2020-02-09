@@ -36,6 +36,7 @@ import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
+import spock.lang.Timeout
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -48,6 +49,7 @@ import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
 
+@Timeout(600)
 class BlobAPITest extends APISpec {
     BlobClient bc
     String blobName

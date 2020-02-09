@@ -42,7 +42,7 @@ import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
 
-@Timeout(600)
+@Timeout(1200)
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
     BlockBlobAsyncClient blockBlobAsyncClient
