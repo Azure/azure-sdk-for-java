@@ -6,7 +6,6 @@ import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
-import com.azure.core.amqp.implementation.EventHubManagementNode;
 import com.azure.core.amqp.implementation.EventHubSession;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
@@ -25,14 +24,14 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A proton-j AMQP connection to an Azure Event Hub instance. Adds additional support for management operations.
+ * A proton-j AMQP connection to an Azure Service Bus instance. Adds additional support for management operations.
  */
-public class EventHubReactorAmqpConnection extends ReactorConnection implements ServiceBusAmqpConnection {
+public class ServiceBusReactorAmqpConnection extends ReactorConnection implements ServiceBusAmqpConnection {
     private static final String MANAGEMENT_SESSION_NAME = "mgmt-session";
     private static final String MANAGEMENT_LINK_NAME = "mgmt";
     private static final String MANAGEMENT_ADDRESS = "$management";
 
-    private final ClientLogger logger = new ClientLogger(EventHubReactorAmqpConnection.class);
+    private final ClientLogger logger = new ClientLogger(ServiceBusReactorAmqpConnection.class);
     /**
      * Keeps track of the opened send links. Links are key'd by their entityPath. The send link for allowing the service
      * load balance messages is the eventHubName.
@@ -56,10 +55,10 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
      */
-    public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
-                                         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                                         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
-                                         String clientVersion) {
+    public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
+                                           ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+                                           TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
+                                           String clientVersion) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion);
         this.connectionId = connectionId;
@@ -115,20 +114,18 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      *
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
-     * @param eventPosition Position to set the receive link to.
      * @param options Consumer options to use when creating the link.
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
-                                                   ReceiveOptions options) {
-        return createSession(entityPath).cast(EventHubSession.class)
+    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveOptions options) {
+        return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
-                    eventPosition, options);
+                    options);
             });
     }
 
@@ -143,7 +140,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
 
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
+        return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
             getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
     }
 }

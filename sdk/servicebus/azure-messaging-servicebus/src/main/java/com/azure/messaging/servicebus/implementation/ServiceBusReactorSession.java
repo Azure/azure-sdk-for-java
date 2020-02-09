@@ -34,12 +34,12 @@ import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
 /**
  * An AMQP session for Event Hubs.
  */
-class EventHubReactorSession extends ReactorSession implements EventHubSession {
+class ServiceBusReactorSession extends ReactorSession implements ServiceBusSession {
     private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
     private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
         Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
 
-    private final ClientLogger logger = new ClientLogger(EventHubReactorSession.class);
+    private final ClientLogger logger = new ClientLogger(ServiceBusReactorSession.class);
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -54,10 +54,10 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      *     operations on the message broker.
      * @param openTimeout Timeout to wait for the session operation to complete.
      */
-    EventHubReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
-                           ReactorProvider provider, ReactorHandlerProvider handlerProvider,
-                           Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-                           Duration openTimeout, MessageSerializer messageSerializer) {
+    ServiceBusReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
+                             ReactorProvider provider, ReactorHandlerProvider handlerProvider,
+                             Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
+                             Duration openTimeout, MessageSerializer messageSerializer) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
             messageSerializer, openTimeout);
     }
@@ -67,18 +67,16 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      */
     @Override
     public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
-                                                AmqpRetryPolicy retry, EventPosition eventPosition, ReceiveOptions options) {
+                                                AmqpRetryPolicy retry, ReceiveOptions options) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         Objects.requireNonNull(retry, "'retry' cannot be null.");
-        Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        final String eventPositionExpression = getExpression(eventPosition);
         final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
-        filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,
-            eventPositionExpression));
+        //filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,
+        //    eventPositionExpression));
 
         final Map<Symbol, Object> properties = new HashMap<>();
         if (options.getOwnerLevel() != null) {

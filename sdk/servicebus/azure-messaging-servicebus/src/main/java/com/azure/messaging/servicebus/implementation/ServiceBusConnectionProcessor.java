@@ -11,16 +11,16 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 
-public class SBConnectionProcessor extends AmqpChannelProcessor<ServiceBusAmqpConnection> {
+public class ServiceBusConnectionProcessor extends AmqpChannelProcessor<ServiceBusAmqpConnection> {
 
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final AmqpRetryOptions retryOptions;
 
-    public SBConnectionProcessor(String fullyQualifiedNamespace, String entityPath,
-                                       AmqpRetryOptions retryOptions) {
+    public ServiceBusConnectionProcessor(String fullyQualifiedNamespace, String entityPath,
+                                         AmqpRetryOptions retryOptions) {
         super("", entityPath, channel -> channel.getEndpointStates(),
-            RetryUtil.getRetryPolicy(retryOptions), new ClientLogger(SBConnectionProcessor.class));
+            RetryUtil.getRetryPolicy(retryOptions), new ClientLogger(ServiceBusConnectionProcessor.class));
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");

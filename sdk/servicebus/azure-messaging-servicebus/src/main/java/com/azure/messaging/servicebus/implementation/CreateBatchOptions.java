@@ -1,10 +1,9 @@
-package com.azure.messaging.servicebus.models;
+package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.annotation.Fluent;
 
-import com.azure.messaging.servicebus.EventDataBatch;
 /**
- * The set of options that can be specified when creating an {@link EventDataBatch}.
+ * The set of options that can be specified when creating an TODO.
  *
 
  */
@@ -15,9 +14,9 @@ public class CreateBatchOptions {
     private String partitionId;
 
     /**
-     * Sets the maximum size for the {@link EventDataBatch batch of events}, in bytes.
+     * Sets the maximum size for the TODO, in bytes.
      *
-     * @param maximumSizeInBytes The maximum size to allow for the {@link EventDataBatch batch of events}.
+     * @param maximumSizeInBytes The maximum size to allow for the TODO.
      *
      * @return The updated {@link CreateBatchOptions} object.
      */
@@ -59,11 +58,11 @@ public class CreateBatchOptions {
     }
 
     /**
-     * Gets the identifier of the Event Hub partition that the events in the {@link EventDataBatch} will be sent to. If
+     * Gets the identifier of the Event Hub partition that the events in the TODO will be sent to. If
      * the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent to
      * an available partition.
      *
-     * @return The identifier of the Event Hub partition that the {@link EventDataBatch} will be set to. {@code null} or
+     * @return The identifier of the Event Hub partition that the TODO will be set to. {@code null} or
      *     an empty string if Event Hubs service is responsible for routing events.
      */
     public String getPartitionId() {
@@ -71,11 +70,11 @@ public class CreateBatchOptions {
     }
 
     /**
-     * Sets the identifier of the Event Hub partition that the events in the {@link EventDataBatch} will be sent to. If
+     * Sets the identifier of the Event Hub partition that the events in the TODO will be sent to. If
      * the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent to
      * an available partition.
      *
-     * @param partitionId The identifier of the Event Hub partition that the {@link EventDataBatch batch's} events
+     * @param partitionId The identifier of the Event Hub partition that the TODOevents
      *     will be sent to. {@code null} or an empty string if Event Hubs service is responsible for routing events.
      *
      * @return The updated {@link CreateBatchOptions} object.

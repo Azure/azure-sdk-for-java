@@ -33,10 +33,8 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      *
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
-     * @param eventPosition Position to set the receive link to.
      * @param options Consumer options to use when creating the link.
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
-    Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
-                                            ReceiveOptions options);
+    Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveOptions options);
 }

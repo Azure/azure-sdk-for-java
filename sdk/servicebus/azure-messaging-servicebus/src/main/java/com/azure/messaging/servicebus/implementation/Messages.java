@@ -1,4 +1,4 @@
-package com.azure.messaging.servicebus;
+package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 
@@ -9,7 +9,7 @@ import java.util.Properties;
 public class Messages {
     private static final ClientLogger LOGGER = new ClientLogger(Messages.class);
     private static Properties properties;
-    private static final String MESSAGES_PROPERTIES_PATH = "com/azure/messaging/eventhubs/messages.properties";
+    public static final String MESSAGES_PROPERTIES_PATH = "com/azure/messaging/eventhubs/messages.properties";
     public static final String CLASS_NOT_A_SUPPORTED_TYPE = getMessage("CLASS_NOT_A_SUPPORTED_TYPE");
     public static final String ENCODING_TYPE_NOT_SUPPORTED = getMessage("ENCODING_TYPE_NOT_SUPPORTED");
     public static final String PROCESS_SPAN_SCOPE_TYPE_ERROR = getMessage("PROCESS_SPAN_SCOPE_TYPE_ERROR");

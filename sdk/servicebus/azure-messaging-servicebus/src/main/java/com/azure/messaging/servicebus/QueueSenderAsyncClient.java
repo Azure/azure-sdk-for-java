@@ -19,16 +19,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
-import com.azure.messaging.servicebus.models.CreateBatchOptions;
-import com.azure.messaging.servicebus.implementation.SBConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.CreateBatchOptions;
+import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
-import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -53,10 +53,10 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 @ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
-public class SenderAsyncClient implements Closeable {
+public final class QueueSenderAsyncClient implements Closeable {
 
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
-    private final ClientLogger logger = new ClientLogger(SenderAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(QueueSenderAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final SendOptions senderOptions;
     private Mono<AmqpSendLink> sendLinkMono;
@@ -65,9 +65,9 @@ public class SenderAsyncClient implements Closeable {
     private final AmqpRetryOptions retryOptions;
     private final AmqpRetryPolicy retryPolicy;
     private final boolean isSharedConnection;
-    private final String entityPath;
+    private final String queueName;
 
-    private final SBConnectionProcessor connectionProcessor;
+    private final ServiceBusConnectionProcessor connectionProcessor;
 
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
 
@@ -77,102 +77,101 @@ public class SenderAsyncClient implements Closeable {
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
     /**
-     * Creates a new instance of this {@link SenderAsyncClient} that sends messages to
+     * Creates a new instance of this {@link QueueSenderAsyncClient} that sends messages to
      */
-    SenderAsyncClient(/*Mono<AmqpSendLink> amqpSendLinkMono,*/  String entityPath,
-                      SBConnectionProcessor connectionProcessor, SendOptions options, AmqpRetryOptions retryOptions,
-                      TracerProvider tracerProvider, MessageSerializer messageSerializer, boolean isSharedConnection) {
+    QueueSenderAsyncClient(String queueName, ServiceBusConnectionProcessor connectionProcessor, SendOptions options,
+                           AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
+                           MessageSerializer messageSerializer, boolean isSharedConnection) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.queueName = Objects.requireNonNull(queueName, "'entityPath' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
-        //this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
         this.tracerProvider = tracerProvider;
         this.isSharedConnection = isSharedConnection;
         this.retryPolicy = getRetryPolicy(retryOptions);
     }
 
-    public Mono<Void> send(EventData message) {
+    public Mono<Void> send(Message message) {
         Objects.requireNonNull(message, "'event' cannot be null.");
 
         return send(Flux.just(message));
     }
 
-    public Mono<Void> send(EventData event, SendOptions options) {
-        Objects.requireNonNull(event, "'event' cannot be null.");
+    public Mono<Void> send(Message message, SendOptions options) {
+        Objects.requireNonNull(message, "'message' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        return send(Flux.just(event), options);
+        return send(Flux.just(message), options);
     }
 
 
-    public Mono<Void> send(Iterable<EventData> events) {
-        Objects.requireNonNull(events, "'events' cannot be null.");
+    public Mono<Void> send(Iterable<Message> messages) {
+        Objects.requireNonNull(messages, "'messages' cannot be null.");
 
-        return send(Flux.fromIterable(events));
+        return send(Flux.fromIterable(messages));
     }
 
     /**
      * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
-     * @param events Events to send to the service.
+     * @param messages Events to send to the service.
      * @param options The set of options to consider when sending this batch.
      *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events, "'options' cannot be null.");
+    public Mono<Void> send(Iterable<Message> messages, SendOptions options) {
+        Objects.requireNonNull(messages, "'options' cannot be null.");
 
-        return send(Flux.fromIterable(events), options);
+        return send(Flux.fromIterable(messages), options);
     }
 
     /**
-     * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
+     * Sends a set of events to the associated Queue using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
-     * @param events Events to send to the service.
+     * @param messages Events to send to the service.
      *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Flux<EventData> events) {
-        Objects.requireNonNull(events, "'events' cannot be null.");
+    public Mono<Void> send(Flux<Message> messages) {
+        Objects.requireNonNull(messages, "'messages' cannot be null.");
 
-        return send(events, DEFAULT_SEND_OPTIONS);
+        return send(messages, DEFAULT_SEND_OPTIONS);
     }
 
     /**
-     * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
+     * Sends a set of messages to the associated Event Hub using a batched approach. If the size of messages exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
-     * @param events Events to send to the service.
+     * @param messages Events to send to the service.
      * @param options The set of options to consider when sending this batch.
      *
-     * @return A {@link Mono} that completes when all events are pushed to the service.
+     * @return A {@link Mono} that completes when all messages are pushed to the service.
      */
-    public Mono<Void> send(Flux<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events, "'events' cannot be null.");
+    public Mono<Void> send(Flux<Message> messages, SendOptions options) {
+        Objects.requireNonNull(messages, "'messages' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        return sendInternal(events, options);
+        return sendInternal(messages, options);
     }
 
 
-    /*private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
+    /*private Mono<Void> sendInternal(Flux<EventData> messages, SendOptions options) {
         final String partitionId = options.getPartitionId();
 
         //verifyPartitionKey(partitionKey);
         if (tracerProvider.isEnabled()) {
-            return sendInternalTracingEnabled(events, options);
+            return sendInternalTracingEnabled(messages, options);
         } else {
-            return sendInternalTracingDisabled(events, options);
+            return sendInternalTracingDisabled(messages, options);
         }
     }
     */
-    private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
+    private Mono<Void> sendInternal(Flux<Message> messages, SendOptions options) {
         final String partitionKey = options.getPartitionKey();
         final String partitionId = options.getPartitionId();
 
@@ -192,13 +191,13 @@ public class SenderAsyncClient implements Closeable {
                         .setPartitionKey(options.getPartitionKey())
                         .setPartitionId(options.getPartitionId())
                         .setMaximumSizeInBytes(batchSize);
-                    return events.collect(new AmqpMessageCollector(batchOptions, 1, link::getErrorContext,
+                    return messages.collect(new AmqpMessageCollector(batchOptions, 1, link::getErrorContext,
                         tracerProvider));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list))));
     }
 
-    private Mono<Void> sendInternalTracingDisabled(Flux<EventData> events, SendOptions options) {
+    private Mono<Void> sendInternalTracingDisabled(Flux<Message> messageFlux, SendOptions options) {
         return sendLinkMono.flatMap(link -> {
             return link.getLinkSize()
                 .flatMap(size -> {
@@ -208,14 +207,14 @@ public class SenderAsyncClient implements Closeable {
                         .setPartitionId(options.getPartitionId())
                         .setMaximumSizeInBytes(batchSize);
 
-                    return events.collect(new AmqpMessageCollector(batchOptions, 1,
+                    return messageFlux.collect(new AmqpMessageCollector(batchOptions, 1,
                         () -> link.getErrorContext(), tracerProvider));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list)));
         });
     }
 
-    private Mono<Void> sendInternalTracingEnabled(Flux<EventData> events, SendOptions options) {
+    private Mono<Void> sendInternalTracingEnabled(Flux<Message> messageFlux, SendOptions options) {
         return sendLinkMono.flatMap(link -> {
             final AtomicReference<Context> sendSpanContext = new AtomicReference<>(Context.NONE);
             return link.getLinkSize()
@@ -226,7 +225,7 @@ public class SenderAsyncClient implements Closeable {
                         .setPartitionId(options.getPartitionId())
                         .setMaximumSizeInBytes(batchSize);
 
-                    return events.map(eventData -> {
+                    return messageFlux.map(eventData -> {
                         Context parentContext = eventData.getContext();
                         Context entityContext = parentContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
                         sendSpanContext.set(tracerProvider.startSpan(entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
@@ -240,7 +239,7 @@ public class SenderAsyncClient implements Closeable {
                 });
         });
     }
-    private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {
+    private Mono<Void> sendInternal(Flux<MessageBatch> eventBatches) {
         return eventBatches
             .flatMap(this::send)
             .then()
@@ -249,14 +248,27 @@ public class SenderAsyncClient implements Closeable {
             });
     }
 
-    public Mono<Void> send(EventDataBatch batch) {
+
+    public long schedule(Message message, Instant scheduledEnqueueTimeUt){
+        return 0;
+    }
+
+    public void cancelScheduledMessage(long sequenceNumber){
+
+    }
+
+    public String getQueueName() {
+        return this.queueName;
+    }
+
+    public Mono<Void> send(MessageBatch batch) {
         Objects.requireNonNull(batch, "'batch' cannot be null.");
         final boolean isTracingEnabled = tracerProvider.isEnabled();
         final AtomicReference<Context> parentContext = isTracingEnabled
             ? new AtomicReference<>(Context.NONE)
             : null;
 
-        if (batch.getEvents().isEmpty()) {
+        if (batch.getMessageList().isEmpty()) {
             logger.info("Cannot send an EventBatch that is empty.");
             return Mono.empty();
         }
@@ -264,10 +276,10 @@ public class SenderAsyncClient implements Closeable {
         logger.info("Sending batch with partitionKey[{}], size[{}].", batch.getPartitionKey(), batch.getCount());
 
         Context sharedContext = null;
-        final List<Message> messages = new ArrayList<>();
+        final List<org.apache.qpid.proton.message.Message> messages = new ArrayList<>();
 
-        for (int i = 0; i < batch.getEvents().size(); i++) {
-            final EventData event = batch.getEvents().get(i);
+        for (int i = 0; i < batch.getMessageList().size(); i++) {
+            final Message event = batch.getMessageList().get(i);
             if (isTracingEnabled) {
                 parentContext.set(event.getContext());
                 if (i == 0) {
@@ -275,7 +287,7 @@ public class SenderAsyncClient implements Closeable {
                 }
                 tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
             }
-            final Message message = messageSerializer.serialize(event);
+            final org.apache.qpid.proton.message.Message message = messageSerializer.serialize(event);
 
             if (!CoreUtils.isNullOrEmpty(batch.getPartitionKey())) {
                 final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
@@ -315,21 +327,21 @@ public class SenderAsyncClient implements Closeable {
 
     }
 
-    private String getEntityPath(String partitionId) {
+    private String getQueueName(String partitionId) {
         return CoreUtils.isNullOrEmpty(partitionId)
-            ? entityPath
-            : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, entityPath, partitionId);
+            ? queueName
+            : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, queueName, partitionId);
     }
 
     private Mono<AmqpSendLink> getSendLink(String partitionId) {
-        final String entityPath = getEntityPath(partitionId);
-        final String linkName = getEntityPath(partitionId);
+        final String entityPath = getQueueName(partitionId);
+        final String linkName = getQueueName(partitionId);
 
         return connectionProcessor
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
     }
 
-    private static class AmqpMessageCollector implements Collector<EventData, List<EventDataBatch>, List<EventDataBatch>> {
+    private static class AmqpMessageCollector implements Collector<Message, List<MessageBatch>, List<MessageBatch>> {
         private final String partitionKey;
         private final String partitionId;
         private final int maxMessageSize;
@@ -337,7 +349,7 @@ public class SenderAsyncClient implements Closeable {
         private final ErrorContextProvider contextProvider;
         private final TracerProvider tracerProvider;
 
-        private volatile EventDataBatch currentBatch;
+        private volatile MessageBatch currentBatch;
 
         AmqpMessageCollector(CreateBatchOptions options, Integer maxNumberOfBatches,
                              ErrorContextProvider contextProvider,
@@ -351,19 +363,19 @@ public class SenderAsyncClient implements Closeable {
             this.partitionId = options.getPartitionId();
             this.tracerProvider = tracerProvider;
 
-            currentBatch = new EventDataBatch(maxMessageSize, options.getPartitionId(), partitionKey, contextProvider,
+            currentBatch = new MessageBatch(maxMessageSize, options.getPartitionId(), partitionKey, contextProvider,
                 tracerProvider);
         }
 
         @Override
-        public Supplier<List<EventDataBatch>> supplier() {
+        public Supplier<List<MessageBatch>> supplier() {
             return ArrayList::new;
         }
 
         @Override
-        public BiConsumer<List<EventDataBatch>, EventData> accumulator() {
+        public BiConsumer<List<MessageBatch>, Message> accumulator() {
             return (list, event) -> {
-                EventDataBatch batch = currentBatch;
+                MessageBatch batch = currentBatch;
                 if (batch.tryAdd(event)) {
                     return;
                 }
@@ -375,7 +387,7 @@ public class SenderAsyncClient implements Closeable {
                     throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, contextProvider.getErrorContext());
                 }
 
-                currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
+                currentBatch = new MessageBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
                     tracerProvider);
                 currentBatch.tryAdd(event);
                 list.add(batch);
@@ -383,7 +395,7 @@ public class SenderAsyncClient implements Closeable {
         }
 
         @Override
-        public BinaryOperator<List<EventDataBatch>> combiner() {
+        public BinaryOperator<List<MessageBatch>> combiner() {
             return (existing, another) -> {
                 existing.addAll(another);
                 return existing;
@@ -391,9 +403,9 @@ public class SenderAsyncClient implements Closeable {
         }
 
         @Override
-        public Function<List<EventDataBatch>, List<EventDataBatch>> finisher() {
+        public Function<List<MessageBatch>, List<MessageBatch>> finisher() {
             return list -> {
-                EventDataBatch batch = currentBatch;
+                MessageBatch batch = currentBatch;
                 currentBatch = null;
 
                 if (batch != null) {
@@ -410,7 +422,7 @@ public class SenderAsyncClient implements Closeable {
         }
     }
 
-    private EventData setSpanContext(EventData event, Context parentContext) {
+    private Message setSpanContext(Message event, Context parentContext) {
         Optional<Object> eventContextData = event.getContext().getData(SPAN_CONTEXT_KEY);
         if (eventContextData.isPresent()) {
             // if message has context (in case of retries), link it to the span
@@ -443,7 +455,7 @@ public class SenderAsyncClient implements Closeable {
     }
 
     /**
-     * Disposes of the {@link SenderAsyncClient} by closing the underlying connection to the service.
+     * Disposes of the {@link QueueSenderAsyncClient} by closing the underlying connection to the service.
      * @throws IOException if the underlying transport could not be closed and its resources could not be
      *                     disposed.
      */
@@ -458,7 +470,7 @@ public class SenderAsyncClient implements Closeable {
     }
     */
     /**
-     * Disposes of the {@link SenderAsyncClient}. If the client had a dedicated connection, the underlying
+     * Disposes of the {@link QueueSenderAsyncClient}. If the client had a dedicated connection, the underlying
      * connection is also closed.
      */
     @Override
@@ -466,9 +478,14 @@ public class SenderAsyncClient implements Closeable {
         if (isDisposed.getAndSet(true)) {
             return;
         }
-
         if (!isSharedConnection) {
             connectionProcessor.dispose();
         }
+    }
+    public Mono<Long> schedule(Message message, Instant scheduledEnqueueTimeUt, TransactionContext context){
+        return null;
+    }
+    public Mono<Void> send(Message message, TransactionContext context){
+        return null;
     }
 }

@@ -14,6 +14,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ManagementChannel;
+import com.azure.messaging.servicebus.implementation.Messages;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -22,7 +23,6 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
-import org.apache.qpid.proton.message.Message;
 
 import java.time.Instant;
 import java.util.Date;
@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ServiceBusMessageSerializer implements MessageSerializer {
+class ServiceBusMessageSerializer implements MessageSerializer {
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
     private static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER =
         Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
@@ -43,7 +43,7 @@ public class ServiceBusMessageSerializer implements MessageSerializer {
      * Gets the serialized size of the AMQP message.
      */
     @Override
-    public int getSize(Message amqpMessage) {
+    public int getSize(org.apache.qpid.proton.message.Message amqpMessage) {
         if (amqpMessage == null) {
             return 0;
         }
@@ -80,25 +80,25 @@ public class ServiceBusMessageSerializer implements MessageSerializer {
 
     /**
      * Creates the AMQP message represented by this {@code object}. Currently, only supports serializing {@link
-     * EventData}.
+     * Message}.
      *
      * @param object Concrete object to deserialize.
      *
      * @return A new AMQP message for this {@code object}.
      *
-     * @throws IllegalArgumentException if {@code object} is not an instance of {@link EventData}.
+     * @throws IllegalArgumentException if {@code object} is not an instance of {@link Message}.
      */
     @Override
-    public <T> Message serialize(T object) {
+    public <T> org.apache.qpid.proton.message.Message serialize(T object) {
         Objects.requireNonNull(object, "'object' to serialize cannot be null.");
 
-        if (!(object instanceof EventData)) {
+        if (!(object instanceof Message)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Cannot serialize object that is not EventData. Clazz: " + object.getClass()));
         }
 
-        final EventData eventData = (EventData) object;
-        final Message message = Proton.message();
+        final Message eventData = (Message) object;
+        final org.apache.qpid.proton.message.Message message = Proton.message();
 
         if (eventData.getProperties() != null && !eventData.getProperties().isEmpty()) {
             message.setApplicationProperties(new ApplicationProperties(eventData.getProperties()));
@@ -113,13 +113,13 @@ public class ServiceBusMessageSerializer implements MessageSerializer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserialize(Message message, Class<T> clazz) {
+    public <T> T deserialize(org.apache.qpid.proton.message.Message message, Class<T> clazz) {
         Objects.requireNonNull(message, "'message' cannot be null.");
         Objects.requireNonNull(clazz, "'clazz' cannot be null.");
 
         if (clazz == PartitionProperties.class || clazz == EventHubProperties.class) {
             return deserializeManagementResponse(message, clazz);
-        } else if (clazz == EventData.class) {
+        } else if (clazz == Message.class) {
             return (T) deserializeEventData(message);
         } /*else if (clazz == LastEnqueuedEventProperties.class) {
             return (T) deserializeEnqueuedEventProperties(message);
@@ -130,7 +130,7 @@ public class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T deserializeManagementResponse(Message message, Class<T> deserializedType) {
+    private <T> T deserializeManagementResponse(org.apache.qpid.proton.message.Message message, Class<T> deserializedType) {
         if (!(message.getBody() instanceof AmqpValue)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
@@ -162,7 +162,7 @@ public class ServiceBusMessageSerializer implements MessageSerializer {
      * @return An instance of   with extracted properties. Otherwise, {@code null} if
      *     there were no delivery annotations in the message.
      */
-   /* private LastEnqueuedEventProperties deserializeEnqueuedEventProperties(Message message) {
+    /*private LastEnqueuedEventProperties deserializeEnqueuedEventProperties(Message message) {
         final DeliveryAnnotations annotations = message.getDeliveryAnnotations();
         if (annotations == null || annotations.getValue() == null) {
             return null;
@@ -178,7 +178,7 @@ public class ServiceBusMessageSerializer implements MessageSerializer {
             retrievalTime);
     }*/
 
-    private EventData deserializeEventData(Message message) {
+    private Message deserializeEventData(org.apache.qpid.proton.message.Message message) {
         final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
         final HashMap<String, Object> receiveProperties = new HashMap<>();
 
@@ -214,8 +214,8 @@ public class ServiceBusMessageSerializer implements MessageSerializer {
             body = new byte[0];
         }
 
-        final EventData.SystemProperties systemProperties = new EventData.SystemProperties(receiveProperties);
-        final EventData eventData = new EventData(body, systemProperties, Context.NONE);
+        final Message.SystemProperties systemProperties = new Message.SystemProperties(receiveProperties);
+        final Message eventData = new Message(body, systemProperties, Context.NONE);
         final Map<String, Object> properties = message.getApplicationProperties() == null
             ? new HashMap<>()
             : message.getApplicationProperties().getValue();
@@ -284,13 +284,13 @@ public class ServiceBusMessageSerializer implements MessageSerializer {
     /*
      * Sets AMQP protocol header values on the AMQP message.
      */
-    private static void setSystemProperties(EventData eventData, Message message) {
+    private static void setSystemProperties(Message eventData, org.apache.qpid.proton.message.Message message) {
         if (eventData.getSystemProperties() == null || eventData.getSystemProperties().isEmpty()) {
             return;
         }
 
         eventData.getSystemProperties().forEach((key, value) -> {
-            if (EventData.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
+            if (Message.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
                 return;
             }
 
@@ -353,7 +353,7 @@ public class ServiceBusMessageSerializer implements MessageSerializer {
         });
     }
 
-    private static int getPayloadSize(Message msg) {
+    private static int getPayloadSize(org.apache.qpid.proton.message.Message msg) {
 
         if (msg == null || msg.getBody() == null) {
             return 0;

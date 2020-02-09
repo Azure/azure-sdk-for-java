@@ -3,19 +3,15 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.Context;
 
 import java.nio.ByteBuffer;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHER_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
@@ -23,10 +19,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * The data structure encapsulating the event being sent-to and received-from Event Hubs. Each Event Hub partition can
- * be visualized as a stream of {@link EventData}.
+ * be visualized as a stream of {@link Message}.
  *
  * <p>
- * Here's how AMQP message sections map to {@link EventData}. For reference, the specification can be found here:
+ * Here's how AMQP message sections map to {@link Message}. For reference, the specification can be found here:
  * <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification</a>
  *
  * <ol>
@@ -35,14 +31,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * </ol>
  *
  * <p>
- * Serializing a received {@link EventData} with AMQP sections other than ApplicationProperties (with primitive Java
+ * Serializing a received {@link Message} with AMQP sections other than ApplicationProperties (with primitive Java
  * types) and Data section is not supported.
  * </p>
  *
- * @see EventDataBatch
+ * @see MessageBatch
 
  */
-public class EventData {
+public class Message {
     /*
      * These are properties owned by the service and set when a message is received.
      */
@@ -55,7 +51,7 @@ public class EventData {
 
     static {
         final Set<String> properties = new HashSet<>();
-        properties.add(OFFSET_ANNOTATION_NAME.getValue());
+       // properties.add(OFFSET_ANNOTATION_NAME.getValue());
         properties.add(PARTITION_KEY_ANNOTATION_NAME.getValue());
         properties.add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
         properties.add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
@@ -70,7 +66,7 @@ public class EventData {
      * @param body The data to set for this event.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public EventData(byte[] body) {
+    public Message(byte[] body) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
         this.properties = new HashMap<>();
@@ -83,7 +79,7 @@ public class EventData {
      * @param body The data to set for this event.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public EventData(ByteBuffer body) {
+    public Message(ByteBuffer body) {
         this(Objects.requireNonNull(body, "'body' cannot be null.").array());
     }
 
@@ -93,7 +89,7 @@ public class EventData {
      * @param body The string that will be UTF-8 encoded to create an event.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public EventData(String body) {
+    public Message(String body) {
         this(Objects.requireNonNull(body, "'body' cannot be null.").getBytes(UTF_8));
     }
 
@@ -105,7 +101,7 @@ public class EventData {
      * @param context A specified key-value pair of type {@link Context}.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
-    EventData(byte[] body, SystemProperties systemProperties, Context context) {
+    Message(byte[] body, SystemProperties systemProperties, Context context) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
         this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
@@ -122,7 +118,7 @@ public class EventData {
      *
      * {@codesnippet com.azure.messaging.eventhubs.eventdata.getProperties}
      *
-     * @return Application properties associated with this {@link EventData}.
+     * @return Application properties associated with this {@link Message}.
      */
     public Map<String, Object> getProperties() {
         return properties;
@@ -130,10 +126,10 @@ public class EventData {
 
     /**
      * Properties that are populated by Event Hubs service. As these are populated by the Event Hubs service, they are
-     * only present on a <b>received</b> {@link EventData}.
+     * only present on a <b>received</b> {@link Message}.
      *
-     * @return An encapsulation of all system properties appended by EventHubs service into {@link EventData}.
-     *     {@code null} if the {@link EventData} is not received from the Event Hubs service.
+     * @return An encapsulation of all system properties appended by EventHubs service into {@link Message}.
+     *     {@code null} if the {@link Message} is not received from the Event Hubs service.
      */
     public Map<String, Object> getSystemProperties() {
         return systemProperties;
@@ -165,9 +161,9 @@ public class EventData {
 
     /**
      * Gets the offset of the event when it was received from the associated Event Hub partition. This is only present
-     * on a <b>received</b> {@link EventData}.
+     * on a <b>received</b> {@link Message}.
      *
-     * @return The offset within the Event Hub partition of the received event. {@code null} if the {@link EventData}
+     * @return The offset within the Event Hub partition of the received event. {@code null} if the {@link Message}
      *     was not received from Event Hubs service.
      */
   /*public Long getOffset() {
@@ -177,9 +173,9 @@ public class EventData {
     /**
      * Gets the partition hashing key if it was set when originally publishing the event. If it exists, this value was
      * used to compute a hash to select a partition to send the message to. This is only present on a <b>received</b>
-     * {@link EventData}.
+     * {@link Message}.
      *
-     * @return A partition key for this Event Data. {@code null} if the {@link EventData} was not received from Event
+     * @return A partition key for this Event Data. {@code null} if the {@link Message} was not received from Event
      *     Hubs service or there was no partition key set when the event was sent to the Event Hub.
      */
     /*public String getPartitionKey() {
@@ -188,9 +184,9 @@ public class EventData {
 
     /**
      * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition. This is only present on a
-     * <b>received</b> {@link EventData}.
+     * <b>received</b> {@link Message}.
      *
-     * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the {@link EventData}
+     * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the {@link Message}
      *     was not received from Event Hubs service.
      */
   /*  public Instant getEnqueuedTime() {
@@ -200,9 +196,9 @@ public class EventData {
     /**
      * Gets the sequence number assigned to the event when it was enqueued in the associated Event Hub partition. This
      * is unique for every message received in the Event Hub partition. This is only present on a <b>received</b>
-     * {@link EventData}.
+     * {@link Message}.
      *
-     * @return The sequence number for this event. {@code null} if the {@link EventData} was not received from Event
+     * @return The sequence number for this event. {@code null} if the {@link Message} was not received from Event
      *     Hubs service.
      */
   /*  public Long getSequenceNumber() {
@@ -221,8 +217,8 @@ public class EventData {
             return false;
         }
 
-        EventData eventData = (EventData) o;
-        return Arrays.equals(body, eventData.body);
+        Message message = (Message) o;
+        return Arrays.equals(body, message.body);
     }
 
     /**
@@ -243,14 +239,14 @@ public class EventData {
     }
 
     /**
-     * Adds a new key value pair to the existing context on Event Data.
+     * Adds a new key value pair to the existing context on Message.
      *
      * @param key The key for this context object
      * @param value The value for this context object.
      * @throws NullPointerException if {@code key} or {@code value} is null.
-     * @return The updated {@link EventData}.
+     * @return The updated {@link Message}.
      */
-    public EventData addContext(String key, Object value) {
+    public Message addContext(String key, Object value) {
         Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
         Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
         this.context = context.addData(key, value);
@@ -263,29 +259,30 @@ public class EventData {
      */
     static class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
-        private final Long offset;
+        //private final Long offset;
         private final String partitionKey;
-        private final Instant enqueuedTime;
-        private final Long sequenceNumber;
+        //private final Instant enqueuedTime;
+        //private final Long sequenceNumber;
 
         SystemProperties() {
             super();
-            offset = null;
+            //offset = null;
             partitionKey = null;
-            enqueuedTime = null;
-            sequenceNumber = null;
+            //enqueuedTime = null;
+            //sequenceNumber = null;
         }
 
         SystemProperties(final Map<String, Object> map) {
             super(map);
             this.partitionKey = removeSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
 
-            final String offset = removeSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
+            /*final String offset = removeSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
             if (offset == null) {
                 throw new IllegalStateException(String.format(Locale.US,
                     "offset: %s should always be in map.", OFFSET_ANNOTATION_NAME.getValue()));
             }
             this.offset = Long.valueOf(offset);
+
 
             final Date enqueuedTimeValue = removeSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
             if (enqueuedTimeValue == null) {
@@ -299,7 +296,9 @@ public class EventData {
                 throw new IllegalStateException(String.format(Locale.US,
                     "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
             }
-            this.sequenceNumber = sequenceNumber;
+            */
+
+           // this.sequenceNumber = sequenceNumber;
         }
 
         /**
