@@ -132,11 +132,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 } else {
                     action = "NoRetry: Successful HTTP request";
                 }
-                System.out.println("Retry policy: " + "(action) " + action + ", (attempt) " + attempt);
 
                 if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
-                    System.out.println("Start retry: (method)" + originalRequest.getHttpMethod()
-                        + ", (url): "+ originalRequest.getUrl());
                         /*
                         We increment primaryTry if we are about to try the primary again (which is when we
                         consider the secondary and tried the secondary this time (tryingPrimary==false) or

@@ -145,11 +145,6 @@ class APISpec extends Specification {
     String containerName
 
     def setupSpec() {
-        Hooks.onOperatorDebug()
-        //System.setProperty("org.slf4j.simpleLogger.log.reactor.core", "trace")
-        System.setProperty("org.slf4j.simpleLogger.log.reactor.netty.tcp.TcpClient", "trace")
-        System.setProperty("org.slf4j.simpleLogger.log.com.azure.storage", "trace")
-        System.setProperty("AZURE_LOG_LEVEL", "1")
         testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)
@@ -189,16 +184,16 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-//        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
-//        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
-//            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
-//
-//            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-//                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
-//            }
-//
-//            containerClient.delete()
-//        }
+        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
+        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
+            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+
+            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
+            }
+
+            containerClient.delete()
+        }
 
         interceptorManager.close()
     }

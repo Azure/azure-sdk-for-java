@@ -254,7 +254,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
             return overwriteCheck
                 .then(uploadWithResponse(data, parallelTransferOptions, null, null, null,
-                    requestConditions).log()).flatMap(FluxUtil::toMono);
+                    requestConditions)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -316,7 +316,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
             Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction = (stream) ->
                 uploadInChunks(blockBlobAsyncClient, stream, validatedParallelTransferOptions, headers, metadata, tier,
-                    validatedRequestConditions).log();
+                    validatedRequestConditions);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobMethod =
                 (stream, length) -> blockBlobAsyncClient.uploadWithResponse(ProgressReporter
@@ -361,8 +361,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         duplicate.position(i * parallelTransferOptions.getBlockSize());
                         duplicate.limit(Math.min(duplicate.limit(), (i + 1) * parallelTransferOptions.getBlockSize()));
                         return duplicate;
-                    }).log();
-            }).log();
+                    });
+            });
 
         /*
          Write to the pool and upload the output.
@@ -378,7 +378,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     UUID.randomUUID().toString().getBytes(UTF_8));
 
                 return blockBlobAsyncClient.stageBlockWithResponse(blockId, progressData, buffer.remaining(),
-                    null, requestConditions.getLeaseId()).log()
+                    null, requestConditions.getLeaseId())
                     // We only care about the stageBlock insofar as it was successful,
                     // but we need to collect the ids.
                     .map(x -> blockId)
@@ -553,17 +553,17 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         // If the file is larger than 256MB chunk it and stage it as blocks.
                         if (uploadInBlocks(filePath, finalParallelTransferOptions.getMaxSingleUploadSize())) {
                             return uploadBlocks(fileSize, finalParallelTransferOptions, originalBlockSize, headers,
-                                metadata, tier, requestConditions, channel, blockBlobAsyncClient).log();
+                                metadata, tier, requestConditions, channel, blockBlobAsyncClient);
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
                             return blockBlobAsyncClient.uploadWithResponse(FluxUtil.readFile(channel), fileSize,
-                                headers, metadata, tier, null, requestConditions).log()
+                                headers, metadata, tier, null, requestConditions)
                                 .then();
                         }
                     } catch (IOException ex) {
                         return Mono.error(ex);
                     }
-                }, this::uploadFileCleanup).log();
+                }, this::uploadFileCleanup);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
