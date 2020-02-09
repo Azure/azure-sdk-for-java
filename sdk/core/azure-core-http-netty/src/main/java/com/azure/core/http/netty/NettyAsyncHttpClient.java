@@ -6,6 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
@@ -83,16 +84,30 @@ class NettyAsyncHttpClient implements HttpClient {
      */
     @Override
     public Mono<HttpResponse> send(final HttpRequest request) {
+        return send(request, disableBufferCopy);
+    }
+
+    @Override
+    public Mono<HttpResponse> send(final HttpPipelineCallContext pipelineCallContext) {
+        Objects.requireNonNull(pipelineCallContext, "'pipelineCallContext' cannot be null.");
+        final HttpRequest request = Objects.requireNonNull(pipelineCallContext.getHttpRequest(), "'pipelineCallContext"
+            + ".getHttpRequest()' cannot be null.");
+        // either the client can disable or the request (through context) can disabled buffer copy
+        final boolean isBufferCopyDisabled = this.disableBufferCopy || Boolean
+            .parseBoolean((String) pipelineCallContext.getData("disable-buffer-copy").orElse("false"));
+        return send(request, isBufferCopyDisabled);
+    }
+
+    private Mono<HttpResponse> send(final HttpRequest request, final boolean isBufferCopyDisabled) {
         Objects.requireNonNull(request.getHttpMethod(), "'request.getHttpMethod()' cannot be null.");
         Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
-
         return nettyClient
             .tcpConfiguration(tcpClient -> configureTcpClient(tcpClient, request.getUrl().getHost()))
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request, disableBufferCopy))
+            .responseConnection(responseDelegate(request, isBufferCopyDisabled))
             .single();
     }
 
@@ -199,7 +214,9 @@ class NettyAsyncHttpClient implements HttpClient {
                 if (this.disableBufferCopy) {
                     return byteBuf.nioBuffer();
                 }
-                return deepCopyBuffer(byteBuf);
+                ByteBuffer retVal = deepCopyBuffer(byteBuf);
+                byteBuf.release();
+                return retVal;
             });
         }
 

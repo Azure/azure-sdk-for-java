@@ -13,6 +13,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.proxy.Socks4ProxyHandler;
 import io.netty.handler.proxy.Socks5ProxyHandler;
+import java.nio.ByteBuffer;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 
@@ -181,6 +182,22 @@ public class NettyAsyncHttpClientBuilder {
         return this;
     }
 
+    /**
+     * Disables deep copy of response {@link ByteBuffer} into a heap location that is managed by this client as
+     * opposed to the underlying netty library which may use direct buffer pool.
+     * <br>
+     * <b>
+     * Caution: Disabling this is not recommended as it can lead to data corruption if the downstream consumers
+     * of the response do not handle the byte buffers before netty releases them.
+     * </b>
+     *
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder disableBufferCopy(boolean disableBufferCopy) {
+        this.disableBufferCopy = disableBufferCopy;
+        return this;
+    }
+
     /*
      * Creates a proxy handler based on the passed ProxyOptions.
      */
@@ -203,10 +220,5 @@ public class NettyAsyncHttpClientBuilder {
                 throw logger.logExceptionAsError(new IllegalStateException(
                     String.format(INVALID_PROXY_MESSAGE, proxyOptions.getType())));
         }
-    }
-
-    public NettyAsyncHttpClientBuilder disableBufferCopy() {
-        this.disableBufferCopy = true;
-        return this;
     }
 }

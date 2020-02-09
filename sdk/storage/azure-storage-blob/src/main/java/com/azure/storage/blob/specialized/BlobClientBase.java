@@ -384,7 +384,8 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null
      */
     public void download(OutputStream stream) {
-        downloadWithResponse(stream, null, null, null, false, null, Context.NONE);
+        downloadWithResponse(stream, null, null, null, false, null, Context.NONE.addData("disable-buffer-copy", true));
+
     }
 
     /**
