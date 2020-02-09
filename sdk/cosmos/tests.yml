@@ -159,8 +159,7 @@ jobs:
         Strong_Tcp_NonEmulator:
           DisplayName: Strong TCP NonEmulator
           OSVmImage: 'macOS-10.14'
-          ProfileFlag: '-Pnon-emu
-          lator'
+          ProfileFlag: '-Pnon-emulator'
           AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
