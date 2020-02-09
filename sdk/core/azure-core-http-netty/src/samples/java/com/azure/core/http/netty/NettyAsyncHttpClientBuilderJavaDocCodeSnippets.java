@@ -34,12 +34,12 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
      * Code snippet for creating http client with fixed thread pool.
      */
     public void fixedThreadPoolSample() {
-        // BEGIN: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#nioEventLoopGroup
+        // BEGIN: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup
         int threadCount = 5;
         HttpClient client = new NettyAsyncHttpClientBuilder()
-            .nioEventLoopGroup(new NioEventLoopGroup(threadCount))
+            .eventLoopGroup(new NioEventLoopGroup(threadCount))
             .build();
-        // END: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#nioEventLoopGroup
+        // END: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup
     }
 
     /**
@@ -64,7 +64,7 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
             .tcpConfiguration(tcp -> tcp.bootstrap(b -> b.handler(new LoggingHandler(LogLevel.INFO))));
         // Create an HttpClient based on above reactor-netty client and configure EventLoop count.
         HttpClient client = new NettyAsyncHttpClientBuilder(baseHttpClient)
-            .nioEventLoopGroup(new NioEventLoopGroup(5))
+            .eventLoopGroup(new NioEventLoopGroup(5))
             .build();
         // END: com.azure.core.http.netty.from-existing-http-client
     }
