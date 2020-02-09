@@ -37,11 +37,13 @@ import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import io.netty.bootstrap.Bootstrap
+import io.netty.channel.ChannelOption
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import reactor.netty.Connection
 import reactor.netty.resources.ConnectionProvider
+import reactor.netty.tcp.TcpClient
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
@@ -145,7 +147,7 @@ class APISpec extends Specification {
     def setupSpec() {
         Hooks.onOperatorDebug()
         //System.setProperty("org.slf4j.simpleLogger.log.reactor.core", "trace")
-        System.setProperty("org.slf4j.simpleLogger.log.logging.level.reactor.netty", "trace")
+        System.setProperty("org.slf4j.simpleLogger.log.reactor.netty.tcp.TcpClient", "trace")
         System.setProperty("org.slf4j.simpleLogger.log.com.azure.storage", "trace")
         System.setProperty("AZURE_LOG_LEVEL", "1")
         testMode = setupTestMode()
@@ -410,9 +412,13 @@ class APISpec extends Specification {
     }
 
     HttpClient getHttpClient() {
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
+        reactor.netty.http.client.HttpClient httpClient = reactor.netty.http.client.HttpClient.from(
+            TcpClient.create().option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 720000)
+        )
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder(httpClient)
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
-            builder.wiretap(true).connectionProvider(ConnectionProvider.newConnection())
+            builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
                 builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
