@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.InternalServerErrorException;
 import com.azure.cosmos.InvalidPartitionException;
@@ -219,12 +220,12 @@ public class AddressResolver implements IAddressResolver {
             }
 
             PartitionKeyRange range;
-            String partitionKeyString = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY);
+            PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
 
-            if (partitionKeyString != null) {
+            if (partitionKeyInternal != null) {
                 range = this.tryResolveServerPartitionByPartitionKey(
                     request,
-                    partitionKeyString,
+                    partitionKeyInternal,
                     collectionCacheIsUptodate,
                     collection,
                     routingMap);
@@ -609,7 +610,7 @@ public class AddressResolver implements IAddressResolver {
 
     private PartitionKeyRange tryResolveServerPartitionByPartitionKey(
         RxDocumentServiceRequest request,
-        String partitionKeyString,
+        PartitionKeyInternal partitionKey,
         boolean collectionCacheUptoDate,
         DocumentCollection collection,
         CollectionRoutingMap routingMap) throws CosmosClientException {
@@ -617,8 +618,8 @@ public class AddressResolver implements IAddressResolver {
             throw new NullPointerException("request");
         }
 
-        if (partitionKeyString == null) {
-            throw new NullPointerException("partitionKeyString");
+        if (partitionKey == null) {
+            throw new NullPointerException("partitionKeyInternal");
         }
 
         if (collection == null) {
@@ -627,20 +628,6 @@ public class AddressResolver implements IAddressResolver {
 
         if (routingMap == null) {
             throw new NullPointerException("routingMap");
-        }
-
-        PartitionKeyInternal partitionKey;
-
-        try {
-            partitionKey = PartitionKeyInternal.fromJsonString(partitionKeyString);
-        } catch (Exception ex) {
-            throw BridgeInternal.setResourceAddress(new BadRequestException(
-                String.format(RMResources.InvalidPartitionKey, partitionKeyString),
-                ex), request.getResourceAddress());
-        }
-
-        if (partitionKey == null) {
-            throw new InternalServerErrorException(String.format("partition key is null '%s'", partitionKeyString));
         }
 
         if (partitionKey.equals(PartitionKeyInternal.Empty) || partitionKey.getComponents().size() == collection.getPartitionKey().getPaths().size()) {
