@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -45,24 +46,25 @@ class DetectLanguageAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
+    Mono<Response<DetectedLanguage>> detectLanguageWithResponse(String text, String countryHint, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
         List<DetectLanguageInput> languageInputs = Collections.singletonList(new DetectLanguageInput("0",
             text, countryHint));
-        return detectBatchLanguagesWithResponse(languageInputs, null, context)
-            .map(Transforms::processSingleResponseErrorResult);
+        return detectLanguageBatchWithResponse(languageInputs, null, context)
+            .map(response -> new SimpleResponse<>(response,
+                Transforms.processSingleResponseErrorResult(response).getValue().getPrimaryLanguage()));
     }
 
-    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> textInputs,
-        String countryHint, Context context) {
+    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguageBatchWithResponse(
+        List<String> textInputs, String countryHint, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         List<DetectLanguageInput> detectLanguageInputs = mapByIndex(textInputs, (index, value) ->
             new DetectLanguageInput(index, value, countryHint));
 
-        return detectBatchLanguagesWithResponse(detectLanguageInputs, null, context);
+        return detectLanguageBatchWithResponse(detectLanguageInputs, options, context);
     }
 
-    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
+    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguageBatchWithResponse(
         List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
@@ -76,7 +78,7 @@ class DetectLanguageAsyncClient {
             options == null ? null : options.showStatistics(), context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of detected language output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to detect languages - {}", error))
+            .doOnError(error -> logger.warning("Failed to detect language - {}", error))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
@@ -87,15 +89,19 @@ class DetectLanguageAsyncClient {
      *
      * @return the {@link DocumentResultCollection} of {@link DetectLanguageResult} to be returned by the SDK.
      */
-    private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(
+    private static DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(
         final LanguageResult languageResult) {
 
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
             DetectedLanguage primaryLanguage = null;
-            if (documentLanguage.getDetectedLanguages().size() >= 1) {
+            List<com.azure.ai.textanalytics.implementation.models.DetectedLanguage> detectedLanguages =
+                documentLanguage.getDetectedLanguages();
+            if (detectedLanguages.size() >= 1) {
+                detectedLanguages.sort(
+                    Comparator.comparing(com.azure.ai.textanalytics.implementation.models.DetectedLanguage::getScore));
                 com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguageResult =
-                    documentLanguage.getDetectedLanguages().get(0);
+                    detectedLanguages.get(0);
                 primaryLanguage = new DetectedLanguage(detectedLanguageResult.getName(),
                     detectedLanguageResult.getIso6391Name(), detectedLanguageResult.getScore());
             }
@@ -103,17 +109,14 @@ class DetectLanguageAsyncClient {
                 documentLanguage.getStatistics() == null
                     ? null : Transforms.toTextDocumentStatistics(documentLanguage.getStatistics()),
                 null,
-                primaryLanguage,
-                documentLanguage.getDetectedLanguages().stream().map(detectedLanguage ->
-                    new DetectedLanguage(detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
-                        detectedLanguage.getScore())).collect(Collectors.toList())));
+                primaryLanguage));
         }
 
         for (DocumentError documentError : languageResult.getErrors()) {
             com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 Transforms.toTextAnalyticsError(documentError.getError());
             detectLanguageResults.add(
-                new DetectLanguageResult(documentError.getId(), null, error, null, null));
+                new DetectLanguageResult(documentError.getId(), null, error, null));
         }
 
         return new DocumentResultCollection<>(detectLanguageResults, languageResult.getModelVersion(),

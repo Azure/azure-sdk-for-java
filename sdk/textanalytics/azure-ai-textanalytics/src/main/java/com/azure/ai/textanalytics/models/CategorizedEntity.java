@@ -78,8 +78,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the subcategory property: CategorizedEntity sub category, such as Age/Year/TimeRange
-     * etc.
+     * Get the subcategory property: CategorizedEntity sub category, such as Age/Year/TimeRange etc.
      *
      * @return the subcategory value.
      */
@@ -88,8 +87,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the offset property: Start position (in Unicode characters) for the
-     * entity text.
+     * Get the offset property: Start position (in Unicode characters) for the entity text.
      *
      * @return the offset value.
      */
@@ -98,8 +96,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the length property: Length (in Unicode characters) for the entity
-     * text.
+     * Get the length property: Length (in Unicode characters) for the entity text.
      *
      * @return the length value.
      */
@@ -108,8 +105,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the score property: Confidence score between 0 and 1 of the
-     * extracted entity.
+     * Get the score property: Confidence score between 0 and 1 of the extracted entity.
      *
      * @return the score value.
      */
