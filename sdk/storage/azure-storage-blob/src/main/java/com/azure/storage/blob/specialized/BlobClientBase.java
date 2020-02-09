@@ -415,8 +415,7 @@ public class BlobClientBase {
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
-            .downloadWithResponse(range, options, requestConditions, getRangeContentMd5,
-                withDisabledBufferCopy(context))
+            .downloadWithResponse(range, options, requestConditions, getRangeContentMd5, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));
@@ -553,7 +552,7 @@ public class BlobClientBase {
         Duration timeout, Context context) {
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
             parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, openOptions,
-            withDisabledBufferCopy(context));
+            context);
         return blockWithOptionalTimeout(download, timeout);
     }
 

@@ -20,14 +20,13 @@ public interface HttpClient {
     Mono<HttpResponse> send(HttpRequest request);
 
     /**
-     * Send the provided request along with context asynchronously.
+     * Sets the context for this Http client.
      *
-     * @param request The HTTP request to send.
-     * @param context Additional context for sending this request.
-     * @return A {@link Mono} that emits response asynchronously.
+     * @param context The context for this Http client.
+     * @return The update instance of this {@link HttpClient}.
      */
-    default Mono<HttpResponse> send(HttpRequest request, Context context) {
-        return send(request);
+    default HttpClient setContext(Context context) {
+        return this;
     }
 
     /**
@@ -36,6 +35,15 @@ public interface HttpClient {
      * @return A new instance of the {@link HttpClient}.
      */
     static HttpClient createDefault() {
-        return HttpClientProviders.createInstance();
+        return createDefault(Context.NONE);
+    }
+
+    /**
+     * Creates default {@link HttpClient} instance with additional context.
+     *
+     * @return A new instance of the {@link HttpClient}.
+     */
+    static HttpClient createDefault(Context context) {
+        return HttpClientProviders.createInstance(context);
     }
 }

@@ -3,12 +3,15 @@
 
 package com.azure.storage.blob;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -90,7 +93,7 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code blobName} is {@code null}.
      */
     public BlobClient buildClient() {
-        return new BlobClient(buildAsyncClient());
+        return new BlobClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
     }
 
     /**
@@ -106,6 +109,10 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code blobName} is {@code null}.
      */
     public BlobAsyncClient buildAsyncClient() {
+        return buildAsyncClient(Context.NONE);
+    }
+
+    private BlobAsyncClient buildAsyncClient(Context context) {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
@@ -122,7 +129,7 @@ public final class BlobClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            httpClient, additionalPolicies, configuration, logger, context);
 
         return new BlobAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, blobContainerName, blobName),
             serviceVersion, accountName, blobContainerName, blobName, snapshot, customerProvidedKey);

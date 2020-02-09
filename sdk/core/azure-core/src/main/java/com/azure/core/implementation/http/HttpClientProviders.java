@@ -4,6 +4,7 @@ package com.azure.core.implementation.http;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.util.Context;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
@@ -29,10 +30,13 @@ public final class HttpClientProviders {
     }
 
     public static HttpClient createInstance() {
+        return createInstance(Context.NONE);
+    }
+
+    public static HttpClient createInstance(Context httpClientContext) {
         if (defaultProvider == null) {
             throw new IllegalStateException(CANNOT_FIND_HTTP_CLIENT);
         }
-
-        return defaultProvider.createInstance();
+        return defaultProvider.createInstance().setContext(httpClientContext);
     }
 }

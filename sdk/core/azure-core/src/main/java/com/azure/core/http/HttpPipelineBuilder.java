@@ -5,6 +5,7 @@ package com.azure.core.http;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
 
+import com.azure.core.util.Context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +40,7 @@ import java.util.List;
 public class HttpPipelineBuilder {
     private HttpClient httpClient;
     private List<HttpPipelinePolicy> pipelinePolicies;
+    private Context context = Context.NONE;
 
 
     /**
@@ -52,13 +54,14 @@ public class HttpPipelineBuilder {
      * Creates a {@link HttpPipeline} based on options set in the Builder. Every time {@code build()} is
      * called, a new instance of {@link HttpPipeline} is created.
      *
-     * If HttpClient is not set then the {@link HttpClient#createDefault() default HttpClient} is used.
+     * If HttpClient is not set then the {@link HttpClient#createDefault() default HttpClient} is used and will be
+     * configured with any relevant options specified in the {@link #context(Context) context}.
      *
      * @return A HttpPipeline with the options set from the builder.
      */
     public HttpPipeline build() {
         List<HttpPipelinePolicy> policies = (pipelinePolicies == null) ? new ArrayList<>() : pipelinePolicies;
-        HttpClient client = (httpClient == null) ? HttpClient.createDefault() : httpClient;
+        HttpClient client = (httpClient == null) ? HttpClient.createDefault(context) : httpClient;
 
         return new HttpPipeline(client, policies);
     }
@@ -87,6 +90,18 @@ public class HttpPipelineBuilder {
         }
 
         this.pipelinePolicies.addAll(Arrays.asList(policies));
+        return this;
+    }
+
+    /**
+     * If {@link #httpClient(HttpClient) httpClient} is not set, this context will be used to create a default
+     * {@link HttpClient} with additional context.
+     *
+     * @param context Additional context for the default {@link HttpClient}.
+     * @return The update HttpPipelineBuilder object.
+     */
+    public HttpPipelineBuilder context(Context context) {
+        this.context = context;
         return this;
     }
 }

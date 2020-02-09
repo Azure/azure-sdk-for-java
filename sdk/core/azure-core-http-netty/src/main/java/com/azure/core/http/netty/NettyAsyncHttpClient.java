@@ -51,7 +51,7 @@ class NettyAsyncHttpClient implements HttpClient {
     private final NioEventLoopGroup eventLoopGroup;
     private final Supplier<ProxyHandler> proxyHandlerSupplier;
     private final Pattern nonProxyHostsPattern;
-    private final boolean disableBufferCopy;
+    private boolean disableBufferCopy;
 
     final reactor.netty.http.client.HttpClient nettyClient;
 
@@ -81,23 +81,18 @@ class NettyAsyncHttpClient implements HttpClient {
         this.disableBufferCopy = disableBufferCopy;
     }
 
+    @Override
+    public HttpClient setContext(Context context) {
+        // value in context will take precedence if it exists, else, fallback to existing value.
+        this.disableBufferCopy = (boolean) context.getData(DISABLE_BUFFER_COPY).orElse(this.disableBufferCopy);
+        return this;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public Mono<HttpResponse> send(final HttpRequest request) {
-        return send(request, disableBufferCopy);
-    }
-
-    @Override
-    public Mono<HttpResponse> send(final HttpRequest request, final Context context) {
-        // either the client can disable or the request (through context) can disabled buffer copy
-        final boolean isBufferCopyDisabled =
-            this.disableBufferCopy || (boolean) context.getData(DISABLE_BUFFER_COPY).orElse(false);
-        return send(request, isBufferCopyDisabled);
-    }
-
-    private Mono<HttpResponse> send(final HttpRequest request, final boolean isBufferCopyDisabled) {
         Objects.requireNonNull(request.getHttpMethod(), "'request.getHttpMethod()' cannot be null.");
         Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
@@ -106,7 +101,7 @@ class NettyAsyncHttpClient implements HttpClient {
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request, isBufferCopyDisabled))
+            .responseConnection(responseDelegate(request, disableBufferCopy))
             .single();
     }
 
