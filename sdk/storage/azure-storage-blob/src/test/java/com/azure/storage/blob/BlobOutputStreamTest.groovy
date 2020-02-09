@@ -5,7 +5,9 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
+import spock.lang.Timeout
 
+@Timeout(600)
 class BlobOutputStreamTest extends APISpec {
     private static int FOUR_MB = 4 * Constants.MB
 
