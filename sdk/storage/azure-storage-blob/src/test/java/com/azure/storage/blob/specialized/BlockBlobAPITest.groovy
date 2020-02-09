@@ -33,6 +33,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Requires
+import spock.lang.Timeout
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -41,6 +42,7 @@ import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
 
+@Timeout(600)
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
     BlockBlobAsyncClient blockBlobAsyncClient
@@ -1530,7 +1532,7 @@ class BlockBlobAPITest extends APISpec {
             .verifyError(IllegalArgumentException)
     }
 
-    @Requires({ liveMode() })
+    //@Requires({ liveMode() })
     def "Buffered upload no overwrite interrupted"() {
         setup:
         def smallFile = getRandomFile(50)
