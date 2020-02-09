@@ -41,7 +41,8 @@ public class HttpPipelineNextPolicy {
 
         this.currentPolicyIndex++;
         if (this.currentPolicyIndex == size) {
-            return this.pipeline.getHttpClient().send(this.context);
+            return this.pipeline.getHttpClient().send(this.context.getHttpRequest(), this.context.getContext());
+            // return this.pipeline.getHttpClient().send(this.context);
         } else {
             return this.pipeline.getPolicy(this.currentPolicyIndex).process(this.context, this);
         }

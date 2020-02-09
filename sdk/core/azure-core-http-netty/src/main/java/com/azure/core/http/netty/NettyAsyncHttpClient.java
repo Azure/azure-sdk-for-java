@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.HttpProxyExceptionHandler;
+import com.azure.core.util.Context;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -97,6 +98,15 @@ class NettyAsyncHttpClient implements HttpClient {
             .parseBoolean((String) pipelineCallContext.getData("disable-buffer-copy").orElse("false"));
         return send(request, isBufferCopyDisabled);
     }
+
+    @Override
+    public Mono<HttpResponse> send(final HttpRequest request, final Context context) {
+        // either the client can disable or the request (through context) can disabled buffer copy
+        final boolean isBufferCopyDisabled = this.disableBufferCopy || Boolean
+            .parseBoolean((String) context.getData("disable-buffer-copy").orElse("false"));
+        return send(request, isBufferCopyDisabled);
+    }
+
 
     private Mono<HttpResponse> send(final HttpRequest request, final boolean isBufferCopyDisabled) {
         Objects.requireNonNull(request.getHttpMethod(), "'request.getHttpMethod()' cannot be null.");

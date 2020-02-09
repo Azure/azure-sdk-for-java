@@ -85,4 +85,8 @@ public final class HttpPipelineCallContext {
         this.httpRequest = request;
         return this;
     }
+
+    public Context getContext() {
+        return this.getContext();
+    }
 }

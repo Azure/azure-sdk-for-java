@@ -4,6 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.HttpClientProviders;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 /**
@@ -20,11 +21,23 @@ public interface HttpClient {
 
     /**
      * Send the provided request along with context asynchronously.
+     *
      * @param pipelineCallContext The HTTP pipeline call context.
      * @return A {@link Mono} that emits response asynchronously.
      */
     default Mono<HttpResponse> send(HttpPipelineCallContext pipelineCallContext) {
         return send(pipelineCallContext.getHttpRequest());
+    }
+
+    /**
+     * Send the provided request along with context asynchronously.
+     *
+     * @param request The HTTP pipeline call context.
+     * @param context Additional context for sending this request.
+     * @return A {@link Mono} that emits response asynchronously.
+     */
+    default Mono<HttpResponse> send(HttpRequest request, Context context) {
+        return send(request);
     }
 
     /**
