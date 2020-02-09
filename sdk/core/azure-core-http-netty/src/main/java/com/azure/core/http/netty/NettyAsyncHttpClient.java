@@ -4,7 +4,6 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.CoreConstants;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -47,6 +46,8 @@ import java.util.regex.Pattern;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
+
+    private static final String DISABLE_BUFFER_COPY = "disable-buffer-copy";
     private final NioEventLoopGroup eventLoopGroup;
     private final Supplier<ProxyHandler> proxyHandlerSupplier;
     private final Pattern nonProxyHostsPattern;
@@ -92,7 +93,7 @@ class NettyAsyncHttpClient implements HttpClient {
     public Mono<HttpResponse> send(final HttpRequest request, final Context context) {
         // either the client can disable or the request (through context) can disabled buffer copy
         final boolean isBufferCopyDisabled =
-            this.disableBufferCopy || (boolean) context.getData(CoreConstants.DISABLE_BUFFER_COPY).orElse(false);
+            this.disableBufferCopy || (boolean) context.getData(DISABLE_BUFFER_COPY).orElse(false);
         return send(request, isBufferCopyDisabled);
     }
 
@@ -173,6 +174,8 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {
+
+        private static final ByteBuffer EMPTY_BYTE_BUFFER = ByteBuffer.wrap(new byte[0]);
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
         private final boolean disableBufferCopy;
@@ -208,12 +211,7 @@ class NettyAsyncHttpClient implements HttpClient {
                 if (!reactorNettyConnection.isDisposed()) {
                     reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
                 }
-            }).map(byteBuf -> {
-                if (this.disableBufferCopy) {
-                    return byteBuf.nioBuffer();
-                }
-                return deepCopyBuffer(byteBuf);
-            });
+            }).map(byteBuf -> this.disableBufferCopy ? byteBuf.nioBuffer() : deepCopyBuffer(byteBuf));
         }
 
         @Override
@@ -263,8 +261,11 @@ class NettyAsyncHttpClient implements HttpClient {
             ByteBuffer buffer = byteBuf.nioBuffer();
             int offset = buffer.position();
             int size = buffer.remaining();
-            byte[] duplicate = new byte[size];
+            if (size == 0) {
+                return EMPTY_BYTE_BUFFER;
+            }
 
+            byte[] duplicate = new byte[size];
             for (int i = 0; i < size; i++) {
                 duplicate[i] = buffer.get(i + offset);
             }

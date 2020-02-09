@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.implementation.CoreConstants;
 import com.azure.core.util.logging.ClientLogger;
 import java.io.IOException;
 import java.io.InputStream;
@@ -182,5 +183,18 @@ public final class CoreUtils {
             logger.warning("Failed to get properties from " + propertiesFileName, ex);
         }
         return Collections.emptyMap();
+    }
+
+    /**
+     * Convenience method to update the input context to disable copying of HTTP response byte buffers. If the input
+     * context is null, a new instance of context is created with a single entry to disable copying of HTTP response
+     * byte buffers.
+     *
+     * @param context The input context that will be updated to disable copying of HTTP response byte buffers.
+     * @return The updated context.
+     */
+    public static Context withDisabledBufferCopy(Context context) {
+        return context == null ? Context.NONE.addData(CoreConstants.DISABLE_BUFFER_COPY,
+            true) : context.addData(CoreConstants.DISABLE_BUFFER_COPY, true);
     }
 }

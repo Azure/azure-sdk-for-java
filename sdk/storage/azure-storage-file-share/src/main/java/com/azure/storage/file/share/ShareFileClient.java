@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.CoreConstants;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -301,8 +302,11 @@ public class ShareFileClient {
      */
     public Response<ShareFileProperties> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
                                                                     Duration timeout, Context context) {
+
+        Context updatedContext = context == null ? Context.NONE.addData(CoreConstants.DISABLE_BUFFER_COPY, true) :
+            context.addData(CoreConstants.DISABLE_BUFFER_COPY, true);
         Mono<Response<ShareFileProperties>> response = shareFileAsyncClient.downloadToFileWithResponse(downloadFilePath,
-            range, context);
+            range, updatedContext);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -352,8 +356,10 @@ public class ShareFileClient {
         Boolean rangeGetContentMD5, Duration timeout, Context context) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
+        Context updatedContext = context == null ? Context.NONE.addData(CoreConstants.DISABLE_BUFFER_COPY, true) :
+            context.addData(CoreConstants.DISABLE_BUFFER_COPY, true);
         Mono<ShareFileDownloadResponse> download = shareFileAsyncClient.downloadWithResponse(range, rangeGetContentMD5,
-            context)
+            updatedContext)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));

@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.util.CoreConstants;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -49,6 +48,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
@@ -386,7 +386,6 @@ public class BlobClientBase {
      */
     public void download(OutputStream stream) {
         downloadWithResponse(stream, null, null, null, false, null, Context.NONE);
-
     }
 
     /**
@@ -414,12 +413,10 @@ public class BlobClientBase {
     public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
-        Context updatedContext = context == null ? Context.NONE.addData(CoreConstants.DISABLE_BUFFER_COPY, true)
-            : context.addData(CoreConstants.DISABLE_BUFFER_COPY, true);
-
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
-            .downloadWithResponse(range, options, requestConditions, getRangeContentMd5, updatedContext)
+            .downloadWithResponse(range, options, requestConditions, getRangeContentMd5,
+                withDisabledBufferCopy(context))
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));
@@ -554,11 +551,9 @@ public class BlobClientBase {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
         Duration timeout, Context context) {
-        Context updatedContext = context == null ? Context.NONE.addData(CoreConstants.DISABLE_BUFFER_COPY, true)
-            : context.addData("disable-buffer-copy", true);
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
             parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, openOptions,
-            updatedContext);
+            withDisabledBufferCopy(context));
         return blockWithOptionalTimeout(download, timeout);
     }
 
