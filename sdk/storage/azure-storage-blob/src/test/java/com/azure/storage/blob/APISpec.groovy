@@ -144,7 +144,7 @@ class APISpec extends Specification {
 
     def setupSpec() {
         Hooks.onOperatorDebug()
-        System.setProperty("org.slf4j.simpleLogger.log.reactor.core", "trace")
+        //System.setProperty("org.slf4j.simpleLogger.log.reactor.core", "trace")
         System.setProperty("org.slf4j.simpleLogger.log.logging.level.reactor.netty", "trace")
         System.setProperty("org.slf4j.simpleLogger.log.com.azure.storage", "trace")
         System.setProperty("AZURE_LOG_LEVEL", "1")
