@@ -22,17 +22,7 @@ public interface HttpClient {
     /**
      * Send the provided request along with context asynchronously.
      *
-     * @param pipelineCallContext The HTTP pipeline call context.
-     * @return A {@link Mono} that emits response asynchronously.
-     */
-    default Mono<HttpResponse> send(HttpPipelineCallContext pipelineCallContext) {
-        return send(pipelineCallContext.getHttpRequest());
-    }
-
-    /**
-     * Send the provided request along with context asynchronously.
-     *
-     * @param request The HTTP pipeline call context.
+     * @param request The HTTP request to send.
      * @param context Additional context for sending this request.
      * @return A {@link Mono} that emits response asynchronously.
      */

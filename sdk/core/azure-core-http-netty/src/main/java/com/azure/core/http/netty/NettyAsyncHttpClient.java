@@ -4,9 +4,9 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.CoreConstants;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
@@ -89,24 +89,12 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     @Override
-    public Mono<HttpResponse> send(final HttpPipelineCallContext pipelineCallContext) {
-        Objects.requireNonNull(pipelineCallContext, "'pipelineCallContext' cannot be null.");
-        final HttpRequest request = Objects.requireNonNull(pipelineCallContext.getHttpRequest(), "'pipelineCallContext"
-            + ".getHttpRequest()' cannot be null.");
-        // either the client can disable or the request (through context) can disabled buffer copy
-        final boolean isBufferCopyDisabled = this.disableBufferCopy || Boolean
-            .parseBoolean((String) pipelineCallContext.getData("disable-buffer-copy").orElse("false"));
-        return send(request, isBufferCopyDisabled);
-    }
-
-    @Override
     public Mono<HttpResponse> send(final HttpRequest request, final Context context) {
         // either the client can disable or the request (through context) can disabled buffer copy
-        final boolean isBufferCopyDisabled = this.disableBufferCopy || Boolean
-            .parseBoolean((String) context.getData("disable-buffer-copy").orElse("false"));
+        final boolean isBufferCopyDisabled =
+            this.disableBufferCopy || (boolean) context.getData(CoreConstants.DISABLE_BUFFER_COPY).orElse(false);
         return send(request, isBufferCopyDisabled);
     }
-
 
     private Mono<HttpResponse> send(final HttpRequest request, final boolean isBufferCopyDisabled) {
         Objects.requireNonNull(request.getHttpMethod(), "'request.getHttpMethod()' cannot be null.");
@@ -230,18 +218,6 @@ class NettyAsyncHttpClient implements HttpClient {
             });
         }
 
-        private ByteBuffer deepCopyBuffer(ByteBuf byteBuf) {
-            ByteBuffer buffer = byteBuf.nioBuffer();
-            int offset = buffer.position();
-            int size = buffer.remaining();
-            byte[] duplicate = new byte[size];
-
-            for (int i = 0; i < size; i++) {
-                duplicate[i] = buffer.get(i + offset);
-            }
-            return ByteBuffer.wrap(duplicate);
-        }
-
         @Override
         public Mono<byte[]> getBodyAsByteArray() {
             return bodyIntern().aggregate().asByteArray().doFinally(s -> {
@@ -283,6 +259,18 @@ class NettyAsyncHttpClient implements HttpClient {
         // used for testing only
         Connection internConnection() {
             return reactorNettyConnection;
+        }
+
+        private static ByteBuffer deepCopyBuffer(ByteBuf byteBuf) {
+            ByteBuffer buffer = byteBuf.nioBuffer();
+            int offset = buffer.position();
+            int size = buffer.remaining();
+            byte[] duplicate = new byte[size];
+
+            for (int i = 0; i < size; i++) {
+                duplicate[i] = buffer.get(i + offset);
+            }
+            return ByteBuffer.wrap(duplicate);
         }
     }
 }

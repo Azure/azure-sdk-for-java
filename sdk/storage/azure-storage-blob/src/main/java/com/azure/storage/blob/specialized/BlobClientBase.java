@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.CoreConstants;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -413,7 +414,7 @@ public class BlobClientBase {
     public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
-        Context updatedContext = context == null ? Context.NONE.addData("disable-buffer-copy", true)
+        Context updatedContext = context == null ? Context.NONE.addData(CoreConstants.DISABLE_BUFFER_COPY, true)
             : context.addData("disable-buffer-copy", true);
 
         StorageImplUtils.assertNotNull("stream", stream);
@@ -553,7 +554,7 @@ public class BlobClientBase {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
         Duration timeout, Context context) {
-        Context updatedContext = context == null ? Context.NONE.addData("disable-buffer-copy", true)
+        Context updatedContext = context == null ? Context.NONE.addData(CoreConstants.DISABLE_BUFFER_COPY, true)
             : context.addData("disable-buffer-copy", true);
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
             parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, openOptions,
