@@ -86,7 +86,11 @@ public final class HttpPipelineCallContext {
         return this;
     }
 
-    public Context getContext() {
+    /**
+     * Returns the context for this HTTP request.
+     * @return The context for this HTTP request.
+     */
+    Context getContext() {
         return this.getContext();
     }
 }

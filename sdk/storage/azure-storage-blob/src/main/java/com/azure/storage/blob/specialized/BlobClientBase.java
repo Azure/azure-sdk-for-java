@@ -384,7 +384,7 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null
      */
     public void download(OutputStream stream) {
-        downloadWithResponse(stream, null, null, null, false, null, Context.NONE.addData("disable-buffer-copy", true));
+        downloadWithResponse(stream, null, null, null, false, null, Context.NONE);
 
     }
 
@@ -413,9 +413,12 @@ public class BlobClientBase {
     public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
+        Context updatedContext = context == null ? Context.NONE.addData("disable-buffer-copy", true)
+            : context.addData("disable-buffer-copy", true);
+
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
-            .downloadWithResponse(range, options, requestConditions, getRangeContentMd5, context)
+            .downloadWithResponse(range, options, requestConditions, getRangeContentMd5, updatedContext)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));
@@ -550,8 +553,11 @@ public class BlobClientBase {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
         Duration timeout, Context context) {
+        Context updatedContext = context == null ? Context.NONE.addData("disable-buffer-copy", true)
+            : context.addData("disable-buffer-copy", true);
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
-            parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, openOptions, context);
+            parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, openOptions,
+            updatedContext);
         return blockWithOptionalTimeout(download, timeout);
     }
 
