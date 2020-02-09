@@ -153,5 +153,9 @@ public final class SubscriptionAsyncClient implements Closeable {
     public Mono<Void>  registerMessageHandler(Supplier<Message> messageSupplier) {
         return null;
     }
+    public Mono<Void> defer(UUID lockToken){
+        return null;
+    }
+
 
 }
