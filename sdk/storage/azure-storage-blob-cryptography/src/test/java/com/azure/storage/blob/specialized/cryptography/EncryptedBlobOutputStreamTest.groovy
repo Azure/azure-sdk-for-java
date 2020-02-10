@@ -5,10 +5,12 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
+import spock.lang.Retry
 import spock.lang.Shared
 import spock.lang.Timeout
 
-@Timeout(1200)
+@Timeout(600)
+@Retry(count = 2)
 class EncryptedBlobOutputStreamTest extends APISpec {
 
     EncryptedBlobClient bec // encrypted client

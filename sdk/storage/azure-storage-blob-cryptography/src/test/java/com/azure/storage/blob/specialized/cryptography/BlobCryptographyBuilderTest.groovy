@@ -1,5 +1,10 @@
 package com.azure.storage.blob.specialized.cryptography
 
+import spock.lang.Retry
+import spock.lang.Timeout
+
+@Timeout(600)
+@Retry(count = 2)
 class BlobCryptographyBuilderTest extends APISpec {
 
     def beac

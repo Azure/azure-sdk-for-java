@@ -30,6 +30,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
+import spock.lang.Retry
 import spock.lang.Shared
 import spock.lang.Timeout
 import spock.lang.Unroll
@@ -41,7 +42,9 @@ import java.nio.file.Files
 import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
 import java.time.Duration
-@Timeout(1200)
+
+@Timeout(600)
+@Retry(count = 2)
 class EncyptedBlockBlobAPITest extends APISpec {
 
     EncryptedBlobClient bec // encrypted client

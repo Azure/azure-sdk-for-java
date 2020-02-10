@@ -30,6 +30,7 @@ import com.azure.storage.common.implementation.Constants
 import io.netty.channel.ChannelOption
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.netty.resources.ConnectionProvider
 import reactor.netty.tcp.TcpClient
 import spock.lang.Requires
 import spock.lang.Shared
@@ -213,14 +214,15 @@ class APISpec extends Specification {
     }
 
     HttpClient getHttpClient() {
-        reactor.netty.http.client.HttpClient httpClient = reactor.netty.http.client.HttpClient.from(
-            TcpClient.create().option(ChannelOption.SO_KEEPALIVE, true)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 720000)
-        )
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder(httpClient)
+//        reactor.netty.http.client.HttpClient httpClient = reactor.netty.http.client.HttpClient.from(
+//            TcpClient.create().option(ChannelOption.SO_KEEPALIVE, true)
+//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 720000)
+//        )
+//        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder(httpClient)
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode != TestMode.PLAYBACK) {
-            builder.wiretap(true)
-
+//            builder.wiretap(true)
+            builder.connectionProvider(ConnectionProvider.fixed("fixed", 3))
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
                 builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }

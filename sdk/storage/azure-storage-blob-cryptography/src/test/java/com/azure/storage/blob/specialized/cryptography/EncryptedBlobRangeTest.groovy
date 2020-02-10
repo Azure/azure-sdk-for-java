@@ -2,8 +2,12 @@ package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.storage.blob.models.BlobRange
 import spock.lang.Requires
+import spock.lang.Retry
+import spock.lang.Timeout
 import spock.lang.Unroll
 
+@Timeout(600)
+@Retry(count = 2)
 class EncryptedBlobRangeTest extends APISpec {
 
     // This test checks that the EncryptedBlobRange cna be properly constructed from a BlobRange

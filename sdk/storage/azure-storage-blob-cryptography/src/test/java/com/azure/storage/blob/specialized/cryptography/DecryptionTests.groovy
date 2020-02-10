@@ -18,8 +18,12 @@ package com.azure.storage.blob.specialized.cryptography
 import com.azure.storage.blob.models.BlobRange
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Requires
+import spock.lang.Retry
+import spock.lang.Timeout
 import spock.lang.Unroll
 
+@Timeout(600)
+@Retry(count = 2)
 class DecryptionTests extends APISpec {
     String keyId
     def fakeKey
