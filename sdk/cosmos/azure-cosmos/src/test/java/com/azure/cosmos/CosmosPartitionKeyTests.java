@@ -144,7 +144,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
             new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
                 .withId(createdItemId)
                 .build();
-        this.validateItemSuccess(readMono, validator);
+        this.validateItemSuccess(createMono, validator);
 
         readMono = createdContainer.readItem(createdItemId, PartitionKey.NONE, CosmosItemProperties.class);
         validator =
