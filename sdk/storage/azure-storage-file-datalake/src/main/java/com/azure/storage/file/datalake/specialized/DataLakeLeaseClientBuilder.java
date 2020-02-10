@@ -15,11 +15,14 @@ import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
+import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 
 import java.net.URL;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TransferQueue;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Lease
@@ -92,7 +95,8 @@ public final class DataLakeLeaseClientBuilder {
         Objects.requireNonNull(dataLakeFileClient);
         blobLeaseClientBuilder.blobClient(
             getSpecializedBlobClientBuilder(dataLakeFileClient.getFileUrl(),
-                dataLakeFileClient.getHttpPipeline()).buildBlockBlobClient());
+                dataLakeFileClient.getHttpPipeline(), dataLakeFileClient.getServiceVersion())
+                .buildBlockBlobClient());
         return this;
     }
 
@@ -108,7 +112,8 @@ public final class DataLakeLeaseClientBuilder {
         Objects.requireNonNull(dataLakeFileAsyncClient);
         blobLeaseClientBuilder.blobAsyncClient(
             getSpecializedBlobClientBuilder(dataLakeFileAsyncClient.getFileUrl(),
-                dataLakeFileAsyncClient.getHttpPipeline()).buildBlockBlobAsyncClient());
+                dataLakeFileAsyncClient.getHttpPipeline(), dataLakeFileAsyncClient.getServiceVersion())
+                .buildBlockBlobAsyncClient());
         return this;
     }
 
@@ -124,7 +129,8 @@ public final class DataLakeLeaseClientBuilder {
         Objects.requireNonNull(dataLakeDirectoryClient);
         blobLeaseClientBuilder.blobClient(
             getSpecializedBlobClientBuilder(dataLakeDirectoryClient.getDirectoryUrl(),
-                dataLakeDirectoryClient.getHttpPipeline()).buildBlockBlobClient());
+                dataLakeDirectoryClient.getHttpPipeline(), dataLakeDirectoryClient.getServiceVersion())
+                .buildBlockBlobClient());
         return this;
     }
 
@@ -140,7 +146,8 @@ public final class DataLakeLeaseClientBuilder {
         Objects.requireNonNull(dataLakeDirectoryAsyncClient);
         blobLeaseClientBuilder.blobAsyncClient(
             getSpecializedBlobClientBuilder(dataLakeDirectoryAsyncClient.getDirectoryUrl(),
-                dataLakeDirectoryAsyncClient.getHttpPipeline()).buildBlockBlobAsyncClient());
+                dataLakeDirectoryAsyncClient.getHttpPipeline(), dataLakeDirectoryAsyncClient.getServiceVersion())
+                .buildBlockBlobAsyncClient());
         return this;
     }
 
@@ -157,7 +164,8 @@ public final class DataLakeLeaseClientBuilder {
         Objects.requireNonNull(dataLakeFileSystemClient);
         blobLeaseClientBuilder.containerClient(
             getBlobContainerClientBuilder(dataLakeFileSystemClient.getFileSystemUrl(),
-                dataLakeFileSystemClient.getHttpPipeline()).buildClient());
+                dataLakeFileSystemClient.getHttpPipeline(), dataLakeFileSystemClient.getServiceVersion())
+                .buildClient());
         return this;
     }
 
@@ -175,7 +183,8 @@ public final class DataLakeLeaseClientBuilder {
 
         blobLeaseClientBuilder.containerClient(
             getBlobContainerClientBuilder(dataLakeFileSystemAsyncClient.getFileSystemUrl(),
-                dataLakeFileSystemAsyncClient.getHttpPipeline()).buildClient());
+                dataLakeFileSystemAsyncClient.getHttpPipeline(),
+                dataLakeFileSystemAsyncClient.getServiceVersion()).buildClient());
         return this;
     }
 
@@ -198,12 +207,13 @@ public final class DataLakeLeaseClientBuilder {
      * @param pipeline The {@link HttpPipeline} for the {@link SpecializedBlobClientBuilder}
      * @return the {@link SpecializedBlobClientBuilder}
      */
-    private SpecializedBlobClientBuilder getSpecializedBlobClientBuilder(String dfsEndpoint, HttpPipeline pipeline) {
+    private SpecializedBlobClientBuilder getSpecializedBlobClientBuilder(String dfsEndpoint, HttpPipeline pipeline,
+        DataLakeServiceVersion version) {
         String blobEndpoint = DataLakeImplUtils.endpointToDesiredEndpoint(dfsEndpoint, "blob", "dfs");
         return new SpecializedBlobClientBuilder()
             .pipeline(pipeline)
             .endpoint(blobEndpoint)
-            .serviceVersion(BlobServiceVersion.getLatest());
+            .serviceVersion(TransformUtils.toBlobServiceVersion(version));
     }
 
     /**
@@ -212,11 +222,12 @@ public final class DataLakeLeaseClientBuilder {
      * @param pipeline The {@link HttpPipeline} for the {@link BlobContainerClientBuilder}
      * @return the {@link BlobContainerClientBuilder}
      */
-    private BlobContainerClientBuilder getBlobContainerClientBuilder(String dfsEndpoint, HttpPipeline pipeline) {
+    private BlobContainerClientBuilder getBlobContainerClientBuilder(String dfsEndpoint, HttpPipeline pipeline,
+        DataLakeServiceVersion version) {
         String blobEndpoint = DataLakeImplUtils.endpointToDesiredEndpoint(dfsEndpoint, "blob", "dfs");
         return new BlobContainerClientBuilder()
             .pipeline(pipeline)
             .endpoint(blobEndpoint)
-            .serviceVersion(BlobServiceVersion.getLatest());
+            .serviceVersion(TransformUtils.toBlobServiceVersion(version));
     }
 }
