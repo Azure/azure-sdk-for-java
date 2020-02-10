@@ -3,11 +3,14 @@
 
 package com.azure.storage.file.share;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -116,6 +119,10 @@ public class ShareClientBuilder {
      * {@link #sasToken(String) SAS token} has been set.
      */
     public ShareAsyncClient buildAsyncClient() {
+        return buildAsyncClient(Context.NONE);
+    }
+
+    public ShareAsyncClient buildAsyncClient(Context context) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
 
@@ -128,7 +135,7 @@ public class ShareClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, context);
 
         AzureFileStorageImpl azureFileStorage = new AzureFileStorageBuilder()
             .url(endpoint)
@@ -155,7 +162,7 @@ public class ShareClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public ShareClient buildClient() {
-        return new ShareClient(buildAsyncClient());
+        return new ShareClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
     }
 
     /**
