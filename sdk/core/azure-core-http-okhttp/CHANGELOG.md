@@ -1,5 +1,8 @@
 # Release History
 
+## 1.1.1 (2020-02-10)
+- Removed default Content-Type of 'application/octet-stream'.
+
 ## 1.1.0 (2020-01-07)
 - Updated version of dependent libraries.
 
