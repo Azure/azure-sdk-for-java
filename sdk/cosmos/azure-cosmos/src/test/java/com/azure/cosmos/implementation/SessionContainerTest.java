@@ -613,7 +613,7 @@ public class SessionContainerTest {
 
     @Test(groups = "unit")
     public void sessionCapturingDisabled() throws Exception {
-        SessionContainer sessionContainer = new SessionContainer("127.0.0.1", false);
+        SessionContainer sessionContainer = new SessionContainer("127.0.0.1", true);
 
         int numCollections = 2;
         int numPartitionKeyRangeIds = 5;

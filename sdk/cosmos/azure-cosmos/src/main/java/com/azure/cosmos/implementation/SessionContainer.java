@@ -40,13 +40,13 @@ public final class SessionContainer implements ISessionContainer {
     private final String hostName;
     private final boolean disableSessionCapturing;
 
-    public SessionContainer(final String hostName, boolean captureSession) {
+    public SessionContainer(final String hostName, boolean disableSessionCapturing) {
         this.hostName = hostName;
-        this.disableSessionCapturing = ! captureSession;
+        this.disableSessionCapturing = disableSessionCapturing;
     }
 
     public SessionContainer(final String hostName) {
-        this(hostName, true);
+        this(hostName, false);
     }
 
     public String getHostName() {
