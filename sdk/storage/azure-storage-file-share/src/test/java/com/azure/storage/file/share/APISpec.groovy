@@ -193,10 +193,6 @@ class APISpec extends Specification {
     }
 
     ShareServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential) {
-        // TODO : Remove this once its no longer preprod
-//        if (credential == premiumCredential) {
-//            return getServiceAsyncClient(credential, String.format("https://%s.file.preprod.core.windows.net/", credential.getAccountName()), null)
-//        }
         return getServiceAsyncClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
     }
 
