@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.DatabaseAccount;
@@ -120,7 +121,7 @@ public class GatewayServiceConfigurationReader {
             Map<String, String> header = new HashMap<>();
             header.put(HttpConstants.HttpHeaders.X_DATE, xDate);
             authorizationToken = baseAuthorizationTokenProvider
-                    .generateKeyAuthorizationSignature(HttpConstants.HttpMethods.GET, serviceEndpoint, header);
+                    .generateKeyAuthorizationSignature(RequestVerb.GET, serviceEndpoint, header);
         }
         httpHeaders.set(HttpConstants.HttpHeaders.AUTHORIZATION, authorizationToken);
 

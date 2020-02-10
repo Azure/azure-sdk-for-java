@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.rx.examples;
 
+import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
@@ -265,7 +266,7 @@ public class TokenResolverTest extends DocumentClientTest {
      * For subsequent Reads, get the correct read only token based on 'userId'.
      */
     private TokenResolver getTokenResolverForRead() {
-        return (String requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
+        return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
             if (resourceType.equals(CosmosResourceType.System)) {
                 //Choose any token it should have the read access on database account
                 for (String token : userToReadOnlyResourceTokenMap.values()) {
@@ -283,7 +284,7 @@ public class TokenResolverTest extends DocumentClientTest {
      * For subsequent Reads/Writes, get the correct read/write token based on 'userId'.
      */
     private TokenResolver getTokenResolverForReadWrite() {
-        return (String requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
+        return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
             if (resourceType.equals(CosmosResourceType.System)) {
                 //Choose any token it should have the read access on database account
                 for (String token : userToReadWriteResourceTokenMap.values()) {
@@ -303,7 +304,7 @@ public class TokenResolverTest extends DocumentClientTest {
      * is compared to the current user's id, passed into the item for the request.
      */
     private TokenResolver getTokenResolverWithBlockList(String blockListedUserId, String errorMessage) {
-        return (String requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object> properties) -> {
+        return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object> properties) -> {
             if (resourceType == CosmosResourceType.System) {
                 return userToReadWriteResourceTokenMap.values().iterator().next();
             } else if (!properties.get(USER_ID).toString().equals(blockListedUserId)) {

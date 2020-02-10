@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.cosmos.RequestVerb;
+import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Mac;
@@ -80,12 +81,12 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
      * @param headers              the request headers.
      * @return the key authorization signature.
      */
-    public String generateKeyAuthorizationSignature(String verb,
-            String resourceIdOrFullName,
-            ResourceType resourceType,
-            Map<String, String> headers) {
+    public String generateKeyAuthorizationSignature(RequestVerb verb,
+                                                    String resourceIdOrFullName,
+                                                    ResourceType resourceType,
+                                                    Map<String, String> headers) {
         return this.generateKeyAuthorizationSignature(verb, resourceIdOrFullName,
-                BaseAuthorizationTokenProvider.getResourceSegment(resourceType).toLowerCase(), headers);
+                BaseAuthorizationTokenProvider.getResourceSegment(resourceType), headers);
     }
 
     /**
@@ -97,11 +98,11 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
      * @param headers              the request headers
      * @return the key authorization signature
      */
-    public String generateKeyAuthorizationSignature(String verb,
+    public String generateKeyAuthorizationSignature(RequestVerb verb,
             String resourceIdOrFullName,
             String resourceSegment,
             Map<String, String> headers) {
-        if (verb == null || verb.isEmpty()) {
+        if (verb == null) {
             throw new IllegalArgumentException("verb");
         }
 
@@ -195,8 +196,8 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         return resourceToken;
     }
-    public String generateKeyAuthorizationSignature(String verb, URI uri, Map<String, String> headers) {
-        if (StringUtils.isEmpty(verb)) {
+    public String generateKeyAuthorizationSignature(RequestVerb verb, URI uri, Map<String, String> headers) {
+        if (verb == null) {
             throw new IllegalArgumentException(String.format(RMResources.StringArgumentNullOrEmpty, "verb"));
         }
 
@@ -213,9 +214,9 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
                 headers);
     }
 
-    private String generateKeyAuthorizationSignatureNew(String verb, String resourceIdValue, String resourceType,
+    private String generateKeyAuthorizationSignatureNew(RequestVerb verb, String resourceIdValue, String resourceType,
                                                         Map<String, String> headers) {
-        if (StringUtils.isEmpty(verb)) {
+        if (verb == null) {
             throw new IllegalArgumentException(String.format(RMResources.StringArgumentNullOrEmpty, "verb"));
         }
 
@@ -269,7 +270,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         }
     }
 
-    private String generateMessagePayload(String verb, String resourceId, String resourceType,
+    private String generateMessagePayload(RequestVerb verb, String resourceId, String resourceType,
             Map<String, String> headers) {
         String xDate = headers.get(HttpConstants.HttpHeaders.X_DATE);
         String date = headers.get(HttpConstants.HttpHeaders.HTTP_DATE);

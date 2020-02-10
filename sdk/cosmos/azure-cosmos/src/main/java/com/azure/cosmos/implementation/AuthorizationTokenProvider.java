@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.RequestVerb;
+
 import java.util.Map;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Map;
  * service.
  */
 public interface AuthorizationTokenProvider {
-    String generateKeyAuthorizationSignature(String verb,
+    String generateKeyAuthorizationSignature(RequestVerb verb,
                                              String resourceIdOrFullName,
                                              ResourceType resourceType,
                                              Map<String, String> headers);
