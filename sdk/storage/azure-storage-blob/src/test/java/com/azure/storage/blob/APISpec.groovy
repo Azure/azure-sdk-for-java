@@ -118,6 +118,8 @@ class APISpec extends Specification {
     static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
     static def BLOB_STORAGE = "BLOB_STORAGE_"
     static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
+    /* Unignore any managed disk tests if a managed disk account is available to be tested. They are difficult to
+     acquire so we do not run them in the nightly live run tests. */
     static def MANAGED_DISK_STORAGE = "MANAGED_DISK_STORAGE_"
 
     protected static StorageSharedKeyCredential primaryCredential
@@ -270,10 +272,6 @@ class APISpec extends Specification {
     }
 
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential) {
-        // TODO : Remove this once its no longer preprod
-        if (credential == managedDiskCredential) {
-            return getServiceClient(credential, String.format("https://%s.blob.preprod.core.windows.net/", credential.getAccountName()), null)
-        }
         return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
     }
 
