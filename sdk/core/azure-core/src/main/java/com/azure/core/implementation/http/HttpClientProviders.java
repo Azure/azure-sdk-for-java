@@ -37,6 +37,6 @@ public final class HttpClientProviders {
         if (defaultProvider == null) {
             throw new IllegalStateException(CANNOT_FIND_HTTP_CLIENT);
         }
-        return defaultProvider.createInstance().setContext(httpClientContext);
+        return defaultProvider.createInstance().initContext(httpClientContext);
     }
 }

@@ -20,12 +20,12 @@ public interface HttpClient {
     Mono<HttpResponse> send(HttpRequest request);
 
     /**
-     * Sets the context for this Http client.
+     * Initializes the Http client with the given context.
      *
-     * @param context The context for this Http client.
+     * @param context The context to initialize this Http client with.
      * @return The update instance of this {@link HttpClient}.
      */
-    default HttpClient setContext(Context context) {
+    default HttpClient initContext(Context context) {
         return this;
     }
 

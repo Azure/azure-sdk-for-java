@@ -11,11 +11,13 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.HttpProxyExceptionHandler;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.proxy.ProxyHandler;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -48,10 +50,12 @@ import java.util.regex.Pattern;
 class NettyAsyncHttpClient implements HttpClient {
 
     private static final String DISABLE_BUFFER_COPY = "disable-buffer-copy";
+    private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClient.class);
     private final NioEventLoopGroup eventLoopGroup;
     private final Supplier<ProxyHandler> proxyHandlerSupplier;
     private final Pattern nonProxyHostsPattern;
     private boolean disableBufferCopy;
+    private AtomicBoolean initialized = new AtomicBoolean();
 
     final reactor.netty.http.client.HttpClient nettyClient;
 
@@ -81,8 +85,14 @@ class NettyAsyncHttpClient implements HttpClient {
         this.disableBufferCopy = disableBufferCopy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public HttpClient setContext(Context context) {
+    public HttpClient initContext(Context context) {
+        if (initialized.getAndSet(true)) {
+            throw logger.logExceptionAsError(new IllegalStateException("This client is already initialized"));
+        }
         // value in context will take precedence if it exists, else, fallback to existing value.
         this.disableBufferCopy = (boolean) context.getData(DISABLE_BUFFER_COPY).orElse(this.disableBufferCopy);
         return this;
