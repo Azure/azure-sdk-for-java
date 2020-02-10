@@ -7,6 +7,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.netty.implementation.ReactorNettyClientProvider;
+import com.azure.core.implementation.CoreConstants;
+import com.azure.core.util.Context;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -40,6 +43,7 @@ import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 public class ReactorNettyClientTests {
@@ -292,7 +296,7 @@ public class ReactorNettyClientTests {
      * Netty reclaiming them once the 'onNext' operator chain has completed.
      */
     @Test
-    public void deepCopyBuffer() {
+    public void deepCopyBufferConfiguredInBuilder() {
         HttpClient client = new NettyAsyncHttpClientBuilder().disableBufferCopy(false).build();
 
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH))).block();
@@ -309,7 +313,7 @@ public class ReactorNettyClientTests {
      * resilient to Netty reclaiming them once the 'onNext' operator chain has completed.
      */
     @Test
-    public void ignoreDeepCopyBuffer() {
+    public void ignoreDeepCopyBufferConfiguredInBuilder() {
         HttpClient client = new NettyAsyncHttpClientBuilder().disableBufferCopy(true).build();
 
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH))).block();
@@ -319,6 +323,68 @@ public class ReactorNettyClientTests {
         DelayWriteStream delayWriteStream = new DelayWriteStream();
         response.getBody().doOnNext(delayWriteStream::write).blockLast();
         assertNotEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+    }
+
+    /**
+     * Tests that deep copying of buffers is able to be configured via {@link Context}.
+     */
+    @Test
+    public void deepCopyBufferConfiguredByContext() {
+        HttpClient client = new ReactorNettyClientProvider().createInstance()
+            .initContext(new Context(CoreConstants.DISABLE_BUFFER_COPY, false));
+
+        HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH))).block();
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+
+        DelayWriteStream delayWriteStream = new DelayWriteStream();
+        response.getBody().doOnNext(delayWriteStream::write).blockLast();
+        assertEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+    }
+
+    /**
+     * Tests that deep copying of buffers is able to be suppressed via {@link Context}.
+     */
+    @Test
+    public void ignoreDeepCopyBufferConfiguredByContext() {
+        HttpClient client = new ReactorNettyClientProvider().createInstance()
+            .initContext(new Context(CoreConstants.DISABLE_BUFFER_COPY, true));
+
+        HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH))).block();
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+
+        DelayWriteStream delayWriteStream = new DelayWriteStream();
+        response.getBody().doOnNext(delayWriteStream::write).blockLast();
+        assertNotEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+    }
+
+    /**
+     * Tests that the configurations for deep copying of buffers set in the client builder is able to be overridden by
+     * the configuration set via {@link Context}.
+     */
+    @Test
+    public void deepCopyConfigurationByContextOverridesBuilder() {
+        HttpClient client = new NettyAsyncHttpClientBuilder().disableBufferCopy(true).build();
+        client = client.initContext(new Context(CoreConstants.DISABLE_BUFFER_COPY, false));
+
+        HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH))).block();
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+
+        DelayWriteStream delayWriteStream = new DelayWriteStream();
+        response.getBody().doOnNext(delayWriteStream::write).blockLast();
+        assertEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+    }
+
+    /**
+     * Tests that attempting to initialize context after it has already been initialized will throw an exception.
+     */
+    @Test
+    public void initializingContextMultipleTimesThrows() {
+        HttpClient client = new NettyAsyncHttpClientBuilder().build();
+        client.initContext(Context.NONE);
+        assertThrows(IllegalStateException.class, () -> client.initContext(Context.NONE));
     }
 
     private static ReactorNettyHttpResponse getResponse(String path) {
