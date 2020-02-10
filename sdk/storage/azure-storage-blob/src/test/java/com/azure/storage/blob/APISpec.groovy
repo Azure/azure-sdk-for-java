@@ -118,15 +118,15 @@ class APISpec extends Specification {
     static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
     static def BLOB_STORAGE = "BLOB_STORAGE_"
     static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
-    /* Uncomment any managed disk lines if a managed disk account is available to be tested. They are difficult to
+    /* Unignore any managed disk tests if a managed disk account is available to be tested. They are difficult to
      acquire so we do not run them in the nightly live run tests. */
-//    static def MANAGED_DISK_STORAGE = "MANAGED_DISK_STORAGE_"
+    static def MANAGED_DISK_STORAGE = "MANAGED_DISK_STORAGE_"
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential alternateCredential
     static StorageSharedKeyCredential blobCredential
     static StorageSharedKeyCredential premiumCredential
-//    static StorageSharedKeyCredential managedDiskCredential
+    static StorageSharedKeyCredential managedDiskCredential
     static TestMode testMode
 
     BlobServiceClient primaryBlobServiceClient
@@ -134,7 +134,7 @@ class APISpec extends Specification {
     BlobServiceClient alternateBlobServiceClient
     BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
-//    BlobServiceClient managedDiskServiceClient
+    BlobServiceClient managedDiskServiceClient
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
@@ -148,7 +148,7 @@ class APISpec extends Specification {
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
-//        managedDiskCredential = getCredential(MANAGED_DISK_STORAGE)
+        managedDiskCredential = getCredential(MANAGED_DISK_STORAGE)
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
@@ -176,7 +176,7 @@ class APISpec extends Specification {
         alternateBlobServiceClient = setClient(alternateCredential)
         blobServiceClient = setClient(blobCredential)
         premiumBlobServiceClient = setClient(premiumCredential)
-//        managedDiskServiceClient = setClient(managedDiskCredential)
+        managedDiskServiceClient = setClient(managedDiskCredential)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
