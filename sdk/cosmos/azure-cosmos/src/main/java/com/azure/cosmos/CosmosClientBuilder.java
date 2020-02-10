@@ -55,6 +55,8 @@ public class CosmosClientBuilder {
 
     /**
      * Indicates if Session capturing is enabled for non Session modes.
+     * The default is false.
+     *
      * @return the session capturing override
      */
     public boolean isSessionCapturingOverride() {
