@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.CosmosKeyCredential;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
@@ -24,7 +26,7 @@ import java.util.Map;
  * verifying the auth header in the Azure Cosmos DB database service.
  */
 public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvider {
-
+    private static final Logger logger = LoggerFactory.getLogger(BaseAuthorizationTokenProvider.class);
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
     private final CosmosKeyCredential cosmosKeyCredential;
     private final Mac macInstance;
@@ -91,14 +93,12 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         HttpConstants.HttpMethod httpVerb = HttpConstants.HttpMethod.from(verb);
         ExpiringAuthTokenCache.Request request = new ExpiringAuthTokenCache.Request(httpVerb, resourceIdOrFullName, resourceType, headers);
 
-        authTokenCache.SetOrUpdateAuthToken(request, req -> {
-            System.out.println("generate a new auth token " + request.resourceType.toString() + request.verb.toString() + request.resourceIdOrFullName);
-
+        authTokenCache.setOrUpdateAuthToken(request, req -> {
+            logger.debug("generate a new auth token resourceType {}, verb {}, resourceIdOrFullName {}" + request.resourceType, request.verb, request.resourceIdOrFullName);
 
             String authorization = this.generateKeyAuthorizationSignature(verb, resourceIdOrFullName,
                 BaseAuthorizationTokenProvider.getResourceSegment(resourceType).toLowerCase(), headers);
             headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, authorization);
-
         });
 
         return request.headers.get(HttpConstants.HttpHeaders.AUTHORIZATION);
