@@ -190,6 +190,11 @@ public class NettyAsyncHttpClientBuilder {
      * Caution: Disabling this is not recommended as it can lead to data corruption if the downstream consumers
      * of the response do not handle the byte buffers before netty releases them.
      * </b>
+     * If copy is disabled, underlying Netty layer can potentially reclaim byte array backed by the {@code ByteBuffer}
+     * upon the return of {@code onNext()}. So, users should ensure they process the {@link ByteBuffer} immediately
+     * and then return.
+     *
+     *  {@codesnippet com.azure.core.http.netty.disabled-buffer-copy}
      *
      * @param disableBufferCopy If set to {@code true}, the client built from this builder will not deep-copy
      * response {@link ByteBuffer ByteBuffers}.
