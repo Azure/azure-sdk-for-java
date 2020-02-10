@@ -389,24 +389,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Database>> createDatabase(Database database, RequestOptions options) {
-        if (database == null) {
-            throw new IllegalArgumentException("Database");
-        }
-
-        logger.debug("Creating a Database. id: [{}]", database.getId());
-        validateResource(database);
-
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
-            ResourceType.Database, Paths.DATABASES_ROOT, database, requestHeaders, options);
-
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-
-        return ObservableHelper.inlineIfPossibleAsObs(() -> createDatabaseInternal(retryPolicyInstance, request), retryPolicyInstance);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> createDatabaseInternal(database, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Mono<ResourceResponse<Database>> createDatabaseInternal(DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<Database>> createDatabaseInternal(Database database, RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
         try {
+
+            if (database == null) {
+                throw new IllegalArgumentException("Database");
+            }
+
+            logger.debug("Creating a Database. id: [{}]", database.getId());
+            validateResource(database);
+
+            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
+                ResourceType.Database, Paths.DATABASES_ROOT, database, requestHeaders, options);
+
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -419,22 +419,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Database>> deleteDatabase(String databaseLink, RequestOptions options) {
-        if (StringUtils.isEmpty(databaseLink)) {
-            throw new IllegalArgumentException("databaseLink");
-        }
-
-        logger.debug("Deleting a Database. databaseLink: [{}]", databaseLink);
-        String path = Utils.joinPath(databaseLink, null);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
-            ResourceType.Database, path, requestHeaders, options);
-
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDatabaseInternal(retryPolicyInstance, request), retryPolicyInstance);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDatabaseInternal(databaseLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Mono<ResourceResponse<Database>> deleteDatabaseInternal(DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<Database>> deleteDatabaseInternal(String databaseLink, RequestOptions options,
+                                                                    DocumentClientRetryPolicy retryPolicyInstance) {
         try {
+            if (StringUtils.isEmpty(databaseLink)) {
+                throw new IllegalArgumentException("databaseLink");
+            }
+
+            logger.debug("Deleting a Database. databaseLink: [{}]", databaseLink);
+            String path = Utils.joinPath(databaseLink, null);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
+                ResourceType.Database, path, requestHeaders, options);
+
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -448,22 +449,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Database>> readDatabase(String databaseLink, RequestOptions options) {
-        if (StringUtils.isEmpty(databaseLink)) {
-            throw new IllegalArgumentException("databaseLink");
-        }
-
-        logger.debug("Reading a Database. databaseLink: [{}]", databaseLink);
-        String path = Utils.joinPath(databaseLink, null);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
-            ResourceType.Database, path, requestHeaders, options);
-
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> readDatabaseInternal(retryPolicyInstance, request), retryPolicyInstance);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> readDatabaseInternal(databaseLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Mono<ResourceResponse<Database>> readDatabaseInternal(DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<Database>> readDatabaseInternal(String databaseLink, RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
         try {
+            if (StringUtils.isEmpty(databaseLink)) {
+                throw new IllegalArgumentException("databaseLink");
+            }
+
+            logger.debug("Reading a Database. databaseLink: [{}]", databaseLink);
+            String path = Utils.joinPath(databaseLink, null);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
+                ResourceType.Database, path, requestHeaders, options);
+
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -546,42 +547,41 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<DocumentCollection>> createCollection(String databaseLink,
-                                                                             DocumentCollection collection, RequestOptions options) {
-        if (StringUtils.isEmpty(databaseLink)) {
-            throw new IllegalArgumentException("databaseLink");
-        }
-        if (collection == null) {
-            throw new IllegalArgumentException("collection");
-        }
-
-        logger.debug("Creating a Collection. databaseLink: [{}], Collection id: [{}]", databaseLink,
-            collection.getId());
-        validateResource(collection);
-
-        String path = Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
-            ResourceType.DocumentCollection, path, collection, requestHeaders, options);
-
+                                                                       DocumentCollection collection, RequestOptions options) {
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> this.createCollectionInternal(retryPolicyInstance, request), retryPolicyInstance);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> this.createCollectionInternal(databaseLink, collection, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Mono<ResourceResponse<DocumentCollection>> createCollectionInternal(DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<DocumentCollection>> createCollectionInternal(String databaseLink,
+                                                                                DocumentCollection collection, RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
         try {
+            if (StringUtils.isEmpty(databaseLink)) {
+                throw new IllegalArgumentException("databaseLink");
+            }
+            if (collection == null) {
+                throw new IllegalArgumentException("collection");
+            }
 
+            logger.debug("Creating a Collection. databaseLink: [{}], Collection id: [{}]", databaseLink,
+                collection.getId());
+            validateResource(collection);
+
+            String path = Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
+                ResourceType.DocumentCollection, path, collection, requestHeaders, options);
 
             if (retryPolicyInstance != null){
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
             return this.create(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class))
-                    .doOnNext(resourceResponse -> {
-                        // set the session token
-                        this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
-                                getAltLink(resourceResponse.getResource()),
-                                resourceResponse.getResponseHeaders());
-                    });
+                .doOnNext(resourceResponse -> {
+                    // set the session token
+                    this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
+                        getAltLink(resourceResponse.getResource()),
+                        resourceResponse.getResponseHeaders());
+                });
         } catch (Exception e) {
             logger.debug("Failure in creating a collection. due to [{}]", e.getMessage(), e);
             return Mono.error(e);
@@ -590,27 +590,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<DocumentCollection>> replaceCollection(DocumentCollection collection,
-                                                                              RequestOptions options) {
-        if (collection == null) {
-            throw new IllegalArgumentException("collection");
-        }
-
-        logger.debug("Replacing a Collection. id: [{}]", collection.getId());
-        validateResource(collection);
-
-        String path = Utils.joinPath(collection.getSelfLink(), null);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
-
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
-            ResourceType.DocumentCollection, path, collection, requestHeaders, options);
-
+                                                                        RequestOptions options) {
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceCollectionInternal(retryPolicyInstance, request), retryPolicyInstance);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceCollectionInternal(collection, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Mono<ResourceResponse<DocumentCollection>> replaceCollectionInternal(DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<DocumentCollection>> replaceCollectionInternal(DocumentCollection collection,
+                                                                                 RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
         try {
+            if (collection == null) {
+                throw new IllegalArgumentException("collection");
+            }
 
+            logger.debug("Replacing a Collection. id: [{}]", collection.getId());
+            validateResource(collection);
+
+            String path = Utils.joinPath(collection.getSelfLink(), null);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
+                ResourceType.DocumentCollection, path, collection, requestHeaders, options);
 
             // TODO: .Net has some logic for updating session token which we don't
             // have here
@@ -619,14 +618,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class))
-                    .doOnNext(resourceResponse -> {
-                        if (resourceResponse.getResource() != null) {
-                            // set the session token
-                            this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
-                                    getAltLink(resourceResponse.getResource()),
-                                    resourceResponse.getResponseHeaders());
-                        }
-                    });
+                .doOnNext(resourceResponse -> {
+                    if (resourceResponse.getResource() != null) {
+                        // set the session token
+                        this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
+                            getAltLink(resourceResponse.getResource()),
+                            resourceResponse.getResponseHeaders());
+                    }
+                });
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a collection. due to [{}]", e.getMessage(), e);
@@ -636,23 +635,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink,
-                                                                             RequestOptions options) {
-        if (StringUtils.isEmpty(collectionLink)) {
-            throw new IllegalArgumentException("collectionLink");
-        }
-
-        logger.debug("Deleting a Collection. collectionLink: [{}]", collectionLink);
-        String path = Utils.joinPath(collectionLink, null);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
-            ResourceType.DocumentCollection, path, requestHeaders, options);
-
+                                                                       RequestOptions options) {
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteCollectionInternal(retryPolicyInstance, request), retryPolicyInstance);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteCollectionInternal(collectionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Mono<ResourceResponse<DocumentCollection>> deleteCollectionInternal(DocumentClientRetryPolicy retryPolicyInstance,RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<DocumentCollection>> deleteCollectionInternal(String collectionLink,
+                                                                                RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
         try {
+            if (StringUtils.isEmpty(collectionLink)) {
+                throw new IllegalArgumentException("collectionLink");
+            }
+
+            logger.debug("Deleting a Collection. collectionLink: [{}]", collectionLink);
+            String path = Utils.joinPath(collectionLink, null);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
+                ResourceType.DocumentCollection, path, requestHeaders, options);
+
             if (retryPolicyInstance != null){
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -702,28 +702,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<DocumentCollection>> readCollection(String collectionLink,
-                                                                           RequestOptions options) {
-        if (StringUtils.isEmpty(collectionLink)) {
-            throw new IllegalArgumentException("collectionLink");
-        }
-
-        logger.debug("Reading a Collection. collectionLink: [{}]", collectionLink);
-        String path = Utils.joinPath(collectionLink, null);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
-            ResourceType.DocumentCollection, path, requestHeaders, options);
-
+                                                                     RequestOptions options) {
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> readCollectionInternal(retryPolicyInstance, request), retryPolicyInstance);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> readCollectionInternal(collectionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Mono<ResourceResponse<DocumentCollection>> readCollectionInternal(DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<DocumentCollection>> readCollectionInternal(String collectionLink,
+                                                                              RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
 
         // we are using an observable factory here
         // observable will be created fresh upon subscription
         // this is to ensure we capture most up to date information (e.g.,
         // session)
         try {
+            if (StringUtils.isEmpty(collectionLink)) {
+                throw new IllegalArgumentException("collectionLink");
+            }
+
+            logger.debug("Reading a Collection. collectionLink: [{}]", collectionLink);
+            String path = Utils.joinPath(collectionLink, null);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
+                ResourceType.DocumentCollection, path, requestHeaders, options);
+
             if (retryPolicyInstance != null){
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -1076,29 +1077,31 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> createDocument(String collectionLink, Object document,
-                                                                 RequestOptions options, boolean disableAutomaticIdGeneration) {
+                                                           RequestOptions options, boolean disableAutomaticIdGeneration) {
         DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         if (options == null || options.getPartitionKey() == null) {
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
         }
 
-        DocumentClientRetryPolicy documentClientRetryPolicy = requestRetryPolicy;
-        logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
-
-        Mono<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(collectionLink, document,
-            options, disableAutomaticIdGeneration, OperationType.Create);
-        return requestObs
-            .flatMap(req -> {
-                return ObservableHelper.inlineIfPossibleAsObs(() -> createDocumentInternal(documentClientRetryPolicy, req), documentClientRetryPolicy);
-            });
+        DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
+        return ObservableHelper.inlineIfPossibleAsObs(() -> createDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance), requestRetryPolicy);
     }
 
-    private Mono<ResourceResponse<Document>> createDocumentInternal(DocumentClientRetryPolicy requestRetryPolicy, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<Document>> createDocumentInternal(String collectionLink, Object document,
+                                                                    RequestOptions options, boolean disableAutomaticIdGeneration, DocumentClientRetryPolicy requestRetryPolicy) {
         try {
-            if (requestRetryPolicy != null) {
-                requestRetryPolicy.onBeforeSendRequest(request);
-            }
-            Mono<RxDocumentServiceResponse> responseObservable = create(request, requestRetryPolicy);
+            logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
+
+            Mono<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(collectionLink, document,
+                options, disableAutomaticIdGeneration, OperationType.Create);
+
+            Mono<RxDocumentServiceResponse> responseObservable = requestObs.flatMap(request -> {
+                if (requestRetryPolicy != null) {
+                    requestRetryPolicy.onBeforeSendRequest(request);
+                }
+
+                return create(request, requestRetryPolicy);
+            });
 
             return responseObservable
                     .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
@@ -1112,27 +1115,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<Document>> upsertDocument(String collectionLink, Object document,
                                                                  RequestOptions options, boolean disableAutomaticIdGeneration) {
-
         DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         if (options == null || options.getPartitionKey() == null) {
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
         }
-
-        logger.debug("Upserting a Document. collectionLink: [{}]", collectionLink);
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
-        Mono<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(collectionLink, document,
-            options, disableAutomaticIdGeneration, OperationType.Upsert);
-        return reqObs.flatMap(req -> {
-            return ObservableHelper.inlineIfPossibleAsObs(() -> upsertDocumentInternal(finalRetryPolicyInstance, req), finalRetryPolicyInstance);
-            });
+        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance), finalRetryPolicyInstance);
     }
 
-    private Mono<ResourceResponse<Document>> upsertDocumentInternal(DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<Document>> upsertDocumentInternal(String collectionLink, Object document,
+                                                                    RequestOptions options, boolean disableAutomaticIdGeneration, DocumentClientRetryPolicy retryPolicyInstance) {
         try {
-            if (retryPolicyInstance != null) {
-                retryPolicyInstance.onBeforeSendRequest(request);
-            }
-            Mono<RxDocumentServiceResponse> responseObservable = upsert(request, retryPolicyInstance);
+            logger.debug("Upserting a Document. collectionLink: [{}]", collectionLink);
+
+            Mono<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(collectionLink, document,
+                options, disableAutomaticIdGeneration, OperationType.Upsert);
+
+            Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> {
+                if (retryPolicyInstance != null) {
+                    retryPolicyInstance.onBeforeSendRequest(request);
+                }
+
+                return upsert(request, retryPolicyInstance);
+            });
+
             return responseObservable
                     .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
         } catch (Exception e) {
@@ -1151,27 +1157,28 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
         }
         DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
-        if (document == null) {
-            throw new IllegalArgumentException("document");
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(documentLink, document, options, finalRequestRetryPolicy), requestRetryPolicy);
+    }
+
+    private Mono<ResourceResponse<Document>> replaceDocumentInternal(String documentLink, Object document,
+                                                                     RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
+        try {
+            if (StringUtils.isEmpty(documentLink)) {
+                throw new IllegalArgumentException("documentLink");
+            }
+
+            if (document == null) {
+                throw new IllegalArgumentException("document");
+            }
+
+            Document typedDocument = documentFromObject(document, mapper);
+
+            return this.replaceDocumentInternal(documentLink, typedDocument, options, retryPolicyInstance);
+
+        } catch (Exception e) {
+            logger.debug("Failure in replacing a document due to [{}]", e.getMessage());
+            return Mono.error(e);
         }
-        if (StringUtils.isEmpty(documentLink)) {
-            throw new IllegalArgumentException("documentLink");
-        }
-
-        if (document == null) {
-            throw new IllegalArgumentException("document");
-        }
-
-        Document typedDocument = documentFromObject(document, mapper);
-        logger.debug("Replacing a Document. documentLink: [{}]", documentLink);
-        final String path = Utils.joinPath(documentLink, null);
-        final Map<String, String> requestHeaders = getRequestHeaders(options);
-
-        String content = toJsonString(typedDocument, mapper);
-
-        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
-            ResourceType.Document, path, requestHeaders, options, content);
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(typedDocument, options, content, finalRequestRetryPolicy, request), finalRequestRetryPolicy);
     }
 
     @Override
@@ -1182,30 +1189,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
         }
         DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
-        if (document == null) {
-            throw new IllegalArgumentException("document");
-        }
-
-        logger.debug("Replacing a Document. documentLink: [{}]", document.getSelfLink());
-        final String path = Utils.joinPath(document.getSelfLink(), null);
-        final Map<String, String> requestHeaders = getRequestHeaders(options);
-
-        String content = toJsonString(document, mapper);
-
-        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
-            ResourceType.Document, path, requestHeaders, options, content);
-
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(document, options, content, finalRequestRetryPolicy, request), requestRetryPolicy);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(document, options, finalRequestRetryPolicy), requestRetryPolicy);
     }
 
-    private Mono<ResourceResponse<Document>> replaceDocumentInternal(Document document, RequestOptions options, String content, DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<Document>> replaceDocumentInternal(Document document, RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             if (document == null) {
                 throw new IllegalArgumentException("document");
             }
 
-            return this.replaceDocumentInternal(document.getSelfLink(), document, options, content, retryPolicyInstance, request);
+            return this.replaceDocumentInternal(document.getSelfLink(), document, options, retryPolicyInstance);
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a database due to [{}]", e.getMessage());
@@ -1213,8 +1207,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private Mono<ResourceResponse<Document>> replaceDocumentInternal(String documentLink, Document document,
-                                                                     RequestOptions options, String content, DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<Document>> replaceDocumentInternal(String documentLink,
+                                                                     Document document,
+                                                                     RequestOptions options,
+                                                                     DocumentClientRetryPolicy retryPolicyInstance) {
+
+        if (document == null) {
+            throw new IllegalArgumentException("document");
+        }
+
+        logger.debug("Replacing a Document. documentLink: [{}]", documentLink);
+        final String path = Utils.joinPath(documentLink, null);
+        final Map<String, String> requestHeaders = getRequestHeaders(options);
+
+        String content = toJsonString(document, mapper);
+
+        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
+            ResourceType.Document, path, requestHeaders, options, content);
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
         Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
@@ -1229,22 +1238,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options) {
-        if (StringUtils.isEmpty(documentLink)) {
-            throw new IllegalArgumentException("documentLink");
-        }
-
-        logger.debug("Deleting a Document. documentLink: [{}]", documentLink);
-        String path = Utils.joinPath(documentLink, null);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
-            ResourceType.Document, path, requestHeaders, options);
         DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(options, requestRetryPolicy, request), requestRetryPolicy);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, options, requestRetryPolicy), requestRetryPolicy);
     }
 
-    private Mono<ResourceResponse<Document>> deleteDocumentInternal(RequestOptions options,
-                                                                          DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, RequestOptions options,
+                                                                    DocumentClientRetryPolicy retryPolicyInstance) {
         try {
+            if (StringUtils.isEmpty(documentLink)) {
+                throw new IllegalArgumentException("documentLink");
+            }
+
+            logger.debug("Deleting a Document. documentLink: [{}]", documentLink);
+            String path = Utils.joinPath(documentLink, null);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
+                ResourceType.Document, path, requestHeaders, options);
+
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
@@ -1254,7 +1264,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     retryPolicyInstance.onBeforeSendRequest(req);
                 }
                 return this.delete(req, retryPolicyInstance)
-                        .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));});
+                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));});
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a document due to [{}]", e.getMessage());
@@ -1264,22 +1274,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options) {
-        if (StringUtils.isEmpty(documentLink)) {
-            throw new IllegalArgumentException("documentLink");
-        }
-
-        logger.debug("Reading a Document. documentLink: [{}]", documentLink);
-        String path = Utils.joinPath(documentLink, null);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
-            ResourceType.Document, path, requestHeaders, options);
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> readDocumentInternal(options, retryPolicyInstance, request), retryPolicyInstance);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> readDocumentInternal(documentLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Mono<ResourceResponse<Document>> readDocumentInternal(RequestOptions options,
-                                                                        DocumentClientRetryPolicy retryPolicyInstance, RxDocumentServiceRequest request) {
+    private Mono<ResourceResponse<Document>> readDocumentInternal(String documentLink, RequestOptions options,
+                                                                  DocumentClientRetryPolicy retryPolicyInstance) {
         try {
+            if (StringUtils.isEmpty(documentLink)) {
+                throw new IllegalArgumentException("documentLink");
+            }
+
+            logger.debug("Reading a Document. documentLink: [{}]", documentLink);
+            String path = Utils.joinPath(documentLink, null);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
+                ResourceType.Document, path, requestHeaders, options);
+
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
