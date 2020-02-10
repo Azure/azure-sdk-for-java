@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -234,41 +233,41 @@ public class CosmosContainer {
     }
 
     /**
-     * Read all items {@link IterableStream}.
+     * Read all items {@link CosmosContinuablePagedIterable}.
      *
      * @param <T> the type parameter
      * @param options the options
      * @param klass the klass
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public <T> IterableStream<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
-        return getFeedIterableStream(this.asyncContainer.readAllItems(options, klass));
+    public <T> CosmosContinuablePagedIterable<T> readAllItems(FeedOptions options, Class<T> klass) {
+        return getCosmosContinuablePagedIterable(this.asyncContainer.readAllItems(options, klass));
     }
 
     /**
-     * Query items {@link IterableStream}.
+     * Query items {@link CosmosContinuablePagedIterable}.
      *
      * @param <T> the type parameter
      * @param query the query
      * @param options the options
      * @param klass the class type
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public <T> IterableStream<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
-        return getFeedIterableStream(this.asyncContainer.queryItems(query, options, klass));
+    public <T> CosmosContinuablePagedIterable<T> queryItems(String query, FeedOptions options, Class<T> klass) {
+        return getCosmosContinuablePagedIterable(this.asyncContainer.queryItems(query, options, klass));
     }
 
     /**
-     * Query items {@link IterableStream}.
+     * Query items {@link CosmosContinuablePagedIterable}.
      *
      * @param <T> the type parameter
      * @param querySpec the query spec
      * @param options the options
      * @param klass the class type
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public <T> IterableStream<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return getFeedIterableStream(this.asyncContainer.queryItems(querySpec, options, klass));
+    public <T> CosmosContinuablePagedIterable<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
+        return getCosmosContinuablePagedIterable(this.asyncContainer.queryItems(querySpec, options, klass));
     }
 
     /**
@@ -352,8 +351,8 @@ public class CosmosContainer {
         return new CosmosItemResponse<T>(response);
     }
 
-    private <T> IterableStream<FeedResponse<T>> getFeedIterableStream(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
-        return IterableStream.of(cosmosContinuablePagedFlux.byPage().toIterable(1));
+    private <T> CosmosContinuablePagedIterable<T> getCosmosContinuablePagedIterable(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
+        return new CosmosContinuablePagedIterable<>(cosmosContinuablePagedFlux);
     }
 
 }

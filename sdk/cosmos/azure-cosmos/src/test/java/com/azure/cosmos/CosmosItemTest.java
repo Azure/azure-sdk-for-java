@@ -6,7 +6,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.IterableStream;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
@@ -125,7 +124,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
 
-        IterableStream<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
+        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator3 =
                 container.readAllItems(feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
@@ -139,13 +138,13 @@ public class CosmosItemTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        IterableStream<FeedResponse<CosmosItemProperties>> feedResponseIterator1 =
+        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator1 =
                 container.queryItems(query, feedOptions, CosmosItemProperties.class);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        IterableStream<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
+        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator3 =
                 container.queryItems(querySpec, feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
