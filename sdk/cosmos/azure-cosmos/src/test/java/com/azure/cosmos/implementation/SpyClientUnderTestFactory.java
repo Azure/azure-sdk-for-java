@@ -33,7 +33,7 @@ public class SpyClientUnderTestFactory {
     public static abstract class SpyBaseClass<T> extends RxDocumentClientImpl {
 
         public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential) {
-            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential);
+            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, false);
         }
 
         public abstract List<T> getCapturedRequests();

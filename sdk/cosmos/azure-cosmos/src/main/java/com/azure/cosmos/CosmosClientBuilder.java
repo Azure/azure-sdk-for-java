@@ -36,8 +36,29 @@ public class CosmosClientBuilder {
     private List<Permission> permissions;
     private TokenResolver tokenResolver;
     private CosmosKeyCredential cosmosKeyCredential;
+    private boolean sessionCapturingOverride;
 
     public CosmosClientBuilder() {
+    }
+
+    /**
+     * Session capturing is enabled by default for {@link ConsistencyLevel#SESSION}.
+     * For other consistency levels, it is not needed, unless if you need occasionally send requests with Session
+     * Consistency while the client is not configured in session.
+     *
+     * enabling Session capturing for Session mode has no effect.
+     * @param sessionCapturingOverride the session capturing override
+     */
+    public void enableSessionCapturing(boolean sessionCapturingOverride) {
+        this.sessionCapturingOverride = sessionCapturingOverride;
+    }
+
+    /**
+     * Indicates if Session Capturing is enabled for non Session modes.
+     * @return the session capturing override
+     */
+    public boolean isSessionCapturingOverride() {
+        return this.sessionCapturingOverride;
     }
 
     /**

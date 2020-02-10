@@ -76,6 +76,7 @@ public interface AsyncDocumentClient {
         URI serviceEndpoint;
         TokenResolver tokenResolver;
         CosmosKeyCredential cosmosKeyCredential;
+        boolean sessionCapturingOverride;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -134,6 +135,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withSessionCapturingOverride(boolean sessionCapturingOverride) {
+            this.sessionCapturingOverride = sessionCapturingOverride;
+            return this;
+        }
+
         public Builder withConnectionPolicy(ConnectionPolicy connectionPolicy) {
             this.connectionPolicy = connectionPolicy;
             return this;
@@ -182,7 +188,8 @@ public interface AsyncDocumentClient {
                                                                    desiredConsistencyLevel,
                                                                    configs,
                                                                    tokenResolver,
-                                                                    cosmosKeyCredential);
+                                                                   cosmosKeyCredential,
+                                                                   sessionCapturingOverride);
             client.init();
             return client;
         }

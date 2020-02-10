@@ -37,7 +37,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      ConsistencyLevel consistencyLevel,
                                      Configs configs,
                                      CosmosKeyCredential cosmosKeyCredential) {
-        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential);
+        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, false);
         init();
     }
 
