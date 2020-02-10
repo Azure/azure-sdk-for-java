@@ -2,17 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -23,7 +20,6 @@ import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-
 import com.azure.storage.queue.implementation.util.BuilderHelper;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +113,7 @@ public final class QueueClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public QueueClient buildClient() {
-        return new QueueClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new QueueClient(buildAsyncClient());
     }
 
     /**
@@ -136,16 +132,12 @@ public final class QueueClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public QueueAsyncClient buildAsyncClient() {
-        return buildAsyncClient(Context.NONE);
-    }
-
-    private QueueAsyncClient buildAsyncClient(Context context) {
         StorageImplUtils.assertNotNull("queueName", queueName);
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger, context);
+            httpClient, additionalPolicies, configuration, logger);
 
         AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageBuilder()
             .url(endpoint)

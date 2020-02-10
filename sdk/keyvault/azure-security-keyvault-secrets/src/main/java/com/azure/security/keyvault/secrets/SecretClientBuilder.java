@@ -3,8 +3,6 @@
 
 package com.azure.security.keyvault.secrets;
 
-import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
-
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.HttpPolicyProviders;
@@ -18,7 +16,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
@@ -104,7 +101,7 @@ public final class SecretClientBuilder {
      *     {@link SecretClientBuilder#vaultUrl(String)} have not been set.
      */
     public SecretClient buildClient() {
-        return new SecretClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new SecretClient(buildAsyncClient());
     }
 
     /**
@@ -123,10 +120,6 @@ public final class SecretClientBuilder {
      *     {@link SecretClientBuilder#vaultUrl(String)} have not been set.
      */
     public SecretAsyncClient buildAsyncClient() {
-        return buildAsyncClient(Context.NONE);
-    }
-
-    private SecretAsyncClient buildAsyncClient(Context context) {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
@@ -165,7 +158,6 @@ public final class SecretClientBuilder {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .context(context)
             .build();
 
         return new SecretAsyncClient(vaultUrl, pipeline, serviceVersion);

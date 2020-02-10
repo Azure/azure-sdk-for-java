@@ -3,8 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -18,7 +16,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
@@ -110,7 +107,7 @@ public final class CryptographyClientBuilder {
      *     either of ({@link CryptographyClientBuilder#keyIdentifier(String)} have not been set.
      */
     public CryptographyClient buildClient() {
-        return new CryptographyClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new CryptographyClient(buildAsyncClient());
     }
 
     /**
@@ -129,10 +126,6 @@ public final class CryptographyClientBuilder {
      * CryptographyClientBuilder#keyIdentifier(String)} have not been set.
      */
     public CryptographyAsyncClient buildAsyncClient() {
-        return buildAsyncClient(Context.NONE);
-    }
-
-    private CryptographyAsyncClient buildAsyncClient(Context context) {
         if (jsonWebKey == null && Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Json Web Key or jsonWebKey identifier are required to create cryptography client"));
@@ -152,7 +145,7 @@ public final class CryptographyClientBuilder {
                 "Key Vault credentials are required to build the Cryptography async client"));
         }
 
-        HttpPipeline pipeline = setupPipeline(context);
+        HttpPipeline pipeline = setupPipeline();
 
         if (jsonWebKey != null) {
             return new CryptographyAsyncClient(jsonWebKey, pipeline, serviceVersion);
@@ -161,7 +154,7 @@ public final class CryptographyClientBuilder {
         }
     }
 
-    HttpPipeline setupPipeline(Context context) {
+    HttpPipeline setupPipeline() {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
@@ -182,7 +175,6 @@ public final class CryptographyClientBuilder {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .context(context)
             .build();
     }
 

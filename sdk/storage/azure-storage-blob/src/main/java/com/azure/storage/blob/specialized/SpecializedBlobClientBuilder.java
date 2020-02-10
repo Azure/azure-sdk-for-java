@@ -3,17 +3,14 @@
 
 package com.azure.storage.blob.specialized;
 
-import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -23,21 +20,20 @@ import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import reactor.core.publisher.Flux;
-
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import reactor.core.publisher.Flux;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of specialized Storage Blob
@@ -89,7 +85,7 @@ public final class SpecializedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobClient buildAppendBlobClient() {
-        return new AppendBlobClient(buildAppendBlobAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new AppendBlobClient(buildAppendBlobAsyncClient());
     }
 
     /**
@@ -101,14 +97,10 @@ public final class SpecializedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
-        return buildAppendBlobAsyncClient(Context.NONE);
-    }
-
-    private AppendBlobAsyncClient buildAppendBlobAsyncClient(Context context) {
         validateConstruction();
         String containerName = getContainerName();
 
-        return new AppendBlobAsyncClient(getHttpPipeline(context), getUrl(containerName), getServiceVersion(),
+        return new AppendBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
             accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
@@ -122,7 +114,7 @@ public final class SpecializedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobClient buildBlockBlobClient() {
-        return new BlockBlobClient(buildBlockBlobAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new BlockBlobClient(buildBlockBlobAsyncClient());
     }
 
     /**
@@ -136,14 +128,10 @@ public final class SpecializedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
-        return buildBlockBlobAsyncClient(Context.NONE);
-    }
-
-    private BlockBlobAsyncClient buildBlockBlobAsyncClient(Context context) {
         validateConstruction();
         String containerName = getContainerName();
 
-        return new BlockBlobAsyncClient(getHttpPipeline(context), getUrl(containerName), getServiceVersion(),
+        return new BlockBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
             accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
@@ -157,7 +145,7 @@ public final class SpecializedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobClient buildPageBlobClient() {
-        return new PageBlobClient(buildPageBlobAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new PageBlobClient(buildPageBlobAsyncClient());
     }
 
     /**
@@ -170,14 +158,10 @@ public final class SpecializedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
-        return buildPageBlobAsyncClient(Context.NONE);
-    }
-
-    private PageBlobAsyncClient buildPageBlobAsyncClient(Context context) {
         validateConstruction();
         String containerName = getContainerName();
 
-        return new PageBlobAsyncClient(getHttpPipeline(context), getUrl(containerName), getServiceVersion(),
+        return new PageBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
             accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
@@ -202,10 +186,10 @@ public final class SpecializedBlobClientBuilder {
         return CoreUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME : containerName;
     }
 
-    private HttpPipeline getHttpPipeline(Context context) {
+    private HttpPipeline getHttpPipeline() {
         return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger, context);
+            httpClient, additionalPolicies, configuration, logger);
     }
 
     private BlobServiceVersion getServiceVersion() {

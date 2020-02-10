@@ -3,17 +3,14 @@
 
 package com.azure.storage.blob;
 
-import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
@@ -24,7 +21,6 @@ import com.azure.storage.common.implementation.connectionstring.StorageConnectio
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -87,7 +83,7 @@ public final class BlobContainerClientBuilder {
      * @return a {@link BlobContainerClient} created from the configurations in this builder.
      */
     public BlobContainerClient buildClient() {
-        return new BlobContainerClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new BlobContainerClient(buildAsyncClient());
     }
 
     /**
@@ -100,10 +96,6 @@ public final class BlobContainerClientBuilder {
      * @return a {@link BlobContainerAsyncClient} created from the configurations in this builder.
      */
     public BlobContainerAsyncClient buildAsyncClient() {
-        return buildAsyncClient(Context.NONE);
-    }
-
-    private BlobContainerAsyncClient buildAsyncClient(Context context) {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
 
         /*
@@ -118,7 +110,7 @@ public final class BlobContainerClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger, context);
+            httpClient, additionalPolicies, configuration, logger);
 
         return new BlobContainerAsyncClient(pipeline, String.format("%s/%s", endpoint, blobContainerName),
             serviceVersion, accountName, blobContainerName, customerProvidedKey);

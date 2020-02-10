@@ -4,7 +4,6 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.HttpClientProviders;
-import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 /**
@@ -20,31 +19,11 @@ public interface HttpClient {
     Mono<HttpResponse> send(HttpRequest request);
 
     /**
-     * Initializes the Http client with the given context.
-     *
-     * @param context The context to initialize this Http client with.
-     * @return The update instance of this {@link HttpClient}.
-     */
-    default HttpClient initContext(Context context) {
-        return this;
-    }
-
-    /**
      * Create default {@link HttpClient} instance.
      *
      * @return A new instance of the {@link HttpClient}.
      */
     static HttpClient createDefault() {
-        return createDefault(Context.NONE);
-    }
-
-    /**
-     * Creates default {@link HttpClient} instance with additional context.
-     *
-     * @param context The context to initialize the {@link HttpClient} with.
-     * @return A new instance of the {@link HttpClient}.
-     */
-    static HttpClient createDefault(Context context) {
-        return HttpClientProviders.createInstance(context);
+        return HttpClientProviders.createInstance();
     }
 }

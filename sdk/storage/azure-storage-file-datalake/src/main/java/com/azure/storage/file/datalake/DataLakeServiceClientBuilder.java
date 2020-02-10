@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.datalake;
 
-import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -12,7 +10,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -22,7 +19,6 @@ import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -78,18 +74,13 @@ public class DataLakeServiceClientBuilder {
      * @return a {@link DataLakeServiceClient} created from the configurations in this builder.
      */
     public DataLakeServiceClient buildClient() {
-        return new DataLakeServiceClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)),
-            blobServiceClientBuilder.buildClient());
+        return new DataLakeServiceClient(buildAsyncClient(), blobServiceClientBuilder.buildClient());
     }
 
     /**
      * @return a {@link DataLakeServiceAsyncClient} created from the configurations in this builder.
      */
     public DataLakeServiceAsyncClient buildAsyncClient() {
-        return buildAsyncClient(Context.NONE);
-    }
-
-    private DataLakeServiceAsyncClient buildAsyncClient(Context context) {
         if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
             && Objects.isNull(sasTokenCredential)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Data Lake Service Client cannot be accessed "
@@ -99,7 +90,7 @@ public class DataLakeServiceClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger, context);
+            httpClient, additionalPolicies, configuration, logger);
 
         return new DataLakeServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName,
             blobServiceClientBuilder.buildAsyncClient());

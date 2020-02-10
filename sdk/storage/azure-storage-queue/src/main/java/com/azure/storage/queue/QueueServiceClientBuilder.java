@@ -2,15 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -113,14 +110,10 @@ public final class QueueServiceClientBuilder {
      * {@link #sasToken(String) SAS token} has been set.
      */
     public QueueServiceAsyncClient buildAsyncClient() {
-        return buildAsyncClient(Context.NONE);
-    }
-
-    private QueueServiceAsyncClient buildAsyncClient(Context context) {
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger, context);
+            httpClient, additionalPolicies, configuration, logger);
 
         AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageBuilder()
             .url(endpoint)
@@ -147,7 +140,7 @@ public final class QueueServiceClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public QueueServiceClient buildClient() {
-        return new QueueServiceClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new QueueServiceClient(buildAsyncClient());
     }
 
 

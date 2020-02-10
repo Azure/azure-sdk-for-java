@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
@@ -18,9 +20,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
@@ -28,9 +29,9 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -39,17 +40,13 @@ import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
-import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
-
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Blob clients.
@@ -123,7 +120,7 @@ public final class EncryptedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public EncryptedBlobClient buildEncryptedBlobClient() {
-        return new EncryptedBlobClient(buildEncryptedBlobAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new EncryptedBlobClient(buildEncryptedBlobAsyncClient());
     }
 
     /**
@@ -137,10 +134,6 @@ public final class EncryptedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public EncryptedBlobAsyncClient buildEncryptedBlobAsyncClient() {
-        return buildEncryptedBlobAsyncClient(Context.NONE);
-    }
-
-    private EncryptedBlobAsyncClient buildEncryptedBlobAsyncClient(Context context) {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         checkValidEncryptionParameters();
 
@@ -153,12 +146,12 @@ public final class EncryptedBlobClientBuilder {
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        return new EncryptedBlobAsyncClient(getHttpPipeline(context),
+        return new EncryptedBlobAsyncClient(getHttpPipeline(),
             String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
             blobName, snapshot, keyWrapper, keyWrapAlgorithm);
     }
 
-    private HttpPipeline getHttpPipeline(Context context) {
+    private HttpPipeline getHttpPipeline() {
         if (httpPipeline != null) {
             return  httpPipeline;
         }
@@ -204,7 +197,6 @@ public final class EncryptedBlobClientBuilder {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .context(context)
             .build();
     }
 

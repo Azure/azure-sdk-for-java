@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.datalake;
 
-import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -12,7 +10,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -93,7 +90,7 @@ public final class DataLakePathClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
      */
     public DataLakeFileClient buildFileClient() {
-        return new DataLakeFileClient(buildFileAsyncClient(withDisabledBufferCopy(Context.NONE)),
+        return new DataLakeFileClient(buildFileAsyncClient(),
             blobClientBuilder.buildClient().getBlockBlobClient());
     }
 
@@ -108,10 +105,6 @@ public final class DataLakePathClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
      */
     public DataLakeFileAsyncClient buildFileAsyncClient() {
-        return buildFileAsyncClient(Context.NONE);
-    }
-
-    private DataLakeFileAsyncClient buildFileAsyncClient(Context context) {
         Objects.requireNonNull(pathName, "'pathName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
@@ -127,7 +120,7 @@ public final class DataLakePathClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger, context);
+            httpClient, additionalPolicies, configuration, logger);
 
         return new DataLakeFileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
             pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,

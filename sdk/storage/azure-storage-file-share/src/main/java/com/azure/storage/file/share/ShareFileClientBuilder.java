@@ -3,14 +3,11 @@
 
 package com.azure.storage.file.share;
 
-import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -118,7 +115,7 @@ public class ShareFileClientBuilder {
         return version != null ? version : ShareServiceVersion.getLatest();
     }
 
-    private AzureFileStorageImpl constructImpl(ShareServiceVersion serviceVersion, Context context) {
+    private AzureFileStorageImpl constructImpl(ShareServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
 
@@ -131,7 +128,7 @@ public class ShareFileClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, context);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
         return new AzureFileStorageBuilder()
             .url(endpoint)
@@ -156,12 +153,8 @@ public class ShareFileClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public ShareDirectoryAsyncClient buildDirectoryAsyncClient() {
-        return buildDirectoryAsyncClient(Context.NONE);
-    }
-
-    private ShareDirectoryAsyncClient buildDirectoryAsyncClient(Context context) {
         ShareServiceVersion serviceVersion = getServiceVersion();
-        return new ShareDirectoryAsyncClient(constructImpl(serviceVersion, context), shareName, resourcePath,
+        return new ShareDirectoryAsyncClient(constructImpl(serviceVersion), shareName, resourcePath,
             shareSnapshot, accountName, serviceVersion);
     }
 
@@ -181,7 +174,7 @@ public class ShareFileClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public ShareDirectoryClient buildDirectoryClient() {
-        return new ShareDirectoryClient(this.buildDirectoryAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new ShareDirectoryClient(this.buildDirectoryAsyncClient());
     }
 
     /**
@@ -200,12 +193,8 @@ public class ShareFileClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public ShareFileAsyncClient buildFileAsyncClient() {
-        return buildFileAsyncClient(Context.NONE);
-    }
-
-    private ShareFileAsyncClient buildFileAsyncClient(Context context) {
         ShareServiceVersion serviceVersion = getServiceVersion();
-        return new ShareFileAsyncClient(constructImpl(serviceVersion, context), shareName, resourcePath, shareSnapshot,
+        return new ShareFileAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
             accountName, serviceVersion);
     }
 
@@ -225,7 +214,7 @@ public class ShareFileClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public ShareFileClient buildFileClient() {
-        return new ShareFileClient(this.buildFileAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new ShareFileClient(this.buildFileAsyncClient());
     }
 
     /**

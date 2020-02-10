@@ -3,8 +3,6 @@
 
 package com.azure.security.keyvault.certificates;
 
-import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -17,7 +15,6 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -101,7 +98,7 @@ public final class CertificateClientBuilder {
      * {@link CertificateClientBuilder#vaultUrl(String)} have not been set.
      */
     public CertificateClient buildClient() {
-        return new CertificateClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
+        return new CertificateClient(buildAsyncClient());
     }
 
     /**
@@ -120,10 +117,6 @@ public final class CertificateClientBuilder {
      * CertificateClientBuilder#vaultUrl(String)} have not been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
-        return buildAsyncClient(Context.NONE);
-    }
-
-    private CertificateAsyncClient buildAsyncClient(Context context) {
         Configuration buildConfiguration = (configuration != null) ? configuration
             : Configuration.getGlobalConfiguration().clone();
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
@@ -161,7 +154,6 @@ public final class CertificateClientBuilder {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .context(context)
             .build();
 
         return new CertificateAsyncClient(vaultUrl, pipeline, serviceVersion);
