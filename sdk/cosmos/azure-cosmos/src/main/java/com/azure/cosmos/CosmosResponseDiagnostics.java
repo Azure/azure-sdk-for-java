@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,11 @@ import java.time.Duration;
 public class CosmosResponseDiagnostics {
     private static final Logger logger = LoggerFactory.getLogger(CosmosResponseDiagnostics.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    static {
+        objectMapper.registerModule(new AfterburnerModule());
+    }
+
     private ClientSideRequestStatistics clientSideRequestStatistics;
 
     CosmosResponseDiagnostics() {
