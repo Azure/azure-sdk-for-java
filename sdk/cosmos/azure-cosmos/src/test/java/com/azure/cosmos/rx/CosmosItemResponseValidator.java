@@ -1,9 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
