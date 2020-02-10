@@ -55,10 +55,10 @@ public class RetryAnalyzer extends RetryAnalyzerCount {
             return null;
         }
 
-        if (t instanceof CosmosClientException) {
-            return (CosmosClientException) t;
+        while(!(t instanceof CosmosClientException)) {
+            t = t.getCause();
         }
-
-        return extractCosmosClientExceptionIfAny(t.getCause());
+        
+        return (CosmosClientException) t;
     }
 }

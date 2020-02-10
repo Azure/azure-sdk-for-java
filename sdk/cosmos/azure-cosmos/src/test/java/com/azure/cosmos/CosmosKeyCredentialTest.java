@@ -329,9 +329,9 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block().getDatabase();
     }
 
-    @BeforeMethod(groups = { "simple" }, timeOut = 3 * TIMEOUT)
+    @BeforeMethod(groups = { "simple" }, timeOut = TIMEOUT)
     public void beforeMethod() throws Exception {
-        Thread.sleep(2 * TIMEOUT);
+        Thread.sleep(TIMEOUT / 2);
     }
 
     @AfterMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
