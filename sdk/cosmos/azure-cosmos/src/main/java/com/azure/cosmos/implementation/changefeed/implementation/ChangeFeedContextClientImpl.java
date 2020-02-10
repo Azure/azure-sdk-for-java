@@ -13,7 +13,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -22,6 +22,8 @@ import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
+import com.fasterxml.jackson.databind.JsonNode;
+import jdk.nashorn.internal.ir.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -82,15 +84,16 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Flux<FeedResponse<CosmosItemProperties>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink, ChangeFeedOptions feedOptions) {
+    public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
+                                                                      ChangeFeedOptions feedOptions) {
         AsyncDocumentClient clientWrapper =
             CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
-        Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux =
+        Flux<FeedResponse<JsonNode>> feedResponseFlux =
             clientWrapper.queryDocumentChangeFeed(BridgeInternal.extractContainerSelfLink(collectionLink), feedOptions)
                                                                     .map(response -> {
-                                                                        List<CosmosItemProperties> results = response.getResults()
+                                                                        List<JsonNode> results = response.getResults()
                                                                                                                      .stream()
-                                                                                                                     .map(document -> new CosmosItemProperties(document.toJson()))
+                                                                                                                     .map(document -> document.toObject(JsonNode.class))
                                                                                                                      .collect(Collectors.toList());
                                                                         return BridgeInternal.toFeedResponsePage(results, response.getResponseHeaders(), false);
                                                                     });

@@ -60,7 +60,7 @@ public class Resource extends JsonSerializable {
      * @param objectNode the {@link ObjectNode} that represent the
      * {@link JsonSerializable}
      */
-    Resource(ObjectNode objectNode) {
+    protected Resource(ObjectNode objectNode) {
         super(objectNode);
     }
 

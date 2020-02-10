@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
@@ -172,7 +173,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     private CosmosItemProperties getCosmosItemProperties() {
         CosmosItemProperties cosmosItemProperties = new CosmosItemProperties();
         cosmosItemProperties.setId(UUID.randomUUID().toString());
-        cosmosItemProperties.set("mypk", "test");
+        BridgeInternal.setProperty(cosmosItemProperties, "mypk", "test");
         return cosmosItemProperties;
     }
 

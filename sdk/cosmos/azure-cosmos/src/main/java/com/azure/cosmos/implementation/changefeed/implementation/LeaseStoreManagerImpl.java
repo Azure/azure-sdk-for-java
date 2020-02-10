@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.SqlParameter;

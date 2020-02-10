@@ -7,6 +7,8 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.IterableStream;
+import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;

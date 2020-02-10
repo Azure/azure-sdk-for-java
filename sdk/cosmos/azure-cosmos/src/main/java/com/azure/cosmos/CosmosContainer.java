@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.IterableStream;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 

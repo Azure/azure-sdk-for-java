@@ -25,7 +25,7 @@ import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosDatabaseProperties;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.CosmosResponse;
 import com.azure.cosmos.CosmosResponseValidator;
@@ -749,6 +749,29 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         flowable.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
+        testSubscriber.assertNotComplete();
+        testSubscriber.assertTerminated();
+        assertThat(testSubscriber.errors()).hasSize(1);
+        validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
+    }
+
+    public <T extends CosmosAsyncItemResponse> void validateItemSuccess(
+        Mono<T> responseMono, CosmosItemResponseValidator validator) {
+
+        TestSubscriber<CosmosAsyncItemResponse> testSubscriber = new TestSubscriber<>();
+        responseMono.subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent(subscriberValidationTimeout, TimeUnit.MILLISECONDS);
+        testSubscriber.assertNoErrors();
+        testSubscriber.assertComplete();
+        testSubscriber.assertValueCount(1);
+        validator.validate(testSubscriber.values().get(0));
+    }
+
+    public <T extends CosmosAsyncItemResponse> void validateItemFailure(
+        Mono<T> responseMono, FailureValidator validator) {
+        TestSubscriber<CosmosAsyncItemResponse> testSubscriber = new TestSubscriber<>();
+        responseMono.subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent(subscriberValidationTimeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNotComplete();
         testSubscriber.assertTerminated();
         assertThat(testSubscriber.errors()).hasSize(1);

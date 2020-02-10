@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.AccessCondition;
 import com.azure.cosmos.AccessConditionType;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;

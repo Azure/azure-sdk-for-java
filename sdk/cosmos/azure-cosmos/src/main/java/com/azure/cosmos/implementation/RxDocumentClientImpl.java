@@ -2,23 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemProperties;
-import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
-import com.azure.cosmos.implementation.caches.RxCollectionCache;
-import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
-import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
-import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
-import com.azure.cosmos.implementation.directconnectivity.StoreClient;
-import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpClientConfig;
-import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
-import com.azure.cosmos.implementation.query.IDocumentQueryClient;
-import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
-import com.azure.cosmos.implementation.query.Paginator;
-import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedOptions;
@@ -36,6 +19,22 @@ import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.TokenResolver;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
+import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
+import com.azure.cosmos.implementation.directconnectivity.StoreClient;
+import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
+import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpClientConfig;
+import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
+import com.azure.cosmos.implementation.query.IDocumentQueryClient;
+import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
+import com.azure.cosmos.implementation.query.Paginator;
+import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
@@ -61,9 +60,9 @@ import static com.azure.cosmos.BridgeInternal.documentFromObject;
 import static com.azure.cosmos.BridgeInternal.getAltLink;
 import static com.azure.cosmos.BridgeInternal.toDatabaseAccount;
 import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
-import static com.azure.cosmos.BridgeInternal.toJsonString;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
+import static com.azure.cosmos.implementation.CosmosItemProperties.toJsonString;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
