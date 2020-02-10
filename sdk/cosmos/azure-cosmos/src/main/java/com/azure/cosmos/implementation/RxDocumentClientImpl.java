@@ -918,20 +918,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
         }
 
-        request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, escapeNonAscii(partitionKeyInternal.toJson()));
-    }
-
-    private static String escapeNonAscii(String partitionKeyJson) {
-        StringBuilder sb = new StringBuilder(partitionKeyJson.length());
-        for (int i = 0; i < partitionKeyJson.length(); i++) {
-            int val = partitionKeyJson.charAt(i);
-            if (val > 127) {
-                sb.append("\\u").append(String.format("%04X", val));
-            } else {
-                sb.append(partitionKeyJson.charAt(i));
-            }
-        }
-        return sb.toString();
+        request.setPartitionKeyInternal(partitionKeyInternal);
+        request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
     }
 
     private static PartitionKeyInternal extractPartitionKeyValueFromDocument(

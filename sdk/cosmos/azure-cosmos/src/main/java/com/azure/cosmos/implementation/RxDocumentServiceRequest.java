@@ -12,6 +12,8 @@ import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
@@ -52,6 +54,9 @@ public class RxDocumentServiceRequest {
     private volatile Integer defaultReplicaIndex;
 
     public DocumentServiceRequestContext requestContext;
+
+    // has the non serialized value of the partition-key
+    private PartitionKeyInternal partitionKeyInternal;
 
     private Flux<byte[]> contentObservable;
     private ByteBuffer byteBuffer;
@@ -967,6 +972,19 @@ public class RxDocumentServiceRequest {
         return defaultReplicaIndex;
     }
 
+    /**
+     * To avoid deserialization of PartitionKey in Address Resolver, when you set PartitionKey header value,
+     * you should also set PartitionKeyInternal.
+     * @param partitionKeyInternal
+     */
+    public void setPartitionKeyInternal(PartitionKeyInternal partitionKeyInternal) {
+        this.partitionKeyInternal = partitionKeyInternal;
+    }
+
+    public PartitionKeyInternal getPartitionKeyInternal() {
+        return this.partitionKeyInternal;
+    }
+
     public boolean isChangeFeedRequest() {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
     }
@@ -1096,8 +1114,8 @@ public class RxDocumentServiceRequest {
 
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
-        // TODO: this may require cloning data too?
         rxDocumentServiceRequest.setByteBuffer(wrapByteBuffer(toByteArray(this.getByteBuffer())));
+        rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
         rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());
         rxDocumentServiceRequest.setEndpointOverride(this.getEndpointOverride());
