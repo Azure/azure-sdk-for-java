@@ -223,7 +223,7 @@ public class AddressResolver implements IAddressResolver {
             PartitionKeyRange range;
             PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
 
-            if (partitionKeyInternal != null) {
+            if (partitionKeyInternal != null || request.getHeaders().containsKey(HttpConstants.HttpHeaders.PARTITION_KEY)) {
                 range = this.tryResolveServerPartitionByPartitionKey(
                     request,
                     partitionKeyInternal,
