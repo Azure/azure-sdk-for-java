@@ -4,12 +4,15 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.cryptography.Strings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  *  Key is the resource consisting of name, {@link JsonWebKey} and its attributes specified in {@link KeyProperties}.
@@ -104,6 +107,7 @@ public class KeyVaultKey {
      * @return The Key Vault Key object.
      */
     public static KeyVaultKey fromKeyId(String keyId, JsonWebKey jsonWebKey) {
+        Objects.requireNonNull(jsonWebKey, "The Json web key cannot be null");
         KeyProperties properties = new KeyProperties();
         properties.unpackId(keyId);
         return new KeyVaultKey(properties, jsonWebKey);
@@ -116,6 +120,7 @@ public class KeyVaultKey {
      * @return The Key Vault Key object.
      */
     public static KeyVaultKey fromName(String name, JsonWebKey jsonWebKey) {
+        Objects.requireNonNull(jsonWebKey, "The Json web key cannot be null");
         KeyProperties properties = new KeyProperties();
         properties.name = name;
         return new KeyVaultKey(properties, jsonWebKey);
