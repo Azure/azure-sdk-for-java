@@ -193,7 +193,6 @@
             },
             "kind": "FileStorage",
             "properties": {
-                "isHnsEnabled": true,
                 "networkAcls": {
                     "bypass": "AzureServices",
                     "virtualNetworkRules": [],
@@ -205,14 +204,10 @@
                     "services": {
                         "file": {
                             "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
                         }
                     },
                     "keySource": "Microsoft.Storage"
-                },
-                "accessTier": "Hot"
+                }
             }
         }
     ],
