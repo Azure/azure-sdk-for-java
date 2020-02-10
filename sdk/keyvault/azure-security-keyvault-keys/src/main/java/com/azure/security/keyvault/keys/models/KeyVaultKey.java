@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
-import com.azure.security.keyvault.keys.cryptography.Strings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
