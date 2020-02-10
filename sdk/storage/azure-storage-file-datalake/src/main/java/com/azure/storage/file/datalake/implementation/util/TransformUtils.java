@@ -12,9 +12,9 @@ public class TransformUtils {
         if (version == null) {
             return null;
         }
-        if (DataLakeServiceVersion.V2019_07_07.equals(version.getVersion())) {
+        if (DataLakeServiceVersion.V2019_07_07.ordinal() == version.ordinal()) {
             return BlobServiceVersion.V2019_07_07;
-        } else if (DataLakeServiceVersion.V2019_02_02.equals(version.getVersion())) {
+        } else if (DataLakeServiceVersion.V2019_02_02.ordinal() == version.ordinal()) {
             return BlobServiceVersion.V2019_02_02;
         }
         return null;
