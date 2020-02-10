@@ -28,9 +28,13 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeoutException;
+import spock.lang.Retry;
+import spock.lang.Timeout;
 
 import static java.lang.StrictMath.pow;
 
+@Timeout(600)
+@Retry(count = 2)
 class RequestRetryTestFactory {
     static final int RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS = 1;
 

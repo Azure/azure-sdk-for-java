@@ -270,6 +270,7 @@
                 --add-reads com.azure.core.amqp=ALL-UNNAMED
                 --add-reads com.azure.storage.common=ALL-UNNAMED
               </argLine>
+              <rerunFailingTestsCount>2</rerunFailingTestsCount>
             </configuration>
           </plugin>
         </plugins>

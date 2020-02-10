@@ -8,8 +8,12 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.HttpGetterInfo
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.DownloadRetryOptions
+import spock.lang.Retry
+import spock.lang.Timeout
 import spock.lang.Unroll
 
+@Timeout(600)
+@Retry(count = 2)
 class DownloadResponseTest extends APISpec {
     BlockBlobClient bu
 

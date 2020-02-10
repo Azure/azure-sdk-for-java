@@ -5,9 +5,11 @@ import com.azure.storage.blob.specialized.BlobOutputStream
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
+import spock.lang.Retry
 import spock.lang.Timeout
 
-@Timeout(1200)
+@Timeout(600)
+@Retry(count = 2)
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
 

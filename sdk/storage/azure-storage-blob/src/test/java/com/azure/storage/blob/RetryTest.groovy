@@ -7,9 +7,13 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import spock.lang.Retry
+import spock.lang.Timeout
 import spock.lang.Unroll
 
 // Tests for package-private functionality.
+@Timeout(600)
+@Retry(count = 2)
 class RetryTest extends APISpec {
     static URL retryTestURL = new URL("https://" + RequestRetryTestFactory.RETRY_TEST_PRIMARY_HOST)
     static RequestRetryOptions retryTestOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 6, 2,

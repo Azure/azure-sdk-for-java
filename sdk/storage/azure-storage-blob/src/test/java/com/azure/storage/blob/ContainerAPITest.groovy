@@ -25,6 +25,8 @@ import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
 import reactor.test.StepVerifier
+import spock.lang.Retry
+import spock.lang.Timeout
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -32,6 +34,8 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.util.stream.Collectors
 
+@Timeout(600)
+@Retry(count = 2)
 class ContainerAPITest extends APISpec {
 
     def "Create all null"() {

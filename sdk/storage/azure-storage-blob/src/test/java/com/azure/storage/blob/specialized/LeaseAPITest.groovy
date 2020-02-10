@@ -9,8 +9,12 @@ import com.azure.storage.blob.models.LeaseDurationType
 import com.azure.storage.blob.models.LeaseStateType
 
 import com.azure.storage.blob.models.BlobStorageException
+import spock.lang.Retry
+import spock.lang.Timeout
 import spock.lang.Unroll
 
+@Timeout(600)
+@Retry(count = 2)
 class LeaseAPITest extends APISpec {
     private BlobClientBase createBlobClient() {
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()

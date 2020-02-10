@@ -6,11 +6,15 @@ package com.azure.storage.blob
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import reactor.core.publisher.Flux
 import spock.lang.Requires
+import spock.lang.Retry
+import spock.lang.Timeout
 
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.locks.ReentrantLock
 
+@Timeout(600)
+@Retry(count = 2)
 class ProgressReporterTest extends APISpec {
     def "Report progress sequential"() {
         setup:

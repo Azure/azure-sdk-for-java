@@ -13,10 +13,14 @@ import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
+import spock.lang.Retry
+import spock.lang.Timeout
 import spock.lang.Unroll
 
 import java.security.MessageDigest
 
+@Timeout(600)
+@Retry(count = 2)
 class AppendBlobAPITest extends APISpec {
     AppendBlobClient bc
     String blobName

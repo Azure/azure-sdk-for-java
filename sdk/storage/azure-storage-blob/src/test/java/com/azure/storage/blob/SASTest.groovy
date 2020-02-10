@@ -24,12 +24,16 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.SasIpRange
 import spock.lang.Ignore
+import spock.lang.Retry
+import spock.lang.Timeout
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
+@Timeout(600)
+@Retry(count = 2)
 class SASTest extends APISpec {
 
     // TODO (gapra) : Cleanup SAS Tests

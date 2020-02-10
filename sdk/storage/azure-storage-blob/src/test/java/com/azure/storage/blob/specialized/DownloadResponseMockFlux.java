@@ -19,7 +19,11 @@ import reactor.core.publisher.Operators;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import spock.lang.Retry;
+import spock.lang.Timeout;
 
+@Timeout(600)
+@Retry(count = 2)
 class DownloadResponseMockFlux extends Flux<ByteBuffer> {
     static final int DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK = 0;
     static final int DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK = 1;

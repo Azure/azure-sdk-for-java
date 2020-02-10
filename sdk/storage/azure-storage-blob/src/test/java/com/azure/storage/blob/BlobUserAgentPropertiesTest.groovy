@@ -4,8 +4,12 @@
 package com.azure.storage.blob
 
 import com.azure.core.util.CoreUtils
+import spock.lang.Retry
 import spock.lang.Specification
+import spock.lang.Timeout
 
+@Timeout(600)
+@Retry(count = 2)
 class BlobUserAgentPropertiesTest extends Specification {
 
     def "User agent properties not null"() {

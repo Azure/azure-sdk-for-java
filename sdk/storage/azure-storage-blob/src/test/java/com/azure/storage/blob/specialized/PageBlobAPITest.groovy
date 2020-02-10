@@ -16,11 +16,15 @@ import com.azure.storage.blob.models.PageBlobRequestConditions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberActionType
+import spock.lang.Retry
+import spock.lang.Timeout
 import spock.lang.Unroll
 
 import java.security.MessageDigest
 import java.time.OffsetDateTime
 
+@Timeout(600)
+@Retry(count = 2)
 class PageBlobAPITest extends APISpec {
     PageBlobClient bc
     String blobName

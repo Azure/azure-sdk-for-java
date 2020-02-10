@@ -21,12 +21,16 @@ import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import spock.lang.Retry
+import spock.lang.Timeout
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
+@Timeout(600)
+@Retry(count = 2)
 class HelperTest extends APISpec {
 
     /*

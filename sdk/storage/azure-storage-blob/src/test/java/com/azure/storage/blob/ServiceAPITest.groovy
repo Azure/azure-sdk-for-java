@@ -24,10 +24,14 @@ import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import spock.lang.Retry
+import spock.lang.Timeout
 
 import java.time.Duration
 import java.time.OffsetDateTime
 
+@Timeout(600)
+@Retry(count = 2)
 class ServiceAPITest extends APISpec {
 
     BlobServiceClient anonymousClient;

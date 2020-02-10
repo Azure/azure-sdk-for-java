@@ -384,7 +384,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     .map(x -> blockId)
                     .doFinally(x -> pool.returnBuffer(buffer))
                     .flux();
-            }).log() // TODO: parallelism?
+            })// TODO: parallelism?
             .collect(Collectors.toList())
             .flatMap(ids ->
                 blockBlobAsyncClient.commitBlockListWithResponse(ids, headers, metadata, tier, requestConditions));
@@ -606,7 +606,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
                 return client.stageBlockWithResponse(blockId, progressData, chunk.getCount(), null,
                     finalRequestConditions.getLeaseId());
-            }).log()
+            })
             .then(Mono.defer(() -> client.commitBlockListWithResponse(
                 new ArrayList<>(blockIds.values()), headers, metadata, tier, finalRequestConditions)))
             .then();

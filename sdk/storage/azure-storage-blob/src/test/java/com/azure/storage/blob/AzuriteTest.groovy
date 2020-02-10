@@ -8,8 +8,12 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import spock.lang.Retry
+import spock.lang.Timeout
 import spock.lang.Unroll
 
+@Timeout(600)
+@Retry(count = 2)
 class AzuriteTest extends APISpec {
     String azuriteEndpoint = "http://127.0.0.1:10000/devstoreaccount1"
 

@@ -33,6 +33,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Requires
+import spock.lang.Retry
 import spock.lang.Timeout
 import spock.lang.Unroll
 
@@ -43,6 +44,7 @@ import java.security.MessageDigest
 import java.time.Duration
 
 @Timeout(1200)
+@Retry(count = 2)
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
     BlockBlobAsyncClient blockBlobAsyncClient

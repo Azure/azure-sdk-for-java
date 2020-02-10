@@ -11,9 +11,13 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.implementation.Constants
+import spock.lang.Retry
+import spock.lang.Timeout
 
 import java.time.OffsetDateTime
 
+@Timeout(600)
+@Retry(count = 2)
 class CPKTest extends APISpec {
 
     CustomerProvidedKey key
