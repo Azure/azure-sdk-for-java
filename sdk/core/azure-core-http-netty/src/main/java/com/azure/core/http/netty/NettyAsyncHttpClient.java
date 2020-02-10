@@ -54,8 +54,8 @@ class NettyAsyncHttpClient implements HttpClient {
     private final NioEventLoopGroup eventLoopGroup;
     private final Supplier<ProxyHandler> proxyHandlerSupplier;
     private final Pattern nonProxyHostsPattern;
+    private final AtomicBoolean initialized = new AtomicBoolean();
     private boolean disableBufferCopy;
-    private AtomicBoolean initialized = new AtomicBoolean();
 
     final reactor.netty.http.client.HttpClient nettyClient;
 

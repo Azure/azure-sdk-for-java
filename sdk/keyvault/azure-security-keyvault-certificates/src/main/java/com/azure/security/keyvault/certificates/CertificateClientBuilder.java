@@ -105,8 +105,8 @@ public final class CertificateClientBuilder {
     }
 
     /**
-     * Creates a {@link CertificateAsyncClient} based on options set in the builder. Every time {@code
-     * buildAsyncClient()} is called, a new instance of {@link CertificateAsyncClient} is created.
+     * Creates a {@link CertificateAsyncClient} based on options set in the builder. Every time
+     * {@link #buildAsyncClient()} is called, a new instance of {@link CertificateAsyncClient} is created.
      *
      * <p>If {@link CertificateClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link CertificateClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the {@link

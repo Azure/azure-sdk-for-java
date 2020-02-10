@@ -118,7 +118,7 @@ public final class ShareServiceClientBuilder {
         return buildAsyncClient(Context.NONE);
     }
 
-    public ShareServiceAsyncClient buildAsyncClient(Context context) {
+    private ShareServiceAsyncClient buildAsyncClient(Context context) {
         ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {

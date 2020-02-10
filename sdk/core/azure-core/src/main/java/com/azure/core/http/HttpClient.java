@@ -41,6 +41,7 @@ public interface HttpClient {
     /**
      * Creates default {@link HttpClient} instance with additional context.
      *
+     * @param context The context to initialize the {@link HttpClient} with.
      * @return A new instance of the {@link HttpClient}.
      */
     static HttpClient createDefault(Context context) {

@@ -122,7 +122,7 @@ public class ShareClientBuilder {
         return buildAsyncClient(Context.NONE);
     }
 
-    public ShareAsyncClient buildAsyncClient(Context context) {
+    private ShareAsyncClient buildAsyncClient(Context context) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
 

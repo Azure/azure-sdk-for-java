@@ -114,8 +114,8 @@ public final class CryptographyClientBuilder {
     }
 
     /**
-     * Creates a {@link CryptographyAsyncClient} based on options set in the builder. Every time {@code
-     * buildAsyncClient()} is called, a new instance of {@link CryptographyAsyncClient} is created.
+     * Creates a {@link CryptographyAsyncClient} based on options set in the builder. Every time
+     * {@link #buildAsyncClient()} is called, a new instance of {@link CryptographyAsyncClient} is created.
      *
      * <p>If {@link CryptographyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * ({@link CryptographyClientBuilder#keyIdentifier(String) jsonWebKey identifier}) are used to create the {@link

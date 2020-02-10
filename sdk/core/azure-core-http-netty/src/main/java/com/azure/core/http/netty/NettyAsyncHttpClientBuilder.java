@@ -191,6 +191,8 @@ public class NettyAsyncHttpClientBuilder {
      * of the response do not handle the byte buffers before netty releases them.
      * </b>
      *
+     * @param disableBufferCopy If set to {@code true}, the client built from this builder will not deep-copy
+     * response {@link ByteBuffer ByteBuffers}.
      * @return The updated {@link NettyAsyncHttpClientBuilder} object.
      */
     public NettyAsyncHttpClientBuilder disableBufferCopy(boolean disableBufferCopy) {
