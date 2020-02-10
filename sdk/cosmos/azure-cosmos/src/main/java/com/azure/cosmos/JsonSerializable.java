@@ -565,11 +565,13 @@ public class JsonSerializable {
                 throw new IllegalStateException("Failed to convert to collection.", e);
             }
         }
-        if (ObjectNode.class.isAssignableFrom(c)) {
+        if (JsonNode.class.isAssignableFrom(c) || ObjectNode.class.isAssignableFrom(c)) {
             // JSONObject
-            if (ObjectNode.class != c) {
-                throw new IllegalArgumentException(
-                    "We support JSONObject but not its sub-classes.");
+            if( JsonNode.class != c) {
+                if (ObjectNode.class != c) {
+                    throw new IllegalArgumentException(
+                        "We support JSONObject but not its sub-classes.");
+                }
             }
             return c.cast(this.propertyBag);
         } else {
