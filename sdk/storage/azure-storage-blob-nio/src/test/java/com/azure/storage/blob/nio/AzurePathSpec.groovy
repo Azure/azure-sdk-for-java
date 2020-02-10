@@ -284,6 +284,7 @@ class AzurePathSpec extends APISpec {
         "foo/bar/a/b/c" | "foo/bar/fizz"       || "../../../fizz"         | true
         "a/b/c"         | "foo/bar/fizz"       || "../../../foo/bar/fizz" | true
         "foo/../bar"    | "bar/./fizz"         || "fizz"                  | false
+        "root:"         | "root:/foo/bar"      || "foo/bar"               | false
     }
 
     def "Path relativize fail"() {

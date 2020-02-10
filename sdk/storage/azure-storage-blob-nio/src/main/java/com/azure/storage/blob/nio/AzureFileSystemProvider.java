@@ -6,17 +6,23 @@ package com.azure.storage.blob.nio;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.nio.implementation.util.Utility;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.AccessMode;
 import java.nio.file.CopyOption;
 import java.nio.file.DirectoryStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemAlreadyExistsException;
@@ -29,6 +35,9 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.spi.FileSystemProvider;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -184,11 +193,35 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
+     * The existence of a directory in the {@code AzureFileSystem} is minimally defined by the presence of a non-zero
+     * number of blobs prefixed with the directory's path. This is is in order to accommodate containers that were
+     * pre-loaded with data by another source but need to be accessed by this file system. Directories created by this
+     * file system will be represented by a zero-length blob whose name is the directory path with a particular metadata
+     * field indicating the blob's status as a directory. Operations targeting directories themselves as the object
+     * (e.g. setting properties) will target these blobs. Operations using the directory only as a container
+     * (e.g. listing) will operate on the blob-name prefix. Note that there may be some unintuitive behavior when
+     * working with directories that were not created by this file system. Of particular note is that directories which
+     * only minimally exist as defined above (e.g. a non-zero number of blobs with the prefix) but do not have the
+     * marker blob will disappear as soon as all the children have been deleted.
+     *
      * This method fulfills the contract of "The check for the existence of the file and the creation of the directory
      * if it does not exist are a single operation that is atomic with respect to all other filesystem activities that
-     * might affect the directory."
+     * might affect the directory." The action of checking whether the parent exists, is not, however, atomic with
+     * the creation of the directory. While it is possible that the parent may be deleted between the positive check and
+     * the creation of the child, the creation of the child will implicitly create the parent if it does not exist as
+     * defined above, so the child will not be left floating and unreachable.
      *
-     * Directories are implemented as:
+     * This method will attempt to extract standard HTTP content headers from the list of file attributes to set them
+     * as blob headers. All other attributes will be set as blob metadata. The value of every attribute will be
+     * converted to a {@code String} with the exception of the Content-MD5 attribute which expects a {@code byte[]}.
+     * When extracting the content headers, the following strings will be used for comparison:
+     * <li>
+     *     <ul>Content-Type</ul>
+     *     <ul>Content-Disposition</ul>
+     *     <ul>Content-Language</ul>
+     *     <ul>Content-MD5</ul>
+     *     <ul>Cache-Control</ul>
+     * </li>
      * {@inheritDoc}
      */
     @Override
@@ -198,10 +231,33 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 "Path other than AzurePath"));
         }
 
+        // Get the destination for the directory and it's parent container.
         BlobClient client = ((AzurePath) path).toBlobClient();
+        BlobContainerClient containerClient = ((AzureFileSystem)path.getFileSystem()).getBlobServiceClient()
+            .getBlobContainerClient(client.getContainerName());
 
-        // create the directory blob with the specified attributes (etag check. catch failure)
-        // check if the parent exists and delete
+        // Determine the path for the parent directory. This is the parent path without the root.
+        Path root = path.getRoot();
+        String prefix = root == null ? path.getParent().toString() : root.relativize(path).getParent().toString();
+
+        // Check if parent exists. If it does, atomically check if a file already exists and create a new dir if not.
+        if (checkDirectoryExists(containerClient, prefix)) {
+            try {
+                List<FileAttribute<?>> attributeList = new ArrayList<>(Arrays.asList(fileAttributes));
+                client.getAppendBlobClient().createWithResponse(Utility.extractHttpHeaders(attributeList, logger),
+                    Utility.convertAttributesToMetadata(attributeList),
+                    new BlobRequestConditions().setIfNoneMatch("*"), null, null);
+            } catch (BlobStorageException e) {
+                if (e.getStatusCode() == HttpURLConnection.HTTP_PRECON_FAILED) {
+                    throw Utility.logError(logger, new FileAlreadyExistsException(path.toString()));
+                } else {
+                    throw Utility.logError(logger, new IOException("An error occured when creating the directory", e));
+                }
+            }
+        } else {
+            throw Utility.logError(logger, new IOException("Parent directory does not exist for path: "
+                + path.toString()));
+        }
 
         /*
         Only the check for a file at that path and creation of the directory needs to be atomic. Checking the parent
@@ -237,8 +293,19 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         cases, we may add stronger guards, but in general, the performance and complexity cost outweight the benefits.
         For example, in the case of creating a directory which requires a parent check, (not specified as atomic in
         docs), this is mostly safe not to be atomic because even if the parent is deleted between the check and the put,
-        the blob implicitly puts the parent and is consequently not left floating.  
+        the blob implicitly puts the parent and is consequently not left floating.
          */
+    }
+
+    boolean checkDirectoryExists(BlobContainerClient containerClient, String prefix) {
+        /*
+        If the prefix is null, that means we are in the root dir for the container, which always exists. If there is a
+        blob with this prefix, it means at least the directory exists. Note that blob names that match the prefix
+        exactly are returned.
+         */
+        return prefix == null
+            || !containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR,
+            new ListBlobsOptions().setPrefix(prefix).setMaxResultsPerPage(1), null).iterator().hasNext();
     }
 
     /**

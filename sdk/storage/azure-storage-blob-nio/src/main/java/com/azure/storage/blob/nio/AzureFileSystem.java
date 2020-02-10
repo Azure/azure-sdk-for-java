@@ -110,6 +110,8 @@ public final class AzureFileSystem extends FileSystem {
 
     public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
 
+    static final String PATH_SEPARATOR = "/";
+
     private static final String AZURE_STORAGE_BLOB_ENDPOINT_TEMPLATE = "%s://%s.blob.core.windows.net";
 
     static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
@@ -207,7 +209,7 @@ public final class AzureFileSystem extends FileSystem {
      */
     @Override
     public String getSeparator() {
-        return "/";
+        return AzureFileSystem.PATH_SEPARATOR;
     }
 
     /**

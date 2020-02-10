@@ -521,7 +521,8 @@ public final class AzurePath implements Path {
      */
     BlobClient toBlobClient() throws IOException{
         // Converting to an absolute path ensures there is a container to operate on even if it is the default.
-        String fileStoreName = this.rootToFileStore(this.toAbsolutePath().getRoot().toString());
+        // Normalizing ensures the path is clean.
+        String fileStoreName = this.rootToFileStore(this.normalize().toAbsolutePath().getRoot().toString());
 
         BlobContainerClient containerClient =
             ((AzureFileStore)this.parentFileSystem.getFileStore(fileStoreName)).getContainerClient();

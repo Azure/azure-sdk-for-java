@@ -114,9 +114,11 @@ class AzureFileSystemProviderSpec extends APISpec {
         provider.getScheme() == "azb"
     }
 
-    // getPath methods
-
-    def "temp"() {
+    def "FileSystemProvider createDirectory"() {
+        // TODO: Test on a path that doesn't have a parent. On a path whose parent is just the root (This will test that
+        //  getting a blobClient to the default directory works and that listing based off it works.
+        // Create a root. Create something in the root. Create something in a normal directory. Create something that doesn't have a parent.
+        // On a root that is invalid. On a path that already exists. Create something that has no parent.
         expect:
         FileSystems
     }
