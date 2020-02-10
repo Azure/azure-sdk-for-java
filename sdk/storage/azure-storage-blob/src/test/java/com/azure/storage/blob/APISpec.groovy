@@ -145,20 +145,20 @@ class APISpec extends Specification {
     String containerName
 
     def setupSpec() {
-        try {
-            Process p = Runtime.getRuntime().exec("netsh advfirewall set global StatefulFTP disable");
-            p.waitFor();
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(p.getInputStream()));
-            String line = reader.readLine();
-            while (line != null) {
-                System.out.println(line);
-                line = reader.readLine();
-            }
-
-        } catch (IOException e1) {
-        } catch (InterruptedException e2) {
-        }
+//        try {
+//            Process p = Runtime.getRuntime().exec("netsh advfirewall set global StatefulFTP disable");
+//            p.waitFor();
+//            BufferedReader reader = new BufferedReader(
+//                new InputStreamReader(p.getInputStream()));
+//            String line = reader.readLine();
+//            while (line != null) {
+//                System.out.println(line);
+//                line = reader.readLine();
+//            }
+//
+//        } catch (IOException e1) {
+//        } catch (InterruptedException e2) {
+//        }
         testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)
@@ -420,18 +420,18 @@ class APISpec extends Specification {
     }
 
     HttpClient getHttpClient() {
-//        reactor.netty.http.client.HttpClient httpClient = reactor.netty.http.client.HttpClient.from(
-//            TcpClient.create().option(ChannelOption.SO_KEEPALIVE, true)
-//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 720000)
-//        )
-//        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder(httpClient)
+        reactor.netty.http.client.HttpClient httpClient = reactor.netty.http.client.HttpClient.from(
+            TcpClient.create().option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.SO_RCVBUF, 1048576)
+        )
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder(httpClient)
 
 
 
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
+        //NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             //builder.wiretap(true)
-            builder.connectionProvider(ConnectionProvider.fixed("fixed", 3))
+            builder.connectionProvider(ConnectionProvider.fixed("fixed", 4))
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
                 builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
