@@ -21,6 +21,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -29,16 +30,21 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.http.netty.NettyAsyncHttpClient.ReactorNettyHttpResponse;
 import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 public class ReactorNettyClientTests {
+    private static final String SHORT_BODY_PATH = "/short";
+    private static final String LONG_BODY_PATH = "/long";
 
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();
@@ -49,8 +55,8 @@ public class ReactorNettyClientTests {
     public static void beforeClass() {
         server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
         server.stubFor(
-            WireMock.get("/short").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
-        server.stubFor(WireMock.get("/long").willReturn(WireMock.aResponse().withBody(LONG_BODY)));
+            WireMock.get(SHORT_BODY_PATH).willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
+        server.stubFor(WireMock.get(LONG_BODY_PATH).willReturn(WireMock.aResponse().withBody(LONG_BODY)));
         server.stubFor(WireMock.get("/error")
             .willReturn(WireMock.aResponse().withBody("error").withStatus(500)));
         server.stubFor(
@@ -68,17 +74,17 @@ public class ReactorNettyClientTests {
 
     @Test
     public void testFlowableResponseShortBodyAsByteArrayAsync() {
-        checkBodyReceived(SHORT_BODY, "/short");
+        checkBodyReceived(SHORT_BODY, SHORT_BODY_PATH);
     }
 
     @Test
     public void testFlowableResponseLongBodyAsByteArrayAsync() {
-        checkBodyReceived(LONG_BODY, "/long");
+        checkBodyReceived(LONG_BODY, LONG_BODY_PATH);
     }
 
     @Test
     public void testMultipleSubscriptionsEmitsError() {
-        HttpResponse response = getResponse("/short");
+        HttpResponse response = getResponse(SHORT_BODY_PATH);
         // Subscription:1
         response.getBodyAsByteArray().block();
 
@@ -93,7 +99,7 @@ public class ReactorNettyClientTests {
 
     @Test
     public void testDispose() throws InterruptedException {
-        ReactorNettyHttpResponse response = getResponse("/long");
+        ReactorNettyHttpResponse response = getResponse(LONG_BODY_PATH);
         response.getBody().subscribe().dispose();
         // Wait for scheduled connection disposal action to execute on netty event-loop
         Thread.sleep(5000);
@@ -102,7 +108,7 @@ public class ReactorNettyClientTests {
 
     @Test
     public void testCancel() {
-        ReactorNettyHttpResponse response = getResponse("/long");
+        ReactorNettyHttpResponse response = getResponse(LONG_BODY_PATH);
         //
         StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
         stepVerifierOptions.initialRequest(0);
@@ -128,7 +134,7 @@ public class ReactorNettyClientTests {
     @Test
     @Disabled("Not working accurately at present")
     public void testFlowableBackpressure() {
-        HttpResponse response = getResponse("/long");
+        HttpResponse response = getResponse(LONG_BODY_PATH);
         //
         StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
         stepVerifierOptions.initialRequest(0);
@@ -281,6 +287,40 @@ public class ReactorNettyClientTests {
         Assertions.fail("Method needs to be reimplemented");
     }
 
+    /**
+     * Tests that deep copying the buffers returned by Netty will make the stream returned to the customer resilient to
+     * Netty reclaiming them once the 'onNext' operator chain has completed.
+     */
+    @Test
+    public void deepCopyBuffer() {
+        HttpClient client = new NettyAsyncHttpClientBuilder().disableBufferCopy(false).build();
+
+        HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH))).block();
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+
+        DelayWriteStream delayWriteStream = new DelayWriteStream();
+        response.getBody().doOnNext(delayWriteStream::write).blockLast();
+        assertEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+    }
+
+    /**
+     * Tests that preventing deep copying the buffers returned by Netty won't make the stream returned to the customer
+     * resilient to Netty reclaiming them once the 'onNext' operator chain has completed.
+     */
+    @Test
+    public void ignoreDeepCopyBuffer() {
+        HttpClient client = new NettyAsyncHttpClientBuilder().disableBufferCopy(true).build();
+
+        HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH))).block();
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+
+        DelayWriteStream delayWriteStream = new DelayWriteStream();
+        response.getBody().doOnNext(delayWriteStream::write).blockLast();
+        assertNotEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+    }
+
     private static ReactorNettyHttpResponse getResponse(String path) {
         NettyAsyncHttpClient client = new NettyAsyncHttpClient();
         return getResponse(client, path);
@@ -317,5 +357,28 @@ public class ReactorNettyClientTests {
     private ReactorNettyHttpResponse doRequest(NettyAsyncHttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return (ReactorNettyHttpResponse) client.send(request).block();
+    }
+
+    private static final class DelayWriteStream {
+        List<ByteBuffer> internalBuffers = new ArrayList<>();
+
+        public void write(ByteBuffer buffer) {
+            internalBuffers.add(buffer);
+        }
+
+        public String aggregateAsString() {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            for (ByteBuffer buffer : internalBuffers) {
+                int bufferSize = buffer.remaining();
+                int offset = buffer.position();
+
+                for (int i = 0; i < bufferSize; i++) {
+                    outputStream.write(buffer.get(i + offset));
+                }
+            }
+
+            return new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+        }
     }
 }
