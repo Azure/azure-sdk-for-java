@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import org.apache.commons.lang3.tuple.Pair;
@@ -22,7 +23,7 @@ public class ResourceTokenAuthorizationHelper {
 
     /**
      * This method help to differentiate between master key and resource token
-     * 
+     *
      * @param token
      *            ResourceToken provide
      * @return Whether given token is resource token or not
@@ -47,7 +48,7 @@ public class ResourceTokenAuthorizationHelper {
     /**
      * Private method which will fetch resource token based on partition key and
      * resource address .
-     * 
+     *
      * @param resourceTokensMap
      * @param resourceAddress
      * @param partitionKey
@@ -71,7 +72,7 @@ public class ResourceTokenAuthorizationHelper {
 
     /**
      * This method will try to fetch the resource token to access the resource .
-     * 
+     *
      * @param resourceTokensMap
      *            It contains the resource link and its partition key and resource
      *            token list .
@@ -84,7 +85,7 @@ public class ResourceTokenAuthorizationHelper {
      */
     public static String getAuthorizationTokenUsingResourceTokens(
             Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap,
-            String requestVerb,
+            RequestVerb requestVerb,
             String resourceAddress,
             Map<String, String> headers) {
         PartitionKeyInternal partitionKey = PartitionKeyInternal.Empty;
@@ -106,8 +107,8 @@ public class ResourceTokenAuthorizationHelper {
 
             // Get or Head for collection can be done with any child token
             if (resourceToken == null && PathsHelper.getCollectionPath(resourceAddress).equalsIgnoreCase(resourceAddress)
-                    && HttpConstants.HttpMethods.GET.equalsIgnoreCase(requestVerb)
-                    || HttpConstants.HttpMethods.HEAD.equalsIgnoreCase(requestVerb)) {
+                    && RequestVerb.GET == requestVerb
+                    || RequestVerb.HEAD == requestVerb) {
                 String resourceAddressWithSlash = resourceAddress.endsWith(Constants.Properties.PATH_SEPARATOR)
                         ? resourceAddress
                         : resourceAddress + Constants.Properties.PATH_SEPARATOR;
@@ -163,8 +164,8 @@ public class ResourceTokenAuthorizationHelper {
             }
             // Get or Head for collection can be done with any child token
             if (resourceToken == null && resourceId.getDocumentCollection() != 0
-                    && (HttpConstants.HttpMethods.GET.equalsIgnoreCase(requestVerb)
-                            || HttpConstants.HttpMethods.HEAD.equalsIgnoreCase(requestVerb))) {
+                    && (RequestVerb.GET == requestVerb
+                            || RequestVerb.HEAD == requestVerb)) {
                 for (String key : resourceTokensMap.keySet()) {
                     ResourceId tokenRid;
                     Pair<Boolean, ResourceId> pair = ResourceId.tryParse(key);

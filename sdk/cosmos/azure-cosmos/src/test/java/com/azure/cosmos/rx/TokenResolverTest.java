@@ -13,6 +13,7 @@ import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PermissionMode;
+import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.TokenResolver;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -505,7 +506,7 @@ public class TokenResolverTest extends TestSuiteBase {
     }
 
     private TokenResolver getTokenResolver(PermissionMode permissionMode) {
-        return (String requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
+        return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
             if (permissionMode == null) {
                 return "invalid";
             } else if (permissionMode.equals(PermissionMode.READ)) {
@@ -517,7 +518,7 @@ public class TokenResolverTest extends TestSuiteBase {
     }
 
     private TokenResolver getBadTokenResolver() {
-        return (String requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
+        return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
             if (resourceType == CosmosResourceType.System) {
                 return readPermission.getToken();
             }
@@ -529,7 +530,7 @@ public class TokenResolverTest extends TestSuiteBase {
     }
 
     private TokenResolver getTokenResolverWithBlockList(PermissionMode permissionMode,  String field, UserClass blockListedUser, String errorMessage) {
-        return (String requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
+        return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
             UserClass currentUser = null;
             if (properties != null && properties.get(field) != null) {
                 currentUser = (UserClass) properties.get(field);

@@ -83,7 +83,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         headers.put(HttpConstants.HttpHeaders.VERSION, "2018-09-17");
         BaseAuthorizationTokenProvider base = new BaseAuthorizationTokenProvider(new CosmosKeyCredential(TestConfigurations.MASTER_KEY));
-        String authorization = base.generateKeyAuthorizationSignature(HttpConstants.HttpMethods.POST, resourceId, Paths.COLLECTIONS_PATH_SEGMENT, headers);
+        String authorization = base.generateKeyAuthorizationSignature(RequestVerb.POST, resourceId, Paths.COLLECTIONS_PATH_SEGMENT, headers);
         headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, URLEncoder.encode(authorization, "UTF-8"));
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
                 ResourceType.DocumentCollection, path, collection, headers, new RequestOptions());
@@ -105,7 +105,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         Document document = new Document();
         document.setId(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID);
 
-        authorization = base.generateKeyAuthorizationSignature(HttpConstants.HttpMethods.POST, resourceId, Paths.DOCUMENTS_PATH_SEGMENT, headers);
+        authorization = base.generateKeyAuthorizationSignature(RequestVerb.POST, resourceId, Paths.DOCUMENTS_PATH_SEGMENT, headers);
         headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, URLEncoder.encode(authorization, "UTF-8"));
         request = RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document, path,
                 document, headers, new RequestOptions());
@@ -134,7 +134,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         validateSuccess(readMono, validator);
 
         String createdItemId = UUID.randomUUID().toString();
-        Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createMono = 
+        Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createMono =
             createdContainer.createItem(new CosmosItemProperties("{'id':'" + createdItemId + "'}"));
         validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
                 .withId(createdItemId).build();
@@ -144,7 +144,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
                 .withId(createdItemId).build();
         validateSuccess(readMono, validator);
-        
+
         CosmosItemProperties itemSettingsToReplace = createdContainer.readItem(createdItemId, PartitionKey.NONE,
                                                                                CosmosItemProperties.class)
                                                          .block()

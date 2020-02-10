@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ISessionContainer;
@@ -78,7 +79,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
         String authorizationToken = tokenProvider.getUserAuthorizationToken(
                 resourceName,
                 request.getResourceType(),
-                HttpConstants.HttpMethods.GET,
+                RequestVerb.GET,
                 request.getHeaders(),
                 AuthorizationTokenType.PrimaryMasterKey,
                 properties);

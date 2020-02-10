@@ -25,7 +25,9 @@ public interface TokenResolver {
      * @param resourceType Resource type i.e. Database, DocumentCollection, Document etc.
      * @return The authorization token.
      */
-    String getAuthorizationToken(String requestVerb, String resourceIdOrFullName,
-                                        CosmosResourceType resourceType, Map<String, Object> properties);
+    String getAuthorizationToken(RequestVerb requestVerb,
+                                 String resourceIdOrFullName,
+                                 CosmosResourceType resourceType,
+                                 Map<String, Object> properties);
 
 }
