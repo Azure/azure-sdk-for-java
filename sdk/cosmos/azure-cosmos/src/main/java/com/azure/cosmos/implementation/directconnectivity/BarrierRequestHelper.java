@@ -114,6 +114,7 @@ public class BarrierRequestHelper {
         }
         if (request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY) != null) {
             barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY));
+            barrierLsnRequest.setPartitionKeyInternal(request.getPartitionKeyInternal());
         }
         if (request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID) != null) {
             barrierLsnRequest.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID));

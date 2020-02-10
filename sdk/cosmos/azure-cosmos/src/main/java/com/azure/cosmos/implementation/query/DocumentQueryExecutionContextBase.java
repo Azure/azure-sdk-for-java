@@ -79,11 +79,16 @@ implements IDocumentQueryExecutionContext<T> {
 
     protected RxDocumentServiceRequest createDocumentServiceRequest(Map<String, String> requestHeaders,
                                                                     SqlQuerySpec querySpec,
+                                                                    PartitionKeyInternal partitionKeyInternal,
                                                                     PartitionKeyRange targetRange,
                                                                     String collectionRid) {
         RxDocumentServiceRequest request = querySpec != null
                 ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
                 : this.createReadFeedDocumentServiceRequest(requestHeaders);
+
+        if (partitionKeyInternal != null) {
+            request.setPartitionKeyInternal(partitionKeyInternal);
+        }
 
         this.populatePartitionKeyRangeInfo(request, targetRange, collectionRid);
 
@@ -180,6 +185,7 @@ implements IDocumentQueryExecutionContext<T> {
 
         if (this.resourceTypeEnum.isPartitioned()) {
             if (partitionKey != null) {
+                request.setPartitionKeyInternal(partitionKey);
                 request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKey.toJson());
             }
         }
