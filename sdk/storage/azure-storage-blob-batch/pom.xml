@@ -283,6 +283,7 @@
                 --add-reads com.azure.storage.common=ALL-UNNAMED
                 --add-reads com.azure.storage.blob=ALL-UNNAMED
               </argLine>
+              <rerunFailingTestsCount>2</rerunFailingTestsCount>
             </configuration>
           </plugin>
         </plugins>
