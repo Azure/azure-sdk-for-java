@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.PartitionKeyRangeGoneException;
+import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -271,7 +272,7 @@ public class GatewayAddressCache implements IAddressCache {
         token = this.tokenProvider.getUserAuthorizationToken(
                 collectionRid,
                 ResourceType.Document,
-                HttpConstants.HttpMethods.GET,
+                RequestVerb.GET,
                 headers,
                 AuthorizationTokenType.PrimaryMasterKey,
                 request.properties);
@@ -282,7 +283,7 @@ public class GatewayAddressCache implements IAddressCache {
             token = this.tokenProvider.getUserAuthorizationToken(
                     collectionAltLink,
                     ResourceType.Document,
-                    HttpConstants.HttpMethods.GET,
+                    RequestVerb.GET,
                     headers,
                     AuthorizationTokenType.PrimaryMasterKey,
                     request.properties);
@@ -461,7 +462,7 @@ public class GatewayAddressCache implements IAddressCache {
         String token = this.tokenProvider.getUserAuthorizationToken(
                 resourceAddress,
                 resourceType,
-                HttpConstants.HttpMethods.GET,
+                RequestVerb.GET,
                 headers,
                 AuthorizationTokenType.PrimaryMasterKey,
                 properties);
