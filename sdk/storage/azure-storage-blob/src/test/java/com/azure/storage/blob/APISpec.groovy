@@ -145,6 +145,20 @@ class APISpec extends Specification {
     String containerName
 
     def setupSpec() {
+        try {
+            Process p = Runtime.getRuntime().exec("netsh advfirewall set global StatefulFTP disable");
+            p.waitFor();
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(p.getInputStream()));
+            String line = reader.readLine();
+            while (line != null) {
+                System.out.println(line);
+                line = reader.readLine();
+            }
+
+        } catch (IOException e1) {
+        } catch (InterruptedException e2) {
+        }
         testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)
@@ -411,6 +425,9 @@ class APISpec extends Specification {
 //                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 720000)
 //        )
 //        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder(httpClient)
+
+
+
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             //builder.wiretap(true)
