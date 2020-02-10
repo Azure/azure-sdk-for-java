@@ -896,6 +896,11 @@ public class RxDocumentServiceRequest {
         return defaultReplicaIndex;
     }
 
+    /**
+     * To avoid deserialization of PartitionKey in Address Resolver, when you set PartitionKey header value,
+     * you should also set PartitionKeyInternal.
+     * @param partitionKeyInternal
+     */
     public void setPartitionKeyInternal(PartitionKeyInternal partitionKeyInternal) {
         this.partitionKeyInternal = partitionKeyInternal;
     }
@@ -1010,6 +1015,7 @@ public class RxDocumentServiceRequest {
 
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
+        rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
         rxDocumentServiceRequest.setContentBytes(this.getContent());
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
         rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());

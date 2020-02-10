@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.http.HttpHeader;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
@@ -618,16 +619,34 @@ public class AddressResolver implements IAddressResolver {
             throw new NullPointerException("request");
         }
 
-        if (partitionKey == null) {
-            throw new NullPointerException("partitionKeyInternal");
-        }
-
         if (collection == null) {
             throw new NullPointerException("collection");
         }
 
         if (routingMap == null) {
             throw new NullPointerException("routingMap");
+        }
+
+        if (partitionKey == null) {
+            // this is just a safe guard to ensure if partitionKeyInternal is not set in DSR
+            // but its encoded value is set in headers, we try deserializing partitionKeyInternal from header
+            String partitionKeyString = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY);
+
+            if (partitionKeyString != null) {
+                try {
+                    logger.warn("PartitionKeyInternal is not set in DocumentServiceRequest, attempting to deserialize header {}." +
+                        " Note, any code setting PARTITION_KEY header value must also set PartitionKeyInternal to avoid deserialization cost.", partitionKeyString);
+                    partitionKey = PartitionKeyInternal.fromJsonString(partitionKeyString);
+                } catch (Exception ex) {
+                    throw BridgeInternal.setResourceAddress(new BadRequestException(
+                        String.format(RMResources.InvalidPartitionKey, partitionKeyString),
+                        ex), request.getResourceAddress());
+                }
+            }
+        }
+
+        if (partitionKey == null) {
+            throw new InternalServerErrorException(String.format("partition key is null"));
         }
 
         if (partitionKey.equals(PartitionKeyInternal.Empty) || partitionKey.getComponents().size() == collection.getPartitionKey().getPaths().size()) {
