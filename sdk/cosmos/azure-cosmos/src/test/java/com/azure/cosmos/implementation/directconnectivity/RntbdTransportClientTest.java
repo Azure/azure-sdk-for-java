@@ -21,6 +21,7 @@ import com.azure.cosmos.PreconditionFailedException;
 import com.azure.cosmos.RequestEntityTooLargeException;
 import com.azure.cosmos.RequestRateTooLargeException;
 import com.azure.cosmos.RequestTimeoutException;
+import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.RetryWithException;
 import com.azure.cosmos.ServiceUnavailableException;
 import com.azure.cosmos.UnauthorizedException;
@@ -626,7 +627,7 @@ public final class RntbdTransportClientTest {
 
             builder.put(HttpHeaders.X_DATE, Utils.nowAsRFC1123());
 
-            final String token = authorizationTokenProvider.generateKeyAuthorizationSignature(HttpMethods.GET,
+            final String token = authorizationTokenProvider.generateKeyAuthorizationSignature(RequestVerb.GET,
                 Paths.DATABASE_ACCOUNT_PATH_SEGMENT,
                 ResourceType.DatabaseAccount,
                 builder.build()

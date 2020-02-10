@@ -719,9 +719,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator)
-            throws InterruptedException {
-        validateSuccess(single.flux(), validator, subscriberValidationTimeout);
+    public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator) {
+        validateSuccess(single, validator, subscriberValidationTimeout);
+    }
+
+    public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator, long timeout) {
+        validateSuccess(single.flux(), validator, timeout);
     }
 
     public static <T extends CosmosResponse> void validateSuccess(Flux<T> flowable,
