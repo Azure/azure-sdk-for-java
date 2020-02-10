@@ -450,6 +450,100 @@ class BlobAPITest extends APISpec {
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
+    /*
+     * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
+     */
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file sync buffer copy"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobServiceClient = new BlobServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(primaryCredential)
+            .buildClient()
+
+        def blobClient = blobServiceClient.createBlobContainer(containerName)
+            .getBlobClient(generateBlobName())
+
+
+        def file = getRandomFile(fileSize)
+        blobClient.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def properties = blobClient.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false, null, null)
+
+        then:
+        compareFiles(file, outFile, 0, fileSize)
+        properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
+
+        cleanup:
+        blobServiceClient.deleteBlobContainer(containerName)
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
+    }
+
+    /*
+     * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
+     */
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file async buffer copy"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobServiceAsyncClient = new BlobServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(primaryCredential)
+            .buildAsyncClient()
+
+        def blobAsyncClient = blobServiceAsyncClient.createBlobContainer(containerName).block()
+            .getBlobAsyncClient(generateBlobName())
+
+        def file = getRandomFile(fileSize)
+        blobAsyncClient.uploadFromFile(file.toPath().toString(), true).block()
+        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def downloadMono = blobAsyncClient.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false)
+
+        then:
+        StepVerifier.create(downloadMono)
+            .assertNext({ it -> it.getValue().getBlobType() == BlobType.BLOCK_BLOB })
+            .verifyComplete()
+
+        compareFiles(file, outFile, 0, fileSize)
+
+        cleanup:
+        blobServiceAsyncClient.deleteBlobContainer(containerName)
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
+    }
+
     @Requires({ liveMode() })
     @Unroll
     def "Download file range"() {
