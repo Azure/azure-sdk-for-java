@@ -11,6 +11,7 @@ package com.microsoft.azure.management.storage.v2019_06_01.implementation;
 import com.microsoft.azure.management.storage.v2019_06_01.CorsRules;
 import com.microsoft.azure.management.storage.v2019_06_01.DeleteRetentionPolicy;
 import com.microsoft.azure.management.storage.v2019_06_01.ChangeFeed;
+import com.microsoft.azure.management.storage.v2019_06_01.RestorePolicyProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -54,6 +55,12 @@ public class BlobServicePropertiesInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.changeFeed")
     private ChangeFeed changeFeed;
+
+    /**
+     * The blob service properties for blob restore policy.
+     */
+    @JsonProperty(value = "properties.restorePolicy")
+    private RestorePolicyProperties restorePolicy;
 
     /**
      * Sku name and tier.
@@ -158,6 +165,26 @@ public class BlobServicePropertiesInner extends ProxyResource {
      */
     public BlobServicePropertiesInner withChangeFeed(ChangeFeed changeFeed) {
         this.changeFeed = changeFeed;
+        return this;
+    }
+
+    /**
+     * Get the blob service properties for blob restore policy.
+     *
+     * @return the restorePolicy value
+     */
+    public RestorePolicyProperties restorePolicy() {
+        return this.restorePolicy;
+    }
+
+    /**
+     * Set the blob service properties for blob restore policy.
+     *
+     * @param restorePolicy the restorePolicy value to set
+     * @return the BlobServicePropertiesInner object itself.
+     */
+    public BlobServicePropertiesInner withRestorePolicy(RestorePolicyProperties restorePolicy) {
+        this.restorePolicy = restorePolicy;
         return this;
     }
 

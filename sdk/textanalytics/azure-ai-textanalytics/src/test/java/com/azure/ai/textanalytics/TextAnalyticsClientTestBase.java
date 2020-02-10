@@ -145,9 +145,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void detectLanguagesBatchInputShowStatistics();
 
     @Test
-    abstract void detectLanguagesBatchStringInput();
-
-    @Test
     abstract void detectLanguagesBatchListCountryHint();
 
     // Categorized Entities
@@ -170,9 +167,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizeEntitiesForBatchInputShowStatistics();
 
     @Test
-    abstract void recognizeEntitiesForBatchStringInput();
-
-    @Test
     abstract void recognizeEntitiesForListLanguageHint();
 
     // Pii Entities
@@ -190,9 +184,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizePiiEntitiesForBatchInputShowStatistics();
-
-    @Test
-    abstract void recognizePiiEntitiesForBatchStringInput();
 
     @Test
     abstract void recognizePiiEntitiesForListLanguageHint();
@@ -214,9 +205,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizeLinkedEntitiesForBatchInputShowStatistics();
 
     @Test
-    abstract void recognizeLinkedEntitiesForBatchStringInput();
-
-    @Test
     abstract void recognizeLinkedEntitiesForListLanguageHint();
 
     // Key Phrases
@@ -234,9 +222,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void extractKeyPhrasesForBatchInputShowStatistics();
-
-    @Test
-    abstract void extractKeyPhrasesForBatchStringInput();
 
     @Test
     abstract void extractKeyPhrasesForListLanguageHint();
@@ -407,7 +392,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         DocumentResultCollection<DetectLanguageResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
             validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage());
-            validateDetectedLanguages(expectedItem.getDetectedLanguages(), actualItem.getDetectedLanguages());
         });
     }
 
@@ -427,7 +411,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         DocumentResultCollection<RecognizeLinkedEntitiesResult> expected,
         DocumentResultCollection<RecognizeLinkedEntitiesResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateLinkedEntities(expectedItem.getLinkedEntities(), actualItem.getLinkedEntities()));
+            validateLinkedEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }
 
     static void validateExtractKeyPhrase(boolean showStatistics, DocumentResultCollection<ExtractKeyPhraseResult> expected,
@@ -444,22 +428,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate the list of detected language.
+     * Helper method to validate a single detected language.
      *
-     * @param expectedLanguageList detectedLanguages returned by the service.
-     * @param actualLanguageList detectedLanguages returned by the API.
+     * @param expectedLanguage detectedLanguage returned by the service.
+     * @param actualLanguage detectedLanguage returned by the API.
      */
-    static void validateDetectedLanguages(List<DetectedLanguage> expectedLanguageList,
-        List<DetectedLanguage> actualLanguageList) {
-        assertEquals(expectedLanguageList.size(), actualLanguageList.size());
-        expectedLanguageList.sort(Comparator.comparing(DetectedLanguage::getName));
-        actualLanguageList.sort(Comparator.comparing(DetectedLanguage::getName));
-
-        for (int i = 0; i < expectedLanguageList.size(); i++) {
-            DetectedLanguage expectedDetectedLanguage = expectedLanguageList.get(i);
-            DetectedLanguage actualDetectedLanguage = actualLanguageList.get(i);
-            validatePrimaryLanguage(expectedDetectedLanguage, actualDetectedLanguage);
-        }
+    static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
+        assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
+        assertEquals(expectedLanguage.getName(), actualLanguage.getName());
+        assertNotNull(actualLanguage.getScore());
     }
 
     /**
@@ -717,18 +694,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedError.getCode(), actualError.getCode());
         assertEquals(expectedError.getMessage(), actualError.getMessage());
         assertEquals(expectedError.getTarget(), actualError.getTarget());
-    }
-
-    /**
-     * Helper method to validate a single detected language.
-     *
-     * @param expectedLanguage detectedLanguage returned by the service.
-     * @param actualLanguage detectedLanguage returned by the API.
-     */
-    static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
-        assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
-        assertEquals(expectedLanguage.getName(), actualLanguage.getName());
-        assertNotNull(actualLanguage.getScore());
     }
 
     /**

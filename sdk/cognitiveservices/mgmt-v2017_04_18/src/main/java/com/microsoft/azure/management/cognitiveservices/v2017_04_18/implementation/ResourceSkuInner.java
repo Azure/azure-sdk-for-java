@@ -54,7 +54,7 @@ public class ResourceSkuInner {
     private List<ResourceSkuRestrictions> restrictions;
 
     /**
-     * Get the resourceType value.
+     * Get the type of resource the SKU applies to.
      *
      * @return the resourceType value
      */
@@ -63,7 +63,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the name value.
+     * Get the name of SKU.
      *
      * @return the name value
      */
@@ -72,7 +72,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the tier value.
+     * Get specifies the tier of Cognitive Services account.
      *
      * @return the tier value
      */
@@ -81,7 +81,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the kind value.
+     * Get the Kind of resources that are supported in this SKU.
      *
      * @return the kind value
      */
@@ -90,7 +90,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the locations value.
+     * Get the set of locations that the SKU is available.
      *
      * @return the locations value
      */
@@ -99,7 +99,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the restrictions value.
+     * Get the restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      *
      * @return the restrictions value
      */
