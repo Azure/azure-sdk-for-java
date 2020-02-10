@@ -65,6 +65,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
         assertThat(diagnostics).contains("\"operationType\":\"Create\"");
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+        validateTransportRequestTimelineGateway(diagnostics);
     }
 
     @Test(groups = {"simple"})
@@ -76,9 +77,9 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             cosmosItemRequestOptions.setPartitionKey(new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<CosmosItemProperties> readResponse =
-                this.container.readItem(createResponse.getProperties().getId(), 
-                                        new PartitionKey("wrongPartitionKey"), 
-                                        CosmosItemProperties.class);
+                this.container.readItem(createResponse.getProperties().getId(),
+                    new PartitionKey("wrongPartitionKey"),
+                    CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosClientException exception) {
             String diagnostics = exception.getCosmosResponseDiagnostics().toString();
@@ -88,6 +89,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+            validateTransportRequestTimelineGateway(diagnostics);
         }
     }
 
@@ -115,6 +117,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"gatewayStatistics\":null");
         assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+        validateTransportRequestTimelineDirect(diagnostics);
     }
 
     @Test(groups = {"simple"})
@@ -127,15 +130,18 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             cosmosItemRequestOptions.setPartitionKey(new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<CosmosItemProperties> readResponse =
-                cosmosContainer.readItem(createResponse.getProperties().getId(), 
-                                        new PartitionKey("wrongPartitionKey"),
-                                        CosmosItemProperties.class);
+                cosmosContainer.readItem(createResponse.getProperties().getId(),
+                    new PartitionKey("wrongPartitionKey"),
+                    CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosClientException exception) {
             String diagnostics = exception.getCosmosResponseDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
             assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+            // TODO https://github.com/Azure/azure-sdk-for-java/issues/8035
+            // uncomment below if above issue is fixed
+            //validateTransportRequestTimelineDirect(diagnostics);
         }
     }
 
@@ -187,5 +193,22 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         Field storeResponseStatisticsField = ClientSideRequestStatistics.class.getDeclaredField("supplementalResponseStatisticsList");
         storeResponseStatisticsField.setAccessible(true);
         storeResponseStatisticsField.set(requestStatistics, new ArrayList<ClientSideRequestStatistics.StoreResponseStatistics>());
+    }
+
+    private void validateTransportRequestTimelineGateway(String diagnostics) {
+        assertThat(diagnostics).contains("\"eventName\":\"connectionConfigured\"");
+        assertThat(diagnostics).contains("\"eventName\":\"connectionConfigured\"");
+        assertThat(diagnostics).contains("\"eventName\":\"requestSent\"");
+        assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
+        assertThat(diagnostics).contains("\"eventName\":\"received\"");
+    }
+
+    private void validateTransportRequestTimelineDirect(String diagnostics) {
+        assertThat(diagnostics).contains("\"eventName\":\"created\"");
+        assertThat(diagnostics).contains("\"eventName\":\"queued\"");
+        assertThat(diagnostics).contains("\"eventName\":\"pipelined\"");
+        assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
+        assertThat(diagnostics).contains("\"eventName\":\"received\"");
+        assertThat(diagnostics).contains("\"eventName\":\"completed\"");
     }
 }

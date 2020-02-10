@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 
 /**
  * The outgoing Http request.
@@ -20,6 +21,7 @@ public class HttpRequest {
     private int port;
     private HttpHeaders headers;
     private Flux<ByteBuf> body;
+    private ReactorNettyRequestRecord reactorNettyRequestRecord;
 
     /**
      * Create a new HttpRequest instance.
@@ -32,6 +34,7 @@ public class HttpRequest {
         this.uri = uri;
         this.port = port;
         this.headers = httpHeaders;
+        this.reactorNettyRequestRecord = createReactorNettyRequestRecord();
     }
 
     /**
@@ -45,6 +48,7 @@ public class HttpRequest {
         this.uri = new URI(uri);
         this.port = port;
         this.headers = new HttpHeaders();
+        this.reactorNettyRequestRecord = createReactorNettyRequestRecord();
     }
 
     /**
@@ -61,6 +65,7 @@ public class HttpRequest {
         this.port = port;
         this.headers = headers;
         this.body = body;
+        this.reactorNettyRequestRecord = createReactorNettyRequestRecord();
     }
 
     /**
@@ -201,5 +206,29 @@ public class HttpRequest {
     public HttpRequest withBody(Flux<ByteBuf> content) {
         this.body = content;
         return this;
+    }
+
+    /**
+     * Sets ReactorNettyRequestRecord for recording request timeline.
+     *
+     * @param reactorNettyRequestRecord the reactor netty request record
+     */
+    public void setReactorNettyRequestRecord(ReactorNettyRequestRecord reactorNettyRequestRecord) {
+        this.reactorNettyRequestRecord = reactorNettyRequestRecord;
+    }
+
+    /**
+     * Gets ReactorNettyRequestRecord for recording request timeline
+     *
+     * @return reactorNettyRequestRecord the reactor netty request record
+     */
+    public ReactorNettyRequestRecord getReactorNettyRequestRecord() {
+        return this.reactorNettyRequestRecord;
+    }
+
+    private ReactorNettyRequestRecord createReactorNettyRequestRecord(){
+        ReactorNettyRequestRecord reactorNettyRequestRecord = new ReactorNettyRequestRecord();
+        reactorNettyRequestRecord.setTimeCreated(OffsetDateTime.now());
+        return reactorNettyRequestRecord;
     }
 }

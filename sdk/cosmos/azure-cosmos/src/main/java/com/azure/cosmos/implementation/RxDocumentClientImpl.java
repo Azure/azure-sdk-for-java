@@ -2,6 +2,24 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.RequestVerb;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
+import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
+import com.azure.cosmos.implementation.directconnectivity.StoreClient;
+import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
+import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpClientConfig;
+import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
+import com.azure.cosmos.implementation.query.IDocumentQueryClient;
+import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
+import com.azure.cosmos.implementation.query.Paginator;
+import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedOptions;
@@ -19,22 +37,6 @@ import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.TokenResolver;
-import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
-import com.azure.cosmos.implementation.caches.RxCollectionCache;
-import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
-import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
-import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
-import com.azure.cosmos.implementation.directconnectivity.StoreClient;
-import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpClientConfig;
-import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
-import com.azure.cosmos.implementation.query.IDocumentQueryClient;
-import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
-import com.azure.cosmos.implementation.query.Paginator;
-import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
@@ -60,9 +62,9 @@ import static com.azure.cosmos.BridgeInternal.documentFromObject;
 import static com.azure.cosmos.BridgeInternal.getAltLink;
 import static com.azure.cosmos.BridgeInternal.toDatabaseAccount;
 import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
+import static com.azure.cosmos.BridgeInternal.toJsonString;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
-import static com.azure.cosmos.implementation.CosmosItemProperties.toJsonString;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -228,7 +230,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private void initializeGatewayConfigurationReader() {
         String resourceToken;
         if(this.tokenResolver != null) {
-            resourceToken = this.tokenResolver.getAuthorizationToken("GET", "", CosmosResourceType.System, null);
+            resourceToken = this.tokenResolver.getAuthorizationToken(RequestVerb.GET, "", CosmosResourceType.System, null);
         } else if(!this.hasAuthKeyResourceToken && this.authorizationTokenProvider == null) {
             resourceToken = this.firstResourceTokenFromPermissionFeed;
         } else {
@@ -665,7 +667,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
-        populateHeaders(request, HttpConstants.HttpMethods.DELETE);
+        populateHeaders(request, RequestVerb.DELETE);
         if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
             documentClientRetryPolicy.updateEndTime();
             request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
@@ -675,7 +677,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> read(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
-        populateHeaders(request, HttpConstants.HttpMethods.GET);
+        populateHeaders(request, RequestVerb.GET);
         if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
             documentClientRetryPolicy.updateEndTime();
             request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
@@ -685,12 +687,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     Mono<RxDocumentServiceResponse> readFeed(RxDocumentServiceRequest request) {
-        populateHeaders(request, HttpConstants.HttpMethods.GET);
+        populateHeaders(request, RequestVerb.GET);
         return gatewayProxy.processMessage(request);
     }
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
-        populateHeaders(request, HttpConstants.HttpMethods.POST);
+        populateHeaders(request, RequestVerb.POST);
         return this.getStoreProxy(request).processMessage(request)
                 .map(response -> {
                             this.captureSessionToken(request, response);
@@ -916,20 +918,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
         }
 
-        request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, escapeNonAscii(partitionKeyInternal.toJson()));
-    }
-
-    private static String escapeNonAscii(String partitionKeyJson) {
-        StringBuilder sb = new StringBuilder(partitionKeyJson.length());
-        for (int i = 0; i < partitionKeyJson.length(); i++) {
-            int val = partitionKeyJson.charAt(i);
-            if (val > 127) {
-                sb.append("\\u").append(String.format("%04X", val));
-            } else {
-                sb.append(partitionKeyJson.charAt(i));
-            }
-        }
-        return sb.toString();
+        request.setPartitionKeyInternal(partitionKeyInternal);
+        request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
     }
 
     private static PartitionKeyInternal extractPartitionKeyValueFromDocument(
@@ -977,7 +967,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
 
-    private void populateHeaders(RxDocumentServiceRequest request, String httpMethod) {
+    private void populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
             || this.tokenResolver != null || this.cosmosKeyCredential != null) {
@@ -994,7 +984,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorization);
         }
 
-        if ((HttpConstants.HttpMethods.POST.equals(httpMethod) || HttpConstants.HttpMethods.PUT.equals(httpMethod))
+        if ((RequestVerb.POST.equals(httpMethod) || RequestVerb.PUT.equals(httpMethod))
                 && !request.getHeaders().containsKey(HttpConstants.HttpHeaders.CONTENT_TYPE)) {
             request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
         }
@@ -1007,7 +997,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public String getUserAuthorizationToken(String resourceName,
                                             ResourceType resourceType,
-                                            String requestVerb,
+                                            RequestVerb requestVerb,
                                             Map<String, String> headers,
                                             AuthorizationTokenType tokenType,
                                             Map<String, Object> properties) {
@@ -1042,7 +1032,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request, DocumentClientRetryPolicy retryPolicy) {
-        populateHeaders(request, HttpConstants.HttpMethods.POST);
+        populateHeaders(request, RequestVerb.POST);
         RxStoreModel storeProxy = this.getStoreProxy(request);
         if(request.requestContext != null && retryPolicy.getRetryCount() > 0) {
             retryPolicy.updateEndTime();
@@ -1054,7 +1044,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<RxDocumentServiceResponse> upsert(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
 
-        populateHeaders(request, HttpConstants.HttpMethods.POST);
+        populateHeaders(request, RequestVerb.POST);
         Map<String, String> headers = request.getHeaders();
         // headers can never be null, since it will be initialized even when no
         // request options are specified,
@@ -1076,7 +1066,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
-        populateHeaders(request, HttpConstants.HttpMethods.PUT);
+        populateHeaders(request, RequestVerb.PUT);
         if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
             documentClientRetryPolicy.updateEndTime();
             request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
@@ -2683,7 +2673,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return Flux.defer(() -> {
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.DatabaseAccount, "", null, (Object) null);
-            this.populateHeaders(request, HttpConstants.HttpMethods.GET);
+            this.populateHeaders(request, RequestVerb.GET);
 
             request.setEndpointOverride(endpoint);
             return this.gatewayProxy.processMessage(request).doOnError(e -> {

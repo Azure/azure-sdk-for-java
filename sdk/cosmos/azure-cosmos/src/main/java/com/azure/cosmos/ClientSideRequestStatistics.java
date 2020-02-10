@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -53,6 +54,7 @@ class ClientSideRequestStatistics {
     private Set<URI> regionsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
+    private RequestTimeline transportRequestTimeline;
 
     ClientSideRequestStatistics() {
         this.requestStartTime = ZonedDateTime.now(ZoneOffset.UTC);
@@ -99,7 +101,7 @@ class ClientSideRequestStatistics {
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
-                    || storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
+                || storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
                 this.supplementalResponseStatisticsList.add(storeResponseStatistics);
             } else {
                 this.responseStatisticsList.add(storeResponseStatistics);
@@ -127,13 +129,18 @@ class ClientSideRequestStatistics {
                 this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
                 this.gatewayStatistics.sessionToken = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
                 this.gatewayStatistics.requestCharge = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+                this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
             } else if(exception != null){
                 this.gatewayStatistics.statusCode = exception.getStatusCode();
                 this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
+                this.gatewayStatistics.requestTimeline = this.transportRequestTimeline;
             }
         }
     }
 
+    void setTransportClientRequestTimeline(RequestTimeline transportRequestTimeline) {
+        this.transportRequestTimeline = transportRequestTimeline;
+    }
 
     String recordAddressResolutionStart(URI targetEndpoint) {
         String identifier = Utils.randomUUID().toString();
@@ -232,6 +239,7 @@ class ClientSideRequestStatistics {
         public int statusCode;
         public int subStatusCode;
         public String requestCharge;
+        public RequestTimeline requestTimeline;
     }
 
     private static class SystemInformation {
@@ -284,7 +292,7 @@ class ClientSideRequestStatistics {
             generator.writeObjectField("regionsContacted", statistics.regionsContacted);
             generator.writeObjectField("retryContext", statistics.retryContext);
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
-            generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
+
             try {
                 SystemInformation systemInformation = new SystemInformation();
                 long totalMemory = Runtime.getRuntime().totalMemory() / 1024;

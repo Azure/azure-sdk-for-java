@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,11 +75,15 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
+
+                PartitionKeyInternal partitionKeyInternal = null;
                 if (feedOptions.partitionKey() != null && feedOptions.partitionKey() != PartitionKey.NONE) {
+                    partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey());
                     headers.put(HttpConstants.HttpHeaders.PARTITION_KEY,
-                                BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey()).toJson());
+                        partitionKeyInternal.toJson());
+
                 }
-                return this.createDocumentServiceRequest(headers, querySpecForInit, partitionKeyRange, collectionRid);
+                return this.createDocumentServiceRequest(headers, querySpecForInit, partitionKeyInternal, partitionKeyRange, collectionRid);
             };
 
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> {

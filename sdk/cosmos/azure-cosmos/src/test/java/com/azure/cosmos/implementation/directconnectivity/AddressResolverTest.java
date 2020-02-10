@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.InvalidPartitionException;
 import com.azure.cosmos.NotFoundException;
 import com.azure.cosmos.PartitionKey;
@@ -21,6 +22,7 @@ import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.IServerIdentity;
 import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.google.common.collect.ImmutableList;
@@ -211,7 +213,9 @@ public class AddressResolverTest {
 
         request.forceNameCacheRefresh = forceNameCacheRefresh;
         request.forcePartitionKeyRangeRefresh = forceRoutingMapRefresh;
-        request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, new PartitionKey("foo").toString());
+        PartitionKey pk = new PartitionKey("foo");
+        request.setPartitionKeyInternal(BridgeInternal.getPartitionKeyInternal(pk));
+        request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, pk.toString());
         AddressInformation[] resolvedAddresses;
         try {
             resolvedAddresses = this.addressResolver.resolveAsync(request, forceAddressRefresh).block();
