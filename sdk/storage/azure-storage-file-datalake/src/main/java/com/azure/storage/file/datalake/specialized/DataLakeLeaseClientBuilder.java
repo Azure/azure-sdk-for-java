@@ -6,7 +6,6 @@ package com.azure.storage.file.datalake.specialized;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient;
@@ -22,7 +21,6 @@ import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import java.net.URL;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.TransferQueue;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Lease
