@@ -88,11 +88,6 @@ public class CosmosItemProperties extends Resource {
         }
     }
 
-    static List<CosmosItemProperties> getFromV2Results(List<Document> results) {
-        return results.stream().map(document -> new CosmosItemProperties(document.toJson()))
-                   .collect(Collectors.toList());
-    }
-
     static <T> List<T> getTypedResultsFromV2Results(List<Document> results, Class<T> klass) {
         return results.stream().map(document -> document.toObject(klass))
                    .collect(Collectors.toList());
