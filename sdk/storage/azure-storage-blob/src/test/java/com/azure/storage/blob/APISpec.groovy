@@ -184,16 +184,16 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
-        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
-            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
-
-            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
-            }
-
-            containerClient.delete()
-        }
+//        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
+//        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
+//            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+//
+//            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+//                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
+//            }
+//
+//            containerClient.delete()
+//        }
 
         interceptorManager.close()
     }
@@ -407,14 +407,15 @@ class APISpec extends Specification {
     }
 
     HttpClient getHttpClient() {
-        reactor.netty.http.client.HttpClient httpClient = reactor.netty.http.client.HttpClient.from(
-            TcpClient.create().option(ChannelOption.SO_KEEPALIVE, true)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 720000)
-        )
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder(httpClient)
+//        reactor.netty.http.client.HttpClient httpClient = reactor.netty.http.client.HttpClient.from(
+//            TcpClient.create().option(ChannelOption.SO_KEEPALIVE, true)
+//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 720000)
+//        )
+//        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder(httpClient)
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
-            builder.wiretap(true)
-
+            //builder.wiretap(true)
+            builder.connectionProvider(ConnectionProvider.newConnection())
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
                 builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
