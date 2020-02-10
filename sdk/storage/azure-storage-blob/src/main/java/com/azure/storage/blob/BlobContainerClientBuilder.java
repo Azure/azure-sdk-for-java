@@ -3,12 +3,15 @@
 
 package com.azure.storage.blob;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -84,7 +87,7 @@ public final class BlobContainerClientBuilder {
      * @return a {@link BlobContainerClient} created from the configurations in this builder.
      */
     public BlobContainerClient buildClient() {
-        return new BlobContainerClient(buildAsyncClient());
+        return new BlobContainerClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
     }
 
     /**
@@ -97,6 +100,10 @@ public final class BlobContainerClientBuilder {
      * @return a {@link BlobContainerAsyncClient} created from the configurations in this builder.
      */
     public BlobContainerAsyncClient buildAsyncClient() {
+        return buildAsyncClient(Context.NONE);
+    }
+
+    private BlobContainerAsyncClient buildAsyncClient(Context context) {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
 
         /*
@@ -111,7 +118,7 @@ public final class BlobContainerClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            httpClient, additionalPolicies, configuration, logger, context);
 
         return new BlobContainerAsyncClient(pipeline, String.format("%s/%s", endpoint, blobContainerName),
             serviceVersion, accountName, blobContainerName, customerProvidedKey);

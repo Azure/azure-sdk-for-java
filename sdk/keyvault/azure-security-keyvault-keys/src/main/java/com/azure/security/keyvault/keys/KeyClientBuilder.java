@@ -3,8 +3,11 @@
 
 package com.azure.security.keyvault.keys;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
+
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.credential.TokenCredential;
@@ -100,7 +103,7 @@ public final class KeyClientBuilder {
      *     {@link KeyClientBuilder#vaultUrl(String)} have not been set.
      */
     public KeyClient buildClient() {
-        return new KeyClient(buildAsyncClient());
+        return new KeyClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
     }
 
     /**
@@ -118,6 +121,10 @@ public final class KeyClientBuilder {
      *     {@link KeyClientBuilder#vaultUrl(String)} have not been set.
      */
     public KeyAsyncClient buildAsyncClient() {
+        return buildAsyncClient(Context.NONE);
+    }
+
+    private KeyAsyncClient buildAsyncClient(Context context) {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
@@ -156,6 +163,7 @@ public final class KeyClientBuilder {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .context(context)
             .build();
 
         return new KeyAsyncClient(vaultUrl, pipeline, serviceVersion);

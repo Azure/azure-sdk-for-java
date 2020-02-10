@@ -3,6 +3,8 @@
 
 package com.azure.data.appconfiguration;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -22,6 +24,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
@@ -130,7 +133,7 @@ public final class ConfigurationClientBuilder {
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
     public ConfigurationClient buildClient() {
-        return new ConfigurationClient(buildAsyncClient());
+        return new ConfigurationClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
     }
 
     /**
@@ -150,6 +153,10 @@ public final class ConfigurationClientBuilder {
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
+        return buildAsyncClient(Context.NONE);
+    }
+
+    private ConfigurationAsyncClient buildAsyncClient(Context context) {
         // Global Env configuration store
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
@@ -209,6 +216,7 @@ public final class ConfigurationClientBuilder {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .context(context)
             .build();
 
         return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);

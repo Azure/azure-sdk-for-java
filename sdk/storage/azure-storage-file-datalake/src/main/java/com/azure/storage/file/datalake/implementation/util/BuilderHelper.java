@@ -16,6 +16,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
@@ -64,6 +65,31 @@ public final class BuilderHelper {
         TokenCredential tokenCredential, SasTokenCredential sasTokenCredential, String endpoint,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, ClientLogger logger) {
+        return buildPipeline(storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions,
+            logOptions, httpClient, additionalPolicies, configuration, logger, Context.NONE);
+    }
+
+    /**
+     * Constructs a {@link HttpPipeline} from values passed from a builder.
+     *
+     * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
+     * @param tokenCredential {@link TokenCredential} if present.
+     * @param sasTokenCredential {@link SasTokenCredential} if present.
+     * @param endpoint The endpoint for the client.
+     * @param retryOptions Retry options to set in the retry policy.
+     * @param logOptions Logging options to set in the logging policy.
+     * @param httpClient HttpClient to use in the builder.
+     * @param additionalPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline.
+     * @param configuration Configuration store contain environment settings.
+     * @param logger {@link ClientLogger} used to log any exception.
+     * @param context {@lin Context} context used for create a default {@link HttpClient}.
+     * @return A new {@link HttpPipeline} from the passed values.
+     */
+    public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
+        TokenCredential tokenCredential, SasTokenCredential sasTokenCredential, String endpoint,
+        RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
+        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, ClientLogger logger,
+        Context context) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -104,6 +130,7 @@ public final class BuilderHelper {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .context(context)
             .build();
     }
 

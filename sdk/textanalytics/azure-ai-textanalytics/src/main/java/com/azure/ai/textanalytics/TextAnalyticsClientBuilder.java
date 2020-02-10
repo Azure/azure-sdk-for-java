@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
+
 import com.azure.ai.textanalytics.implementation.ApiKeyCredentialPolicy;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
@@ -26,6 +28,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -131,7 +134,7 @@ public final class TextAnalyticsClientBuilder {
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsClient buildClient() {
-        return new TextAnalyticsClient(buildAsyncClient());
+        return new TextAnalyticsClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
     }
 
     /**
@@ -150,6 +153,10 @@ public final class TextAnalyticsClientBuilder {
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsAsyncClient buildAsyncClient() {
+        return buildAsyncClient(Context.NONE);
+    }
+
+    private TextAnalyticsAsyncClient buildAsyncClient(Context context) {
         // Global Env configuration store
         final Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone() : configuration;
@@ -194,6 +201,7 @@ public final class TextAnalyticsClientBuilder {
             pipeline = new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
+                .context(context)
                 .build();
         }
 

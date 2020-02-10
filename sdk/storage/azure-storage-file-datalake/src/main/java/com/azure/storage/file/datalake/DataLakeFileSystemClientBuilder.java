@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.datalake;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -10,6 +12,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClientBuilder;
@@ -83,7 +86,8 @@ public class DataLakeFileSystemClientBuilder {
      * @return a {@link DataLakeFileSystemClient} created from the configurations in this builder.
      */
     public DataLakeFileSystemClient buildClient() {
-        return new DataLakeFileSystemClient(buildAsyncClient(), blobContainerClientBuilder.buildClient());
+        return new DataLakeFileSystemClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)),
+            blobContainerClientBuilder.buildClient());
     }
 
     /**
@@ -94,6 +98,10 @@ public class DataLakeFileSystemClientBuilder {
      * @return a {@link DataLakeFileSystemAsyncClient} created from the configurations in this builder.
      */
     public DataLakeFileSystemAsyncClient buildAsyncClient() {
+        return buildAsyncClient(Context.NONE);
+    }
+
+    private DataLakeFileSystemAsyncClient buildAsyncClient(Context context) {
         /*
         Implicit and explicit root file system access are functionally equivalent, but explicit references are easier
         to read and debug.
@@ -106,7 +114,7 @@ public class DataLakeFileSystemClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            httpClient, additionalPolicies, configuration, logger, context);
 
         return new DataLakeFileSystemAsyncClient(pipeline, String.format("%s/%s", endpoint, dataLakeFileSystemName),
             serviceVersion, accountName, dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient());

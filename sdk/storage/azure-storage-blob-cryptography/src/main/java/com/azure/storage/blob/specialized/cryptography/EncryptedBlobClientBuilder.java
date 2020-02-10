@@ -18,6 +18,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
 
 /**
@@ -121,7 +123,7 @@ public final class EncryptedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public EncryptedBlobClient buildEncryptedBlobClient() {
-        return new EncryptedBlobClient(buildEncryptedBlobAsyncClient());
+        return new EncryptedBlobClient(buildEncryptedBlobAsyncClient(withDisabledBufferCopy(Context.NONE)));
     }
 
     /**
@@ -135,6 +137,10 @@ public final class EncryptedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public EncryptedBlobAsyncClient buildEncryptedBlobAsyncClient() {
+        return buildEncryptedBlobAsyncClient(Context.NONE);
+    }
+
+    private EncryptedBlobAsyncClient buildEncryptedBlobAsyncClient(Context context) {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         checkValidEncryptionParameters();
 
@@ -147,12 +153,12 @@ public final class EncryptedBlobClientBuilder {
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        return new EncryptedBlobAsyncClient(getHttpPipeline(),
+        return new EncryptedBlobAsyncClient(getHttpPipeline(context),
             String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
             blobName, snapshot, keyWrapper, keyWrapAlgorithm);
     }
 
-    private HttpPipeline getHttpPipeline() {
+    private HttpPipeline getHttpPipeline(Context context) {
         if (httpPipeline != null) {
             return  httpPipeline;
         }
@@ -198,6 +204,7 @@ public final class EncryptedBlobClientBuilder {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .context(context)
             .build();
     }
 

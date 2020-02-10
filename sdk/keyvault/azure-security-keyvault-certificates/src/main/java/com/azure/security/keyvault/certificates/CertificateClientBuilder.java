@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.certificates;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -15,6 +17,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -98,24 +101,29 @@ public final class CertificateClientBuilder {
      * {@link CertificateClientBuilder#vaultUrl(String)} have not been set.
      */
     public CertificateClient buildClient() {
-        return new CertificateClient(buildAsyncClient());
+        return new CertificateClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
     }
 
     /**
-     * Creates a {@link CertificateAsyncClient} based on options set in the builder.
-     * Every time {@code buildAsyncClient()} is called, a new instance of {@link CertificateAsyncClient} is created.
+     * Creates a {@link CertificateAsyncClient} based on options set in the builder. Every time {@code
+     * buildAsyncClient()} is called, a new instance of {@link CertificateAsyncClient} is created.
      *
      * <p>If {@link CertificateClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link CertificateClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the
-     * {@link CertificateClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
-     * then {@link CertificateClientBuilder#credential(TokenCredential) key vault credential and
-     * {@link CertificateClientBuilder#vaultUrl(String)} key vault url are required to build the {@link CertificateAsyncClient client}.}</p>
+     * {@link CertificateClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the {@link
+     * CertificateClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set, then
+     * {@link CertificateClientBuilder#credential(TokenCredential) key vault credential and {@link
+     * CertificateClientBuilder#vaultUrl(String)} key vault url are required to build the {@link CertificateAsyncClient
+     * client}.}</p>
      *
      * @return A {@link CertificateAsyncClient} with the options set from the builder.
-     * @throws IllegalStateException If {@link CertificateClientBuilder#credential(TokenCredential)} or
-     * {@link CertificateClientBuilder#vaultUrl(String)} have not been set.
+     * @throws IllegalStateException If {@link CertificateClientBuilder#credential(TokenCredential)} or {@link
+     * CertificateClientBuilder#vaultUrl(String)} have not been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
+        return buildAsyncClient(Context.NONE);
+    }
+
+    private CertificateAsyncClient buildAsyncClient(Context context) {
         Configuration buildConfiguration = (configuration != null) ? configuration
             : Configuration.getGlobalConfiguration().clone();
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
@@ -153,6 +161,7 @@ public final class CertificateClientBuilder {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .context(context)
             .build();
 
         return new CertificateAsyncClient(vaultUrl, pipeline, serviceVersion);

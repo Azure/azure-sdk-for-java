@@ -3,12 +3,15 @@
 
 package com.azure.storage.blob;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -76,7 +79,7 @@ public final class BlobServiceClientBuilder {
      * @return a {@link BlobServiceClient} created from the configurations in this builder.
      */
     public BlobServiceClient buildClient() {
-        return new BlobServiceClient(buildAsyncClient());
+        return new BlobServiceClient(buildAsyncClient(withDisabledBufferCopy(Context.NONE)));
     }
 
     /**
@@ -84,6 +87,10 @@ public final class BlobServiceClientBuilder {
      * @throws IllegalArgumentException If no credentials are provided.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
+        return buildAsyncClient(Context.NONE);
+    }
+
+    private BlobServiceAsyncClient buildAsyncClient(Context context) {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
 
         boolean anonymousAccess = false;
@@ -96,7 +103,7 @@ public final class BlobServiceClientBuilder {
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            httpClient, additionalPolicies, configuration, logger, context);
 
         return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
             anonymousAccess);

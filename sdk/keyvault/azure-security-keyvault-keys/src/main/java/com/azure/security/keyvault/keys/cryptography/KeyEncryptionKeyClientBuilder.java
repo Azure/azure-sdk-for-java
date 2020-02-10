@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
+import static com.azure.core.util.CoreUtils.withDisabledBufferCopy;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
@@ -16,6 +18,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -73,7 +76,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     @Override
     public KeyEncryptionKey buildKeyEncryptionKey(String keyId) {
-        return new KeyEncryptionKeyClient((KeyEncryptionKeyAsyncClient) buildAsyncKeyEncryptionKey(keyId).block());
+        return new KeyEncryptionKeyClient((KeyEncryptionKeyAsyncClient) buildAsyncKeyEncryptionKey(keyId,
+            withDisabledBufferCopy(Context.NONE)).block());
     }
 
     /**
@@ -93,6 +97,10 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     @Override
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId) {
+        return buildAsyncKeyEncryptionKey(keyId, Context.NONE);
+    }
+
+    private Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId, Context context) {
         builder.keyIdentifier(keyId);
         if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
@@ -109,7 +117,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
                 "Key Vault credentials are required to build the key encryption key async client"));
         }
 
-        HttpPipeline pipeline = builder.setupPipeline();
+        HttpPipeline pipeline = builder.setupPipeline(context);
 
         return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion)));
     }
