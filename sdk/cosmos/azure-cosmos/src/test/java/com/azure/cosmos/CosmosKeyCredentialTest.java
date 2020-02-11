@@ -238,10 +238,9 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
                                                                               new PartitionKey(docDefinition.get(
                                                                                   "mypk")), options);
 
-
         CosmosItemResponseValidator validator =
             new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
-                .withId(docDefinition.getId())
+                .nullResource()
                 .build();
         validateItemSuccess(deleteObservable, validator);
 
