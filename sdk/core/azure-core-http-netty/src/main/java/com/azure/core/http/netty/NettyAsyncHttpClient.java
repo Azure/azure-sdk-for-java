@@ -244,18 +244,10 @@ class NettyAsyncHttpClient implements HttpClient {
         }
 
         private static ByteBuffer deepCopyBuffer(ByteBuf byteBuf) {
-            ByteBuffer buffer = byteBuf.nioBuffer();
-            int offset = buffer.position();
-            int size = buffer.remaining();
-            if (size == 0) {
-                return EMPTY_BYTE_BUFFER;
-            }
-
-            byte[] duplicate = new byte[size];
-            for (int i = 0; i < size; i++) {
-                duplicate[i] = buffer.get(i + offset);
-            }
-            return ByteBuffer.wrap(duplicate);
+            ByteBuffer buffer = ByteBuffer.allocate(byteBuf.readableBytes());
+            byteBuf.readBytes(buffer);
+            buffer.rewind();
+            return buffer;
         }
     }
 }
