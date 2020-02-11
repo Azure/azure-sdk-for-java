@@ -39,12 +39,13 @@ import java.util.function.BiFunction;
  */
 class NettyAsyncHttpClient implements HttpClient {
     final reactor.netty.http.client.HttpClient nettyClient;
+    private final boolean disableBufferCopy;
 
     /**
      * Creates default NettyAsyncHttpClient.
      */
     NettyAsyncHttpClient() {
-        this(reactor.netty.http.client.HttpClient.create());
+        this(reactor.netty.http.client.HttpClient.create(), false);
     }
 
     /**
@@ -52,8 +53,9 @@ class NettyAsyncHttpClient implements HttpClient {
      *
      * @param nettyClient the reactor-netty http client
      */
-    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient) {
+    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy) {
         this.nettyClient = nettyClient;
+        this.disableBufferCopy = disableBufferCopy;
     }
 
     /** {@inheritDoc} */
@@ -67,7 +69,7 @@ class NettyAsyncHttpClient implements HttpClient {
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request))
+            .responseConnection(responseDelegate(request, disableBufferCopy))
             .single();
     }
 
@@ -98,23 +100,27 @@ class NettyAsyncHttpClient implements HttpClient {
      * Delegate to receive response.
      *
      * @param restRequest the Rest request whose response this delegate handles
+     * @param disableBufferCopy if set to {@code true}, disables deep copy of response buffer
      * @return a delegate upon invocation setup Rest response object
      */
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
-        final HttpRequest restRequest) {
+        final HttpRequest restRequest, final boolean disableBufferCopy) {
         return (reactorNettyResponse, reactorNettyConnection) ->
-            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest));
+            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
+                disableBufferCopy));
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
+        private final boolean disableBufferCopy;
 
         ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
-                                 HttpRequest httpRequest) {
+                                 HttpRequest httpRequest, boolean disableBufferCopy){
             super(httpRequest);
             this.reactorNettyResponse = reactorNettyResponse;
             this.reactorNettyConnection = reactorNettyConnection;
+            this.disableBufferCopy = disableBufferCopy;
         }
 
         @Override
@@ -140,7 +146,7 @@ class NettyAsyncHttpClient implements HttpClient {
                 if (!reactorNettyConnection.isDisposed()) {
                     reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
                 }
-            }).map(ByteBuf::nioBuffer);
+            }).map(byteBuf -> this.disableBufferCopy ? byteBuf.nioBuffer() : deepCopyBuffer(byteBuf));
         }
 
         @Override
@@ -184,6 +190,13 @@ class NettyAsyncHttpClient implements HttpClient {
         // used for testing only
         Connection internConnection() {
             return reactorNettyConnection;
+        }
+
+        private static ByteBuffer deepCopyBuffer(ByteBuf byteBuf) {
+            ByteBuffer buffer = ByteBuffer.allocate(byteBuf.readableBytes());
+            byteBuf.readBytes(buffer);
+            buffer.rewind();
+            return buffer;
         }
     }
 }

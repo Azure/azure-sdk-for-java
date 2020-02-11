@@ -5,6 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.core.http.rest.Response
 import com.azure.core.util.logging.ClientLogger
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareCorsRule
@@ -146,11 +147,61 @@ class FileTestHelper {
         }
     }
 
+    /*
+     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
+    */
+    static File getRandomFile(int size) {
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
+        file.deleteOnExit()
+        FileOutputStream fos = new FileOutputStream(file)
+
+        if (size > Constants.MB) {
+            for (def i = 0; i < size / Constants.MB; i++) {
+                def dataSize = Math.min(Constants.MB, size - i * Constants.MB)
+                fos.write(getRandomBuffer(dataSize))
+            }
+        } else {
+            fos.write(getRandomBuffer(size))
+        }
+
+        fos.close()
+        return file
+    }
+
     // TODO : Move this into a common package test class?
     static byte[] getRandomBuffer(int length) {
         final Random randGenerator = new Random()
         final byte[] buff = new byte[length]
         randGenerator.nextBytes(buff)
         return buff
+    }
+
+    static compareFiles(File file1, File file2, long offset, long count) {
+        def pos = 0L
+        def readBuffer = 8 * Constants.KB
+        def stream1 = new FileInputStream(file1)
+        stream1.skip(offset)
+        def stream2 = new FileInputStream(file2)
+
+        try {
+            while (pos < count) {
+                def bufferSize = (int) Math.min(readBuffer, count - pos)
+                def buffer1 = new byte[bufferSize]
+                def buffer2 = new byte[bufferSize]
+
+                def readCount1 = stream1.read(buffer1)
+                def readCount2 = stream2.read(buffer2)
+
+                assert readCount1 == readCount2 && buffer1 == buffer2
+
+                pos += bufferSize
+            }
+
+            def verificationRead = stream2.read()
+            return pos == count && verificationRead == -1
+        } finally {
+            stream1.close()
+            stream2.close()
+        }
     }
 }
