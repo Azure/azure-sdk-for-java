@@ -43,7 +43,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        client.recognizeBatchEntitiesWithResponse(inputs, requestOptions).subscribe(
+        client.recognizeEntitiesBatchWithResponse(inputs, requestOptions).subscribe(
             result -> {
                 final DocumentResultCollection<RecognizeEntitiesResult> recognizedBatchResult = result.getValue();
                 System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
@@ -66,7 +66,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                     }
                     // Valid document
                     for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
-                        System.out.printf("Recognized entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                        System.out.printf("Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
                             entity.getText(),
                             entity.getCategory(),
                             entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),

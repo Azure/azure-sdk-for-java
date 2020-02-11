@@ -42,8 +42,7 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Get the name property: Long name of a detected language (e.g. English,
-     * French).
+     * Get the name property: Long name of a detected language (e.g. English, French).
      *
      * @return the name value.
      */

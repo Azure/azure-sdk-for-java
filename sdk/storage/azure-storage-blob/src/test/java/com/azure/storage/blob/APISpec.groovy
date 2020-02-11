@@ -57,6 +57,7 @@ import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 
+
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
 class APISpec extends Specification {
     @Shared
@@ -145,20 +146,6 @@ class APISpec extends Specification {
     String containerName
 
     def setupSpec() {
-//        try {
-//            Process p = Runtime.getRuntime().exec("netsh advfirewall set global StatefulFTP disable");
-//            p.waitFor();
-//            BufferedReader reader = new BufferedReader(
-//                new InputStreamReader(p.getInputStream()));
-//            String line = reader.readLine();
-//            while (line != null) {
-//                System.out.println(line);
-//                line = reader.readLine();
-//            }
-//
-//        } catch (IOException e1) {
-//        } catch (InterruptedException e2) {
-//        }
         testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)
@@ -422,7 +409,8 @@ class APISpec extends Specification {
     HttpClient getHttpClient() {
         reactor.netty.http.client.HttpClient httpClient = reactor.netty.http.client.HttpClient.from(
             TcpClient.create().option(ChannelOption.SO_KEEPALIVE, true)
-                .option(ChannelOption.SO_RCVBUF, 1048576)
+                .option(ChannelOption.SO_RCVBUF, 10485760)
+                .option(ChannelOption.SO_SNDBUF, 10485760)
         )
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder(httpClient)
 

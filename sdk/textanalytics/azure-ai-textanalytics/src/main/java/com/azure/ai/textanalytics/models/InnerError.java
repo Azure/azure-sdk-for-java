@@ -79,8 +79,7 @@ public final class InnerError {
     }
 
     /**
-     * Get the innererror property: Inner error contains more specific
-     * information.
+     * Get the innererror property: Inner error contains more specific information.
      *
      * @return the innererror value.
      */

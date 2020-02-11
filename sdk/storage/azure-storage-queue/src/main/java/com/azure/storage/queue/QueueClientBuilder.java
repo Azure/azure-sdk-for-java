@@ -8,8 +8,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -20,7 +20,6 @@ import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-
 import com.azure.storage.queue.implementation.util.BuilderHelper;
 import java.util.ArrayList;
 import java.util.List;

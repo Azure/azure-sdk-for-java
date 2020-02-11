@@ -1,5 +1,8 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+
 ## 1.0.1 (2020-02-11)
 - Client library name and version are no longer hard coded in connection properties.
 - Update qpid-proton-j-extensions dependency

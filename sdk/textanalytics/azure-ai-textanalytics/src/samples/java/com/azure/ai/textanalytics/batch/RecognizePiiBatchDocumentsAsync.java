@@ -44,7 +44,7 @@ public class RecognizePiiBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        client.recognizeBatchPiiEntitiesWithResponse(inputs, requestOptions).subscribe(
+        client.recognizePiiEntitiesBatchWithResponse(inputs, requestOptions).subscribe(
             result -> {
                 final DocumentResultCollection<RecognizePiiEntitiesResult> recognizedBatchResult = result.getValue();
                 System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
@@ -67,7 +67,7 @@ public class RecognizePiiBatchDocumentsAsync {
                     }
                     // Valid document
                     for (PiiEntity entity : piiEntityDocumentResult.getEntities()) {
-                        System.out.printf("Recognized personal identifiable information entity: %s, entity Category: %s, entity Sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                        System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
                             entity.getText(),
                             entity.getCategory(),
                             entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),

@@ -4,6 +4,7 @@ import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobContainerClient
+import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.BlobErrorCode
@@ -55,7 +56,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     String keyId
 
     @Shared
-    def fakeKey
+    FakeKey fakeKey
 
     @Shared
     def fakeKeyResolver
@@ -969,6 +970,104 @@ class EncyptedBlockBlobAPITest extends APISpec {
         8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
         50 * Constants.MB    | _ // large file requiring multiple requests
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
+    }
+
+    /*
+     * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
+     */
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file sync buffer copy"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobServiceClient = new BlobServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(primaryCredential)
+            .buildClient()
+
+        def encryptedBlobClient = new EncryptedBlobClientBuilder()
+            .key(fakeKey, "keyWrapAlgorithm")
+            .blobClient(blobServiceClient.createBlobContainer(containerName).getBlobClient(generateBlobName()))
+            .buildEncryptedBlobClient()
+
+        def file = getRandomFile(fileSize)
+        encryptedBlobClient.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def properties = encryptedBlobClient.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false, null, null)
+
+        then:
+        compareFiles(file, outFile, 0, fileSize)
+        properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
+
+        cleanup:
+        blobServiceClient.deleteBlobContainer(containerName)
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
+    }
+
+    /*
+     * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
+     */
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file async buffer copy"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobServiceAsyncClient = new BlobServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(primaryCredential)
+            .buildAsyncClient()
+
+        def encryptedBlobAsyncClient = new EncryptedBlobClientBuilder()
+            .key(fakeKey, "keyWrapAlgorithm")
+            .blobAsyncClient(blobServiceAsyncClient.createBlobContainer(containerName).block()
+                .getBlobAsyncClient(generateBlobName()))
+            .buildEncryptedBlobAsyncClient()
+
+        def file = getRandomFile(fileSize)
+        encryptedBlobAsyncClient.uploadFromFile(file.toPath().toString(), true).block()
+        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def downloadMono = encryptedBlobAsyncClient.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false)
+
+        then:
+        StepVerifier.create(downloadMono)
+            .assertNext({ it -> it.getValue().getBlobType() == BlobType.BLOCK_BLOB })
+            .verifyComplete()
+
+        compareFiles(file, outFile, 0, fileSize)
+
+        cleanup:
+        blobServiceAsyncClient.deleteBlobContainer(containerName)
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
     }
 
     @Requires({ liveMode() })

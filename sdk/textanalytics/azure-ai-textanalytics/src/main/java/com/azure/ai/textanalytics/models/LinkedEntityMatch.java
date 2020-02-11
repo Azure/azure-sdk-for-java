@@ -67,8 +67,7 @@ public final class LinkedEntityMatch {
     }
 
     /**
-     * Get the offset property: Start position (in Unicode characters) for the
-     * entity match text.
+     * Get the offset property: Start position (in Unicode characters) for the entity match text.
      *
      * @return the offset value.
      */
@@ -77,8 +76,7 @@ public final class LinkedEntityMatch {
     }
 
     /**
-     * Get the length property: Length (in Unicode characters) for the entity
-     * match text.
+     * Get the length property: Length (in Unicode characters) for the entity match text.
      *
      * @return the length value.
      */

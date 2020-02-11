@@ -51,9 +51,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -293,8 +293,7 @@ class EventHubProducerAsyncClientTest {
     }
 
     /**
-     * Verifies addLink method is not invoked and message/event is not stamped with context on retry (span context
-     * already present on event).
+     * Verifies send, message and addLink spans are only invoked once even for multiple retry attempts to send the message.
      */
     @Test
     void sendMessageRetrySpanTest() {
@@ -303,27 +302,24 @@ class EventHubProducerAsyncClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
 
-        final EventData eventData = new EventData(TEST_CONTENTS.getBytes(UTF_8))
-            .addContext(SPAN_CONTEXT_KEY, Context.NONE);
-        final EventData eventData2 = new EventData(TEST_CONTENTS.getBytes(UTF_8))
-            .addContext(SPAN_CONTEXT_KEY, Context.NONE);
-        final Flux<EventData> testData = Flux.just(eventData, eventData2);
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            tracerProvider, messageSerializer, false);
 
-        final String partitionId = "my-partition-id";
-        final SendOptions sendOptions = new SendOptions()
-            .setPartitionId(partitionId);
-        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
-
-        when(connection.createSendLink(
-            argThat(name -> name.endsWith(partitionId)), argThat(name -> name.endsWith(partitionId)), eq(retryOptions)))
-            .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        final String failureKey = "fail";
+        final EventData testData = new EventData("test");
+        testData.getProperties().put(failureKey, "true");
 
         when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(PARENT_SPAN_KEY, "value");
+                return passed.addData(PARENT_SPAN_KEY, "value").addData(HOST_NAME_KEY, "value2");
+            }
+        );
+
+        when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
             }
         );
 
@@ -334,15 +330,29 @@ class EventHubProducerAsyncClientTest {
             }
         );
 
-        //Act
-        StepVerifier.create(asyncProducer.send(testData, sendOptions)).verifyComplete();
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
+            new AmqpErrorContext("test-namespace"));
+
+        // Send a transient error to attempt retry.
+        when(sendLink.send(argThat((Message message) ->
+            message.getApplicationProperties().getValue().containsKey(failureKey))))
+            .thenReturn(Mono.error(error))
+            .thenReturn(Mono.error(error))
+            .thenReturn(Mono.empty());
+
+        StepVerifier.create(producer.send(testData)).verifyComplete();
 
         //Assert
         verify(tracer1, times(1))
             .start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
-        verify(tracer1, never()).start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(2)).addLink(any());
-        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(1))
+            .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
+        verify(tracer1, times(1)).addLink(any());
+        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
     }
 
     /**

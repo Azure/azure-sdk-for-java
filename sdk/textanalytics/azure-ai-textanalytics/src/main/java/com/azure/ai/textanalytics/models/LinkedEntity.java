@@ -72,8 +72,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the linkedEntityMatches property: List of instances this entity appears in the
-     * text.
+     * Get the linkedEntityMatches property: List of instances this entity appears in the text.
      *
      * @return the linkedEntityMatches value.
      */
@@ -91,8 +90,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the id property: Unique identifier of the recognized entity from the
-     * data source.
+     * Get the id property: Unique identifier of the recognized entity from the data source.
      *
      * @return the id value.
      */
@@ -110,8 +108,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the dataSource property: Data source used to extract entity linking,
-     * such as Wiki/Bing etc.
+     * Get the dataSource property: Data source used to extract entity linking, such as Wiki/Bing etc.
      *
      * @return the dataSource value.
      */

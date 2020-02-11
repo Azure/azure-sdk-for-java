@@ -43,7 +43,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        client.recognizeBatchLinkedEntitiesWithResponse(inputs, requestOptions).subscribe(
+        client.recognizeLinkedEntitiesBatchWithResponse(inputs, requestOptions).subscribe(
             result -> {
                 final DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizedBatchResult = result.getValue();
                 System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
@@ -65,7 +65,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                         continue;
                     }
                     // Valid document
-                    for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getLinkedEntities()) {
+                    for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getEntities()) {
                         System.out.printf("Recognized linked entities: %s, URL: %s, data source: %s%n",
                             linkedEntity.getName(),
                             linkedEntity.getUrl(),

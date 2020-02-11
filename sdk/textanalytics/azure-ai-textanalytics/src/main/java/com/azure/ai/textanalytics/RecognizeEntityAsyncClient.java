@@ -14,6 +14,9 @@ import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -48,25 +51,36 @@ class RecognizeEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language,
+    Mono<PagedResponse<CategorizedEntity>> recognizeEntitiesWithResponse(String text, String language,
         Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
-        return recognizeBatchEntitiesWithResponse(
+        return recognizeEntitiesBatchWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(Transforms::processSingleResponseErrorResult);
+            .map(response -> new PagedResponseBase<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    Transforms.processSingleResponseErrorResult(response).getValue().getEntities(),
+                    null,
+                    null
+                ));
+    }
+
+    PagedFlux<CategorizedEntity> recognizeEntities(String text, String language, Context context) {
+        return new PagedFlux<>(() -> recognizeEntitiesWithResponse(text, language, context));
     }
 
     Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
-        List<String> textInputs, String language, Context context) {
+        List<String> textInputs, String language,  TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
-        return recognizeBatchEntitiesWithResponse(documentInputs, null, context);
+        return recognizeEntitiesBatchWithResponse(documentInputs, options, context);
     }
 
-    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesBatchWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 

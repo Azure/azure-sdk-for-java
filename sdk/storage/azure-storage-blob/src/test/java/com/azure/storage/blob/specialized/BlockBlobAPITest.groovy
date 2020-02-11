@@ -1081,11 +1081,11 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         // Due to memory issues, this check only runs on small to medium sized data sets.
-//        if (dataSize < 100 * 1024 * 1024) {
-//            StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
-//                .assertNext({ assert it == data })
-//                .verifyComplete()
-//        }
+        if (dataSize < 100 * 1024 * 1024) {
+            StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
+                .assertNext({ assert it == data })
+                .verifyComplete()
+        }
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
             .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
@@ -1184,9 +1184,9 @@ class BlockBlobAPITest extends APISpec {
         def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
 
         expect:
-//        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
-//            .assertNext({ assert compareListToBuffer(dataList, it) })
-//            .verifyComplete()
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
+            .assertNext({ assert compareListToBuffer(dataList, it) })
+            .verifyComplete()
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
             .assertNext({ assert it.getCommittedBlocks().size() == blockCount })

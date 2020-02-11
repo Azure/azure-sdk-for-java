@@ -34,7 +34,7 @@ public final class TextDocumentBatchStatistics {
     private final long transactionCount;
 
     /**
-     * Creates a {@code TextDocumentBatchStatistics} model that describes the statistics of batch text
+     * Creates a {@code TextDocumentBatchStatistics} model that describes the statistics of batch text.
      *
      * @param documentCount number of documents submitted in the request
      * @param validDocumentCount number of valid documents. This excludes empty, over-size limit or
@@ -52,8 +52,7 @@ public final class TextDocumentBatchStatistics {
     }
 
     /**
-     * Get the documentCount property: Number of documents submitted in the
-     * request.
+     * Get the documentCount property: Number of documents submitted in the request.
      *
      * @return the documentCount value.
      */
@@ -62,8 +61,8 @@ public final class TextDocumentBatchStatistics {
     }
 
     /**
-     * Get the validDocumentCount property: Number of valid documents. This
-     * excludes empty, over-size limit or non-supported languages documents.
+     * Get the validDocumentCount property: Number of valid documents.
+     * This excludes empty, over-size limit or non-supported languages documents.
      *
      * @return the validDocumentCount value.
      */
@@ -73,8 +72,7 @@ public final class TextDocumentBatchStatistics {
 
     /**
      * Get the invalidDocumentCount property: Number of invalid documents.
-     * This includes empty, over-size limit or non-supported languages
-     * documents.
+     * This includes empty, over-size limit or non-supported languages documents.
      *
      * @return the invalidDocumentCount value.
      */
@@ -83,8 +81,7 @@ public final class TextDocumentBatchStatistics {
     }
 
     /**
-     * Get the transactionCount property: Number of transactions for the
-     * request.
+     * Get the transactionCount property: Number of transactions for the request.
      *
      * @return the transactionCount value.
      */

@@ -19,7 +19,6 @@ import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;

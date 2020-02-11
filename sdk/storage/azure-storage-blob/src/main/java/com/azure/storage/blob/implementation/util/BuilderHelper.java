@@ -63,6 +63,7 @@ public final class BuilderHelper {
         TokenCredential tokenCredential, SasTokenCredential sasTokenCredential, String endpoint,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, ClientLogger logger) {
+
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
