@@ -64,6 +64,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String}
      *
      * @param text The text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @return the {@link DetectedLanguage detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -81,6 +83,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageWithResponse#String-String-Context}
      *
      * @param text The text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -101,6 +105,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#List}
      *
      * @param textInputs The list of texts to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
      * {@link DetectLanguageResult detected language} with their numeric scores.
@@ -120,6 +126,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs The list of texts to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
      * alpha-2. Defaults to "US" if not specified.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -145,6 +153,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -169,6 +179,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#String}
      *
      * @param text the text to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return the {@link PagedIterable} containing the {@link CategorizedEntity categorized entities} of the text.
      *
@@ -190,6 +202,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#String-String-Context}
      *
      * @param text the text to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -212,6 +226,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#List}
      *
      * @param textInputs A list of texts to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
      * {@link RecognizeEntitiesResult categorized entity} of the text.
@@ -231,6 +247,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of texts to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
@@ -255,6 +273,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -281,6 +301,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String}
      *
      * @param text the text to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @return A {@link PagedIterable} containing the {@link PiiEntity PII entities} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -301,6 +323,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-Context}
      *
      * @param text the text to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -325,6 +349,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#List}
      *
      * @param textInputs A list of text to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link DocumentResultCollection batch} of the {@link RecognizePiiEntitiesResult PII entity}
      * of the text.
@@ -346,6 +372,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of text to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -373,6 +401,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -398,6 +428,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String}
      *
      * @param text the text to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link PagedIterable} containing the {@link LinkedEntity linked entities} of the text.
      *
@@ -418,6 +450,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String-String-Context}
      *
      * @param text the text to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -442,6 +476,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#List}
      *
      * @param textInputs A list of text to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link DocumentResultCollection batch} of the
      * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
@@ -464,6 +500,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of text to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -490,6 +528,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -514,6 +554,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String}
      *
      * @param text the text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link PagedIterable} containing the key phrases of the text.
      *
@@ -534,6 +576,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context}
      *
      * @param text the text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -556,6 +600,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#List}
      *
      * @param textInputs A list of text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @return A {@link DocumentResultCollection batch} of the {@link ExtractKeyPhraseResult key phrases} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -575,6 +621,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -601,6 +649,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -626,6 +676,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String}
      *
      * @param text the text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return the {@link DocumentSentiment document sentiment} of the text.
      *
@@ -646,6 +698,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentWithResponse#String-String-Context}
      *
      * @param text the text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -668,6 +722,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#List}
      *
      * @param textInputs A list of text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
      * {@link AnalyzeSentimentResult text sentiments} with their numeric scores.
@@ -688,6 +744,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -714,6 +772,8 @@ public final class TextAnalyticsClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.

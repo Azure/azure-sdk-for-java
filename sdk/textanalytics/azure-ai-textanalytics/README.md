@@ -35,7 +35,12 @@ Text Analytics supports both [multi-service and single-service access][service_a
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Text Analytics access only,
 create a Text Analytics resource.
 
-You can create either resource using the [Azure Portal][create_new_resource] or [Azure CLI][azure_cli].
+You can create either resource using the 
+
+**Option 1:** [Azure Portal][create_new_resource] 
+
+**Option 2:** [Azure CLI][azure_cli]
+
 Below is an example of how you can create a Text Analytics resource using the CLI:
 
 ```bash
@@ -55,64 +60,23 @@ az cognitiveservices account create \
     --yes
 ```
 ### Authenticate the client
-In order to interact with the Text Analytics service, you'll need to create an instance of the 
-`TextAnalyticsClient` class. You would need an **endpoint** and **API key** to instantiate a client object.
-And they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in your created
-Text Analytics resource. 
+In order to interact with the Text Analytics service, you will need to create an instance of the `TextAnalyticsClient` 
+class. You will need an **endpoint** and either an **API key** or **AAD TokenCredential** to instantiate a client 
+object. And they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in your created
+Text Analytics resource. See the full details regarding [authentication][authentication] of Cognitive Services.
 
 #### Get credentials
-##### Types of credentials
 The authentication credential may be provided as the API key to your resource or as a token from Azure Active Directory.
-See the full details regarding [authentication][authentication] of cognitive services.
 
-1. To use an [API key][api_key], provide the key as a string. This can be found in the [Azure Portal][azure_portal] 
+
+##### **Option 1**: Create TextAnalyticsClient with API Key Credential
+To use an [API key][api_key], provide the key as a string. This can be found in the [Azure Portal][azure_portal] 
    under the "Quickstart" section or by running the following Azure CLI command:
 
-    ```bash
-    az cognitiveservices account keys list --name "resource-name" --resource-group "resource-group-name"
-    ```
-    
-    Use the key as the credential parameter to authenticate the client:
-    <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L47-L50 -->
-    ```java
-    TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-        .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
-        .endpoint("{endpoint}")
-        .buildClient();
-    ```
-
-2. To use an [Azure Active Directory (AAD) token credential][aad_credential],
-   provide an instance of the desired credential type obtained from the [azure-identity][azure_identity] library.
-   Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] 
-   name for your resource in order to use this type of authentication.
-
-   Authentication with AAD requires some initial setup:
-   * [Install azure-identity][install_azure_identity]
-   * [Register a new AAD application][register_AAD_application]
-   * [Grant access][grant_access] to Text Analytics by assigning the `"Cognitive Services User"` role to your service principal.
-   
-   After setup, you can choose which type of [credential][credential_type] from azure.identity to use. 
-   As an example, [DefaultAzureCredential][default_azure_credential]
-   can be used to authenticate the client:
-
-   Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
-   AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET
-
-   Use the returned token credential to authenticate the client:
-   <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L67-L70 -->
-    ```java
-    TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-        .endpoint("{endpoint}")
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildAsyncClient();
-    ```
-
-#### Create a Client
-The Azure Text Analytics client library for Java allows you to engage with the Text Analytics service to 
-analyze sentiment, recognize entities, detect language, and extract key phrases from text.
-To create a client object, you will need the cognitive services or text analytics endpoint to 
-your resource and an API key that allows you access:
-
+```bash
+az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
+```
+Use the API key as the credential parameter to authenticate the client:
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L47-L50 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -120,9 +84,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .endpoint("{endpoint}")
     .buildClient();
 ```
-
-#### Rotate existing API key
-The Azure Text Analytics client library provides a way to rotate the existing API key.
+The Azure Text Analytics client library provides a way to **rotate the existing API key**.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L164 -->
 ```java
@@ -134,29 +96,70 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 
 credential.updateCredential("{new_api_key}");
 ```
+##### **Option 2**: Create TextAnalyticsClient with Azure Active Directory Credential
+To use an [Azure Active Directory (AAD) token credential][aad_credential],
+provide an instance of the desired credential type obtained from the [azure-identity][azure_identity] library.
+Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] 
+name for your resource in order to use this type of authentication.
+
+Authentication with AAD requires some initial setup:
+* [Install azure-identity][install_azure_identity]
+* [Register a new AAD application][register_AAD_application]
+* [Grant access][grant_access] to Text Analytics by assigning the `"Cognitive Services User"` role to your service principal.
+
+After setup, you can choose which type of [credential][credential_type] from azure.identity to use. 
+As an example, [DefaultAzureCredential][default_azure_credential]
+can be used to authenticate the client:
+
+Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
+AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
+
+Use the returned token credential to authenticate the client:
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L67-L70 -->
+```java
+TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+    .endpoint("{endpoint}")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
+```
+
 ## Key concepts
+### Client
+The Text Analytics client library provides a [TextAnalyticsClient][text_analytics_sync_client] and 
+[TextAnalyticsAsyncClient][text_analytics_async_client] to do analysis on batches of documents. It provides both synchronous and
+asynchronous operations to access a specific use of Text Analytics, such as language detection or key phrase extraction.
 
-### Text Input
-A text input, sometimes called a `document`, is a single unit of input to be analyzed by the predictive models
+### Text input
+A **text input**, sometimes called a **document**, is a single unit of input to be analyzed by the predictive models
 in the Text Analytics service. Operations on Text Analytics client may take a single text input or a collection
-of inputs to be analyzed as a batch.
+of inputs to be analyzed as a batch. 
+See [service limitations][service_input_limitation] for the input, including document length limits, maximum batch size,
+and supported text encoding.
 
-### Operation Result
+### Return value
 An operation result, such as `AnalyzeSentimentResult`, is the result of a Text Analytics operation, containing a 
 prediction or predictions about a single text input. An operation's result type also may optionally include information
-about the input document and how it was processed.
+about the input document and how it was processed. An operation result contains a `isError` property that allows to
+identify if an operation executed was successful or unsuccessful for the given text input. When the operation results
+an error, you can simply call `getError()` to get `TextAnalyticsError` which contains the reason why it is unsuccessful. 
+If you are interested in how many characters in your input text or number of operation transactions been going through,
+simply call `getStatistics()` to get the `TextDocumentStatistics` which contains both information.
 
-### Operation Result Collection
+### Return value collection
 An operation result collection, such as `DocumentResultCollection<AnalyzeSentimentResult>`, which is the collection of 
 the result of a Text Analytics analyzing sentiment operation. `DocumentResultCollection` includes the model version of
 the operation and statistics of the batch documents. Since `DocumentResultCollection<T>` extends `IterableStream<T>`,
 the list of item can be retrieved by streaming or iterating the list.
 
-### Operation Overloads
+### Operation on multiple text inputs
 For each supported operation, the Text Analytics client provides method overloads to take a single text input, a batch 
 of text inputs as strings, or a batch of either `TextDocumentInput` or `DetectLanguageInput` objects. The overload 
-taking the `TextDocumentInput` or `DetectLanguageInput` batch allows callers to give each document a unique ID, or 
-indicate that the documents in the batch are written in different languages.
+taking the `TextDocumentInput` or `DetectLanguageInput` batch allows callers to give each document a unique ID, 
+indicate that the documents in the batch are written in different languages, or provide a country hint about the 
+language of the document.
+
+**Note**: It is recommended to use the batch methods when working on production environments as they allow you to send one 
+request with multiple text inputs. This is more performant than sending a request per each text input.
 
 The following are types of text analysis that the service offers:
 
@@ -272,6 +275,9 @@ for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
 }
 ```
 
+Above examples are introduced as the single input examples.
+For more examples, such as batch operation, refer to [here][samples_readme].
+
 ## Troubleshooting
 ### General
 Text Analytics clients raise exceptions. For example, if you try to detect the languages of a batch of text with same 
@@ -349,10 +355,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [samples_readme]: src/samples/README.md
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
+[service_input_limitation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits
 [sentiment_analysis]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-sentiment-analysis
 [source_code]: src
 [supported_language]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support#language-detection
 [text_analytics_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
+[text_analytics_async_client]: src/main/java/com/azure/ai/textanalytics/TextAnalyticsAsyncClient.java
+[text_analytics_sync_client]: src/main/java/com/azure/ai/textanalytics/TextAnalyticsClient.java
 [LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)
