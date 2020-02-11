@@ -13,6 +13,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -151,15 +153,19 @@ public class CosmosItemTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryItemsWithContinuationTokenAndPageSize() throws Exception{
+        List<String> actualIds = new ArrayList<>();
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         container.createItem(properties);
+        actualIds.add(properties.getId());
         properties = getDocumentDefinition(UUID.randomUUID().toString());
         container.createItem(properties);
+        actualIds.add(properties.getId());
         properties = getDocumentDefinition(UUID.randomUUID().toString());
         container.createItem(properties);
+        actualIds.add(properties.getId());
 
 
-        String query = "SELECT * from c";
+        String query = String.format("SELECT * from c where c.id in ('%s', '%s', '%s')", actualIds.get(0), actualIds.get(1), actualIds.get(2));
         FeedOptions feedOptions = new FeedOptions();
         String continuationToken = null;
         int pageSize = 1;
@@ -174,14 +180,11 @@ public class CosmosItemTest extends TestSuiteBase {
             Iterable<FeedResponse<CosmosItemProperties>> feedResponseIterable =
                 feedResponseIterator1.iterableByPage(continuationToken, pageSize);
             FeedResponse<CosmosItemProperties> feedResponse = feedResponseIterable.iterator().next();
-            continuationToken = feedResponse.getContinuationToken();
-            if (continuationToken == null) {
-                break;
-            }
             int resultSize = feedResponse.getResults().size();
             assertThat(resultSize).isEqualTo(pageSize);
             finalDocumentCount += feedResponse.getResults().size();
-        } while(true);
+            continuationToken = feedResponse.getContinuationToken();
+        } while(continuationToken != null);
 
         assertThat(finalDocumentCount).isEqualTo(initialDocumentCount);
 
