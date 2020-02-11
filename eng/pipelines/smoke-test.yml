@@ -9,12 +9,33 @@ jobs:
 
     strategy:
       matrix:
-        Java 8:
+        Java 8 Windows:
           ProfileFlag: ''
           JavaVersion: '1.8'
-        Java LTS:
+          OSVmImage: windows-2019
+        Java LTS Windows:
           ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
+          OSVmImage: windows-2019
+        Java 8 Linux:
+          ProfileFlag: ''
+          JavaVersion: '1.8'
+          OSVmImage: ubuntu-18.04
+        Java LTS Linux:
+          ProfileFlag: '-Djava-lts'
+          JavaVersion: '1.11'
+          OSVmImage: ubuntu-18.04
+        Java 8 MacOS:
+          ProfileFlag: ''
+          JavaVersion: '1.8'
+          OSVmImage: macOS-10.15
+        Java LTS MacOS:
+          ProfileFlag: '-Djava-lts'
+          JavaVersion: '1.11'
+          OSVmImage: macOS-10.15
+
+    pool:
+      vmImage: $(OSVmImage)
 
     steps:
       - task: Maven@3
