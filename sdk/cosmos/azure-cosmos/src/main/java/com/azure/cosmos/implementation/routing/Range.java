@@ -19,6 +19,8 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     private T minValue;
     private T maxValue;
+    private boolean minInclusive;
+    private boolean maxInclusive;
 
     public Range() {
         super();
@@ -26,13 +28,23 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     public Range(String jsonString) {
         super(jsonString);
+        this.minValue = (T) super.get(Range.MIN_PROPERTY);
+        this.maxValue = (T) super.get(Range.MAX_PROPERTY);
+        this.minInclusive = super.getBoolean(Range.IS_MIN_INCLUSIVE_PROPERTY);
+        this.maxInclusive = super.getBoolean(Range.IS_MAX_INCLUSIVE_PROPERTY);
     }
 
     public Range(T min, T max, boolean isMinInclusive, boolean isMaxInclusive) {
-        this.setMin(min);
-        this.setMax(max);
-        this.setMinInclusive(isMinInclusive);
-        this.setMaxInclusive(isMaxInclusive);
+        this.minValue = min;
+        this.maxValue = max;
+        this.minInclusive = isMinInclusive;
+        this.maxInclusive = isMaxInclusive;
+    }
+
+    @Override
+    public String toJson() {
+        populatePropertyBag();
+        return super.toJson();
     }
 
     public static <T extends Comparable<T>> Range<T> getPointRange(T value) {
@@ -61,48 +73,38 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     @SuppressWarnings("unchecked")
     public T getMin() {
-        if (this.minValue == null) {
-            this.minValue = (T) super.get(Range.MIN_PROPERTY);
-        }
-
         return this.minValue;
     }
 
     public void setMin(T min) {
         this.minValue = min;
-        BridgeInternal.setProperty(this, Range.MIN_PROPERTY, min);
     }
 
     @SuppressWarnings("unchecked")
     public T getMax() {
-        if (this.maxValue == null) {
-            this.maxValue = (T) super.get(Range.MAX_PROPERTY);
-        }
-
         return this.maxValue;
     }
 
     public void setMax(T max) {
         this.maxValue = max;
-        BridgeInternal.setProperty(this, Range.MAX_PROPERTY, max);
     }
 
     @JsonProperty("isMinInclusive")
     public boolean isMinInclusive() {
-        return super.getBoolean(Range.IS_MIN_INCLUSIVE_PROPERTY);
+        return this.minInclusive;
     }
 
     public void setMinInclusive(boolean isMinInclusive) {
-        BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, isMinInclusive);
+        this.minInclusive = isMinInclusive;
     }
 
     @JsonProperty("isMaxInclusive")
     public boolean isMaxInclusive() {
-        return super.getBoolean(Range.IS_MAX_INCLUSIVE_PROPERTY);
+        return this.maxInclusive;
     }
 
     public void setMaxInclusive(boolean isMaxInclusive) {
-        BridgeInternal.setProperty(this, Range.IS_MAX_INCLUSIVE_PROPERTY, isMaxInclusive);
+        this.maxInclusive = isMaxInclusive;
     }
 
     public boolean isSingleValue() {
@@ -145,6 +147,13 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
         hash = (hash * 397) ^ Boolean.compare(this.isMinInclusive(), false);
         hash = (hash * 397) ^ Boolean.compare(this.isMaxInclusive(), false);
         return hash;
+    }
+
+    void populatePropertyBag() {
+        BridgeInternal.setProperty(this, Range.MIN_PROPERTY, this.minValue);
+        BridgeInternal.setProperty(this, Range.MAX_PROPERTY, this.maxValue);
+        BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, this.minInclusive);
+        BridgeInternal.setProperty(this, Range.IS_MAX_INCLUSIVE_PROPERTY, this.maxInclusive);
     }
 
     public static class MinComparator<T extends Comparable<T>> implements Comparator<Range<T>> {
