@@ -558,7 +558,7 @@ public class Utils {
             objectMapper.writeValue(byteBufferOutputStream, object);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to serialize json", e);
+            throw new IllegalArgumentException("Failed to serialize the object into json", e);
         }
     }
 
