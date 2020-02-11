@@ -129,14 +129,14 @@ The Text Analytics client library provides a [TextAnalyticsClient][text_analytic
 [TextAnalyticsAsyncClient][text_analytics_async_client] to do analysis on batches of documents. It provides both synchronous and
 asynchronous operations to access a specific use of Text Analytics, such as language detection or key phrase extraction.
 
-### Text Input
+### Text input
 A **text input**, sometimes called a **document**, is a single unit of input to be analyzed by the predictive models
 in the Text Analytics service. Operations on Text Analytics client may take a single text input or a collection
 of inputs to be analyzed as a batch. 
 See [service limitations][service_input_limitation] for the input, including document length limits, maximum batch size,
 and supported text encoding.
 
-### Operation Result
+### Return value
 An operation result, such as `AnalyzeSentimentResult`, is the result of a Text Analytics operation, containing a 
 prediction or predictions about a single text input. An operation's result type also may optionally include information
 about the input document and how it was processed. An operation result contains a `isError` property that allows to
@@ -145,17 +145,21 @@ an error, you can simply call `getError()` to get `TextAnalyticsError` which con
 If you are interested in how many characters in your input text or number of operation transactions been going through,
 simply call `getStatistics()` to get the `TextDocumentStatistics` which contains both information.
 
-### Operation Result Collection
+### Return value collection
 An operation result collection, such as `DocumentResultCollection<AnalyzeSentimentResult>`, which is the collection of 
 the result of a Text Analytics analyzing sentiment operation. `DocumentResultCollection` includes the model version of
 the operation and statistics of the batch documents. Since `DocumentResultCollection<T>` extends `IterableStream<T>`,
 the list of item can be retrieved by streaming or iterating the list.
 
-### Operation Overloads
+### Operation on multiple text inputs
 For each supported operation, the Text Analytics client provides method overloads to take a single text input, a batch 
 of text inputs as strings, or a batch of either `TextDocumentInput` or `DetectLanguageInput` objects. The overload 
-taking the `TextDocumentInput` or `DetectLanguageInput` batch allows callers to give each document a unique ID, or 
-indicate that the documents in the batch are written in different languages.
+taking the `TextDocumentInput` or `DetectLanguageInput` batch allows callers to give each document a unique ID, 
+indicate that the documents in the batch are written in different languages, or provide a country hint about the 
+language of the document.
+
+**Note**: It is recommended to use the batch methods when working on production environments as they allow you to send one 
+request with multiple text inputs. This is more performant than sending a request per each text input.
 
 The following are types of text analysis that the service offers:
 
