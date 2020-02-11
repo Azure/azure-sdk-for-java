@@ -14,7 +14,7 @@ public class App {
         LOGGER.info("     AZURE SDK SMOKE TEST");
         LOGGER.info("================================");
 
-        KeyVaultSecrets.main(null);
+        // KeyVaultSecrets.main(null);
         StorageBlob.main(null);
         EventHubs.main(null);
         CosmosDB.main(null);
