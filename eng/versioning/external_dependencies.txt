@@ -52,8 +52,9 @@ org.slf4j:slf4j-simple;1.7.25
 org.springframework:spring-web;5.2.0.RELEASE
 org.springframework:spring-jdbc;5.2.0.RELEASE
 org.springframework:spring-jms;5.2.0.RELEASE
+org.springframework.boot:spring-boot-autoconfigure;2.2.0.RELEASE
 org.springframework.boot:spring-boot-actuator-autoconfigure;2.2.0.RELEASE
-org.springframework.boot:spring-boot-actuator-autoconfigure-processor;2.2.0.RELEASE
+org.springframework.boot:spring-boot-autoconfigure-processor;2.2.0.RELEASE
 org.springframework.boot:spring-boot-configuration-processor;2.2.0.RELEASE
 org.springframework.boot:spring-boot-dependencies;2.2.0.RELEASE
 org.springframework.boot:spring-boot-starter-test;2.2.0.RELEASE
@@ -71,6 +72,7 @@ javax.servlet:javax.servlet-api;4.0.1
 com.google.code.findbugs:annotations;2.0.1
 org.projectlombok:lombok;1.18.10
 org.yaml:snakeyaml;1.25
+org.hibernate.validator:hibernate-validator;6.0.17.Final
 pl.pragmatists:JUnitParams;1.1.1
 org.apache.qpid:qpid-jms-client;0.43.0
 

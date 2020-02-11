@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>azure-spring-boot</artifactId>
+    <version>2.2.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Azure Spring Boot AutoConfigure</name>
@@ -80,8 +81,8 @@
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>  <!-- {x-version-update;org.projectlombok:lombok;external_dependency} -->
-            <version>1.18.10</version>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>  <!-- {x-version-update;org.projectlombok:lombok;external_dependency} -->
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -178,12 +179,12 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-secrets</artifactId>
-            <version>4.1.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+            <version>4.0.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.0.2</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+            <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
@@ -200,7 +201,7 @@
         <!-- Spring JDBC -->
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
+            <artifactId>spring-jdbc</artifactId >
             <version>5.2.0.RELEASE</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
             <optional>true</optional>
         </dependency>
@@ -262,7 +263,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.8.9</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+            <version>2.8.9</version> <!-- {x-version-update;spring_org.mockito:mockito-core;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
