@@ -6,7 +6,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.IterableStream;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
@@ -210,12 +209,12 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
-        IterableStream<FeedResponse<CosmosContainerProperties>> feedResponseIterator = createdDatabase.readAllContainers();
+        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.readAllContainers();
         // Very basic validation
         assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
         FeedOptions feedOptions = new FeedOptions();
-        IterableStream<FeedResponse<CosmosContainerProperties>> feedResponseIterator1 = createdDatabase.readAllContainers(feedOptions);
+        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator1 = createdDatabase.readAllContainers(feedOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
     }
 
@@ -230,21 +229,21 @@ public class CosmosContainerTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", collectionName);
         FeedOptions feedOptions = new FeedOptions();
 
-        IterableStream<FeedResponse<CosmosContainerProperties>> feedResponseIterator = createdDatabase.queryContainers(query);
+        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.queryContainers(query);
         // Very basic validation
         assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
-        IterableStream<FeedResponse<CosmosContainerProperties>> feedResponseIterator1 =
+        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator1 =
             createdDatabase.queryContainers(query, feedOptions);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        IterableStream<FeedResponse<CosmosContainerProperties>> feedResponseIterator2 =
+        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator2 =
             createdDatabase.queryContainers(querySpec);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
 
-        IterableStream<FeedResponse<CosmosContainerProperties>> feedResponseIterator3 =
+        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator3 =
             createdDatabase.queryContainers(querySpec, feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }

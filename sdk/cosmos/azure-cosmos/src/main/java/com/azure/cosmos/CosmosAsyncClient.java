@@ -37,7 +37,7 @@ public class CosmosAsyncClient implements AutoCloseable {
     private final List<Permission> permissions;
     private final TokenResolver tokenResolver;
     private final CosmosKeyCredential cosmosKeyCredential;
-
+    private final boolean sessionCapturingOverride;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         this.configs = builder.configs();
@@ -48,11 +48,13 @@ public class CosmosAsyncClient implements AutoCloseable {
         this.permissions = builder.getPermissions();
         this.tokenResolver = builder.getTokenResolver();
         this.cosmosKeyCredential = builder.getCosmosKeyCredential();
+        this.sessionCapturingOverride = builder.isSessionCapturingOverride();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)
                                        .withConnectionPolicy(this.connectionPolicy)
                                        .withConsistencyLevel(this.desiredConsistencyLevel)
+                                       .withSessionCapturingOverride(this.sessionCapturingOverride)
                                        .withConfigs(this.configs)
                                        .withTokenResolver(this.tokenResolver)
                                        .withCosmosKeyCredential(this.cosmosKeyCredential)
@@ -67,7 +69,7 @@ public class CosmosAsyncClient implements AutoCloseable {
     public static CosmosClientBuilder cosmosClientBuilder() {
         return new CosmosClientBuilder();
     }
-    
+
     AsyncDocumentClient getContextClient() {
         return this.asyncDocumentClient;
     }
