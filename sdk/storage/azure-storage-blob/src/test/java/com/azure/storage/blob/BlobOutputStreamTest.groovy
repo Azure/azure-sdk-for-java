@@ -8,7 +8,7 @@ import spock.lang.Requires
 import spock.lang.Retry
 import spock.lang.Timeout
 
-@Timeout(600)
+@Timeout(900)
 @Retry(count = 2)
 class BlobOutputStreamTest extends APISpec {
     private static int FOUR_MB = 4 * Constants.MB
