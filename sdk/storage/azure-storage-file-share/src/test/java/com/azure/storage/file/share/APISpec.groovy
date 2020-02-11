@@ -66,6 +66,8 @@ class APISpec extends Specification {
 
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, testName)
+        System.setProperty("reactor.bufferSize.x", "16")
+        System.setProperty("reactor.bufferSize.small", "100")
     }
 
     /**
