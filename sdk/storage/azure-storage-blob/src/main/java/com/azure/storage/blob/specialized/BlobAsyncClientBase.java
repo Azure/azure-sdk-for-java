@@ -120,7 +120,7 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
+     * Protected constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
