@@ -205,7 +205,7 @@ jobs:
         displayName: 'Analyze dependencies'
         condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
         inputs:
-          mavenPomFile: 'DependencyChecker/pom.xml'
+          mavenPomFile: 'DependencyChecker/core/pom.xml'
           options: '-Dexec.args="-showall -dependencymanagement"'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
