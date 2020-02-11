@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -74,6 +75,10 @@ public class JsonSerializable {
 
     protected JsonSerializable(ByteBuffer byteBuffer) {
         this.propertyBag = fromJson(byteBuffer);
+    }
+
+    protected JsonSerializable(byte[] bytes) {
+        this.propertyBag = fromJson(bytes);
     }
 
     private static void checkForValidPOJO(Class<?> c) {
@@ -519,6 +524,15 @@ public class JsonSerializable {
         return null;
     }
 
+    private ObjectNode fromJson(byte[] bytes) {
+        try {
+            return (ObjectNode) getMapper().readTree(bytes);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(
+                String.format("Unable to parse JSON %s", Arrays.toString(bytes)), e);
+        }
+    }
+
     private ObjectNode fromJson(String json) {
         try {
             return (ObjectNode) getMapper().readTree(json);
@@ -532,8 +546,7 @@ public class JsonSerializable {
         try {
             return (ObjectNode) getMapper().readTree(new ByteBufferBackedInputStream(json));
         } catch (IOException e) {
-            throw new IllegalArgumentException(
-                String.format("Unable to parse JSON %s", json), e);
+            throw new IllegalArgumentException("Unable to parse JSON from ByteBuffer", e);
         }
     }
 

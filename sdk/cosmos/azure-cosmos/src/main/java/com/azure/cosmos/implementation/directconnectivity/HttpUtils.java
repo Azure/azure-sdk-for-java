@@ -7,17 +7,13 @@ import com.azure.cosmos.implementation.Constants.UrlEncodingInfo;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import io.netty.buffer.ByteBuf;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.ByteBuffer;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;

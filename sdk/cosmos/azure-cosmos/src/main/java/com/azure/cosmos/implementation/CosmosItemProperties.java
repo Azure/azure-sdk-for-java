@@ -26,6 +26,16 @@ public class CosmosItemProperties extends Resource {
     /**
      * Initialize a CosmosItemProperties object from json string.
      *
+     * @param bytes the json string that represents the document object.
+     */
+    public CosmosItemProperties(byte[] bytes) {
+        super(bytes);
+    }
+
+
+    /**
+     * Initialize a CosmosItemProperties object from json string.
+     *
      * @param byteBuffer the json string that represents the document object.
      */
     public CosmosItemProperties(ByteBuffer byteBuffer) {

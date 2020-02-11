@@ -895,32 +895,32 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request,
-                                                                      ByteBuffer contentAsString,
+                                                                      ByteBuffer contentAsByteBuffer,
                                                                       Document document,
                                                                       RequestOptions options) {
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
         return collectionObs
                 .map(collectionValueHolder -> {
-                    addPartitionKeyInformation(request, contentAsString, document, options, collectionValueHolder.v);
+                    addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v);
                     return request;
                 });
     }
 
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request,
-                                                                      ByteBuffer contentAsString,
+                                                                      ByteBuffer contentAsByteBuffer,
                                                                       Object document,
                                                                       RequestOptions options,
                                                                       Mono<Utils.ValueHolder<DocumentCollection>> collectionObs) {
 
         return collectionObs.map(collectionValueHolder -> {
-            addPartitionKeyInformation(request, contentAsString, document, options, collectionValueHolder.v);
+            addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v);
             return request;
         });
     }
 
     private void addPartitionKeyInformation(RxDocumentServiceRequest request,
-                                            ByteBuffer contentAsString,
+                                            ByteBuffer contentAsByteBuffer,
                                             Object objectDoc, RequestOptions options,
                                             DocumentCollection collection) {
         PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
@@ -934,12 +934,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
             // have empty value for it and user doesn't need to specify it explicitly.
             partitionKeyInternal = PartitionKeyInternal.getEmpty();
-        } else if (contentAsString != null) {
+        } else if (contentAsByteBuffer != null) {
             CosmosItemProperties cosmosItemProperties;
             if (objectDoc instanceof CosmosItemProperties) {
                 cosmosItemProperties = (CosmosItemProperties) objectDoc;
             } else {
-                cosmosItemProperties = new CosmosItemProperties(contentAsString);
+                cosmosItemProperties = new CosmosItemProperties(contentAsByteBuffer);
             }
 
             partitionKeyInternal = extractPartitionKeyValueFromDocument(cosmosItemProperties, partitionKeyDefinition);

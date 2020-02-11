@@ -41,18 +41,6 @@ public class StoreResponse {
         this(status, headerEntries, safeToByteArray(content), null);
     }
 
-    static private byte[] safeToByteArray(String content) {
-        if (content == null) {
-            return null;
-        }
-
-        try {
-            return content.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
     private StoreResponse(
             int status,
             List<Entry<String, String>> headerEntries,
@@ -87,6 +75,10 @@ public class StoreResponse {
 
     public String[] getResponseHeaderValues() {
         return responseHeaderValues;
+    }
+
+    public byte[] getResponseBodyAsByteArray() {
+        return this.content;
     }
 
     public String getResponseBody() {
@@ -161,5 +153,17 @@ public class StoreResponse {
             }
         }
         return subStatusCode;
+    }
+
+    static private byte[] safeToByteArray(String content) {
+        if (content == null) {
+            return null;
+        }
+
+        try {
+            return content.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

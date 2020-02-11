@@ -1153,7 +1153,7 @@ public class RxDocumentServiceRequest {
             return null;
         }
 
-        return wrapByteBuffer(Utils.getUTF8BytesSafe(content));
+        return wrapByteBuffer(Utils.getUTF8Bytes(content));
     }
 
     public static byte[] toByteArray(ByteBuffer byteBuffer) {
