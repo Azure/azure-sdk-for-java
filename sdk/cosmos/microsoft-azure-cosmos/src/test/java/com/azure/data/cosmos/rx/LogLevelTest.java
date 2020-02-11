@@ -9,25 +9,34 @@ import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemRequestOptions;
 import com.azure.data.cosmos.CosmosItemResponse;
 import com.azure.data.cosmos.CosmosResponseValidator;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.WriterAppender;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
-import org.testng.annotations.Ignore;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.WriterAppender;
+import org.apache.logging.log4j.core.config.AppenderRef;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.ConfigurationSource;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.LoggerConfig;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
+import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.io.StringWriter;
-import java.lang.reflect.Method;
+import java.io.Writer;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class LogLevelTest extends TestSuiteBase {
     public final static String COSMOS_DB_LOGGING_CATEGORY = "com.azure.data.cosmos";
@@ -37,6 +46,7 @@ public class LogLevelTest extends TestSuiteBase {
     public final static String LOG_PATTERN_3 = "USER_EVENT: SslHandshakeCompletionEvent(SUCCESS)";
     public final static String LOG_PATTERN_4 = "CONNECT: ";
 
+    private static final String APPENDER_NAME = "StringWriterAppender";
     private static CosmosContainer createdCollection;
     private static CosmosClient client;
 
@@ -50,18 +60,30 @@ public class LogLevelTest extends TestSuiteBase {
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
+    @AfterMethod(groups = { "simple" })
+    public void afterMethod() {
+        resetLoggingConfiguration();
+    }
+
+    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT)
+    public void afterClass() {
+        resetLoggingConfiguration();
+    }
+
     /**
      * This test will try to create document with netty wire DEBUG logging and
      * validate it.
-     * 
+     *
      * @throws Exception
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithDebugLevel() throws Exception {
-        LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.DEBUG);
-        StringWriter consoleWriter = new StringWriter();
-        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-        LogManager.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
+        final StringWriter consoleWriter = new StringWriter();
+
+        addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.DEBUG, APPENDER_NAME, consoleWriter);
+
+        final Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
+        assertThat(logger.isDebugEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -82,16 +104,13 @@ public class LogLevelTest extends TestSuiteBase {
     /**
      * This test will try to create document with netty wire WARN logging and
      * validate it.
-     * 
+     *
      * @throws Exception
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithWarningLevel() throws Exception {
-        LogManager.getRootLogger().setLevel(Level.INFO);
-        LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.WARN);
-        StringWriter consoleWriter = new StringWriter();
-        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
+        final StringWriter consoleWriter = new StringWriter();
+        addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.WARN, APPENDER_NAME, consoleWriter);
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -111,18 +130,17 @@ public class LogLevelTest extends TestSuiteBase {
     /**
      * This test will try to create document with netty wire TRACE logging and
      * validate it.
-     * 
+     *
      * @throws Exception
      */
-    //FIXME test is flaky
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithTraceLevel() throws Exception {
-        LogManager.getRootLogger().setLevel(Level.INFO);
-        LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.TRACE);
-        StringWriter consoleWriter = new StringWriter();
-        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
+        final StringWriter consoleWriter = new StringWriter();
+
+        addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.TRACE, APPENDER_NAME, consoleWriter);
+
+        Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
+        assertThat(logger.isTraceEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -147,11 +165,12 @@ public class LogLevelTest extends TestSuiteBase {
     @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithTraceLevelAtRoot() throws Exception {
-        LogManager.getRootLogger().setLevel(Level.INFO);
-        LogManager.getLogger(COSMOS_DB_LOGGING_CATEGORY).setLevel(Level.TRACE);
-        StringWriter consoleWriter = new StringWriter();
-        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
+        final StringWriter consoleWriter = new StringWriter();
+
+        addAppenderAndLogger(COSMOS_DB_LOGGING_CATEGORY, Level.INFO, APPENDER_NAME, consoleWriter);
+
+        Logger logger = LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY);
+        assertThat(logger.isInfoEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -173,11 +192,30 @@ public class LogLevelTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithDebugLevelAtRoot() throws Exception {
-        LogManager.getRootLogger().setLevel(Level.INFO);
-        LogManager.getLogger(COSMOS_DB_LOGGING_CATEGORY).setLevel(Level.DEBUG);
-        StringWriter consoleWriter = new StringWriter();
-        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
+        final StringWriter consoleWriter = new StringWriter();
+        final LoggerContext context = (LoggerContext) LogManager.getContext(false);
+        final Configuration configuration = context.getConfiguration();
+
+        // The cosmos DB logger has its level set to DEBUG
+        final AppenderRef[] cosmosAppenderRef = new AppenderRef[] {
+            AppenderRef.createAppenderRef("STDOUT", null, null)
+        };
+        final LoggerConfig cosmosConfig = LoggerConfig.createLogger(false, Level.DEBUG,
+            COSMOS_DB_LOGGING_CATEGORY, null, cosmosAppenderRef, null, configuration, null);
+
+        configuration.addLogger(COSMOS_DB_LOGGING_CATEGORY, cosmosConfig);
+        context.updateLoggers();
+
+        // The NETWORK_LOGGING should inherit its log level from the root configuration, which is info.
+        final WriterAppender appender = WriterAppender.createAppender(PatternLayout.createDefaultLayout(configuration),
+            null, consoleWriter, APPENDER_NAME, false, true);
+        appender.start();
+
+        org.apache.logging.log4j.core.Logger logger = context.getLogger(NETWORK_LOGGING_CATEGORY);
+        logger.addAppender(appender);
+
+        assertThat(LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY).isDebugEnabled()).isTrue();
+        assertThat(LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY).isInfoEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -197,16 +235,16 @@ public class LogLevelTest extends TestSuiteBase {
     /**
      * This test will try to create document with netty wire ERROR logging and
      * validate it.
-     * 
+     *
      * @throws Exception
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithErrorClient() throws Exception {
-        LogManager.getRootLogger().setLevel(Level.INFO);
-        LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.ERROR);
-        StringWriter consoleWriter = new StringWriter();
-        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
+        final StringWriter consoleWriter = new StringWriter();
+
+        addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.ERROR, APPENDER_NAME, consoleWriter);
+        Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
+        assertThat(logger.isErrorEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -226,16 +264,16 @@ public class LogLevelTest extends TestSuiteBase {
     /**
      * This test will try to create document with netty wire INFO logging and
      * validate it.
-     * 
+     *
      * @throws Exception
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithInfoLevel() throws Exception {
-        LogManager.getRootLogger().setLevel(Level.INFO);
-        LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.INFO);
-        StringWriter consoleWriter = new StringWriter();
-        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
+        final StringWriter consoleWriter = new StringWriter();
+
+        addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.INFO, APPENDER_NAME, consoleWriter);
+        Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
+        assertThat(logger.isInfoEnabled()).isTrue();
 
         CosmosClient client = clientBuilder().build();
         try {
@@ -260,21 +298,64 @@ public class LogLevelTest extends TestSuiteBase {
         return doc;
     }
 
-    @BeforeMethod(groups = { "simple" })
-    public void beforeMethod(Method method) {
-        LogManager.resetConfiguration();
-        PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
+    /**
+     * Resets the logging configuration.
+     */
+    static void resetLoggingConfiguration() {
+        final URL resource = LogLevelTest.class.getClassLoader().getResource("log4j2-test.properties");
+
+        assertThat(resource).isNotNull();
+
+        final ConfigurationSource defaultConfigurationSource;
+        try {
+            defaultConfigurationSource = ConfigurationSource.fromUri(resource.toURI());
+        } catch (URISyntaxException e) {
+            fail("Should have been able to load test properties from: " + resource, e);
+            return;
+        }
+
+        final Configuration defaultConfiguration = ConfigurationBuilderFactory.newConfigurationBuilder()
+            .setConfigurationSource(defaultConfigurationSource)
+            .build();
+
+        // Stopping the old context so we can reinitialise it.
+        final LoggerContext oldContext = (LoggerContext) LogManager.getContext(false);
+        oldContext.stop();
+
+        final LoggerContext context = Configurator.initialize(defaultConfiguration);
+
+        assertThat(context).isNotSameAs(oldContext);
     }
 
-    @AfterMethod(groups = { "simple" })
-    public void afterMethod() {
-        LogManager.resetConfiguration();
-        PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
-    }
+    /**
+     * Adds a {@link WriterAppender} associated with the given {@code loggerName} to the current logging configuration.
+     *
+     * @param loggerName Name of the logger to add.
+     * @param logLevel Level for the logger to log at.
+     * @param appenderName The name of the appender.
+     * @param consoleWriter The {@link Writer} associated with the WriterAppender.
+     */
+    static void addAppenderAndLogger(String loggerName, Level logLevel, String appenderName, Writer consoleWriter) {
+        final LoggerContext context = (LoggerContext) LogManager.getContext(false);
+        final Configuration configuration = context.getConfiguration();
+        final WriterAppender appender = WriterAppender.createAppender(PatternLayout.createDefaultLayout(configuration),
+            null, consoleWriter, appenderName, false, true);
+        appender.start();
+        configuration.addAppender(appender);
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT)
-    public void afterClass() {
-        LogManager.resetConfiguration();
-        PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
+        final AppenderRef[] appenderRefs = new AppenderRef[] {
+            AppenderRef.createAppenderRef(appenderName, null, null)
+        };
+        final LoggerConfig loggerConfiguration = LoggerConfig.createLogger(false, logLevel,
+            loggerName, null, appenderRefs, null, configuration, null);
+
+        configuration.addLogger(loggerName, loggerConfiguration);
+        context.updateLoggers();
+
+        org.apache.logging.log4j.core.Logger logger = context.getLogger(loggerName);
+        configuration.addLoggerAppender(logger, appender);
+
+        // Enable this if you want to see the logging to console.
+        // logger.addAppender(configuration.getAppender("STDOUT"));
     }
 }

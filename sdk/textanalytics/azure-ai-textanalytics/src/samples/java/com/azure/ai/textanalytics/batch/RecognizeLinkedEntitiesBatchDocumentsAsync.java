@@ -29,7 +29,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -43,7 +43,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        client.recognizeBatchLinkedEntitiesWithResponse(inputs, requestOptions).subscribe(
+        client.recognizeLinkedEntitiesBatchWithResponse(inputs, requestOptions).subscribe(
             result -> {
                 final DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizedBatchResult = result.getValue();
                 System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
@@ -52,7 +52,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                 final TextDocumentBatchStatistics batchStatistics = recognizedBatchResult.getStatistics();
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
+                    batchStatistics.getInvalidDocumentCount(),
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -65,7 +65,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                         continue;
                     }
                     // Valid document
-                    for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getLinkedEntities()) {
+                    for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getEntities()) {
                         System.out.printf("Recognized linked entities: %s, URL: %s, data source: %s%n",
                             linkedEntity.getName(),
                             linkedEntity.getUrl(),

@@ -9,8 +9,8 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 
 import java.util.Arrays;
@@ -29,7 +29,7 @@ public class DetectLanguageBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -43,7 +43,7 @@ public class DetectLanguageBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Detecting batch languages
-        client.detectBatchLanguagesWithResponse(inputs, requestOptions).subscribe(
+        client.detectLanguageBatchWithResponse(inputs, requestOptions).subscribe(
             result -> {
                 final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = result.getValue();
                 System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
@@ -52,7 +52,7 @@ public class DetectLanguageBatchDocumentsAsync {
                 final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
                 System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
+                    batchStatistics.getInvalidDocumentCount(),
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -70,12 +70,6 @@ public class DetectLanguageBatchDocumentsAsync {
                         detectedPrimaryLanguage.getName(),
                         detectedPrimaryLanguage.getIso6391Name(),
                         detectedPrimaryLanguage.getScore());
-                    for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-                        System.out.printf("Another detected language: %s, ISO 6391 name: %s, score: %s.%n",
-                            detectedLanguage.getName(),
-                            detectedLanguage.getIso6391Name(),
-                            detectedLanguage.getScore());
-                    }
                 }
             },
             error -> System.err.println("There was an error detecting language of the text inputs." + error),

@@ -1,6 +1,6 @@
 # Azure SDK for Java
 
-[![Packages](https://img.shields.io/badge/packages-latest-blue.svg)](https://azure.github.io/azure-sdk/releases/latest/java.html) [![Dependencies](https://img.shields.io/badge/dependencies-analyzed-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/dependencies.html) [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html) [![SpotBugs](https://img.shields.io/badge/SpotBugs-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/spotbugsXml.html) [![CheckStyle](https://img.shields.io/badge/CheckStyle-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/checkstyle-aggregate.html)
+[![Packages](https://img.shields.io/badge/packages-latest-blue.svg)](https://azure.github.io/azure-sdk/releases/latest/java.html) [![Dependencies](https://img.shields.io/badge/dependencies-report-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/dependencies.html) [![DepGraph](https://img.shields.io/badge/dependencies-graph-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/InterdependencyGraph.html) [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html) [![SpotBugs](https://img.shields.io/badge/SpotBugs-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/spotbugsXml.html) [![CheckStyle](https://img.shields.io/badge/CheckStyle-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/checkstyle-aggregate.html)
 
 This repository is for active development of the Azure SDK for Java. For consumers of the SDK we recommend visiting our [public developer docs](https://docs.microsoft.com/en-us/java/azure/) or our versioned [developer docs](https://azure.github.io/azure-sdk-for-java).
 
@@ -42,7 +42,7 @@ The libraries released in the GA January 2020 release is listed below.
 - [October 2019](https://azure.github.io/azure-sdk/releases/2019-10-11/java.html)
 - [September 2019](https://azure.github.io/azure-sdk/releases/2019-09-17/java.html)
 - [August 2019](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html)
-- [July 2010](https://azure.github.io/azure-sdk/releases/2019-07-10/java.html)
+- [July 2019](https://azure.github.io/azure-sdk/releases/2019-07-10/java.html)
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 

@@ -17,14 +17,14 @@ public class ExtractKeyPhrases {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
         // The text that need be analysed.
         String text = "My cat might need to see a veterinarian.";
 
-        for (String keyPhrase : client.extractKeyPhrases(text).getKeyPhrases()) {
+        for (String keyPhrase : client.extractKeyPhrases(text)) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrase);
         }
     }

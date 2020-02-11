@@ -79,6 +79,12 @@ jobs:
 
       - script: |
           python3 --version
+          python3 eng/versioning/set_versions.py --set-dev-zero-version --build-type ${{parameters.SDKType}} --build-qualifier dev.$(Build.BuildNumber)
+        condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+        displayName: Set zero-dev-version for packages
+
+      - script: |
+          python3 --version
           python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}}
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Apply version settings to repository

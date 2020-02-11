@@ -19,7 +19,7 @@ public class ExtractKeyPhrasesAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -27,11 +27,7 @@ public class ExtractKeyPhrasesAsync {
         String text = "My cat might need to see a veterinarian.";
 
         client.extractKeyPhrases(text).subscribe(
-            result -> {
-                for (String keyPhrase : result.getKeyPhrases()) {
-                    System.out.printf("Recognized phrases: %s.%n", keyPhrase);
-                }
-            },
+            keyPhrase -> System.out.printf("Recognized phrases: %s.%n", keyPhrase),
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));
 

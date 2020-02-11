@@ -5,8 +5,8 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
@@ -29,7 +29,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -43,7 +43,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        client.recognizeBatchEntitiesWithResponse(inputs, requestOptions).subscribe(
+        client.recognizeEntitiesBatchWithResponse(inputs, requestOptions).subscribe(
             result -> {
                 final DocumentResultCollection<RecognizeEntitiesResult> recognizedBatchResult = result.getValue();
                 System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
@@ -52,7 +52,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                 final TextDocumentBatchStatistics batchStatistics = recognizedBatchResult.getStatistics();
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
+                    batchStatistics.getInvalidDocumentCount(),
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -65,11 +65,11 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                         continue;
                     }
                     // Valid document
-                    for (NamedEntity entity : recognizeEntitiesResult.getNamedEntities()) {
-                        System.out.printf("Recognized entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
+                    for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
+                        System.out.printf("Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
                             entity.getText(),
-                            entity.getType(),
-                            entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
+                            entity.getCategory(),
+                            entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
                             entity.getOffset(),
                             entity.getLength(),
                             entity.getScore());

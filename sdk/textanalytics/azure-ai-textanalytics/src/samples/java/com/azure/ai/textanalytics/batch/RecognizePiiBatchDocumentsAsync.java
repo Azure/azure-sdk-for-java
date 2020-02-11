@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
@@ -30,7 +30,7 @@ public class RecognizePiiBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -44,7 +44,7 @@ public class RecognizePiiBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        client.recognizeBatchPiiEntitiesWithResponse(inputs, requestOptions).subscribe(
+        client.recognizePiiEntitiesBatchWithResponse(inputs, requestOptions).subscribe(
             result -> {
                 final DocumentResultCollection<RecognizePiiEntitiesResult> recognizedBatchResult = result.getValue();
                 System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
@@ -53,7 +53,7 @@ public class RecognizePiiBatchDocumentsAsync {
                 final TextDocumentBatchStatistics batchStatistics = recognizedBatchResult.getStatistics();
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
+                    batchStatistics.getInvalidDocumentCount(),
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
@@ -66,11 +66,11 @@ public class RecognizePiiBatchDocumentsAsync {
                         continue;
                     }
                     // Valid document
-                    for (NamedEntity entity : piiEntityDocumentResult.getNamedEntities()) {
-                        System.out.printf("Recognized personal identifiable information entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
+                    for (PiiEntity entity : piiEntityDocumentResult.getEntities()) {
+                        System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
                             entity.getText(),
-                            entity.getType(),
-                            entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
+                            entity.getCategory(),
+                            entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
                             entity.getOffset(),
                             entity.getLength(),
                             entity.getScore());

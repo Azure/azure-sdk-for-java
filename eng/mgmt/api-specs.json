@@ -82,6 +82,10 @@
     "source": "specification/deploymentmanager/resource-manager/readme.md",
     "args": "--multiapi=true --fluent=true"
   },
+  "databox/resource-manager": {
+    "source": "specification/databox/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "datalakeanalytics/resource-manager": {
     "source": "specification/datalake-analytics/resource-manager/readme.md",
     "args": "--multiapi --fluent"

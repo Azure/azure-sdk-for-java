@@ -1,0 +1,21 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdkeea66410f82b.search-dogfood.windows-int.net/indexes('hotels')/docs('1000000001')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "138",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "request-id" : "9d3a70fc-9647-4627-8844-c06fac8ee516",
+      "StatusCode" : "404",
+      "Date" : "Tue, 24 Dec 2019 16:21:14 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

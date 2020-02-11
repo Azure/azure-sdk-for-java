@@ -1,0 +1,132 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-sdk-bom</artifactId>
+  <version>1.0.0-beta.1</version>
+  <packaging>pom</packaging>
+  <name>Azure Java SDK BOM (Bill of Materials)</name>
+  <description>Azure Java SDK BOM (Bill of Materials)</description>
+  <url>https://github.com/azure/azure-sdk-for-java</url>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/azure/azure-sdk-for-java</connection>
+    <developerConnection>scm:git:git://github.com/azure/azure-sdk-for-java</developerConnection>
+    <url>https://github.com/azure/azure-sdk-for-java</url>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>1.2.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-netty</artifactId>
+        <version>1.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-okhttp</artifactId>
+        <version>1.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-data-appconfiguration</artifactId>
+        <version>1.0.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity</artifactId>
+        <version>1.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-security-keyvault-certificates</artifactId>
+        <version>4.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-security-keyvault-keys</artifactId>
+        <version>4.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-security-keyvault-secrets</artifactId>
+        <version>4.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-storage-blob</artifactId>
+        <version>12.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-storage-blob-batch</artifactId>
+        <version>12.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-storage-blob-cryptography</artifactId>
+        <version>12.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-storage-common</artifactId>
+        <version>12.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-storage-file-share</artifactId>
+        <version>12.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-storage-queue</artifactId>
+        <version>12.2.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <plugins>
+      <!-- This plugin validates that the artifacts in this BOM use a common dependency set. -->
+      <plugin>
+        <groupId>net.jonathangiles.tools</groupId>
+        <artifactId>dependencyChecker-maven-plugin</artifactId>
+        <version>1.0.2</version>
+        <configuration>
+          <reporters>html</reporters>
+          <showAll>true</showAll>
+          <analyseBom>true</analyseBom>
+          <failOnDependencyConflict>true</failOnDependencyConflict>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

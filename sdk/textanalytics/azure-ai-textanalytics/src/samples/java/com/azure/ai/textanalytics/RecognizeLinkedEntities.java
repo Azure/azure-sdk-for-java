@@ -18,14 +18,14 @@ public class RecognizeLinkedEntities {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
         // The text that need be analysed.
         String text = "Old Faithful is a geyser at Yellowstone Park.";
 
-        for (LinkedEntity linkedEntity : client.recognizeLinkedEntities(text).getLinkedEntities()) {
+        for (LinkedEntity linkedEntity : client.recognizeLinkedEntities(text)) {
             System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(),
                 linkedEntity.getUrl(),

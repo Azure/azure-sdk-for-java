@@ -20,6 +20,7 @@ import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -322,6 +323,47 @@ class FileAPITests extends APISpec {
 
         cleanup:
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())
+    }
+
+    /*
+     * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
+     */
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file buffer copy"() {
+        setup:
+        def shareServiceClient = new ShareServiceClientBuilder()
+            .connectionString(connectionString)
+            .buildClient()
+
+        def fileClient = shareServiceClient.getShareClient(shareName)
+            .createFile(filePath, fileSize)
+
+        def file = FileTestHelper.getRandomFile(fileSize)
+        fileClient.uploadFromFile(file.toPath().toString())
+        def outFile = new File(testResourceName.randomName(methodName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        fileClient.downloadToFile(outFile.toPath().toString())
+
+        then:
+        FileTestHelper.compareFiles(file, outFile, 0, fileSize)
+
+        cleanup:
+        shareServiceClient.deleteShare(shareName)
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
     }
 
     def "Upload and download file exists"() {
