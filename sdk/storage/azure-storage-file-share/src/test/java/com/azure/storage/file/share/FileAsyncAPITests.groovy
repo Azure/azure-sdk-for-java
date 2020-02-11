@@ -8,6 +8,7 @@ import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.polling.PollerFlux
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -19,6 +20,7 @@ import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Ignore
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -137,6 +139,48 @@ class FileAsyncAPITests extends APISpec {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.OUT_OF_RANGE_INPUT)
         }
     }
+
+    /*
+    * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
+    */
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file buffer copy"() {
+        setup:
+        def shareServiceAsyncClient = new ShareServiceClientBuilder()
+            .connectionString(connectionString)
+            .buildAsyncClient()
+
+        def fileClient = shareServiceAsyncClient.getShareAsyncClient(shareName)
+            .createFile(filePath, fileSize).block()
+
+        def file = FileTestHelper.getRandomFile(fileSize)
+        fileClient.uploadFromFile(file.toPath().toString()).block()
+        def outFile = new File(testResourceName.randomName(methodName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        fileClient.downloadToFile(outFile.toPath().toString()).block()
+
+        then:
+        FileTestHelper.compareFiles(file, outFile, 0, fileSize)
+
+        cleanup:
+        shareServiceAsyncClient.deleteShare(shareName).block()
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
+    }
+
 
     def "Upload and download data"() {
         given:

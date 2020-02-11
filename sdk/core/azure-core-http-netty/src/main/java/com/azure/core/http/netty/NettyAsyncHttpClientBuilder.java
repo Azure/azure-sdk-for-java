@@ -6,6 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.nio.NioEventLoopGroup;
+import java.nio.ByteBuffer;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
@@ -31,6 +32,7 @@ public class NettyAsyncHttpClientBuilder {
     private boolean enableWiretap;
     private int port = 80;
     private NioEventLoopGroup nioEventLoopGroup;
+    private boolean disableBufferCopy;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of
@@ -108,7 +110,7 @@ public class NettyAsyncHttpClientBuilder {
                 }
                 return tcpConfig;
             });
-        return new NettyAsyncHttpClient(nettyHttpClient);
+        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy);
     }
 
     /**
@@ -172,6 +174,29 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
         this.nioEventLoopGroup = nioEventLoopGroup;
+        return this;
+    }
+
+    /**
+     * Disables deep copy of response {@link ByteBuffer} into a heap location that is managed by this client as
+     * opposed to the underlying netty library which may use direct buffer pool.
+     * <br>
+     * <b>
+     * Caution: Disabling this is not recommended as it can lead to data corruption if the downstream consumers
+     * of the response do not handle the byte buffers before netty releases them.
+     * </b>
+     * If copy is disabled, underlying Netty layer can potentially reclaim byte array backed by the {@code ByteBuffer}
+     * upon the return of {@code onNext()}. So, users should ensure they process the {@link ByteBuffer} immediately
+     * and then return.
+     *
+     *  {@codesnippet com.azure.core.http.netty.disabled-buffer-copy}
+     *
+     * @param disableBufferCopy If set to {@code true}, the client built from this builder will not deep-copy
+     * response {@link ByteBuffer ByteBuffers}.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder disableBufferCopy(boolean disableBufferCopy) {
+        this.disableBufferCopy = disableBufferCopy;
         return this;
     }
 }
