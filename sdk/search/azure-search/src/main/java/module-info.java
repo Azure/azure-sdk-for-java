@@ -3,7 +3,6 @@
 
 module com.azure.search {
     requires transitive com.azure.core;
-    requires com.fasterxml.jackson.datatype.jsr310;
     requires jakarta.activation;
     requires com.fasterxml.jackson.core;
 
