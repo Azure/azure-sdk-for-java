@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -252,29 +251,29 @@ public class CosmosDatabase {
      * Read all containers iterator.
      *
      * @param options the options
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosContainerProperties>> readAllContainers(FeedOptions options) {
-        return getFeedIterableStream(databaseWrapper.readAllContainers(options));
+    public CosmosContinuablePagedIterable<CosmosContainerProperties> readAllContainers(FeedOptions options) {
+        return getCosmosContinuablePagedIterable(databaseWrapper.readAllContainers(options));
     }
 
     /**
      * Read all containers iterator.
      *
-     @return the {@link IterableStream}
+     @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosContainerProperties>> readAllContainers() {
-        return getFeedIterableStream(databaseWrapper.readAllContainers());
+    public CosmosContinuablePagedIterable<CosmosContainerProperties> readAllContainers() {
+        return getCosmosContinuablePagedIterable(databaseWrapper.readAllContainers());
     }
 
     /**
      * Query containers iterator.
      *
      * @param query the query
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(String query) {
-        return getFeedIterableStream(databaseWrapper.queryContainers(query));
+    public CosmosContinuablePagedIterable<CosmosContainerProperties> queryContainers(String query) {
+        return getCosmosContinuablePagedIterable(databaseWrapper.queryContainers(query));
     }
 
     /**
@@ -282,20 +281,20 @@ public class CosmosDatabase {
      *
      * @param query the query
      * @param options the options
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(String query, FeedOptions options) {
-        return getFeedIterableStream(databaseWrapper.queryContainers(query, options));
+    public CosmosContinuablePagedIterable<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
+        return getCosmosContinuablePagedIterable(databaseWrapper.queryContainers(query, options));
     }
 
     /**
      * Query containers iterator.
      *
      * @param querySpec the query spec
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec) {
-        return getFeedIterableStream(databaseWrapper.queryContainers(querySpec));
+    public CosmosContinuablePagedIterable<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec) {
+        return getCosmosContinuablePagedIterable(databaseWrapper.queryContainers(querySpec));
     }
 
     /**
@@ -303,12 +302,12 @@ public class CosmosDatabase {
      *
      * @param querySpec the query spec
      * @param options the options
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosContainerProperties>> queryContainers(
+    public CosmosContinuablePagedIterable<CosmosContainerProperties> queryContainers(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return getFeedIterableStream(databaseWrapper.queryContainers(querySpec, options));
+        return getCosmosContinuablePagedIterable(databaseWrapper.queryContainers(querySpec, options));
     }
 
     /**
@@ -356,64 +355,64 @@ public class CosmosDatabase {
     }
 
     /**
-     * Read all users {@link IterableStream}.
+     * Read all users {@link CosmosContinuablePagedIterable}.
      *
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosUserProperties>> readAllUsers() {
-        return getFeedIterableStream(databaseWrapper.readAllUsers(), 1);
+    public CosmosContinuablePagedIterable<CosmosUserProperties> readAllUsers() {
+        return getCosmosContinuablePagedIterable(databaseWrapper.readAllUsers());
     }
 
     /**
-     * Read all users {@link IterableStream}.
+     * Read all users {@link CosmosContinuablePagedIterable}.
      *
      * @param options the options
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosUserProperties>> readAllUsers(FeedOptions options) {
-        return getFeedIterableStream(databaseWrapper.readAllUsers(options), 1);
+    public CosmosContinuablePagedIterable<CosmosUserProperties> readAllUsers(FeedOptions options) {
+        return getCosmosContinuablePagedIterable(databaseWrapper.readAllUsers(options));
     }
 
     /**
-     * Query users {@link IterableStream}.
+     * Query users {@link CosmosContinuablePagedIterable}.
      *
      * @param query the query
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosUserProperties>> queryUsers(String query) {
-        return getFeedIterableStream(databaseWrapper.queryUsers(query), 1);
+    public CosmosContinuablePagedIterable<CosmosUserProperties> queryUsers(String query) {
+        return getCosmosContinuablePagedIterable(databaseWrapper.queryUsers(query));
     }
 
     /**
-     * Query users {@link IterableStream}.
+     * Query users {@link CosmosContinuablePagedIterable}.
      *
      * @param query the query
      * @param options the options
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosUserProperties>> queryUsers(String query, FeedOptions options) {
-        return getFeedIterableStream(databaseWrapper.queryUsers(query, options), 1);
+    public CosmosContinuablePagedIterable<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
+        return getCosmosContinuablePagedIterable(databaseWrapper.queryUsers(query, options));
     }
 
     /**
-     * Query users {@link IterableStream}.
+     * Query users {@link CosmosContinuablePagedIterable}.
      *
      * @param querySpec the query spec
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec) {
-        return getFeedIterableStream(databaseWrapper.queryUsers(querySpec));
+    public CosmosContinuablePagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec) {
+        return getCosmosContinuablePagedIterable(databaseWrapper.queryUsers(querySpec));
     }
 
     /**
-     * Query users {@link IterableStream}.
+     * Query users {@link CosmosContinuablePagedIterable}.
      *
      * @param querySpec the query spec
      * @param options the options
-     * @return the {@link IterableStream}
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public IterableStream<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
-        return getFeedIterableStream(databaseWrapper.queryUsers(querySpec, options), 1);
+    public CosmosContinuablePagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+        return getCosmosContinuablePagedIterable(databaseWrapper.queryUsers(querySpec, options));
     }
 
     /**
@@ -478,12 +477,8 @@ public class CosmosDatabase {
         }
     }
 
-    private <T> IterableStream<FeedResponse<T>> getFeedIterableStream(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux, int batchSize) {
-        return IterableStream.of(cosmosContinuablePagedFlux.byPage().toIterable(batchSize));
-    }
-
-    private <T> IterableStream<FeedResponse<T>> getFeedIterableStream(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
-        return IterableStream.of(cosmosContinuablePagedFlux.byPage().toIterable());
+    private <T> CosmosContinuablePagedIterable<T> getCosmosContinuablePagedIterable(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
+        return new CosmosContinuablePagedIterable<>(cosmosContinuablePagedFlux);
     }
 
 }

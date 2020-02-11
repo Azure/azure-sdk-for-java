@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.IterableStream;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -88,7 +87,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
         
-        IterableStream<FeedResponse<CosmosTriggerProperties>> feedResponseIterator3 =
+        CosmosContinuablePagedIterable<CosmosTriggerProperties> feedResponseIterator3 =
                 container.getScripts().readAllTriggers(feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
@@ -109,12 +108,12 @@ public class CosmosTriggerTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        IterableStream<FeedResponse<CosmosTriggerProperties>> feedResponseIterator1 =
+        CosmosContinuablePagedIterable<CosmosTriggerProperties> feedResponseIterator1 =
                 container.getScripts().queryTriggers(query, feedOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        IterableStream<FeedResponse<CosmosTriggerProperties>> feedResponseIterator2 =
+        CosmosContinuablePagedIterable<CosmosTriggerProperties> feedResponseIterator2 =
                 container.getScripts().queryTriggers(query, feedOptions);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }

@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.IterableStream;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -104,7 +103,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
         
-        IterableStream<FeedResponse<CosmosUserDefinedFunctionProperties>> feedResponseIterator3 =
+        CosmosContinuablePagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator3 =
                 container.getScripts().readAllUserDefinedFunctions(feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
@@ -118,12 +117,12 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         FeedOptions feedOptions = new FeedOptions();
         
 
-        IterableStream<FeedResponse<CosmosUserDefinedFunctionProperties>> feedResponseIterator1 =
+        CosmosContinuablePagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator1 =
                 container.getScripts().queryUserDefinedFunctions(query, feedOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        IterableStream<FeedResponse<CosmosUserDefinedFunctionProperties>> feedResponseIterator2 =
+        CosmosContinuablePagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator2 =
                 container.getScripts().queryUserDefinedFunctions(query, feedOptions);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }
