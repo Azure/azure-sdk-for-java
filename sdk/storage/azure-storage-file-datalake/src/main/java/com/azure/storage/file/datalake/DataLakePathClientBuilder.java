@@ -90,7 +90,8 @@ public final class DataLakePathClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
      */
     public DataLakeFileClient buildFileClient() {
-        return new DataLakeFileClient(buildFileAsyncClient(), blobClientBuilder.buildClient().getBlockBlobClient());
+        return new DataLakeFileClient(buildFileAsyncClient(),
+            blobClientBuilder.buildClient().getBlockBlobClient());
     }
 
     /**

@@ -301,6 +301,7 @@ public class ShareFileClient {
      */
     public Response<ShareFileProperties> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
                                                                     Duration timeout, Context context) {
+
         Mono<Response<ShareFileProperties>> response = shareFileAsyncClient.downloadToFileWithResponse(downloadFilePath,
             range, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);

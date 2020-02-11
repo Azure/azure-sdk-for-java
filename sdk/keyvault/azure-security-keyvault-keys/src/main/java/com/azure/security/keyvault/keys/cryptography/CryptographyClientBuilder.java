@@ -110,21 +110,21 @@ public final class CryptographyClientBuilder {
     public CryptographyClient buildClient() {
         return new CryptographyClient(buildAsyncClient());
     }
+
     /**
-     * Creates a {@link CryptographyAsyncClient} based on options set in the builder.
-     * Every time {@code buildAsyncClient()} is called, a new instance of {@link CryptographyAsyncClient} is created.
+     * Creates a {@link CryptographyAsyncClient} based on options set in the builder. Every time
+     * {@link #buildAsyncClient()} is called, a new instance of {@link CryptographyAsyncClient} is created.
      *
      * <p>If {@link CryptographyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * ({@link CryptographyClientBuilder#keyIdentifier(String) jsonWebKey identifier})
-     * are used to create the {@link CryptographyAsyncClient async client}. All other builder settings are ignored. If
-     * {@code pipeline} is not set, then
-     * ({@link CryptographyClientBuilder#credential(TokenCredential) jsonWebKey vault credential} and
-     * ({@link CryptographyClientBuilder#keyIdentifier(String) jsonWebKey identifier}  are required to build the
-     * {@link CryptographyAsyncClient async client}.</p>
+     * ({@link CryptographyClientBuilder#keyIdentifier(String) jsonWebKey identifier}) are used to create the {@link
+     * CryptographyAsyncClient async client}. All other builder settings are ignored. If {@code pipeline} is not set,
+     * then ({@link CryptographyClientBuilder#credential(TokenCredential) jsonWebKey vault credential} and ({@link
+     * CryptographyClientBuilder#keyIdentifier(String) jsonWebKey identifier}  are required to build the {@link
+     * CryptographyAsyncClient async client}.</p>
      *
      * @return A {@link CryptographyAsyncClient} with the options set from the builder.
-     * @throws IllegalStateException If {@link CryptographyClientBuilder#credential(TokenCredential)} or
-     * ({@link CryptographyClientBuilder#keyIdentifier(String)} have not been set.
+     * @throws IllegalStateException If {@link CryptographyClientBuilder#credential(TokenCredential)} or ({@link
+     * CryptographyClientBuilder#keyIdentifier(String)} have not been set.
      */
     public CryptographyAsyncClient buildAsyncClient() {
         if (keyVaultKey == null && Strings.isNullOrEmpty(keyId)) {

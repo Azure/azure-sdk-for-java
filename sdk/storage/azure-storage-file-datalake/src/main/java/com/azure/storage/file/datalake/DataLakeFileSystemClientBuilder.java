@@ -83,7 +83,8 @@ public class DataLakeFileSystemClientBuilder {
      * @return a {@link DataLakeFileSystemClient} created from the configurations in this builder.
      */
     public DataLakeFileSystemClient buildClient() {
-        return new DataLakeFileSystemClient(buildAsyncClient(), blobContainerClientBuilder.buildClient());
+        return new DataLakeFileSystemClient(buildAsyncClient(),
+            blobContainerClientBuilder.buildClient());
     }
 
     /**
