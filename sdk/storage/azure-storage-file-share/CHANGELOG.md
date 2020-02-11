@@ -3,6 +3,11 @@
 ## 12.2.0-beta.1 (Unreleased)
 - Fixed bug in ShareClient.getStatistics where shareUsageInGB was not properly converted. Added parameter to ShareStatistics to include a shareUsageInBytes parameter.
 - Fixed bug where ShareDirectoryAsyncClient.getFileClient appended an extra / for files in the root directory.
+- Added support for the 2019-07-07 service version.
+- Added support for file leases. Includes adding the ShareLeaseClientBuilder, ShareLeaseClient, and ShareLeaseAsync client and overloads accepting leaseIds for operations that support leases.
+- Added failedClosedHandles property to CloseHandlesInfo to allow users to access number of failed handles in forceCloseAllHandles and closeHandle.
+- Added support for obtaining premium file properties in ShareServiceClient.listShares and ShareClient.getProperties.
+- Added support for additional start copy parameters - FileSmbProperties, file permission, file permission copy mode, set archive and ignore read only.
 
 ## 12.1.0 (2020-01-08)
 This package's

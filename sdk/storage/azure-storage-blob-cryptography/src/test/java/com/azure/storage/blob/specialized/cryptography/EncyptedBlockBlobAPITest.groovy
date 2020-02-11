@@ -537,23 +537,25 @@ class EncyptedBlockBlobAPITest extends APISpec {
         BlobEncryptionPolicy uploadPolicy = new BlobEncryptionPolicy(fakeKey, null)
         BlobRequestOptions uploadOptions = new BlobRequestOptions()
         uploadOptions.setEncryptionPolicy(uploadPolicy)
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(defaultData.array())
 
         EncryptedBlobClient decryptClient =
             getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, primaryCredential, cc.getBlobContainerUrl())
                 .blobName(blobName)
                 .buildEncryptedBlobClient()
 
+        def streamSize = Constants.KB + 1
+        def data = getRandomByteArray(streamSize)
+        def inputStream = new ByteArrayInputStream(data)
         when:
         // Upload with v8
-        v8EncryptBlob.upload(inputStream, defaultDataSize, null, uploadOptions, null)
+        v8EncryptBlob.upload(inputStream, streamSize, null, uploadOptions, null)
 
         // Download with current version
-        ByteArrayOutputStream stream = new ByteArrayOutputStream()
-        decryptClient.download(stream)
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
+        decryptClient.download(outputStream)
 
         then:
-        stream.toByteArray() == defaultData.array()
+        outputStream.toByteArray() == data
     }
 
     // Upload with new SDK download with old SDK.
@@ -572,6 +574,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         CloudStorageAccount v8Account = CloudStorageAccount.parse(connectionString)
         CloudBlobClient blobClient = v8Account.createCloudBlobClient()
         CloudBlobContainer container = blobClient.getContainerReference(containerName)
+        container.createIfNotExists()
         CloudBlockBlob v8DecryptBlob = container.getBlockBlobReference(blobName)
         BlobEncryptionPolicy policy = new BlobEncryptionPolicy(fakeKey, null)
         BlobRequestOptions downloadOptions = new BlobRequestOptions()

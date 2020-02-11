@@ -30,8 +30,8 @@ import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
 
 /**
  * This class provides helper methods for common builder patterns.

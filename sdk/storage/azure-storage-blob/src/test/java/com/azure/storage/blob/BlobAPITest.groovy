@@ -39,6 +39,7 @@ import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.channels.NonWritableChannelException
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files

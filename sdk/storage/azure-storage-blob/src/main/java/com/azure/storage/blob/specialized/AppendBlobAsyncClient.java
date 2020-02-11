@@ -18,6 +18,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -82,10 +83,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
      * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
     AppendBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
-        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
-        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey);
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        EncryptionScope encryptionScope) {
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
+            encryptionScope);
     }
 
     /**
@@ -160,11 +165,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null, metadata,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(), context)
+            requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 AppendBlobCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), null, null);
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, null);
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -235,12 +240,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             appendBlobRequestConditions.getMaxSize(), appendBlobRequestConditions.getAppendPosition(),
             appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
             appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), context)
+            getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 AppendBlobAppendBlockHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getBlobAppendOffset(),
-                    hd.getBlobCommittedBlockCount());
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
+                    hd.getBlobAppendOffset(), hd.getBlobCommittedBlockCount());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -320,12 +325,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), context)
+            getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 AppendBlobAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getBlobAppendOffset(),
-                    hd.getBlobCommittedBlockCount());
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
+                    hd.getBlobAppendOffset(), hd.getBlobCommittedBlockCount());
                 return new SimpleResponse<>(rb, item);
             });
     }

@@ -203,12 +203,7 @@ public final class AzureBlobStorageImpl {
      * Initializes an instance of AzureBlobStorage client.
      */
     public AzureBlobStorageImpl() {
-        this(new HttpPipelineBuilder()
-                 .policies(
-                     new UserAgentPolicy(),
-                     new RetryPolicy(),
-                     new CookiePolicy())
-                 .build());
+        new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
     }
 
     /**

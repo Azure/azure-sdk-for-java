@@ -12,7 +12,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -52,6 +54,8 @@ public final class BlobContainerClientBuilder {
     private String containerName;
 
     private CpkInfo customerProvidedKey;
+    private EncryptionScope encryptionScope;
+    private BlobContainerEncryptionScope blobContainerEncryptionScope;
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
@@ -98,6 +102,11 @@ public final class BlobContainerClientBuilder {
     public BlobContainerAsyncClient buildAsyncClient() {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
 
+        if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
+                + "scope cannot both be set"));
+        }
+
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
@@ -113,7 +122,8 @@ public final class BlobContainerClientBuilder {
             httpClient, additionalPolicies, configuration, logger);
 
         return new BlobContainerAsyncClient(pipeline, String.format("%s/%s", endpoint, blobContainerName),
-            serviceVersion, accountName, blobContainerName, customerProvidedKey);
+            serviceVersion, accountName, blobContainerName, customerProvidedKey, encryptionScope,
+            blobContainerEncryptionScope);
     }
 
     /**
@@ -160,6 +170,35 @@ public final class BlobContainerClientBuilder {
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the {@code encryption scope} that is used to encrypt blob contents on the server.
+     *
+     * @param encryptionScope Encryption scope containing the encryption key information.
+     * @return the updated BlobContainerClientBuilder object
+     */
+    public BlobContainerClientBuilder encryptionScope(String encryptionScope) {
+        if (encryptionScope == null) {
+            this.encryptionScope = null;
+        } else {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link BlobContainerEncryptionScope encryption scope} that is used to determine how blob contents are
+     * encrypted on the server.
+     *
+     * @param blobContainerEncryptionScope Encryption scope containing the encryption key information.
+     * @return the updated BlobContainerClientBuilder object
+     */
+    public BlobContainerClientBuilder blobContainerEncryptionScope(
+        BlobContainerEncryptionScope blobContainerEncryptionScope) {
+        this.blobContainerEncryptionScope = blobContainerEncryptionScope;
         return this;
     }
 

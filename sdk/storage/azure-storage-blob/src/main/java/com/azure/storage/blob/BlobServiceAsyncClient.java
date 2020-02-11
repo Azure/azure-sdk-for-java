@@ -17,8 +17,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
+import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
@@ -77,7 +79,10 @@ public final class BlobServiceAsyncClient {
 
     private final String accountName;
     private final BlobServiceVersion serviceVersion;
-    private final CpkInfo customerProvidedKey;
+    private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
+    private final EncryptionScope encryptionScope; // only used to pass down to blob clients
+    private final BlobContainerEncryptionScope blobContainerEncryptionScope; // only used to pass down to container
+    // clients
     private final boolean anonymousAccess;
 
     /**
@@ -89,10 +94,13 @@ public final class BlobServiceAsyncClient {
      * @param accountName The storage account name.
      * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      * @param anonymousAccess Whether or not the client was built with anonymousAccess
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
-        CpkInfo customerProvidedKey, boolean anonymousAccess) {
+        CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
+        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -102,6 +110,8 @@ public final class BlobServiceAsyncClient {
 
         this.accountName = accountName;
         this.customerProvidedKey = customerProvidedKey;
+        this.encryptionScope = encryptionScope;
+        this.blobContainerEncryptionScope = blobContainerEncryptionScope;
         this.anonymousAccess = anonymousAccess;
     }
 
@@ -125,7 +135,7 @@ public final class BlobServiceAsyncClient {
 
         return new BlobContainerAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getAccountUrl(), containerName).toString(), getServiceVersion(),
-            getAccountName(), containerName, customerProvidedKey);
+            getAccountName(), containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
     /**

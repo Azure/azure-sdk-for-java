@@ -12,7 +12,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -50,6 +52,8 @@ public final class BlobServiceClientBuilder {
     private String accountName;
 
     private CpkInfo customerProvidedKey;
+    private EncryptionScope encryptionScope;
+    private BlobContainerEncryptionScope blobContainerEncryptionScope;
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
@@ -92,13 +96,18 @@ public final class BlobServiceClientBuilder {
             anonymousAccess = true;
         }
 
+        if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
+                + "scope cannot both be set"));
+        }
+
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
             httpClient, additionalPolicies, configuration, logger);
 
         return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
-            anonymousAccess);
+            encryptionScope, blobContainerEncryptionScope, anonymousAccess);
     }
 
     /**
@@ -143,6 +152,35 @@ public final class BlobServiceClientBuilder {
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the {@code encryption scope} that is used to encrypt blob contents on the server.
+     *
+     * @param encryptionScope Encryption scope containing the encryption key information.
+     * @return the updated BlobServiceClientBuilder object
+     */
+    public BlobServiceClientBuilder encryptionScope(String encryptionScope) {
+        if (encryptionScope == null) {
+            this.encryptionScope = null;
+        } else {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link BlobContainerEncryptionScope encryption scope} that is used to determine how blob contents are
+     * encrypted on the server.
+     *
+     * @param blobContainerEncryptionScope Encryption scope containing the encryption key information.
+     * @return the updated BlobServiceClientBuilder object
+     */
+    public BlobServiceClientBuilder blobContainerEncryptionScope(
+        BlobContainerEncryptionScope blobContainerEncryptionScope) {
+        this.blobContainerEncryptionScope = blobContainerEncryptionScope;
         return this;
     }
 
