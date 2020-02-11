@@ -360,4 +360,8 @@ class AzurePathSpec extends APISpec {
         then:
         thrown(ClassCastException)
     }
+
+    def "Path getBlobClient"() {
+
+    }
 }

@@ -7,11 +7,9 @@ import spock.lang.Unroll
 
 import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
-import java.nio.file.FileSystems
-import java.nio.file.spi.FileSystemProvider
 
 class AzureFileSystemProviderSpec extends APISpec {
-    def config = [:]
+    def config = new HashMap<String, String>()
     AzureFileSystemProvider provider
 
     def setup() {
@@ -114,12 +112,70 @@ class AzureFileSystemProviderSpec extends APISpec {
         provider.getScheme() == "azb"
     }
 
-    def "FileSystemProvider createDirectory"() {
+    @Unroll
+    def "FileSystemProvider createDir parent exists"() {
+        // Root, one, two subdirs
+        // for (numSubDirs) blobName = generateBlobName. Create Blob. Then after all, create dir.
+        // Call a getBlob and check the metadata
+
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names
+        def rootName = fs.getRootDirectories().first().toString()
+        def containerName = rootName.substring(0, rootName.length() - 1)
+        def parent = ""
+        for (int i=0; i < depth; i++) {
+            parent += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
+        }
+        def dirName = generateBlobName()
+        def dirPathStr = parent + dirName
+
+        def dirPath = fs.getPath(rootName, dirPathStr)
+
+        // Generate clients to resources. Create resources as necessary
+        def containerClient = primaryBlobServiceClient
+            .getBlobContainerClient(containerName)
+        if (parent != "") {
+            def parentClient = containerClient.getBlobClient(parent)
+            parentClient.getAppendBlobClient().create()
+        }
+        def dirClient = containerClient.getBlobClient(dirPathStr)
+
+        when:
+        fs.provider().createDirectory(dirPath)
+
+        then:
+        dirClient.getPropertiesWithResponse(null, null, null).getValue().getMetadata()
+            .containsKey(AzureFileSystemProvider.DIR_METADATA_MARKER)
+
+
         // TODO: Test on a path that doesn't have a parent. On a path whose parent is just the root (This will test that
-        //  getting a blobClient to the default directory works and that listing based off it works.
+        // getting a blobClient to the default directory works and that listing based off it works.
         // Create a root. Create something in the root. Create something in a normal directory. Create something that doesn't have a parent.
         // On a root that is invalid. On a path that already exists. Create something that has no parent.
-        expect:
-        FileSystems
+
+        where:
+        depth | _
+        0     | _ // Test putting a blob in the root dir.
+        1     | _
+        2     | _
+    }
+
+    def "FileSystemProvider dir exists"() {
+        // No blob. Blob with prefix. Directory blob.
+    }
+
+    def "FileSystemProvider createDir file already exists"() {
+        // Root. Another blob. Another directory.
+    }
+
+    def "FileSystemProvider createDir IOException"() {
+        // Parent doesn't exist.
+        // Invalid rood
+    }
+
+    def "FileSystemProvider createDir attributes"() {
+        // null
     }
 }

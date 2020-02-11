@@ -17,17 +17,10 @@ import java.nio.file.InvalidPathException
 import java.time.OffsetDateTime
 
 class AzureFileSystemSpec extends APISpec {
-    def config = [:]
+    def config = new HashMap<String, String>()
 
     def setup() {
         config = initializeConfigMap()
-    }
-
-    def createFS() {
-        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
-
-        return new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
     }
 
     // We do not have a meaningful way of testing the configurations for the ServiceClient.
@@ -142,7 +135,7 @@ class AzureFileSystemSpec extends APISpec {
     @Unroll
     def "FileSystem getPath"() {
         setup:
-        def fs = createFS()
+        def fs = createFS(config)
         def arr = pathArr == null ? null : Arrays.copyOf(pathArr.toArray(), pathArr.size(), String[].class)
 
         expect:
@@ -168,7 +161,7 @@ class AzureFileSystemSpec extends APISpec {
     @Unroll
     def "FileSystem getPath fail"() {
         when:
-        createFS().getPath(path)
+        createFS(config).getPath(path)
 
         then:
         thrown(InvalidPathException)
@@ -186,7 +179,7 @@ class AzureFileSystemSpec extends APISpec {
 
     def "FileSystem isReadOnly getSeparator"() {
         setup:
-        def fs = createFS()
+        def fs = createFS(config)
 
         expect:
         !fs.isReadOnly()
@@ -195,7 +188,7 @@ class AzureFileSystemSpec extends APISpec {
 
     def "FileSystem getRootDirs getFileStores"() {
         setup:
-        def fs = createFS()
+        def fs = createFS(config)
         def containers = ((String) config[AzureFileSystem.AZURE_STORAGE_FILE_STORES]).split(",")
         def fileStoreNames = []
         for (FileStore store : fs.getFileStores()) {
@@ -214,7 +207,7 @@ class AzureFileSystemSpec extends APISpec {
     @Unroll
     def "FileSystem supportsFileAttributeView"() {
         setup:
-        def fs = createFS()
+        def fs = createFS(config)
 
         expect:
         fs.supportedFileAttributeViews().contains(view) == supports

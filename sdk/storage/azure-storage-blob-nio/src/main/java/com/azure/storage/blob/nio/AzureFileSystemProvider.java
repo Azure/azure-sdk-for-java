@@ -7,6 +7,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -37,6 +38,7 @@ import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -110,6 +112,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     private final ClientLogger logger = new ClientLogger(AzureFileSystemProvider.class);
 
     private static final String ACCOUNT_QUERY_KEY = "account";
+
+    static final String DIR_METADATA_MARKER = "is_hdi_folder";
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
@@ -199,10 +203,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * file system will be represented by a zero-length blob whose name is the directory path with a particular metadata
      * field indicating the blob's status as a directory. Operations targeting directories themselves as the object
      * (e.g. setting properties) will target these blobs. Operations using the directory only as a container
-     * (e.g. listing) will operate on the blob-name prefix. Note that there may be some unintuitive behavior when
-     * working with directories that were not created by this file system. Of particular note is that directories which
-     * only minimally exist as defined above (e.g. a non-zero number of blobs with the prefix) but do not have the
-     * marker blob will disappear as soon as all the children have been deleted.
+     * (e.g. listing) will operate on the blob-name prefix.
      *
      * This method fulfills the contract of "The check for the existence of the file and the creation of the directory
      * if it does not exist are a single operation that is atomic with respect to all other filesystem activities that
@@ -210,6 +211,15 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * the creation of the directory. While it is possible that the parent may be deleted between the positive check and
      * the creation of the child, the creation of the child will implicitly create the parent if it does not exist as
      * defined above, so the child will not be left floating and unreachable.
+     *
+     * Note that there may be some unintuitive behavior when working with directories that were not created by this file
+     * system. Directories which only minimally exist as defined above (e.g. a non-zero number of blobs with the prefix)
+     * and so do not have the marker blob will disappear as soon as all the children have been deleted. Furthermore, if
+     * such a directory already exists at the time of calling this method, this method will still return success and
+     * create the marker blob. In other words, it is possible to "double create" a directory if it is not initially
+     * created with a marker blob. This is both because it is impossible to atomically check if a minimal directory
+     * exists while creating a new directory and because such behavior will have minimal side effects--no files will
+     * be overwritten and the directory will still be available for writing as intended, though it may not be empty.
      *
      * This method will attempt to extract standard HTTP content headers from the list of file attributes to set them
      * as blob headers. All other attributes will be set as blob metadata. The value of every attribute will be
@@ -222,6 +232,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      *     <ul>Content-MD5</ul>
      *     <ul>Cache-Control</ul>
      * </li>
+     * Note that these properties also have a particular semantic in that if one is specified, all are updated. In other
+     * words, if any of the above is set, all those that are not set will be cleared.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -230,6 +243,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             throw Utility.logError(logger, new IllegalArgumentException("This provider cannot operate on subtypes of " +
                 "Path other than AzurePath"));
         }
+        fileAttributes = fileAttributes == null ? new FileAttribute<?>[0] : fileAttributes;
 
         // Get the destination for the directory and it's parent container.
         BlobClient client = ((AzurePath) path).toBlobClient();
@@ -238,14 +252,16 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         // Determine the path for the parent directory. This is the parent path without the root.
         Path root = path.getRoot();
-        String prefix = root == null ? path.getParent().toString() : root.relativize(path).getParent().toString();
+        Path prefix = root == null ? path.getParent() : root.relativize(path).getParent();
 
         // Check if parent exists. If it does, atomically check if a file already exists and create a new dir if not.
         if (checkDirectoryExists(containerClient, prefix)) {
             try {
                 List<FileAttribute<?>> attributeList = new ArrayList<>(Arrays.asList(fileAttributes));
-                client.getAppendBlobClient().createWithResponse(Utility.extractHttpHeaders(attributeList, logger),
-                    Utility.convertAttributesToMetadata(attributeList),
+                BlobHttpHeaders headers = Utility.extractHttpHeaders(attributeList, logger);
+                Map<String, String> metadata = Utility.convertAttributesToMetadata(attributeList);
+                metadata = prepareMetadataForDirectory(metadata);
+                client.getAppendBlobClient().createWithResponse(headers, metadata,
                     new BlobRequestConditions().setIfNoneMatch("*"), null, null);
             } catch (BlobStorageException e) {
                 if (e.getStatusCode() == HttpURLConnection.HTTP_PRECON_FAILED) {
@@ -258,54 +274,25 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             throw Utility.logError(logger, new IOException("Parent directory does not exist for path: "
                 + path.toString()));
         }
-
-        /*
-        Only the check for a file at that path and creation of the directory needs to be atomic. Checking the parent
-        doesn't need to be atomic. This is good because we couldn't make it atomic without leases anyway (even a
-        static map of path->lock wouldn't be sufficient because someone could have another FS in this JVM instance
-        that points to the same account and it wouldn't see the same locks. So we can't check the parent before because
-        someone could just delete it between our check and our putBlob. And same thing with trying to check after
-        we create because someone could put a blob under this directory in that time and then if we delete the dir now
-        there's a floating file.
-         */
-
-        /*
-        What is the definition of an extant directory? We can't strictly enforce that there be the directory blob
-        because then you could never load a FS with data already in Azure. So then minimally it is just the path. In
-        that case, this always succeeds because the parent is always implicitly created when we put the blob because
-        its just the existence of the path as a prefix of some other path. So then what's the point of empty blobs with
-        is_hdi_folder=true? just for properties? ok... We could check the existence of a directory by trying an
-        enumeration on that prefix, fail if nothing is there, and then put the new directory and just doc the race
-        condition. We communicate you have to be careful with concurrency, and the javadocs don't say it has to be
-        atomic. In this case, the worst scenario is that someone deleted an empty dir, returned true, and then we
-        effectively just recreated it. Now that previous return is invalidated. But that's more or less just the same
-        as deleting it and then someone else immediately recreating it and creating the child. So maybe it's fine.
-         */
-
-        /*
-        Can't just accept the race condition even though ti's documented because we tell them to be careful about
-        concurrency and then don't support file locks, so they have no way to actually handle it, but it is documented
-        in our docs and javadocs and creating the child implicitly creates the parent anyway... but the safest thing
-        to do is just lease the directory. But if it's preloaded data, then there's not a blob to lease and creating a
-        blob for the parent as part of that operation just to be able to lease it is suuuuper slow and also weird.
-        Should add a section to the design doc on concurrency things for non atomic operations--we will generally not
-        attempt to offer atomicity where the service does not support it. In some exceptional and particularly unsafe
-        cases, we may add stronger guards, but in general, the performance and complexity cost outweight the benefits.
-        For example, in the case of creating a directory which requires a parent check, (not specified as atomic in
-        docs), this is mostly safe not to be atomic because even if the parent is deleted between the check and the put,
-        the blob implicitly puts the parent and is consequently not left floating.
-         */
     }
 
-    boolean checkDirectoryExists(BlobContainerClient containerClient, String prefix) {
+    boolean checkDirectoryExists(BlobContainerClient containerClient, Path prefix) {
         /*
         If the prefix is null, that means we are in the root dir for the container, which always exists. If there is a
         blob with this prefix, it means at least the directory exists. Note that blob names that match the prefix
         exactly are returned.
          */
         return prefix == null
-            || !containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR,
-            new ListBlobsOptions().setPrefix(prefix).setMaxResultsPerPage(1), null).iterator().hasNext();
+            || containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR,
+            new ListBlobsOptions().setPrefix(prefix.toString()).setMaxResultsPerPage(1), null).iterator().hasNext();
+    }
+
+    Map<String, String> prepareMetadataForDirectory(Map<String, String> metadata) {
+        if (metadata == null) {
+            metadata = new HashMap<>();
+        }
+        metadata.put(DIR_METADATA_MARKER, "true");
+        return metadata;
     }
 
     /**

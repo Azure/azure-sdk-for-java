@@ -406,6 +406,13 @@ class APISpec extends Specification {
         return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
     }
 
+    def createFS(Map<String,String> config) {
+        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
+        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+
+        return new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
+    }
+
     OffsetDateTime getUTCNow() {
         return resourceNamer.now()
     }

@@ -68,6 +68,8 @@ public class Utility {
         for (FileAttribute<?> attr : fileAttributes) {
             metadata.put(attr.name(), attr.value().toString());
         }
-        return metadata;
+
+        // If no attributes are set, return null so existing metadata is not cleared.
+        return metadata.isEmpty() ? null : metadata;
     }
 }
