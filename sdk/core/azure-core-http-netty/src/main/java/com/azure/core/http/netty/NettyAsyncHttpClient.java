@@ -116,7 +116,7 @@ class NettyAsyncHttpClient implements HttpClient {
         private final boolean disableBufferCopy;
 
         ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
-                                 HttpRequest httpRequest, boolean disableBufferCopy){
+                                 HttpRequest httpRequest, boolean disableBufferCopy) {
             super(httpRequest);
             this.reactorNettyResponse = reactorNettyResponse;
             this.reactorNettyConnection = reactorNettyConnection;
