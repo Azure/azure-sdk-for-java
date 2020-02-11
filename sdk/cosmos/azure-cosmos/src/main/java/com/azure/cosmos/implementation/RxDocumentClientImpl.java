@@ -122,8 +122,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ConsistencyLevel consistencyLevel,
                                 Configs configs,
                                 TokenResolver tokenResolver,
-                                CosmosKeyCredential cosmosKeyCredential) {
-        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential);
+                                CosmosKeyCredential cosmosKeyCredential,
+                                boolean sessionCapturingOverride) {
+        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverride);
         this.tokenResolver = tokenResolver;
     }
 
@@ -133,8 +134,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ConnectionPolicy connectionPolicy,
                                 ConsistencyLevel consistencyLevel,
                                 Configs configs,
-                                CosmosKeyCredential cosmosKeyCredential) {
-        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential);
+                                CosmosKeyCredential cosmosKeyCredential,
+                                boolean sessionCapturingOverrideEnabled) {
+        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverrideEnabled);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -177,8 +179,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    RxDocumentClientImpl(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy,
-                         ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential) {
+    RxDocumentClientImpl(URI serviceEndpoint,
+                         String masterKeyOrResourceToken,
+                         ConnectionPolicy connectionPolicy,
+                         ConsistencyLevel consistencyLevel,
+                         Configs configs,
+                         CosmosKeyCredential cosmosKeyCredential,
+                         boolean sessionCapturingOverrideEnabled) {
 
         logger.info(
             "Initializing DocumentClient with"
@@ -211,7 +218,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.connectionPolicy = new ConnectionPolicy();
         }
 
-        this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost());
+        boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
+
+        this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
         this.consistencyLevel = consistencyLevel;
 
         this.userAgentContainer = new UserAgentContainer();
