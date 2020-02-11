@@ -28,6 +28,17 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+
+      - task: PythonScript@0
+        inputs:
+          scriptPath: common/smoke-tests/validate_version_dates.py
+          workingDirectory: common/smoke-tests
+        displayName: Validate consistent dependency dev versions for com.azure packages
+
       - task: Maven@3
         displayName: Show dependency tree
         inputs:
