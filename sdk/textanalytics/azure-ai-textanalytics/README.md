@@ -35,7 +35,12 @@ Text Analytics supports both [multi-service and single-service access][service_a
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Text Analytics access only,
 create a Text Analytics resource.
 
-You can create either resource using the **Option 1:** [Azure Portal][create_new_resource] or **Option 2:** [Azure CLI][azure_cli].
+You can create either resource using the 
+
+**Option 1:** [Azure Portal][create_new_resource] 
+
+**Option 2:** [Azure CLI][azure_cli]
+
 Below is an example of how you can create a Text Analytics resource using the CLI:
 
 ```bash
@@ -55,10 +60,10 @@ az cognitiveservices account create \
     --yes
 ```
 ### Authenticate the client
-In order to interact with the Text Analytics service, you'll need to create an instance of the 
-`TextAnalyticsClient` class. You would need an **endpoint** and either an **API key** or **AAD TokenCredential** to instantiate a client object.
-And they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in your created
-Text Analytics resource. See the full details regarding [authentication][authentication] of cognitive services.
+In order to interact with the Text Analytics service, you will need to create an instance of the `TextAnalyticsClient` 
+class. You will need an **endpoint** and either an **API key** or **AAD TokenCredential** to instantiate a client 
+object. And they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in your created
+Text Analytics resource. See the full details regarding [authentication][authentication] of Cognitive Services.
 
 #### Get credentials
 The authentication credential may be provided as the API key to your resource or as a token from Azure Active Directory.
@@ -136,7 +141,7 @@ An operation result, such as `AnalyzeSentimentResult`, is the result of a Text A
 prediction or predictions about a single text input. An operation's result type also may optionally include information
 about the input document and how it was processed. An operation result contains a `isError` property that allows to
 identify if an operation executed was successful or unsuccessful for the given text input. When the operation results
-an error. You can simply call `getError()` to get `TextAnalyticsError` which contains the reason why it is unsuccessful. 
+an error, you can simply call `getError()` to get `TextAnalyticsError` which contains the reason why it is unsuccessful. 
 If you are interested in how many characters in your input text or number of operation transactions been going through,
 simply call `getStatistics()` to get the `TextDocumentStatistics` which contains both information.
 
