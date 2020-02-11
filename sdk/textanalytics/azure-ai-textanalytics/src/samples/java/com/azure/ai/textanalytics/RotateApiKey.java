@@ -7,19 +7,19 @@ import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 
 /**
- * Sample demonstrates how to rotate the existing subscription key of text analytics client
+ * Sample demonstrates how to rotate the existing API key of text analytics client
  */
-public class RotateSubscriptionKey {
+public class RotateApiKey {
 
     /**
-     * Main method to invoke this demo about how to rotate the existing subscription key of text analytics client.
+     * Main method to invoke this demo about how to rotate the existing API key of text analytics client.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{invalid_subscription_key}");
+        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(credential)
+            .apiKey(credential)
             .endpoint("{endpoint}")
             .buildClient();
 
@@ -32,8 +32,8 @@ public class RotateSubscriptionKey {
             System.out.println(ex.getMessage());
         }
 
-        // Update the subscription key
-        credential.updateCredential("{valid_subscription_key}");
+        // Update the API key
+        credential.updateCredential("{valid_api_key}");
 
         for (String keyPhrase : client.extractKeyPhrases(text).getKeyPhrases()) {
             System.out.printf("Recognized phrases: %s.%n", keyPhrase);
