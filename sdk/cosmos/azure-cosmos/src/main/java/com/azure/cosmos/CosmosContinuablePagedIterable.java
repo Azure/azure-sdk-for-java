@@ -22,16 +22,7 @@ public class CosmosContinuablePagedIterable<T> extends ContinuablePagedIterable<
      *
      * @param pagedFlux the paged flux use as iterable
      */
-    public CosmosContinuablePagedIterable(ContinuablePagedFlux<String, T, FeedResponse<T>> pagedFlux) {
+    CosmosContinuablePagedIterable(ContinuablePagedFlux<String, T, FeedResponse<T>> pagedFlux) {
         super(pagedFlux);
-    }
-
-    /**
-     * Creates instance given {@link ContinuablePagedFlux}.
-     *
-     * @param pagedFlux the paged flux use as iterable
-     */
-    public CosmosContinuablePagedIterable(ContinuablePagedFlux<String, T, FeedResponse<T>> pagedFlux, int batchSize) {
-        super(pagedFlux, batchSize);
     }
 }

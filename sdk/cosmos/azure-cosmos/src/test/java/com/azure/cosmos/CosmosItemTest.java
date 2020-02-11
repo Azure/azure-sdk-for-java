@@ -149,6 +149,44 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryItemsWithContinuationTokenAndPageSize() throws Exception{
+        CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
+        container.createItem(properties);
+        properties = getDocumentDefinition(UUID.randomUUID().toString());
+        container.createItem(properties);
+        properties = getDocumentDefinition(UUID.randomUUID().toString());
+        container.createItem(properties);
+
+
+        String query = "SELECT * from c";
+        FeedOptions feedOptions = new FeedOptions();
+        String continuationToken = null;
+        int pageSize = 1;
+
+        int initialDocumentCount = 3;
+        int finalDocumentCount = 0;
+
+        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator1 =
+            container.queryItems(query, feedOptions, CosmosItemProperties.class);
+
+        do {
+            Iterable<FeedResponse<CosmosItemProperties>> feedResponseIterable =
+                feedResponseIterator1.iterableByPage(continuationToken, pageSize);
+            FeedResponse<CosmosItemProperties> feedResponse = feedResponseIterable.iterator().next();
+            continuationToken = feedResponse.getContinuationToken();
+            if (continuationToken == null) {
+                break;
+            }
+            int resultSize = feedResponse.getResults().size();
+            assertThat(resultSize).isEqualTo(pageSize);
+            finalDocumentCount += feedResponse.getResults().size();
+        } while(true);
+
+        assertThat(finalDocumentCount).isEqualTo(initialDocumentCount);
+
+    }
+
 
     private CosmosItemProperties getDocumentDefinition(String documentId) {
         final String uuid = UUID.randomUUID().toString();
