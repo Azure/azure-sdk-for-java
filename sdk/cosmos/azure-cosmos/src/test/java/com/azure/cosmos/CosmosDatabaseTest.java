@@ -6,7 +6,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.IterableStream;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
@@ -15,7 +14,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -156,32 +154,30 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void readAllDatabases() throws Exception {
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
 
-        IterableStream<FeedResponse<CosmosDatabaseProperties>> readIterator = client.readAllDatabases(options);
+        CosmosContinuablePagedIterable<CosmosDatabaseProperties> readIterator = client.readAllDatabases(options);
         // Basic validation
-        assertThat(readIterator.iterator().hasNext()).isTrue();
+        assertThat(readIterator.iterableByPage(2).iterator().hasNext()).isTrue();
 
-        IterableStream<FeedResponse<CosmosDatabaseProperties>> readIterator1 = client.readAllDatabases();
+        CosmosContinuablePagedIterable<CosmosDatabaseProperties> readIterator1 = client.readAllDatabases();
         // Basic validation
-        assertThat(readIterator1.iterator().hasNext()).isTrue();
+        assertThat(readIterator1.iterableByPage(2).iterator().hasNext()).isTrue();
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void queryAllDatabases() throws Exception {
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
         String query = String.format("SELECT * from c where c.getId = '%s'", createdDatabase.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        IterableStream<FeedResponse<CosmosDatabaseProperties>> queryIterator = client.queryDatabases(query, options);
+        CosmosContinuablePagedIterable<CosmosDatabaseProperties> queryIterator = client.queryDatabases(query, options);
         // Basic validation
-        assertThat(queryIterator.iterator().hasNext()).isTrue();
+        assertThat(queryIterator.iterableByPage(2).iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        IterableStream<FeedResponse<CosmosDatabaseProperties>> queryIterator1 = client.queryDatabases(querySpec, options);
+        CosmosContinuablePagedIterable<CosmosDatabaseProperties> queryIterator1 = client.queryDatabases(querySpec, options);
         // Basic validation
-        assertThat(queryIterator1.iterator().hasNext()).isTrue();
+        assertThat(queryIterator1.iterableByPage(2).iterator().hasNext()).isTrue();
     }
 
 

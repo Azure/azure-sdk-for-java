@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.IterableStream;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
@@ -161,7 +160,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
         
-        IterableStream<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator3 =
+        CosmosContinuablePagedIterable<CosmosStoredProcedureProperties> feedResponseIterator3 =
                 container.getScripts().readAllStoredProcedures(feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
 
@@ -175,12 +174,12 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        IterableStream<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator1 =
+        CosmosContinuablePagedIterable<CosmosStoredProcedureProperties> feedResponseIterator1 =
                 container.getScripts().queryStoredProcedures(query, feedOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        IterableStream<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator2 =
+        CosmosContinuablePagedIterable<CosmosStoredProcedureProperties> feedResponseIterator2 =
                 container.getScripts().queryStoredProcedures(query, feedOptions);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }

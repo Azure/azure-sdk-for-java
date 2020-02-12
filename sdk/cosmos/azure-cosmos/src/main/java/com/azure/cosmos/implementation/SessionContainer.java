@@ -38,16 +38,22 @@ public final class SessionContainer implements ISessionContainer {
     private final ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<Long, String> collectionResourceIdToCollectionName = new ConcurrentHashMap<>();
     private final String hostName;
+    private final boolean disableSessionCapturing;
+
+    public SessionContainer(final String hostName, boolean disableSessionCapturing) {
+        this.hostName = hostName;
+        this.disableSessionCapturing = disableSessionCapturing;
+    }
 
     public SessionContainer(final String hostName) {
-        this.hostName = hostName;
+        this(hostName, false);
     }
 
     public String getHostName() {
         return this.hostName;
     }
 
-    public String getSessionToken(String collectionLink) {
+    String getSessionToken(String collectionLink) {
 
         PathInfo pathInfo = new PathInfo(false, null, null, false);
         ConcurrentHashMap<String, ISessionToken> partitionKeyRangeIdToTokenMap = null;
@@ -157,6 +163,10 @@ public final class SessionContainer implements ISessionContainer {
 
     @Override
     public void setSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
+        if (this.disableSessionCapturing) {
+            return;
+        }
+
         String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
 
         if (!Strings.isNullOrEmpty(token)) {
@@ -171,6 +181,10 @@ public final class SessionContainer implements ISessionContainer {
 
     @Override
     public void setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders) {
+        if (this.disableSessionCapturing) {
+            return;
+        }
+
         ResourceId resourceId = ResourceId.parse(collectionRid);
         String collectionName = PathsHelper.getCollectionPath(collectionFullName);
         String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
