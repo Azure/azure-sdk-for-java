@@ -49,7 +49,7 @@ param (
 
     [Parameter()]
     [ValidateNotNullOrEmpty()]
-    [string] $Location = 'westus2',
+    [string] $Location = 'westus',
 
     [Parameter()]
     [ValidateNotNullOrEmpty()]
