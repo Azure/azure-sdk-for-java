@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
@@ -108,8 +109,19 @@ public class ReadmeSamples {
     public void recognizeLinkedEntity() {
         String text = "Old Faithful is a geyser at Yellowstone Park.";
         for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
-            System.out.printf("Recognized linked entity: %s, url: %s, data source: %s.%n",
-                linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+            System.out.println("Linked Entities:");
+            System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                linkedEntity.getName(),
+                linkedEntity.getId(),
+                linkedEntity.getUrl(),
+                linkedEntity.getDataSource());
+            for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+                System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                    linkedEntityMatch.getText(),
+                    linkedEntityMatch.getOffset(),
+                    linkedEntityMatch.getLength(),
+                    linkedEntityMatch.getScore());
+            }
         }
     }
 
@@ -118,8 +130,9 @@ public class ReadmeSamples {
      */
     public void extractKeyPhrases() {
         String text = "My cat might need to see a veterinarian.";
+        System.out.println("Recognized phrases:");
         for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
-            System.out.printf("Recognized phrases: %s.%n", keyPhrase);
+            System.out.printf("%s.%n", keyPhrase);
         }
     }
 

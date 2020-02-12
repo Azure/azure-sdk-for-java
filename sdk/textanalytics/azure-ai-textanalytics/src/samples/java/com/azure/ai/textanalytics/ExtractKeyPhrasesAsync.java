@@ -26,8 +26,9 @@ public class ExtractKeyPhrasesAsync {
         // The text that need be analyzed.
         String text = "My cat might need to see a veterinarian.";
 
+        System.out.println("Recognized phrases:");
         client.extractKeyPhrases(text).subscribe(
-            keyPhrase -> System.out.printf("Recognized phrases: %s.%n", keyPhrase),
+            keyPhrase -> System.out.printf("%s.%n", keyPhrase),
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));
 

@@ -62,8 +62,9 @@ public class ExtractKeyPhrasesBatchDocuments {
                 continue;
             }
             // Valid document
+            System.out.println("Recognized phrases:");
             for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
-                System.out.printf("Extracted phrases: %s.%n", keyPhrases);
+                System.out.printf("%s.%n", keyPhrases);
             }
         }
     }

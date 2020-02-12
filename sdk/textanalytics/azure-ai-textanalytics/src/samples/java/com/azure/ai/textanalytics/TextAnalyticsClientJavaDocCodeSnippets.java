@@ -12,6 +12,7 @@ import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
@@ -403,9 +404,20 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void recognizeLinkedEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String
         final String inputText = "Old Faithful is a geyser at Yellowstone Park.";
+        System.out.println("Linked Entities:");
         for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(inputText)) {
-            System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
-                linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+            System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                linkedEntity.getName(),
+                linkedEntity.getId(),
+                linkedEntity.getUrl(),
+                linkedEntity.getDataSource());
+            for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+                System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                    linkedEntityMatch.getText(),
+                    linkedEntityMatch.getOffset(),
+                    linkedEntityMatch.getLength(),
+                    linkedEntityMatch.getScore());
+            }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String
     }
@@ -417,8 +429,19 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String-String-Context
         String inputText = "Old Faithful is a geyser at Yellowstone Park.";
         for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(inputText, "en", Context.NONE)) {
-            System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
-                linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+            System.out.println("Linked Entities:");
+            System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                linkedEntity.getName(),
+                linkedEntity.getId(),
+                linkedEntity.getUrl(),
+                linkedEntity.getDataSource());
+            for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+                System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                    linkedEntityMatch.getText(),
+                    linkedEntityMatch.getOffset(),
+                    linkedEntityMatch.getLength(),
+                    linkedEntityMatch.getScore());
+            }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String-String-Context
     }
@@ -442,8 +465,19 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
             for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
-                System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
-                    linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                System.out.println("Linked Entities:");
+                System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                    linkedEntity.getName(),
+                    linkedEntity.getId(),
+                    linkedEntity.getUrl(),
+                    linkedEntity.getDataSource());
+                for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+                    System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                        linkedEntityMatch.getText(),
+                        linkedEntityMatch.getOffset(),
+                        linkedEntityMatch.getLength(),
+                        linkedEntityMatch.getScore());
+                }
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#List
@@ -471,8 +505,19 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
             for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
-                System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
-                    linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                System.out.println("Linked Entities:");
+                System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                    linkedEntity.getName(),
+                    linkedEntity.getId(),
+                    linkedEntity.getUrl(),
+                    linkedEntity.getDataSource());
+                for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+                    System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                        linkedEntityMatch.getText(),
+                        linkedEntityMatch.getOffset(),
+                        linkedEntityMatch.getLength(),
+                        linkedEntityMatch.getScore());
+                }
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context
@@ -501,8 +546,19 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
             for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
-                System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
-                    linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                System.out.println("Linked Entities:");
+                System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                    linkedEntity.getName(),
+                    linkedEntity.getId(),
+                    linkedEntity.getUrl(),
+                    linkedEntity.getDataSource());
+                for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+                    System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                        linkedEntityMatch.getText(),
+                        linkedEntityMatch.getOffset(),
+                        linkedEntityMatch.getLength(),
+                        linkedEntityMatch.getScore());
+                }
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse#List-TextAnalyticsRequestOptions-Context
@@ -515,8 +571,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrases() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
+        System.out.println("Recognized phrases:");
         for (String keyPhrase : textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.")) {
-            System.out.printf("Recognized phrases: %s.%n", keyPhrase);
+            System.out.printf("%s.%n", keyPhrase);
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
     }
@@ -526,9 +583,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrasesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context
-        for (String keyPhrases : textAnalyticsClient.extractKeyPhrases(
+        System.out.println("Recognized phrases:");
+        for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(
             "My cat might need to see a veterinarian.", "en", Context.NONE)) {
-            System.out.printf("Recognized phrases: %s.%n", keyPhrases);
+            System.out.printf("%s.%n", keyPhrase);
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context
     }
@@ -556,8 +614,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (ExtractKeyPhraseResult extractKeyPhraseResult : extractKeyPhraseResults) {
             System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
             // Valid document
-            for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
-                System.out.printf("Extracted phrases: %s.%n", keyPhrases);
+            System.out.println("Recognized phrases:");
+            for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
+                System.out.printf("%s.%n", keyPhrase);
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#List
@@ -588,8 +647,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (ExtractKeyPhraseResult extractKeyPhraseResult : extractKeyPhraseResults) {
             System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
             // Valid document
-            for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
-                System.out.printf("Extracted phrases: %s.%n", keyPhrases);
+            System.out.println("Recognized phrases:");
+            for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
+                System.out.printf("%s.%n", keyPhrase);
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context
@@ -621,8 +681,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (ExtractKeyPhraseResult extractKeyPhraseResult : extractKeyPhraseResults) {
             System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
             // Valid document
-            for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
-                System.out.printf("Extracted phrases: %s.%n", keyPhrases);
+            System.out.println("Recognized phrases:");
+            for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
+                System.out.printf("%s.%n", keyPhrase);
             }
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatchWithResponse#List-TextAnalyticsRequestOptions-Context
