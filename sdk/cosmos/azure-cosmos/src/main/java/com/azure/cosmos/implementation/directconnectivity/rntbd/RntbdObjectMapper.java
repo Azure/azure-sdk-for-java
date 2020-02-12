@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ser.PropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.handler.codec.CorruptedFrameException;
@@ -38,7 +39,8 @@ public final class RntbdObjectMapper {
         .registerModule(new SimpleModule()
             .addSerializer(Duration.class, ToStringSerializer.instance)
             .addDeserializer(Duration.class, DurationDeserializer.INSTANCE))
-        .setFilterProvider(filterProvider);
+        .setFilterProvider(filterProvider)
+        .registerModule(new AfterburnerModule());
 
     private static final ObjectWriter objectWriter = objectMapper.writer();
 

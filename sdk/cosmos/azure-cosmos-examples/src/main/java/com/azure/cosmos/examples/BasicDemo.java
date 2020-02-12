@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
@@ -75,14 +75,14 @@ public class BasicDemo {
 
     private void createAndReplaceItem() {
         TestObject replaceObject = new TestObject("item_new_id_3", "test3", "test description3", "JP");
-        CosmosItemProperties properties = null;
+        TestObject properties = null;
         //CREATE item sync
         try {
             properties = container.createItem(replaceObject)
                              .doOnError(throwable -> log("CREATE 3", throwable))
                              .publishOn(Schedulers.elastic())
                              .block()
-                             .getProperties();
+                             .getResource();
         } catch (RuntimeException e) {
             log("Couldn't create items due to above exceptions");
         }

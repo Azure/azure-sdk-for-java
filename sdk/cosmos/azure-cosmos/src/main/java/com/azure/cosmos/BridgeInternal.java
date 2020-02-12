@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -16,6 +17,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -23,6 +25,7 @@ import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Flux;
@@ -57,9 +60,14 @@ public class BridgeInternal {
         return Document.FromObject(document, mapper);
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
-        return CosmosItemProperties.serializeJsonToByteBuffer(document, mapper);
+    public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
+        if (cosmosItem instanceof JsonSerializable) {
+            return ((JsonSerializable) cosmosItem).serializeJsonToByteBuffer(objectMapper);
+        } else {
+            return Utils.serializeJsonToByteBuffer(objectMapper, cosmosItem);
+        }
     }
+
 
     public static void monitorTelemetry(MeterRegistry registry) {
         CosmosAsyncClient.setMonitorTelemetry(registry);
@@ -75,7 +83,7 @@ public class BridgeInternal {
         return new FeedResponse<T>(response.getQueryResponse(cls), response.getResponseHeaders());
     }
 
-    public static <T extends Resource> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
+    public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
         return new FeedResponse<>(results, headers, noChanges);
     }
 
@@ -489,5 +497,9 @@ public class BridgeInternal {
 
     public static <T> CosmosContinuablePagedFlux<T> createCosmosContinuablePagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
         return new CosmosContinuablePagedFlux<>(pagedFluxOptionsFluxFunction);
+    }
+
+    public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
+        return cosmosItemResponse.getProperties();
     }
 }

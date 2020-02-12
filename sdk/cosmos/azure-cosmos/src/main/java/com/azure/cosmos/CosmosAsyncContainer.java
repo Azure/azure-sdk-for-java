@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -12,6 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.Resource.validateResource;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -234,9 +236,9 @@ public class CosmosAsyncContainer {
         }
         Class<T> itemType = (Class<T>) item.getClass();
         return this.getDatabase().getDocClientWrapper()
-                   .upsertDocument(this.getLink(), CosmosItemProperties.fromObject(item),
+                   .upsertDocument(this.getLink(), item,
                                    options.toRequestOptions(),
-                       true)
+                                   true)
                    .map(response -> new CosmosAsyncItemResponse<T>(response, itemType))
                    .single();
     }
@@ -272,11 +274,7 @@ public class CosmosAsyncContainer {
         return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
-                response -> BridgeInternal
-                    .createFeedResponse(CosmosItemProperties
-                            .getTypedResultsFromV2Results(response.getResults(),
-                                klass),
-                        response.getResponseHeaders()));
+                response -> prepareFeedResponse(response, klass));
         });
     }
 
@@ -351,12 +349,17 @@ public class CosmosAsyncContainer {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, feedOptions);
             return getDatabase().getDocClientWrapper().queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, feedOptions)
                                             .map(response ->
-                                                BridgeInternal.createFeedResponseWithQueryMetrics((
-                                                    CosmosItemProperties.getTypedResultsFromV2Results((List<Document>)(Object)response.getResults(), klass)),
-                                                    response.getResponseHeaders(),
-                                                    response.queryMetrics()));
+                                                     prepareFeedResponse(response, klass));
         });
     }
+
+    private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> klass){
+        return BridgeInternal.createFeedResponseWithQueryMetrics(
+            (response.getResults().stream().map(document -> document.toObject(klass))
+                 .collect(Collectors.toList())), response.getResponseHeaders(),
+            response.queryMetrics());
+    }
+
 
     /**
      * Reads an item.

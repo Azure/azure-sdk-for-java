@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.CheckpointFrequency;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -51,7 +52,7 @@ class AutoCheckpointer implements ChangeFeedObserver {
     }
 
     @Override
-    public Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
+    public Mono<Void> processChanges(ChangeFeedObserverContext context, List<JsonNode> docs) {
         return this.observer.processChanges(context, docs)
             .doOnError(throwable -> {
                 logger.warn("Unexpected exception from thread {}", Thread.currentThread().getId(), throwable);

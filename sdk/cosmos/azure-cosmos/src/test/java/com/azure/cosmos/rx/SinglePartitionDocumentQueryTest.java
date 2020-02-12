@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -23,7 +24,6 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -257,7 +257,8 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, int cnt) {
         CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
-        return cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block().getProperties();
+        return BridgeInternal
+                   .getProperties(cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block());
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
