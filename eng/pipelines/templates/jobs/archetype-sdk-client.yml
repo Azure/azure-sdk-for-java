@@ -102,7 +102,7 @@ jobs:
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           goals: 'package'
-          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview -e -X' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -329,7 +329,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: ${{ parameters.TestGoals }}
-        # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set) 
+        # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set)
         # OR when ShouldRunSourceTests is true
         condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
