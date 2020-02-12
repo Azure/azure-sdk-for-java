@@ -3,6 +3,9 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+#Requires -Version 6.0
+#Requires -PSEdition Core
+
 <#
     .Synopsis
     Gets the modules that are built from the given service directory and SDK type.
