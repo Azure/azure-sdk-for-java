@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>azure-spring-boot</artifactId>
-    <version>2.2.3-beta.1</version> <!-- {x-version-update;:azure-spring-boot;current} -->
+    <version>2.2.3-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot;current} -->
     <packaging>jar</packaging>
 
     <name>Azure Spring Boot AutoConfigure</name>
