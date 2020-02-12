@@ -86,7 +86,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 The Azure Text Analytics client library provides a way to **rotate the existing API key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L171-L177 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L165-L171 -->
 ```java
 TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -217,7 +217,7 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 ### Analyze sentiment
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L143-L148 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L137-L142 -->
 ```java
 String text = "The hotel was dark and unclean. I like microsoft.";
 DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
@@ -257,31 +257,25 @@ for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
 ```
 
 ### Recognize linked entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L110-L125 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L110-L119 -->
 
 ```java
 String text = "Old Faithful is a geyser at Yellowstone Park.";
 for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
     System.out.println("Linked Entities:");
     System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
-        linkedEntity.getName(),
-        linkedEntity.getId(),
-        linkedEntity.getUrl(),
-        linkedEntity.getDataSource());
+        linkedEntity.getName(), linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
     for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
-        System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
-            linkedEntityMatch.getText(),
-            linkedEntityMatch.getOffset(),
-            linkedEntityMatch.getLength(),
-            linkedEntityMatch.getScore());
+        System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n", linkedEntityMatch.getText(),
+            linkedEntityMatch.getOffset(), linkedEntityMatch.getLength(), linkedEntityMatch.getScore());
     }
 }
 ```
 ### Extract key phrases
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L132-L136 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L126-L130 -->
 ```java
 String text = "My cat might need to see a veterinarian.";
-System.out.println("Recognized phrases:");
+System.out.println("Extracted phrases:");
 for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
     System.out.printf("%s.%n", keyPhrase);
 }
@@ -296,7 +290,7 @@ Text Analytics clients raise exceptions. For example, if you try to detect the l
 document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L155-L164 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L149-L158 -->
 ```java
 List<DetectLanguageInput> inputs = Arrays.asList(
     new DetectLanguageInput("1", "This is written in English.", "us"),

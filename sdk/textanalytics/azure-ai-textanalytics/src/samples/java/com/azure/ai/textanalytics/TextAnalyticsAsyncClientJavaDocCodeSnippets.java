@@ -630,7 +630,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrases() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string
-        System.out.println("Recognized phrases:");
+        System.out.println("Extracted phrases:");
         textAnalyticsAsyncClient.extractKeyPhrases("Bonjour tout le monde").subscribe(keyPhrase ->
             System.out.printf("%s.%n", keyPhrase));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string
@@ -641,7 +641,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrasesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string-string
-        System.out.println("Recognized phrases:");
+        System.out.println("Extracted phrases:");
         textAnalyticsAsyncClient.extractKeyPhrases("Bonjour tout le monde", "fr")
             .subscribe(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string-string
@@ -665,7 +665,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (ExtractKeyPhraseResult extractKeyPhraseResult : extractKeyPhraseResults) {
-                System.out.println("Recognized phrases:");
+                System.out.println("Extracted phrases:");
                 for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
                     System.out.printf("%s.%n", keyPhrase);
                 }
@@ -694,7 +694,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 batchStatistics.getValidDocumentCount());
 
             for (ExtractKeyPhraseResult extractKeyPhraseResult : extractKeyPhraseResults) {
-                System.out.println("Recognized phrases:");
+                System.out.println("Extracted phrases:");
                 for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
                     System.out.printf("%s.%n", keyPhrase);
                 }
@@ -727,7 +727,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     batchStatistics.getValidDocumentCount());
 
                 for (ExtractKeyPhraseResult extractKeyPhraseResult : extractKeyPhraseResults) {
-                    System.out.println("Recognized phrases:");
+                    System.out.println("Extracted phrases:");
                     for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
                         System.out.printf("%s.%n", keyPhrase);
                     }

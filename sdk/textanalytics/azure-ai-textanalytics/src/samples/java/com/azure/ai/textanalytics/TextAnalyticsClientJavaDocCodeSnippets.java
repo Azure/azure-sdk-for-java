@@ -571,7 +571,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrases() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
-        System.out.println("Recognized phrases:");
+        System.out.println("Extracted phrases:");
         for (String keyPhrase : textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.")) {
             System.out.printf("%s.%n", keyPhrase);
         }
@@ -583,7 +583,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrasesWithResponse() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context
-        System.out.println("Recognized phrases:");
+        System.out.println("Extracted phrases:");
         for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(
             "My cat might need to see a veterinarian.", "en", Context.NONE)) {
             System.out.printf("%s.%n", keyPhrase);
@@ -614,7 +614,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (ExtractKeyPhraseResult extractKeyPhraseResult : extractKeyPhraseResults) {
             System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
             // Valid document
-            System.out.println("Recognized phrases:");
+            System.out.println("Extracted phrases:");
             for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
                 System.out.printf("%s.%n", keyPhrase);
             }
@@ -647,7 +647,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (ExtractKeyPhraseResult extractKeyPhraseResult : extractKeyPhraseResults) {
             System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
             // Valid document
-            System.out.println("Recognized phrases:");
+            System.out.println("Extracted phrases:");
             for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
                 System.out.printf("%s.%n", keyPhrase);
             }
@@ -681,7 +681,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (ExtractKeyPhraseResult extractKeyPhraseResult : extractKeyPhraseResults) {
             System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
             // Valid document
-            System.out.println("Recognized phrases:");
+            System.out.println("Extracted phrases:");
             for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
                 System.out.printf("%s.%n", keyPhrase);
             }
