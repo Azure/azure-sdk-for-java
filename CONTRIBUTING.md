@@ -49,6 +49,11 @@ Merging Pull Requests (for project contributors with write access)
 - Install [Maven](http://maven.apache.org/download.cgi)
   - add `MAVEN_HOME` to environment variables
 
+>**Note:** If you ran into "long path" issue on `Windows`, enable paths longer than 260 characters by: <br><br>
+1.- Run this as Administrator on a command prompt:<br> 
+`REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1`<br>*(might need to type `yes` to override key if it already exists)*<br><br>
+2.- Set up `git` by running:<br> `git config --system core.longpaths true`
+
 ### Building and Testing
 
 The easiest way to build is by running the following command from the root folder:
