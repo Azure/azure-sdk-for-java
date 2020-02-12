@@ -75,6 +75,7 @@ org.yaml:snakeyaml;1.25
 org.hibernate.validator:hibernate-validator;6.0.17.Final
 pl.pragmatists:JUnitParams;1.1.1
 org.apache.qpid:qpid-jms-client;0.43.0
+javax.annotation:javax.annotation-api;1.3.2
 
 
 ## Test dependency versions
