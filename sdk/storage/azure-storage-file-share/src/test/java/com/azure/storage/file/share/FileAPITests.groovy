@@ -10,6 +10,7 @@ import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
@@ -19,6 +20,7 @@ import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -323,6 +325,47 @@ class FileAPITests extends APISpec {
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
+    /*
+     * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
+     */
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file buffer copy"() {
+        setup:
+        def shareServiceClient = new ShareServiceClientBuilder()
+            .connectionString(connectionString)
+            .buildClient()
+
+        def fileClient = shareServiceClient.getShareClient(shareName)
+            .createFile(filePath, fileSize)
+
+        def file = FileTestHelper.getRandomFile(fileSize)
+        fileClient.uploadFromFile(file.toPath().toString())
+        def outFile = new File(testResourceName.randomName(methodName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        fileClient.downloadToFile(outFile.toPath().toString())
+
+        then:
+        FileTestHelper.compareFiles(file, outFile, 0, fileSize)
+
+        cleanup:
+        shareServiceClient.deleteShare(shareName)
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
+    }
+
     def "Upload and download file exists"() {
         given:
         def data = "Download file exists"
@@ -422,6 +465,37 @@ class FileAPITests extends APISpec {
 
         then:
         assert pollResponse.getValue().getCopyId() != null
+    }
+
+    @Unroll
+    def "Start copy with args"() {
+        given:
+        primaryFileClient.create(1024)
+        def sourceURL = primaryFileClient.getFileUrl()
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+        if (setFilePermissionKey) {
+            smbProperties.setFilePermissionKey(filePermissionKey)
+        }
+
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, smbProperties,
+            setFilePermission ? filePermission : null, permissionType, ignoreReadOnly,
+            setArchiveAttribute, null, null, null)
+
+        def pollResponse = poller.poll()
+
+        then:
+        pollResponse.getValue().getCopyId() != null
+
+        where:
+        setFilePermissionKey | setFilePermission | ignoreReadOnly | setArchiveAttribute | permissionType
+        true                 | false             | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | true              | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | false             | true           | false               | PermissionCopyModeType.SOURCE
+        false                | false             | false          | true                | PermissionCopyModeType.SOURCE
     }
 
     @Ignore("There is a race condition in Poller where it misses the first observed event if there is a gap between the time subscribed and the time we start observing events.")
@@ -637,6 +711,7 @@ class FileAPITests extends APISpec {
 
         then:
         handlesClosedInfo.getClosedHandles() == 0
+        handlesClosedInfo.getFailedHandles() == 0
         notThrown(ShareStorageException)
     }
 
@@ -661,6 +736,7 @@ class FileAPITests extends APISpec {
         then:
         notThrown(ShareStorageException)
         handlesClosedInfo.getClosedHandles() == 0
+        handlesClosedInfo.getFailedHandles() == 0
     }
 
     def "Get snapshot id"() {

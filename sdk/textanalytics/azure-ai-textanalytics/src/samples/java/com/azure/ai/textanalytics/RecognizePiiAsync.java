@@ -24,12 +24,12 @@ public class RecognizePiiAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analysed.
+        // The text that needs be analyzed.
         String text = "My SSN is 555-55-5555";
 
         client.recognizePiiEntities(text).subscribe(
             entity -> System.out.printf(
-                "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
                 entity.getText(),
                 entity.getCategory(),
                 entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),

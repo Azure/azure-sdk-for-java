@@ -3,8 +3,9 @@
 package com.azure.storage.file.share;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
@@ -16,9 +17,12 @@ import java.util.EnumSet;
 import java.util.Map;
 
 /**
- * Contains code snippets when generating javadocs through doclets for {@link ShareDirectoryClient} and {@link ShareDirectoryAsyncClient}.
+ * Contains code snippets when generating javadocs through doclets for {@link ShareDirectoryClient} and {@link
+ * ShareDirectoryAsyncClient}.
  */
 public class ShareDirectoryAsyncJavaDocCodeSamples {
+
+    private String leaseId = "leaseId";
 
     /**
      * Generates code sample for {@link ShareDirectoryAsyncClient} instantiation.
@@ -34,6 +38,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link ShareDirectoryAsyncClient} with SAS token.
+     *
      * @return An instance of {@link ShareDirectoryAsyncClient}
      */
     public ShareDirectoryAsyncClient createAsyncClientWithSASToken() {
@@ -49,6 +54,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link ShareDirectoryAsyncClient} with SAS token.
+     *
      * @return An instance of {@link ShareDirectoryAsyncClient}
      */
     public ShareDirectoryAsyncClient createAsyncClientWithCredential() {
@@ -64,7 +70,9 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link ShareDirectoryAsyncClient} with {@code connectionString} which turns into {@link StorageSharedKeyCredential}
+     * Generates code sample for creating a {@link ShareDirectoryAsyncClient} with {@code connectionString} which turns
+     * into {@link StorageSharedKeyCredential}
+     *
      * @return An instance of {@link ShareDirectoryAsyncClient}
      */
     public ShareDirectoryAsyncClient createAsyncClientWithConnectionString() {
@@ -86,7 +94,8 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.create
         shareDirectoryAsyncClient.create().subscribe(
-            response -> { },
+            response -> {
+            },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Completed creating the directory!")
         );
@@ -94,7 +103,8 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createWithResponse(FileSmbProperties, String, Map)}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createWithResponse(FileSmbProperties, String,
+     * Map)}
      */
     public void createDirectoryWithResponseAsync() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
@@ -122,7 +132,8 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createSubdirectoryWithResponse(String, FileSmbProperties, String, Map)}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createSubdirectoryWithResponse(String,
+     * FileSmbProperties, String, Map)}
      */
     public void createSubdirectoryAsyncMaxOverload() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
@@ -146,7 +157,8 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFile#string-long
         shareDirectoryAsyncClient.createFile("myfile", 1024).subscribe(
-            response -> { },
+            response -> {
+            },
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed creating the file.")
         );
@@ -154,11 +166,12 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createFileWithResponse(String, long, ShareFileHttpHeaders, FileSmbProperties, String, Map)}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createFileWithResponse(String, long,
+     * ShareFileHttpHeaders, FileSmbProperties, String, Map)}
      */
     public void createFileWithResponse() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
@@ -174,11 +187,43 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         // NOTE: filePermission and filePermissionKey should never be both set
         shareDirectoryAsyncClient.createFileWithResponse("myFile", 1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata")).subscribe(
-                response ->  System.out.printf("Creating the file completed with status code %d", response.getStatusCode()),
+                response -> System.out.printf("Creating the file completed with status code %d", response.getStatusCode()),
                 error -> System.err.println(error.toString()),
                 () -> System.out.println("Completed creating the file.")
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createFileWithResponse(String, long,
+     * ShareFileHttpHeaders, FileSmbProperties, String, Map, ShareRequestConditions)}
+     */
+    public void createFileWithLease() {
+        ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+
+        shareDirectoryAsyncClient.createFileWithResponse("myFile", 1024, httpHeaders, smbProperties, filePermission,
+            Collections.singletonMap("directory", "metadata"), requestConditions).subscribe(
+                response -> System.out.printf("Creating the file completed with status code %d", response.getStatusCode()),
+                error -> System.err.println(error.toString()),
+                () -> System.out.println("Completed creating the file.")
+        );
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
     }
 
     /**
@@ -218,7 +263,8 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFile#string
         shareDirectoryAsyncClient.deleteFile("myfile").subscribe(
-            response -> { },
+            response -> {
+            },
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the file.")
         );
@@ -232,11 +278,27 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileWithResponse#string
         shareDirectoryAsyncClient.deleteFileWithResponse("myfile").subscribe(
-            response ->  System.out.printf("Delete file completed with status code %d", response.getStatusCode()),
+            response -> System.out.printf("Delete file completed with status code %d", response.getStatusCode()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the file.")
         );
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileWithResponse#string
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#deleteFileWithResponse(String,
+     * ShareRequestConditions)}
+     */
+    public void deleteFileWithLease() {
+        ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileWithResponse#string-ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareDirectoryAsyncClient.deleteFileWithResponse("myfile", requestConditions).subscribe(
+            response -> System.out.printf("Delete file completed with status code %d", response.getStatusCode()),
+            error -> System.err.println(error.toString()),
+            () -> System.out.println("Completed deleting the file.")
+        );
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileWithResponse#string-ShareRequestConditions
     }
 
     /**
@@ -246,7 +308,8 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectory#string
         shareDirectoryAsyncClient.deleteSubdirectory("mysubdirectory").subscribe(
-            response -> { },
+            response -> {
+            },
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the subdirectory.")
         );
@@ -260,7 +323,8 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryWithResponse#string
         shareDirectoryAsyncClient.deleteSubdirectoryWithResponse("mysubdirectory").subscribe(
-            response ->  System.out.printf("Delete subdirectory completed with status code %d", response.getStatusCode()),
+            response -> System.out.printf("Delete subdirectory completed with status code %d",
+                response.getStatusCode()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the subdirectory.")
         );
@@ -274,7 +338,8 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.delete
         shareDirectoryAsyncClient.delete().subscribe(
-            response -> { },
+            response -> {
+            },
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the file.")
         );
@@ -288,7 +353,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteWithResponse
         shareDirectoryAsyncClient.deleteWithResponse().subscribe(
-            response ->  System.out.printf("Delete completed with status code %d", response.getStatusCode()),
+            response -> System.out.printf("Delete completed with status code %d", response.getStatusCode()),
             error -> System.err.println(error.toString())
         );
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteWithResponse
@@ -333,7 +398,8 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#setPropertiesWithResponse(FileSmbProperties, String)}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#setPropertiesWithResponse(FileSmbProperties,
+     * String)}
      */
     public void setPropertiesWithResponse() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
@@ -364,18 +430,19 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.setMetadata#map.clearMetadata
         shareDirectoryAsyncClient.setMetadata(null)
-            .doOnSuccess(response ->  System.out.println("Clearing the directory metadata completed"));
+            .doOnSuccess(response -> System.out.println("Clearing the directory metadata completed"));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setMetadata#map.clearMetadata
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#setMetadataWithResponse(Map)} to clear the metadata.
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#setMetadataWithResponse(Map)} to clear the
+     * metadata.
      */
     public void setMetadataWithResponseClear() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.setMetadataWithResponse#map.clearMetadata
         shareDirectoryAsyncClient.setMetadataWithResponse(null).subscribe(
-            response ->  System.out.printf("Clearing the directory metadata completed with status code %d",
+            response -> System.out.printf("Clearing the directory metadata completed with status code %d",
                 response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setMetadataWithResponse#map.clearMetadata
     }
@@ -436,8 +503,9 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     public void forceCloseAllHandles() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.forceCloseAllHandles#boolean
-        shareDirectoryAsyncClient.forceCloseAllHandles(true).subscribe(numberOfHandlesClosed ->
-            System.out.printf("Closed %d open handles on the directory%n", numberOfHandlesClosed));
+        shareDirectoryAsyncClient.forceCloseAllHandles(true).subscribe(closeHandlesInfo ->
+            System.out.printf("Closed %d open handles on the directory%nFailed to close %d open handles on the "
+                + "directory%n", closeHandlesInfo.getClosedHandles(), closeHandlesInfo.getFailedHandles()));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.forceCloseAllHandles#boolean
     }
 

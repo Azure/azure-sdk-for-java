@@ -4,12 +4,14 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 
 /**
  * Code snippets for {@link NettyAsyncHttpClientBuilder}
@@ -65,5 +67,27 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
             .nioEventLoopGroup(new NioEventLoopGroup(5))
             .build();
         // END: com.azure.core.http.netty.from-existing-http-client
+    }
+
+    /**
+     * Code snippet to demonstrate the use of a Netty based http client that disables buffer copy.
+     */
+    public void disabledBufferCopyClientSample() {
+        HttpRequest httpRequest = null;
+        // BEGIN: com.azure.core.http.netty.disabled-buffer-copy
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .port(8080)
+            .disableBufferCopy(true)
+            .build();
+
+        client.send(httpRequest)
+            .flatMapMany(response -> response.getBody())
+            .map(byteBuffer -> completeProcessingByteBuffer(byteBuffer))
+            .subscribe();
+        // END: com.azure.core.http.netty.disabled-buffer-copy
+    }
+
+    private int completeProcessingByteBuffer(ByteBuffer byteBuffer) {
+        return byteBuffer.remaining();
     }
 }
