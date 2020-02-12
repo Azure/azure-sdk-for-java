@@ -195,29 +195,32 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * The existence of a directory in the {@code AzureFileSystem} is minimally defined by the presence of a non-zero
-     * number of blobs prefixed with the directory's path. This is is in order to accommodate containers that were
-     * pre-loaded with data by another source but need to be accessed by this file system. Directories created by this
-     * file system will be represented by a zero-length blob whose name is the directory path with a particular metadata
-     * field indicating the blob's status as a directory. Operations targeting directories themselves as the object
-     * (e.g. setting properties) will target these blobs. Operations using the directory only as a container
-     * (e.g. listing) will operate on the blob-name prefix.
+     * The existence of a directory in the {@code AzureFileSystem} is defined on two levels. Weak existence is defined
+     * by the presence of a non-zero number of blobs prefixed with the directory's path. This is also known as a virtual
+     * directory and is in order to accommodate containers that were pre-loaded with data by another source but need to
+     * be accessed by this file system. Strong existence is defined as the presence of a zero-length blob whose name is
+     * the directory path with a particular metadata field indicating the blob's status as a directory and is also known
+     * as a concrete directory. Directories created by this file system will strongly exist. Operations targeting
+     * directories themselves as the object (e.g. setting properties) will target marker blobs. Operations using the
+     * directory only as a container (e.g. listing) will operate on the blob-name prefix.
      *
-     * This method fulfills the contract of "The check for the existence of the file and the creation of the directory
+     * This method fulfills the contract of: "The check for the existence of the file and the creation of the directory
      * if it does not exist are a single operation that is atomic with respect to all other filesystem activities that
      * might affect the directory." The action of checking whether the parent exists, is not, however, atomic with
      * the creation of the directory. While it is possible that the parent may be deleted between the positive check and
-     * the creation of the child, the creation of the child will implicitly create the parent if it does not exist as
-     * defined above, so the child will not be left floating and unreachable.
+     * the creation of the child, the creation of the child will always implicitly ensure the existence of a virtual
+     * parent, so the child will never be left floating and unreachable. Note that we only check for weak existence of
+     * the parent directory and only check for strong existence of an actual blob or other directory when attempting to
+     * put an object at the given path. This split is due to limitations in the Storage service API.
      *
-     * Note that there may be some unintuitive behavior when working with directories that were not created by this file
-     * system. Directories which only minimally exist as defined above (e.g. a non-zero number of blobs with the prefix)
-     * and so do not have the marker blob will disappear as soon as all the children have been deleted. Furthermore, if
-     * such a directory already exists at the time of calling this method, this method will still return success and
-     * create the marker blob. In other words, it is possible to "double create" a directory if it is not initially
-     * created with a marker blob. This is both because it is impossible to atomically check if a minimal directory
-     * exists while creating a new directory and because such behavior will have minimal side effects--no files will
-     * be overwritten and the directory will still be available for writing as intended, though it may not be empty.
+     * There may be some unintuitive behavior when working with directories in this file system, particularly virtual
+     * directories(usually those not created by this file system). A virtual directory will disappear as soon as all its
+     * children have been deleted. Furthermore, if a directory with the given path weakly exists at the time of calling
+     * this method, this method will still return success and create a concrete directory at the target location.
+     * In other words, it is possible to "double create" a directory if it first weakly exists and then is strongly
+     * created. This is both because it is impossible to atomically check if a virtual directory exists while creating a
+     * concrete directory and because such behavior will have minimal side effects--no files will be overwritten and the
+     * directory will still be available for writing as intended, though it may not be empty.
      *
      * This method will attempt to extract standard HTTP content headers from the list of file attributes to set them
      * as blob headers. All other attributes will be set as blob metadata. The value of every attribute will be
@@ -246,10 +249,10 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         // Get the destination for the directory and it's parent container.
         BlobClient client = ((AzurePath) path).toBlobClient();
-        BlobContainerClient containerClient = ((AzureFileSystem)path.getFileSystem()).getBlobServiceClient()
+        BlobContainerClient containerClient = ((AzureFileSystem) path.getFileSystem()).getBlobServiceClient()
             .getBlobContainerClient(client.getContainerName());
 
-        // Determine the path for the parent directory. This is the parent path without the root.
+        // Determine the path for the parent directory blob. This is the parent path without the root.
         Path root = path.getRoot();
         if (root != null && root.equals(path)) {
             throw Utility.logError(logger, new IOException("Creating a root directory is not supported."));
@@ -283,7 +286,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * blob with this prefix, it means at least the directory exists. Note that blob names that match the prefix
      * exactly are returned in listing operations.
      *
-     * We do not check for the actual marker blob.
+     * We do not check for the actual marker blob as parents need only weakly exist.
      */
     boolean checkParentDirectoryExists(BlobContainerClient containerClient, Path prefix) {
         return prefix == null

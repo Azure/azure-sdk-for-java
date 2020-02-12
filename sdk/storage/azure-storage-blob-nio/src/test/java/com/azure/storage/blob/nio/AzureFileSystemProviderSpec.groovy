@@ -280,13 +280,13 @@ class AzureFileSystemProviderSpec extends APISpec {
         then:
         !((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, fs.getPath("foo"))
 
-        when: "Virtual directories (a blob that has the dir path as a prefix) count as directory existence"
+        when: "Virtual directories suffice for parent existence"
         blobClient.create()
 
         then:
         ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, fs.getPath("foo"))
 
-        when: "Marker blobs cont as directory existence"
+        when: "Marker blobs suffice for parent existence"
         blobClient.delete()
         blobClient = containerClient.getBlobClient("foo").getAppendBlobClient()
         blobClient.createWithResponse(null, [(AzureFileSystemProvider.DIR_METADATA_MARKER):"true"], null, null, null)
