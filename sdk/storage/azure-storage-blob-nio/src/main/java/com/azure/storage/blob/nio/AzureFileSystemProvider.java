@@ -226,14 +226,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * as blob headers. All other attributes will be set as blob metadata. The value of every attribute will be
      * converted to a {@code String} with the exception of the Content-MD5 attribute which expects a {@code byte[]}.
      * When extracting the content headers, the following strings will be used for comparison:
-     * <li>
-     *     <ul>{@code Content-Type}</ul>
-     *     <ul>{@code Content-Disposition}</ul>
-     *     <ul>{@code Content-Language}</ul>
-     *     <ul>{@code Content-Encoding}</ul>
-     *     <ul>{@code Content-MD5}</ul>
-     *     <ul>{@code Cache-Control}</ul>
-     * </li>
+     * <ul>
+     *     <li>{@code Content-Type}</li>
+     *     <li>{@code Content-Disposition}</li>
+     *     <li>{@code Content-Language}</li>
+     *     <li>{@code Content-Encoding}</li>
+     *     <li>{@code Content-MD5}</li>
+     *     <li>{@code Cache-Control}</li>
+     * </ul>
      * Note that these properties also have a particular semantic in that if one is specified, all are updated. In other
      * words, if any of the above is set, all those that are not set will be cleared.
      *
