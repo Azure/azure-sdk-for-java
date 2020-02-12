@@ -294,5 +294,11 @@
             <version>0.43.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
             <optional>true</optional>
         </dependency>
+
+        <dependency>
+          <groupId>javax.annotation</groupId>
+          <artifactId>javax.annotation-api</artifactId>
+          <version>1.3.2</version> <!-- {x-version-update;javax.annotation:javax.annotation-api;external_dependency} -->
+        </dependency>
     </dependencies>
 </project>
