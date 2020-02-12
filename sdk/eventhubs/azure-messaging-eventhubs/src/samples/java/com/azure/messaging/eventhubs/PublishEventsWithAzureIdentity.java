@@ -73,5 +73,7 @@ public class PublishEventsWithAzureIdentity {
                     currentBatch.getMaxSizeInBytes(), event.getBodyAsString());
             }
         }
+
+        producer.send(currentBatch);
     }
 }
