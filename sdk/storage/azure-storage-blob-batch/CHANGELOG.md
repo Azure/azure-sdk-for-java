@@ -1,6 +1,6 @@
 # Release History
 
-## 12.4.0 (2020-02-12)
+## 12.4.0-beta.1 (2020-02-12)
 - Updated `azure-storage-blob` to version 12.4.0
 
 ## 12.3.1 (2020-02-10)
