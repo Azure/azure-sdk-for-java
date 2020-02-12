@@ -29,7 +29,6 @@
   <suppress checks="Header" files="EventHubSession.java"/>
   <suppress checks="Header" files="EventHubReactorAmqpConnection.java"/>
   <suppress checks="Header" files="EventHubAmqpConnection.java"/>
-  <suppress checks="Header" files="EventHubProperties.java"/>
   <suppress checks="Header" files="EventHubReactorSession.java"/>
   <suppress checks="Header" files="EventPosition.java"/>
   <suppress checks="Header" files="EventHubAmqpConnection.java"/>
@@ -241,7 +240,7 @@
 
   <!-- Report AMQP retry attempts in static withRetry method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.amqp.implementation.RetryUtil.java"/>
-  
+
   <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.textanalytics.Transforms.java" />
 

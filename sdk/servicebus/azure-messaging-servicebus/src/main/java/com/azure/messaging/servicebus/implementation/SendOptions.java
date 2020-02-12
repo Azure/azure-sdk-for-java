@@ -1,4 +1,8 @@
-package com.azure.core.amqp;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.messaging.servicebus.implementation;
+
 
 import com.azure.core.annotation.Fluent;
 
@@ -26,7 +30,7 @@ public class SendOptions {
      *
      * @param partitionKey The partition hashing key to associate with the event or batch of events.
      *
-     * @return The updated {@link SendOptions} object.
+     * @return The updated {@link com.azure.core.amqp.SendOptions} object.
      */
     public SendOptions setPartitionKey(String partitionKey) {
         this.partitionKey = partitionKey;
@@ -63,10 +67,11 @@ public class SendOptions {
      * @param partitionId The identifier of the Event Hub partition that the {@link EventData events} will be set
      *     to. {@code null} or an empty string if Event Hubs service is responsible for routing events.
      *
-     * @return The updated {@link SendOptions} object.
+     * @return The updated {@link com.azure.core.amqp.SendOptions} object.
      */
     public SendOptions setPartitionId(String partitionId) {
         this.partitionId = partitionId;
         return this;
     }
 }
+

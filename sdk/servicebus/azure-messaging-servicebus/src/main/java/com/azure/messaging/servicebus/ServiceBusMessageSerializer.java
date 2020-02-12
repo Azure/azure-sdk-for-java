@@ -4,10 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpMessageConstant;
-import com.azure.core.amqp.implementation.EventHubProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.PartitionProperties;
-
 
 
 import com.azure.core.exception.AzureException;
@@ -118,13 +115,13 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         Objects.requireNonNull(message, "'message' cannot be null.");
         Objects.requireNonNull(clazz, "'clazz' cannot be null.");
 
-        if (clazz == PartitionProperties.class || clazz == EventHubProperties.class) {
+        if (clazz == ServiceBusProperties.class) {
             return deserializeManagementResponse(message, clazz);
         } else if (clazz == Message.class) {
             return (T) deserializeEventData(message);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Deserialization only supports EventData, PartitionProperties, or EventHubProperties."));
+                "Deserialization only supports ServiceBusProperties."));
         }
     }
 

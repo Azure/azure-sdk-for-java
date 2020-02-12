@@ -20,7 +20,6 @@ module com.azure.core.amqp {
     exports com.azure.core.amqp.implementation.handler to
         com.azure.messaging.servicebus,
         com.azure.messaging.eventhubs;
-    exports com.azure.core.amqp.models;
 
     opens com.azure.core.amqp.implementation;
 }

@@ -38,7 +38,7 @@
     <checkstyle.skip>true</checkstyle.skip>
     <spotbugs.version>4.0.0-beta3</spotbugs.version>
   </properties>
-  <!--
+<!--
   <build>
     <plugins>
       <plugin>

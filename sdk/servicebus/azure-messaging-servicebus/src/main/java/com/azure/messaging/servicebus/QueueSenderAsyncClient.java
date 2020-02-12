@@ -2,10 +2,9 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.SendOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.implementation.AmqpConstants;
+
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 
@@ -20,6 +19,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.CreateBatchOptions;
+import com.azure.messaging.servicebus.implementation.SendOptions;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import reactor.core.publisher.Flux;
@@ -27,7 +27,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +44,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
@@ -54,7 +52,6 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 @ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
 public final class QueueSenderAsyncClient implements Closeable {
-
 
     private final ClientLogger logger = new ClientLogger(QueueSenderAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();

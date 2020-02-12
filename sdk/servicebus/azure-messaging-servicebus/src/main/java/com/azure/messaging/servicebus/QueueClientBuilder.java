@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.SendOptions;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -27,6 +26,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.ClientConstants;
+import com.azure.messaging.servicebus.implementation.SendOptions;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
@@ -186,26 +186,51 @@ public final class QueueClientBuilder {
         return this;
     }
 
+    /**
+     * Specify connection string and  queue name for connection to Queue.
+     * @param connectionString
+     * @param queueName
+     * @return
+     */
     public QueueClientBuilder connectionString(String connectionString, String queueName) {
         this.queueName = queueName;
         return connectionString(connectionString);
     }
 
+    /**
+     *
+     * @param queueName  to connect to .
+     * @return The {@link QueueClientBuilder}.
+     */
     public QueueClientBuilder queueName(String queueName) {
         this.queueName = queueName;
         return this;
     }
 
+    /**
+     *
+     * @param retryPolicy to recover from Connection.
+     * @return The {@link QueueClientBuilder}.
+     */
     public QueueClientBuilder retryPolicy(AmqpRetryPolicy retryPolicy) {
         return this;
     }
 
-    public QueueClientBuilder transportType(TransportType transportType) {
-        this.transport = transport;
+    /**
+     *
+     * @param transportType to use.
+     * @return The {@link QueueClientBuilder}.
+     */
+    public QueueClientBuilder transportType(AmqpTransportType transportType) {
+        this.transport = transportType;
         return this;
     }
 
-    /** package- private method*/
+    /** package- private method
+     *
+     * @param scheduler
+     * @return The {@link QueueClientBuilder}.
+     */
     QueueClientBuilder scheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
         return this;
