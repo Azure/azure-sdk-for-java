@@ -9,6 +9,10 @@
 - Added support for obtaining premium file properties in ShareServiceClient.listShares and ShareClient.getProperties.
 - Added support for additional start copy parameters - FileSmbProperties, file permission, file permission copy mode, set archive and ignore read only.
 
+## 12.1.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+- Update `azure-storage-common` to version 12.3.1
+
 ## 12.1.0 (2020-01-08)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.1.0/sdk/storage/azure-storage-file-share/README.md)
