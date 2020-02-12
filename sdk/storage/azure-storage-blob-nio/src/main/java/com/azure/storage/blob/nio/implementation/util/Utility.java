@@ -39,12 +39,15 @@ public class Utility {
                 case "Content-Disposition":
                     headers.setContentDisposition(attr.value().toString());
                     break;
+                case "Content-Encoding":
+                    headers.setContentEncoding(attr.value().toString());
+                    break;
                 case "Content-MD5":
                     if ((attr.value() instanceof byte[])) {
                         headers.setContentMd5((byte[]) attr.value());
                     } else {
                         throw Utility.logError(logger,
-                            new UnsupportedOperationException("Cannot read Content-MD5 attribute as byte[]"));
+                            new UnsupportedOperationException("Content-MD5 attribute must be a byte[]"));
                     }
                     break;
                 case "Cache-Control":

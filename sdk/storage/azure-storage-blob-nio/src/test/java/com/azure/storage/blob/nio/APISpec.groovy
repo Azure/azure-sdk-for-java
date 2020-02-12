@@ -55,6 +55,7 @@ import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.nio.file.attribute.FileAttribute
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
@@ -495,6 +496,26 @@ class APISpec extends Specification {
     def sleepIfRecord(long milliseconds) {
         if (testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
+        }
+    }
+
+    static class TestFileAttribute<T> implements  FileAttribute<T> {
+        String name
+        T value
+
+        TestFileAttribute(String name, T value) {
+            this.name = name
+            this.value = value
+        }
+
+        @Override
+        String name() {
+            return this.name
+        }
+
+        @Override
+        T value() {
+            return this.value
         }
     }
 }

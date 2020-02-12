@@ -12,7 +12,6 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.nio.implementation.util.Utility;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +27,6 @@ import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemAlreadyExistsException;
 import java.nio.file.FileSystemNotFoundException;
-import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -226,11 +224,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * converted to a {@code String} with the exception of the Content-MD5 attribute which expects a {@code byte[]}.
      * When extracting the content headers, the following strings will be used for comparison:
      * <li>
-     *     <ul>Content-Type</ul>
-     *     <ul>Content-Disposition</ul>
-     *     <ul>Content-Language</ul>
-     *     <ul>Content-MD5</ul>
-     *     <ul>Cache-Control</ul>
+     *     <ul>{@code Content-Type}</ul>
+     *     <ul>{@code Content-Disposition}</ul>
+     *     <ul>{@code Content-Language}</ul>
+     *     <ul>{@code Content-Encoding}</ul>
+     *     <ul>{@code Content-MD5}</ul>
+     *     <ul>{@code Cache-Control}</ul>
      * </li>
      * Note that these properties also have a particular semantic in that if one is specified, all are updated. In other
      * words, if any of the above is set, all those that are not set will be cleared.
@@ -252,10 +251,13 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         // Determine the path for the parent directory. This is the parent path without the root.
         Path root = path.getRoot();
+        if (root != null && root.equals(path)) {
+            throw Utility.logError(logger, new IOException("Creating a root directory is not supported."));
+        }
         Path prefix = root == null ? path.getParent() : root.relativize(path).getParent();
 
         // Check if parent exists. If it does, atomically check if a file already exists and create a new dir if not.
-        if (checkDirectoryExists(containerClient, prefix)) {
+        if (checkParentDirectoryExists(containerClient, prefix)) {
             try {
                 List<FileAttribute<?>> attributeList = new ArrayList<>(Arrays.asList(fileAttributes));
                 BlobHttpHeaders headers = Utility.extractHttpHeaders(attributeList, logger);
@@ -264,7 +266,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 client.getAppendBlobClient().createWithResponse(headers, metadata,
                     new BlobRequestConditions().setIfNoneMatch("*"), null, null);
             } catch (BlobStorageException e) {
-                if (e.getStatusCode() == HttpURLConnection.HTTP_PRECON_FAILED) {
+                if (e.getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
                     throw Utility.logError(logger, new FileAlreadyExistsException(path.toString()));
                 } else {
                     throw Utility.logError(logger, new IOException("An error occured when creating the directory", e));
@@ -276,12 +278,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
     }
 
-    boolean checkDirectoryExists(BlobContainerClient containerClient, Path prefix) {
-        /*
-        If the prefix is null, that means we are in the root dir for the container, which always exists. If there is a
-        blob with this prefix, it means at least the directory exists. Note that blob names that match the prefix
-        exactly are returned.
-         */
+    /**
+     * If the prefix is null, that means we are in the root dir for the container, which always exists. If there is a
+     * blob with this prefix, it means at least the directory exists. Note that blob names that match the prefix
+     * exactly are returned in listing operations.
+     *
+     * We do not check for the actual marker blob.
+     */
+    boolean checkParentDirectoryExists(BlobContainerClient containerClient, Path prefix) {
         return prefix == null
             || containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR,
             new ListBlobsOptions().setPrefix(prefix.toString()).setMaxResultsPerPage(1), null).iterator().hasNext();

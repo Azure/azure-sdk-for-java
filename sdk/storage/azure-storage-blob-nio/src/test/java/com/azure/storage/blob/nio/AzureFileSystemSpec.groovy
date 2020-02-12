@@ -219,4 +219,13 @@ class AzureFileSystemSpec extends APISpec {
         "azureStorage" | true
         "posix"        | false
     }
+
+    def "FileSystem getDefaultDirectory"() {
+        setup:
+        def fs = createFS(config)
+
+        expect:
+        fs.getDefaultDirectory().toString() ==
+            config[AzureFileSystem.AZURE_STORAGE_FILE_STORES].split(",")[0] + AzurePath.ROOT_DIR_SUFFIX
+    }
 }
