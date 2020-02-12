@@ -33,7 +33,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "Satya Nadella is the CEO of Microsoft.", "en"),
             new TextDocumentInput("2", "Elon Musk is the CEO of SpaceX and Tesla.", "en")
@@ -66,7 +66,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                     }
                     // Valid document
                     for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
-                        System.out.printf("Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                        System.out.printf("Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
                             entity.getText(),
                             entity.getCategory(),
                             entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
