@@ -33,7 +33,7 @@ public class RecognizePiiBatchDocuments {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "My SSN is 555-55-5555", "en"),
             new TextDocumentInput("2", "Visa card 4111 1111 1111 1111", "en")
@@ -65,7 +65,7 @@ public class RecognizePiiBatchDocuments {
             }
             // Valid document
             for (PiiEntity entity : piiEntityDocumentResult.getEntities()) {
-                System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
                     entity.getText(),
                     entity.getCategory(),
                     entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),

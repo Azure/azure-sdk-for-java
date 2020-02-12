@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
@@ -33,7 +34,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park.", "en"),
             new TextDocumentInput("2", "Mount Shasta has lenticular clouds.", "en")
@@ -66,10 +67,19 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                     }
                     // Valid document
                     for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getEntities()) {
-                        System.out.printf("Recognized linked entities: %s, URL: %s, data source: %s%n",
+                        System.out.println("Linked Entities:");
+                        System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(),
+                            linkedEntity.getId(),
                             linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
+                        for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+                            System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                                linkedEntityMatch.getText(),
+                                linkedEntityMatch.getOffset(),
+                                linkedEntityMatch.getLength(),
+                                linkedEntityMatch.getScore());
+                        }
                     }
                 }
             },

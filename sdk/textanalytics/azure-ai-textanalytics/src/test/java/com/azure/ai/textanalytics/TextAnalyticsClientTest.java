@@ -358,7 +358,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         DocumentSentiment analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
 
-        validateAnalysedSentiment(expectedDocumentSentiment, analyzeSentimentResult);
+        validateAnalyzedSentiment(expectedDocumentSentiment, analyzeSentimentResult);
     }
 
     /**
@@ -384,7 +384,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");
 
-        validateAnalysedSentiment(expectedDocumentSentiment, analyzeSentimentResult);
+        validateAnalyzedSentiment(expectedDocumentSentiment, analyzeSentimentResult);
     }
 
     /**
