@@ -1,8 +1,9 @@
 # Release History
 
-## 12.4.0-beta.1 (Unreleased)
+## 12.4.0 (2020-02-12)
 - Added ability to access BlobProperties from BlobInputStream.
 - Modified downloadToFile to populate BlobProperties.blobSize to be the actual blob size instead of the content length of the first range. 
+- Added upload methods on BlobClient to upload from an InputStream.
 
 - Added support for the 2019-07-07 service version.
 - Added support for encryption scopes service, container and blob builders now accept an encryption scope parameter and service and container builders accept a BlobContainerEncryptionScope parameter.
