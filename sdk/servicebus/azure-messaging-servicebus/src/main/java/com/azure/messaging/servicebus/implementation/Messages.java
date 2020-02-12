@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Define various messages for different error conditions.
+ */
 public class Messages {
     private static final ClientLogger LOGGER = new ClientLogger(Messages.class);
     private static Properties properties;

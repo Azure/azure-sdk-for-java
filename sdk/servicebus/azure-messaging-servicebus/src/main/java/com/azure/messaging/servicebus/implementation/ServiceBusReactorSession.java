@@ -29,12 +29,9 @@ import java.util.Objects;
 import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
 
 /**
- * An AMQP session for Event Hubs.
+ * An AMQP session for Service Bus.
  */
 class ServiceBusReactorSession extends ReactorSession implements ServiceBusSession {
-    private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
-    private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
-        Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorSession.class);
 

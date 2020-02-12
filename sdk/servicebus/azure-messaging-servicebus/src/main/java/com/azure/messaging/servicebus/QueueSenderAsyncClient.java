@@ -59,7 +59,6 @@ public final class QueueSenderAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(QueueSenderAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final SendOptions senderOptions;
-    private Mono<AmqpSendLink> sendLinkMono;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
     private final AmqpRetryOptions retryOptions;
@@ -95,9 +94,22 @@ public final class QueueSenderAsyncClient implements Closeable {
     }
 
     public Mono<Void> send(Message message) {
-        Objects.requireNonNull(message, "'event' cannot be null.");
+        Objects.requireNonNull(message, "'message' cannot be null.");
 
         return send(Flux.just(message));
+    }
+
+    public Mono<Void> send(Message message, String sessionId) {
+        //TODO Implement session id feature
+        Objects.requireNonNull(message, "'message' cannot be null.");
+        return send(Flux.just(message));
+    }
+
+    public Mono<Void> send(Message message, SendOptions options, String sessionId) {
+        Objects.requireNonNull(message, "'message' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        //TODO Implement session id feature
+        return send(Flux.just(message), options);
     }
 
     public Mono<Void> send(Message message, SendOptions options) {

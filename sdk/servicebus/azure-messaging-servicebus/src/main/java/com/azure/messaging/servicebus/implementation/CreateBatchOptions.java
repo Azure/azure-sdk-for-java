@@ -6,7 +6,8 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The set of options that can be specified when creating an TODO.
+ * The set of options that can be specified when creating an batch of messages. This wrapper will help to limit
+ * the messages with maximum allowed size.
  *
 
  */

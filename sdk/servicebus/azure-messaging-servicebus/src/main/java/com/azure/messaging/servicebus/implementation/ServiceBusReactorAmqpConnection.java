@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A proton-j AMQP connection to an Azure Service Bus instance. Adds additional support for management operations.
+ * A proton-j AMQP connection to an Azure Service Bus instance.
  */
 public class ServiceBusReactorAmqpConnection extends ReactorConnection implements ServiceBusAmqpConnection {
 

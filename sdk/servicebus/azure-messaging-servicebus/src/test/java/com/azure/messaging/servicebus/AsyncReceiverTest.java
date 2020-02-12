@@ -1,10 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.amqp.models.ReceiveOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
@@ -78,12 +80,9 @@ public class AsyncReceiverTest {
         receiveLinkMono = Mono.fromCallable(() -> amqpReceiveLink);
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
-        //when(amqpReceiveLink.getErrors()).thenReturn(errorProcessor);
-        //when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
-        //when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-        connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7uJdC9utZi6pxJ2trk4MmiiEyuHltIz1Oyejp1jZRgM=;EntityPath=hemant-test1";
+
+        String connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7uJdC9utZi6pxJ2trk4MmiiEyuHltIz1Oyejp1jZRgM=;EntityPath=hemant-test1";
 
         // Instantiate a client that will be used to call the service.
 
@@ -150,14 +149,7 @@ public class AsyncReceiverTest {
 
             });
         Thread.sleep(9000);
-        // Act & Assert
-        /*StepVerifier.create(consumer.receive().take(numberOfEvents))
-            .then(() -> sendMessages(numberOfEvents))
-            .expectNextCount(numberOfEvents)
-            .verifyComplete();
 
-        verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
-        */
     }
 
     private void sendMessages(int numberOfEvents) {

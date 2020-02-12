@@ -15,8 +15,7 @@ import java.time.Duration;
 
 /**
  * Represents an AMQP session that supports vendor specific properties and capabilities. For example, creating a
- * receiver that exclusively listens to a partition + consumer group combination, or getting snapshots of partition
- * information.
+ * receiver that exclusively listens to a specific session.
  *
  * @see AmqpSession
  * @see ReactorSession

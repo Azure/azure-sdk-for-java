@@ -59,7 +59,7 @@ public final class QueueClientBuilder {
     private Configuration configuration;
     private AmqpRetryOptions retryOptions;
     private Scheduler scheduler;
-    private AmqpTransportType transport;
+    private AmqpTransportType transport = AmqpTransportType.AMQP;
     private String fullyQualifiedNamespace;
     private String queueName;
 
@@ -76,7 +76,6 @@ public final class QueueClientBuilder {
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
      */
     public QueueClientBuilder(){
-        transport = AmqpTransportType.AMQP;
         this.connectionId = StringUtil.getRandomString("MF");
     }
 
@@ -87,7 +86,7 @@ public final class QueueClientBuilder {
             tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
                 properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch ( Exception e) {
-            throw logger.logExceptionAsError(new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e));
+            throw logger.logExceptionAsError(new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
         }
         this.fullyQualifiedNamespace = properties.getEndpoint().getHost();
         this.queueName = properties.getEntityPath();
@@ -110,8 +109,7 @@ public final class QueueClientBuilder {
 
 
     /**
-     * Creates an {@link QueueSenderAsyncClient} for transmitting {@link Message} to the Event Hub, grouped together
-     * in batches.
+     * Creates an {@link QueueSenderAsyncClient} for transmitting {@link Message} to the Service Bus Queue.
      *
      * @return A new {@link QueueSenderAsyncClient}.
      */
@@ -140,13 +138,10 @@ public final class QueueClientBuilder {
         return new QueueSenderAsyncClient(queueName, connectionProcessor, defaultSenderOptions,  retryOptions, tracerProvider, messageSerializer, isSharedConnection);
     }
     /**
-     * Creates an Event Hub consumer responsible for reading {@link Message} from a specific Event Hub, as a
-     * member of the configured consumer group.
+     * Creates an Service Bus Queue receiver responsible for reading {@link Message} from a specific Queue.
      *
      * @param prefetchCount The set of options to apply when creating the consumer.
-     * @return An new {@link QueueReceiverAsyncClient} that receives events from the Event Hub.
-     * @throws NullPointerException If {@code consumerGroup} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} is an empty string.
+     * @return An new {@link QueueReceiverAsyncClient} that receives events from the Queue.
      */
     QueueReceiverAsyncClient createAsyncReceiverClient(int prefetchCount) {
         if (retryOptions == null) {
@@ -206,6 +201,7 @@ public final class QueueClientBuilder {
     }
 
     public QueueClientBuilder transportType(TransportType transportType) {
+        this.transport = transport;
         return this;
     }
 

@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
@@ -21,7 +22,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * The data structure encapsulating the event being sent-to and received-from Event Hubs. Each Event Hub partition can
+ * The data structure encapsulating the message being sent-to and received-from Service Bus. Each Service Bus entity can
  * be visualized as a stream of {@link Message}.
  *
  * <p>
@@ -51,6 +52,7 @@ public class Message {
     private final byte[] body;
     private final SystemProperties systemProperties;
     private Context context;
+    private UUID lockToken;
 
     static {
         final Set<String> properties = new HashSet<>();
@@ -219,93 +221,39 @@ public class Message {
         return this;
     }
 
+    public UUID getLockToken() {
+        return lockToken;
+    }
+
+    public void setLockToken(UUID lockToken) {
+        this.lockToken = lockToken;
+    }
+
+
     /**
      * A collection of properties populated by Azure Event Hubs service.
      */
     static class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
-        //private final Long offset;
+
         private final String partitionKey;
-        //private final Instant enqueuedTime;
-        //private final Long sequenceNumber;
+
 
         SystemProperties() {
             super();
-            //offset = null;
+
             partitionKey = null;
-            //enqueuedTime = null;
-            //sequenceNumber = null;
+
         }
 
         SystemProperties(final Map<String, Object> map) {
             super(map);
             this.partitionKey = removeSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
 
-            /*final String offset = removeSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
-            if (offset == null) {
-                throw new IllegalStateException(String.format(Locale.US,
-                    "offset: %s should always be in map.", OFFSET_ANNOTATION_NAME.getValue()));
-            }
-            this.offset = Long.valueOf(offset);
 
-
-            final Date enqueuedTimeValue = removeSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-            if (enqueuedTimeValue == null) {
-                throw new IllegalStateException(String.format(Locale.US,
-                    "enqueuedTime: %s should always be in map.", ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
-            }
-            this.enqueuedTime = enqueuedTimeValue.toInstant();
-
-            final Long sequenceNumber = removeSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-            if (sequenceNumber == null) {
-                throw new IllegalStateException(String.format(Locale.US,
-                    "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-            }
-            */
-
-           // this.sequenceNumber = sequenceNumber;
         }
 
-        /**
-         * Gets the offset within the Event Hubs stream.
-         *
-         * @return The offset within the Event Hubs stream.
-         */
-  /*   private Long getOffset() {
-            return offset;
-        }
-*/
-        /**
-         * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to
-         * select a partition to send the message to.
-         *
-         * @return A partition key for this Event Data.
-         */
-  /*      private String getPartitionKey() {
-            return partitionKey;
-        }
-*/
-        /**
-         * Gets the time this event was enqueued in the Event Hub.
-         *
-         * @return The time this was enqueued in the service.
-         */
-        /*private Instant getEnqueuedTime() {
-            return enqueuedTime;
-        }*/
 
-        /**
-         * Gets the sequence number in the event stream for this event. This is unique for every message received in the
-         * Event Hub.
-         *
-         * @return Sequence number for this event.
-         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
-         * event.
-         */
-  /*      private Long getSequenceNumber() {
-            return sequenceNumber;
-        }
-*/
         @SuppressWarnings("unchecked")
         private <T> T removeSystemProperty(final String key) {
             if (this.containsKey(key)) {

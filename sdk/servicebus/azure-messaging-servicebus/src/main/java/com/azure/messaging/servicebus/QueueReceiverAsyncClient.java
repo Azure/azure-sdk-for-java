@@ -15,7 +15,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
-import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -32,28 +31,8 @@ import java.util.function.Supplier;
 import static com.azure.core.util.FluxUtil.fluxError;
 
 /**
- * An <b>asynchronous</b> consumer responsible for reading {@link Message} from either a specific Event Hub partition
- * or all partitions in the context of a specific consumer group.
+ * An <b>asynchronous</b> receiver responsible for reading {@link Message} from either a specific Queue.
  *
- * <p><strong>Creating an {@link QueueReceiverAsyncClient}</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
- *
- * <p><strong>Consuming events a single partition from Event Hub</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition}
- *
- * <p><strong>Viewing latest partition information</strong></p>
- * <p>Latest partition information as events are received can by setting
- * TODO setTrackLastEnqueuedEventProperties} to
- * {@code true}. As events come in, explore the {@link Message} object.
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions}
- *
- * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
- * <p>For event consumers that need to limit the number of events they receive at a given time, they can use
- * {@link BaseSubscriber#request(long)}.</p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber}
- *
- * <p><strong>Receiving from all partitions</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean}
  */
 @ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
 public final class QueueReceiverAsyncClient implements Closeable {
@@ -94,10 +73,10 @@ public final class QueueReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Gets the fully qualified Event Hubs namespace that the connection is associated with. This is likely similar to
+     * Gets the fully qualified Service Bus  namespace that the connection is associated with. This is likely similar to
      * {@code {yournamespace}.servicebus.windows.net}.
      *
-     * @return The fully qualified Event Hubs namespace that the connection is associated with
+     * @return The fully qualified Service Bus namespace that the connection is associated with.
      */
     public String getFullyQualifiedNamespace() {
         return fullyQualifiedNamespace;
@@ -116,13 +95,8 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * Consumes messages from Queue.
      *
      * <p>This method is <b>not</b> recommended for production use; the TODO should be used for
-     * reading events from all partitions in a production scenario, as it offers a much more robust experience with
+     * reading messages in a production scenario, as it offers a much more robust experience with
      * higher throughput.
-     *
-     * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
-     * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
-     * given partition or subset of partitions.</p>
-     *
      *
      * @return A stream of messages from Queue.
      */
@@ -172,7 +146,7 @@ public final class QueueReceiverAsyncClient implements Closeable {
      *
      * @return A stream of events for every partition from Queue.
      *
-     * @throws NullPointerException if {@code receiveOptions} is null.
+     * @throws NullPointerException if {@code receiveMode} is null.
      */
     public Flux<Message> receive( ReceiveMode receiveMode) {
         if (Objects.isNull(receiveMode)) {
@@ -188,6 +162,7 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * @param receiveMode for messages from Queue.
      * @param sessionId of the message.
      * @return A stream of messages from Queue.
+     * @throws NullPointerException if {@code receiveMode} is null.
      */
     public Flux<Message> receive( ReceiveMode receiveMode, String sessionId) {
         //TODO : Session id needs to be implemented.

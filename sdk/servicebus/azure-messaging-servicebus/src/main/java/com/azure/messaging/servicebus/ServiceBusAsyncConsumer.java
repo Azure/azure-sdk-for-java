@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -10,8 +13,7 @@ import reactor.core.publisher.Flux;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * A package-private consumer responsible for reading {@link Message} from a specific Event Hub partition in the
- * context of a specific consumer group.
+ * A package-private consumer responsible for reading {@link Message} from a specific Service Bus.
  */
 class ServiceBusAsyncConsumer implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
@@ -19,36 +21,24 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     private final ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor;
     private final MessageSerializer messageSerializer;
     private final String fullyQualifiedNamespace;
-    private final String eventHubName;
+    private final String queueName;
     private final String partitionId;
     private final EmitterProcessor<Message> emitterProcessor;
 
     private volatile Long currentOffset;
 
     ServiceBusAsyncConsumer(ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
-                            MessageSerializer messageSerializer, String fullyQualifiedNamespace, String eventHubName,
+                            MessageSerializer messageSerializer, String fullyQualifiedNamespace, String queueName,
                             String partitionId) {
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
-        this.eventHubName = eventHubName;
+        this.queueName = queueName;
         this.partitionId = partitionId;
 
 
         this.emitterProcessor = amqpReceiveLinkProcessor
             .map(message -> onMessageReceived(message))
-            /*.doOnNext(event -> {
-                // Keep track of the last position so if the link goes down, we don't start from the original location.
-                final Long offset = event.getBody().getOffset();
-                if (offset != null) {
-                    currentOffset = offset;
-                } else {
-                    logger.warning(
-                        "Offset for received event should not be null. Partition Id: {}. Consumer group: {}. Data: {}",
-                        event.getPartitionContext().getPartitionId(), event.getPartitionContext().getConsumerGroup(),
-                        event.getBody());
-                }
-            })*/
             .subscribeWith(EmitterProcessor.create(false));
     }
 
@@ -76,8 +66,6 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
      * On each message received from the service, it will try to:
      * <ol>
      * <li>Deserialize the message into an {@link Message}.</li>
-     * <li>If {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()} is true, then it will try to update
-     * {@link LastEnqueuedEventProperties}.</li>
      * </ol>
      *
      * @param message AMQP message to deserialize.

@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
 /**
- * All TransportType switches available for communicating to Service service.
+ * All TransportType switches available for communicating to Service Bus.
  */
 public enum TransportType {
     /**
