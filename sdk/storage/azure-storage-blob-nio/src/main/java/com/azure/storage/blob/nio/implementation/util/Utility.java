@@ -26,7 +26,7 @@ public class Utility {
      */
     public static BlobHttpHeaders extractHttpHeaders(List<FileAttribute<?>> fileAttributes, ClientLogger logger) {
         BlobHttpHeaders headers = new BlobHttpHeaders();
-        for (Iterator<FileAttribute<?>> it = fileAttributes.iterator(); it.hasNext(); ) {
+        for (Iterator<FileAttribute<?>> it = fileAttributes.iterator(); it.hasNext();) {
             FileAttribute<?> attr = it.next();
             boolean propertyFound = true;
             switch (attr.name()) {

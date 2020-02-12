@@ -242,8 +242,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public void createDirectory(Path path, FileAttribute<?>... fileAttributes) throws IOException {
         if (!(path instanceof AzurePath)) {
-            throw Utility.logError(logger, new IllegalArgumentException("This provider cannot operate on subtypes of " +
-                "Path other than AzurePath"));
+            throw Utility.logError(logger, new IllegalArgumentException("This provider cannot operate on subtypes of "
+                + "Path other than AzurePath"));
         }
         fileAttributes = fileAttributes == null ? new FileAttribute<?>[0] : fileAttributes;
 
