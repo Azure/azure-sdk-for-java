@@ -23,12 +23,12 @@ public class RecognizeEntitiesAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analysed.
+        // The text that need be analyzed.
         String text = "Satya Nadella is the CEO of Microsoft";
 
         client.recognizeEntities(text).subscribe(
             entity -> System.out.printf(
-                "Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                "Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
                 entity.getText(),
                 entity.getCategory(),
                 entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),

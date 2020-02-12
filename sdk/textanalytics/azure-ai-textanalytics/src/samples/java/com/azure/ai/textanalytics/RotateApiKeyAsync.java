@@ -24,7 +24,7 @@ public class RotateApiKeyAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analysed.
+        // The text that need be analyzed.
         String text = "My cat might need to see a veterinarian.";
 
         client.extractKeyPhrases(text).subscribe(

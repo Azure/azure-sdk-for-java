@@ -72,7 +72,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string
         String inputText = "Bonjour tout le monde";
         textAnalyticsAsyncClient.detectLanguage(inputText).subscribe(detectedLanguage ->
-            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
+            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %.2f.%n",
                 detectedLanguage.getName(),
                 detectedLanguage.getIso6391Name(),
                 detectedLanguage.getScore()));
@@ -88,7 +88,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         String countryHint = "US";
         textAnalyticsAsyncClient.detectLanguageWithResponse(input, countryHint).subscribe(detectedLanguageResponse -> {
             final DetectedLanguage detectedLanguage = detectedLanguageResponse.getValue();
-            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
+            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %.2f.%n",
                 detectedLanguage.getName(),
                 detectedLanguage.getIso6391Name(),
                 detectedLanguage.getScore());
@@ -112,7 +112,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
                 DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
-                System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
+                System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %.2f.%n",
                     detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(),
                     detectedLanguage.getScore());
@@ -142,7 +142,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
                 DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
-                System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
+                System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %.2f.%n",
                     detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(),
                     detectedLanguage.getScore());
@@ -177,7 +177,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
                     DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
-                    System.out.printf("Detected language name: %s, ISO 6391 Name: %s, Score: %s.%n",
+                    System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %.2f.%n",
                         detectedLanguage.getName(),
                         detectedLanguage.getIso6391Name(),
                         detectedLanguage.getScore());
@@ -195,7 +195,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
         String inputText = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntities(inputText)
-            .subscribe(entity -> System.out.printf("Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
+            .subscribe(entity -> System.out.printf("Recognized categorized entity: %s, category: %s, score: %.2f.%n",
                 entity.getText(),
                 entity.getCategory(),
                 entity.getScore()));
@@ -209,7 +209,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string
         String inputText1 = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntities(inputText1, "en")
-            .subscribe(entity -> System.out.printf("Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
+            .subscribe(entity -> System.out.printf("Recognized categorized entity: %s, category: %s, score: %.2f.%n",
                 entity.getText(),
                 entity.getCategory(),
                 entity.getScore()));
@@ -235,7 +235,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (RecognizeEntitiesResult recognizeEntitiesResult : entityBatchResult) {
                 for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
-                    System.out.printf("Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
+                    System.out.printf("Recognized categorized entity: %s, category: %s, score: %.2f.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -267,7 +267,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                     for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                         System.out.printf(
-                            "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
+                            "Recognized categorized entity: %s, category: %s, score: %.2f.%n",
                             entity.getText(),
                             entity.getCategory(),
                             entity.getScore());
@@ -303,7 +303,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (RecognizeEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                     for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
                         System.out.printf(
-                            "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
+                            "Recognized categorized entity: %s, category: %s, score: %.2f.%n",
                             entity.getText(),
                             entity.getCategory(),
                             entity.getScore());
@@ -323,7 +323,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
         String inputText = "My SSN is 555-55-5555";
         textAnalyticsAsyncClient.recognizePiiEntities(inputText).subscribe(piiEntity -> System.out.printf(
-            "Recognized Categorized Entity: %s, Category: %s, Score: %s.%n",
+            "Recognized categorized entity: %s, category: %s, score: %.2f.%n",
             piiEntity.getText(),
             piiEntity.getCategory(),
             piiEntity.getScore()));
@@ -338,7 +338,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string
         String inputText1 = "My SSN is 555-55-5555";
         textAnalyticsAsyncClient.recognizePiiEntities(inputText1, "en")
-            .subscribe(entity -> System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
+            .subscribe(entity -> System.out.printf("Recognized PII entity: %s, category: %s, score: %.2f.%n",
                 entity.getText(),
                 entity.getCategory(),
                 entity.getScore()));
@@ -363,7 +363,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                    System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
+                    System.out.printf("Recognized PII entity: %s, category: %s, score: %.2f.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -395,7 +395,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                    System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
+                    System.out.printf("Recognized PII entity: %s, category: %s, score: %.2f.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getScore());
@@ -430,7 +430,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                     for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                        System.out.printf("Recognized PII Entity: %s, Category: %s, Score: %s.%n",
+                        System.out.printf("Recognized PII entity: %s, category: %s, score: %.2f.%n",
                             entity.getText(),
                             entity.getCategory(),
                             entity.getScore());
@@ -698,7 +698,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf(
-                    "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
+                    "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                     sentenceSentiment.getSentiment(),
                     sentenceSentiment.getSentimentScores().getPositive(),
                     sentenceSentiment.getSentimentScores().getNeutral(),
@@ -720,8 +720,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Recognized sentiment class: %s.%n", documentSentiment.getSentiment());
 
                 for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-                    System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
-                            + "negative score: %s.%n",
+                    System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
+                            + "negative score: %.2f.%n",
                         sentenceSentiment.getSentiment(),
                         sentenceSentiment.getSentimentScores().getPositive(),
                         sentenceSentiment.getSentimentScores().getNeutral(),
@@ -753,8 +753,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Recognized document sentiment: %s.%n",
                     documentSentiment.getSentiment());
                 for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-                    System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
-                            + "negative score: %s.%n",
+                    System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
+                            + "negative score: %.2f.%n",
                         sentenceSentiment.getSentiment(),
                         sentenceSentiment.getSentimentScores().getPositive(),
                         sentenceSentiment.getSentimentScores().getNeutral(),
@@ -790,8 +790,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                 System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
                 for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-                    System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
-                            + "negative score: %s.%n",
+                    System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
+                            + "negative score: %.2f.%n",
                         sentenceSentiment.getSentiment(),
                         sentenceSentiment.getSentimentScores().getPositive(),
                         sentenceSentiment.getSentimentScores().getNeutral(),
@@ -830,8 +830,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
                     for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-                        System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, "
-                                + "negative score: %s.%n",
+                        System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
+                                + "negative score: %.2f.%n",
                             sentenceSentiment.getSentiment(),
                             sentenceSentiment.getSentimentScores().getPositive(),
                             sentenceSentiment.getSentimentScores().getNeutral(),

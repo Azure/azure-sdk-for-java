@@ -22,11 +22,11 @@ public class DetectLanguage {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analysed.
+        // The text that need be analyzed.
         String text = "hello world";
 
         final DetectedLanguage detectedLanguage = client.detectLanguage(text);
-        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %s.%n",
+        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
             detectedLanguage.getName(),
             detectedLanguage.getIso6391Name(),
             detectedLanguage.getScore());

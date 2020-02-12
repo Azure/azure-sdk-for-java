@@ -21,7 +21,7 @@ public class ExtractKeyPhrases {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analysed.
+        // The text that need be analyzed.
         String text = "My cat might need to see a veterinarian.";
 
         for (String keyPhrase : client.extractKeyPhrases(text)) {

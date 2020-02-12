@@ -24,13 +24,13 @@ public class AnalyzeSentimentAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analysed.
+        // The text that need be analyzed.
         String text = "The hotel was dark and unclean. I like Microsoft";
 
         client.analyzeSentiment(text).subscribe(
             documentSentiment -> {
                 System.out.printf(
-                    "Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
+                    "Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                     documentSentiment.getSentiment(),
                     documentSentiment.getSentimentScores().getPositive(),
                     documentSentiment.getSentimentScores().getNeutral(),
@@ -38,7 +38,7 @@ public class AnalyzeSentimentAsync {
 
                 for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                     System.out.printf(
-                        "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
+                        "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                         sentenceSentiment.getSentiment(),
                         sentenceSentiment.getSentimentScores().getPositive(),
                         sentenceSentiment.getSentimentScores().getNeutral(),

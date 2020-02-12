@@ -34,7 +34,7 @@ public class AnalyzeSentimentBatchDocumentsAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi.", "en"),
             new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.", "en")
@@ -67,13 +67,13 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                     }
                     // Valid document
                     final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                    System.out.printf("Analyzed document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
+                    System.out.printf("Analyzed document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                         documentSentiment.getSentiment(),
                         documentSentiment.getSentimentScores().getPositive(),
                         documentSentiment.getSentimentScores().getNeutral(),
                         documentSentiment.getSentimentScores().getNegative());
                     for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-                        System.out.printf("Analyzed sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
+                        System.out.printf("Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
                             sentenceSentiment.getSentiment(),
                             sentenceSentiment.getSentimentScores().getPositive(),
                             sentenceSentiment.getSentimentScores().getNeutral(),

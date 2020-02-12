@@ -76,17 +76,17 @@ public class ReadmeSamples {
     public void detectLanguages() {
         String inputText = "Bonjour tout le monde";
         DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
-        System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %s.%n",
+        System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %.2f.%n",
             detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
     }
 
     /**
-     * Code snippet for recognizing Category entity in a text.
+     * Code snippet for recognizing category entity in a text.
      */
     public void recognizeCategorizedEntity() {
         String text = "Satya Nadella is the CEO of Microsoft";
         for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text)) {
-            System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %s.%n",
+            System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
         }
     }
@@ -97,7 +97,7 @@ public class ReadmeSamples {
     public void recognizePiiEntity() {
         String text = "My SSN is 555-55-5555";
         for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
-            System.out.printf("Recognized PII entity: %s, category: %s, subCategory: %s, score: %s.%n",
+            System.out.printf("Recognized PII entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
         }
     }

@@ -423,7 +423,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateSentiment(boolean showStatistics, DocumentResultCollection<AnalyzeSentimentResult> expected,
         DocumentResultCollection<AnalyzeSentimentResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
-            validateAnalysedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment());
+            validateAnalyzedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment());
         });
     }
 
@@ -565,7 +565,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentimentList a list of analyzed sentence sentiment returned by the service.
      * @param actualSentimentList a list of analyzed sentence sentiment returned by the API.
      */
-    static void validateAnalysedSentenceSentiment(List<SentenceSentiment> expectedSentimentList,
+    static void validateAnalyzedSentenceSentiment(List<SentenceSentiment> expectedSentimentList,
         List<SentenceSentiment> actualSentimentList) {
 
         assertEquals(expectedSentimentList.size(), actualSentimentList.size());
@@ -575,7 +575,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate one pair of analysed sentiments. Can't really validate score numbers because it
+     * Helper method to validate one pair of analyzed sentiments. Can't really validate score numbers because it
      * frequently changed by background model computation.
      *
      * @param expectedSentiment analyzed sentence sentiment returned by the service.
@@ -589,15 +589,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate one pair of analysed sentiments. Can't really validate score numbers because it
+     * Helper method to validate one pair of analyzed sentiments. Can't really validate score numbers because it
      * frequently changed by background model computation.
      *
      * @param expectedSentiment analyzed document sentiment returned by the service.
      * @param actualSentiment analyzed document sentiment returned by the API.
      */
-    static void validateAnalysedSentiment(DocumentSentiment expectedSentiment, DocumentSentiment actualSentiment) {
+    static void validateAnalyzedSentiment(DocumentSentiment expectedSentiment, DocumentSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
-        validateAnalysedSentenceSentiment(expectedSentiment.getSentences(), expectedSentiment.getSentences());
+        validateAnalyzedSentenceSentiment(expectedSentiment.getSentences(), expectedSentiment.getSentences());
     }
 
     /**
