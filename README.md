@@ -22,27 +22,17 @@ Java 8 or later is required to use the January 2020 client libraries, otherwise 
 
 Each service might have a number of libraries available from each of the following categories:
 
-- [Client: GA January 2020 Releases](#Client-GA-January-2020-Releases)
+- [Client: New Releases](#Client-New-Releases)
 - [Client - Previous Versions](#Client-Previous-Versions)
 - [Management](#Management)
 
-### Client: GA January 2020 Releases
+### Client: New Releases
 
 New wave of packages that were released in January 2020 client library as General Availability (GA) and several others that were released in **beta**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](https://github.com/Azure/azure-sdk-for-java/blob/azure-core_1.2.0/sdk/core/azure-core/README.md).
 
 These libraries can be easily identified by sdk/ folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
-The libraries released in the GA January 2020 release is listed below.
-- [January 2020](https://azure.github.io/azure-sdk/releases/2020-01/java.html)
-
-#### Client: Earlier GA Releases
-
-- [December 2019](https://azure.github.io/azure-sdk/releases/2019-12/java.html)
-- [November 2019](https://azure.github.io/azure-sdk/releases/2019-11/java.html)
-- [October 2019](https://azure.github.io/azure-sdk/releases/2019-10-11/java.html)
-- [September 2019](https://azure.github.io/azure-sdk/releases/2019-09-17/java.html)
-- [August 2019](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html)
-- [July 2019](https://azure.github.io/azure-sdk/releases/2019-07-10/java.html)
+You can find the [most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/index.html#java-packages)
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 
