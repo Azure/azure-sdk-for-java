@@ -32,7 +32,7 @@ New wave of packages that were released in February 2020 client library as Gener
 
 These libraries can be easily identified by sdk/ folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
-The libraries released in the GA January 2020 release is listed below.
+The libraries released in the GA February 2020 release is listed below.
 
 - [February 2020](https://azure.github.io/azure-sdk/releases/2020-02/java.html)
 
@@ -68,7 +68,7 @@ Libraries which enable you to provision specific resources. They are responsible
 
 ### Master branch
 
-The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-GA-January-2020-Releases) for latest **GA** release.
+The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-GA-February-2020-Releases) for latest **GA** release.
 
 ### Release branches (Release tagging)
 
