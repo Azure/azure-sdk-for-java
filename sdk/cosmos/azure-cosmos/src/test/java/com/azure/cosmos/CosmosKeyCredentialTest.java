@@ -1,7 +1,9 @@
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
+import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.TestConfigurations;
 import org.testng.annotations.AfterClass;
@@ -178,11 +180,11 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         CosmosItemProperties properties = getDocumentDefinition(documentId);
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = container.createItem(properties, new CosmosItemRequestOptions());
 
-        CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
-            .withId(properties.getId())
-            .build();
-
-        validateSuccess(createObservable, validator);
+        CosmosItemResponseValidator validator =
+            new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                .withId(properties.getId())
+                .build();
+        validateItemSuccess(createObservable, validator);
 
         //  sanity check
         assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
@@ -208,11 +210,11 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
                                                                                                 options,
                                                                                                 CosmosItemProperties.class);
 
-        CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
-            .withId(docDefinition.getId())
-            .build();
-
-        validateSuccess(readObservable, validator);
+        CosmosItemResponseValidator validator =
+            new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                .withId(docDefinition.getId())
+                .build();
+        validateItemSuccess(readObservable, validator);
 
         //  sanity check
         assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
@@ -236,10 +238,11 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
                                                                               new PartitionKey(docDefinition.get(
                                                                                   "mypk")), options);
 
-
-        CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
-            .nullResource().build();
-        validateSuccess(deleteObservable, validator);
+        CosmosItemResponseValidator validator =
+            new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                .nullResource()
+                .build();
+        validateItemSuccess(deleteObservable, validator);
 
         // attempt to read document which was deleted
         waitIfNeededForReplicasToCatchUp(clientBuilder());
@@ -248,7 +251,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
                                                                           new PartitionKey(docDefinition.get("mypk")),
                                                                           options, CosmosItemProperties.class);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
-        validateFailure(readObservable, notFoundValidator);
+        validateItemFailure(readObservable, notFoundValidator);
 
         //  sanity check
         assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);

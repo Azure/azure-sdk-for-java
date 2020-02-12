@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
@@ -81,9 +82,9 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
         CosmosItemResponse<CosmosItemProperties> readResponse1 = container.readItem(properties.getId(),
-                                                                 new PartitionKey(properties.get("mypk")),
-                                                                 new CosmosItemRequestOptions(),
-                                                                 CosmosItemProperties.class);
+                                                                                    new PartitionKey(properties.get("mypk")),
+                                                                                    new CosmosItemRequestOptions(),
+                                                                                    CosmosItemProperties.class);
         validateItemResponse(properties, readResponse1);
 
     }

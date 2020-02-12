@@ -25,7 +25,7 @@ import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosDatabaseProperties;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.CosmosResponse;
 import com.azure.cosmos.CosmosResponseValidator;
@@ -452,7 +452,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, CosmosItemProperties item) {
-        return cosmosContainer.createItem(item).block().getProperties();
+        return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
     }
 
     public Flux<CosmosAsyncItemResponse> bulkInsert(CosmosAsyncContainer cosmosContainer,
@@ -470,7 +470,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                          List<CosmosItemProperties> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
                 .publishOn(Schedulers.parallel())
-                .map(CosmosAsyncItemResponse::getProperties)
+                .map(itemResponse -> (CosmosItemProperties)itemResponse.getResource())
                 .collectList()
                 .block();
     }
@@ -479,7 +479,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                        List<CosmosItemProperties> documentDefinitionList) {
         bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(CosmosAsyncItemResponse::getProperties)
+            .map(itemResponse -> BridgeInternal.getProperties(itemResponse))
             .then()
             .block();
     }
@@ -752,6 +752,29 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         flowable.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
+        testSubscriber.assertNotComplete();
+        testSubscriber.assertTerminated();
+        assertThat(testSubscriber.errors()).hasSize(1);
+        validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
+    }
+
+    public <T extends CosmosAsyncItemResponse> void validateItemSuccess(
+        Mono<T> responseMono, CosmosItemResponseValidator validator) {
+
+        TestSubscriber<CosmosAsyncItemResponse> testSubscriber = new TestSubscriber<>();
+        responseMono.subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent(subscriberValidationTimeout, TimeUnit.MILLISECONDS);
+        testSubscriber.assertNoErrors();
+        testSubscriber.assertComplete();
+        testSubscriber.assertValueCount(1);
+        validator.validate(testSubscriber.values().get(0));
+    }
+
+    public <T extends CosmosAsyncItemResponse> void validateItemFailure(
+        Mono<T> responseMono, FailureValidator validator) {
+        TestSubscriber<CosmosAsyncItemResponse> testSubscriber = new TestSubscriber<>();
+        responseMono.subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent(subscriberValidationTimeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNotComplete();
         testSubscriber.assertTerminated();
         assertThat(testSubscriber.errors()).hasSize(1);

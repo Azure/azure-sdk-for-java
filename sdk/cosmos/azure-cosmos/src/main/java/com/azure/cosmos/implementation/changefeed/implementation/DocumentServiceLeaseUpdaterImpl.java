@@ -4,8 +4,9 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.AccessCondition;
 import com.azure.cosmos.AccessConditionType;
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -77,7 +78,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         return Mono.error(throwable);
                     })
                     .map(cosmosItemResponse -> {
-                        CosmosItemProperties document = cosmosItemResponse.getProperties();
+                        CosmosItemProperties document =
+                            BridgeInternal.getProperties(cosmosItemResponse);
                         ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
                         logger.info(
                             "Partition {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
@@ -119,7 +121,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, String itemId, PartitionKey partitionKey) 
                                                                                         throws LeaseLostException {
         return this.client.replaceItem(itemId, partitionKey, lease, this.getCreateIfMatchOptions(lease))
-            .map(cosmosItemResponse -> cosmosItemResponse.getProperties())
+            .map(cosmosItemResponse -> BridgeInternal.getProperties(cosmosItemResponse))
             .onErrorResume(re -> {
                 if (re instanceof CosmosClientException) {
                     CosmosClientException ex = (CosmosClientException) re;

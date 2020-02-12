@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedResponse;
+import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
 
 /**
@@ -23,7 +24,7 @@ public interface ChangeFeedObserverContext {
      *
      * @return the response from the underlying call.
      */
-    FeedResponse<CosmosItemProperties> getFeedResponse();
+    FeedResponse<JsonNode> getFeedResponse();
 
     /**
      * Checkpoints progress of a stream. This method is valid only if manual checkpoint was configured.

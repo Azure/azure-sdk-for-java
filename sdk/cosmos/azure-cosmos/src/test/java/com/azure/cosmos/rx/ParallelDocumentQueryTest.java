@@ -10,7 +10,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
@@ -24,14 +24,12 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.google.common.base.Strings;
 import io.reactivex.subscribers.TestSubscriber;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import org.testng.asserts.Assertion;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -495,7 +493,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
 	    CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
 
-		return cosmosContainer.createItem(docDefinition).block().getProperties();
+		return BridgeInternal.getProperties(cosmosContainer.createItem(docDefinition).block());
 	}
 
 	private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, List<CosmosItemProperties> expectedDocs) {
