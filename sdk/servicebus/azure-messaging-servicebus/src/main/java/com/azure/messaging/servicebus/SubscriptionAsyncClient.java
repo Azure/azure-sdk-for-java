@@ -35,8 +35,7 @@ public final class SubscriptionAsyncClient implements Closeable {
     private final int prefetchCount;
     private final boolean isSharedConnection;
     private final TracerProvider tracerProvider;
-
-    private final ReceiveOptions defaultReceiveOptions = new ReceiveOptions();
+    private final ReceiveMode defaultReceiveMode = ReceiveMode.PEEKLOCK;
 
     private final ConcurrentHashMap<String, ServiceBusAsyncConsumer> openConsumers =
         new ConcurrentHashMap<>();
@@ -54,23 +53,23 @@ public final class SubscriptionAsyncClient implements Closeable {
     }
 
     public Flux<Message> receive() {
-        return receive(defaultReceiveOptions);
+        return receive(defaultReceiveMode);
     }
 
     public Flux<Message> peek() {
-        return receive(defaultReceiveOptions);
+        return receive(defaultReceiveMode);
     }
 
 
 
 
-    public Flux<Message> receive( ReceiveOptions receiveOptions) {
-        if (Objects.isNull(receiveOptions)) {
-            return fluxError(logger, new NullPointerException("'receiveOptions' cannot be null."));
+    public Flux<Message> receive( ReceiveMode receiveMode) {
+        if (Objects.isNull(receiveMode)) {
+            return fluxError(logger, new NullPointerException("'receiveMode' cannot be null."));
         }
 
         final String linkName = connectionProcessor.getEntityPath();
-        return createConsumer(linkName, receiveOptions);
+        return createConsumer(linkName, receiveMode);
     }
 
     /**
@@ -89,11 +88,11 @@ public final class SubscriptionAsyncClient implements Closeable {
         }
     }
 
-    private Flux<Message> createConsumer(String linkName, ReceiveOptions receiveOptions) {
+    private Flux<Message> createConsumer(String linkName, ReceiveMode receiveMode) {
         return openConsumers
             .computeIfAbsent(linkName, name -> {
                 logger.info("{}: Creating receive consumer.", linkName);
-                return createPartitionConsumer(name, receiveOptions);
+                return createPartitionConsumer(name, receiveMode);
             })
             .receive()
             .doOnCancel(() -> removeLink(linkName, SignalType.CANCEL))
@@ -113,12 +112,12 @@ public final class SubscriptionAsyncClient implements Closeable {
     public String getTopicName() {
         return null;
     }
-    private ServiceBusAsyncConsumer createPartitionConsumer(String linkName, ReceiveOptions receiveOptions) {
+    private ServiceBusAsyncConsumer createPartitionConsumer(String linkName, ReceiveMode receiveMode) {
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, getTopicName());
 
         final Flux<AmqpReceiveLink> receiveLinkMono =
             connectionProcessor.flatMap(connection ->
-                connection.createReceiveLink(linkName, entityPath, receiveOptions))
+                connection.createReceiveLink(linkName, entityPath, receiveMode))
                 .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()))
                 .repeat();
 

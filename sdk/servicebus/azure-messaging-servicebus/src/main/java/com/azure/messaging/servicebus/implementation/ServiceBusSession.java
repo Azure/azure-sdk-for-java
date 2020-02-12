@@ -1,11 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.amqp.AmqpLink;
+
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.ReactorSession;
-import com.azure.core.amqp.models.ReceiveOptions;
+import com.azure.messaging.servicebus.ReceiveMode;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -27,9 +30,9 @@ public interface ServiceBusSession extends AmqpSession {
      * @param entityPath The entity path this link connects to, so that it may read events from the message broker.
      * @param timeout Timeout required for creating and opening an AMQP link.
      * @param retryPolicy The retry policy to use when consuming messages.
-     * @param options  The {@link ReceiveOptions} for the messages to be received.
+     * @param receiveMode  The {@link ReceiveMode} for the messages to be received.
      *
      * @return A newly created AMQP link.
      */
-    Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy, ReceiveOptions options);
+    Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode);
 }

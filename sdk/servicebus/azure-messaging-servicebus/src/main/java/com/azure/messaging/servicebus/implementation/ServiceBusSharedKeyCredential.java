@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.implementation;
 
 
@@ -25,12 +28,12 @@ import java.util.Objects;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Authorizes with Azure Event Hubs service using a shared access key from either an Event Hubs namespace or a specific
- * Event Hub.
+ * Authorizes with Azure Service Bus service using a shared access key from either an Service Bus namespace or a specific
+ * Service Bus.
  *
  * <p>
- * The shared access key can be obtained by creating a <i>shared access policy</i> for the Event Hubs namespace or for
- * a specific Event Hub instance. See
+ * The shared access key can be obtained by creating a <i>shared access policy</i> for the Service Bus namespace or for
+ * a specific Service Bus instance. See
  * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/
  * authorize-access-shared-access-signature#shared-access-authorization-policies">Shared access authorization policies
  * </a> for more information.

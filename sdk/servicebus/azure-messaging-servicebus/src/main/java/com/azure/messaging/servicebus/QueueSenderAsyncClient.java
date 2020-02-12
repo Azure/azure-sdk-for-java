@@ -55,7 +55,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 @ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
 public final class QueueSenderAsyncClient implements Closeable {
 
-    private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
+
     private final ClientLogger logger = new ClientLogger(QueueSenderAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final SendOptions senderOptions;
@@ -160,17 +160,6 @@ public final class QueueSenderAsyncClient implements Closeable {
     }
 
 
-    /*private Mono<Void> sendInternal(Flux<EventData> messages, SendOptions options) {
-        final String partitionId = options.getPartitionId();
-
-        //verifyPartitionKey(partitionKey);
-        if (tracerProvider.isEnabled()) {
-            return sendInternalTracingEnabled(messages, options);
-        } else {
-            return sendInternalTracingDisabled(messages, options);
-        }
-    }
-    */
     private Mono<Void> sendInternal(Flux<Message> messages, SendOptions options) {
         final String partitionKey = options.getPartitionKey();
         final String partitionId = options.getPartitionId();
@@ -183,13 +172,11 @@ public final class QueueSenderAsyncClient implements Closeable {
                 partitionKey, partitionId)));
         }
 
-        return getSendLink(options.getPartitionId())
+        return getSendLink()
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                     final CreateBatchOptions batchOptions = new CreateBatchOptions()
-                        .setPartitionKey(options.getPartitionKey())
-                        .setPartitionId(options.getPartitionId())
                         .setMaximumSizeInBytes(batchSize);
                     return messages.collect(new AmqpMessageCollector(batchOptions, 1, link::getErrorContext,
                         tracerProvider));
@@ -197,48 +184,6 @@ public final class QueueSenderAsyncClient implements Closeable {
                 .flatMap(list -> sendInternal(Flux.fromIterable(list))));
     }
 
-    private Mono<Void> sendInternalTracingDisabled(Flux<Message> messageFlux, SendOptions options) {
-        return sendLinkMono.flatMap(link -> {
-            return link.getLinkSize()
-                .flatMap(size -> {
-                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                    final CreateBatchOptions batchOptions = new CreateBatchOptions()
-                        .setPartitionKey(options.getPartitionKey())
-                        .setPartitionId(options.getPartitionId())
-                        .setMaximumSizeInBytes(batchSize);
-
-                    return messageFlux.collect(new AmqpMessageCollector(batchOptions, 1,
-                        () -> link.getErrorContext(), tracerProvider));
-                })
-                .flatMap(list -> sendInternal(Flux.fromIterable(list)));
-        });
-    }
-
-    private Mono<Void> sendInternalTracingEnabled(Flux<Message> messageFlux, SendOptions options) {
-        return sendLinkMono.flatMap(link -> {
-            final AtomicReference<Context> sendSpanContext = new AtomicReference<>(Context.NONE);
-            return link.getLinkSize()
-                .flatMap(size -> {
-                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                    final CreateBatchOptions batchOptions = new CreateBatchOptions()
-                        .setPartitionKey(options.getPartitionKey())
-                        .setPartitionId(options.getPartitionId())
-                        .setMaximumSizeInBytes(batchSize);
-
-                    return messageFlux.map(eventData -> {
-                        Context parentContext = eventData.getContext();
-                        Context entityContext = parentContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
-                        sendSpanContext.set(tracerProvider.startSpan(entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
-                        // add span context on event data
-                        return setSpanContext(eventData, parentContext);
-                    }).collect(new AmqpMessageCollector(batchOptions, 1, () -> link.getErrorContext(), tracerProvider));
-                })
-                .flatMap(list -> sendInternal(Flux.fromIterable(list)))
-                .doOnEach(signal -> {
-                    tracerProvider.endSpan(sendSpanContext.get(), signal);
-                });
-        });
-    }
     private Mono<Void> sendInternal(Flux<MessageBatch> eventBatches) {
         return eventBatches
             .flatMap(this::send)
@@ -261,6 +206,11 @@ public final class QueueSenderAsyncClient implements Closeable {
         return this.queueName;
     }
 
+    /**
+     *
+     * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
+     * @return
+     */
     public Mono<Void> send(MessageBatch batch) {
         Objects.requireNonNull(batch, "'batch' cannot be null.");
         final boolean isTracingEnabled = tracerProvider.isEnabled();
@@ -273,7 +223,7 @@ public final class QueueSenderAsyncClient implements Closeable {
             return Mono.empty();
         }
 
-        logger.info("Sending batch with partitionKey[{}], size[{}].", batch.getPartitionKey(), batch.getCount());
+        logger.info("Sending batch with size[{}].", batch.getCount());
 
         Context sharedContext = null;
         final List<org.apache.qpid.proton.message.Message> messages = new ArrayList<>();
@@ -289,20 +239,18 @@ public final class QueueSenderAsyncClient implements Closeable {
             }
             final org.apache.qpid.proton.message.Message message = messageSerializer.serialize(event);
 
-            if (!CoreUtils.isNullOrEmpty(batch.getPartitionKey())) {
-                final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
+            final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
                     ? new MessageAnnotations(new HashMap<>())
                     : message.getMessageAnnotations();
-                messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, batch.getPartitionKey());
-                message.setMessageAnnotations(messageAnnotations);
-            }
+
+            message.setMessageAnnotations(messageAnnotations);
             messages.add(message);
         }
 
         final Context finalSharedContext = sharedContext != null ? sharedContext : Context.NONE;
 
         return withRetry(
-            getSendLink(batch.getPartitionId()).flatMap(link -> {
+            getSendLink().flatMap(link -> {
                 if (isTracingEnabled) {
                     Context entityContext = finalSharedContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
                     // Start send span and store updated context
@@ -327,23 +275,15 @@ public final class QueueSenderAsyncClient implements Closeable {
 
     }
 
-    private String getQueueName(String partitionId) {
-        return CoreUtils.isNullOrEmpty(partitionId)
-            ? queueName
-            : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, queueName, partitionId);
-    }
-
-    private Mono<AmqpSendLink> getSendLink(String partitionId) {
-        final String entityPath = getQueueName(partitionId);
-        final String linkName = getQueueName(partitionId);
+    private Mono<AmqpSendLink> getSendLink() {
+        final String entityPath = queueName;//getQueueName(partitionId);
+        final String linkName = queueName;//getQueueName(partitionId);
 
         return connectionProcessor
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
     }
 
     private static class AmqpMessageCollector implements Collector<Message, List<MessageBatch>, List<MessageBatch>> {
-        private final String partitionKey;
-        private final String partitionId;
         private final int maxMessageSize;
         private final Integer maxNumberOfBatches;
         private final ErrorContextProvider contextProvider;
@@ -358,13 +298,10 @@ public final class QueueSenderAsyncClient implements Closeable {
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
                 ? options.getMaximumSizeInBytes()
                 : MAX_MESSAGE_LENGTH_BYTES;
-            this.partitionKey = options.getPartitionKey();
             this.contextProvider = contextProvider;
-            this.partitionId = options.getPartitionId();
             this.tracerProvider = tracerProvider;
 
-            currentBatch = new MessageBatch(maxMessageSize, options.getPartitionId(), partitionKey, contextProvider,
-                tracerProvider);
+            currentBatch = new MessageBatch(maxMessageSize, contextProvider, tracerProvider);
         }
 
         @Override
@@ -387,8 +324,7 @@ public final class QueueSenderAsyncClient implements Closeable {
                     throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, contextProvider.getErrorContext());
                 }
 
-                currentBatch = new MessageBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
-                    tracerProvider);
+                currentBatch = new MessageBatch(maxMessageSize, contextProvider, tracerProvider);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };
@@ -454,21 +390,6 @@ public final class QueueSenderAsyncClient implements Closeable {
         return  event;
     }
 
-    /**
-     * Disposes of the {@link QueueSenderAsyncClient} by closing the underlying connection to the service.
-     * @throws IOException if the underlying transport could not be closed and its resources could not be
-     *                     disposed.
-     */
-    /*@Override
-    public void close() throws IOException {
-        if (!isDisposed.getAndSet(true)) {
-            final AmqpSendLink block = sendLinkMono.block( retryOptions.getTryTimeout());
-            if (block != null) {
-                block.close();
-            }
-        }
-    }
-    */
     /**
      * Disposes of the {@link QueueSenderAsyncClient}. If the client had a dedicated connection, the underlying
      * connection is also closed.

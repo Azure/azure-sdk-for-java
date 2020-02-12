@@ -13,14 +13,12 @@ import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
-import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.models.ReceiveOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
@@ -31,6 +29,7 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.ClientConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -50,7 +49,7 @@ public final class QueueClientBuilder {
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions().setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
 
-    private static final String EVENTHUBS_PROPERTIES_FILE = "azure-messaging-eventhubs.properties";
+    private static final String SERVICEBUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
@@ -58,25 +57,19 @@ public final class QueueClientBuilder {
     private ProxyOptions proxyOptions;
     private TokenCredential credentials;
     private Configuration configuration;
-    private ProxyOptions proxyConfiguration;
     private AmqpRetryOptions retryOptions;
     private Scheduler scheduler;
     private AmqpTransportType transport;
     private String fullyQualifiedNamespace;
     private String queueName;
-    private String host;
-    private String queuePath;
 
 
     private final String connectionId;
-    //private  Mono<EventHubConnection> connectionMono;
     private ServiceBusConnectionProcessor servicerBusConnectionProcessor;
-    private int prefetchCount;
     private boolean isSharedConnection;
 
 
     private SendOptions defaultSenderOptions;
-    private ReceiveOptions defaultReceiverOptions;
 
 
     /**
@@ -102,45 +95,19 @@ public final class QueueClientBuilder {
     }
 
 
-    public QueueClientBuilder credential(String host, String queueName, TokenCredential credential) {
-        this.host = Objects.requireNonNull(host, "'host' cannot be null.");
+    public QueueClientBuilder credential(String fullyQualifiedNamespace, String queueName, TokenCredential credential) {
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.queuePath = Objects.requireNonNull(queueName, "'entityPath' cannot be null.");
+        this.queueName = Objects.requireNonNull(queueName, "'entityPath' cannot be null.");
 
-        if (CoreUtils.isNullOrEmpty(host)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         } else if (CoreUtils.isNullOrEmpty(queueName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entityPath' cannot be an empty string."));
         }
         return this;
     }
 
-    /*private static class ResponseMapper implements AmqpResponseMapper {
-        @Override
-        public AMQPResponseProperties toAMQPResponseProperties(Map<?, ?> amqpBody) {
-            return new AMQPResponseProperties(amqpBody);
-        }
-        @Override
-        public EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
-            return new EventHubProperties(
-                (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
-                ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
-                (String[]) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS));
-        }
-
-        @Override
-        public PartitionProperties toPartitionProperties(Map<?, ?> amqpBody) {
-            return new PartitionProperties(
-                (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
-                (String) amqpBody.get(ManagementChannel.MANAGEMENT_PARTITION_NAME_KEY),
-                (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
-                (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
-                (String) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
-                ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
-                (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY));
-        }
-    }
-    */
 
     /**
      * Creates an {@link QueueSenderAsyncClient} for transmitting {@link Message} to the Event Hub, grouped together
@@ -158,8 +125,6 @@ public final class QueueClientBuilder {
         }
         this.defaultSenderOptions = new SendOptions();
 
-        this.defaultReceiverOptions = new ReceiveOptions();
-
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
 
         if (isSharedConnection && servicerBusConnectionProcessor == null) {
@@ -172,7 +137,7 @@ public final class QueueClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new QueueSenderAsyncClient(queuePath, connectionProcessor, defaultSenderOptions,  retryOptions, tracerProvider, messageSerializer, isSharedConnection);
+        return new QueueSenderAsyncClient(queueName, connectionProcessor, defaultSenderOptions,  retryOptions, tracerProvider, messageSerializer, isSharedConnection);
     }
     /**
      * Creates an Event Hub consumer responsible for reading {@link Message} from a specific Event Hub, as a
@@ -193,8 +158,6 @@ public final class QueueClientBuilder {
         }
         this.defaultSenderOptions = new SendOptions();
 
-        this.defaultReceiverOptions = new ReceiveOptions();
-
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
 
         if (isSharedConnection && servicerBusConnectionProcessor == null) {
@@ -207,69 +170,13 @@ public final class QueueClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new QueueReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), queuePath,
+        return new QueueReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), queueName,
             connectionProcessor, tracerProvider, messageSerializer, prefetchCount, isSharedConnection);
     }
 
     QueueReceiverAsyncClient createAsyncReceiverClient(ReceiveMode receiveMode, int prefetchCount) {
         return createAsyncReceiverClient(prefetchCount);
     }
-
-
-    /*SenderAsyncClient buildAsyncClient() {
-        final ConnectionOptions connectionOptions = getConnectionOptions();
-        final ReactorProvider provider = new ReactorProvider();
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-        if (retryOptions == null) {
-            retryOptions = DEFAULT_RETRY;
-        }
-
-        if (scheduler == null) {
-            scheduler = Schedulers.elastic();
-        }
-        final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
-
-        //this.entityPath = connectionOptions.getEntityPath();
-
-        this.connectionMono = Mono.fromCallable(() -> {
-            return (EventHubAmqpConnection) new ReactorConnection(connectionId, connectionOptions, provider,
-                handlerProvider, new ResponseMapper());
-        }).doOnSubscribe(c -> hasConnection.set(true))
-            .cache();
-
-        this.defaultSenderOptions = new SendOptions()
-            .retry(connectionOptions.getRetry());
-
-        this.defaultReceiverOptions = new ReceiveOptions()
-            //.retry(connectionOptions.getRetry())
-            .scheduler(connectionOptions.getScheduler());
-
-        final Mono<AmqpSendLink> amqpLinkMono = connectionMono
-            .flatMap(connection -> connection.createSession(connectionOptions.getEntityPath()))
-            .flatMap(session -> {
-                logger.verbose("Creating producer for {}", connectionOptions.getEntityPath());
-                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
-
-                return session.createProducer(linkName, connectionOptions.getEntityPath(), connectionOptions.getRetry().tryTimeout(), retryPolicy)
-                    .cast(AmqpSendLink.class);
-            });
-
-        return new SenderAsyncClient(amqpLinkMono, this.defaultSenderOptions,
-             tracerProvider);
-    }
-
-
-    public SenderClient buildClient() {
-        final ConnectionOptions connectionOptions = getConnectionOptions();
-        final ReactorProvider provider = new ReactorProvider();
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-        final SenderAsyncClient client = new SenderAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider, );
-
-        return new SenderClient(client, connectionOptions);
-    }
- */
 
     /**
      * Sets the proxy configuration to use for {@link QueueSenderAsyncClient}. When a proxy is configured, {@link
@@ -293,12 +200,15 @@ public final class QueueClientBuilder {
         this.queueName = queueName;
         return this;
     }
+
     public QueueClientBuilder retryPolicy(AmqpRetryPolicy retryPolicy) {
         return this;
     }
+
     public QueueClientBuilder transportType(TransportType transportType) {
         return this;
     }
+
     /** package- private method*/
     QueueClientBuilder scheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
@@ -314,7 +224,7 @@ public final class QueueClientBuilder {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
-        final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
+        final Map<String, String> properties = CoreUtils.getProperties(SERVICEBUS_PROPERTIES_FILE);
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 

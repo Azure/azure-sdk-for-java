@@ -1,11 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.models.ReceiveOptions;
+
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -52,7 +57,7 @@ import static com.azure.core.util.FluxUtil.fluxError;
  */
 @ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
 public final class QueueReceiverAsyncClient implements Closeable {
-    //private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
+
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s";
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -64,8 +69,10 @@ public final class QueueReceiverAsyncClient implements Closeable {
     private final int prefetchCount;
     private final boolean isSharedConnection;
     private final TracerProvider tracerProvider;
+    private final ReceiveMode defaultReceiveMode = ReceiveMode.PEEKLOCK;
 
-    private final ReceiveOptions defaultReceiveOptions = new ReceiveOptions();
+
+    AmqpRetryOptions defaultRetryOptions =  new AmqpRetryOptions();
 
     /**
      * Keeps track of the open consumers keyed by linkName. The link name is generated as: {@code
@@ -106,7 +113,7 @@ public final class QueueReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Consumes events from all partitions starting from the beginning of each partition.
+     * Consumes messages from Queue.
      *
      * <p>This method is <b>not</b> recommended for production use; the TODO should be used for
      * reading events from all partitions in a production scenario, as it offers a much more robust experience with
@@ -117,16 +124,29 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * given partition or subset of partitions.</p>
      *
      *
-     * @return A stream of events for every partition in the Event Hub starting from the beginning of each partition.
+     * @return A stream of messages from Queue.
      */
    public Flux<Message> receive() {
-        return receive(defaultReceiveOptions);
+        return receive(defaultReceiveMode);
     }
 
+    /**
+     *
+     * @return A stream of messages from Queue.
+     */
     public Flux<Message> peek() {
-        return receive(defaultReceiveOptions);
+        return receive(defaultReceiveMode);
     }
 
+    /**
+     * Receive message for specific session id.
+     * @param sessionId of the message.
+     * @return A stream of messages from Queue.
+     */
+    public Flux<Message> receive(String sessionId) {
+        return receive(defaultReceiveMode);
+        //TODO : Session id needs to be implemented.
+    }
 
     /**
      * Consumes events from all partitions configured with a set of {@code receiveOptions}.
@@ -148,19 +168,35 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * referred to as a "Non-Epoch Consumer."</li>
      * </ul>
      *
-     * @param receiveOptions Options when receiving events from each Event Hub partition.
+     * @param receiveMode {@link ReceiveMode} when receiving events from Queue.
      *
-     * @return A stream of events for every partition in the Event Hub.
+     * @return A stream of events for every partition from Queue.
      *
      * @throws NullPointerException if {@code receiveOptions} is null.
      */
-    public Flux<Message> receive( ReceiveOptions receiveOptions) {
-        if (Objects.isNull(receiveOptions)) {
-            return fluxError(logger, new NullPointerException("'receiveOptions' cannot be null."));
+    public Flux<Message> receive( ReceiveMode receiveMode) {
+        if (Objects.isNull(receiveMode)) {
+            return fluxError(logger, new NullPointerException("'receiveMode' cannot be null."));
         }
 
         final String linkName = connectionProcessor.getEntityPath();
-        return createConsumer(linkName, receiveOptions);
+        return createConsumer(linkName, receiveMode);
+    }
+
+    /**
+     *
+     * @param receiveMode for messages from Queue.
+     * @param sessionId of the message.
+     * @return A stream of messages from Queue.
+     */
+    public Flux<Message> receive( ReceiveMode receiveMode, String sessionId) {
+        //TODO : Session id needs to be implemented.
+        if (Objects.isNull(receiveMode)) {
+            return fluxError(logger, new NullPointerException("'receiveMode' cannot be null."));
+        }
+
+        final String linkName = connectionProcessor.getEntityPath();
+        return createConsumer(linkName, receiveMode);
     }
 
     /**
@@ -179,11 +215,11 @@ public final class QueueReceiverAsyncClient implements Closeable {
         }
     }
 
-    private Flux<Message> createConsumer(String linkName, ReceiveOptions receiveOptions) {
+    private Flux<Message> createConsumer(String linkName, ReceiveMode receiveMode) {
         return openConsumers
             .computeIfAbsent(linkName, name -> {
                 logger.info("{}: Creating receive consumer.", linkName);
-                return createPartitionConsumer(name, receiveOptions);
+                return createServiceBusConsumer(name, receiveMode);
             })
             .receive()
             .doOnCancel(() -> removeLink(linkName, SignalType.CANCEL))
@@ -199,12 +235,12 @@ public final class QueueReceiverAsyncClient implements Closeable {
             consumer.close();
         }
     }
-    private ServiceBusAsyncConsumer createPartitionConsumer(String linkName, ReceiveOptions receiveOptions) {
+    private ServiceBusAsyncConsumer createServiceBusConsumer(String linkName, ReceiveMode receiveMode) {
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, getQueueName());
 
         final Flux<AmqpReceiveLink> receiveLinkMono =
             connectionProcessor.flatMap(connection ->
-                connection.createReceiveLink(linkName, entityPath, receiveOptions))
+                connection.createReceiveLink(linkName, entityPath, receiveMode))
                 .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()))
                 .repeat();
 

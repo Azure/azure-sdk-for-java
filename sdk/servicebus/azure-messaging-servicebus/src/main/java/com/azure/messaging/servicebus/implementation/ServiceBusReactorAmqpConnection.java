@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
@@ -6,7 +9,6 @@ import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
-import com.azure.core.amqp.implementation.EventHubSession;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
@@ -14,9 +16,8 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.amqp.models.EventPosition;
-import com.azure.core.amqp.models.ReceiveOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.ReceiveMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
@@ -27,9 +28,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * A proton-j AMQP connection to an Azure Service Bus instance. Adds additional support for management operations.
  */
 public class ServiceBusReactorAmqpConnection extends ReactorConnection implements ServiceBusAmqpConnection {
-    private static final String MANAGEMENT_SESSION_NAME = "mgmt-session";
-    private static final String MANAGEMENT_LINK_NAME = "mgmt";
-    private static final String MANAGEMENT_ADDRESS = "$management";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorAmqpConnection.class);
     /**
@@ -37,7 +35,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * load balance messages is the eventHubName.
      */
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
-    private final Mono<ServiceBusManagementNode> managementChannelMono;
+
     private final String connectionId;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
@@ -68,24 +66,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.retryOptions = connectionOptions.getRetry();
         this.messageSerializer = messageSerializer;
 
-        this.managementChannelMono = getReactorConnection().then(
-            Mono.fromCallable(() -> {
-                return (ServiceBusManagementNode) new ManagementChannel(
-                    createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-                    connectionOptions.getEntityPath(), connectionOptions.getTokenCredential(),
-                    this.tokenManagerProvider, this.messageSerializer);
-            }))
-            .cache();
-    }
-
-    @Override
-    public Mono<ServiceBusManagementNode> getManagementNode() {
-        if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "connectionId[%s]: Connection is disposed. Cannot get management instance", connectionId))));
-        }
-
-        return managementChannelMono;
     }
 
     /**
@@ -114,18 +94,18 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      *
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
-     * @param options Consumer options to use when creating the link.
+     * @param receiveMode Consumer options to use when creating the link.
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveOptions options) {
+    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
-                    options);
+                    receiveMode);
             });
     }
 

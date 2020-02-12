@@ -5,16 +5,13 @@ import com.azure.core.amqp.implementation.EventHubProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.PartitionProperties;
 
-import static com.azure.messaging.servicebus.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET;
-import static com.azure.messaging.servicebus.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER;
-import static com.azure.messaging.servicebus.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC;
-import static com.azure.messaging.servicebus.implementation.ManagementChannel.MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC;
+
 
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.ManagementChannel;
 import com.azure.messaging.servicebus.implementation.Messages;
+import com.azure.messaging.servicebus.implementation.ServiceBusProperties;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -31,13 +28,14 @@ import java.util.Map;
 import java.util.Objects;
 
 class ServiceBusMessageSerializer implements MessageSerializer {
+    // Well-known keys from the management service responses and requests.
+    public static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
+    public static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
+    public static final String MANAGEMENT_RESULT_PARTITION_IDS = "partition_ids";
+    public static final String MANAGEMENT_RESULT_CREATED_AT = "created_at";
+
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
-    private static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER =
-        Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
-    private static final Symbol LAST_ENQUEUED_OFFSET = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET);
-    private static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
-    private static final Symbol RETRIEVAL_TIME_UTC =
-        Symbol.getSymbol(MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC);
+
 
     /**
      * Gets the serialized size of the AMQP message.
@@ -121,9 +119,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return deserializeManagementResponse(message, clazz);
         } else if (clazz == Message.class) {
             return (T) deserializeEventData(message);
-        } /*else if (clazz == LastEnqueuedEventProperties.class) {
-            return (T) deserializeEnqueuedEventProperties(message);
-        } */else {
+        } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Deserialization only supports EventData, PartitionProperties, or EventHubProperties."));
         }
@@ -144,39 +140,14 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         final Map<?, ?> amqpBody = (Map<?, ?>) body.getValue();
 
-        if (deserializedType == PartitionProperties.class) {
-            return (T) toPartitionProperties(amqpBody);
-        } else if (deserializedType == EventHubProperties.class) {
-            return (T) toEventHubProperties(amqpBody);
+        if (deserializedType == ServiceBusProperties.class) {
+            return (T) toServiceBusProperties(amqpBody);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 Messages.CLASS_NOT_A_SUPPORTED_TYPE, deserializedType)));
         }
     }
 
-    /**
-     * Tries to deserialize  from an AMQP message.
-     *
-     * @param message AMQP message from the message broker.
-     *
-     * @return An instance of   with extracted properties. Otherwise, {@code null} if
-     *     there were no delivery annotations in the message.
-     */
-    /*private LastEnqueuedEventProperties deserializeEnqueuedEventProperties(Message message) {
-        final DeliveryAnnotations annotations = message.getDeliveryAnnotations();
-        if (annotations == null || annotations.getValue() == null) {
-            return null;
-        }
-
-        final Map<Symbol, Object> deliveryAnnotations = annotations.getValue();
-        final Long lastSequenceNumber = getValue(deliveryAnnotations, LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class);
-        final String lastEnqueuedOffset = getValue(deliveryAnnotations, LAST_ENQUEUED_OFFSET, String.class);
-        final Instant lastEnqueuedTime = getValue(deliveryAnnotations, LAST_ENQUEUED_TIME_UTC, Date.class).toInstant();
-        final Instant retrievalTime = getValue(deliveryAnnotations, RETRIEVAL_TIME_UTC, Date.class).toInstant();
-
-        return new LastEnqueuedEventProperties(lastSequenceNumber, Long.valueOf(lastEnqueuedOffset), lastEnqueuedTime,
-            retrievalTime);
-    }*/
 
     private Message deserializeEventData(org.apache.qpid.proton.message.Message message) {
         final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
@@ -226,22 +197,11 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         return eventData;
     }
 
-    private EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
-        return new EventHubProperties(
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, String.class),
-            getDate(amqpBody, ManagementChannel.MANAGEMENT_RESULT_CREATED_AT),
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS, String[].class));
-    }
-
-    private PartitionProperties toPartitionProperties(Map<?, ?> amqpBody) {
-        return new PartitionProperties(
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, String.class),
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_PARTITION_NAME_KEY, String.class),
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER, Long.class),
-            getValue(amqpBody, MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class),
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, String.class),
-            getDate(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC),
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY, Boolean.class));
+   private ServiceBusProperties toServiceBusProperties(Map<?, ?> amqpBody) {
+        return new ServiceBusProperties(
+            getValue(amqpBody, MANAGEMENT_ENTITY_NAME_KEY, String.class),
+            getDate(amqpBody, MANAGEMENT_RESULT_CREATED_AT),
+            getValue(amqpBody, MANAGEMENT_RESULT_PARTITION_IDS, String[].class));
     }
 
     private <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz) {
@@ -253,14 +213,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         return getValue(amqpBody.get(key), key, clazz);
     }
 
-    /*private <T> T getValue(Map<Symbol, Object> amqpBody, Symbol key, Class<T> clazz) {
-        if (!amqpBody.containsKey(key)) {
-            throw logger.logExceptionAsError(new AzureException(
-                String.format("AMQP body did not contain expected field '%s'.", key)));
-        }
-
-        return getValue(amqpBody.get(key), key, clazz);
-    }*/
 
     @SuppressWarnings("unchecked")
     private <T> T getValue(Object value, Object key, Class<T> clazz) {

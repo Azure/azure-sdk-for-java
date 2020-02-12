@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.Context;
@@ -51,7 +54,6 @@ public class Message {
 
     static {
         final Set<String> properties = new HashSet<>();
-       // properties.add(OFFSET_ANNOTATION_NAME.getValue());
         properties.add(PARTITION_KEY_ANNOTATION_NAME.getValue());
         properties.add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
         properties.add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
@@ -160,17 +162,6 @@ public class Message {
     }
 
     /**
-     * Gets the offset of the event when it was received from the associated Event Hub partition. This is only present
-     * on a <b>received</b> {@link Message}.
-     *
-     * @return The offset within the Event Hub partition of the received event. {@code null} if the {@link Message}
-     *     was not received from Event Hubs service.
-     */
-  /*public Long getOffset() {
-        return systemProperties.getOffset();
-    }
-*/
-    /**
      * Gets the partition hashing key if it was set when originally publishing the event. If it exists, this value was
      * used to compute a hash to select a partition to send the message to. This is only present on a <b>received</b>
      * {@link Message}.
@@ -178,33 +169,7 @@ public class Message {
      * @return A partition key for this Event Data. {@code null} if the {@link Message} was not received from Event
      *     Hubs service or there was no partition key set when the event was sent to the Event Hub.
      */
-    /*public String getPartitionKey() {
-        return systemProperties.getPartitionKey();
-    }*/
 
-    /**
-     * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition. This is only present on a
-     * <b>received</b> {@link Message}.
-     *
-     * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the {@link Message}
-     *     was not received from Event Hubs service.
-     */
-  /*  public Instant getEnqueuedTime() {
-        return systemProperties.getEnqueuedTime();
-    }
-*/
-    /**
-     * Gets the sequence number assigned to the event when it was enqueued in the associated Event Hub partition. This
-     * is unique for every message received in the Event Hub partition. This is only present on a <b>received</b>
-     * {@link Message}.
-     *
-     * @return The sequence number for this event. {@code null} if the {@link Message} was not received from Event
-     *     Hubs service.
-     */
-  /*  public Long getSequenceNumber() {
-        return systemProperties.getSequenceNumber();
-    }
-*/
     /**
      * {@inheritDoc}
      */

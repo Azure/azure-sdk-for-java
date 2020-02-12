@@ -69,7 +69,6 @@ public class AsyncReceiverTest {
     private Mono<AmqpReceiveLink> receiveLinkMono;
     private List<org.apache.qpid.proton.message.Message> messages = new ArrayList<>();
 
-    private ReceiveOptions options;
     private QueueReceiverAsyncClient consumer;
 
 
@@ -131,9 +130,6 @@ public class AsyncReceiverTest {
         consumer = new QueueClientBuilder()
             .connectionString(connectionString)
             .createAsyncReceiverClient(numberOfEvents);
-
-
-        //consumer = client.createReceiver(ReceiveMode.RECEIVEANDDELETE);
         Thread.sleep(3000);
 
         consumer.receive()

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpMessageConstant;
@@ -39,19 +42,16 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
     private final ClientLogger logger = new ClientLogger(MessageBatch.class);
     private final Object lock = new Object();
     private final int maxMessageSize;
-    private final String partitionKey;
     private final ErrorContextProvider contextProvider;
     private final List<Message> messageList;
     private final byte[] eventBytes;
-    private final String partitionId;
     private int sizeInBytes;
     private final TracerProvider tracerProvider;
 
-    MessageBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
+    MessageBatch(int maxMessageSize, ErrorContextProvider contextProvider,
                  TracerProvider tracerProvider) {
         this.maxMessageSize = maxMessageSize;
-        this.partitionKey = partitionKey;
-        this.partitionId = partitionId;
+
         this.contextProvider = contextProvider;
         this.messageList = new LinkedList<>();
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
@@ -152,18 +152,11 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
         return messageList;
     }
 
-    String getPartitionKey() {
-        return partitionKey;
-    }
-
-    String getPartitionId() {
-        return partitionId;
-    }
 
     private int getSize(final Message message, final boolean isFirst) {
         Objects.requireNonNull(message, "'eventData' cannot be null.");
 
-        final org.apache.qpid.proton.message.Message amqpMessage = createAmqpMessage(message, partitionKey);
+        final org.apache.qpid.proton.message.Message amqpMessage = createAmqpMessage(message);
         int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
@@ -182,7 +175,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
     /*
      * Creates the AMQP message represented by the event data
      */
-    private org.apache.qpid.proton.message.Message createAmqpMessage(Message event, String partitionKey) {
+    private org.apache.qpid.proton.message.Message createAmqpMessage(Message event) {
         final org.apache.qpid.proton.message.Message message = Proton.message();
 
         if (event.getProperties() != null && !event.getProperties().isEmpty()) {
@@ -253,13 +246,6 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
             });
         }
 
-        if (partitionKey != null) {
-            final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                ? new MessageAnnotations(new HashMap<>())
-                : message.getMessageAnnotations();
-            messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
-            message.setMessageAnnotations(messageAnnotations);
-        }
 
         message.setBody(new Data(new Binary(event.getBody())));
 
