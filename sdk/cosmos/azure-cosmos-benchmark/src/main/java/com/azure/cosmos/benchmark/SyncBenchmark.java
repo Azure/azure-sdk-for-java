@@ -355,7 +355,6 @@ abstract class SyncBenchmark<T> {
     }
 
     PojoizedJson toPojoizedJson(CosmosItemResponse<PojoizedJson> resp) throws Exception {
-        return Utils.getSimpleObjectMapper().readValue(
-            resp.getProperties().toJson(), PojoizedJson.class);
+        return resp.getResource();
     }
 }

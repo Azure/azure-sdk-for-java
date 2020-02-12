@@ -20,6 +20,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.List;
@@ -34,6 +36,7 @@ public class SampleChangeFeedProcessor {
     public static final String DATABASE_NAME = "db_" + RandomStringUtils.randomAlphabetic(7);
     public static final String COLLECTION_NAME = "coll_" + RandomStringUtils.randomAlphabetic(7);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    protected static Logger logger = LoggerFactory.getLogger(SampleChangeFeedProcessor.class.getSimpleName());
 
 
     private static ChangeFeedProcessor changeFeedProcessorInstance;
@@ -214,7 +217,12 @@ public class SampleChangeFeedProcessor {
             document.setId(String.format("0%d-%s", i, suffix));
 
             containerClient.createItem(document).subscribe(doc -> {
-                System.out.println("---->DOCUMENT WRITE: " + doc.getProperties().toJson(SerializationFormattingPolicy.INDENTED));
+                try {
+                    System.out.println("---->DOCUMENT WRITE: " + OBJECT_MAPPER.writerWithDefaultPrettyPrinter()
+                                                                     .writeValueAsString(doc));
+                } catch (JsonProcessingException e) {
+                    logger.error("Failure in processing json [{}]", e.getMessage(), e);
+                }
             });
 
             long remainingWork = delay.toMillis();

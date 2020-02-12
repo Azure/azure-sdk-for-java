@@ -486,4 +486,8 @@ public class BridgeInternal {
     public static <T> CosmosContinuablePagedFlux<T> createCosmosContinuablePagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
         return new CosmosContinuablePagedFlux<>(pagedFluxOptionsFluxFunction);
     }
+
+    public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
+        return cosmosItemResponse.getProperties();
+    }
 }

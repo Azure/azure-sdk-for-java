@@ -354,7 +354,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnostics());
             logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
-            CosmosItemProperties readDocument = readDocumentResponse.getProperties();
+            CosmosItemProperties readDocument = BridgeInternal.getProperties(readDocumentResponse);
 
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
             assertThat(readDocument.get("name").equals(newDocument.get("name"))).isTrue();

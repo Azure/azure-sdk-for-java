@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -256,7 +257,8 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, int cnt) {
         CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
-        return cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block().getProperties();
+        return BridgeInternal
+                   .getProperties(cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block());
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

@@ -452,7 +452,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, CosmosItemProperties item) {
-        return cosmosContainer.createItem(item).block().getProperties();
+        return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
     }
 
     public Flux<CosmosAsyncItemResponse> bulkInsert(CosmosAsyncContainer cosmosContainer,
@@ -470,7 +470,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                          List<CosmosItemProperties> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
                 .publishOn(Schedulers.parallel())
-                .map(CosmosAsyncItemResponse::getProperties)
+                .map(itemResponse -> (CosmosItemProperties)itemResponse.getResource())
                 .collectList()
                 .block();
     }
@@ -479,7 +479,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                        List<CosmosItemProperties> documentDefinitionList) {
         bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(CosmosAsyncItemResponse::getProperties)
+            .map(itemResponse -> BridgeInternal.getProperties(itemResponse))
             .then()
             .block();
     }

@@ -182,12 +182,11 @@ public class DocumentCrudTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        CosmosItemProperties readDocument = container.readItem(docDefinition.getId(),
+        CosmosItemProperties readDocument = BridgeInternal.getProperties(container.readItem(docDefinition.getId(),
                                                                new PartitionKey(docDefinition.get("mypk")),
                                                                options,
                                                                CosmosItemProperties.class)
-                                                .block()
-                                                .getProperties();
+                                                .block());
         Thread.sleep(1000);
         OffsetDateTime after = OffsetDateTime.now();
 
@@ -341,7 +340,8 @@ public class DocumentCrudTest extends TestSuiteBase {
     public void upsertDocument_ReplaceDocument(String documentId) throws Throwable {
 
         CosmosItemProperties properties = getDocumentDefinition(documentId);
-        properties = container.createItem(properties, new CosmosItemRequestOptions()).block().getProperties();
+        properties =
+            BridgeInternal.getProperties(container.createItem(properties, new CosmosItemRequestOptions()).block());
 
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);

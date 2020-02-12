@@ -84,13 +84,9 @@ abstract class AsyncBenchmark<T> {
                 PojoizedJson newDoc = generateDocument(uuid, dataFieldValue);
 
                 Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
-                                                                                         try {
-                                                                                            PojoizedJson x = Utils.getSimpleObjectMapper().readValue(
-                                                                                                 resp.getProperties().toJson(), PojoizedJson.class);
-                                                                                            return x;
-                                                                                         } catch (IOException e) {
-                                                                                             throw new IllegalStateException(e);
-                                                                                         }
+                                                                                         PojoizedJson x =
+                                                                                             resp.getResource();
+                                                                                         return x;
                                                                                      }
                 ).flux();
                 createDocumentObservables.add(obs);

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -371,7 +372,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, Map<String, Object> keyValueProps)
             throws CosmosClientException {
         CosmosItemProperties docDefinition = getDocumentDefinition(keyValueProps);
-        return cosmosContainer.createItem(docDefinition).block().getProperties();
+        return BridgeInternal.getProperties(cosmosContainer.createItem(docDefinition).block());
     }
 
     public List<CosmosItemProperties> bulkInsert(CosmosAsyncContainer cosmosContainer, List<Map<String, Object>> keyValuePropsList) {

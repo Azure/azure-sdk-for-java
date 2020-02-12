@@ -55,7 +55,7 @@ public class CosmosAsyncItemResponse<T> {
      *
      * @return the itemProperties
      */
-    public CosmosItemProperties getProperties() {
+    CosmosItemProperties getProperties() {
         ensureCosmosItemPropertiesInitialized();
         return props;
     }

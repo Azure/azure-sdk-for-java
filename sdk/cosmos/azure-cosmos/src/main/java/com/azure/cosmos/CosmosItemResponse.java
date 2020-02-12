@@ -25,7 +25,7 @@ public class CosmosItemResponse<T> {
      *
      * @return the itemSettings
      */
-    public CosmosItemProperties getProperties() {
+    CosmosItemProperties getProperties() {
         return responseWrapper.getProperties();
     }
 

@@ -274,7 +274,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                             BridgeInternal.setProperty(doc, "Owner", "TEMP_OWNER");
                             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
                             return createdLeaseCollection.replaceItem(doc, doc.getId(), new PartitionKey(doc.getId()), options)
-                                .map(CosmosAsyncItemResponse::getProperties);
+                                .map(itemResponse -> BridgeInternal.getProperties(itemResponse));
                         })
                         .map(ServiceItemLease::fromDocument)
                         .map(leaseDocument -> {
@@ -427,7 +427,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessorTest.log
                 .info("RECEIVED {}", OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(item));
         } catch (JsonProcessingException e) {
-            logger.error("Failure in processing json [{}]", e.getMessage(), e);
+            log.error("Failure in processing json [{}]", e.getMessage(), e);
         }
         receivedDocuments.put(item.get("id").asText(), item);
     }

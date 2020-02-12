@@ -78,7 +78,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
             createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
 
         StepVerifier.create(createObservable.subscribeOn(Schedulers.single()))
-                    .expectNextMatches(cosmosItemResponse -> cosmosItemResponse.getProperties().getId().equals(docDefinition.getId()))
+                    .expectNextMatches(cosmosItemResponse -> BridgeInternal.getProperties(cosmosItemResponse).getId().equals(docDefinition.getId()))
                     .expectComplete()
                     .verify(Duration.ofMillis(subscriberValidationTimeout));
     }
