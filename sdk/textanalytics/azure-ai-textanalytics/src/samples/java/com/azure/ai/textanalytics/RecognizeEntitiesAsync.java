@@ -23,7 +23,7 @@ public class RecognizeEntitiesAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analyzed.
+        // The text that needs be analyzed.
         String text = "Satya Nadella is the CEO of Microsoft";
 
         client.recognizeEntities(text).subscribe(

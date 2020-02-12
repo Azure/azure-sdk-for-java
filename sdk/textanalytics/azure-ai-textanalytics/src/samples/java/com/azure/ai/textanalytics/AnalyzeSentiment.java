@@ -23,7 +23,7 @@ public class AnalyzeSentiment {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analyzed.
+        // The text that needs be analyzed.
         String text = "The hotel was dark and unclean. I like Microsoft.";
 
         final DocumentSentiment documentSentiment = client.analyzeSentiment(text);

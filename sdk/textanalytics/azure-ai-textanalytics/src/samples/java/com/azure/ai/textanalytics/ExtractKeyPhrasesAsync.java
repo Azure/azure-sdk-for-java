@@ -23,7 +23,7 @@ public class ExtractKeyPhrasesAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analyzed.
+        // The text that needs be analyzed.
         String text = "My cat might need to see a veterinarian.";
 
         System.out.println("Recognized phrases:");

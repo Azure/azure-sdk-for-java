@@ -24,7 +24,7 @@ public class RecognizeLinkedEntitiesAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analyzed.
+        // The text that needs be analyzed.
         String text = "Old Faithful is a geyser at Yellowstone Park.";
 
         client.recognizeLinkedEntities(text).subscribe(

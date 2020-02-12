@@ -22,7 +22,7 @@ public class RecognizePii {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analyzed.
+        // The text that needs be analyzed.
         String text = "My SSN is 555-55-5555";
 
         for (PiiEntity entity : client.recognizePiiEntities(text)) {

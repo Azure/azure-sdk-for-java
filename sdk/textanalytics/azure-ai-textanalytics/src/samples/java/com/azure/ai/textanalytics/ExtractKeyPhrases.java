@@ -21,7 +21,7 @@ public class ExtractKeyPhrases {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analyzed.
+        // The text that needs be analyzed.
         String text = "My cat might need to see a veterinarian.";
 
         System.out.println("Recognized phrases:");

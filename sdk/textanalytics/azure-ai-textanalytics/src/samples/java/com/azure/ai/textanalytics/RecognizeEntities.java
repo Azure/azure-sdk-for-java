@@ -22,7 +22,7 @@ public class RecognizeEntities {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analyzed.
+        // The text that needs be analyzed.
         String text = "Satya Nadella is the CEO of Microsoft";
 
         for (CategorizedEntity entity : client.recognizeEntities(text)) {

@@ -24,7 +24,7 @@ public class AnalyzeSentimentAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analyzed.
+        // The text that needs be analyzed.
         String text = "The hotel was dark and unclean. I like Microsoft";
 
         client.analyzeSentiment(text).subscribe(

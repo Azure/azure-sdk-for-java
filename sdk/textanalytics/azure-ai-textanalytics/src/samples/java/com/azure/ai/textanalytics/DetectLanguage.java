@@ -22,7 +22,7 @@ public class DetectLanguage {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analyzed.
+        // The text that needs be analyzed.
         String text = "hello world";
 
         final DetectedLanguage detectedLanguage = client.detectLanguage(text);

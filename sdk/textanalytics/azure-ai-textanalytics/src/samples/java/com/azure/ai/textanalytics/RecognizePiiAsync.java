@@ -24,7 +24,7 @@ public class RecognizePiiAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analyzed.
+        // The text that needs be analyzed.
         String text = "My SSN is 555-55-5555";
 
         client.recognizePiiEntities(text).subscribe(
