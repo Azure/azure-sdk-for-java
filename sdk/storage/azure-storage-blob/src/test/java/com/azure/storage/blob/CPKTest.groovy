@@ -11,9 +11,11 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.implementation.Constants
+import org.junit.Ignore
 
 import java.time.OffsetDateTime
 
+@Ignore
 class CPKTest extends APISpec {
 
     CustomerProvidedKey key
