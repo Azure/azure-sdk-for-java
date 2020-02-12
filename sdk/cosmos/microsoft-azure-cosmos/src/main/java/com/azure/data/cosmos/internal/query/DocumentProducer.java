@@ -143,7 +143,7 @@ class DocumentProducer<T extends Resource> {
 
         this.correlatedActivityId = correlatedActivityId;
 
-        this.feedOptions = feedOptions != null ? feedOptions : new FeedOptions();
+        this.feedOptions = feedOptions != null ? new FeedOptions(feedOptions) : new FeedOptions();
         this.feedOptions.requestContinuation(initialContinuationToken);
         this.lastResponseContinuationToken = initialContinuationToken;
         this.resourceType = resourceType;
@@ -161,9 +161,9 @@ class DocumentProducer<T extends Resource> {
                 .getPaginatedQueryResultAsObservable(
                         feedOptions.requestContinuation(),
                         sourcePartitionCreateRequestFunc,
-                        executeRequestFuncWithRetries, 
-                        resourceType, 
-                        top, 
+                        executeRequestFuncWithRetries,
+                        resourceType,
+                        top,
                         pageSize)
                 .map(rsp -> {
                     lastResponseContinuationToken = rsp.continuationToken();
@@ -220,7 +220,7 @@ class DocumentProducer<T extends Resource> {
         }
         return replacingDocumentProducers;
     }
-    
+
     protected DocumentProducer<T> createChildDocumentProducerOnSplit(
             PartitionKeyRange targetRange,
             String initialContinuationToken) {
