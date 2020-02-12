@@ -1,7 +1,9 @@
 # Release History
 
-## 12.4.0-beta.1 (Unreleased)
+## 12.4.0 (2020-02-12)
 
+## 12.3.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
 
 ## 12.3.0 (2020-01-15)
 

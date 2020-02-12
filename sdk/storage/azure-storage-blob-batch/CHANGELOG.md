@@ -1,7 +1,11 @@
 # Release History
 
-## 12.4.0-beta.1 (Unreleased)
+## 12.4.0-beta.1 (2020-02-12)
+- Updated `azure-storage-blob` to version 12.4.0
 
+## 12.3.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+- Update `azure-storage-blob` to version 12.3.1
 
 ## 12.3.0 (2020-01-16)
 This package's

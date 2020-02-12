@@ -403,7 +403,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
         StepVerifier
             .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
-            .assertNext(response -> validateAnalysedSentiment(expectedDocumentSentiment, response)).verifyComplete();
+            .assertNext(response -> validateAnalyzedSentiment(expectedDocumentSentiment, response)).verifyComplete();
     }
 
     /**
@@ -430,7 +430,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             ));
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))
-            .assertNext(response -> validateAnalysedSentiment(expectedDocumentSentiment, response)).verifyComplete();
+            .assertNext(response -> validateAnalyzedSentiment(expectedDocumentSentiment, response)).verifyComplete();
     }
 
     /**

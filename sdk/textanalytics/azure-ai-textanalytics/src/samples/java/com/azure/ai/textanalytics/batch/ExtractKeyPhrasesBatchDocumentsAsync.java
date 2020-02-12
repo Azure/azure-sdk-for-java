@@ -32,7 +32,7 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "My cat might need to see a veterinarian.", "en"),
             new TextDocumentInput("2", "The pitot tube is used to measure airspeed.", "en")
@@ -64,8 +64,9 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
                         continue;
                     }
                     // Valid document
+                    System.out.println("Extracted phrases:");
                     for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
-                        System.out.printf("Extracted phrases: %s.%n", keyPhrases);
+                        System.out.printf("%s.%n", keyPhrases);
                     }
                 }
             },

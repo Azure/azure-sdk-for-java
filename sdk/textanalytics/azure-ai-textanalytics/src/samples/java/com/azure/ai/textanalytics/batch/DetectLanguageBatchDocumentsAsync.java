@@ -33,7 +33,7 @@ public class DetectLanguageBatchDocumentsAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<DetectLanguageInput> inputs = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "us"),
             new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
@@ -66,7 +66,7 @@ public class DetectLanguageBatchDocumentsAsync {
                     }
                     // Valid document
                     final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
-                    System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %s.%n",
+                    System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
                         detectedPrimaryLanguage.getName(),
                         detectedPrimaryLanguage.getIso6391Name(),
                         detectedPrimaryLanguage.getScore());

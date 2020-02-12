@@ -4,11 +4,13 @@ package com.azure.storage.file.share;
 
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Flux;
@@ -29,6 +31,7 @@ import java.util.Map;
  * Contains code snippets when generating javadocs through doclets for {@link ShareFileClient} and {@link ShareFileAsyncClient}.
  */
 public class ShareFileAsyncJavaDocCodeSamples {
+    String leaseId = "leaseId";
 
     /**
      * Generates code sample for {@link ShareFileAsyncClient} instantiation.
@@ -130,6 +133,35 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#createWithResponse(long, ShareFileHttpHeaders, FileSmbProperties, String, Map, ShareRequestConditions)}
+     */
+    public void createWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+
+        shareFileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission,
+            Collections.singletonMap("directory", "metadata"), requestConditions)
+            .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
+                response.getStatusCode()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
+    }
+
+    /**
      * Generates a code sample for using {@link ShareFileAsyncClient#beginCopy(String, Map, Duration)}
      */
     public void beginCopy() {
@@ -145,6 +177,35 @@ public class ShareFileAsyncJavaDocCodeSamples {
         }, error -> System.err.println("Error: " + error),
             () -> System.out.println("Complete copying the file."));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-map-duration
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#beginCopy(String, FileSmbProperties, String, PermissionCopyModeType, Boolean, Boolean, Map, Duration, ShareRequestConditions)}
+     */
+    public void beginCopy2() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration-ShareRequestConditions
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+        boolean ignoreReadOnly = false; // Default value
+        boolean setArchiveAttribute = true; // Default value
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+
+        PollerFlux<ShareFileCopyInfo, Void> poller = shareFileAsyncClient.beginCopy(
+            "https://{accountName}.file.core.windows.net?{SASToken}",
+            smbProperties, filePermission, PermissionCopyModeType.SOURCE, ignoreReadOnly, setArchiveAttribute,
+            Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2), requestConditions);
+
+        poller.subscribe(response -> {
+            final ShareFileCopyInfo value = response.getValue();
+            System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
+        }, error -> System.err.println("Error: " + error), () -> System.out.println("Complete copying the file."));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration-ShareRequestConditions
     }
 
     /**
@@ -171,6 +232,19 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#abortCopyWithResponse(String, ShareRequestConditions)}
+     */
+    public void abortCopyWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.abortCopyWithResponse#string-ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.abortCopyWithResponse("someCopyId", requestConditions)
+            .subscribe(response -> System.out.printf("Abort copying the file completed with status code %d",
+                response.getStatusCode()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.abortCopyWithResponse#string-ShareRequestConditions
+    }
+
+    /**
      * Generates a code sample for using {@link ShareFileAsyncClient#upload(Flux, long)}
      */
     public void uploadDataAsync() {
@@ -192,12 +266,29 @@ public class ShareFileAsyncJavaDocCodeSamples {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#flux-long-long
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        shareFileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining()).subscribe(
+        shareFileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 0L).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete deleting the file!")
         );
         // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#flux-long-long
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#uploadWithResponse(Flux, long, Long, ShareRequestConditions)}
+     */
+    public void uploadDataWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#flux-long-long-ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        shareFileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 0L, requestConditions)
+            .subscribe(
+                response -> { },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete deleting the file!")
+            );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#flux-long-long-ShareRequestConditions
     }
 
     /**
@@ -229,6 +320,21 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#clearRangeWithResponse(long, long, ShareRequestConditions)}
+     */
+    public void clearRangeAsyncWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.clearRange#long-long-ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.clearRangeWithResponse(1024, 1024, requestConditions).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete clearing the range!")
+        );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.clearRange#long-long-ShareRequestConditions
+    }
+
+    /**
      * Generates a code sample for using {@link ShareFileAsyncClient#uploadFromFile(String)}
      */
     public void uploadFileAsync() {
@@ -240,6 +346,21 @@ public class ShareFileAsyncJavaDocCodeSamples {
             () -> System.out.println("Complete deleting the file!")
         );
         // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadFromFile#string
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#uploadFromFile(String, ShareRequestConditions)}
+     */
+    public void uploadFileAsyncWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadFromFile#string-ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.uploadFromFile("someFilePath", requestConditions).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete deleting the file!")
+        );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadFromFile#string-ShareRequestConditions
     }
 
     /**
@@ -271,6 +392,21 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#uploadRangeFromUrlWithResponse(long, long, long, String, ShareRequestConditions)}
+     */
+    public void uploadFileFromURLWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-String-ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.uploadRangeFromUrlWithResponse(6, 8, 0, "sourceUrl", requestConditions).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Completed upload range from url!")
+        );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-String-ShareRequestConditions
+    }
+
+    /**
      * Generates a code sample for using {@link ShareFileAsyncClient#download()}
      */
     public void downloadDataAsync() {
@@ -297,6 +433,22 @@ public class ShareFileAsyncJavaDocCodeSamples {
             );
         // END: com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#ShareFileRange-Boolean
     }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#downloadWithResponse(ShareFileRange, Boolean, ShareRequestConditions)}
+     */
+    public void downloadWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#ShareFileRange-Boolean-ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.downloadWithResponse(new ShareFileRange(1024, 2047L), false, requestConditions)
+            .subscribe(response ->
+                    System.out.printf("Complete downloading the data with status code %d%n", response.getStatusCode()),
+                error -> System.err.println(error.getMessage())
+            );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#ShareFileRange-Boolean-ShareRequestConditions
+    }
+
 
     /**
      * Generates a code sample for using {@link ShareFileAsyncClient#downloadToFile(String)}
@@ -337,6 +489,28 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#downloadToFileWithResponse(String, ShareFileRange, ShareRequestConditions)}
+     */
+    public void downloadFileAsyncWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.downloadToFileWithResponse#string-ShareFileRange-ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.downloadToFileWithResponse("somelocalfilepath", new ShareFileRange(1024, 2047L),
+            requestConditions)
+            .subscribe(
+                response -> {
+                    if (Files.exists(Paths.get("somelocalfilepath"))) {
+                        System.out.println("Successfully downloaded the file with status code "
+                            + response.getStatusCode());
+                    }
+                },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete downloading the file!")
+            );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.downloadToFileWithResponse#string-ShareFileRange-ShareRequestConditions
+    }
+
+    /**
      * Generates a code sample for using {@link ShareFileAsyncClient#delete()}
      */
     public void deleteFileAsync() {
@@ -361,6 +535,20 @@ public class ShareFileAsyncJavaDocCodeSamples {
             error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteWithResponse
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#deleteWithResponse(ShareRequestConditions)}
+     */
+    public void deleteWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteWithResponse#ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.deleteWithResponse(requestConditions).subscribe(
+            response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
+            error -> System.err.print(error.toString())
+        );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteWithResponse#ShareRequestConditions
     }
 
     /**
@@ -391,6 +579,21 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#getPropertiesWithResponse(ShareRequestConditions)}
+     */
+    public void getPropertiesWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.getPropertiesWithResponse#ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.getPropertiesWithResponse(requestConditions)
+            .subscribe(response -> {
+                ShareFileProperties properties = response.getValue();
+                System.out.printf("File latest modified date is %s.", properties.getLastModified());
+            });
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.getPropertiesWithResponse#ShareRequestConditions
+    }
+
+    /**
      * Generates a code sample for using {@link ShareFileAsyncClient#setMetadata(Map)}
      */
     public void setMetadataAsync() {
@@ -402,7 +605,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileAsyncClient#setMetadata(Map)}
+     * Generates a code sample for using {@link ShareFileAsyncClient#setMetadataWithResponse(Map)}
      */
     public void setMetadataWithResponse() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
@@ -411,6 +614,19 @@ public class ShareFileAsyncJavaDocCodeSamples {
             .subscribe(response -> System.out.printf("Setting the file metadata completed with status code %d",
                 response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.setMetadataWithResponse#map
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#setMetadataWithResponse(Map, ShareRequestConditions)}
+     */
+    public void setMetadataWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.setMetadataWithResponse#map-ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.setMetadataWithResponse(Collections.singletonMap("file", "updatedMetadata"), requestConditions)
+            .subscribe(response -> System.out.printf("Setting the file metadata completed with status code %d",
+                response.getStatusCode()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.setMetadataWithResponse#map-ShareRequestConditions
     }
 
     /**
@@ -423,6 +639,20 @@ public class ShareFileAsyncJavaDocCodeSamples {
             response -> System.out.printf("Setting the file metadata completed with status code %d",
                 response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.setMetadataWithResponse#map.clearMetadata
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#setMetadataWithResponse(Map, ShareRequestConditions)} to clear
+     * metadata.
+     */
+    public void clearMetadataAsyncWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.setMetadataWithResponse#map-ShareRequestConditions.clearMetadata
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.setMetadataWithResponse(null, requestConditions).subscribe(
+            response -> System.out.printf("Setting the file metadata completed with status code %d",
+                response.getStatusCode()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.setMetadataWithResponse#map-ShareRequestConditions.clearMetadata
     }
 
     /**
@@ -487,6 +717,32 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#setPropertiesWithResponse(long, ShareFileHttpHeaders, FileSmbProperties, String, ShareRequestConditions)}
+     */
+    public void setHttpHeadersWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.setPropertiesWithResponse(1024, httpHeaders, smbProperties, filePermission, requestConditions)
+            .subscribe(response -> System.out.printf("Setting the file properties completed with status code %d",
+                response.getStatusCode()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions
+    }
+
+    /**
      * Generates a code sample for using {@link ShareFileAsyncClient#setPropertiesWithResponse(long, ShareFileHttpHeaders, FileSmbProperties, String)}
      * to clear httpHeaders.
      */
@@ -497,6 +753,20 @@ public class ShareFileAsyncJavaDocCodeSamples {
             .subscribe(response -> System.out.printf("Setting the file httpHeaders completed with status code %d",
                 response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String.clearHttpHeaderspreserveSMBProperties
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#setPropertiesWithResponse(long, ShareFileHttpHeaders, FileSmbProperties, String, ShareRequestConditions)}
+     * to clear httpHeaders.
+     */
+    public void clearHTTPHeadersAsyncWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions.clearHttpHeaderspreserveSMBProperties
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.setPropertiesWithResponse(1024, null, null, null, requestConditions)
+            .subscribe(response -> System.out.printf("Setting the file httpHeaders completed with status code %d",
+                response.getStatusCode()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions.clearHttpHeaderspreserveSMBProperties
     }
 
     /**
@@ -532,6 +802,19 @@ public class ShareFileAsyncJavaDocCodeSamples {
             .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
                 result.getStart(), result.getEnd()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.listRanges#ShareFileRange
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#listRanges(ShareFileRange, ShareRequestConditions)}
+     */
+    public void listRangesAsyncWithLease() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.listRanges#ShareFileRange-ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.listRanges(new ShareFileRange(1024, 2048L), requestConditions)
+            .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
+                result.getStart(), result.getEnd()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.listRanges#ShareFileRange-ShareRequestConditions
     }
 
     /**
@@ -589,7 +872,8 @@ public class ShareFileAsyncJavaDocCodeSamples {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.forceCloseAllHandles
         shareFileAsyncClient.forceCloseAllHandles().subscribe(handlesClosedInfo ->
-            System.out.printf("Closed %d open handles on the file%n", handlesClosedInfo.getClosedHandles()));
+            System.out.printf("Closed %d open handles on the file.%nFailed to close %d open handles on the file%n",
+                handlesClosedInfo.getClosedHandles(), handlesClosedInfo.getFailedHandles()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.forceCloseAllHandles
     }
 

@@ -1,76 +1,76 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestssetmetadataerror39195cb0aca7f737?restype=share",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryapitestssetmetadataerror736409feb2e6a76f?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "e049492d-dba5-46ee-bb81-26d8c21ea696"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "740c8c8b-ecab-4084-b76a-020dca80631b"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7519F5F4114E8",
-      "Last-Modified" : "Tue, 15 Oct 2019 18:42:03 GMT",
+      "ETag" : "0x8D77911B48F6C6B",
+      "Last-Modified" : "Wed, 04 Dec 2019 23:28:44 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "c1ad4dee-b01a-00ca-7a88-83a3bb000000",
-      "Date" : "Tue, 15 Oct 2019 18:42:03 GMT",
-      "x-ms-client-request-id" : "e049492d-dba5-46ee-bb81-26d8c21ea696"
+      "x-ms-request-id" : "172f8754-101a-0047-4efa-aaf960000000",
+      "Date" : "Wed, 04 Dec 2019 23:28:44 GMT",
+      "x-ms-client-request-id" : "740c8c8b-ecab-4084-b76a-020dca80631b"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestssetmetadataerror39195cb0aca7f737/directoryapitestssetmetadataerror10258f956a227620?restype=directory",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryapitestssetmetadataerror736409feb2e6a76f/directoryapitestssetmetadataerror8390957205b13ad4?restype=directory",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "36435566-d3bd-47c0-8b41-1eb9732f3df9"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "c73c7626-5551-4ef0-93c8-059cd4772748"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
-      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-version" : "2019-07-07",
+      "x-ms-file-permission-key" : "1887593946193683302*8280205063999649007",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-10-15T18:42:03.6479246Z",
-      "Last-Modified" : "Tue, 15 Oct 2019 18:42:03 GMT",
+      "x-ms-file-creation-time" : "2019-12-04T23:28:44.8008333Z",
+      "Last-Modified" : "Wed, 04 Dec 2019 23:28:44 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 15 Oct 2019 18:42:03 GMT",
-      "ETag" : "0x8D7519F5F48ED0E",
+      "Date" : "Wed, 04 Dec 2019 23:28:44 GMT",
+      "ETag" : "0x8D77911B4A0108D",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-10-15T18:42:03.6479246Z",
+      "x-ms-file-change-time" : "2019-12-04T23:28:44.8008333Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "beee0f84-701a-001b-5e88-831ee4000000",
-      "x-ms-client-request-id" : "36435566-d3bd-47c0-8b41-1eb9732f3df9",
-      "x-ms-file-last-write-time" : "2019-10-15T18:42:03.6479246Z"
+      "x-ms-request-id" : "172f8757-101a-0047-50fa-aaf960000000",
+      "x-ms-client-request-id" : "c73c7626-5551-4ef0-93c8-059cd4772748",
+      "x-ms-file-last-write-time" : "2019-12-04T23:28:44.8008333Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestssetmetadataerror39195cb0aca7f737/directoryapitestssetmetadataerror10258f956a227620?restype=directory&comp=metadata",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryapitestssetmetadataerror736409feb2e6a76f/directoryapitestssetmetadataerror8390957205b13ad4?restype=directory&comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "351a1e5e-ecfd-4e0f-80ef-74a5f7a4970d"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "8f9bce01-17cb-48dc-99a4-3bd86ef0a390"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "EmptyMetadataKey",
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "c1ad4df0-b01a-00ca-7b88-83a3bb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:c1ad4df0-b01a-00ca-7b88-83a3bb000000\nTime:2019-10-15T18:42:03.6996146Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Tue, 15 Oct 2019 18:42:03 GMT",
-      "x-ms-client-request-id" : "351a1e5e-ecfd-4e0f-80ef-74a5f7a4970d",
+      "x-ms-request-id" : "172f875a-101a-0047-53fa-aaf960000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:172f875a-101a-0047-53fa-aaf960000000\nTime:2019-12-04T23:28:44.8877796Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Wed, 04 Dec 2019 23:28:44 GMT",
+      "x-ms-client-request-id" : "8f9bce01-17cb-48dc-99a4-3bd86ef0a390",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryapitestssetmetadataerror39195cb0aca7f737", "directoryapitestssetmetadataerror10258f956a227620" ]
+  "variables" : [ "directoryapitestssetmetadataerror736409feb2e6a76f", "directoryapitestssetmetadataerror8390957205b13ad4" ]
 }

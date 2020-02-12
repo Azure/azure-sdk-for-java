@@ -13,18 +13,12 @@ import com.azure.data.cosmos.CosmosItemResponse;
 import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.internal.TestConfigurations;
 import com.azure.data.cosmos.rx.proxy.HttpProxyServer;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.WriterAppender;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
-import org.testng.annotations.Ignore;
+import org.apache.logging.log4j.Level;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.io.StringWriter;
@@ -37,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * This class help to test proxy host feature scenarios where user can provide proxy
  * host server during AsyncDocumentClient initialization and all its request will
- * go through that particular host. 
+ * go through that particular host.
  *
  */
 public class ProxyHostTest extends TestSuiteBase {
@@ -63,11 +57,13 @@ public class ProxyHostTest extends TestSuiteBase {
         httpProxyServer.start();
         // wait for proxy server to be ready
         TimeUnit.SECONDS.sleep(1);
+
+        LogLevelTest.resetLoggingConfiguration();
     }
 
     /**
      * This test will try to create document via http proxy server and validate it.
-     * 
+     *
      * @throws Exception
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -101,13 +97,12 @@ public class ProxyHostTest extends TestSuiteBase {
     @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithValidHttpProxyWithNettyWireLogging() throws Exception {
-        LogManager.getRootLogger().setLevel(Level.INFO);
-        LogManager.getLogger(LogLevelTest.NETWORK_LOGGING_CATEGORY).setLevel(Level.TRACE);
+
         CosmosClient clientWithRightProxy = null;
         try {
-            StringWriter consoleWriter = new StringWriter();
-            WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-            Logger.getLogger(LogLevelTest.NETWORK_LOGGING_CATEGORY).addAppender(appender);
+            final StringWriter consoleWriter = new StringWriter();
+            LogLevelTest.addAppenderAndLogger(LogLevelTest.NETWORK_LOGGING_CATEGORY, Level.TRACE,
+                "ProxyStringAppender", consoleWriter);
 
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
             connectionPolicy.proxy(PROXY_HOST, PROXY_PORT);
@@ -116,7 +111,8 @@ public class ProxyHostTest extends TestSuiteBase {
                     .connectionPolicy(connectionPolicy)
                     .consistencyLevel(ConsistencyLevel.SESSION).build();
             CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse> createObservable = clientWithRightProxy.getDatabase(createdDatabase.id()).getContainer(createdCollection.id())
+            Mono<CosmosItemResponse> createObservable = clientWithRightProxy.getDatabase(createdDatabase.id())
+                    .getContainer(createdCollection.id())
                     .createItem(docDefinition, new CosmosItemRequestOptions());
             CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                     .withId(docDefinition.id())
@@ -138,20 +134,12 @@ public class ProxyHostTest extends TestSuiteBase {
         // wait for proxy server to be shutdown
         TimeUnit.SECONDS.sleep(1);
 
-        LogManager.resetConfiguration();
-        PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
-    }
-
-    @BeforeMethod(groups = { "simple"})
-    public void beforeMethod() {
-        LogManager.resetConfiguration();
-        PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
+        LogLevelTest.resetLoggingConfiguration();
     }
 
     @AfterMethod(groups = { "simple" })
     public void afterMethod(Method method) {
-        LogManager.resetConfiguration();
-        PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
+        LogLevelTest.resetLoggingConfiguration();
     }
 
     private CosmosItemProperties getDocumentDefinition() {

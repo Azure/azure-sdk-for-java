@@ -98,7 +98,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      */
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, AsyncKeyEncryptionKey key, String keyWrapAlgorithm) {
-        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, null);
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, null /*cpk*/,
+            null /*encryption scope*/);
 
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
