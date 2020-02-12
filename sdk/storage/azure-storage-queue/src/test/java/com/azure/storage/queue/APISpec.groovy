@@ -33,7 +33,6 @@ class APISpec extends Specification {
     QueueServiceClient primaryQueueServiceClient
     QueueServiceAsyncClient primaryQueueServiceAsyncClient
 
-
     static def PRIMARY_STORAGE = "AZURE_STORAGE_QUEUE_"
     protected static StorageSharedKeyCredential primaryCredential
 
@@ -214,9 +213,14 @@ class APISpec extends Specification {
 
     def sleepIfLive(long milliseconds) {
         if (testMode == TestMode.PLAYBACK) {
-            return;
+            return
         }
 
         sleep(milliseconds)
     }
+
+    boolean liveMode() {
+        return testMode == TestMode.RECORD
+    }
+
 }

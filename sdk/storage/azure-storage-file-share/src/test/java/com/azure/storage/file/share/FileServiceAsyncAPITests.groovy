@@ -192,6 +192,24 @@ class FileServiceAsyncAPITests extends APISpec {
         new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithargs").setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
     }
 
+    def "List shares with premium share"() {
+        setup:
+        def premiumShareName = generateShareName()
+        premiumFileServiceAsyncClient.createShare(premiumShareName).block()
+
+        when:
+        def shares = premiumFileServiceAsyncClient.listShares().filter({ item -> item.getName() == premiumShareName })
+        def shareProperty = shares.blockFirst().getProperties()
+
+        then:
+        shareProperty.getETag()
+        shareProperty.getLastModified()
+        shareProperty.getNextAllowedQuotaDowngradeTime()
+        shareProperty.getProvisionedEgressMBps()
+        shareProperty.getProvisionedIngressMBps()
+        shareProperty.getProvisionedIops()
+    }
+
     def "Set and get properties"() {
         given:
         def originalProperties = primaryFileServiceAsyncClient.getProperties().block()

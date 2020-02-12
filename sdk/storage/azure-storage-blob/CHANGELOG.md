@@ -4,6 +4,14 @@
 - Added ability to access BlobProperties from BlobInputStream.
 - Modified downloadToFile to populate BlobProperties.blobSize to be the actual blob size instead of the content length of the first range. 
 
+- Added support for the 2019-07-07 service version.
+- Added support for encryption scopes service, container and blob builders now accept an encryption scope parameter and service and container builders accept a BlobContainerEncryptionScope parameter.
+- Added support for managed disk page range diff for managed disk accounts.
+
+## 12.3.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+- Update `azure-storage-common` to version 12.3.1
+
 ## 12.3.0 (2020-01-16)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.3.0/sdk/storage/azure-storage-blob/README.md)

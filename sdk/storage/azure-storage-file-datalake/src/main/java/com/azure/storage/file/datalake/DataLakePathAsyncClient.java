@@ -11,7 +11,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
@@ -27,6 +26,7 @@ import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -756,11 +756,10 @@ public class DataLakePathAsyncClient {
         String newBlobEndpoint = BlobUrlParts.parse(DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(),
             "blob", "dfs")).setBlobName(destinationPath).setContainerName(destinationFileSystem).toUrl().toString();
 
-        // TODO (gapra) : Investigate how to convert from datalake service version to blob service version
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
             .endpoint(newBlobEndpoint)
-            .serviceVersion(BlobServiceVersion.getLatest());
+            .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()));
     }
 
     BlockBlobAsyncClient getBlockBlobAsyncClient() {

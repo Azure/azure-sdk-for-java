@@ -2,6 +2,9 @@
 
 ## 12.3.0-beta.1 (Unreleased)
 
+## 12.2.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+- Update `azure-storage-common` to version 12.3.1
 
 ## 12.2.0 (2020-01-08)
 This package's
