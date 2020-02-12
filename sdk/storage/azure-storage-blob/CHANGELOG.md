@@ -1,6 +1,6 @@
 # Release History
 
-## 12.4.0-beta.1 (Unreleased)
+## 12.4.0 (2020-02-12)
 - Added ability to access BlobProperties from BlobInputStream.
 - Modified downloadToFile to populate BlobProperties.blobSize to be the actual blob size instead of the content length of the first range. 
 
