@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.InvalidPathException;
 import java.nio.file.LinkOption;
@@ -28,7 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * The root component, if it is present, is the first element of the path and is denoted by a {@code ':'} as the last
