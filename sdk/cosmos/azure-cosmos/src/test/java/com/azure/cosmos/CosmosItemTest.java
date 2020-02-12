@@ -25,7 +25,7 @@ public class CosmosItemTest extends TestSuiteBase {
     private CosmosClient client;
     private CosmosContainer container;
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuilders")
     public CosmosItemTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
