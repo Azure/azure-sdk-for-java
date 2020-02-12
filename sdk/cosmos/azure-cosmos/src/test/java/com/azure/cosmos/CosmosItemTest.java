@@ -180,9 +180,7 @@ public class CosmosItemTest extends TestSuiteBase {
         do {
             Iterable<FeedResponse<CosmosItemProperties>> feedResponseIterable =
                 feedResponseIterator1.iterableByPage(continuationToken, pageSize);
-            Iterator<FeedResponse<CosmosItemProperties>> feedResponse = feedResponseIterable.iterator();
-            for (; feedResponse.hasNext(); ) {
-                FeedResponse<CosmosItemProperties> fr = feedResponse.next();
+            for (FeedResponse<CosmosItemProperties> fr : feedResponseIterable) {
                 int resultSize = fr.getResults().size();
                 assertThat(resultSize).isEqualTo(pageSize);
                 finalDocumentCount += fr.getResults().size();
