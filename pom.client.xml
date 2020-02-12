@@ -1234,6 +1234,7 @@
     <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
+    <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
     <module>sdk/identity/azure-identity</module>
     <module>sdk/keyvault/azure-security-keyvault-certificates</module>
     <module>sdk/keyvault/azure-security-keyvault-keys</module>
