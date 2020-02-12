@@ -13,7 +13,9 @@ import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.Resource;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -24,6 +26,7 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.google.common.base.Strings;
 import io.reactivex.subscribers.TestSubscriber;
+import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.testng.annotations.AfterClass;
@@ -370,8 +373,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         
     }
     
-
-
     // TODO (DANOBLE) ParallelDocumentQueryTest initialization intermittently fails in CI environments
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6398
     @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 4 * SETUP_TIMEOUT)
@@ -541,4 +542,23 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         return receivedDocuments;
     }
+
+    //TODO: This fails in gateway mode. Need to fix readMany for gateway
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readMany() throws Exception {
+        List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
+        int count = 0;
+        for (int i = 0; i < createdDocuments.size(); i = i +3) {
+            pairList.add(Pair.of(createdDocuments.get(i).getId(),
+                                 new PartitionKey(createdDocuments.get(i).get("mypk"))));
+            count++;
+        }
+        System.out.println("pairList = " + pairList.size());
+        FeedResponse<Document> documentFeedResponse =
+            BridgeInternal.readMany(createdCollection, pairList).block();
+        assertThat(pairList.size()).isEqualTo(documentFeedResponse.getResults().size());
+    }
+
+    
+    
 }

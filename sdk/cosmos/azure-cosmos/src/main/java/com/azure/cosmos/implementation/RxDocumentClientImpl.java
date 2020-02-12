@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactor
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.Paginator;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.AccessConditionType;
@@ -37,9 +38,11 @@ import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.TokenResolver;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -54,6 +57,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -1326,6 +1330,155 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         return queryDocuments(collectionLink, "SELECT * FROM r", options);
+    }
+
+    @Override
+    public Mono<FeedResponse<Document>> readMany(
+        List<Pair<String, PartitionKey>> itemKeyList,
+        String collectionLink) {
+        
+        DocumentCollection collection = 
+            this.readCollection(collectionLink, new RequestOptions()).block().getResource();
+
+        return this.readCollection(collectionLink, new RequestOptions())
+            .flatMap(documentCollectionResourceResponse -> {
+                         Map<PartitionKeyRange, List<Pair<String, PartitionKey>>> partitionRangeItemKeyMap =
+                             new HashMap<>();
+                         Mono<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = partitionKeyRangeCache
+                                                                                             .tryLookupAsync(collection
+                                                                                                                 .getResourceId(),
+                                                                                                             null,
+                                                                                                             null);
+                         return valueHolderMono.flatMap(collectionRoutingMapValueHolder ->{
+                             CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
+                             itemKeyList
+                                 .forEach(stringPartitionKeyPair -> {
+
+                                     String effectivePartitionKeyString = PartitionKeyInternalHelper
+                                                                              .getEffectivePartitionKeyString(BridgeInternal
+                                                                                                                  .getPartitionKeyInternal(stringPartitionKeyPair
+                                                                                                                                               .getRight()),
+                                                                                                              collection
+                                                                                                                  .getPartitionKey());
+
+                                     //use routing map to find the partitionKeyRangeId of each effectivePartitionKey
+
+
+                                     PartitionKeyRange range =
+                                         routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+
+
+                                     //group the itemKeyList based on partitionKeyRangeId
+                                     if (partitionRangeItemKeyMap.get(range) == null) {
+                                         List<Pair<String, PartitionKey>> list = new ArrayList<>();
+                                         list.add(stringPartitionKeyPair);
+                                         partitionRangeItemKeyMap.put(range, list);
+                                     } else {
+                                         List<Pair<String, PartitionKey>> pairs = partitionRangeItemKeyMap.get(range);
+                                         pairs.add(stringPartitionKeyPair);
+                                         partitionRangeItemKeyMap.put(range, pairs);
+                                     }
+
+                                 });
+
+                             Set<PartitionKeyRange> partitionKeyRanges = partitionRangeItemKeyMap.keySet();
+                             List<PartitionKeyRange> ranges = new ArrayList<>();
+                             ranges.addAll(partitionKeyRanges);
+
+                             //Create the range query map that contains the query to be run for that partitionkeyrange
+                             Map<PartitionKeyRange, String> rangeQueryMap;
+                             rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap, collection.getPartitionKey());
+
+                             String sqlQuery = "this is dummy and only used for creating " +
+                                                   "ParallelDocumentQueryExecutioncontext, but not used";
+
+                             return createReadManyQuery(collectionLink, new SqlQuerySpec(sqlQuery), new FeedOptions(), Document.class,
+                                                        ResourceType.Document, collection, rangeQueryMap)
+                                        .collectList() // aggregating the result construct a FeedResponse and aggregate RUs.
+                                        .map(feedList -> {
+                                            List<Document> finalList = new ArrayList<>();
+                                            HashMap<String, String> headers = new HashMap<>();
+                                            double requestCharge = 0;
+                                            for (FeedResponse<Document> page : feedList) {
+                                                requestCharge += page.getRequestCharge();
+                                                finalList.addAll(page.getResults());
+                                            }
+                                            headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
+                                            FeedResponse<Document> frp = BridgeInternal.createFeedResponse(finalList, headers);
+                                            return frp;
+                                        });
+                         });
+                     }
+            );
+      
+    }
+
+    // TODO: This needs refactoring and optimization and betterment and everything
+    private Map<PartitionKeyRange, String> getRangeQueryMap(
+        Map<PartitionKeyRange, List<Pair<String, PartitionKey>>> partitionRangeItemKeyMap,
+        PartitionKeyDefinition partitionKeyDefinition) {
+        //TODO: Optimise this
+        String partitionKeyPathString = partitionKeyDefinition.getPaths().get(0);
+        String partitionKeyPath = (new StringBuilder(partitionKeyPathString)).deleteCharAt(0).toString();
+        
+        Map<PartitionKeyRange, String> rangeQueryMap = new HashMap<>();
+        
+        for (PartitionKeyRange range : partitionRangeItemKeyMap.keySet()) {
+            StringBuilder queryStringBuilder = new StringBuilder();
+            queryStringBuilder.append("select * from c where ");
+            List<Pair<String, PartitionKey>> pairsList = partitionRangeItemKeyMap.get(range);
+            for (Pair p : pairsList) {
+                queryStringBuilder.append("(c.id = \"");
+                queryStringBuilder.append(p.getLeft());
+                queryStringBuilder.append("\" and ");
+                queryStringBuilder.append(" c.");
+                // partition key def
+                queryStringBuilder.append(partitionKeyPath);
+                queryStringBuilder.append(("=\""));
+                
+                //partition key value
+                PartitionKey pkey = (PartitionKey) p.getRight();
+                String val = pkey.toString();
+                StringBuilder stringBuilder = new StringBuilder(val);
+                stringBuilder.delete(0, 2);
+                stringBuilder.setLength(stringBuilder.length()-2);
+                queryStringBuilder.append(stringBuilder.toString());
+                
+                queryStringBuilder.append("\") ");
+                queryStringBuilder.append(" or ");
+            }
+            
+            //removing last " or "
+            queryStringBuilder.delete((queryStringBuilder.length() -1) - 4, queryStringBuilder.length()-1); 
+
+            // Add query for this partition to rangeQueryMap
+            rangeQueryMap.put(range, queryStringBuilder.toString());
+        }
+        return rangeQueryMap;
+    }
+
+    private <T extends Resource> Flux<FeedResponse<T>> createReadManyQuery(
+        String parentResourceLink,
+        SqlQuerySpec sqlQuery,
+        FeedOptions options,
+        Class<T> klass,
+        ResourceType resourceTypeEnum,
+        DocumentCollection collection,
+        Map<PartitionKeyRange, String> rangeQueryMap) {
+
+        UUID activityId = Utils.randomUUID();
+        IDocumentQueryClient queryClient = DocumentQueryClientImpl(RxDocumentClientImpl.this);
+        Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
+            DocumentQueryExecutionContextFactory.createReadManyQueryAsync(queryClient, collection.getResourceId(),
+                                                                          sqlQuery,
+                                                                          rangeQueryMap,
+                                                                          options,
+                                                                          collection.getResourceId(),
+                                                                          parentResourceLink,
+                                                                          activityId,
+                                                                          klass,
+                                                                          resourceTypeEnum);
+        return executionContext.flatMap(IDocumentQueryExecutionContext::executeAsync);
     }
 
     @Override

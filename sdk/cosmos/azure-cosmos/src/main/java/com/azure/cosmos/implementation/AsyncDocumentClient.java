@@ -5,13 +5,16 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.DatabaseAccount;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.TokenResolver;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1322,6 +1325,14 @@ public interface AsyncDocumentClient {
      */
     Mono<DatabaseAccount> getDatabaseAccount();
 
+    /**
+     * Reads many documents at once
+     * @param itemKeyList document id and partition key pair that needs to be read
+     * @param collectionLink link for the documentcollection/container to be queried
+     * @return
+     */
+    Mono<FeedResponse<Document>> readMany(List<Pair<String, PartitionKey>> itemKeyList,
+                                                     String collectionLink);
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.
      */
