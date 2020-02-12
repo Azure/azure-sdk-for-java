@@ -297,8 +297,4 @@ class AzureFileSystemProviderSpec extends APISpec {
         expect: "Null directory means the path is targeting the root directory"
         ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, null)
     }
-
-    def rootToContainer(String root) {
-        return root.substring(0, root.length() - 1)
-    }
 }

@@ -499,6 +499,10 @@ class APISpec extends Specification {
         }
     }
 
+    def rootToContainer(String root) {
+        return root.substring(0, root.length() - 1)
+    }
+
     static class TestFileAttribute<T> implements  FileAttribute<T> {
         String name
         T value

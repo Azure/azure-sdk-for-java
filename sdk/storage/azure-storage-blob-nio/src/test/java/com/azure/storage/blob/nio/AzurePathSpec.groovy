@@ -361,7 +361,31 @@ class AzurePathSpec extends APISpec {
         thrown(ClassCastException)
     }
 
-    def "Path getBlobClient"() {
+    def "Path getBlobClient relative"() {
+        when:
+        def path = fs.getPath("foo/bar")
+        def client = ((AzurePath) path).toBlobClient()
 
+        then:
+        client.getBlobName() == "foo/bar"
+        client.getContainerName() == rootToContainer(fs.getDefaultDirectory().toString())
+    }
+
+    def "Path getBlobClient absolute"() {
+        when:
+        def path = fs.getPath(fs.getRootDirectories().last().toString(), "foo/bar")
+        def client = ((AzurePath) path).toBlobClient()
+
+        then:
+        client.getBlobName() == "foo/bar"
+        client.getContainerName() == rootToContainer(fs.getRootDirectories().last().toString())
+    }
+
+    def "Path getBlobClient fail"() {
+        when:
+        ((AzurePath) fs.getPath("fakeRoot:", "foo/bar")).toBlobClient() // Can't get a client to a nonexistent root/container.
+
+        then:
+        thrown(IOException)
     }
 }
