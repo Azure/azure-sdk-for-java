@@ -75,7 +75,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
                 return (EventHubManagementNode) new ManagementChannel(
                     createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
                     connectionOptions.getEntityPath(), connectionOptions.getTokenCredential(),
-                    this.tokenManagerProvider, this.messageSerializer);
+                    this.tokenManagerProvider, this.messageSerializer, connectionOptions.getScheduler());
             }))
             .cache();
     }
