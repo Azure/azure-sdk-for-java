@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.keys.implementation;
 
 import com.azure.core.http.rest.Page;
-import com.azure.core.util.IterableStream;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
