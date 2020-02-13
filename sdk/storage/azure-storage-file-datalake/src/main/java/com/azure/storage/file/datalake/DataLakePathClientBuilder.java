@@ -20,6 +20,7 @@ import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -90,7 +91,8 @@ public final class DataLakePathClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
      */
     public DataLakeFileClient buildFileClient() {
-        return new DataLakeFileClient(buildFileAsyncClient(), blobClientBuilder.buildClient().getBlockBlobClient());
+        return new DataLakeFileClient(buildFileAsyncClient(),
+            blobClientBuilder.buildClient().getBlockBlobClient());
     }
 
     /**
@@ -395,7 +397,6 @@ public final class DataLakePathClientBuilder {
         return this;
     }
 
-    // TODO (gapra) : Determine how to set blob version as well
     /**
      * Sets the {@link DataLakeServiceVersion} that is used when making API requests.
      * <p>
@@ -409,6 +410,7 @@ public final class DataLakePathClientBuilder {
      * @return the updated DataLakePathClientBuilder object
      */
     public DataLakePathClientBuilder serviceVersion(DataLakeServiceVersion version) {
+        blobClientBuilder.serviceVersion(TransformUtils.toBlobServiceVersion(version));
         this.version = version;
         return this;
     }

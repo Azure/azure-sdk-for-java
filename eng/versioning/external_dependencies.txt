@@ -26,21 +26,22 @@ commons-codec:commons-codec;1.13
 io.micrometer:micrometer-core;1.2.0
 io.micrometer:micrometer-registry-azure-monitor;1.2.0
 io.micrometer:micrometer-registry-graphite;1.2.0
-io.netty:netty-buffer;4.1.42.Final
-io.netty:netty-codec-http;4.1.42.Final
-io.netty:netty-codec-http2;4.1.42.Final
-io.netty:netty-handler;4.1.42.Final
-io.netty:netty-handler-proxy;4.1.42.Final
+io.netty:netty-buffer;4.1.44.Final
+io.netty:netty-codec-http;4.1.44.Final
+io.netty:netty-codec-http2;4.1.44.Final
+io.netty:netty-handler;4.1.44.Final
+io.netty:netty-handler-proxy;4.1.44.Final
 io.netty:netty-tcnative;2.0.26.Final
 io.netty:netty-tcnative-boringssl-static;2.0.26.Final
-io.netty:netty-transport-native-epoll;4.1.42.Final
-io.netty:netty-transport-native-unix-common;4.1.42.Final
-io.projectreactor.netty:reactor-netty;0.9.0.RELEASE
+io.netty:netty-transport-native-epoll;4.1.44.Final
+io.netty:netty-transport-native-unix-common;4.1.44.Final
+io.projectreactor.netty:reactor-netty;0.9.4.RELEASE
 io.projectreactor:reactor-core;3.3.0.RELEASE
 io.reactivex:rxjava;1.2.4
 org.apache.httpcomponents:httpclient;4.3.6
 org.apache.logging.log4j:log4j-api;2.11.1
 org.apache.logging.log4j:log4j-core;2.11.1
+org.apache.logging.log4j:log4j-slf4j-impl;2.13.0
 org.apache.qpid:proton-j;0.33.2
 org.asynchttpclient:async-http-client;2.10.4
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
@@ -48,7 +49,6 @@ org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
 org.powermock:powermock-api-mockito2;2.0.2
 org.powermock:powermock-module-junit4;2.0.2
 org.slf4j:slf4j-api;1.7.28
-org.slf4j:slf4j-log4j12;1.7.0
 org.slf4j:slf4j-simple;1.7.25
 
 ## Test dependency versions
@@ -66,7 +66,6 @@ io.opentelemetry:opentelemetry-api;0.2.0
 io.opentelemetry:opentelemetry-sdk;0.2.0
 io.projectreactor:reactor-test;3.3.0.RELEASE
 junit:junit;4.13-beta-3
-log4j:log4j;1.2.17
 org.assertj:assertj-core;3.11.1
 org.bouncycastle:bcprov-jdk15on;1.60
 org.eclipse.jetty:jetty-http;9.4.11.v20180605

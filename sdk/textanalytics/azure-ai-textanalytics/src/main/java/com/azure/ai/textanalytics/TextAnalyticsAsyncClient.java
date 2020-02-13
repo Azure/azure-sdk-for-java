@@ -126,6 +126,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string}
      *
      * @param text The text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link Mono} containing the {@link DetectedLanguage detected language} of the text.
      *
@@ -148,6 +150,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageWithResponse#string-string}
      *
      * @param text The text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified.
      *
@@ -177,6 +181,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#List}
      *
      * @param textInputs The list of texts to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link DetectLanguageResult detected language}.
@@ -198,6 +204,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatchWithResponse#List-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs The list of texts to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO
      * 3166-1 alpha-2. Defaults to "US" if not specified.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -229,6 +237,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatchWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -262,6 +272,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string}
      *
      * @param text the text to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link PagedFlux} containing the {@link CategorizedEntity categorized entities} of the text.
      *
@@ -286,6 +298,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string}
      *
      * @param text the text to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      *
@@ -314,6 +328,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesBatch#List}
      *
      * @param textInputs A list of texts to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link RecognizeEntitiesResult categorized entity} of the text.
@@ -335,6 +351,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesBatchWithResponse#List-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of texts to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -366,6 +384,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesBatchWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -398,6 +418,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string}
      *
      * @param text the text to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link PagedFlux} containing the {@link PiiEntity PII entities} of the text.
      *
@@ -420,6 +442,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string}
      *
      * @param text the text to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -449,6 +473,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#list}
      *
      * @param textInputs A list of text to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link RecognizePiiEntitiesResult PII entity} of the text.
@@ -473,6 +499,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatchWithResponse#list-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of text to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -505,6 +533,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatchWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -536,6 +566,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string}
      *
      * @param text the text to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link PagedFlux} containing the {@link LinkedEntity linked entities} of the text.
      *
@@ -557,6 +589,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string}
      *
      * @param text the text to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -585,7 +619,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#List}
      *
      * @param textInputs A list of text to recognize linked entities for.
-     *
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
      *
@@ -607,6 +642,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatchWithResponse#List-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of text to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -640,6 +677,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatchWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -671,6 +710,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string}
      *
      * @param text the text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link PagedFlux} containing the key phrases of the text.
      *
@@ -692,6 +733,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string-string}
      *
      * @param text the text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -719,6 +762,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#list}
      *
      * @param textInputs A list of text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link ExtractKeyPhraseResult key phrases} of the text.
@@ -741,6 +786,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatchWithResponse#List-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -773,6 +820,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatchWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -804,6 +853,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string}
      *
      * @param text the text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link Mono} containing the {@link DocumentSentiment document sentiment} of the text.
      *
@@ -829,6 +880,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentWithResponse#string-string}
      *
      * @param text the text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -858,6 +911,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#List}
      *
      * @param textInputs A list of text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link AnalyzeSentimentResult text sentiment} of the text.
@@ -884,6 +939,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatchWithResponse#List-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of text to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -915,6 +972,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatchWithResponse#List-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
