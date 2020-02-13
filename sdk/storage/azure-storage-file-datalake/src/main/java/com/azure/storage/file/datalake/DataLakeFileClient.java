@@ -30,6 +30,7 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -147,32 +148,32 @@ public class DataLakeFileClient extends DataLakePathClient {
     }
 
     /**
-     * Appends to a file, with the content of the specified file. By default this method will not overwrite an
+     * Creates a file, with the content of the specified file. By default this method will not overwrite an
      * existing file.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-long}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String}
      *
      * @param filePath Path of the file to upload
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, long destOffset) {
-        uploadFromFile(filePath, destOffset, false);
+    public void uploadFromFile(String filePath) {
+        uploadFromFile(filePath, false);
     }
 
     /**
-     * Appends to a file, with the content of the specified file.
+     * Creates a file, with the content of the specified file.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-long-boolean}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-boolean}
      *
      * @param filePath Path of the file to upload
      * @param overwrite Whether or not to overwrite, should the file already exist
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, long destOffset, boolean overwrite) {
+    public void uploadFromFile(String filePath, boolean overwrite) {
         DataLakeRequestConditions requestConditions = null;
 
         if (!overwrite) {
@@ -182,30 +183,29 @@ public class DataLakeFileClient extends DataLakePathClient {
             }
             requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        uploadFromFile(filePath, destOffset, null, null, requestConditions, null);
+        uploadFromFile(filePath, null, null, null, requestConditions, null);
     }
 
     /**
-     * Appends to a file, with the content of the specified file.
+     * Creates a file, with the content of the specified file.
      * <p>
      * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-long-ParallelTransferOptions-PathHttpHeaders-DataLakeRequestConditions-Duration}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-ParallelTransferOptions-PathHttpHeaders-DataLakeRequestConditions-Duration}
      *
      * @param filePath Path of the file to upload
-     * @param fileOffset The position where the data is to be appended.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link PathHttpHeaders}
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, long fileOffset, ParallelTransferOptions parallelTransferOptions,
-        PathHttpHeaders headers, DataLakeRequestConditions requestConditions, Duration timeout) {
+    public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
+        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions, Duration timeout) {
         Mono<Void> upload = this.dataLakeFileAsyncClient.uploadFromFile(
-            filePath, fileOffset, parallelTransferOptions, headers, requestConditions);
+            filePath, parallelTransferOptions, headers, metadata, requestConditions);
 
         try {
             StorageImplUtils.blockWithOptionalTimeout(upload, timeout);

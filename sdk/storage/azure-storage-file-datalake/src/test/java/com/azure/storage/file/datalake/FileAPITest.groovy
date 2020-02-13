@@ -1499,23 +1499,18 @@ class FileAPITest extends APISpec {
 //        response.getHeaders().getValue("Content-MD5") != null
 //        Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
 //    }
-//
-//    /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
-//       for getBlockID that will change every time test is run
-//     */
-//
+
     @Requires({ liveMode() })
     @Unroll
     def "Upload from file"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.create().block()
         def file = getRandomFile(fileSize)
 
         when:
         // Block length will be ignored for single shot.
-        StepVerifier.create(fac.uploadFromFile(file.getPath(), 0, false, false, new ParallelTransferOptions(blockSize, null,
-            null, null), null, null))
+        StepVerifier.create(fac.uploadFromFile(file.getPath(), new ParallelTransferOptions(blockSize, null,
+            null, null), null, null, null))
             .verifyComplete()
 
         then:
@@ -1548,13 +1543,13 @@ class FileAPITest extends APISpec {
         fac.create().block()
         when:
         def file = getRandomFile(50)
-        fc.uploadFromFile(file.toPath().toString(), 0)
+        fc.uploadFromFile(file.toPath().toString())
 
         then:
         thrown(DataLakeStorageException)
 
         and:
-        def uploadVerifier = StepVerifier.create(fac.uploadFromFile(getRandomFile(50).toPath().toString(), 0))
+        def uploadVerifier = StepVerifier.create(fac.uploadFromFile(getRandomFile(50).toPath().toString()))
 
         then:
         uploadVerifier.verifyError(DataLakeStorageException)
@@ -1597,13 +1592,13 @@ class FileAPITest extends APISpec {
 
         when:
         def file = getRandomFile(50)
-        fc.uploadFromFile(file.toPath().toString(), 0, true)
+        fc.uploadFromFile(file.toPath().toString(), true)
 
         then:
         notThrown(BlobStorageException)
 
         and:
-        def uploadVerifier = StepVerifier.create(fac.uploadFromFile(getRandomFile(50).toPath().toString(), 0, true))
+        def uploadVerifier = StepVerifier.create(fac.uploadFromFile(getRandomFile(50).toPath().toString(), true))
 
         then:
         uploadVerifier.verifyComplete()
@@ -1635,7 +1630,6 @@ class FileAPITest extends APISpec {
     def "Upload from file reporter"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.create().block()
 
         when:
         def uploadReporter = new FileUploadReporter()
@@ -1645,8 +1639,8 @@ class FileAPITest extends APISpec {
             uploadReporter, blockSize - 1)
 
         then:
-        StepVerifier.create(fac.uploadFromFile(file.toPath().toString(), 0, false, false, parallelTransferOptions,
-            null, null))
+        StepVerifier.create(fac.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
+            null, null, null))
             .verifyComplete()
 
         // Check if the reported size is equal to or grater than the file size in case there are retries.
@@ -1670,8 +1664,8 @@ class FileAPITest extends APISpec {
         def file = getRandomFile(dataSize)
 
         when:
-        fc.uploadFromFile(file.toPath().toString(), 0, false, false,
-            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null, null)
+        fc.uploadFromFile(file.toPath().toString(),
+            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null, null, null)
 
         then:
         fc.getProperties().getFileSize() == dataSize
@@ -1697,7 +1691,7 @@ class FileAPITest extends APISpec {
 
         expect:
         def len = buffer1.remaining() + buffer2.remaining() + buffer3.remaining()
-        StepVerifier.create(fac.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), 0, len, false, false, null, true))
+        StepVerifier.create(fac.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), len, null, true))
             .assertNext({ assert it.getETag() != null })
             .verifyComplete()
 
@@ -1723,7 +1717,7 @@ class FileAPITest extends APISpec {
         when:
         def data = getRandomData(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize, numBuffs, null, 4 * Constants.MB)
-        fac.upload(Flux.just(data), 0, dataSize, false, false, parallelTransferOptions, true).block()
+        fac.upload(Flux.just(data), dataSize, parallelTransferOptions, true).block()
         data.position(0)
 
         then:
@@ -1787,7 +1781,6 @@ class FileAPITest extends APISpec {
     def "Buffered upload with reporter"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.create().block()
 
         when:
         def uploadReporter = new Reporter(blockSize)
@@ -1796,8 +1789,8 @@ class FileAPITest extends APISpec {
             uploadReporter, 4 * Constants.MB)
 
         then:
-        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(size)), 0, size, false, false,
-            parallelTransferOptions, null, null))
+        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(size)), size,
+            parallelTransferOptions, null, null, null))
             .assertNext({
                 assert it.getStatusCode() == 200
 
@@ -1857,7 +1850,6 @@ class FileAPITest extends APISpec {
     def "Buffered upload handle pathing"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.create().block()
         def dataList = [] as List<ByteBuffer>
         def dataSize = 0
         for (def size : dataSizeList) {
@@ -1865,7 +1857,7 @@ class FileAPITest extends APISpec {
             dataList.add(getRandomData(size))
         }
 
-        def uploadOperation = fac.upload(Flux.fromIterable(dataList), 0, dataSize, false, false, new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
+        def uploadOperation = fac.upload(Flux.fromIterable(dataList), dataSize, new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fac.read())))
@@ -1885,14 +1877,13 @@ class FileAPITest extends APISpec {
     def "Buffered upload handle pathing hot flux"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.create().block()
         def dataList = [] as List<ByteBuffer>
         def dataSize = 0
         for (def size : dataSizeList) {
             dataSize += size
             dataList.add(getRandomData(size))
         }
-        def uploadOperation = fac.upload(Flux.fromIterable(dataList).publish().autoConnect(), 0, dataSize, false, false, new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
+        def uploadOperation = fac.upload(Flux.fromIterable(dataList).publish().autoConnect(), dataSize, new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fac.read())))
@@ -1912,7 +1903,7 @@ class FileAPITest extends APISpec {
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
         expect:
-        StepVerifier.create(fac.upload(null, 0, defaultDataSize, false, false, new ParallelTransferOptions(4, 4, null, null), true))
+        StepVerifier.create(fac.upload(null, defaultDataSize, new ParallelTransferOptions(4, 4, null, null), true))
             .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
@@ -1927,14 +1918,14 @@ class FileAPITest extends APISpec {
         when:
         def data = getRandomByteArray(dataSize)
         def contentMD5 = validateContentMD5 ? MessageDigest.getInstance("MD5").digest(data) : null
-        def uploadOperation = fac.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), 0, dataSize, false, false, new ParallelTransferOptions(null, null, null, 4 * Constants.MB), new PathHttpHeaders()
+        def uploadOperation = fac.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), dataSize, new ParallelTransferOptions(null, null, null, 4 * Constants.MB), new PathHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
             .setContentMd5(contentMD5)
             .setContentType(contentType),
-            null)
+            null, null)
 
         then:
         StepVerifier.create(uploadOperation.then(fac.getPropertiesWithResponse(null)))
@@ -1958,12 +1949,11 @@ class FileAPITest extends APISpec {
     def "Buffered upload options"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.create().block()
         def data = getRandomData(dataSize)
 
         when:
-        fac.uploadWithResponse(Flux.just(data), 0, dataSize, false, false,
-            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null).block()
+        fac.uploadWithResponse(Flux.just(data), dataSize,
+            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null, null).block()
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
@@ -1984,7 +1974,6 @@ class FileAPITest extends APISpec {
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
 
-        fac.upload(defaultFlux, 0, defaultDataSize, false, false, null, true).block()
         match = setupPathMatchCondition(fac, match)
         leaseID = setupPathLeaseCondition(fac, leaseID)
         def requestConditions = new DataLakeRequestConditions()
@@ -1996,8 +1985,8 @@ class FileAPITest extends APISpec {
 
         expect:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, null, null, null)
-        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)), defaultDataSize, 10, false, false,
-            parallelTransferOptions, null, requestConditions))
+        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)), 10,
+            parallelTransferOptions, null, null, requestConditions))
             .assertNext({ assert it.getStatusCode() == 200 })
             .verifyComplete()
 
@@ -2018,7 +2007,6 @@ class FileAPITest extends APISpec {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
-        fac.upload(defaultFlux, 0, defaultDataSize, false, false, null, true).block()
         noneMatch = setupPathMatchCondition(fac, noneMatch)
         leaseID = setupPathLeaseCondition(fac, leaseID)
         def requestConditions = new DataLakeRequestConditions()
@@ -2030,8 +2018,8 @@ class FileAPITest extends APISpec {
         def parallelTransferOptions = new ParallelTransferOptions(10, null, null, null)
 
         expect:
-        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)), defaultDataSize, 10, false, false,
-            parallelTransferOptions, null, requestConditions))
+        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)), 10,
+            parallelTransferOptions, null, null, requestConditions))
             .verifyErrorSatisfies({
                 assert it instanceof DataLakeStorageException
                 def storageException = (DataLakeStorageException) it
@@ -2055,7 +2043,6 @@ class FileAPITest extends APISpec {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
-        fac.upload(defaultFlux, 0, defaultDataSize, false, false, null, true).block()
         def leaseID = setupPathLeaseCondition(fac, garbageLeaseID)
         def requestConditions = new DataLakeRequestConditions().setLeaseId(leaseID)
 
@@ -2064,8 +2051,8 @@ class FileAPITest extends APISpec {
             numBuffers as int, null, null)
 
         then:
-        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)), defaultDataSize, 10, false, false,
-            parallelTransferOptions, null, requestConditions))
+        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)), 10,
+            parallelTransferOptions, null, null, requestConditions))
             .verifyErrorSatisfies({ assert it instanceof DataLakeStorageException })
 
         where:
@@ -2157,7 +2144,7 @@ class FileAPITest extends APISpec {
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
         expect:
-        StepVerifier.create(fac.upload(defaultFlux, 0, defaultDataSize, false, false, null))
+        StepVerifier.create(fac.upload(defaultFlux, defaultDataSize, null))
             .verifyError(IllegalArgumentException)
     }
 
@@ -2192,13 +2179,13 @@ class FileAPITest extends APISpec {
 
         when:
         def file = getRandomFile(50)
-        fc.uploadFromFile(file.toPath().toString(), 0, true)
+        fc.uploadFromFile(file.toPath().toString(), true)
 
         then:
         notThrown(BlobStorageException)
 
         and:
-        def uploadVerifier = StepVerifier.create(fac.uploadFromFile(getRandomFile(50).toPath().toString(), 0, true))
+        def uploadVerifier = StepVerifier.create(fac.uploadFromFile(getRandomFile(50).toPath().toString(), true))
 
         then:
         uploadVerifier.verifyComplete()
