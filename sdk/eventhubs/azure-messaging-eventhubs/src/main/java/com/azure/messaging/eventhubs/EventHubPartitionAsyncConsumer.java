@@ -14,6 +14,7 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,6 +36,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private final String consumerGroup;
     private final String partitionId;
     private final boolean trackLastEnqueuedEventProperties;
+    private final Scheduler scheduler;
     private final EmitterProcessor<PartitionEvent> emitterProcessor;
     private final EventPosition initialPosition;
 
@@ -43,7 +45,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     EventHubPartitionAsyncConsumer(AmqpReceiveLinkProcessor amqpReceiveLinkProcessor,
         MessageSerializer messageSerializer, String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
         String partitionId, AtomicReference<Supplier<EventPosition>> currentEventPosition,
-        boolean trackLastEnqueuedEventProperties) {
+        boolean trackLastEnqueuedEventProperties, Scheduler scheduler) {
         this.initialPosition = Objects.requireNonNull(currentEventPosition.get().get(),
             "'currentEventPosition.get().get()' cannot be null.");
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
@@ -53,6 +55,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
+        this.scheduler = scheduler;
 
         if (trackLastEnqueuedEventProperties) {
             lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
@@ -79,6 +82,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                         event.getData().getBodyAsString());
                 }
             })
+            .publishOn(scheduler)
             .subscribeWith(EmitterProcessor.create(false));
     }
 

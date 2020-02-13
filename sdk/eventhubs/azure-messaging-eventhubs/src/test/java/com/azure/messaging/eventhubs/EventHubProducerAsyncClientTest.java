@@ -131,7 +131,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getEntityPath(), connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, false);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false);
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
         when(sendLink2.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -251,7 +251,7 @@ class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions()
             .setPartitionId(partitionId);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false);
 
         when(connection.createSendLink(
             argThat(name -> name.endsWith(partitionId)), argThat(name -> name.endsWith(partitionId)), eq(retryOptions)))
@@ -293,7 +293,8 @@ class EventHubProducerAsyncClientTest {
     }
 
     /**
-     * Verifies send, message and addLink spans are only invoked once even for multiple retry attempts to send the message.
+     * Verifies send, message and addLink spans are only invoked once even for multiple retry attempts to send the
+     * message.
      */
     @Test
     void sendMessageRetrySpanTest() {
@@ -303,7 +304,7 @@ class EventHubProducerAsyncClientTest {
         TracerProvider tracerProvider = new TracerProvider(tracers);
 
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, false);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false);
 
         final String failureKey = "fail";
         final EventData testData = new EventData("test");
@@ -438,7 +439,7 @@ class EventHubProducerAsyncClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false);
         final AmqpSendLink link = mock(AmqpSendLink.class);
 
         when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -735,7 +736,7 @@ class EventHubProducerAsyncClientTest {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient sharedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            hubConnection, retryOptions, tracerProvider, messageSerializer, true);
+            hubConnection, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), true);
 
         // Act
         sharedProducer.close();
@@ -752,7 +753,7 @@ class EventHubProducerAsyncClientTest {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            hubConnection, retryOptions, tracerProvider, messageSerializer, false);
+            hubConnection, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false);
 
         // Act
         dedicatedProducer.close();
@@ -769,7 +770,7 @@ class EventHubProducerAsyncClientTest {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            hubConnection, retryOptions, tracerProvider, messageSerializer, false);
+            hubConnection, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false);
 
         // Act
         dedicatedProducer.close();
@@ -804,7 +805,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getEntityPath(), connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, false);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false);
 
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
@@ -877,7 +878,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getEntityPath(), connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, false);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false);
 
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
@@ -952,7 +953,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getEntityPath(), connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, false);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false);
 
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);

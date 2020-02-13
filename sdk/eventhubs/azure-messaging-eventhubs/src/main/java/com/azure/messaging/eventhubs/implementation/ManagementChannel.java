@@ -16,6 +16,7 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +51,7 @@ public class ManagementChannel implements EventHubManagementNode {
 
     private final TokenCredential tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
+    private final Scheduler scheduler;
     private final String eventHubName;
     private final MessageSerializer messageSerializer;
     private final TokenManagerProvider tokenManagerProvider;
@@ -64,7 +66,7 @@ public class ManagementChannel implements EventHubManagementNode {
      * @param messageSerializer Maps responses from the management channel.
      */
     ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
-                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, Scheduler scheduler) {
 
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
@@ -72,6 +74,7 @@ public class ManagementChannel implements EventHubManagementNode {
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
+        this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
     }
 
     /**
@@ -84,7 +87,7 @@ public class ManagementChannel implements EventHubManagementNode {
         properties.put(MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return getProperties(properties, EventHubProperties.class);
+        return getProperties(properties, EventHubProperties.class).publishOn(scheduler);
     }
 
     /**
@@ -113,7 +116,7 @@ public class ManagementChannel implements EventHubManagementNode {
 
             return channelMono.flatMap(x -> x.sendWithAck(request))
                 .map(message -> messageSerializer.deserialize(message, responseType));
-        });
+        }).publishOn(scheduler);
     }
 
     /**
