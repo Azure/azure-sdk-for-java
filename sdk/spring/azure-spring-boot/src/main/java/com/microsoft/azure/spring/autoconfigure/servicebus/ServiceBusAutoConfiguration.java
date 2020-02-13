@@ -12,7 +12,8 @@ import com.microsoft.azure.servicebus.TopicClient;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.telemetry.TelemetrySender;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -26,16 +27,19 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.microsoft.azure.telemetry.TelemetryData.*;
+import static com.microsoft.azure.telemetry.TelemetryData.HASHED_NAMESPACE;
+import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 @Lazy
-@Slf4j
 @Configuration
 @ConditionalOnResource(resources = "classpath:servicebus.enable.config")
 @EnableConfigurationProperties(ServiceBusProperties.class)
 @ConditionalOnProperty(prefix = "azure.servicebus", value = "connection-string")
 public class ServiceBusAutoConfiguration {
+
+    private static final Logger log = LoggerFactory.getLogger(ServiceBusAutoConfiguration.class);
 
     private final ServiceBusProperties properties;
 

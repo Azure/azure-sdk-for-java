@@ -6,8 +6,8 @@
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
@@ -16,12 +16,13 @@ import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Validated
 @ConfigurationProperties("azure.activedirectory")
-@Data
-@Slf4j
 public class AADAuthenticationProperties {
+
+    private static final Logger log = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
 
@@ -96,7 +97,6 @@ public class AADAuthenticationProperties {
      * Properties dedicated to changing the behavior of how the groups are mapped from the Azure AD response. Depending
      * on the graph API used the object will not be the same.
      */
-    @Data
     public static class UserGroupProperties {
 
         /**
@@ -125,7 +125,65 @@ public class AADAuthenticationProperties {
         @NotEmpty
         private String objectIDKey = "objectId";
 
+        public List<String> getAllowedGroups() {
+            return allowedGroups;
+        }
+
+        public void setAllowedGroups(List<String> allowedGroups) {
+            this.allowedGroups = allowedGroups;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getObjectIDKey() {
+            return objectIDKey;
+        }
+
+        public void setObjectIDKey(String objectIDKey) {
+            this.objectIDKey = objectIDKey;
+        }
+
+        @Override
+        public String toString() {
+            return "UserGroupProperties{" +
+                "allowedGroups=" + allowedGroups +
+                ", key='" + key + '\'' +
+                ", value='" + value + '\'' +
+                ", objectIDKey='" + objectIDKey + '\'' +
+                '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            UserGroupProperties that = (UserGroupProperties) o;
+            return Objects.equals(allowedGroups, that.allowedGroups) &&
+                Objects.equals(key, that.key) &&
+                Objects.equals(value, that.value) &&
+                Objects.equals(objectIDKey, that.objectIDKey);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(allowedGroups, key, value, objectIDKey);
+        }
     }
+
 
     /**
      * Validates at least one of the user group properties are populated.
@@ -142,5 +200,145 @@ public class AADAuthenticationProperties {
         }
     }
 
+    public static Logger getLog() {
+        return log;
+    }
 
+    public static String getDefaultServiceEnvironment() {
+        return DEFAULT_SERVICE_ENVIRONMENT;
+    }
+
+    public UserGroupProperties getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(UserGroupProperties userGroup) {
+        this.userGroup = userGroup;
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public void setActiveDirectoryGroups(List<String> activeDirectoryGroups) {
+        this.activeDirectoryGroups = activeDirectoryGroups;
+    }
+
+    public String getAppIdUri() {
+        return appIdUri;
+    }
+
+    public void setAppIdUri(String appIdUri) {
+        this.appIdUri = appIdUri;
+    }
+
+    public int getJwtConnectTimeout() {
+        return jwtConnectTimeout;
+    }
+
+    public void setJwtConnectTimeout(int jwtConnectTimeout) {
+        this.jwtConnectTimeout = jwtConnectTimeout;
+    }
+
+    public int getJwtReadTimeout() {
+        return jwtReadTimeout;
+    }
+
+    public void setJwtReadTimeout(int jwtReadTimeout) {
+        this.jwtReadTimeout = jwtReadTimeout;
+    }
+
+    public int getJwtSizeLimit() {
+        return jwtSizeLimit;
+    }
+
+    public void setJwtSizeLimit(int jwtSizeLimit) {
+        this.jwtSizeLimit = jwtSizeLimit;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public boolean isAllowTelemetry() {
+        return allowTelemetry;
+    }
+
+    public void setAllowTelemetry(boolean allowTelemetry) {
+        this.allowTelemetry = allowTelemetry;
+    }
+
+    public Boolean getSessionStateless() {
+        return sessionStateless;
+    }
+
+    public void setSessionStateless(Boolean sessionStateless) {
+        this.sessionStateless = sessionStateless;
+    }
+
+    @Override
+    public String toString() {
+        return "AADAuthenticationProperties{" +
+            "userGroup=" + userGroup +
+            ", environment='" + environment + '\'' +
+            ", clientId='" + clientId + '\'' +
+            ", clientSecret='" + clientSecret + '\'' +
+            ", activeDirectoryGroups=" + activeDirectoryGroups +
+            ", appIdUri='" + appIdUri + '\'' +
+            ", jwtConnectTimeout=" + jwtConnectTimeout +
+            ", jwtReadTimeout=" + jwtReadTimeout +
+            ", jwtSizeLimit=" + jwtSizeLimit +
+            ", tenantId='" + tenantId + '\'' +
+            ", allowTelemetry=" + allowTelemetry +
+            ", sessionStateless=" + sessionStateless +
+            '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AADAuthenticationProperties that = (AADAuthenticationProperties) o;
+        return jwtConnectTimeout == that.jwtConnectTimeout &&
+            jwtReadTimeout == that.jwtReadTimeout &&
+            jwtSizeLimit == that.jwtSizeLimit &&
+            allowTelemetry == that.allowTelemetry &&
+            Objects.equals(userGroup, that.userGroup) &&
+            Objects.equals(environment, that.environment) &&
+            Objects.equals(clientId, that.clientId) &&
+            Objects.equals(clientSecret, that.clientSecret) &&
+            Objects.equals(activeDirectoryGroups, that.activeDirectoryGroups) &&
+            Objects.equals(appIdUri, that.appIdUri) &&
+            Objects.equals(tenantId, that.tenantId) &&
+            Objects.equals(sessionStateless, that.sessionStateless);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userGroup, environment, clientId, clientSecret, activeDirectoryGroups, appIdUri, jwtConnectTimeout, jwtReadTimeout, jwtSizeLimit, tenantId, allowTelemetry, sessionStateless);
+    }
 }

@@ -8,6 +8,7 @@ package com.microsoft.azure.spring.autoconfigure.aad;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.BadJWTException;
 import junitparams.FileParameters;
 import junitparams.JUnitParamsRunner;
@@ -27,14 +28,13 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @RunWith(JUnitParamsRunner.class)
 public class UserPrincipalManagerTest {
 
-    private static ImmutableJWKSet immutableJWKSet;
+    private static ImmutableJWKSet<SecurityContext> immutableJWKSet;
 
     @BeforeClass
     public static void setupClass() throws Exception {
         final X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509")
                 .generateCertificate(Files.newInputStream(Paths.get("src/test/resources/test-public-key.txt")));
-        immutableJWKSet = new ImmutableJWKSet<>(new JWKSet(JWK.parse(
-                cert)));
+        immutableJWKSet = new ImmutableJWKSet<>(new JWKSet(JWK.parse(cert)));
     }
 
     private UserPrincipalManager userPrincipalManager;
@@ -44,8 +44,8 @@ public class UserPrincipalManagerTest {
     public void testAlgIsTakenFromJWT() throws Exception {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
         final UserPrincipal userPrincipal = userPrincipalManager.buildUserPrincipal(
-                new String(Files.readAllBytes(
-                        Paths.get("src/test/resources/jwt-signed.txt")), StandardCharsets.UTF_8));
+            new String(Files.readAllBytes(
+            Paths.get("src/test/resources/jwt-signed.txt")), StandardCharsets.UTF_8));
         assertThat(userPrincipal).isNotNull().extracting(UserPrincipal::getIssuer, UserPrincipal::getSubject)
                 .containsExactly("https://sts.windows.net/test", "test@example.com");
     }
@@ -54,8 +54,8 @@ public class UserPrincipalManagerTest {
     public void invalidIssuer() {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(
-                new String(Files.readAllBytes(
-                        Paths.get("src/test/resources/jwt-bad-issuer.txt")), StandardCharsets.UTF_8)))
+            new String(Files.readAllBytes(
+                Paths.get("src/test/resources/jwt-bad-issuer.txt")), StandardCharsets.UTF_8)))
                 .isInstanceOf(BadJWTException.class);
     }
 
@@ -72,8 +72,8 @@ public class UserPrincipalManagerTest {
     public void nullIssuer() {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(
-                new String(Files.readAllBytes(
-                        Paths.get("src/test/resources/jwt-null-issuer.txt")), StandardCharsets.UTF_8)))
+            new String(Files.readAllBytes(
+                Paths.get("src/test/resources/jwt-null-issuer.txt")), StandardCharsets.UTF_8)))
                 .isInstanceOf(BadJWTException.class);
     }
 }

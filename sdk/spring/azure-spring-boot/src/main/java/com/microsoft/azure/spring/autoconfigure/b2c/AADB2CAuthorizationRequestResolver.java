@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.spring.autoconfigure.b2c;
 
-import lombok.NonNull;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;

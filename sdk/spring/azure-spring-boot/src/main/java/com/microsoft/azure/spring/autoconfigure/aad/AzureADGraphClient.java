@@ -15,7 +15,8 @@ import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.UserAssertion;
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -40,8 +41,10 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Slf4j
 public class AzureADGraphClient {
+
+    private static final Logger log = LoggerFactory.getLogger(AzureADGraphClient.class);
+
     private static final SimpleGrantedAuthority DEFAULT_AUTHORITY = new SimpleGrantedAuthority("ROLE_USER");
     private static final String DEFAULT_ROLE_PREFIX = "ROLE_";
     private static final String MICROSOFT_GRAPH_SCOPE = "https://graph.microsoft.com/user.read";
@@ -160,7 +163,6 @@ public class AzureADGraphClient {
      * Converts UserGroup list to Set of GrantedAuthorities
      *
      * @param groups
-     * @return
      */
     public Set<GrantedAuthority> convertGroupsToGrantedAuthorities(final List<UserGroup> groups) {
         // Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities

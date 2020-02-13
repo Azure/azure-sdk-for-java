@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.spring.autoconfigure.b2c;
 
-import lombok.NonNull;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 

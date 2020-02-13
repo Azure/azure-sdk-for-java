@@ -51,8 +51,6 @@ public class ServiceBusProperties {
 
     /**
      * return allow telemery or not
-     *
-     * @return
      */
     public boolean isAllowTelemetry() {
         return allowTelemetry;

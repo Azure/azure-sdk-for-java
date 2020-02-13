@@ -5,14 +5,12 @@
  */
 package com.microsoft.azure.spring.autoconfigure.b2c;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import static com.microsoft.azure.spring.autoconfigure.b2c.AADB2CProperties.PREFIX;
 import static com.microsoft.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AADB2CConstants {
+
+    private AADB2CConstants() {}
 
     public static final String TEST_TENANT = "fake-tenant";
 

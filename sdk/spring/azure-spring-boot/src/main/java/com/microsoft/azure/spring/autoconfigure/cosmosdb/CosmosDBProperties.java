@@ -9,7 +9,8 @@ package com.microsoft.azure.spring.autoconfigure.cosmosdb;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.microsoft.azure.spring.data.cosmosdb.core.ResponseDiagnosticsProcessor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -17,8 +18,9 @@ import javax.validation.constraints.NotEmpty;
 
 @Validated
 @ConfigurationProperties("azure.cosmosdb")
-@Slf4j
 public class CosmosDBProperties {
+
+    private static final Logger log = LoggerFactory.getLogger(CosmosDBProperties.class);
     /**
      * Document DB URI.
      */
