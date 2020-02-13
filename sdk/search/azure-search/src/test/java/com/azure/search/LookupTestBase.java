@@ -179,6 +179,15 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
     public abstract void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelected();
 
     @Test
+    public abstract void getDynamicDocumentCannotAlwaysDetermineCorrectType();
+
+    @Test
+    public abstract void canGetDocumentWithBase64EncodedKey();
+
+    @Test
+    public abstract void roundTrippingDateTimeOffsetNormalizesToUtc() throws ParseException;
+
+    @Test
     public abstract void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelected();
 
     @Test

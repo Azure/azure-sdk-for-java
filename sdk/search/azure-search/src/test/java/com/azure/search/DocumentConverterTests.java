@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -90,7 +91,7 @@ public class DocumentConverterTests {
 
     @Test
     public void canReadPrimitiveTypes() {
-        Map<String, Object> values = new HashMap<String, Object>() {
+        Map<String, Object> values = new HashMap<>() {
             {
                 put("123", 123);
                 put("9999999999999", 9_999_999_999_999L);
@@ -118,7 +119,7 @@ public class DocumentConverterTests {
 
     @Test
     public void canReadArraysOfPrimitiveTypes() {
-        Map<String, Object> values = new HashMap<String, Object>() {
+        Map<String, Object> values = new HashMap<>() {
             {
                 put("[\"hello\", \"goodbye\"]", Arrays.asList("hello", "goodbye"));
                 put("[123, 456]", Arrays.asList(123, 456));
@@ -243,14 +244,54 @@ public class DocumentConverterTests {
     }
 
     @Test
+    public void canReadArraysOfMixedTypes() {
+        // Azure Cognitive Search won't return payloads like this; This test is only for pinning purposes.
+        String json = "{\"field\": [\"hello\", 123, 3.14, { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581] }, { \"name\": \"Arthur\", \"quest\": null }] }";
+
+        GeoPoint point = GeoPoint.create(47.678581, -122.131577);
+        Document innerDoc = new Document();
+        innerDoc.put("name", "Arthur");
+        innerDoc.put("quest", null);
+        List<Object> value = Arrays.asList("hello", 123, 3.14, point, innerDoc);
+
+        Document expectedDoc = new Document();
+        expectedDoc.put("field", value);
+
+        Document actualDoc = deserialize(json);
+        Assert.assertEquals(expectedDoc, actualDoc);
+    }
+
+    @Test
     public void dateTimeStringsAreReadAsDateTime() {
         String json = "{\"field1\":\"".concat(testDateString).concat("\",\"field2\" : [\"").concat(testDateString).concat("\", \"").concat(testDateString).concat("\"]}");
-        Document expectedDoc = new Document() {
-            {
-                put("field1", testDate);
-                put("field2", Arrays.asList(testDate, testDate));
-            }
-        };
+        Document expectedDoc = new Document();
+        expectedDoc.put("field1", testDate);
+        expectedDoc.put("field2", Arrays.asList(testDate, testDate));
+
+        Document actualDoc = deserialize(json);
+        Assert.assertEquals(expectedDoc, actualDoc);
+    }
+
+    @Test
+    public void emptyArraysReadAsObjectArrays() {
+        String json = "{ \"field\": [] }";
+
+        // With no elements, we can't tell what type of collection it is, so we default to object.
+        Document expectedDoc = new Document();
+        expectedDoc.put("field", new ArrayList<>());
+
+        Document actualDoc = deserialize(json);
+        Assert.assertEquals(expectedDoc, actualDoc);
+    }
+
+    @Test
+    public void arraysWithOnlyNullsReadAsStringArrays() {
+        String json = "{ \"field\": [null, null] }";
+
+        // With only null elements, we can't tell what type of collection it is. For backward compatibility, we assume type string.
+        // This shouldn't happen in practice anyway since Azure Cognitive Search generally doesn't allow nulls in collections.
+        Document expectedDoc = new Document();
+        expectedDoc.put("field", Arrays.asList(null, null));
 
         Document actualDoc = deserialize(json);
         Assert.assertEquals(expectedDoc, actualDoc);

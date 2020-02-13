@@ -92,7 +92,7 @@ public class SearchIndexAsyncClient {
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
     SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion apiVersion,
-                           HttpPipeline httpPipeline) {
+        HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
 
@@ -140,256 +140,196 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Uploads a collection of documents to the target index
-     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
-     *
-     * Exception IndexBatchException is thrown when some of the indexing actions failed,
-     * but other actions succeeded and modified the state of the index.
-     * This can happen when the Search Service is under heavy indexing load.
-     * It is important to explicitly catch this exception and check the return value of
-     * its getIndexingResult method. The indexing result reports the status of each indexing
-     * action in the batch, making it possible to determine the state of the index after a
-     * partial failure.
+     * Uploads a collection of documents to the target index.
      *
      * @param documents collection of documents to upload to the target Index.
-     * @return document index result.
+     * @return The result of the document indexing actions.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
+     * delete documents</a>
      */
     public Mono<IndexDocumentsResult> uploadDocuments(Iterable<?> documents) {
-        try {
-            return this.uploadDocumentsWithResponse(documents)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return uploadDocumentsWithResponse(documents).map(Response::getValue);
     }
 
     /**
-     * Uploads a collection of documents to the target index
-     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
-     *
-     * Exception IndexBatchException is thrown when some of the indexing actions failed,
-     * but other actions succeeded and modified the state of the index.
-     * This can happen when the Search Service is under heavy indexing load.
-     * It is important to explicitly catch this exception and check the return value of
-     * its getIndexingResult method. The indexing result reports the status of each indexing
-     * action in the batch, making it possible to determine the state of the index after a
-     * partial failure.
+     * Uploads a collection of documents to the target index.
      *
      * @param documents collection of documents to upload to the target Index.
-     * @return response containing the document index result.
+     * @return A response containing the result of the document indexing actions.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
+     * delete documents</a>
      */
     public Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents) {
+        return withContext(context -> uploadDocumentsWithResponse(documents, context));
+    }
+
+    Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         try {
-            return withContext(context -> uploadDocumentsWithResponse(documents, context));
+            return indexWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    @SuppressWarnings("unchecked")
-    Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.UPLOAD);
-        return this.indexWithResponse(batch, context);
-    }
-
     /**
      * Merges a collection of documents with existing documents in the target index.
-     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
-     *
-     * If the type of the document contains non-nullable primitive-typed properties, these properties may not
-     * merge correctly. If you do not set such a property, it will automatically take its default value
-     * (for example, 0 for int or false for boolean), which will override the value of the property currently stored
-     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
-     * declare primitive-typed properties with their class equivalents (for example, an integer property should be
-     * of type Integer instead of int).
-     *
-     * Exception IndexBatchException is thrown when some of the indexing actions failed,
-     * but other actions succeeded and modified the state of the index.
-     * This can happen when the Search Service is under heavy indexing load.
-     * It is important to explicitly catch this exception and check the return value of
-     * its getIndexingResult method. The indexing result reports the status of each indexing
-     * action in the batch, making it possible to determine the state of the index after a
-     * partial failure.
+     * <p>
+     * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
+     * correctly. If you do not set such a property, it will automatically take its default value (for example,
+     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
+     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended that
+     * you always declare primitive-typed properties with their class equivalents (for example, an integer property
+     * should be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged
      * @return document index result
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
+     * delete documents</a>
      */
     public Mono<IndexDocumentsResult> mergeDocuments(Iterable<?> documents) {
-        try {
-            return this.mergeDocumentsWithResponse(documents)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return mergeDocumentsWithResponse(documents).map(Response::getValue);
     }
 
     /**
      * Merges a collection of documents with existing documents in the target index.
-     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
-     *
-     * If the type of the document contains non-nullable primitive-typed properties, these properties may not
-     * merge correctly. If you do not set such a property, it will automatically take its default value
-     * (for example, 0 for int or false for boolean), which will override the value of the property currently stored
-     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
-     * declare primitive-typed properties with their class equivalents (for example, an integer property should be
-     * of type Integer instead of int).
-     *
-     * Exception IndexBatchException is thrown when some of the indexing actions failed,
-     * but other actions succeeded and modified the state of the index.
-     * This can happen when the Search Service is under heavy indexing load.
-     * It is important to explicitly catch this exception and check the return value of
-     * its getIndexingResult method. The indexing result reports the status of each indexing
-     * action in the batch, making it possible to determine the state of the index after a
-     * partial failure.
+     * <p>
+     * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
+     * correctly. If you do not set such a property, it will automatically take its default value (for example,
+     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
+     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended that
+     * you always declare primitive-typed properties with their class equivalents (for example, an integer property
+     * should be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged
      * @return response containing the document index result.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
+     * delete documents</a>
      */
     public Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents) {
-        try {
-            return withContext(context -> mergeDocumentsWithResponse(documents, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return withContext(context -> mergeDocumentsWithResponse(documents, context));
     }
 
-    @SuppressWarnings("unchecked")
     Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
         try {
-            IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE);
-            return this.indexWithResponse(batch, context);
+            return this.indexWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * This action behaves like merge if a document with the given key already exists in the index.
-     * If the document does not exist, it behaves like upload with a new document.
-     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
-     *
-     * If the type of the document contains non-nullable primitive-typed properties, these properties may not
-     * merge correctly. If you do not set such a property, it will automatically take its default value
-     * (for example, 0 for int or false for boolean), which will override the value of the property currently stored
-     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
-     * declare primitive-typed properties with their class equivalents (for example, an integer property should be
-     * of type Integer instead of int).
-     *
-     * Exception IndexBatchException is thrown when some of the indexing actions failed,
-     * but other actions succeeded and modified the state of the index.
-     * This can happen when the Search Service is under heavy indexing load.
-     * It is important to explicitly catch this exception and check the return value of
-     * its getIndexingResult method. The indexing result reports the status of each indexing
-     * action in the batch, making it possible to determine the state of the index after a
-     * partial failure.
+     * This action behaves like merge if a document with the given key already exists in the index. If the document does
+     * not exist, it behaves like upload with a new document.
+     * <p>
+     * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
+     * correctly. If you do not set such a property, it will automatically take its default value (for example,
+     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
+     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended that
+     * you always declare primitive-typed properties with their class equivalents (for example, an integer property
+     * should be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
+     * delete documents</a>
      */
     public Mono<IndexDocumentsResult> mergeOrUploadDocuments(Iterable<?> documents) {
-        try {
-            return this.mergeOrUploadDocumentsWithResponse(documents)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return mergeOrUploadDocumentsWithResponse(documents).map(Response::getValue);
     }
 
     /**
-     * This action behaves like merge if a document with the given key already exists in the index.
-     * If the document does not exist, it behaves like upload with a new document.
-     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
-     *
-     * If the type of the document contains non-nullable primitive-typed properties, these properties may not
-     * merge correctly. If you do not set such a property, it will automatically take its default value
-     * (for example, 0 for int or false for boolean), which will override the value of the property currently stored
-     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
-     * declare primitive-typed properties with their class equivalents (for example, an integer property should be
-     * of type Integer instead of int).
-     *
-     * Exception IndexBatchException is thrown when some of the indexing actions failed,
-     * but other actions succeeded and modified the state of the index.
-     * This can happen when the Search Service is under heavy indexing load.
-     * It is important to explicitly catch this exception and check the return value of
-     * its getIndexingResult method. The indexing result reports the status of each indexing
-     * action in the batch, making it possible to determine the state of the index after a
-     * partial failure.
+     * This action behaves like merge if a document with the given key already exists in the index. If the document does
+     * not exist, it behaves like upload with a new document.
+     * <p>
+     * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
+     * correctly. If you do not set such a property, it will automatically take its default value (for example,
+     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
+     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended that
+     * you always declare primitive-typed properties with their class equivalents (for example, an integer property
+     * should be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
-     * @return response containing the document index result.
+     * @return document index result
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
+     * delete documents</a>
      */
     public Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
-        try {
-            return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, context));
     }
 
-    @SuppressWarnings("unchecked")
     Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         try {
-            IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD);
-            return this.indexWithResponse(batch, context);
+            return this.indexWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Deletes a collection of documents from the target index
-     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * Deletes a collection of documents from the target index. See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * Exception IndexBatchException is thrown when some of the indexing actions failed,
-     * but other actions succeeded and modified the state of the index.
-     * This can happen when the Search Service is under heavy indexing load.
-     * It is important to explicitly catch this exception and check the return value of
-     * its getIndexingResult method. The indexing result reports the status of each indexing
-     * action in the batch, making it possible to determine the state of the index after a
-     * partial failure.
+     * Exception IndexBatchException is thrown when some of the indexing actions failed, but other actions succeeded and
+     * modified the state of the index. This can happen when the Search Service is under heavy indexing load. It is
+     * important to explicitly catch this exception and check the return value of its getIndexingResult method. The
+     * indexing result reports the status of each indexing action in the batch, making it possible to determine the
+     * state of the index after a partial failure.
      *
-     * @param documents collection of documents to delete from the target Index.
-     *                  Fields other than the key are ignored.
+     * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
      * @return document index result.
      */
     public Mono<IndexDocumentsResult> deleteDocuments(Iterable<?> documents) {
-        try {
-            return this.deleteDocumentsWithResponse(documents)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteDocumentsWithResponse(documents).map(Response::getValue);
     }
 
     /**
-     * Deletes a collection of documents from the target index
-     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * Deletes a collection of documents from the target index See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * Exception IndexBatchException is thrown when some of the indexing actions failed,
-     * but other actions succeeded and modified the state of the index.
-     * This can happen when the Search Service is under heavy indexing load.
-     * It is important to explicitly catch this exception and check the return value of
-     * its getIndexingResult method. The indexing result reports the status of each indexing
-     * action in the batch, making it possible to determine the state of the index after a
-     * partial failure.
+     * Exception IndexBatchException is thrown when some of the indexing actions failed, but other actions succeeded and
+     * modified the state of the index. This can happen when the Search Service is under heavy indexing load. It is
+     * important to explicitly catch this exception and check the return value of its getIndexingResult method. The
+     * indexing result reports the status of each indexing action in the batch, making it possible to determine the
+     * state of the index after a partial failure.
      *
-     * @param documents collection of documents to delete from the target Index.
-     *                  Fields other than the key are ignored.
+     * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
      * @return response containing the document index result.
      */
     public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
-        try {
-            return withContext(context -> deleteDocumentsWithResponse(documents, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return withContext(context -> deleteDocumentsWithResponse(documents, context));
     }
 
-    @SuppressWarnings("unchecked")
     Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
         try {
-            IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.DELETE);
-            return this.indexWithResponse(batch, context);
+            return this.indexWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -419,12 +359,7 @@ public class SearchIndexAsyncClient {
      * @return the number of documents.
      */
     public Mono<Long> getDocumentCount() {
-        try {
-            return this.getDocumentCountWithResponse()
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return this.getDocumentCountWithResponse().map(Response::getValue);
     }
 
     /**
@@ -448,43 +383,33 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Searches for documents in the Azure Cognitive Search index
-     * See https://docs.microsoft.com/rest/api/searchservice/Search-Documents
+     * Searches for documents in the Azure Cognitive Search index See https://docs.microsoft.com/rest/api/searchservice/Search-Documents
      *
-     * @param searchText A full-text search query expression;
-     * Use null or "*" to match all documents. See
-     * See https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search"
-     * for more information about search query syntax.
-     * @return A {@link PagedFluxBase} that iterates over {@link SearchResult} objects
-     * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
-     * facet, and coverage information.
+     * @param searchText A full-text search query expression; Use null or "*" to match all documents. See See
+     * https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search" for more information about
+     * search query syntax.
+     * @return A {@link PagedFluxBase} that iterates over {@link SearchResult} objects and provides access to the {@link
+     * SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage information.
      */
     public PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText) {
-        try {
-            return this.search(searchText, null, null);
-        } catch (RuntimeException ex) {
-            return new PagedFluxBase<>(() -> monoError(logger, ex));
-        }
+        return this.search(searchText, null, null);
     }
 
     /**
-     * Searches for documents in the Azure Cognitive Search index
-     * See https://docs.microsoft.com/rest/api/searchservice/Search-Documents
+     * Searches for documents in the Azure Cognitive Search index See https://docs.microsoft.com/rest/api/searchservice/Search-Documents
      *
-     * @param searchText A full-text search query expression;
-     * Use null or "*" to match all documents. See
-     * See https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search"
-     * for more information about search query syntax.
+     * @param searchText A full-text search query expression; Use null or "*" to match all documents. See See
+     * https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search" for more information about
+     * search query syntax.
      * @param searchOptions Parameters to further refine the search query
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return A {@link PagedFluxBase} that iterates over {@link SearchResult} objects
-     * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
-     * facet, and coverage information.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
+     * @return A {@link PagedFluxBase} that iterates over {@link SearchResult} objects and provides access to the {@link
+     * SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage information.
      */
     public PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText,
-                                                                   SearchOptions searchOptions,
-                                                                   RequestOptions requestOptions) {
+        SearchOptions searchOptions,
+        RequestOptions requestOptions) {
         try {
             SearchRequest searchRequest = this.createSearchRequest(searchText, searchOptions);
             return new PagedFluxBase<>(
@@ -498,9 +423,9 @@ public class SearchIndexAsyncClient {
     }
 
     PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText,
-                                                            SearchOptions searchOptions,
-                                                            RequestOptions requestOptions,
-                                                            Context context) {
+        SearchOptions searchOptions,
+        RequestOptions requestOptions,
+        Context context) {
         SearchRequest searchRequest = this.createSearchRequest(searchText, searchOptions);
         return new PagedFluxBase<>(
             () -> this.searchFirstPage(searchRequest, requestOptions, context),
@@ -508,11 +433,9 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Retrieves a document from the Azure Cognitive Search index.
-     * See https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
+     * Retrieves a document from the Azure Cognitive Search index. See https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
      *
-     * @param key The key of the document to retrieve;
-     * See https://docs.microsoft.com/rest/api/searchservice/Naming-rules
+     * @param key The key of the document to retrieve; See https://docs.microsoft.com/rest/api/searchservice/Naming-rules
      * for the rules for constructing valid document keys.
      * @return the document object
      */
@@ -526,23 +449,17 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Retrieves a document from the Azure Cognitive Search index.
-     * See https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
+     * Retrieves a document from the Azure Cognitive Search index. See https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
      *
-     * @param key The key of the document to retrieve;
-     * See https://docs.microsoft.com/rest/api/searchservice/Naming-rules
+     * @param key The key of the document to retrieve; See https://docs.microsoft.com/rest/api/searchservice/Naming-rules
      * for the rules for constructing valid document keys.
-     * @param selectedFields List of field names to retrieve for the document;
-     * Any field not retrieved will have null or default as its
-     * corresponding property value in the returned object.
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will have null or
+     * default as its corresponding property value in the returned object.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return the document object
      */
-    public Mono<Document> getDocument(
-        String key,
-        List<String> selectedFields,
-        RequestOptions requestOptions) {
+    public Mono<Document> getDocument(String key, List<String> selectedFields, RequestOptions requestOptions) {
         try {
             return this.getDocumentWithResponse(key, selectedFields, requestOptions)
                 .map(Response::getValue);
@@ -552,35 +469,23 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Retrieves a document from the Azure Cognitive Search index.
-     * See https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
+     * Retrieves a document from the Azure Cognitive Search index. See <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document"></a>
      *
-     * @param key The key of the document to retrieve;
-     * See https://docs.microsoft.com/rest/api/searchservice/Naming-rules
+     * @param key The key of the document to retrieve; See https://docs.microsoft.com/rest/api/searchservice/Naming-rules
      * for the rules for constructing valid document keys.
-     * @param selectedFields List of field names to retrieve for the document;
-     * Any field not retrieved will have null or default as its
-     * corresponding property value in the returned object.
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will have null or
+     * default as its corresponding property value in the returned object.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the document object
      */
-    public Mono<Response<Document>> getDocumentWithResponse(
-        String key,
-        List<String> selectedFields,
+    public Mono<Response<Document>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions) {
-        try {
-            return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
     }
 
-    Mono<Response<Document>> getDocumentWithResponse(
-        String key,
-        List<String> selectedFields,
-        RequestOptions requestOptions,
-        Context context) {
+    Mono<Response<Document>> getDocumentWithResponse(String key, List<String> selectedFields,
+        RequestOptions requestOptions, Context context) {
         try {
             return restClient
                 .documents()
@@ -598,15 +503,13 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Suggests documents in the index that match the given partial query.
-     * See https://docs.microsoft.com/rest/api/searchservice/Suggestions
+     * Suggests documents in the index that match the given partial query. See https://docs.microsoft.com/rest/api/searchservice/Suggestions
      *
      * @param searchText The search text on which to base suggestions
-     * @param suggesterName The name of the suggester as specified in the suggesters collection
-     * that's part of the index definition
-     * @return A {@link PagedFluxBase} that iterates over {@link SuggestResult} objects
-     * and provides access to the {@link SuggestPagedResponse} object for each page containing
-     * HTTP response and coverage information.
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     * definition
+     * @return A {@link PagedFluxBase} that iterates over {@link SuggestResult} objects and provides access to the
+     * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      */
     public PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
         try {
@@ -617,23 +520,21 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Suggests documents in the index that match the given partial query.
-     * See https://docs.microsoft.com/rest/api/searchservice/Suggestions
+     * Suggests documents in the index that match the given partial query. See https://docs.microsoft.com/rest/api/searchservice/Suggestions
      *
      * @param searchText The search text on which to base suggestions
-     * @param suggesterName The name of the suggester as specified in the suggesters collection
-     * that's part of the index definition
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     * definition
      * @param suggestOptions Parameters to further refine the suggestion query.
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
-     * @return A {@link PagedFluxBase} that iterates over {@link SuggestResult} objects
-     * and provides access to the {@link SuggestPagedResponse} object for each page containing
-     * HTTP response and coverage information.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
+     * @return A {@link PagedFluxBase} that iterates over {@link SuggestResult} objects and provides access to the
+     * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      */
     public PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
-                                                                      String suggesterName,
-                                                                      SuggestOptions suggestOptions,
-                                                                      RequestOptions requestOptions) {
+        String suggesterName,
+        SuggestOptions suggestOptions,
+        RequestOptions requestOptions) {
         try {
             SuggestRequest suggestRequest = this.createSuggestRequest(searchText,
                 suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
@@ -645,10 +546,10 @@ public class SearchIndexAsyncClient {
     }
 
     PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
-                                                               String suggesterName,
-                                                               SuggestOptions suggestOptions,
-                                                               RequestOptions requestOptions,
-                                                               Context context) {
+        String suggesterName,
+        SuggestOptions suggestOptions,
+        RequestOptions requestOptions,
+        Context context) {
         SuggestRequest suggestRequest = this.createSuggestRequest(searchText,
             suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
         return new PagedFluxBase<>(
@@ -656,40 +557,31 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Sends a batch of upload, merge, and/or delete actions to the search index.
-     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * Sends a batch of upload, merge, and/or delete actions to the search index. See
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * Exception IndexBatchException is thrown when some of the indexing actions failed,
-     * but other actions succeeded and modified the state of the index.
-     * This can happen when the Search Service is under heavy indexing load.
-     * It is important to explicitly catch this exception and check the return value of
-     * its getIndexingResult method. The indexing result reports the status of each indexing
-     * action in the batch, making it possible to determine the state of the index after a
-     * partial failure.
+     * Exception IndexBatchException is thrown when some of the indexing actions failed, but other actions succeeded and
+     * modified the state of the index. This can happen when the Search Service is under heavy indexing load. It is
+     * important to explicitly catch this exception and check the return value of its getIndexingResult method. The
+     * indexing result reports the status of each indexing action in the batch, making it possible to determine the
+     * state of the index after a partial failure.
      *
      * @param batch The batch of index actions
      * @return Response containing the status of operations for all actions in the batch.
      */
     public Mono<IndexDocumentsResult> index(IndexBatch<?> batch) {
-        try {
-            return this.indexWithResponse(batch)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return indexWithResponse(batch).map(Response::getValue);
     }
 
     /**
-     * Sends a batch of upload, merge, and/or delete actions to the search index.
-     * See https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
+     * Sends a batch of upload, merge, and/or delete actions to the search index. See
+     * https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents
      *
-     * Exception IndexBatchException is thrown when some of the indexing actions failed,
-     * but other actions succeeded and modified the state of the index.
-     * This can happen when the Search Service is under heavy indexing load.
-     * It is important to explicitly catch this exception and check the return value of
-     * its getIndexingResult method. The indexing result reports the status of each indexing
-     * action in the batch, making it possible to determine the state of the index after a
-     * partial failure.
+     * Exception IndexBatchException is thrown when some of the indexing actions failed, but other actions succeeded and
+     * modified the state of the index. This can happen when the Search Service is under heavy indexing load. It is
+     * important to explicitly catch this exception and check the return value of its getIndexingResult method. The
+     * indexing result reports the status of each indexing action in the batch, making it possible to determine the
+     * state of the index after a partial failure.
      *
      * @param batch The batch of index actions
      * @return Response containing the status of operations for all actions in the batch
@@ -737,12 +629,12 @@ public class SearchIndexAsyncClient {
      * @param searchText search text
      * @param suggesterName suggester name
      * @param autocompleteOptions autocomplete options
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return auto complete result.
      */
     public PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
-            String suggesterName, AutocompleteOptions autocompleteOptions, RequestOptions requestOptions) {
+        String suggesterName, AutocompleteOptions autocompleteOptions, RequestOptions requestOptions) {
         try {
             AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
                 searchText, suggesterName, autocompleteOptions);
@@ -754,10 +646,10 @@ public class SearchIndexAsyncClient {
     }
 
     PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
-                                                                            String suggesterName,
-                                                                            AutocompleteOptions autocompleteOptions,
-                                                                            RequestOptions requestOptions,
-                                                                            Context context) {
+        String suggesterName,
+        AutocompleteOptions autocompleteOptions,
+        RequestOptions requestOptions,
+        Context context) {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
             searchText, suggesterName, autocompleteOptions);
         return new PagedFluxBase<>(
@@ -765,8 +657,8 @@ public class SearchIndexAsyncClient {
     }
 
     private Mono<AutocompletePagedResponse> autocompleteFirst(RequestOptions requestOptions,
-                                                              AutocompleteRequest autocompleteRequest,
-                                                              Context context) {
+        AutocompleteRequest autocompleteRequest,
+        Context context) {
         return restClient.documents()
             .autocompletePostWithRestResponseAsync(autocompleteRequest, requestOptions, context)
             .map(AutocompletePagedResponse::new);
@@ -782,8 +674,8 @@ public class SearchIndexAsyncClient {
      * response with results
      */
     private Mono<SearchPagedResponse> searchFirstPage(SearchRequest searchRequest,
-                                                      RequestOptions requestOptions,
-                                                      Context context) {
+        RequestOptions requestOptions,
+        Context context) {
         return restClient.documents()
             .searchPostWithRestResponseAsync(searchRequest, requestOptions, context)
             .map(SearchPagedResponse::new);
@@ -793,11 +685,9 @@ public class SearchIndexAsyncClient {
      * Retrieve the next page of a document search
      *
      * @param searchRequest the search request
-     * @param nextPageParameters json string holding the parameters required to get the next page:
-     *                           skip is the number of documents to skip, top is the number of documents per page.
-     *                           Due to a limitation in PageFlux, this value is stored as String and converted
-     *                           to its Integer value
-     *                           before making the next request
+     * @param nextPageParameters json string holding the parameters required to get the next page: skip is the number of
+     * documents to skip, top is the number of documents per page. Due to a limitation in PageFlux, this value is stored
+     * as String and converted to its Integer value before making the next request
      * @param context the context to associate with this operation.
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
@@ -836,8 +726,8 @@ public class SearchIndexAsyncClient {
     }
 
     private Mono<SuggestPagedResponse> suggestFirst(RequestOptions requestOptions,
-                                                    SuggestRequest suggestRequest,
-                                                    Context context) {
+        SuggestRequest suggestRequest,
+        Context context) {
         return restClient.documents()
             .suggestPostWithRestResponseAsync(suggestRequest, requestOptions, context)
             .map(SuggestPagedResponse::new);
@@ -892,8 +782,8 @@ public class SearchIndexAsyncClient {
      * @return SuggestRequest
      */
     private SuggestRequest createSuggestRequest(String searchText,
-                                                String suggesterName,
-                                                SuggestOptions suggestOptions) {
+        String suggesterName,
+        SuggestOptions suggestOptions) {
         SuggestRequest suggestRequest = new SuggestRequest()
             .setSearchText(searchText)
             .setSuggesterName(suggesterName);
@@ -934,8 +824,8 @@ public class SearchIndexAsyncClient {
      * @return AutocompleteRequest
      */
     private AutocompleteRequest createAutoCompleteRequest(String searchText,
-                                                          String suggesterName,
-                                                          AutocompleteOptions autocompleteOptions) {
+        String suggesterName,
+        AutocompleteOptions autocompleteOptions) {
         AutocompleteRequest autoCompleteRequest = new AutocompleteRequest()
             .setSearchText(searchText)
             .setSuggesterName(suggesterName);

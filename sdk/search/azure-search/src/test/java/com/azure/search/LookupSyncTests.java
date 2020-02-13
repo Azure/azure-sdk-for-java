@@ -3,15 +3,22 @@
 package com.azure.search;
 
 import com.azure.search.models.GeoPoint;
+import com.azure.search.models.IndexBatch;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
+import com.microsoft.azure.storage.core.Base64;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -268,6 +275,65 @@ public class LookupSyncTests extends LookupTestBase {
 
         Document actualDoc = client.getDocument("1", selectedFields, generateRequestOptions());
         Assert.assertEquals(expectedDoc, actualDoc);
+    }
+
+    @Override
+    public void getDynamicDocumentCannotAlwaysDetermineCorrectType() {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+
+        List<Document> rooms = new ArrayList<>();
+        rooms.add(new Document(Collections.singletonMap("baseRate", NaN)));
+
+        Document indexedDoc = new Document();
+        indexedDoc.put("HotelId", "1");
+        indexedDoc.put("HotelName", "2015-02-11T12:58:00Z");
+        indexedDoc.put("Location", GeoPoint.create(40.760586, -73.975403)); // Test that we don't confuse Geo-JSON & complex types.
+        indexedDoc.put("Rooms", rooms);
+
+        Document expectedDoc = new Document();
+        expectedDoc.put("HotelId", "1");
+        expectedDoc.put("HotelName", OffsetDateTime.of(2015, 2, 11, 12, 58, 0, 9, ZoneOffset.UTC));
+        expectedDoc.put("Location", GeoPoint.create(40.760586, -73.975403));
+        expectedDoc.put("Rooms", Collections.singleton(new Document(Collections.singletonMap("BaseRate", "NaN"))));
+
+        client.index(new IndexBatch<>().addUploadAction(expectedDoc));
+
+        // Select only the fields set in the test case so we don't get superfluous data back.
+        Assertions.assertEquals(client.getDocument("1", new ArrayList<>(indexedDoc.keySet()), null), expectedDoc);
+    }
+
+    @Override
+    public void canGetDocumentWithBase64EncodedKey() {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+
+        String complexKey = Base64.encode(new byte[]{1, 2, 3, 4, 5});
+
+        Document expectedDoc = new Document();
+        expectedDoc.put("HotelId", complexKey);
+
+        client.index(new IndexBatch<>().addUploadAction(expectedDoc));
+        Assertions.assertEquals(client.getDocument(complexKey, new ArrayList<>(expectedDoc.keySet()), null), expectedDoc);
+    }
+
+    @Override
+    public void roundTrippingDateTimeOffsetNormalizesToUtc() throws ParseException {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+        Document indexedDoc = new Document();
+        indexedDoc.put("HotelId", "1");
+        indexedDoc.put("LastRenovationDate", dateFormat.parse("2010-06-27T00:00:00-08:00"));
+
+        Document expectedDoc = new Document();
+        expectedDoc.put("HotelId", "1");
+        expectedDoc.put("LastRenovationDate", dateFormat.parse("2010-06-27T08:00:00Z"));
+
+        client.index(new IndexBatch<>().addUploadAction(expectedDoc));
+        Assertions.assertEquals(client.getDocument("1"), expectedDoc);
     }
 
     @Test

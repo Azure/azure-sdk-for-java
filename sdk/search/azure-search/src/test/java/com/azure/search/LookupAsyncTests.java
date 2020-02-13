@@ -3,17 +3,22 @@
 package com.azure.search;
 
 import com.azure.search.models.GeoPoint;
+import com.azure.search.models.IndexBatch;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
+import com.microsoft.azure.storage.core.Base64;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,9 +40,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Hotel expected = prepareExpectedHotel();
         uploadDocument(client, expected);
 
-        Mono<Document> result = client.getDocument(expected.hotelId());
-
-        StepVerifier.create(result)
+        StepVerifier.create(client.getDocument(expected.hotelId()))
             .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
             .verifyComplete();
     }
@@ -49,9 +52,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Hotel expected = prepareEmptyHotel();
         uploadDocument(client, expected);
 
-        Mono<Document> result = client.getDocument(expected.hotelId());
-
-        StepVerifier.create(result)
+        StepVerifier.create(client.getDocument(expected.hotelId()))
             .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
             .verifyComplete();
     }
@@ -63,9 +64,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Hotel expected = preparePascalCaseFieldsHotel();
         uploadDocument(client, expected);
 
-        Mono<Document> result = client.getDocument(expected.hotelId());
-
-        StepVerifier.create(result)
+        StepVerifier.create(client.getDocument(expected.hotelId()))
             .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
             .verifyComplete();
     }
@@ -78,9 +77,7 @@ public class LookupAsyncTests extends LookupTestBase {
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
         uploadDocument(client, expected);
 
-        Mono<Document> result = client.getDocument(expected.key());
-
-        StepVerifier.create(result)
+        StepVerifier.create(client.getDocument(expected.key()))
             .assertNext(res -> assertReflectionEquals(expected, convertToType(res, ModelWithPrimitiveCollections.class), IGNORE_DEFAULTS))
             .verifyComplete();
     }
@@ -102,9 +99,8 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, indexedDoc);
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
-        Mono<Document> result = client.getDocument(indexedDoc.hotelId(), selectedFields, generateRequestOptions());
 
-        StepVerifier.create(result)
+        StepVerifier.create(client.getDocument(indexedDoc.hotelId(), selectedFields, generateRequestOptions()))
             .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
             .verifyComplete();
     }
@@ -113,36 +109,30 @@ public class LookupAsyncTests extends LookupTestBase {
     public void canGetDynamicDocumentWithNullOrEmptyValues() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
-        Document expectedDoc = new Document() {
-            {
-                put("HotelId", "1");
-                put("HotelName", null);
-                put("Tags", new ArrayList<>());
-                put("ParkingIncluded", null);
-                put("LastRenovationDate", null);
-                put("Rating", null);
-                put("Location", null);
-                put("Address", null);
-                put("Rooms", Collections.singletonList(
-                    new Document() {
-                        {
-                            put("BaseRate", null);
-                            put("BedOptions", null);
-                            put("SleepsCount", null);
-                            put("SmokingAllowed", null);
-                            put("Tags", new ArrayList<>());
-                        }
-                    }
-                ));
-            }
-        };
+
+        Document room = new Document();
+        room.put("BaseRate", null);
+        room.put("BedOptions", null);
+        room.put("SleepsCount", null);
+        room.put("SmokingAllowed", null);
+        room.put("Tags", new ArrayList<>());
+
+        Document expectedDoc = new Document();
+        expectedDoc.put("HotelId", "1");
+        expectedDoc.put("HotelName", null);
+        expectedDoc.put("Tags", new ArrayList<>());
+        expectedDoc.put("ParkingIncluded", null);
+        expectedDoc.put("LastRenovationDate", null);
+        expectedDoc.put("Rating", null);
+        expectedDoc.put("Location", null);
+        expectedDoc.put("Address", null);
+        expectedDoc.put("Rooms", Collections.singleton(room));
 
         uploadDocument(client, expectedDoc);
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
-        Mono<Document> result = client.getDocument("1", selectedFields, generateRequestOptions());
-        StepVerifier.create(result)
+        StepVerifier.create(client.getDocument("1", selectedFields, generateRequestOptions()))
             .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
             .verifyComplete();
     }
@@ -177,8 +167,7 @@ public class LookupAsyncTests extends LookupTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "Address");
 
-        Mono<Document> result = client.getDocument("1", selectedFields, generateRequestOptions());
-        StepVerifier.create(result)
+        StepVerifier.create(client.getDocument("1", selectedFields, generateRequestOptions()))
             .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
             .verifyComplete();
     }
@@ -218,8 +207,7 @@ public class LookupAsyncTests extends LookupTestBase {
 
         uploadDocument(client, originalDoc);
 
-        Mono<Document> result = client.getDocument(docKey);
-        StepVerifier.create(result)
+        StepVerifier.create(client.getDocument(docKey))
             .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
             .verifyComplete();
     }
@@ -281,9 +269,90 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
 
-        Mono<Document> result = client.getDocument("1", selectedFields, generateRequestOptions());
-        StepVerifier.create(result)
+        StepVerifier.create(client.getDocument("1", selectedFields, generateRequestOptions()))
             .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
+            .verifyComplete();
+    }
+
+    @Override
+    public void getDynamicDocumentCannotAlwaysDetermineCorrectType() {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
+
+        List<Document> rooms = new ArrayList<>();
+        rooms.add(new Document(Collections.singletonMap("baseRate", NaN)));
+
+        Document indexedDoc = new Document();
+        indexedDoc.put("HotelId", "1");
+        indexedDoc.put("HotelName", "2015-02-11T12:58:00Z");
+        indexedDoc.put("Location", GeoPoint.create(40.760586, -73.975403)); // Test that we don't confuse Geo-JSON & complex types.
+        indexedDoc.put("Rooms", rooms);
+
+        Document expectedDoc = new Document();
+        expectedDoc.put("HotelId", "1");
+        expectedDoc.put("HotelName", OffsetDateTime.of(2015, 2, 11, 12, 58, 0, 9, ZoneOffset.UTC));
+        expectedDoc.put("Location", GeoPoint.create(40.760586, -73.975403));
+        expectedDoc.put("Rooms", Collections.singleton(new Document(Collections.singletonMap("BaseRate", "NaN"))));
+
+        IndexBatch<Document> batch = new IndexBatch<>();
+        batch.addUploadAction(expectedDoc);
+
+        StepVerifier.create(client.index(batch))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        // Select only the fields set in the test case so we don't get superfluous data back.
+        StepVerifier.create(client.getDocument("1", new ArrayList<>(indexedDoc.keySet()), null))
+            .assertNext(actualDoc -> Assertions.assertEquals(actualDoc, expectedDoc))
+            .verifyComplete();
+    }
+
+    @Override
+    public void canGetDocumentWithBase64EncodedKey() {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
+
+        String complexKey = Base64.encode(new byte[]{1, 2, 3, 4, 5});
+
+        Document expectedDoc = new Document();
+        expectedDoc.put("HotelId", complexKey);
+
+        IndexBatch<Document> batch = new IndexBatch<>();
+        batch.addUploadAction(expectedDoc);
+
+        StepVerifier.create(client.index(batch))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        StepVerifier.create(client.getDocument(complexKey, new ArrayList<>(expectedDoc.keySet()), null))
+            .assertNext(actualDoc -> Assertions.assertEquals(actualDoc, expectedDoc))
+            .verifyComplete();
+    }
+
+    @Override
+    public void roundTrippingDateTimeOffsetNormalizesToUtc() throws ParseException {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+        Document indexedDoc = new Document();
+        indexedDoc.put("HotelId", "1");
+        indexedDoc.put("LastRenovationDate", dateFormat.parse("2010-06-27T00:00:00-08:00"));
+
+        Document expectedDoc = new Document();
+        expectedDoc.put("HotelId", "1");
+        expectedDoc.put("LastRenovationDate", dateFormat.parse("2010-06-27T08:00:00Z"));
+
+        IndexBatch<Document> batch = new IndexBatch<>();
+        batch.addUploadAction(expectedDoc);
+
+        StepVerifier.create(client.index(batch))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        StepVerifier.create(client.getDocument("1"))
+            .assertNext(actualDoc -> Assertions.assertEquals(actualDoc, expectedDoc))
             .verifyComplete();
     }
 
@@ -329,8 +398,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
-        Mono<Document> result = client.getDocument("1", selectedFields, generateRequestOptions());
-        StepVerifier.create(result)
+        StepVerifier.create(client.getDocument("1", selectedFields, generateRequestOptions()))
             .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
             .verifyComplete();
     }
@@ -373,8 +441,7 @@ public class LookupAsyncTests extends LookupTestBase {
 
         uploadDocument(client, indexedDoc);
 
-        Mono<Document> result = client.getDocument(docKey);
-        StepVerifier.create(result)
+        StepVerifier.create(client.getDocument(docKey))
             .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
             .verifyComplete();
     }

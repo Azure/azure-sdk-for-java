@@ -14,10 +14,8 @@ public class GeoPointUnitTests {
         GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
 
         Assert.assertNotNull(geoPoint);
-        Assert.assertNotNull(geoPoint.getCoordinates());
-        Assert.assertEquals(2, geoPoint.getCoordinates().size());
-        Assert.assertEquals(100.0, geoPoint.getCoordinates().get(0), 0.0);
-        Assert.assertEquals(1.0, geoPoint.getCoordinates().get(1), 0.0);
+        Assert.assertEquals(100.0, geoPoint.getLongitude(), 0.0);
+        Assert.assertEquals(1.0, geoPoint.getLatitude(), 0.0);
         Assert.assertNotNull(geoPoint.getCoordinateSystem());
     }
 
@@ -26,10 +24,8 @@ public class GeoPointUnitTests {
         GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
 
         Assert.assertNotNull(geoPoint);
-        Assert.assertNotNull(geoPoint.getCoordinates());
-        Assert.assertEquals(2, geoPoint.getCoordinates().size());
-        Assert.assertEquals(100.0, geoPoint.getCoordinates().get(0), 0.0);
-        Assert.assertEquals(1.0, geoPoint.getCoordinates().get(1), 0.0);
+        Assert.assertEquals(100.0, geoPoint.getLongitude(), 0.0);
+        Assert.assertEquals(1.0, geoPoint.getLatitude(), 0.0);
         Assert.assertNotNull(geoPoint.getCoordinateSystem());
         Assert.assertEquals("name", geoPoint.getCoordinateSystem().getType());
         Assert.assertEquals(1, geoPoint.getCoordinateSystem().getProperties().size());
