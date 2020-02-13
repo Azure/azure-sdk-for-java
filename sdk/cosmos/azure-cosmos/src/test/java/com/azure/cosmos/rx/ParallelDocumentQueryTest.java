@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.ItemOperations;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -550,27 +551,27 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         return receivedDocuments;
     }
 
-    //TODO: This fails in gateway mode. Need to fix readMany for gateway
+    //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readMany() throws Exception {
         if (this.clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
             throw new SkipException("Skipping gateway mode. This needs to be fixed");
         }
+
         List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {
             pairList.add(Pair.of(createdDocuments.get(i).getId(),
                 new PartitionKey(createdDocuments.get(i).get("mypk"))));
         }
-        System.out.println("pairList = " + pairList.size());
         FeedResponse<JsonNode> documentFeedResponse =
-            BridgeInternal.readMany(createdCollection, pairList, JsonNode.class).block();
+            ItemOperations.readMany(createdCollection, pairList, JsonNode.class).block();
         assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
             .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));
     }
 
+    //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    //TODO: This fails in gateway mode. Need to fix readMany for gateway
     public void readManyIdSameAsPartitionKey() throws Exception {
         if (this.clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
             throw new SkipException("Skipping gateway mode. This needs to be fixed");
@@ -578,18 +579,13 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         CosmosAsyncContainer containerWithIdAsPartitionKey = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
         List<CosmosItemProperties> newItems = prepareCosmosContainer(containerWithIdAsPartitionKey);
-
-        if (this.clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("Skipping gateway mode. This needs to be fixed");
-        }
         List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
         for (int i = 0; i < newItems.size(); i = i + 3) {
             pairList.add(Pair.of(newItems.get(i).getId(),
-                new PartitionKey(newItems.get(i).get("mypk"))));
+                new PartitionKey(newItems.get(i).get("id"))));
         }
-        System.out.println("pairList = " + pairList.size());
         FeedResponse<JsonNode> documentFeedResponse =
-            BridgeInternal.readMany(containerWithIdAsPartitionKey, pairList, JsonNode.class).block();
+            ItemOperations.readMany(containerWithIdAsPartitionKey, pairList, JsonNode.class).block();
         assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
             .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));

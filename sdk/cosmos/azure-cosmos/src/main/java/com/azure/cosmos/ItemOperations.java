@@ -1,0 +1,39 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos;
+
+import org.apache.commons.lang3.tuple.Pair;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
+
+/**
+ * Note: although this class is public it is not part of our public API and may change in future.
+ */
+public class ItemOperations {
+    /**
+     * Note: although this method is public, it is not part of public API and may change in future.
+     *
+     * Reads many documents.
+     *
+     * @param container   the cosmos async container
+     * @param itemKeyList document id and partition key pair that needs to be read
+     * @param klass       class type
+     * @return a Mono with feed response of documents
+     */
+    public static <T> Mono<FeedResponse<T>> readMany(CosmosAsyncContainer container,
+                                                     List<Pair<String, PartitionKey>> itemKeyList,
+                                                     Class<T> klass) {
+        return readManyInternal(container, itemKeyList, new FeedOptions(), klass);
+    }
+
+    static <T> Mono<FeedResponse<T>> readManyInternal(CosmosAsyncContainer container,
+                                                      List<Pair<String, PartitionKey>> itemKeyList,
+                                                      FeedOptions options,
+                                                      Class<T> klass) {
+        return container.getDatabase()
+            .getDocClientWrapper()
+            .readMany(itemKeyList, container.getLink(), options, klass);
+    }
+}

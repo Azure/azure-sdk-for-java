@@ -500,30 +500,4 @@ public class BridgeInternal {
     public static Object getPartitionKeyObject(PartitionKey right) {
         return right.getKeyObject();
     }
-
-    /**
-     * Reads many documents
-     *
-     * @param container the cosmos async container
-     * @param itemKeyList document id and partition key pair that needs to be read
-     * @param klass class type
-     * @return a Mono with feed response of documents
-     */
-    public static <T> Mono<FeedResponse<T>> readMany(
-        CosmosAsyncContainer container,
-        List<Pair<String, PartitionKey>> itemKeyList,
-        Class<T> klass) {
-        return readManyInternal(container, itemKeyList, new FeedOptions(), klass);
-    }
-
-    static <T> Mono<FeedResponse<T>> readManyInternal(
-        CosmosAsyncContainer container,
-        List<Pair<String, PartitionKey>> itemKeyList,
-        FeedOptions options,
-        Class<T> klass) {
-        return container.getDatabase()
-                   .getDocClientWrapper()
-                   .readMany(itemKeyList, container.getLink(), options, klass);
-    }
-
 }
