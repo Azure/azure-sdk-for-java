@@ -34,9 +34,6 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 /**
  * A class for aggregating {@link Message} into a single, size-limited, batch. It is treated as a single message when
  * sent to the Azure Service Bus service.
- *
-
- *     producer.
  */
  final class MessageBatch {
     private final ClientLogger logger = new ClientLogger(MessageBatch.class);
