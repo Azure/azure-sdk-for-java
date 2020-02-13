@@ -26,7 +26,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -489,5 +491,13 @@ public class BridgeInternal {
 
     public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.getProperties();
+    }
+
+    public static PartitionKey partitionKeyfromJsonString(String jsonString) {
+        return PartitionKey.fromJsonString(jsonString);
+    }
+
+    public static Object getPartitionKeyObject(PartitionKey right) {
+        return right.getKeyObject();
     }
 }

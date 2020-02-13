@@ -2,21 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.CommonsBridgeInternal;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.CommonsBridgeInternal;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -210,5 +210,17 @@ public class DocumentQueryExecutionContextFactory {
                 isContinuationExpected,
                 getLazyFeedResponse,
                 correlatedActivityId);
+    }
+
+    public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createReadManyQueryAsync(
+        IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
+        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, FeedOptions feedOptions,
+        String resourceId, String collectionLink, UUID activityId, Class<T> klass,
+        ResourceType resourceTypeEnum) {
+        
+        return PipelinedDocumentQueryExecutionContext.createReadManyAsync(queryClient,
+                                                                   collectionResourceId, sqlQuery, rangeQueryMap,
+                                                                   feedOptions, resourceId, collectionLink,
+                                                                   activityId, klass, resourceTypeEnum );
     }
 }
