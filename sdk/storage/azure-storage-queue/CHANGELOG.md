@@ -1,5 +1,8 @@
 # Release History
 
+## 12.4.0-beta.1 (Unreleased)
+
+
 ## 12.3.0 (2020-02-12)
 - Added support for the 2019-07-07 service version.
 
