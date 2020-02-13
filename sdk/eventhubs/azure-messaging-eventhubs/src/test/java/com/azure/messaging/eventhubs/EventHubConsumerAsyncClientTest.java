@@ -106,7 +106,9 @@ class EventHubConsumerAsyncClientTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
 
-        when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
+        // Forcing us to publish the messages we receive on the AMQP link on single. Similar to how it is done
+        // in ReactorExecutor.
+        when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
 
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
@@ -180,6 +182,7 @@ class EventHubConsumerAsyncClientTest {
             .verifyComplete();
     }
 
+
     /**
      * Verifies that this receives a number of events. Verifies that the initial credits we add are equal to the
      * prefetch value.
@@ -196,6 +199,43 @@ class EventHubConsumerAsyncClientTest {
             .verifyComplete();
 
         verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
+    }
+
+    /**
+     * Verifies that this receives a number of events. Verifies that the initial credits we add are equal to the
+     * prefetch value.
+     */
+    @Test
+    void receivesNumberOfEventsAllowsBlock() throws InterruptedException {
+        // Arrange
+        final int numberOfEvents = 10;
+        final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
+
+        // Scheduling on elastic to simulate a user passed in scheduler (this is the default in EventHubClientBuilder).
+        final EventHubConsumerAsyncClient myConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.elastic(), false);
+        final Flux<PartitionEvent> eventsFlux = myConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest())
+            .take(numberOfEvents);
+
+        // Act
+        eventsFlux.subscribe(event -> {
+            logger.info("Current count: {}", countDownLatch.getCount());
+            saveAction(event.getData()).block(Duration.ofSeconds(2));
+            countDownLatch.countDown();
+        });
+
+        sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID);
+
+        // Assert
+        Assertions.assertTrue(countDownLatch.await(30, TimeUnit.SECONDS));
+        verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
+    }
+
+    private Mono<Instant> saveAction(EventData event) {
+        return Mono.delay(Duration.ofMillis(500)).then(Mono.fromCallable(() -> {
+            logger.info("Saved the event: {}", event.getBodyAsString());
+            return Instant.now();
+        }));
     }
 
     /**
