@@ -44,6 +44,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -58,10 +59,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.BridgeInternal.documentFromObject;
 import static com.azure.cosmos.BridgeInternal.getAltLink;
@@ -1374,7 +1377,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                                                                      collection
                                                                                                                          .getPartitionKey());
 
-                                            //use routing map to find the partitionKeyRangeId of each 
+                                            //use routing map to find the partitionKeyRangeId of each
                                             // effectivePartitionKey
                                             PartitionKeyRange range =
                                                 routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
@@ -1397,7 +1400,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     List<PartitionKeyRange> ranges = new ArrayList<>();
                                     ranges.addAll(partitionKeyRanges);
 
-                                    //Create the range query map that contains the query to be run for that 
+                                    //Create the range query map that contains the query to be run for that
                                     // partitionkeyrange
                                     Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap;
                                     rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap,
@@ -1414,7 +1417,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                ResourceType.Document,
                                                                collection,
                                                                Collections.unmodifiableMap(rangeQueryMap))
-                                               .collectList() // aggregating the result construct a FeedResponse and 
+                                               .collectList() // aggregating the result construct a FeedResponse and
                                                // aggregate RUs.
                                                .map(feedList -> {
                                                    List<Document> finalList = new ArrayList<>();
@@ -1436,51 +1439,108 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     }
 
-    // TODO: This needs refactoring and optimization and betterment and everything
     private Map<PartitionKeyRange, SqlQuerySpec> getRangeQueryMap(
         Map<PartitionKeyRange, List<Pair<String, PartitionKey>>> partitionRangeItemKeyMap,
         PartitionKeyDefinition partitionKeyDefinition) {
         //TODO: Optimise this to include all types of partitionkeydefinitions. ex: c["prop1./ab"]["key1"]
-        String partitionKeyPathString = partitionKeyDefinition.getPaths().get(0);
-        String partitionKeyPath = (new StringBuilder(partitionKeyPathString)).deleteCharAt(0).toString();
 
-        SqlParameterList parameters = new SqlParameterList();
-        int paramCnt = 0;
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = new HashMap<>();
-        
-        for (PartitionKeyRange range : partitionRangeItemKeyMap.keySet()) {
-            StringBuilder queryStringBuilder = new StringBuilder();
-            queryStringBuilder.append("select * from c where ");
-            List<Pair<String, PartitionKey>> pairsList = partitionRangeItemKeyMap.get(range);
-            for (Pair p : pairsList) {
-                paramCnt++;
-                queryStringBuilder.append("(c.id = ");
-                queryStringBuilder.append(getCurentParamName(paramCnt));
-                parameters.add(new SqlParameter(getCurentParamName(paramCnt), p.getLeft()));
-                paramCnt++;
-                queryStringBuilder.append(" and ");
-                queryStringBuilder.append(" c.");
-                // partition key def
-                queryStringBuilder.append(partitionKeyPath);
-                queryStringBuilder.append((" = "));
-                queryStringBuilder.append(getCurentParamName(paramCnt));
-                parameters.add(new SqlParameter(getCurentParamName(paramCnt),
-                                                BridgeInternal.getPartitionKeyObject((PartitionKey) p.getRight())));
-                
-                queryStringBuilder.append(") ");
-                queryStringBuilder.append(" or ");
-            }
-            
-            //removing last " or "
-            queryStringBuilder.delete((queryStringBuilder.length() -1) - 4, queryStringBuilder.length()-1);
+        String partitionKeySelector = createPkSelector(partitionKeyDefinition);
 
-            SqlQuerySpec querySpec = new SqlQuerySpec(queryStringBuilder.toString(), parameters);
+        for(Map.Entry<PartitionKeyRange, List<Pair<String, PartitionKey>>> entry: partitionRangeItemKeyMap.entrySet()) {
+
+            SqlQuerySpec sqlQuerySpec;
+            if (partitionKeySelector.equals("[\"id\"]")) {
+                sqlQuerySpec = createReadManyQuerySpecPartitionKeyIdSame(entry.getValue(), partitionKeySelector);
+            } else {
+                sqlQuerySpec = createReadManyQuerySpec(entry.getValue(), partitionKeySelector);
+            }
             // Add query for this partition to rangeQueryMap
-            rangeQueryMap.put(range, querySpec);
-    }
+            rangeQueryMap.put(entry.getKey(), sqlQuerySpec);
+
+        }
+
         return rangeQueryMap;
     }
-    
+
+    private SqlQuerySpec createReadManyQuerySpecPartitionKeyIdSame(List<Pair<String, PartitionKey>> idPartitionKeyPairList, String partitionKeySelector) {
+        StringBuilder queryStringBuilder = new StringBuilder();
+        SqlParameterList parameters = new SqlParameterList();
+
+        queryStringBuilder.append("SELECT * FROM c WHERE c.id IN ( ");
+        for (int i = 0; i < idPartitionKeyPairList.size(); i++) {
+            Pair<String, PartitionKey> pair = idPartitionKeyPairList.get(i);
+
+            String idValue = pair.getLeft();
+            String idParamName = "@param" + i;
+
+            PartitionKey pkValueAsPartitionKey = pair.getRight();
+            Object pkValue = BridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
+
+            if (!Objects.equals(idValue, pkValue)) {
+                // this is sanity check to ensure id and pk are the same
+                continue;
+            }
+
+            parameters.add(new SqlParameter(idParamName, idValue));
+            queryStringBuilder.append(idParamName);
+
+            if (i < idPartitionKeyPairList.size() - 1) {
+                queryStringBuilder.append(", ");
+            }
+        }
+        queryStringBuilder.append(" )");
+
+        return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
+    }
+
+    private SqlQuerySpec createReadManyQuerySpec(List<Pair<String, PartitionKey>> idPartitionKeyPairList, String partitionKeySelector) {
+        StringBuilder queryStringBuilder = new StringBuilder();
+        SqlParameterList parameters = new SqlParameterList();
+
+        queryStringBuilder.append("SELECT * FROM c WHERE ( ");
+        for (int i = 0; i < idPartitionKeyPairList.size(); i++) {
+            Pair<String, PartitionKey> pair = idPartitionKeyPairList.get(i);
+
+            PartitionKey pkValueAsPartitionKey = pair.getRight();
+            Object pkValue = BridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
+            String pkParamName = "@param" + (2 * i);
+            parameters.add(new SqlParameter(pkParamName, pkValue));
+
+            String idValue = pair.getLeft();
+            String idParamName = "@param" + (2 * i + 1);
+            parameters.add(new SqlParameter(idParamName, idValue));
+
+            queryStringBuilder.append("(");
+            queryStringBuilder.append("c.id = ");
+            queryStringBuilder.append(idParamName);
+            queryStringBuilder.append(" AND ");
+            queryStringBuilder.append(" c");
+            // partition key def
+            queryStringBuilder.append(partitionKeySelector);
+            queryStringBuilder.append((" = "));
+            queryStringBuilder.append(pkParamName);
+            queryStringBuilder.append(" )");
+
+            if (i < idPartitionKeyPairList.size() - 1) {
+                queryStringBuilder.append(" OR ");
+            }
+        }
+        queryStringBuilder.append(" )");
+
+        return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
+    }
+
+    private String createPkSelector(PartitionKeyDefinition partitionKeyDefinition) {
+        return partitionKeyDefinition.getPaths()
+            .stream()
+            .map(pathPart -> StringUtils.substring(pathPart, 1)) // skip starting /
+            .map(pathPart -> StringUtils.replace(pathPart, "\"", "\\")) // escape quote
+            .map(part -> "[\"" + part + "\"]")
+            .collect(Collectors.joining());
+    }
+
+
     private String getCurentParamName(int paramCnt){
         return "@param" + paramCnt;
     }
