@@ -49,8 +49,7 @@ Merging Pull Requests (for project contributors with write access)
 - Install [Maven](http://maven.apache.org/download.cgi)
   - add `MAVEN_HOME` to environment variables
 
-
->**Note:** If you are on `Windows`, enable paths longer than 260 characters by: <br><br>
+>**Note:** If you ran into "long path" issue on `Windows`, enable paths longer than 260 characters by: <br><br>
 1.- Run this as Administrator on a command prompt:<br> 
 `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1`<br>*(might need to type `yes` to override key if it already exists)*<br><br>
 2.- Set up `git` by running:<br> `git config --system core.longpaths true`
@@ -59,11 +58,12 @@ Merging Pull Requests (for project contributors with write access)
 
 The easiest way to build is by running the following command from the root folder:
 ```
-mvn -f pom.client.xml -Dgpg.skip -DskipTests clean install
+mvn -f pom.client.xml -Dgpg.skip -DskipTests -Dinclude-non-shipping-modules clean install
 ```
 - `-f pom.client.xml`: tells maven to target latest Azure SDK for Java project.
 - `-Dgpg.skip`: disables [gpg](https://mran.microsoft.com/snapshot/2016-12-19/web/packages/gpg/vignettes/intro.html) signing.
 - `-DskipTests:` Building without running unit tests would speed operation up, however, make sure all tests pass before creating a new PR.
+- `-Dinclude-non-shipping-modules:` Installing and Runing sdk build tools.
 - `clean:` will remove any previous generated output.
 - `install:`  compiles project and installs it in the local Maven cache.
 
@@ -164,7 +164,7 @@ After the unreleased version of `com.azure:azure-core` was released but before `
 
 Each night our engineering system produces a set of packages for each component of the SDK. These can be used by other projects to test updated builds of our libraries prior to their release. The packages are published to an Azure Artifacts public feed hosted at the following URL:
 
->> https://dev.azure.com/azure-sdk/public/_packaging?_a=feed&feed=azure-sdk-for-java
+> https://dev.azure.com/azure-sdk/public/_packaging?_a=feed&feed=azure-sdk-for-java
 
 For developers working within the repo, refer to the instructions above for updating versions numbers correctly. The parent POM for the Azure SDK already contains a repository reference to the daily feed and can download the packages.
 

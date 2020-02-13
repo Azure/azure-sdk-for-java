@@ -1,7 +1,8 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
+## 1.1.0-beta.1
+- All credential builders support setting a pipeline via `httpPipeline` method.
+- SharedTokenCacheCredentialBuilder supports setting the tenant id via `tenantId` method.
 
 ## 1.0.3 (2020-01-013)
 - Support datetime format `M/d/yyyy K:mm:ss a XXX` for token `expires_on` property on Windows App Services.
