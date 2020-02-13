@@ -5,6 +5,12 @@ jobs:
       - name: PomFile
         value: common/smoke-tests/pom.xml
 
+      # When set to `true`, dependency ordering is shuffled randomly to detect
+      # version conflicts that arise from how maven resolves transitive
+      # dependencies based on the order of their appearance in a pom file.
+      - name: ShuffleDependencies
+        value: false
+
     timeoutInMinutes: 5
 
     strategy:
@@ -13,6 +19,7 @@ jobs:
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: windows-2019
+          ShuffleDependencies: true
         Java LTS Windows:
           ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
@@ -25,10 +32,12 @@ jobs:
           ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
           OSVmImage: ubuntu-18.04
+          ShuffleDependencies: true
         Java 8 MacOS:
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: macOS-10.15
+          ShuffleDependencies: true
         Java LTS MacOS:
           ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
@@ -43,7 +52,12 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'versions:use-latest-versions'
-          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests "-Dincludes=com.azure:*"'
+
+          # Explicitly exclude "upgrade" of `azure-cosmos` because mvn resolves
+          # the `preview` release as a later release than `beta`.
+          # TODO: Remove this when we ship a version of `azure-cosmos`
+          # supersedes the `preview` version on Maven Central
+          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests "-Dincludes=com.azure:*" "-Dexcludes=com.azure:azure-cosmos:*"'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
@@ -60,6 +74,13 @@ jobs:
           workingDirectory: common/smoke-tests
         continueOnError: true
         displayName: Validate consistent dependency dev versions for com.azure packages
+
+      - task: PythonScript@0
+        inputs:
+          scriptPath: common/smoke-tests/shuffle_dependency_order.py
+          workingDirectory: common/smoke-tests
+        displayName: Shuffle dependency order
+        condition: eq(true, variables['ShuffleDependencies'])
 
       - task: Maven@3
         displayName: Show dependency tree
