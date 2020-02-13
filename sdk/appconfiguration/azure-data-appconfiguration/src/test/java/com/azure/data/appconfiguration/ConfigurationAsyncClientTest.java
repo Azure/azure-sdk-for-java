@@ -543,22 +543,35 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that we can select filter results by key, label, and select fields using SettingSelector with not supported filter.
+     * Verifies that throws exception when using SettingSelector with not supported *a key filter.
      */
     @Test
-    public void listConfigurationSettingsSelectFieldsWithNotSupportedFilter() {
-        listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner((settings, selector) -> {
-            final List<Mono<Response<ConfigurationSetting>>> settingsBeingAdded = new ArrayList<>();
-            for (ConfigurationSetting setting : settings) {
-                settingsBeingAdded.add(client.setConfigurationSettingWithResponse(setting, false));
-            }
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter() {
+        filterValueTest("*" + getKey(), getLabel());
+    }
 
-            // Waiting for all the settings to be added.
-            Flux.merge(settingsBeingAdded).blockLast();
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a* key filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter() {
+        filterValueTest("*" + getKey() + "*", getLabel());
+    }
 
-            StepVerifier.create(client.listConfigurationSettings(selector))
-                .verifyError(HttpResponseException.class);
-        });
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a label filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter() {
+        filterValueTest(getKey(), "*" + getLabel());
+    }
+
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a* label filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter() {
+        filterValueTest(getKey(), "*" + getLabel() + "*");
     }
 
     /**
@@ -904,6 +917,18 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     assertContainsHeaders(headers, requestHeaders);
                 })
                 .verifyComplete());
+    }
+
+    /**
+     * Test helper that calling list configuration setting with given key and label input
+     *
+     * @param keyFilter key filter expression
+     * @param labelFilter label filter expression
+     */
+    private void filterValueTest(String keyFilter, String labelFilter) {
+        listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner(keyFilter, labelFilter, selector ->
+            StepVerifier.create(client.listConfigurationSettings(selector))
+                .verifyError(HttpResponseException.class));
     }
 }
 

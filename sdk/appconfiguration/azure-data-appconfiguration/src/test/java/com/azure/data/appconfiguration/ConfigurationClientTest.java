@@ -412,19 +412,35 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that we can select filter results by key, label, and select fields using SettingSelector with not supported filter.
+     * Verifies that throws exception when using SettingSelector with not supported *a key filter.
      */
     @Test
-    public void listConfigurationSettingsSelectFieldsWithNotSupportedFilter() {
-        listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner((settings, selector) -> {
-            settings.forEach(setting -> client.setConfigurationSettingWithResponse(setting, false, Context.NONE).getValue());
-            try {
-                client.listConfigurationSettings(selector).iterator().forEachRemaining(cs -> cs.getLabel());
-                Assertions.fail("Expected to fail");
-            } catch (Exception ex) {
-                assertRestException(ex, HttpResponseException.class, 400);
-            }
-        });
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter() {
+        filterValueTest("*" + getKey(), getLabel());
+    }
+
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a* key filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter() {
+        filterValueTest("*" + getKey() + "*", getLabel());
+    }
+
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a label filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter() {
+        filterValueTest(getKey(), "*" + getLabel());
+    }
+
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a* label filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter() {
+        filterValueTest(getKey(), "*" + getLabel() + "*");
     }
 
     /**
@@ -674,5 +690,22 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 assertContainsHeaders(headers, response.getRequest().getHeaders());
             }
         );
+    }
+
+    /**
+     * Test helper that calling list configuration setting with given key and label input
+     *
+     * @param keyFilter key filter expression
+     * @param labelFilter label filter expression
+     */
+    private void filterValueTest(String keyFilter, String labelFilter) {
+        listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner(keyFilter, labelFilter, selector -> {
+            try {
+                client.listConfigurationSettings(selector).iterator().forEachRemaining(setting -> setting.getLabel());
+                Assertions.fail("Expected to fail");
+            } catch (Exception ex) {
+                assertRestException(ex, HttpResponseException.class, 400);
+            }
+        });
     }
 }
