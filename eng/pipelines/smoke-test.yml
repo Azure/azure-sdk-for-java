@@ -58,6 +58,7 @@ jobs:
         inputs:
           scriptPath: common/smoke-tests/validate_version_dates.py
           workingDirectory: common/smoke-tests
+        continueOnError: true
         displayName: Validate consistent dependency dev versions for com.azure packages
 
       - task: Maven@3
