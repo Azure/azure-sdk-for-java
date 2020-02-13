@@ -102,6 +102,11 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     }
 
     @Override
+    public Boolean isVersioningEnabled() {
+        return this.inner().isVersioningEnabled();
+    }
+
+    @Override
     public String name() {
         return this.inner().name();
     }
@@ -155,6 +160,12 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     @Override
     public BlobServicePropertiesImpl withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
         this.inner().withDeleteRetentionPolicy(deleteRetentionPolicy);
+        return this;
+    }
+
+    @Override
+    public BlobServicePropertiesImpl withIsVersioningEnabled(Boolean isVersioningEnabled) {
+        this.inner().withIsVersioningEnabled(isVersioningEnabled);
         return this;
     }
 
