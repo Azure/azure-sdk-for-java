@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.5.0-beta.1 (Unreleased)
-
+- Fixed a bug that was adding an invalid 'include' query-parameter for list blob item requests if no dataset-include options were specified.
 
 ## 12.4.0 (2020-02-12)
 - Added ability to access BlobProperties from BlobInputStream.
