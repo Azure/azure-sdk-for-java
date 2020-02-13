@@ -16,14 +16,14 @@ import com.microsoft.azure.management.peering.v2019_08_01_preview.ProvisioningSt
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * Peering is a logical representation of a set of connections to the Microsoft
  * Cloud Edge at a location.
  */
 @JsonFlatten
-public class PeeringInner extends Resource {
+public class PeeringInner extends ProxyResource {
     /**
      * The SKU that defines the tier and kind of the peering.
      */
