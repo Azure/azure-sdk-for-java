@@ -28,7 +28,7 @@ class EventHubAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
     private final EventHubConnectionProcessor connectionProcessor;
-    private Scheduler scheduler;
+    private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final TracerProvider tracerProvider;
 
