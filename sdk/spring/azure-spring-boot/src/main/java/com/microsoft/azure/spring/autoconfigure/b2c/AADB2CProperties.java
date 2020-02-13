@@ -5,9 +5,9 @@
  */
 package com.microsoft.azure.spring.autoconfigure.b2c;
 
-import lombok.*;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
 import org.springframework.validation.annotation.Validated;
@@ -15,10 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotBlank;
 import java.net.MalformedURLException;
 
-@Getter
-@Setter
 @Validated
-@NoArgsConstructor
 @ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
 public class AADB2CProperties {
 
@@ -37,6 +34,10 @@ public class AADB2CProperties {
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
     public static final String PREFIX = "azure.activedirectory.b2c";
+
+    AADB2CProperties() {
+
+    }
 
     /**
      * The name of the b2c tenant.
@@ -91,11 +92,12 @@ public class AADB2CProperties {
         return getReplyURLPath(replyUrl);
     }
 
-    @Getter
-    @Setter
     @Validated
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     protected static class UserFlows {
+
+        protected UserFlows() {
+
+        }
 
         /**
          * The sign-up-or-sign-in user flow which is created under b2c tenant.
@@ -112,5 +114,95 @@ public class AADB2CProperties {
          * The password-reset user flow which is created under b2c tenant.
          */
         private String passwordReset;
+
+        public String getSignUpOrSignIn() {
+            return signUpOrSignIn;
+        }
+
+        public void setSignUpOrSignIn(String signUpOrSignIn) {
+            this.signUpOrSignIn = signUpOrSignIn;
+        }
+
+        public String getProfileEdit() {
+            return profileEdit;
+        }
+
+        public void setProfileEdit(String profileEdit) {
+            this.profileEdit = profileEdit;
+        }
+
+        public String getPasswordReset() {
+            return passwordReset;
+        }
+
+        public void setPasswordReset(String passwordReset) {
+            this.passwordReset = passwordReset;
+        }
     }
+
+    public String getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(String tenant) {
+        this.tenant = tenant;
+    }
+
+    public Boolean getOidcEnabled() {
+        return oidcEnabled;
+    }
+
+    public void setOidcEnabled(Boolean oidcEnabled) {
+        this.oidcEnabled = oidcEnabled;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public String getReplyUrl() {
+        return replyUrl;
+    }
+
+    public void setReplyUrl(String replyUrl) {
+        this.replyUrl = replyUrl;
+    }
+
+    public String getLogoutSuccessUrl() {
+        return logoutSuccessUrl;
+    }
+
+    public void setLogoutSuccessUrl(String logoutSuccessUrl) {
+        this.logoutSuccessUrl = logoutSuccessUrl;
+    }
+
+    public UserFlows getUserFlows() {
+        return userFlows;
+    }
+
+    public void setUserFlows(UserFlows userFlows) {
+        this.userFlows = userFlows;
+    }
+
+    public boolean isAllowTelemetry() {
+        return allowTelemetry;
+    }
+
+    public void setAllowTelemetry(boolean allowTelemetry) {
+        this.allowTelemetry = allowTelemetry;
+    }
+
+
 }

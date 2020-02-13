@@ -5,15 +5,16 @@
  */
 package com.microsoft.azure.spring.autoconfigure.b2c;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AADB2CURL {
+
+    private AADB2CURL() {
+
+    }
 
     private static final String AUTHORIZATION_URL_PATTERN =
             "https://%s.b2clogin.com/%s.onmicrosoft.com/oauth2/v2.0/authorize";

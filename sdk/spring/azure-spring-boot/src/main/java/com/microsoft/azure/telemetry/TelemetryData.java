@@ -5,10 +5,6 @@
  */
 package com.microsoft.azure.telemetry;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TelemetryData {
     public static final String INSTALLATION_ID = "installationId";
     public static final String PROJECT_VERSION = "version";
@@ -16,6 +12,8 @@ public class TelemetryData {
     public static final String HASHED_ACCOUNT_NAME = "hashedAccountName";
     public static final String HASHED_NAMESPACE = "hashedNamespace";
     public static final String TENANT_NAME = "tenantName";
+
+    private TelemetryData() {}
 
     public static String getClassPackageSimpleName(Class<?> clazz) {
         if (clazz == null) {

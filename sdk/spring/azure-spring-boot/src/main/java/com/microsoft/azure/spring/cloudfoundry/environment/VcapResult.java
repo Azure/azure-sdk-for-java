@@ -6,8 +6,6 @@
 package com.microsoft.azure.spring.cloudfoundry.environment;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.Getter;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -20,8 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-@Getter
-@Setter
 public class VcapResult implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VcapResult.class);
@@ -223,5 +219,7 @@ public class VcapResult implements Serializable {
             LOGGER.info(msg);
         }
     }
+
+
 
 }

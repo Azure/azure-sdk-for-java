@@ -6,15 +6,11 @@
 
 package com.microsoft.azure.spring.autoconfigure.mediaservices;
 
-import javax.validation.constraints.NotEmpty;
-
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-@Getter
-@Setter
+import javax.validation.constraints.NotEmpty;
+
 @Validated
 @ConfigurationProperties("azure.mediaservices")
 public class MediaServicesProperties {
@@ -69,4 +65,83 @@ public class MediaServicesProperties {
      */
     private Integer readTimeout;
 
+    public String getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(String tenant) {
+        this.tenant = tenant;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public String getRestApiEndpoint() {
+        return restApiEndpoint;
+    }
+
+    public void setRestApiEndpoint(String restApiEndpoint) {
+        this.restApiEndpoint = restApiEndpoint;
+    }
+
+    public String getProxyHost() {
+        return proxyHost;
+    }
+
+    public void setProxyHost(String proxyHost) {
+        this.proxyHost = proxyHost;
+    }
+
+    public Integer getProxyPort() {
+        return proxyPort;
+    }
+
+    public void setProxyPort(Integer proxyPort) {
+        this.proxyPort = proxyPort;
+    }
+
+    public String getProxyScheme() {
+        return proxyScheme;
+    }
+
+    public void setProxyScheme(String proxyScheme) {
+        this.proxyScheme = proxyScheme;
+    }
+
+    public boolean isAllowTelemetry() {
+        return allowTelemetry;
+    }
+
+    public void setAllowTelemetry(boolean allowTelemetry) {
+        this.allowTelemetry = allowTelemetry;
+    }
+
+    public Integer getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public void setConnectTimeout(Integer connectTimeout) {
+        this.connectTimeout = connectTimeout;
+    }
+
+    public Integer getReadTimeout() {
+        return readTimeout;
+    }
+
+    public void setReadTimeout(Integer readTimeout) {
+        this.readTimeout = readTimeout;
+    }
 }

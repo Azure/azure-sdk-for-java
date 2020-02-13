@@ -18,6 +18,7 @@ import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
 import javax.jms.ConnectionFactory;
 
@@ -61,14 +62,14 @@ public class ServiceBusJMSAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public JmsListenerContainerFactory jmsListenerContainerFactory(ConnectionFactory connectionFactory) {
+    public JmsListenerContainerFactory<DefaultMessageListenerContainer> jmsListenerContainerFactory(ConnectionFactory connectionFactory) {
         final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
         jmsListenerContainerFactory.setConnectionFactory(connectionFactory);
         return jmsListenerContainerFactory;
     }
 
     @Bean
-    public JmsListenerContainerFactory topicJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
+    public JmsListenerContainerFactory<DefaultMessageListenerContainer> topicJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
         final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
         jmsListenerContainerFactory.setConnectionFactory(connectionFactory);
         jmsListenerContainerFactory.setSubscriptionDurable(Boolean.TRUE);

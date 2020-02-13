@@ -5,35 +5,63 @@
  */
 package com.microsoft.azure.spring.autoconfigure.storage;
 
-import javax.validation.constraints.NotEmpty;
-
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotEmpty;
 
 @Validated
 @ConfigurationProperties("azure.storage")
 public class StorageProperties {
     @NotEmpty
-    @Getter
-    @Setter
     private String accountName;
 
     @NotEmpty
-    @Getter
-    @Setter
     private String accountKey;
 
-    @Getter
-    @Setter
     private String containerName;
 
-    @Getter
-    @Setter
     private boolean allowTelemetry = true;
-    
-    @Getter
-    @Setter
+
     private boolean enableHttps = false;
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public String getAccountKey() {
+        return accountKey;
+    }
+
+    public void setAccountKey(String accountKey) {
+        this.accountKey = accountKey;
+    }
+
+    public String getContainerName() {
+        return containerName;
+    }
+
+    public void setContainerName(String containerName) {
+        this.containerName = containerName;
+    }
+
+    public boolean isAllowTelemetry() {
+        return allowTelemetry;
+    }
+
+    public void setAllowTelemetry(boolean allowTelemetry) {
+        this.allowTelemetry = allowTelemetry;
+    }
+
+    public boolean isEnableHttps() {
+        return enableHttps;
+    }
+
+    public void setEnableHttps(boolean enableHttps) {
+        this.enableHttps = enableHttps;
+    }
 }

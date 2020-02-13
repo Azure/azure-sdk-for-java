@@ -7,16 +7,12 @@ package com.microsoft.azure.telemetry;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.utils.PropertyLoader;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
 import java.time.Instant;
 import java.util.Map;
 
-@Getter
 public class TelemetryEventData {
 
     private final String name;
@@ -41,7 +37,6 @@ public class TelemetryEventData {
         time = Instant.now().toString();
     }
 
-    @Getter
     private static class Tags {
 
         @JsonProperty("ai.cloud.roleInstance")
@@ -54,9 +49,16 @@ public class TelemetryEventData {
             aiCloudRoleInstance = instance;
             aiInternalSdkVersion = sdkVersion;
         }
+
+        public String getAiCloudRoleInstance() {
+            return aiCloudRoleInstance;
+        }
+
+        public String getAiInternalSdkVersion() {
+            return aiInternalSdkVersion;
+        }
     }
 
-    @Getter
     private static class EventData {
 
         private final String baseType;
@@ -67,8 +69,6 @@ public class TelemetryEventData {
             this.baseType = baseType;
         }
 
-        @Getter
-        @Setter(AccessLevel.PRIVATE)
         private static class CustomData {
 
             private final Integer ver = 2;
@@ -76,6 +76,54 @@ public class TelemetryEventData {
             private String name;
 
             private Map<String, String> properties;
+
+            public Integer getVer() {
+                return ver;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public Map<String, String> getProperties() {
+                return properties;
+            }
+
+            private void setName(String name) {
+                this.name = name;
+            }
+
+            private void setProperties(Map<String, String> properties) {
+                this.properties = properties;
+            }
         }
+
+        public String getBaseType() {
+            return baseType;
+        }
+
+        public CustomData getBaseData() {
+            return baseData;
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getInstrumentationKey() {
+        return instrumentationKey;
+    }
+
+    public Tags getTags() {
+        return tags;
+    }
+
+    public EventData getData() {
+        return data;
+    }
+
+    public String getTime() {
+        return time;
     }
 }

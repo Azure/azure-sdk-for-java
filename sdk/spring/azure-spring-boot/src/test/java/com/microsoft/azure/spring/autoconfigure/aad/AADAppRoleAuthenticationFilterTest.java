@@ -78,6 +78,7 @@ public class AADAppRoleAuthenticationFilterTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testDoFilterGoodCase()
         throws ParseException, JOSEException, BadJOSEException, ServletException, IOException {
         final UserPrincipal dummyPrincipal = createUserPrincipal(Arrays.asList("user", "admin"));
@@ -118,6 +119,7 @@ public class AADAppRoleAuthenticationFilterTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testDoFilterAddsDefaultRole()
         throws ParseException, JOSEException, BadJOSEException, ServletException, IOException {
 

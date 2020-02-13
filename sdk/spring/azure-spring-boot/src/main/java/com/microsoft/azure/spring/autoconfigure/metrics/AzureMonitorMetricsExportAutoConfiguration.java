@@ -50,8 +50,8 @@ public class AzureMonitorMetricsExportAutoConfiguration {
 
     /**
      * This bean is already available when the
-     * {@see <a href="https://github.com/Microsoft/ApplicationInsights-Java/tree/master/
-     * azure-application-insights-spring-boot-starter">Azure Application Insights starter</a>}
+     * <a href="https://github.com/Microsoft/ApplicationInsights-Java/tree/master/
+     * azure-application-insights-spring-boot-starter">Azure Application Insights starter</a>
      * is present.
      */
     @Bean

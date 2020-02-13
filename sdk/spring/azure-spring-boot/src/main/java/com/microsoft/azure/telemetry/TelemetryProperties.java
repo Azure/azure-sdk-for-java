@@ -5,14 +5,18 @@
  */
 package com.microsoft.azure.telemetry;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Getter
-@Setter
 @ConfigurationProperties("telemetry")
 public class TelemetryProperties {
 
     private String instrumentationKey;
+
+    public String getInstrumentationKey() {
+        return instrumentationKey;
+    }
+
+    public void setInstrumentationKey(String instrumentationKey) {
+        this.instrumentationKey = instrumentationKey;
+    }
 }

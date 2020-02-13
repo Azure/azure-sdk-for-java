@@ -8,9 +8,14 @@ package com.microsoft.azure.telemetry;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.spring.support.GetHashMac;
 import com.microsoft.azure.utils.PropertyLoader;
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,8 +23,9 @@ import java.util.Map;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 
-@Slf4j
 public class TelemetrySender {
+
+    private static final Logger log = LoggerFactory.getLogger(TelemetrySender.class);
 
     private static final String TELEMETRY_TARGET_URL = "https://dc.services.visualstudio.com/v2/track";
 
