@@ -433,22 +433,18 @@ class EventHubConsumerAsyncClientTest {
                 counter.getAndIncrement();
             },
             error -> Assertions.fail(error.toString()),
-            () -> logger.info("Complete"), sub -> {
+            () -> {
+                logger.info("Complete");
+            }, sub -> {
+                logger.info("requesting backpressure: {}", backPressure);
                 sub.request(backPressure);
             });
 
         try {
             // Act
-
-            // Capturing the credit supplier that we set when the link was received.
             sendMessages(messageSink, 11, PARTITION_ID);
 
-            verify(amqpReceiveLink).setEmptyCreditListener(creditSupplier.capture());
-            final Supplier<Integer> supplier = creditSupplier.getValue();
-            final int actualCredits = supplier.get();
-
             // Assert
-            Assertions.assertEquals(1, actualCredits);
             Assertions.assertEquals(backPressure, counter.get());
         } finally {
             subscription.dispose();
