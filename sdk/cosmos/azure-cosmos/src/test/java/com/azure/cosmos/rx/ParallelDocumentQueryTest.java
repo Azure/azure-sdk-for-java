@@ -7,11 +7,9 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.ItemOperations;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -19,7 +17,6 @@ import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.Resource;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -564,7 +561,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 new PartitionKey(createdDocuments.get(i).get("mypk"))));
         }
         FeedResponse<JsonNode> documentFeedResponse =
-            ItemOperations.readMany(createdCollection, pairList, JsonNode.class).block();
+            ItemOperations.readManyAsync(createdCollection, pairList, JsonNode.class).block();
         assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
             .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));
@@ -585,7 +582,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 new PartitionKey(newItems.get(i).get("id"))));
         }
         FeedResponse<JsonNode> documentFeedResponse =
-            ItemOperations.readMany(containerWithIdAsPartitionKey, pairList, JsonNode.class).block();
+            ItemOperations.readManyAsync(containerWithIdAsPartitionKey, pairList, JsonNode.class).block();
         assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
             .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));

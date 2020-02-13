@@ -12,19 +12,36 @@ import java.util.List;
  * Note: although this class is public it is not part of our public API and may change in future.
  */
 public class ItemOperations {
+
     /**
      * Note: although this method is public, it is not part of public API and may change in future.
-     *
+     * <p>
      * Reads many documents.
      *
      * @param container   the cosmos async container
      * @param itemKeyList document id and partition key pair that needs to be read
      * @param klass       class type
-     * @return a Mono with feed response of documents
+     * @return a feed response of cosmos items
      */
-    public static <T> Mono<FeedResponse<T>> readMany(CosmosAsyncContainer container,
-                                                     List<Pair<String, PartitionKey>> itemKeyList,
-                                                     Class<T> klass) {
+    public static <T> FeedResponse<T> readMany(CosmosContainer container,
+                                               List<Pair<String, PartitionKey>> itemKeyList,
+                                               Class<T> klass) {
+        return readManyInternal(container.asyncContainer, itemKeyList, new FeedOptions(), klass).block();
+    }
+
+    /**
+     * Note: although this method is public, it is not part of public API and may change in future.
+     * <p>
+     * Reads many documents.
+     *
+     * @param container   the cosmos async container
+     * @param itemKeyList document id and partition key pair that needs to be read
+     * @param klass       class type
+     * @return a Mono with feed response of cosmos items
+     */
+    public static <T> Mono<FeedResponse<T>> readManyAsync(CosmosAsyncContainer container,
+                                                          List<Pair<String, PartitionKey>> itemKeyList,
+                                                          Class<T> klass) {
         return readManyInternal(container, itemKeyList, new FeedOptions(), klass);
     }
 
