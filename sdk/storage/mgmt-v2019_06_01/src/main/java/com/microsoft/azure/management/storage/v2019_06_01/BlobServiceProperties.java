@@ -17,7 +17,6 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2019_06_01.implementation.StorageManager;
-import com.microsoft.azure.management.storage.v2019_06_01.implementation.SkuInner;
 
 /**
  * Type representing BlobServiceProperties.
@@ -52,6 +51,11 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
      * @return the id value.
      */
     String id();
+
+    /**
+     * @return the isVersioningEnabled value.
+     */
+    Boolean isVersioningEnabled();
 
     /**
      * @return the name value.
@@ -108,7 +112,7 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
         interface WithAutomaticSnapshotPolicyEnabled {
             /**
              * Specifies automaticSnapshotPolicyEnabled.
-             * @param automaticSnapshotPolicyEnabled Automatic Snapshot is enabled if set to true
+             * @param automaticSnapshotPolicyEnabled Deprecated in favor of isVersioningEnabled property
              * @return the next definition stage
              */
             WithCreate withAutomaticSnapshotPolicyEnabled(Boolean automaticSnapshotPolicyEnabled);
@@ -163,6 +167,18 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
         }
 
         /**
+         * The stage of the blobserviceproperties definition allowing to specify IsVersioningEnabled.
+         */
+        interface WithIsVersioningEnabled {
+            /**
+             * Specifies isVersioningEnabled.
+             * @param isVersioningEnabled Versioning is enabled if set to true
+             * @return the next definition stage
+             */
+            WithCreate withIsVersioningEnabled(Boolean isVersioningEnabled);
+        }
+
+        /**
          * The stage of the blobserviceproperties definition allowing to specify RestorePolicy.
          */
         interface WithRestorePolicy {
@@ -179,13 +195,13 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<BlobServiceProperties>, DefinitionStages.WithAutomaticSnapshotPolicyEnabled, DefinitionStages.WithChangeFeed, DefinitionStages.WithCors, DefinitionStages.WithDefaultServiceVersion, DefinitionStages.WithDeleteRetentionPolicy, DefinitionStages.WithRestorePolicy {
+        interface WithCreate extends Creatable<BlobServiceProperties>, DefinitionStages.WithAutomaticSnapshotPolicyEnabled, DefinitionStages.WithChangeFeed, DefinitionStages.WithCors, DefinitionStages.WithDefaultServiceVersion, DefinitionStages.WithDeleteRetentionPolicy, DefinitionStages.WithIsVersioningEnabled, DefinitionStages.WithRestorePolicy {
         }
     }
     /**
      * The template for a BlobServiceProperties update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<BlobServiceProperties>, UpdateStages.WithAutomaticSnapshotPolicyEnabled, UpdateStages.WithChangeFeed, UpdateStages.WithCors, UpdateStages.WithDefaultServiceVersion, UpdateStages.WithDeleteRetentionPolicy, UpdateStages.WithRestorePolicy {
+    interface Update extends Appliable<BlobServiceProperties>, UpdateStages.WithAutomaticSnapshotPolicyEnabled, UpdateStages.WithChangeFeed, UpdateStages.WithCors, UpdateStages.WithDefaultServiceVersion, UpdateStages.WithDeleteRetentionPolicy, UpdateStages.WithIsVersioningEnabled, UpdateStages.WithRestorePolicy {
     }
 
     /**
@@ -198,7 +214,7 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
         interface WithAutomaticSnapshotPolicyEnabled {
             /**
              * Specifies automaticSnapshotPolicyEnabled.
-             * @param automaticSnapshotPolicyEnabled Automatic Snapshot is enabled if set to true
+             * @param automaticSnapshotPolicyEnabled Deprecated in favor of isVersioningEnabled property
              * @return the next update stage
              */
             Update withAutomaticSnapshotPolicyEnabled(Boolean automaticSnapshotPolicyEnabled);
@@ -250,6 +266,18 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
              * @return the next update stage
              */
             Update withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy);
+        }
+
+        /**
+         * The stage of the blobserviceproperties update allowing to specify IsVersioningEnabled.
+         */
+        interface WithIsVersioningEnabled {
+            /**
+             * Specifies isVersioningEnabled.
+             * @param isVersioningEnabled Versioning is enabled if set to true
+             * @return the next update stage
+             */
+            Update withIsVersioningEnabled(Boolean isVersioningEnabled);
         }
 
         /**
