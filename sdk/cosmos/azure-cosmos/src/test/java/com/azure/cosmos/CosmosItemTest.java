@@ -15,6 +15,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -180,11 +181,12 @@ public class CosmosItemTest extends TestSuiteBase {
         do {
             Iterable<FeedResponse<CosmosItemProperties>> feedResponseIterable =
                 feedResponseIterator1.iterableByPage(continuationToken, pageSize);
-            FeedResponse<CosmosItemProperties> feedResponse = feedResponseIterable.iterator().next();
-            int resultSize = feedResponse.getResults().size();
-            assertThat(resultSize).isEqualTo(pageSize);
-            finalDocumentCount += feedResponse.getResults().size();
-            continuationToken = feedResponse.getContinuationToken();
+            for (FeedResponse<CosmosItemProperties> fr : feedResponseIterable) {
+                int resultSize = fr.getResults().size();
+                assertThat(resultSize).isEqualTo(pageSize);
+                finalDocumentCount += fr.getResults().size();
+                continuationToken = fr.getContinuationToken();
+            }
         } while(continuationToken != null);
 
         assertThat(finalDocumentCount).isEqualTo(initialDocumentCount);
