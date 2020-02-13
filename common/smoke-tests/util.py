@@ -9,7 +9,7 @@ def get_xml_root(file_path):
 
     print(xml)
 
-    it = ET.iterparse(StringIO(xml.decode()))
+    it = ET.iterparse(StringIO(xml))
     for _, el in it:
         if '}' in el.tag:
             # strip all namespaces
