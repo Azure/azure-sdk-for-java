@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.GoneException;
 import com.azure.cosmos.InvalidPartitionException;
+import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.ServiceUnavailableException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
@@ -615,7 +616,7 @@ public class StoreReaderDotNetTest {
         StoreReader storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
 
         IAuthorizationTokenProvider mockAuthorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.anyString(), Matchers.anyMap(),
+        Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), Matchers.anyMap(),
                 Matchers.any(), Matchers.anyMap())).thenReturn("dummyauthtoken");
 
         // setup max replica set size on the config reader
@@ -689,7 +690,7 @@ public class StoreReaderDotNetTest {
         Mockito.when(serviceConfigurationReader.getDefaultConsistencyLevel()).thenReturn(Mono.just(ConsistencyLevel.SESSION));
 
         IAuthorizationTokenProvider mockAuthorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(),Matchers.any(), Matchers.anyString(), Matchers.anyMap(),
+        Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), Matchers.anyMap(),
                 Matchers.any(), Matchers.anyMap())).thenReturn("dummyauthtoken");
 
         for (int i = 0; i < addressInformations.length; i++) {
@@ -782,7 +783,7 @@ public class StoreReaderDotNetTest {
             StoreReader storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
 
             IAuthorizationTokenProvider mockAuthorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.anyString(), Matchers.anyMap(),
+            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), Matchers.anyMap(),
                     Matchers.any(), Matchers.anyMap())).thenReturn("dummyauthtoken");
 
             // setup max replica set size on the config reader
@@ -815,7 +816,7 @@ public class StoreReaderDotNetTest {
             StoreReader storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
 
             IAuthorizationTokenProvider mockAuthorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.anyString(), Matchers.anyMap(),
+            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), Matchers.anyMap(),
                     Matchers.any(), Matchers.anyMap())).thenReturn("dummyauthtoken");
 
             // setup max replica set size on the config reader
@@ -858,7 +859,7 @@ public class StoreReaderDotNetTest {
                             sessionContainer);
 
             IAuthorizationTokenProvider mockAuthorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.anyString(), Matchers.anyMap(),
+            Mockito.when(mockAuthorizationTokenProvider.getUserAuthorizationToken(Matchers.anyString(), Matchers.any(), Matchers.any(RequestVerb.class), Matchers.anyMap(),
                     Matchers.any(), Matchers.anyMap())).thenReturn("dummyauthtoken");
             // setup max replica set size on the config reader
             ReplicationPolicy replicationPolicy = new ReplicationPolicy();

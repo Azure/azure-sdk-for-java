@@ -611,6 +611,46 @@ public class SessionContainerTest {
         assertThat(tokens.contains("range_0:1#100#4=90#5=1")).isTrue();
     }
 
+    @Test(groups = "unit")
+    public void sessionCapturingDisabled() throws Exception {
+        SessionContainer sessionContainer = new SessionContainer("127.0.0.1", true);
+
+        int numCollections = 2;
+        int numPartitionKeyRangeIds = 5;
+
+        for (int i = 0; i < numCollections; i++) {
+            String collectionResourceId = ResourceId.newDocumentCollectionId(getRandomDbId(), getRandomCollectionId() + i).getDocumentCollectionId().toString();
+            String collectionFullName = "dbs/db1/colls/collName_" + i;
+
+            for (int j = 0; j < numPartitionKeyRangeIds; j++) {
+
+                String partitionKeyRangeId = "range_" + j;
+                String lsn = "1#" + j + "#4=90#5=2";
+
+                sessionContainer.setSessionToken(
+                    collectionResourceId,
+                    collectionFullName,
+                    ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, partitionKeyRangeId + ":" + lsn));
+            }
+        }
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.ReadFeed, ResourceType.DocumentCollection,
+            "dbs/db1/colls/collName_1", IOUtils.toInputStream("content1", "UTF-8"), new HashMap<>());
+
+        ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_1");
+        assertThat(sessionToken).isNull();
+
+        DocumentServiceRequestContext dsrContext = new DocumentServiceRequestContext();
+        PartitionKeyRange resolvedPKRange = new PartitionKeyRange();
+        resolvedPKRange.setId("range_" + (numPartitionKeyRangeIds + 10));
+        GatewayTestUtils.setParent(resolvedPKRange, ImmutableList.of("range_2", "range_x"));
+        dsrContext.resolvedPartitionKeyRange = resolvedPKRange;
+        request.requestContext = dsrContext;
+
+        sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, resolvedPKRange.getId());
+        assertThat(sessionToken).isNull();
+    }
+
     private static int getRandomCollectionId() {
         return random.nextInt(Integer.MAX_VALUE / 2) - (Integer.MAX_VALUE / 2);
     }

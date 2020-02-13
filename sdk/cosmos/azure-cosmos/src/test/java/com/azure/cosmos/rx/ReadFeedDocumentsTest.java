@@ -6,9 +6,9 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -16,7 +16,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,20 +38,19 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments() {
         FeedOptions options = new FeedOptions();
-        
-        options.maxItemCount(2);
+        int maxItemCount = 2;
 
-        Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(createdDocuments.size())
                 .numberOfPagesIsGreaterThanOrEqualTo(1)
                 .exactlyContainsInAnyOrder(createdDocuments.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0)
-                                         .pageSizeIsLessThanOrEqualTo(options.maxItemCount())
+                                         .pageSizeIsLessThanOrEqualTo(maxItemCount)
                                          .build())
                 .build();
-        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
@@ -60,8 +58,8 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         // With introduction of queryplan, crosspartition need not be enabled anymore.
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
-        Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        int maxItemCount = 2;
+        CosmosContinuablePagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> validator =
             new FeedResponseListValidator.Builder<CosmosItemProperties>()
                                                         .totalSize(createdDocuments.size())
@@ -73,11 +71,10 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
                                                                                                     .toList()))
                                                         .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
                                                                              .requestChargeGreaterThanOrEqualTo(1.0)
-                                                                             .pageSizeIsLessThanOrEqualTo(options
-                                                                                                              .maxItemCount())
+                                                                             .pageSizeIsLessThanOrEqualTo(maxItemCount)
                                                                              .build())
                                                         .build();
-        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
     // TODO (DANOBLE) ReadFeedDocumentsTest initialization consistently times out in CI environments.

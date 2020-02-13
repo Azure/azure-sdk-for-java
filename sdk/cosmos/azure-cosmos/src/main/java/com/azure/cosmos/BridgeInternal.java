@@ -5,6 +5,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -24,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Flux;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -34,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 /**
  * This is meant to be used only internally as a bridge access to classes in
@@ -53,10 +57,6 @@ public class BridgeInternal {
         return Document.FromObject(document, mapper);
     }
 
-    public static String toJsonString(Object document, ObjectMapper mapper) {
-        return CosmosItemProperties.toJsonString(document, mapper);
-    }
-
     public static void monitorTelemetry(MeterRegistry registry) {
         CosmosAsyncClient.setMonitorTelemetry(registry);
     }
@@ -69,6 +69,10 @@ public class BridgeInternal {
     public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
                                                                           Class<T> cls) {
         return new FeedResponse<T>(response.getQueryResponse(cls), response.getResponseHeaders());
+    }
+
+    public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
+        return new FeedResponse<>(results, headers, noChanges);
     }
 
     public static <T extends Resource> FeedResponse<T> toChaneFeedResponsePage(RxDocumentServiceResponse response,
@@ -218,11 +222,6 @@ public class BridgeInternal {
 
     public static <E extends CosmosClientException> E setPartitionKeyRangeId(E e, String partitionKeyRangeId) {
         e.partitionKeyRangeId = partitionKeyRangeId;
-        return e;
-    }
-
-    public static <E extends CosmosClientException> E setRequestTimeline(E e, RequestTimeline timeline) {
-        e.setRequestTimeline(timeline);
         return e;
     }
 
@@ -418,6 +417,11 @@ public class BridgeInternal {
         return new CosmosResponseDiagnostics();
     }
 
+    public static void setTransportClientRequestTimelineOnDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics,
+                                                                      RequestTimeline requestTimeline) {
+        cosmosResponseDiagnostics.clientSideRequestStatistics().setTransportClientRequestTimeline(requestTimeline);
+    }
+
     public static void recordResponse(CosmosResponseDiagnostics cosmosResponseDiagnostics,
                                            RxDocumentServiceRequest request, StoreResult storeResult) {
         cosmosResponseDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResult);
@@ -464,5 +468,26 @@ public class BridgeInternal {
 
     public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
         return partitionKey.getInternalPartitionKey();
+    }
+
+    public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
+        feedOptions.requestContinuation(continuationToken);
+        feedOptions.maxItemCount(maxItemCount);
+    }
+
+    public static void setFeedOptionsContinuationToken(FeedOptions feedOptions, String continuationToken) {
+        feedOptions.requestContinuation(continuationToken);
+    }
+
+    public static void setFeedOptionsMaxItemCount(FeedOptions feedOptions, Integer maxItemCount) {
+        feedOptions.maxItemCount(maxItemCount);
+    }
+
+    public static <T> CosmosContinuablePagedFlux<T> createCosmosContinuablePagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptionsFluxFunction);
+    }
+
+    public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
+        return cosmosItemResponse.getProperties();
     }
 }

@@ -21,10 +21,11 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosDatabaseProperties;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.CosmosResponse;
 import com.azure.cosmos.CosmosResponseValidator;
@@ -168,7 +169,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         @Override
-        public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec query) {
+        public CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec query) {
             return client.queryDatabases(query, null);
         }
 
@@ -216,11 +217,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(-1);
-        options.maxItemCount(100);
+        int maxItemCount = 100;
 
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
 
         cosmosContainer.queryItems("SELECT * FROM root", options, CosmosItemProperties.class)
+                       .byPage(maxItemCount)
                        .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                         .flatMap(doc -> {
@@ -245,6 +247,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
+                       .byPage(maxItemCount)
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(trigger -> {
@@ -261,6 +264,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryStoredProcedures("SELECT * FROM root", options)
+                       .byPage(maxItemCount)
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(storedProcedure -> {
@@ -278,6 +282,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} udfs ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryUserDefinedFunctions("SELECT * FROM root", options)
+                       .byPage(maxItemCount)
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(udf -> {
@@ -447,7 +452,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, CosmosItemProperties item) {
-        return cosmosContainer.createItem(item).block().getProperties();
+        return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
     }
 
     public Flux<CosmosAsyncItemResponse> bulkInsert(CosmosAsyncContainer cosmosContainer,
@@ -465,7 +470,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                          List<CosmosItemProperties> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
                 .publishOn(Schedulers.parallel())
-                .map(CosmosAsyncItemResponse::getProperties)
+                .map(itemResponse -> (CosmosItemProperties)itemResponse.getResource())
                 .collectList()
                 .block();
     }
@@ -474,7 +479,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                        List<CosmosItemProperties> documentDefinitionList) {
         bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(CosmosAsyncItemResponse::getProperties)
+            .map(itemResponse -> BridgeInternal.getProperties(itemResponse))
             .then()
             .block();
     }
@@ -534,7 +539,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public static void deleteCollectionIfExists(CosmosAsyncClient client, String databaseId, String collectionId) {
         CosmosAsyncDatabase database = client.getDatabase(databaseId).read().block().getDatabase();
         List<CosmosContainerProperties> res = database.queryContainers(String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null)
-                                                      .flatMap(page -> Flux.fromIterable(page.getResults()))
                                                       .collectList()
                                                       .block();
 
@@ -558,6 +562,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         List<CosmosItemProperties> res = cosmosContainer
                 .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options, CosmosItemProperties.class)
+                .byPage()
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .collectList().block();
 
@@ -587,7 +592,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosAsyncDatabase database = client.getDatabase(databaseId).read().block().getDatabase();
         List<CosmosUserProperties> res = database
                 .queryUsers(String.format("SELECT * FROM root r where r.id = '%s'", userId), null)
-                .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .collectList().block();
         if (!res.isEmpty()) {
             deleteUser(database, userId);
@@ -620,7 +624,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     static protected CosmosAsyncDatabase createDatabaseIfNotExists(CosmosAsyncClient client, String databaseId) {
         List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null)
-                                                   .flatMap(p -> Flux.fromIterable(p.getResults()))
                                                    .collectList()
                                                    .block();
         if (res.size() != 0) {
@@ -655,7 +658,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected void safeDeleteAllCollections(CosmosAsyncDatabase database) {
         if (database != null) {
             List<CosmosContainerProperties> collections = database.readAllContainers()
-                                                                  .flatMap(p -> Flux.fromIterable(p.getResults()))
                                                                   .collectList()
                                                                   .block();
 
@@ -717,9 +719,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator)
-            throws InterruptedException {
-        validateSuccess(single.flux(), validator, subscriberValidationTimeout);
+    public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator) {
+        validateSuccess(single, validator, subscriberValidationTimeout);
+    }
+
+    public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator, long timeout) {
+        validateSuccess(single.flux(), validator, timeout);
     }
 
     public static <T extends CosmosResponse> void validateSuccess(Flux<T> flowable,
@@ -747,6 +752,29 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         flowable.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
+        testSubscriber.assertNotComplete();
+        testSubscriber.assertTerminated();
+        assertThat(testSubscriber.errors()).hasSize(1);
+        validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
+    }
+
+    public <T extends CosmosAsyncItemResponse> void validateItemSuccess(
+        Mono<T> responseMono, CosmosItemResponseValidator validator) {
+
+        TestSubscriber<CosmosAsyncItemResponse> testSubscriber = new TestSubscriber<>();
+        responseMono.subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent(subscriberValidationTimeout, TimeUnit.MILLISECONDS);
+        testSubscriber.assertNoErrors();
+        testSubscriber.assertComplete();
+        testSubscriber.assertValueCount(1);
+        validator.validate(testSubscriber.values().get(0));
+    }
+
+    public <T extends CosmosAsyncItemResponse> void validateItemFailure(
+        Mono<T> responseMono, FailureValidator validator) {
+        TestSubscriber<CosmosAsyncItemResponse> testSubscriber = new TestSubscriber<>();
+        responseMono.subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent(subscriberValidationTimeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNotComplete();
         testSubscriber.assertTerminated();
         assertThat(testSubscriber.errors()).hasSize(1);

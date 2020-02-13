@@ -121,13 +121,12 @@ public class StoreResponse {
         return this;
     }
 
-    public RequestTimeline getRequestTimeline() {
-        return this.requestTimeline;
+    void setRequestTimeline(RequestTimeline requestTimeline) {
+        this.requestTimeline = requestTimeline;
     }
 
-    public StoreResponse setRequestTimeline(RequestTimeline requestTimeline) {
-        this.requestTimeline = requestTimeline;
-        return this;
+    RequestTimeline getRequestTimeline() {
+        return this.requestTimeline;
     }
 
     int getSubStatusCode() {

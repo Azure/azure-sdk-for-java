@@ -45,7 +45,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     // region Fields
 
-    private static final String UrlTrim = "/+";
+    private static final String URL_TRIM = "/";
 
     // endregion
 
@@ -614,7 +614,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
         if (StringUtils.isNotEmpty(value)) {
 
-            final ConsistencyLevel level = EnumUtils.getEnumIgnoreCase(ConsistencyLevel.class, value);
+            final ConsistencyLevel level = ConsistencyLevel.fromServiceSerializedFormat(value);
 
             if (level == null) {
                 final String reason = String.format(Locale.ROOT, RMResources.InvalidRequestHeaderValue,
@@ -1004,19 +1004,13 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
             // not "apps/appName/partitions/partitionKey/replicas/replicaId/dbs/dbName"
 
             final String address = request.getResourceAddress();
-            final String[] fragments = address.split(UrlTrim);
+            final String[] fragments = StringUtils.split(address, URL_TRIM);
             int count = fragments.length;
-            int index = 0;
-
-            if (count > 0 && fragments[0].isEmpty()) {
-                ++index;
-                --count;
-            }
 
             if (count >= 2) {
-                switch (fragments[index]) {
+                switch (fragments[0]) {
                     case Paths.DATABASES_PATH_SEGMENT:
-                        this.getDatabaseName().setValue(fragments[index + 1]);
+                        this.getDatabaseName().setValue(fragments[1]);
                         break;
                     default:
                         final String reason = String.format(Locale.ROOT, RMResources.InvalidResourceAddress,
@@ -1026,52 +1020,52 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
             }
 
             if (count >= 4) {
-                switch (fragments[index + 2]) {
+                switch (fragments[2]) {
                     case Paths.COLLECTIONS_PATH_SEGMENT:
-                        this.getCollectionName().setValue(fragments[index + 3]);
+                        this.getCollectionName().setValue(fragments[3]);
                         break;
                     case Paths.USERS_PATH_SEGMENT:
-                        this.getUserName().setValue(fragments[index + 3]);
+                        this.getUserName().setValue(fragments[3]);
                         break;
                     case Paths.USER_DEFINED_TYPES_PATH_SEGMENT:
-                        this.getUserDefinedTypeName().setValue(fragments[index + 3]);
+                        this.getUserDefinedTypeName().setValue(fragments[3]);
                         break;
                 }
             }
 
             if (count >= 6) {
-                switch (fragments[index + 4]) {
+                switch (fragments[4]) {
                     case Paths.DOCUMENTS_PATH_SEGMENT:
-                        this.getDocumentName().setValue(fragments[index + 5]);
+                        this.getDocumentName().setValue(fragments[5]);
                         break;
                     case Paths.STORED_PROCEDURES_PATH_SEGMENT:
-                        this.getStoredProcedureName().setValue(fragments[index + 5]);
+                        this.getStoredProcedureName().setValue(fragments[5]);
                         break;
                     case Paths.PERMISSIONS_PATH_SEGMENT:
-                        this.getPermissionName().setValue(fragments[index + 5]);
+                        this.getPermissionName().setValue(fragments[5]);
                         break;
                     case Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT:
-                        this.getUserDefinedFunctionName().setValue(fragments[index + 5]);
+                        this.getUserDefinedFunctionName().setValue(fragments[5]);
                         break;
                     case Paths.TRIGGERS_PATH_SEGMENT:
-                        this.getTriggerName().setValue(fragments[index + 5]);
+                        this.getTriggerName().setValue(fragments[5]);
                         break;
                     case Paths.CONFLICTS_PATH_SEGMENT:
-                        this.getConflictName().setValue(fragments[index + 5]);
+                        this.getConflictName().setValue(fragments[5]);
                         break;
                     case Paths.PARTITION_KEY_RANGES_PATH_SEGMENT:
-                        this.getPartitionKeyRangeName().setValue(fragments[index + 5]);
+                        this.getPartitionKeyRangeName().setValue(fragments[5]);
                         break;
                     case Paths.SCHEMAS_PATH_SEGMENT:
-                        this.getSchemaName().setValue(fragments[index + 5]);
+                        this.getSchemaName().setValue(fragments[5]);
                         break;
                 }
             }
 
             if (count >= 8) {
-                switch (fragments[index + 6]) {
+                switch (fragments[6]) {
                     case Paths.ATTACHMENTS_PATH_SEGMENT:
-                        this.getAttachmentName().setValue(fragments[index + 7]);
+                        this.getAttachmentName().setValue(fragments[7]);
                         break;
                 }
             }

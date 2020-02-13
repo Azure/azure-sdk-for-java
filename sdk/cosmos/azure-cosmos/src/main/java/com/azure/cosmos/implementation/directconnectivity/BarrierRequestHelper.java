@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.InternalServerErrorException;
+import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -88,7 +89,7 @@ public class BarrierRequestHelper {
                 authorizationToken = authorizationTokenProvider.getUserAuthorizationToken(
                         barrierLsnRequest.getResourceAddress(),
                         isCollectionHeadRequest ? ResourceType.DocumentCollection : ResourceType.Database,
-                        HttpConstants.HttpMethods.HEAD,
+                        RequestVerb.HEAD,
                         barrierLsnRequest.getHeaders(),
                         originalRequestTokenType,
                         request.properties);
@@ -114,6 +115,7 @@ public class BarrierRequestHelper {
         }
         if (request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY) != null) {
             barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY));
+            barrierLsnRequest.setPartitionKeyInternal(request.getPartitionKeyInternal());
         }
         if (request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID) != null) {
             barrierLsnRequest.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID));

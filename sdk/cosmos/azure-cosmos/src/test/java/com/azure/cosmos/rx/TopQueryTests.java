@@ -6,7 +6,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
@@ -18,9 +19,7 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -60,31 +59,31 @@ public class TopQueryTests extends TestSuiteBase {
         int[] expectedPageLengths = new int[] { 9, 9, 2 };
 
         for (int i = 0; i < 2; i++) {
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c",
+            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c",
                 options,
                 CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator1 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                     .totalSize(0).build();
 
-            validateQuerySuccess(queryObservable1, validator1, TIMEOUT);
+            validateQuerySuccess(queryObservable1.byPage(), validator1, TIMEOUT);
 
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c",
+            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c",
                 options,
                 CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator2 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                     .totalSize(1).build();
 
-            validateQuerySuccess(queryObservable2, validator2, TIMEOUT);
+            validateQuerySuccess(queryObservable2.byPage(), validator2, TIMEOUT);
 
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options, CosmosItemProperties.class);
+            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options, CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator3 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                     .totalSize(expectedTotalSize).numberOfPages(expectedNumberOfPages).pageLengths(expectedPageLengths)
                     .hasValidQueryMetrics(qmEnabled).build();
 
-            validateQuerySuccess(queryObservable3, validator3, TIMEOUT);
+            validateQuerySuccess(queryObservable3.byPage(), validator3, TIMEOUT);
 
             if (i == 0) {
                 options.partitionKey(new PartitionKey(firstPk));
@@ -149,11 +148,11 @@ public class TopQueryTests extends TestSuiteBase {
             
             options.setMaxDegreeOfParallelism(2);
             options.requestContinuation(requestContinuation);
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();
-            queryObservable.subscribe(testSubscriber);
+            queryObservable.byPage().subscribe(testSubscriber);
             testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();

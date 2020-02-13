@@ -4,10 +4,7 @@
 package com.azure.cosmos;
 
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Iterator;
 
 /**
  * The type Cosmos sync scripts.
@@ -58,39 +55,39 @@ public class CosmosScripts {
     }
 
     /**
-     * Read all stored procedures iterator.
+     * Read all stored procedures {@link CosmosContinuablePagedIterable}.
      *
      * @param options the options
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public Iterator<FeedResponse<CosmosStoredProcedureProperties>> readAllStoredProcedures(FeedOptions options) {
-        return getFeedIterator(asyncScripts.readAllStoredProcedures(options));
+    public CosmosContinuablePagedIterable<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
+        return getCosmosContinuablePagedIterable(asyncScripts.readAllStoredProcedures(options));
     }
 
     /**
-     * Query stored procedures iterator.
+     * Query stored procedures {@link CosmosContinuablePagedIterable}.
      *
      * @param query the query
      * @param options the options
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public Iterator<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(
+    public CosmosContinuablePagedIterable<CosmosStoredProcedureProperties> queryStoredProcedures(
         String query,
         FeedOptions options) {
-        return getFeedIterator(asyncScripts.queryStoredProcedures(query, options));
+        return getCosmosContinuablePagedIterable(asyncScripts.queryStoredProcedures(query, options));
     }
 
     /**
-     * Query stored procedures iterator.
+     * Query stored procedures {@link CosmosContinuablePagedIterable}.
      *
      * @param querySpec the query spec
      * @param options the options
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public Iterator<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(
+    public CosmosContinuablePagedIterable<CosmosStoredProcedureProperties> queryStoredProcedures(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return getFeedIterator(asyncScripts.queryStoredProcedures(querySpec, options));
+        return getCosmosContinuablePagedIterable(asyncScripts.queryStoredProcedures(querySpec, options));
 
     }
 
@@ -122,40 +119,40 @@ public class CosmosScripts {
     }
 
     /**
-     * Read all user defined functions iterator.
+     * Read all user defined functions {@link CosmosContinuablePagedIterable}.
      *
      * @param options the options
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> readAllUserDefinedFunctions(
+    public CosmosContinuablePagedIterable<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(
         FeedOptions options) {
-        return getFeedIterator(asyncScripts.readAllUserDefinedFunctions(options));
+        return getCosmosContinuablePagedIterable(asyncScripts.readAllUserDefinedFunctions(options));
     }
 
     /**
-     * Query user defined functions iterator.
+     * Query user defined functions {@link CosmosContinuablePagedIterable}.
      *
      * @param query the query
      * @param options the options
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(
+    public CosmosContinuablePagedIterable<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         String query,
         FeedOptions options) {
-        return getFeedIterator(asyncScripts.queryUserDefinedFunctions(new SqlQuerySpec(query), options));
+        return getCosmosContinuablePagedIterable(asyncScripts.queryUserDefinedFunctions(new SqlQuerySpec(query), options));
     }
 
     /**
-     * Query user defined functions iterator.
+     * Query user defined functions {@link CosmosContinuablePagedIterable}.
      *
      * @param querySpec the query spec
      * @param options the options
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(
+    public CosmosContinuablePagedIterable<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return getFeedIterator(asyncScripts.queryUserDefinedFunctions(querySpec, options));
+        return getCosmosContinuablePagedIterable(asyncScripts.queryUserDefinedFunctions(querySpec, options));
     }
 
     /**
@@ -183,37 +180,37 @@ public class CosmosScripts {
     }
 
     /**
-     * Read all triggers iterator.
+     * Read all triggers {@link CosmosContinuablePagedIterable}.
      *
      * @param options the options
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public Iterator<FeedResponse<CosmosTriggerProperties>> readAllTriggers(FeedOptions options) {
-        return getFeedIterator(asyncScripts.readAllTriggers(options));
+    public CosmosContinuablePagedIterable<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
+        return getCosmosContinuablePagedIterable(asyncScripts.readAllTriggers(options));
     }
 
     /**
-     * Query triggers iterator.
+     * Query triggers {@link CosmosContinuablePagedIterable}.
      *
      * @param query the query
      * @param options the options
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public Iterator<FeedResponse<CosmosTriggerProperties>> queryTriggers(String query, FeedOptions options) {
-        return getFeedIterator(asyncScripts.queryTriggers(query, options));
+    public CosmosContinuablePagedIterable<CosmosTriggerProperties> queryTriggers(String query, FeedOptions options) {
+        return getCosmosContinuablePagedIterable(asyncScripts.queryTriggers(query, options));
     }
 
     /**
-     * Query triggers iterator.
+     * Query triggers {@link CosmosContinuablePagedIterable}.
      *
      * @param querySpec the query spec
      * @param options the options
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public Iterator<FeedResponse<CosmosTriggerProperties>> queryTriggers(
+    public CosmosContinuablePagedIterable<CosmosTriggerProperties> queryTriggers(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return getFeedIterator(asyncScripts.queryTriggers(querySpec, options));
+        return getCosmosContinuablePagedIterable(asyncScripts.queryTriggers(querySpec, options));
     }
 
     /**
@@ -344,8 +341,7 @@ public class CosmosScripts {
         }
     }
 
-    private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
-        return itemFlux.toIterable(1).iterator();
+    private <T> CosmosContinuablePagedIterable<T> getCosmosContinuablePagedIterable(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
+        return new CosmosContinuablePagedIterable<>(cosmosContinuablePagedFlux);
     }
-
 }

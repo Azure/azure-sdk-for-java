@@ -11,14 +11,14 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-class AsyncReadBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
+class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 
     class LatencySubscriber<T> extends BaseSubscriber<T> {
 
         Timer.Context context;
-        BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber;
+        BaseSubscriber<PojoizedJson> baseSubscriber;
 
-        LatencySubscriber(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber) {
+        LatencySubscriber(BaseSubscriber<PojoizedJson> baseSubscriber) {
             this.baseSubscriber = baseSubscriber;
         }
 
@@ -49,21 +49,21 @@ class AsyncReadBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber, long i) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<PojoizedJson> baseSubscriber, long i) throws InterruptedException {
         int index = (int) (i % docsToRead.size());
         PojoizedJson doc = docsToRead.get(index);
 
         String partitionKeyValue = doc.getId();
-        Mono<CosmosAsyncItemResponse<PojoizedJson>> result = cosmosAsyncContainer.readItem(doc.getId(),
-                                                                                           new PartitionKey(partitionKeyValue),
-                                                                                           PojoizedJson.class);
+        Mono<PojoizedJson> result = cosmosAsyncContainer.readItem(doc.getId(),
+            new PartitionKey(partitionKeyValue),
+            PojoizedJson.class).map(CosmosAsyncItemResponse::getResource);
 
         concurrencyControlSemaphore.acquire();
 
         if (configuration.getOperationType() == Configuration.Operation.ReadThroughput) {
             result.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
         } else {
-            LatencySubscriber<CosmosAsyncItemResponse> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
+            LatencySubscriber<PojoizedJson> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
             latencySubscriber.context = latency.time();
             result.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
         }

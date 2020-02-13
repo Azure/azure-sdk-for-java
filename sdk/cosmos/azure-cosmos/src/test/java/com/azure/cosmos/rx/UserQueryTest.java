@@ -5,10 +5,10 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosUserProperties;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.TestUtils;
@@ -16,9 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,15 +46,15 @@ public class UserQueryTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", filterUserId);
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
-        Flux<FeedResponse<CosmosUserProperties>> queryObservable = createdDatabase.queryUsers(query, options);
+        int maxItemCount = 5;
+        CosmosContinuablePagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
 
         List<CosmosUserProperties> expectedUsers = createdUsers.stream()
                                                                .filter(c -> StringUtils.equals(filterUserId, c.getId()) ).collect(Collectors.toList());
 
         assertThat(expectedUsers).isNotEmpty();
 
-        int expectedPageSize = (expectedUsers.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedUsers.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .totalSize(expectedUsers.size())
@@ -66,7 +64,7 @@ public class UserQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -75,15 +73,15 @@ public class UserQueryTest extends TestSuiteBase {
         String query = "SELECT * from c";
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        int maxItemCount = 2;
         String databaseLink = TestUtils.getDatabaseNameLink(databaseId);
-        Flux<FeedResponse<CosmosUserProperties>> queryObservable = createdDatabase.queryUsers(query, options);
+        CosmosContinuablePagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
 
         List<CosmosUserProperties> expectedUsers = createdUsers;
 
         assertThat(expectedUsers).isNotEmpty();
 
-        int expectedPageSize = (expectedUsers.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedUsers.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .totalSize(expectedUsers.size())
@@ -93,7 +91,7 @@ public class UserQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -101,7 +99,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        Flux<FeedResponse<CosmosUserProperties>> queryObservable = createdDatabase.queryUsers(query, options);
+        CosmosContinuablePagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .containsExactly(new ArrayList<>())
@@ -109,7 +107,7 @@ public class UserQueryTest extends TestSuiteBase {
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

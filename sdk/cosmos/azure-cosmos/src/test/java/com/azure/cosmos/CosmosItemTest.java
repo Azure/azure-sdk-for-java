@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
@@ -14,7 +15,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,9 +82,9 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
         CosmosItemResponse<CosmosItemProperties> readResponse1 = container.readItem(properties.getId(),
-                                                                 new PartitionKey(properties.get("mypk")),
-                                                                 new CosmosItemRequestOptions(),
-                                                                 CosmosItemProperties.class);
+                                                                                    new PartitionKey(properties.get("mypk")),
+                                                                                    new CosmosItemRequestOptions(),
+                                                                                    CosmosItemProperties.class);
         validateItemResponse(properties, readResponse1);
 
     }
@@ -127,9 +127,9 @@ public class CosmosItemTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
 
-        Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
+        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator3 =
                 container.readAllItems(feedOptions, CosmosItemProperties.class);
-        assertThat(feedResponseIterator3.hasNext()).isTrue();
+        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
 
@@ -141,15 +141,54 @@ public class CosmosItemTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator1 =
+        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator1 =
                 container.queryItems(query, feedOptions, CosmosItemProperties.class);
         // Very basic validation
-        assertThat(feedResponseIterator1.hasNext()).isTrue();
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
+        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator3 =
                 container.queryItems(querySpec, feedOptions, CosmosItemProperties.class);
-        assertThat(feedResponseIterator3.hasNext()).isTrue();
+        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryItemsWithContinuationTokenAndPageSize() throws Exception{
+        List<String> actualIds = new ArrayList<>();
+        CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
+        container.createItem(properties);
+        actualIds.add(properties.getId());
+        properties = getDocumentDefinition(UUID.randomUUID().toString());
+        container.createItem(properties);
+        actualIds.add(properties.getId());
+        properties = getDocumentDefinition(UUID.randomUUID().toString());
+        container.createItem(properties);
+        actualIds.add(properties.getId());
+
+
+        String query = String.format("SELECT * from c where c.id in ('%s', '%s', '%s')", actualIds.get(0), actualIds.get(1), actualIds.get(2));
+        FeedOptions feedOptions = new FeedOptions();
+        String continuationToken = null;
+        int pageSize = 1;
+
+        int initialDocumentCount = 3;
+        int finalDocumentCount = 0;
+
+        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator1 =
+            container.queryItems(query, feedOptions, CosmosItemProperties.class);
+
+        do {
+            Iterable<FeedResponse<CosmosItemProperties>> feedResponseIterable =
+                feedResponseIterator1.iterableByPage(continuationToken, pageSize);
+            FeedResponse<CosmosItemProperties> feedResponse = feedResponseIterable.iterator().next();
+            int resultSize = feedResponse.getResults().size();
+            assertThat(resultSize).isEqualTo(pageSize);
+            finalDocumentCount += feedResponse.getResults().size();
+            continuationToken = feedResponse.getContinuationToken();
+        } while(continuationToken != null);
+
+        assertThat(finalDocumentCount).isEqualTo(initialDocumentCount);
+
     }
 
 

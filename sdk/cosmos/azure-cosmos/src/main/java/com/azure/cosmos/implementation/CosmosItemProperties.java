@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,10 +40,14 @@ public class CosmosItemProperties extends Resource {
         super(jsonString);
     }
 
+    public CosmosItemProperties(ObjectNode propertyBag) {
+        super(propertyBag);
+    }
+
     /**
      * fromObject returns Document for compatibility with V2 sdk
      */
-    static Document fromObject(Object cosmosItem) {
+    public static Document fromObject(Object cosmosItem) {
         Document typedItem;
         if (cosmosItem instanceof CosmosItemProperties) {
             typedItem = new Document(((CosmosItemProperties) cosmosItem).toJson());
@@ -54,6 +58,7 @@ public class CosmosItemProperties extends Resource {
                 throw new IllegalArgumentException("Can't serialize the object into the json string", e);
             }
         }
+
         return typedItem;
     }
 
@@ -70,11 +75,6 @@ public class CosmosItemProperties extends Resource {
                 throw new IllegalArgumentException("Can't serialize the object into the json string", e);
             }
         }
-    }
-
-    static List<CosmosItemProperties> getFromV2Results(List<Document> results) {
-        return results.stream().map(document -> new CosmosItemProperties(document.toJson()))
-                   .collect(Collectors.toList());
     }
 
     static <T> List<T> getTypedResultsFromV2Results(List<Document> results, Class<T> klass) {

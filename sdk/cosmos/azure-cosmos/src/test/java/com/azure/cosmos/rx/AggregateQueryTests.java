@@ -7,10 +7,10 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -79,7 +79,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
         for (QueryConfig queryConfig : queryConfigs) {
 
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(queryConfig.query, options, CosmosItemProperties.class);
+            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(queryConfig.query, options, CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .withAggregateValue(queryConfig.expected)
@@ -87,7 +87,7 @@ public class AggregateQueryTests extends TestSuiteBase {
                 .hasValidQueryMetrics(qmEnabled)
                 .build();
 
-            validateQuerySuccess(queryObservable, validator);
+            validateQuerySuccess(queryObservable.byPage(), validator);
         }
     }
 

@@ -3,11 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Iterator;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -236,51 +234,41 @@ public class CosmosContainer {
     }
 
     /**
-     * Read all items iterator.
+     * Read all items {@link CosmosContinuablePagedIterable}.
      *
      * @param <T> the type parameter
      * @param options the options
      * @param klass the klass
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public <T> Iterator<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.asyncContainer.readAllItems(options, klass));
+    public <T> CosmosContinuablePagedIterable<T> readAllItems(FeedOptions options, Class<T> klass) {
+        return getCosmosContinuablePagedIterable(this.asyncContainer.readAllItems(options, klass));
     }
 
     /**
-     * Query items iterator.
+     * Query items {@link CosmosContinuablePagedIterable}.
      *
      * @param <T> the type parameter
      * @param query the query
      * @param options the options
      * @param klass the class type
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public <T> Iterator<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.asyncContainer.queryItems(query, options, klass));
+    public <T> CosmosContinuablePagedIterable<T> queryItems(String query, FeedOptions options, Class<T> klass) {
+        return getCosmosContinuablePagedIterable(this.asyncContainer.queryItems(query, options, klass));
     }
 
     /**
-     * Query items iterator.
+     * Query items {@link CosmosContinuablePagedIterable}.
      *
      * @param <T> the type parameter
      * @param querySpec the query spec
      * @param options the options
      * @param klass the class type
-     * @return the iterator
+     * @return the {@link CosmosContinuablePagedIterable}
      */
-    public <T> Iterator<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return getFeedIterator(this.asyncContainer.queryItems(querySpec, options, klass));
-    }
-
-    /**
-     * Query change feed items iterator.
-     *
-     * @param changeFeedOptions the change feed options
-     * @return the iterator
-     */
-    public Iterator<FeedResponse<CosmosItemProperties>> queryChangeFeedItems(ChangeFeedOptions changeFeedOptions) {
-        return getFeedIterator(this.asyncContainer.queryChangeFeedItems(changeFeedOptions));
+    public <T> CosmosContinuablePagedIterable<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
+        return getCosmosContinuablePagedIterable(this.asyncContainer.queryItems(querySpec, options, klass));
     }
 
     /**
@@ -364,8 +352,8 @@ public class CosmosContainer {
         return new CosmosItemResponse<T>(response);
     }
 
-    private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
-        return itemFlux.toIterable(1).iterator();
+    private <T> CosmosContinuablePagedIterable<T> getCosmosContinuablePagedIterable(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
+        return new CosmosContinuablePagedIterable<>(cosmosContinuablePagedFlux);
     }
 
 }

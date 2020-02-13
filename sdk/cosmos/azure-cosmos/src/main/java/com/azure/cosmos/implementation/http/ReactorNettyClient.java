@@ -8,6 +8,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
+import org.apache.commons.lang3.tuple.Pair;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +19,12 @@ import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
+import reactor.netty.http.client.HttpClientState;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.charset.Charset;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
@@ -66,7 +69,7 @@ class ReactorNettyClient implements HttpClient {
     private void configureChannelPipelineHandlers() {
         Configs configs = this.httpClientConfig.getConfigs();
         this.httpClient = this.httpClient.tcpConfiguration(tcpClient -> {
-  
+
             if (this.httpClientConfig.getProxy() != null) {
                 tcpClient =
                     tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP).address(this.httpClientConfig.getProxy()));
@@ -95,9 +98,26 @@ class ReactorNettyClient implements HttpClient {
         Objects.requireNonNull(request.httpMethod());
         Objects.requireNonNull(request.uri());
         Objects.requireNonNull(this.httpClientConfig);
+        if(request.getReactorNettyRequestRecord() == null) {
+            ReactorNettyRequestRecord reactorNettyRequestRecord = new ReactorNettyRequestRecord();
+            reactorNettyRequestRecord.setTimeCreated(OffsetDateTime.now());
+            request.setReactorNettyRequestRecord(reactorNettyRequestRecord);
+        }
 
         return this.httpClient
-                .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
+            .observe((connection, state) -> {
+                OffsetDateTime time = OffsetDateTime.now();
+                if(state.equals(HttpClientState.CONNECTED) || state.equals(HttpClientState.ACQUIRED)){
+                    request.getReactorNettyRequestRecord().setTimeConnected(time);
+                } else if(state.equals(HttpClientState.CONFIGURED)){
+                    request.getReactorNettyRequestRecord().setTimeConfigured(time);
+                } else if(state.equals(HttpClientState.REQUEST_SENT)){
+                    request.getReactorNettyRequestRecord().setTimeSent(time);
+                } else if(state.equals(HttpClientState.RESPONSE_RECEIVED)){
+                    request.getReactorNettyRequestRecord().setTimeReceived(time);
+                }
+            })
+            .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
                 .port(request.port())
                 .request(HttpMethod.valueOf(request.httpMethod().toString()))
                 .uri(request.uri().toString())

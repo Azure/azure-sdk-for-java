@@ -8,12 +8,11 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.implementation.Utils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -76,14 +75,14 @@ public class BasicDemo {
 
     private void createAndReplaceItem() {
         TestObject replaceObject = new TestObject("item_new_id_3", "test3", "test description3", "JP");
-        CosmosItemProperties properties = null;
+        TestObject properties = null;
         //CREATE item sync
         try {
             properties = container.createItem(replaceObject)
                              .doOnError(throwable -> log("CREATE 3", throwable))
                              .publishOn(Schedulers.elastic())
                              .block()
-                             .getProperties();
+                             .getResource();
         } catch (RuntimeException e) {
             log("Couldn't create items due to above exceptions");
         }
@@ -115,14 +114,14 @@ public class BasicDemo {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class);
+        CosmosContinuablePagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
 
-        queryFlux.publishOn(Schedulers.elastic())
-            .toIterable()
-            .forEach(cosmosItemFeedResponse ->
-                     {
-                         log(cosmosItemFeedResponse.getResults());
-                     });
+        queryFlux.byPage()
+                 .publishOn(Schedulers.elastic())
+                 .toIterable()
+                 .forEach(cosmosItemFeedResponse -> {
+                     log(cosmosItemFeedResponse.getResults());
+                 });
 
     }
 
@@ -135,8 +134,8 @@ public class BasicDemo {
         String continuation = null;
         do {
             options.requestContinuation(continuation);
-            Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class);
-            FeedResponse<TestObject> page = queryFlux.blockFirst();
+            CosmosContinuablePagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
+            FeedResponse<TestObject> page = queryFlux.byPage().blockFirst();
             assert page != null;
             log(page.getResults());
             continuation = page.getContinuationToken();

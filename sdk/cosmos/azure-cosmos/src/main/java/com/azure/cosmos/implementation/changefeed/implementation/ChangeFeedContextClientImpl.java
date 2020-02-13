@@ -2,16 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -20,6 +21,7 @@ import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -28,6 +30,8 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 
@@ -78,9 +82,20 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Flux<FeedResponse<CosmosItemProperties>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink, ChangeFeedOptions feedOptions) {
-        return collectionLink.queryChangeFeedItems(feedOptions)
-            .publishOn(this.rxScheduler);
+    public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
+                                                                      ChangeFeedOptions feedOptions) {
+        AsyncDocumentClient clientWrapper =
+            CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
+        Flux<FeedResponse<JsonNode>> feedResponseFlux =
+            clientWrapper.queryDocumentChangeFeed(BridgeInternal.extractContainerSelfLink(collectionLink), feedOptions)
+                                                                    .map(response -> {
+                                                                        List<JsonNode> results = response.getResults()
+                                                                                                                     .stream()
+                                                                                                                     .map(document -> document.toObject(JsonNode.class))
+                                                                                                                     .collect(Collectors.toList());
+                                                                        return BridgeInternal.toFeedResponsePage(results, response.getResponseHeaders(), false);
+                                                                    });
+        return feedResponseFlux.publishOn(this.rxScheduler);
     }
 
     @Override
@@ -132,7 +147,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     public <T> Flux<FeedResponse<T>> queryItems(CosmosAsyncContainer containerLink, SqlQuerySpec querySpec,
                                                 FeedOptions options, Class<T> klass) {
         return containerLink.queryItems(querySpec, options, klass)
-            .publishOn(this.rxScheduler);
+                            .byPage()
+                            .publishOn(this.rxScheduler);
     }
 
     @Override

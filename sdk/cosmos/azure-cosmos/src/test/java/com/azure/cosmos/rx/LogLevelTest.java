@@ -6,7 +6,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncItemResponse;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
 import org.apache.log4j.Level;
@@ -19,7 +19,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -68,10 +67,12 @@ public class LogLevelTest extends TestSuiteBase {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
-            CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = 
-                new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
-                    .withId(docDefinition.getId()).build();
-            validateSuccess(createObservable, validator);
+
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                    .withId(docDefinition.getId())
+                    .build();
+            validateItemSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).isEmpty();
 
@@ -99,9 +100,11 @@ public class LogLevelTest extends TestSuiteBase {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
-            CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
-                    .withId(docDefinition.getId()).build();
-            validateSuccess(createObservable, validator);
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                    .withId(docDefinition.getId())
+                    .build();
+            validateItemSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).isEmpty();
         } finally {
@@ -128,9 +131,11 @@ public class LogLevelTest extends TestSuiteBase {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
-            CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
-                    .withId(docDefinition.getId()).build();
-            validateSuccess(createObservable, validator);
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                    .withId(docDefinition.getId())
+                    .build();
+            validateItemSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
             assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
@@ -155,9 +160,11 @@ public class LogLevelTest extends TestSuiteBase {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
-            CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
-                    .withId(docDefinition.getId()).build();
-            validateSuccess(createObservable, validator);
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                    .withId(docDefinition.getId())
+                    .build();
+            validateItemSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
             assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
@@ -181,9 +188,11 @@ public class LogLevelTest extends TestSuiteBase {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
-            CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
-                    .withId(docDefinition.getId()).build();
-            validateSuccess(createObservable, validator);
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                    .withId(docDefinition.getId())
+                    .build();
+            validateItemSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).isEmpty();
         } finally {
@@ -210,9 +219,11 @@ public class LogLevelTest extends TestSuiteBase {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
-            CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
-                    .withId(docDefinition.getId()).build();
-            validateSuccess(createObservable, validator);
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                    .withId(docDefinition.getId())
+                    .build();
+            validateItemSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).isEmpty();
         } finally {
@@ -239,9 +250,11 @@ public class LogLevelTest extends TestSuiteBase {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
-            CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
-                    .withId(docDefinition.getId()).build();
-            validateSuccess(createObservable, validator);
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                    .withId(docDefinition.getId())
+                    .build();
+            validateItemSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).isEmpty();
         } finally {
@@ -265,12 +278,14 @@ public class LogLevelTest extends TestSuiteBase {
 
     @AfterMethod(groups = { "simple" })
     public void afterMethod() {
+        LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.OFF);
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT)
     public void afterClass() {
+        LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.OFF);
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }

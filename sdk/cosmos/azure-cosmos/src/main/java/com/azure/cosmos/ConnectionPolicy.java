@@ -29,7 +29,7 @@ public final class ConnectionPolicy {
     private RetryOptions retryOptions;
     private boolean enableEndpointDiscovery = true;
     private List<String> preferredLocations;
-    private boolean usingMultipleWriteLocations;
+    private boolean usingMultipleWriteLocations = true;
     private InetSocketAddress inetSocketProxyAddress;
     private Boolean enableReadRequestsFallback;
 
@@ -231,8 +231,8 @@ public final class ConnectionPolicy {
      * to true has no effect until EnableMultipleWriteLocations in DatabaseAccount
      * is also set to true.
      * <p>
-     * DEFAULT value is false indicating that writes are only directed to
-     * first region in PreferredLocations property.
+     * DEFAULT value is true indicating that writes are directed to
+     * available writable locations of geo-replicated database account.
      *
      * @return flag to enable writes on any locations (regions) for geo-replicated database accounts.
      */

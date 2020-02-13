@@ -4,13 +4,11 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.Iterator;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,9 +87,9 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
         
-        Iterator<FeedResponse<CosmosTriggerProperties>> feedResponseIterator3 =
+        CosmosContinuablePagedIterable<CosmosTriggerProperties> feedResponseIterator3 =
                 container.getScripts().readAllTriggers(feedOptions);
-        assertThat(feedResponseIterator3.hasNext()).isTrue();
+        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
     private CosmosTriggerProperties getCosmosTriggerProperties() {
@@ -110,14 +108,14 @@ public class CosmosTriggerTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        Iterator<FeedResponse<CosmosTriggerProperties>> feedResponseIterator1 =
+        CosmosContinuablePagedIterable<CosmosTriggerProperties> feedResponseIterator1 =
                 container.getScripts().queryTriggers(query, feedOptions);
-        assertThat(feedResponseIterator1.hasNext()).isTrue();
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        Iterator<FeedResponse<CosmosTriggerProperties>> feedResponseIterator2 =
+        CosmosContinuablePagedIterable<CosmosTriggerProperties> feedResponseIterator2 =
                 container.getScripts().queryTriggers(query, feedOptions);
-        assertThat(feedResponseIterator2.hasNext()).isTrue();
+        assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }
 
     private void validateResponse(CosmosTriggerProperties properties,

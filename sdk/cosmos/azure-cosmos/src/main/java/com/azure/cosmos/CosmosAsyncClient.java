@@ -11,10 +11,11 @@ import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+
+import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos database service.
@@ -36,7 +37,7 @@ public class CosmosAsyncClient implements AutoCloseable {
     private final List<Permission> permissions;
     private final TokenResolver tokenResolver;
     private final CosmosKeyCredential cosmosKeyCredential;
-
+    private final boolean sessionCapturingOverride;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         this.configs = builder.configs();
@@ -47,11 +48,13 @@ public class CosmosAsyncClient implements AutoCloseable {
         this.permissions = builder.getPermissions();
         this.tokenResolver = builder.getTokenResolver();
         this.cosmosKeyCredential = builder.getCosmosKeyCredential();
+        this.sessionCapturingOverride = builder.isSessionCapturingOverride();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)
                                        .withConnectionPolicy(this.connectionPolicy)
                                        .withConsistencyLevel(this.desiredConsistencyLevel)
+                                       .withSessionCapturingOverride(this.sessionCapturingOverride)
                                        .withConfigs(this.configs)
                                        .withTokenResolver(this.tokenResolver)
                                        .withCosmosKeyCredential(this.cosmosKeyCredential)
@@ -66,7 +69,7 @@ public class CosmosAsyncClient implements AutoCloseable {
     public static CosmosClientBuilder cosmosClientBuilder() {
         return new CosmosClientBuilder();
     }
-    
+
     AsyncDocumentClient getContextClient() {
         return this.asyncDocumentClient;
     }
@@ -320,30 +323,33 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Reads all databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
+     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param options {@link FeedOptions}
-     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
-        return getDocClientWrapper().readDatabases(options)
-                   .map(response -> 
-                            BridgeInternal.createFeedResponse(
-                                CosmosDatabaseProperties.getFromV2Results(response.getResults()),
-                                response.getResponseHeaders()));
+    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return getDocClientWrapper().readDatabases(options)
+                                        .map(response ->
+                                            BridgeInternal.createFeedResponse(
+                                                CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                                                response.getResponseHeaders()));
+        });
     }
 
     /**
      * Reads all databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
+     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
      *
-     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabases() {
+    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> readAllDatabases() {
         return readAllDatabases(new FeedOptions());
     }
 
@@ -352,14 +358,14 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Query for databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
+     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param query the query.
      * @param options the feed options.
-     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(String query, FeedOptions options) {
+    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options) {
         return queryDatabases(new SqlQuerySpec(query), options);
     }
 
@@ -367,18 +373,21 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Query for databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
+     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
-        return getDocClientWrapper().queryDatabases(querySpec, options)
-                   .map(response -> BridgeInternal.createFeedResponse(
-                       CosmosDatabaseProperties.getFromV2Results(response.getResults()),
-                       response.getResponseHeaders()));
+    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return getDocClientWrapper().queryDatabases(querySpec, options)
+                                        .map(response -> BridgeInternal.createFeedResponse(
+                                            CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                                            response.getResponseHeaders()));
+        });
     }
 
     public Mono<DatabaseAccount> readDatabaseAccount() {

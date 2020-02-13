@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;

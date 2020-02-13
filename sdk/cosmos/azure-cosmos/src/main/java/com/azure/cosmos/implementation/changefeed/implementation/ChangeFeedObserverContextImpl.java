@@ -3,11 +3,12 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
+import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
 
 /**
@@ -16,7 +17,7 @@ import reactor.core.publisher.Mono;
 class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     private final PartitionCheckpointer checkpointer;
     private final String partitionKeyRangeId;
-    private final FeedResponse<CosmosItemProperties> feedResponse;
+    private final FeedResponse<JsonNode> feedResponse;
     private String responseContinuation;
 
     public ChangeFeedObserverContextImpl(String leaseToken) {
@@ -25,7 +26,8 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
         this.feedResponse = null;
     }
 
-    public ChangeFeedObserverContextImpl(String leaseToken, FeedResponse<CosmosItemProperties> feedResponse, PartitionCheckpointer checkpointer) {
+    public ChangeFeedObserverContextImpl(String leaseToken, FeedResponse<JsonNode> feedResponse,
+                                         PartitionCheckpointer checkpointer) {
         this.partitionKeyRangeId = leaseToken;
         this.feedResponse = feedResponse;
         this.checkpointer = checkpointer;
@@ -59,7 +61,7 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
      * @return the response from the underlying call.
      */
     @Override
-    public FeedResponse<CosmosItemProperties> getFeedResponse() {
+    public FeedResponse<JsonNode> getFeedResponse() {
         return this.feedResponse;
     }
 

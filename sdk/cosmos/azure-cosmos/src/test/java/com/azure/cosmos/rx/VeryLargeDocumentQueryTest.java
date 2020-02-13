@@ -7,16 +7,15 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -54,11 +53,11 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         
-        Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
+        CosmosContinuablePagedFlux<CosmosItemProperties> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
             options, CosmosItemProperties.class);
 
         AtomicInteger totalCount = new AtomicInteger();
-        StepVerifier.create(feedResponseFlux.subscribeOn(Schedulers.single()))
+        StepVerifier.create(feedResponseFlux.byPage().subscribeOn(Schedulers.single()))
                     .thenConsumeWhile(feedResponse -> {
                         int size = feedResponse.getResults().size();
                         totalCount.addAndGet(size);
@@ -79,7 +78,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
             createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
 
         StepVerifier.create(createObservable.subscribeOn(Schedulers.single()))
-                    .expectNextMatches(cosmosItemResponse -> cosmosItemResponse.getProperties().getId().equals(docDefinition.getId()))
+                    .expectNextMatches(cosmosItemResponse -> BridgeInternal.getProperties(cosmosItemResponse).getId().equals(docDefinition.getId()))
                     .expectComplete()
                     .verify(Duration.ofMillis(subscriberValidationTimeout));
     }

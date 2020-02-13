@@ -5,17 +5,16 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosUserProperties;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +38,11 @@ public class ReadFeedUsersTest extends TestSuiteBase {
     public void readUsers() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        int maxItemCount = 2;
 
-        Flux<FeedResponse<CosmosUserProperties>> feedObservable = createdDatabase.readAllUsers(options);
+        CosmosContinuablePagedFlux<CosmosUserProperties> feedObservable = createdDatabase.readAllUsers(options);
 
-        int expectedPageSize = (createdUsers.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (createdUsers.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .totalSize(createdUsers.size())
@@ -52,7 +51,7 @@ public class ReadFeedUsersTest extends TestSuiteBase {
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

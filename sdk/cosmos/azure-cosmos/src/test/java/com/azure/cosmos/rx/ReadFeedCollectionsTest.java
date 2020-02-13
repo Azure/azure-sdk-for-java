@@ -8,9 +8,9 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -18,7 +18,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,11 +46,12 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
     public void readCollections() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosContainerProperties>> feedObservable = createdDatabase.readAllContainers(options);
+        int maxItemCount = 2;
 
-        int expectedPageSize = (createdCollections.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        CosmosContinuablePagedFlux<CosmosContainerProperties> feedObservable = createdDatabase.readAllContainers(options);
+
+        int expectedPageSize = (createdCollections.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()
                 .totalSize(createdCollections.size())
@@ -61,7 +61,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
 
     }
 

@@ -5,16 +5,15 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +35,10 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments() {
         final FeedOptions options = new FeedOptions();
-        
-        options.maxItemCount(2);
-        final Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
-        final int expectedPageSize = (createdDocuments.size() + options.maxItemCount() - 1) / options.maxItemCount();
+
+        int maxItemCount = 2;
+        final CosmosContinuablePagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        final int expectedPageSize = (createdDocuments.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(createdDocuments.size())
@@ -48,7 +47,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
     // TODO (DANOBLE) SinglePartitionReadFeedDocumentsTest initialization consistently times out in CI environments.

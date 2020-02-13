@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
@@ -11,8 +13,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.Resource.validateResource;
+import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
  * Provides methods for reading, deleting, and replacing existing Containers.
@@ -232,9 +236,9 @@ public class CosmosAsyncContainer {
         }
         Class<T> itemType = (Class<T>) item.getClass();
         return this.getDatabase().getDocClientWrapper()
-                   .upsertDocument(this.getLink(), CosmosItemProperties.fromObject(item),
+                   .upsertDocument(this.getLink(), item,
                                    options.toRequestOptions(),
-                       true)
+                                   true)
                    .map(response -> new CosmosAsyncItemResponse<T>(response, itemType))
                    .single();
     }
@@ -242,85 +246,84 @@ public class CosmosAsyncContainer {
     /**
      * Reads all cosmos items in the container.
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the read cosmos items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param <T> the type parameter
      * @param klass the class type
-     * @return a {@link Flux} containing one or several feed response pages of the read cosmos items or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the read cosmos items or an error.
      */
-    public <T> Flux<FeedResponse<T>> readAllItems(Class<T> klass) {
+    public <T> CosmosContinuablePagedFlux<T> readAllItems(Class<T> klass) {
         return readAllItems(new FeedOptions(), klass);
     }
 
     /**
      * Reads all cosmos items in a container.
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the read cosmos items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param <T> the type parameter
      * @param options the feed options.
      * @param klass the class type
-     * @return a {@link Flux} containing one or several feed response pages of the read cosmos items or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the read cosmos items or an error.
      */
-    public <T> Flux<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
-        return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
-            response -> BridgeInternal
-                            .createFeedResponse(CosmosItemProperties
-                                                    .getTypedResultsFromV2Results(response.getResults(),
-                                                                                  klass),
-                                                response.getResponseHeaders()));
+    public <T> CosmosContinuablePagedFlux<T> readAllItems(FeedOptions options, Class<T> klass) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
+                response -> prepareFeedResponse(response, klass));
+        });
     }
 
     /**
      * Query for documents in a items in a container
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param <T> the type parameter
      * @param query the query.
      * @param klass the class type
-     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> Flux<FeedResponse<T>> queryItems(String query, Class<T> klass) {
+    public <T> CosmosContinuablePagedFlux<T> queryItems(String query, Class<T> klass) {
         return queryItems(new SqlQuerySpec(query), klass);
     }
 
     /**
      * Query for documents in a items in a container
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param <T> the type parameter
      * @param query the query.
      * @param options the feed options.
      * @param klass the class type
-     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> Flux<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
+    public <T> CosmosContinuablePagedFlux<T> queryItems(String query, FeedOptions options, Class<T> klass) {
         return queryItems(new SqlQuerySpec(query), options, klass);
     }
 
     /**
      * Query for documents in a items in a container
      * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosContinuablePagedFlux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param <T> the type parameter
      * @param querySpec the SQL query specification.
      * @param klass the class type
-     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> Flux<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, Class<T> klass) {
+    public <T> CosmosContinuablePagedFlux<T> queryItems(SqlQuerySpec querySpec, Class<T> klass) {
         return queryItems(querySpec, new FeedOptions(), klass);
     }
 
@@ -329,41 +332,34 @@ public class CosmosAsyncContainer {
      * <p>
      * After subscription the operation will be performed. The {@link Flux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosContinuablePagedFlux} will error.
      *
      * @param <T> the type parameter
      * @param querySpec the SQL query specification.
      * @param options the feed options.
      * @param klass the class type
-     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> Flux<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return getDatabase().getDocClientWrapper().queryDocuments(getLink(),
-                                                                  querySpec, options)
-                   .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                       (CosmosItemProperties
-                            .getTypedResultsFromV2Results((List<Document>) (Object) response.getResults(),
-                                                          klass)), response.getResponseHeaders(),
-                       response.queryMetrics()));
+    public <T> CosmosContinuablePagedFlux<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
+        return queryItemsInternal(querySpec, options, klass);
     }
 
-    /**
-     * Query for documents in a items in a container
-     * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
-     * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
-     *
-     * @param changeFeedOptions the feed options.
-     * @return a {@link Flux} containing one or several feed response pages of the
-     * obtained items or an error.
-     */
-    public Flux<FeedResponse<CosmosItemProperties>> queryChangeFeedItems(ChangeFeedOptions changeFeedOptions) {
-        return getDatabase().getDocClientWrapper().queryDocumentChangeFeed(getLink(), changeFeedOptions)
-                   .map(response -> new FeedResponse<CosmosItemProperties>(
-                       CosmosItemProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
-                       false));
+    private <T> CosmosContinuablePagedFlux<T> queryItemsInternal(SqlQuerySpec sqlQuerySpec, FeedOptions feedOptions, Class<T> klass) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, feedOptions);
+            return getDatabase().getDocClientWrapper().queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, feedOptions)
+                                            .map(response ->
+                                                     prepareFeedResponse(response, klass));
+        });
     }
+
+    private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> klass){
+        return BridgeInternal.createFeedResponseWithQueryMetrics(
+            (response.getResults().stream().map(document -> document.toObject(klass))
+                 .collect(Collectors.toList())), response.getResponseHeaders(),
+            response.queryMetrics());
+    }
+
 
     /**
      * Reads an item.
@@ -513,25 +509,28 @@ public class CosmosAsyncContainer {
      * Lists all the conflicts in the container
      *
      * @param options the feed options
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
-    public Flux<FeedResponse<CosmosConflictProperties>> readAllConflicts(FeedOptions options) {
-        return database.getDocClientWrapper().readConflicts(getLink(), options)
-                   .map(response -> BridgeInternal.createFeedResponse(
-                       CosmosConflictProperties.getFromV2Results(response.getResults()),
-                       response.getResponseHeaders()));
+    public CosmosContinuablePagedFlux<CosmosConflictProperties> readAllConflicts(FeedOptions options) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return database.getDocClientWrapper().readConflicts(getLink(), options)
+                           .map(response -> BridgeInternal.createFeedResponse(
+                               CosmosConflictProperties.getFromV2Results(response.getResults()),
+                               response.getResponseHeaders()));
+        });
     }
 
     /**
      * Queries all the conflicts in the container
      *
      * @param query the query
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
-    public Flux<FeedResponse<CosmosConflictProperties>> queryConflicts(String query) {
-        return queryConflicts(query, null);
+    public CosmosContinuablePagedFlux<CosmosConflictProperties> queryConflicts(String query) {
+        return queryConflicts(query, new FeedOptions());
     }
 
     /**
@@ -539,14 +538,17 @@ public class CosmosAsyncContainer {
      *
      * @param query the query
      * @param options the feed options
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
-    public Flux<FeedResponse<CosmosConflictProperties>> queryConflicts(String query, FeedOptions options) {
-        return database.getDocClientWrapper().queryConflicts(getLink(), query, options)
-                   .map(response -> BridgeInternal.createFeedResponse(
-                       CosmosConflictProperties.getFromV2Results(response.getResults()),
-                       response.getResponseHeaders()));
+    public CosmosContinuablePagedFlux<CosmosConflictProperties> queryConflicts(String query, FeedOptions options) {
+        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return database.getDocClientWrapper().queryConflicts(getLink(), query, options)
+                           .map(response -> BridgeInternal.createFeedResponse(
+                               CosmosConflictProperties.getFromV2Results(response.getResults()),
+                               response.getResponseHeaders()));
+        });
     }
 
     /**

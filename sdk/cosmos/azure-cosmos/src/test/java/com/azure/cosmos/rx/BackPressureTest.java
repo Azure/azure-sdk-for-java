@@ -10,7 +10,8 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKeyDefinition;
@@ -22,7 +23,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
 
@@ -65,18 +65,17 @@ public class BackPressureTest extends TestSuiteBase {
     }
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
-    public void readFeed() throws Exception {
+    public void readFeedPages() throws Exception {
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(1);
         
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         AtomicInteger valueCount = new AtomicInteger();
         rxClient.httpRequests.clear();
 
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
-        queryObservable.doOnNext(cosmosItemPropertiesFeedResponse -> {
+        queryObservable.byPage(1).doOnNext(cosmosItemPropertiesFeedResponse -> {
             if (!cosmosItemPropertiesFeedResponse.getResults().isEmpty()) {
                 valueCount.incrementAndGet();
             }
@@ -110,11 +109,52 @@ public class BackPressureTest extends TestSuiteBase {
     }
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
-    public void query() throws Exception {
+    public void readFeedItems() throws Exception {
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(1);
+
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+
+        RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
+        AtomicInteger valueCount = new AtomicInteger();
+        rxClient.httpRequests.clear();
+
+        TestSubscriber<CosmosItemProperties> subscriber = new TestSubscriber<>(1);
+        queryObservable.doOnNext(cosmosItemPropertiesFeedResponse -> {
+            valueCount.incrementAndGet();
+        }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+
+        int sleepTimeInMillis = 10000; // 10 seconds
+
+        int i = 0;
+        // use a test subscriber and request for more result and sleep in between
+        while (subscriber.completions() == 0 && subscriber.getEvents().get(1).isEmpty()) {
+            TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
+            sleepTimeInMillis /= 2;
+
+            if (sleepTimeInMillis > 1000) {
+                // validate that only one item is returned to subscriber in each iteration
+                assertThat(subscriber.valueCount() - i).isEqualTo(1);
+            }
+            // validate that only one item is returned to subscriber in each iteration
+            // validate that the difference between the number of requests to backend
+            // and the number of returned results is always less than a fixed threshold
+            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
+                .isLessThanOrEqualTo(Queues.SMALL_BUFFER_SIZE);
+
+            subscriber.requestMore(1);
+            i++;
+        }
+
+        subscriber.assertNoErrors();
+        subscriber.assertComplete();
+        assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
+    }
+
+    @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
+    public void queryPages() throws Exception {
+        FeedOptions options = new FeedOptions();
         
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
@@ -122,7 +162,7 @@ public class BackPressureTest extends TestSuiteBase {
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
         AtomicInteger valueCount = new AtomicInteger();
 
-        queryObservable.doOnNext(cosmosItemPropertiesFeedResponse -> {
+        queryObservable.byPage(1).doOnNext(cosmosItemPropertiesFeedResponse -> {
             if (!cosmosItemPropertiesFeedResponse.getResults().isEmpty()) {
                 valueCount.incrementAndGet();
             }
@@ -152,6 +192,50 @@ public class BackPressureTest extends TestSuiteBase {
         subscriber.assertNoErrors();
         subscriber.assertComplete();
 
+        assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
+    }
+
+    @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
+    public void queryItems() throws Exception {
+        FeedOptions options = new FeedOptions();
+
+        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
+
+        RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
+        rxClient.httpRequests.clear();
+
+        TestSubscriber<CosmosItemProperties> subscriber = new TestSubscriber<>(1);
+        AtomicInteger valueCount = new AtomicInteger();
+
+        queryObservable.doOnNext(cosmosItemProperties -> {
+            valueCount.incrementAndGet();
+        }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+
+        int sleepTimeInMillis = 10000;
+
+        int i = 0;
+        // use a test subscriber and request for more result and sleep in between
+        while(subscriber.completions() == 0 && subscriber.getEvents().get(1).isEmpty()) {
+            TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
+            sleepTimeInMillis /= 2;
+
+            if (sleepTimeInMillis > 1000) {
+                // validate that only one item is returned to subscriber in each iteration
+                assertThat(subscriber.valueCount() - i).isEqualTo(1);
+            }
+            // validate that the difference between the number of requests to backend
+            // and the number of returned results is always less than a fixed threshold
+            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
+                .isLessThanOrEqualTo(Queues.SMALL_BUFFER_SIZE);
+
+            subscriber.requestMore(1);
+            i++;
+        }
+
+        subscriber.assertNoErrors();
+        subscriber.assertComplete();
+
+        logger.debug("final value count {}", valueCount);
         assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
     }
 
@@ -191,7 +275,7 @@ public class BackPressureTest extends TestSuiteBase {
         // ensure collection is cached
         FeedOptions options = new FeedOptions();
         
-        createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class).blockFirst();
+        createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class).byPage().blockFirst();
     }
 
     @AfterClass(groups = { "long" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)

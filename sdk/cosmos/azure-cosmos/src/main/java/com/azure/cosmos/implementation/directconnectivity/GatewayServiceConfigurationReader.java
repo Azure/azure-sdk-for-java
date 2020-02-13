@@ -4,28 +4,12 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosError;
-import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.DatabaseAccount;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ReplicationPolicy;
-import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpResponse;
-import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

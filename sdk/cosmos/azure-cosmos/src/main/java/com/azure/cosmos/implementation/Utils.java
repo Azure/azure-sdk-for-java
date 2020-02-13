@@ -4,9 +4,11 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.FeedOptions;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.fasterxml.uuid.EthernetAddress;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
@@ -55,6 +57,8 @@ public class Utils {
         Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
         Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
         Utils.simpleObjectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
+
+        Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
     }
 
     public static byte[] getUTF8Bytes(String str) throws UnsupportedEncodingException {
@@ -527,6 +531,44 @@ public class Utils {
             return getSimpleObjectMapper().readValue(itemResponseBodyAsString, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException("Failed to get POJO.", e);
+        }
+    }
+
+    public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, FeedOptions feedOptions) {
+        if (pagedFluxOptions == null) {
+            return;
+        }
+        if (pagedFluxOptions.getRequestContinuation() != null) {
+            feedOptions.requestContinuation(pagedFluxOptions.getRequestContinuation());
+        }
+        if (pagedFluxOptions.getMaxItemCount() != null) {
+            feedOptions.maxItemCount(pagedFluxOptions.getMaxItemCount());
+        }
+    }
+
+    static String escapeNonAscii(String partitionKeyJson) {
+        // if all are ascii original string will be returned, and avoids copying data.
+        StringBuilder sb = null;
+        for(int i = 0; i < partitionKeyJson.length(); i++) {
+            int val = partitionKeyJson.charAt(i);
+            if (val > 127) {
+                if (sb == null) {
+                    sb = new StringBuilder(partitionKeyJson.length());
+                    sb.append(partitionKeyJson.substring(0, i));
+                }
+                sb.append("\\u").append(String.format("%04X", val));
+            } else {
+                if (sb != null) {
+                    sb.append(partitionKeyJson.charAt(i));
+                }
+            }
+        }
+
+        if (sb == null) {
+            // all are ascii character
+            return partitionKeyJson;
+        } else {
+            return sb.toString();
         }
     }
 }

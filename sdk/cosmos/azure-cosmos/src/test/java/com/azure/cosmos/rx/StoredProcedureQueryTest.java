@@ -6,18 +6,16 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 import com.azure.cosmos.CosmosStoredProcedureProperties;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,15 +43,15 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
-        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
-                .queryStoredProcedures(query, options);
+        int maxItemCount = 5;
+        CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
+                                                                                                       .queryStoredProcedures(query, options);
 
         List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs.stream()
                 .filter(sp -> filterId.equals(sp.getId())).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
-        int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .totalSize(expectedDocs.size())
@@ -63,7 +61,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -72,15 +70,15 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         
-        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
-                .queryStoredProcedures(query, options);
+        CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
+                                                                                                       .queryStoredProcedures(query, options);
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .containsExactly(new ArrayList<>()).numberOfPages(1)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -88,14 +86,14 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(3);
+        int maxItemCount = 3;
         
-        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
-                .queryStoredProcedures(query, options);
+        CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
+                                                                                                       .queryStoredProcedures(query, options);
 
         List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs;
 
-        int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
@@ -104,7 +102,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator);
+        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -112,12 +110,12 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
         
-        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
-                .queryStoredProcedures(query, options);
+        CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
+                                                                                                       .queryStoredProcedures(query, options);
 
         FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosClientException.class)
                 .statusCode(400).notNullActivityId().build();
-        validateQueryFailure(queryObservable, validator);
+        validateQueryFailure(queryObservable.byPage(), validator);
     }
 
     public CosmosStoredProcedureProperties createStoredProc(CosmosAsyncContainer cosmosContainer) {

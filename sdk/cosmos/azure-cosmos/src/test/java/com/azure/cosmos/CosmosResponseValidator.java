@@ -48,8 +48,6 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 return ((CosmosAsyncDatabaseResponse)resourceResponse).getProperties();
             } else if (resourceResponse instanceof CosmosAsyncContainerResponse) {
                 return ((CosmosAsyncContainerResponse)resourceResponse).getProperties();
-            } else if (resourceResponse instanceof CosmosAsyncItemResponse) {
-                return ((CosmosAsyncItemResponse)resourceResponse).getProperties();
             } else if (resourceResponse instanceof CosmosAsyncStoredProcedureResponse) {
                 return ((CosmosAsyncStoredProcedureResponse)resourceResponse).getProperties();
             } else if (resourceResponse instanceof CosmosAsyncTriggerResponse) {
