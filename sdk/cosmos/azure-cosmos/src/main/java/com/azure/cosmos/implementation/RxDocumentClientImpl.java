@@ -1337,9 +1337,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<FeedResponse<Document>> readMany(
+    public <T> Mono<FeedResponse<T>> readMany(
         List<Pair<String, PartitionKey>> itemKeyList,
-        String collectionLink, FeedOptions options) {
+        String collectionLink,
+        FeedOptions options,
+        Class<T> klass) {
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             OperationType.Query,
@@ -1420,16 +1422,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                .collectList() // aggregating the result construct a FeedResponse and
                                                // aggregate RUs.
                                                .map(feedList -> {
-                                                   List<Document> finalList = new ArrayList<>();
+                                                   List<T> finalList = new ArrayList<T>();
                                                    HashMap<String, String> headers = new HashMap<>();
                                                    double requestCharge = 0;
                                                    for (FeedResponse<Document> page : feedList) {
                                                        requestCharge += page.getRequestCharge();
-                                                       finalList.addAll(page.getResults());
+                                                       // TODO: this does double serialization: FIXME
+                                                       finalList.addAll(page.getResults().stream().map(document -> document.toObject(klass)).collect(Collectors.toList()));
                                                    }
                                                    headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                                                                                              .toString(requestCharge));
-                                                   FeedResponse<Document> frp = BridgeInternal
+                                                   FeedResponse<T> frp = BridgeInternal
                                                                                     .createFeedResponse(finalList, headers);
                                                    return frp;
                                                });

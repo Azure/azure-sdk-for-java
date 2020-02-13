@@ -492,7 +492,7 @@ public class BridgeInternal {
     public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.getProperties();
     }
-    
+
     public static PartitionKey partitionKeyfromJsonString(String jsonString) {
         return PartitionKey.fromJsonString(jsonString);
     }
@@ -506,21 +506,24 @@ public class BridgeInternal {
      *
      * @param container the cosmos async container
      * @param itemKeyList document id and partition key pair that needs to be read
+     * @param klass class type
      * @return a Mono with feed response of documents
      */
-    public static Mono<FeedResponse<Document>> readMany(
-        CosmosAsyncContainer container,
-        List<Pair<String, PartitionKey>> itemKeyList) {
-        return readManyInternal(container, itemKeyList, new FeedOptions());
-    }
-
-    static Mono<FeedResponse<Document>> readManyInternal(
+    public static <T> Mono<FeedResponse<T>> readMany(
         CosmosAsyncContainer container,
         List<Pair<String, PartitionKey>> itemKeyList,
-        FeedOptions options) {
+        Class<T> klass) {
+        return readManyInternal(container, itemKeyList, new FeedOptions(), klass);
+    }
+
+    static <T> Mono<FeedResponse<T>> readManyInternal(
+        CosmosAsyncContainer container,
+        List<Pair<String, PartitionKey>> itemKeyList,
+        FeedOptions options,
+        Class<T> klass) {
         return container.getDatabase()
                    .getDocClientWrapper()
-                   .readMany(itemKeyList, container.getLink(), options);
+                   .readMany(itemKeyList, container.getLink(), options, klass);
     }
 
 }
