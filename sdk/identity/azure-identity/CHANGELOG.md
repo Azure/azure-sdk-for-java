@@ -1,5 +1,8 @@
 # Release History
 
+## 1.1.0-beta.2 (Unreleased)
+
+
 ## 1.1.0-beta.1
 - All credential builders support setting a pipeline via `httpPipeline` method.
 - SharedTokenCacheCredentialBuilder supports setting the tenant id via `tenantId` method.
