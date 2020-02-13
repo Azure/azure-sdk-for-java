@@ -101,7 +101,7 @@ public class ManagementChannel implements EventHubManagementNode {
         properties.put(MANAGEMENT_PARTITION_NAME_KEY, partitionId);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return getProperties(properties, PartitionProperties.class);
+        return getProperties(properties, PartitionProperties.class).publishOn(scheduler);
     }
 
     private <T> Mono<T> getProperties(Map<String, Object> properties, Class<T> responseType) {
@@ -116,7 +116,7 @@ public class ManagementChannel implements EventHubManagementNode {
 
             return channelMono.flatMap(x -> x.sendWithAck(request))
                 .map(message -> messageSerializer.deserialize(message, responseType));
-        }).publishOn(scheduler);
+        });
     }
 
     /**
