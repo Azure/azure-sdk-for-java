@@ -15,8 +15,10 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.Resource;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
@@ -188,6 +190,105 @@ public class LROPollerTests {
                     throw new IllegalStateException("Poller emitted more than expected value.");
                 }
             }).blockLast();
+        } finally {
+            if (lroServer.isRunning()) {
+                lroServer.shutdown();
+            }
+        }
+    }
+
+    @Test
+    public void lroSucceededNoPoll() {
+        final String resourceEndpoint = "/resource/1";
+        final String sampleVaultUpdateSucceededResponse = "{\"id\":\"/subscriptions/###/resourceGroups/rg-weidxu/providers/Microsoft.KeyVault/vaults/v1weidxu\",\"name\":\"v1weidxu\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"centralus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"###\",\"accessPolicies\":[],\"enabledForDeployment\":false,\"vaultUri\":\"https://v1weidxu.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}";
+        ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
+            @Override
+            public com.github.tomakehurst.wiremock.http.Response
+            transform(Request request,
+                      com.github.tomakehurst.wiremock.http.Response response,
+                      FileSource fileSource,
+                      Parameters parameters) {
+
+                if (!request.getUrl().endsWith(resourceEndpoint)) {
+                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                        .status(500)
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
+                }
+                if (request.getMethod().isOneOf(RequestMethod.PUT)) {
+                    // 200 response with provisioningState=Succeeded.
+                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                        .status(200)
+                        .body(sampleVaultUpdateSucceededResponse)
+                        .build();
+                }
+                return response;
+            }
+
+            @Override
+            public String getName() {
+                return "LroService";
+            }
+        };
+
+        WireMockServer lroServer = createServer(provisioningStateLroService, resourceEndpoint);
+        lroServer.start();
+
+        try {
+            final ProvisioningStateLroServiceClient client = RestProxy.create(ProvisioningStateLroServiceClient.class,
+                createHttpPipeline(lroServer.port()),
+                SERIALIZER);
+
+            Function<PollingContext<PollResult<Resource>>, Mono<PollResponse<PollResult<Resource>>>>
+                lroInitFunction = context -> client.startLro()
+                    .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                        .map(bytes -> {
+                            String content = new String(bytes, StandardCharsets.UTF_8);
+                            //
+                            PollingState state = PollingState.create(SERIALIZER,
+                                response.getRequest(),
+                                response.getStatusCode(),
+                                response.getHeaders(),
+                                content);
+                            state.store(context);
+                            //
+                            Resource entity
+                                = fromJson(content, Resource.class);
+                            if (response.getStatusCode() == 200) {
+                                return new PollResponse<>(state.getOperationStatus(), new PollResult<>(entity));
+                            } else {
+                                return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new PollResult<>(entity));
+                            }
+                        }));
+
+            when(provisioningStateLroInitOperation.apply(any())).thenAnswer((Answer) in -> {
+                PollingContext<PollResult<Resource>> context
+                    = (PollingContext<PollResult<Resource>>) in.getArguments()[0];
+                return lroInitFunction.apply(context);
+            });
+
+            PollerFlux<PollResult<Resource>, Resource> lroFlux
+                = PollerFactory.create(SERIALIZER,
+                new HttpPipelineBuilder().build(),
+                Resource.class,
+                Resource.class,
+                Duration.ofMillis(100),
+                lroInitFunction);
+
+            AsyncPollResponse<PollResult<Resource>, Resource> asyncPollResponse = lroFlux.doOnNext(response -> {
+                PollResult<Resource> pollResult = response.getValue();
+                Assertions.assertNotNull(pollResult);
+                Assertions.assertNotNull(pollResult.value());
+                Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+                Assertions.assertNotNull(pollResult.value().getId());
+            }).blockLast();
+            Assertions.assertNotNull(asyncPollResponse);
+
+            Resource result = asyncPollResponse.getFinalResult().block();
+            Assertions.assertNotNull(result);
+            Assertions.assertNotNull(result.getId());
+            Assertions.assertEquals("v1weidxu", result.getName());
+            Assertions.assertEquals("Microsoft.KeyVault/vaults", result.getType());
         } finally {
             if (lroServer.isRunning()) {
                 lroServer.shutdown();
