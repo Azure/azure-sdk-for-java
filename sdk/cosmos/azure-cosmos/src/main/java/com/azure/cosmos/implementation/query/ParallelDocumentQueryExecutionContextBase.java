@@ -149,4 +149,44 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             producer.top = newTop;
         }
     }
+
+    protected void initializeReadMany(
+        IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuerySpec,
+        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
+        FeedOptions feedOptions,
+        UUID activityId,
+        String collectionRid) {
+        Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
+
+        for (PartitionKeyRange targetRange : rangeQueryMap.keySet()) {
+            TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (
+                partitionKeyRange,
+                continuationToken, pageSize) -> {
+                Map<String, String> headers = new HashMap<>(commonRequestHeaders);
+                headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
+                headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
+
+                PartitionKeyInternal partitionKeyInternal = null;
+                return this.createDocumentServiceRequest(headers,
+                                                         rangeQueryMap.get(targetRange),
+                                                         partitionKeyInternal,
+                                                         partitionKeyRange,
+                                                         collectionRid);
+            };
+
+            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> {
+                return this.executeRequestAsync(request);
+            };
+
+            // TODO: Review pagesize -1
+            DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
+                                                            null, -1, feedOptions,
+                                                            rangeQueryMap.get(targetRange),
+                                                            commonRequestHeaders, createRequestFunc, executeFunc,
+                                                            () -> client.getResetSessionTokenRetryPolicy()
+                                                                      .getRequestPolicy());
+
+            documentProducers.add(dp);
+        }
+    }
 }

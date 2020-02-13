@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -13,7 +12,7 @@ import reactor.core.publisher.Mono;
  */
 public class CosmosContainer {
 
-    private final CosmosAsyncContainer asyncContainer;
+    final CosmosAsyncContainer asyncContainer;
     private final CosmosDatabase database;
     private final String id;
     private CosmosScripts scripts;
@@ -167,7 +166,7 @@ public class CosmosContainer {
      * @return the cosmos item response
      * @throws CosmosClientException the cosmos client exception
      */
-    
+
     public <T> CosmosItemResponse<T> createItem(T item, CosmosItemRequestOptions options) throws CosmosClientException {
         return this.mapItemResponseAndBlock(this.asyncContainer.createItem(item, options));
     }

@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.Utils;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -129,6 +130,21 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         int pageSize = Math.min(actualPageSize, Utils.getValueOrDefault(queryInfo.getTop(), (actualPageSize)));
         return createTakeComponentFunction.apply(feedOptions.requestContinuation())
                 .map(c -> new PipelinedDocumentQueryExecutionContext<>(c, pageSize, correlatedActivityId));
+    }
+
+    public static <T extends Resource> Flux<PipelinedDocumentQueryExecutionContext<T>> createReadManyAsync(
+        IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
+        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, FeedOptions feedOptions,
+        String resourceId, String collectionLink, UUID activityId, Class<T> klass,
+        ResourceType resourceTypeEnum) {
+        Flux<IDocumentQueryExecutionComponent<T>> documentQueryExecutionComponentFlux = ParallelDocumentQueryExecutionContext
+                                                                                            .createReadManyQueryAsync(queryClient,
+                                                                                                                      collectionResourceId, sqlQuery, rangeQueryMap,
+                                                                                                                      feedOptions, resourceId, collectionLink, activityId, klass, resourceTypeEnum);
+
+        // TODO: Making pagesize -1. Should be reviewed
+        return documentQueryExecutionComponentFlux.map(c -> new PipelinedDocumentQueryExecutionContext<>(c, -1,
+                                                                                                  activityId));
     }
 
     @Override

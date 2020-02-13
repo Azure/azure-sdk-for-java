@@ -6,9 +6,11 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -18,6 +20,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
@@ -27,6 +30,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
@@ -95,6 +99,36 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             return Flux.error(dce);
         }
     }
+
+    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createReadManyQueryAsync(
+        IDocumentQueryClient queryClient,
+        String collectionResourceId, SqlQuerySpec sqlQuery,
+        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
+        FeedOptions feedOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
+        ResourceType resourceTypeEnum) {
+        
+        List<PartitionKeyRange> ranges = new ArrayList<>();
+        ranges.addAll(rangeQueryMap.keySet());
+
+        ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(queryClient,
+                                                                                                        ranges,
+                                                                                                        resourceTypeEnum,
+                                                                                                        klass,
+                                                                                                        sqlQuery,
+                                                                                                        feedOptions,
+                                                                                                        collectionLink,
+                                                                                                        sqlQuery.getQueryText(),
+                                                                                                        collectionRid,
+                                                                                                        false,
+                                                                                                        false,
+                                                                                                        activityId);
+
+        context
+            .initializeReadMany(queryClient, collectionResourceId, sqlQuery, rangeQueryMap, feedOptions,
+                                activityId, collectionRid);
+        return Flux.just(context);
+    }
+    
 
     private void initialize(
             String collectionRid,
