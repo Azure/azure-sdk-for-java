@@ -36,8 +36,10 @@ import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactor
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.Paginator;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
@@ -1365,7 +1367,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     itemKeyList
                                         .forEach(stringPartitionKeyPair -> {
 
-                                            String effectivePartitionKeyString = PartitionKeyInternalHelper
+                                            String effectivePartitionKeyString =  PartitionKeyInternalHelper
                                                                                      .getEffectivePartitionKeyString(BridgeInternal
                                                                                                                          .getPartitionKeyInternal(stringPartitionKeyPair
                                                                                                                                                       .getRight()),

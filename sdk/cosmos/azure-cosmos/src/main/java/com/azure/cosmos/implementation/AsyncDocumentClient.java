@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.DatabaseAccount;
 import com.azure.cosmos.FeedOptions;
