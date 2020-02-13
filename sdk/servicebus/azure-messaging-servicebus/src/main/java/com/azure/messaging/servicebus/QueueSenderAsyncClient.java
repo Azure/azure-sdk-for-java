@@ -15,11 +15,10 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
+
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.CreateBatchOptions;
-import com.azure.messaging.servicebus.implementation.SendOptions;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import reactor.core.publisher.Flux;
@@ -44,7 +43,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
@@ -55,17 +53,13 @@ public final class QueueSenderAsyncClient implements Closeable {
 
     private final ClientLogger logger = new ClientLogger(QueueSenderAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final SendOptions senderOptions;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
     private final AmqpRetryOptions retryOptions;
     private final AmqpRetryPolicy retryPolicy;
     private final boolean isSharedConnection;
     private final String queueName;
-
     private final ServiceBusConnectionProcessor connectionProcessor;
-
-    private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
 
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
@@ -75,7 +69,7 @@ public final class QueueSenderAsyncClient implements Closeable {
     /**
      * Creates a new instance of this {@link QueueSenderAsyncClient} that sends messages to
      */
-    QueueSenderAsyncClient(String queueName, ServiceBusConnectionProcessor connectionProcessor, SendOptions options,
+    QueueSenderAsyncClient(String queueName, ServiceBusConnectionProcessor connectionProcessor,
                            AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
                            MessageSerializer messageSerializer, boolean isSharedConnection) {
         // Caching the created link so we don't invoke another link creation.
@@ -84,72 +78,25 @@ public final class QueueSenderAsyncClient implements Closeable {
         this.queueName = Objects.requireNonNull(queueName, "'entityPath' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
-        this.senderOptions = options;
         this.tracerProvider = tracerProvider;
         this.isSharedConnection = isSharedConnection;
         this.retryPolicy = getRetryPolicy(retryOptions);
     }
 
+    public Mono<Void> send(Message message, String sessionId) {
+        Objects.requireNonNull(message, "'message' cannot be null.");
+        //TODO Implement session id feature
+        return send(Flux.just(message));
+    }
+
     public Mono<Void> send(Message message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
-
         return send(Flux.just(message));
     }
-
-    public Mono<Void> send(Message message, String sessionId) {
-        //TODO Implement session id feature
-        Objects.requireNonNull(message, "'message' cannot be null.");
-        return send(Flux.just(message));
-    }
-
-    public Mono<Void> send(Message message, SendOptions options, String sessionId) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        //TODO Implement session id feature
-        return send(Flux.just(message), options);
-    }
-
-    public Mono<Void> send(Message message, SendOptions options) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
-        Objects.requireNonNull(options, "'options' cannot be null.");
-
-        return send(Flux.just(message), options);
-    }
-
 
     public Mono<Void> send(Iterable<Message> messages) {
         Objects.requireNonNull(messages, "'messages' cannot be null.");
-
         return send(Flux.fromIterable(messages));
-    }
-
-    /**
-     * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
-     * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
-     * size is the max amount allowed on the link.
-     * @param messages Events to send to the service.
-     * @param options The set of options to consider when sending this batch.
-     *
-     * @return A {@link Mono} that completes when all events are pushed to the service.
-     */
-    public Mono<Void> send(Iterable<Message> messages, SendOptions options) {
-        Objects.requireNonNull(messages, "'options' cannot be null.");
-
-        return send(Flux.fromIterable(messages), options);
-    }
-
-    /**
-     * Sends a set of events to the associated Queue using a batched approach. If the size of events exceed the
-     * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
-     * size is the max amount allowed on the link.
-     * @param messages Events to send to the service.
-     *
-     * @return A {@link Mono} that completes when all events are pushed to the service.
-     */
-    public Mono<Void> send(Flux<Message> messages) {
-        Objects.requireNonNull(messages, "'messages' cannot be null.");
-
-        return send(messages, DEFAULT_SEND_OPTIONS);
     }
 
     /**
@@ -157,30 +104,16 @@ public final class QueueSenderAsyncClient implements Closeable {
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
      * @param messages Events to send to the service.
-     * @param options The set of options to consider when sending this batch.
      *
      * @return A {@link Mono} that completes when all messages are pushed to the service.
      */
-    public Mono<Void> send(Flux<Message> messages, SendOptions options) {
+    public Mono<Void> send(Flux<Message> messages) {
         Objects.requireNonNull(messages, "'messages' cannot be null.");
-        Objects.requireNonNull(options, "'options' cannot be null.");
 
-        return sendInternal(messages, options);
+        return sendInternal(messages);
     }
 
-
-    private Mono<Void> sendInternal(Flux<Message> messages, SendOptions options) {
-        final String partitionKey = options.getPartitionKey();
-        final String partitionId = options.getPartitionId();
-
-        if (!CoreUtils.isNullOrEmpty(partitionKey)
-            && !CoreUtils.isNullOrEmpty(partitionId)) {
-            return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
-                "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
-                    + " other can be used. partitionKey: '%s'. partitionId: '%s'",
-                partitionKey, partitionId)));
-        }
-
+    private Mono<Void> sendInternal(Flux<Message> messages) {
         return getSendLink()
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
@@ -190,10 +123,10 @@ public final class QueueSenderAsyncClient implements Closeable {
                     return messages.collect(new AmqpMessageCollector(batchOptions, 1, link::getErrorContext,
                         tracerProvider));
                 })
-                .flatMap(list -> sendInternal(Flux.fromIterable(list))));
+                .flatMap(list -> sendInternalBatch(Flux.fromIterable(list))));
     }
 
-    private Mono<Void> sendInternal(Flux<MessageBatch> eventBatches) {
+    private Mono<Void> sendInternalBatch(Flux<MessageBatch> eventBatches) {
         return eventBatches
             .flatMap(this::send)
             .then()
@@ -356,7 +289,6 @@ public final class QueueSenderAsyncClient implements Closeable {
                 if (batch != null) {
                     list.add(batch);
                 }
-
                 return list;
             };
         }

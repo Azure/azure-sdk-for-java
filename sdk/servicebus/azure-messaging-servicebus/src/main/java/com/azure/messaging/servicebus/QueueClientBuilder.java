@@ -26,7 +26,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.ClientConstants;
-import com.azure.messaging.servicebus.implementation.SendOptions;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
@@ -67,10 +66,6 @@ public final class QueueClientBuilder {
     private final String connectionId;
     private ServiceBusConnectionProcessor servicerBusConnectionProcessor;
     private boolean isSharedConnection;
-
-
-    private SendOptions defaultSenderOptions;
-
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
@@ -121,8 +116,6 @@ public final class QueueClientBuilder {
         if (scheduler == null) {
             scheduler = Schedulers.elastic();
         }
-        this.defaultSenderOptions = new SendOptions();
-
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
 
         if (isSharedConnection && servicerBusConnectionProcessor == null) {
@@ -135,7 +128,7 @@ public final class QueueClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new QueueSenderAsyncClient(queueName, connectionProcessor, defaultSenderOptions,  retryOptions, tracerProvider, messageSerializer, isSharedConnection);
+        return new QueueSenderAsyncClient(queueName, connectionProcessor,  retryOptions, tracerProvider, messageSerializer, isSharedConnection);
     }
     /**
      * Creates an Service Bus Queue receiver responsible for reading {@link Message} from a specific Queue.
@@ -151,8 +144,6 @@ public final class QueueClientBuilder {
         if (scheduler == null) {
             scheduler = Schedulers.elastic();
         }
-        this.defaultSenderOptions = new SendOptions();
-
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
 
         if (isSharedConnection && servicerBusConnectionProcessor == null) {

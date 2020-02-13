@@ -44,13 +44,14 @@
 
   <suppress checks="AvoidStarImport" files="EventData.java"/>
   <suppress checks="WhitespaceAround" files="EventData.java"/>
-  -->
+
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(AvoidStarImport|Header|ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
             files=".*[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]messaging[/\\]servicebus[/\\].*\.java"/>
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(AvoidStarImport|Header|ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
             files=".*[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]core[/\\]amqp[/\\].*\.java"/>
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(AvoidStarImport|Header|ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
             files=".*[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]core[/\\]amqp[/\\]implementation[/\\].*\.java"/>
+  -->
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
