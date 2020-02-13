@@ -66,7 +66,8 @@ public class ManagementChannel implements EventHubManagementNode {
      * @param messageSerializer Maps responses from the management channel.
      */
     ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
-                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, Scheduler scheduler) {
+                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+                      Scheduler scheduler) {
 
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
