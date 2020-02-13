@@ -1414,7 +1414,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     // create the executable query
                                     return createReadManyQuery(collectionLink,
                                                                new SqlQuerySpec(sqlQuery),
-                                                               new FeedOptions(),
+                                                               options,
                                                                Document.class,
                                                                ResourceType.Document,
                                                                collection,

@@ -26,7 +26,7 @@ public class ItemOperations {
     public static <T> FeedResponse<T> readMany(CosmosContainer container,
                                                List<Pair<String, PartitionKey>> itemKeyList,
                                                Class<T> klass) {
-        return readManyInternal(container.asyncContainer, itemKeyList, new FeedOptions(), klass).block();
+        return readManyAsync(container.asyncContainer, itemKeyList, klass).block();
     }
 
     /**
@@ -42,6 +42,10 @@ public class ItemOperations {
     public static <T> Mono<FeedResponse<T>> readManyAsync(CosmosAsyncContainer container,
                                                           List<Pair<String, PartitionKey>> itemKeyList,
                                                           Class<T> klass) {
+
+
+        FeedOptions options = new FeedOptions();
+        options.setMaxDegreeOfParallelism(-1);
         return readManyInternal(container, itemKeyList, new FeedOptions(), klass);
     }
 
