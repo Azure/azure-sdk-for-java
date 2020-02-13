@@ -25,8 +25,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -50,7 +48,6 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
@@ -95,9 +92,6 @@ class EventHubConsumerAsyncClientTest {
     @Mock
     private TokenCredential tokenCredential;
 
-    @Captor
-    private ArgumentCaptor<Supplier<Integer>> creditSupplier;
-
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConsumerAsyncClient consumer;
     private EventHubConnectionProcessor connectionProcessor;
@@ -106,7 +100,9 @@ class EventHubConsumerAsyncClientTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
 
-        when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
+        // Forcing us to publish the messages we receive on the AMQP link on single. Similar to how it is done
+        // in ReactorExecutor.
+        when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
 
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
@@ -123,7 +119,7 @@ class EventHubConsumerAsyncClientTest {
                     connectionOptions.getEntityPath(), connectionOptions.getRetry()));
 
         consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer,
-            CONSUMER_GROUP, PREFETCH, false);
+            CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false);
     }
 
     @AfterEach
@@ -139,7 +135,7 @@ class EventHubConsumerAsyncClientTest {
     @Test
     void lastEnqueuedEventInformationIsNull() {
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
+            connectionProcessor, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, Schedulers.parallel(), false);
         final int numberOfEvents = 10;
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
         final int numberToReceive = 3;
@@ -160,7 +156,7 @@ class EventHubConsumerAsyncClientTest {
     void lastEnqueuedEventInformationCreated() {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
+            connectionProcessor, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, Schedulers.parallel(), false);
         final int numberOfEvents = 10;
         final ReceiveOptions receiveOptions = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
@@ -180,6 +176,7 @@ class EventHubConsumerAsyncClientTest {
             .verifyComplete();
     }
 
+
     /**
      * Verifies that this receives a number of events. Verifies that the initial credits we add are equal to the
      * prefetch value.
@@ -196,6 +193,43 @@ class EventHubConsumerAsyncClientTest {
             .verifyComplete();
 
         verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
+    }
+
+    /**
+     * Verifies that this receives a number of events. Verifies that the initial credits we add are equal to the
+     * prefetch value.
+     */
+    @Test
+    void receivesNumberOfEventsAllowsBlock() throws InterruptedException {
+        // Arrange
+        final int numberOfEvents = 10;
+        final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
+
+        // Scheduling on elastic to simulate a user passed in scheduler (this is the default in EventHubClientBuilder).
+        final EventHubConsumerAsyncClient myConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.elastic(), false);
+        final Flux<PartitionEvent> eventsFlux = myConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest())
+            .take(numberOfEvents);
+
+        // Act
+        eventsFlux.subscribe(event -> {
+            logger.info("Current count: {}", countDownLatch.getCount());
+            saveAction(event.getData()).block(Duration.ofSeconds(2));
+            countDownLatch.countDown();
+        });
+
+        sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID);
+
+        // Assert
+        Assertions.assertTrue(countDownLatch.await(30, TimeUnit.SECONDS));
+        verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
+    }
+
+    private Mono<Instant> saveAction(EventData event) {
+        return Mono.delay(Duration.ofMillis(500)).then(Mono.fromCallable(() -> {
+            logger.info("Saved the event: {}", event.getBodyAsString());
+            return Instant.now();
+        }));
     }
 
     /**
@@ -234,7 +268,7 @@ class EventHubConsumerAsyncClientTest {
             any(ReceiveOptions.class))).thenReturn(Mono.just(link2), Mono.just(link3));
 
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false);
 
         // Act & Assert
         StepVerifier.create(asyncClient.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
@@ -379,9 +413,10 @@ class EventHubConsumerAsyncClientTest {
      * Verify that backpressure is respected.
      */
     @Test
-    void suppliesCreditsWhenSubscribers() {
+    void suppliesCreditsWhenSubscribers() throws InterruptedException {
         // Arrange
         final int backPressure = 8;
+        final CountDownLatch semaphore = new CountDownLatch(8);
         final AtomicInteger counter = new AtomicInteger();
         final FluxSink<Message> messageSink = messageProcessor.sink();
 
@@ -390,25 +425,27 @@ class EventHubConsumerAsyncClientTest {
         final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).subscribe(
             e -> {
                 logger.info("Event received");
-                counter.getAndIncrement();
+                final int count = counter.incrementAndGet();
+                if (count > backPressure) {
+                    Assertions.fail("Shouldn't have more than " + backPressure + " events. Count: " + count);
+                }
+
+                semaphore.countDown();
             },
             error -> Assertions.fail(error.toString()),
-            () -> logger.info("Complete"), sub -> {
+            () -> {
+                logger.info("Complete");
+            }, sub -> {
+                logger.info("requesting backpressure: {}", backPressure);
                 sub.request(backPressure);
             });
 
         try {
             // Act
-
-            // Capturing the credit supplier that we set when the link was received.
             sendMessages(messageSink, 11, PARTITION_ID);
 
-            verify(amqpReceiveLink).setEmptyCreditListener(creditSupplier.capture());
-            final Supplier<Integer> supplier = creditSupplier.getValue();
-            final int actualCredits = supplier.get();
-
             // Assert
-            Assertions.assertEquals(1, actualCredits);
+            Assertions.assertTrue(semaphore.await(10, TimeUnit.SECONDS));
             Assertions.assertEquals(backPressure, counter.get());
         } finally {
             subscription.dispose();
@@ -452,7 +489,7 @@ class EventHubConsumerAsyncClientTest {
             .thenReturn(Mono.just(new EventHubProperties(EVENT_HUB_NAME, Instant.EPOCH, partitions)));
 
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false);
 
         EmitterProcessor<Message> processor2 = EmitterProcessor.create();
         FluxSink<Message> processor2sink = processor2.sink();
@@ -525,7 +562,7 @@ class EventHubConsumerAsyncClientTest {
             .thenReturn(Mono.just(new EventHubProperties(EVENT_HUB_NAME, Instant.EPOCH, partitions)));
 
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false);
 
         EmitterProcessor<Message> processor2 = EmitterProcessor.create();
         FluxSink<Message> processor2sink = processor2.sink();
@@ -583,7 +620,7 @@ class EventHubConsumerAsyncClientTest {
         EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
             .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, retryOptions));
         EventHubConsumerAsyncClient sharedConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, true);
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), true);
 
         // Act
         sharedConsumer.close();
@@ -601,7 +638,7 @@ class EventHubConsumerAsyncClientTest {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubConsumerAsyncClient dedicatedConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            hubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
+            hubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false);
 
         // Act
         dedicatedConsumer.close();
