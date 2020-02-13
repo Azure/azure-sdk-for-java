@@ -188,9 +188,9 @@ public final class QueueClientBuilder {
 
     /**
      * Specify connection string and  queue name for connection to Queue.
-     * @param connectionString
-     * @param queueName
-     * @return
+     * @param connectionString to connect to service bus resource.
+     * @param queueName The name of the queue.
+     * @return The {@link QueueClientBuilder}.
      */
     public QueueClientBuilder connectionString(String connectionString, String queueName) {
         this.queueName = queueName;
@@ -199,7 +199,7 @@ public final class QueueClientBuilder {
 
     /**
      *
-     * @param queueName  to connect to .
+     * @param queueName The name of the queue.
      * @return The {@link QueueClientBuilder}.
      */
     public QueueClientBuilder queueName(String queueName) {

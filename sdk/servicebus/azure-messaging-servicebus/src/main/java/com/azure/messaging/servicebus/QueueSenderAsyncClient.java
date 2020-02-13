@@ -218,7 +218,7 @@ public final class QueueSenderAsyncClient implements Closeable {
     /**
      *
      * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
-     * @return
+     * @return {@link Mono}
      */
     public Mono<Void> send(MessageBatch batch) {
         Objects.requireNonNull(batch, "'batch' cannot be null.");

@@ -5,9 +5,8 @@ package com.azure.messaging.servicebus;
 
 
 import com.azure.core.amqp.exception.AmqpException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 
@@ -18,16 +17,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class AsyncSenderTest {
 
-    @Rule
-    public TestName testName = new TestName();
-
+    private final String baseConnectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
     @Captor
     ArgumentCaptor<com.azure.core.amqp.EventData> singleMessageCaptor;
 
     private static String TEST_CONTENTS = "Hello World Azure Servicebus !!";
-    protected String testName() {
-        return testName.getMethodName();
-    }
+
 
     /**
      * Main method to invoke this demo on how to send a message to an Azure Event Hub.
@@ -39,8 +34,9 @@ public class AsyncSenderTest {
         // 2. Creating an Event Hub instance.
         // 3. Creating a "Shared access policy" for your Event Hub instance.
         // 4. Copying the connection string from the policy's properties.
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-        connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7uJdC9utZi6pxJ2trk4MmiiEyuHltIz1Oyejp1jZRgM=;EntityPath=hemant-test1";
+
+        String connectionString = baseConnectionString + ";EntityPath=hemant-test1";
+
         // Instantiate a client that will be used to call the service.
         QueueSenderAsyncClient asyncSender = new QueueClientBuilder()
             .connectionString(connectionString)
@@ -81,30 +77,8 @@ public class AsyncSenderTest {
 
                     asyncSender.close();
                 });
-        Thread.sleep(1000 *10);
-        // Arrange
-        //final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
-
-        //when(asyncSender.send(any(EventData.class))).thenReturn(Mono.empty());
-
-        //final SendOptions options = new SendOptions();
-        //final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-        //    .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
-        //final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-        //final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions, tracerProvider);
-
-        // Act
-        //StepVerifier.create(asyncSender.send(testData)).verifyComplete();
-
-        // Assert
-        //verify(asyncSender, times(1)).send(any(EventData.class));
-        //verify(asyncSender).send(singleMessageCaptor.capture());
-
-        //final EventData event = singleMessageCaptor.getValue();
-
-
-
-    }
+        Thread.sleep(1000 *5);
+           }
 
     /**
      * Main method to invoke this demo on how to send a message to an Azure Event Hub.
@@ -116,8 +90,7 @@ public class AsyncSenderTest {
         // 2. Creating an Event Hub instance.
         // 3. Creating a "Shared access policy" for your Event Hub instance.
         // 4. Copying the connection string from the policy's properties.
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-        connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7uJdC9utZi6pxJ2trk4MmiiEyuHltIz1Oyejp1jZRgM=;EntityPath=hemant-test1";
+        String connectionString = baseConnectionString + ";EntityPath=hemant-test1";
         // Instantiate a client that will be used to call the service.
         QueueSenderAsyncClient asyncSender = new QueueClientBuilder()
             .connectionString(connectionString)
@@ -130,7 +103,7 @@ public class AsyncSenderTest {
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
-        List list = new ArrayList();
+        List<Message> list = new ArrayList<Message>();
 
         list.add(message1);
         list.add(message1);
@@ -145,7 +118,6 @@ public class AsyncSenderTest {
                 error -> {
 
                     System.out.println("There was an error sending the event: " + error.toString());
-                    //error.printStackTrace();
                     if (error instanceof AmqpException) {
                         AmqpException amqpException = (AmqpException) error;
 

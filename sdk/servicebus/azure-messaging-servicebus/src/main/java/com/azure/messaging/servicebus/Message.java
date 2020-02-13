@@ -120,8 +120,6 @@ public class Message {
      * <p><strong>Adding serialization hint using {@code getProperties()}</strong></p>
      * <p>In the sample, the type of telemetry is indicated by adding an application property with key "eventType".</p>
      *
-     * {@codesnippet com.azure.messaging.eventhubs.eventdata.getProperties}
-     *
      * @return Application properties associated with this {@link Message}.
      */
     public Map<String, Object> getProperties() {

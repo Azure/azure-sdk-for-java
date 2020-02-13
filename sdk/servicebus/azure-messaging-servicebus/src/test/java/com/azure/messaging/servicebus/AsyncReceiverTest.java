@@ -16,9 +16,10 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -27,7 +28,7 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -61,6 +62,7 @@ public class AsyncReceiverTest {
     private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
+    private final String baseConnectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
@@ -74,15 +76,14 @@ public class AsyncReceiverTest {
     private QueueReceiverAsyncClient consumer;
 
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         receiveLinkMono = Mono.fromCallable(() -> amqpReceiveLink);
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
 
-
-        String connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7uJdC9utZi6pxJ2trk4MmiiEyuHltIz1Oyejp1jZRgM=;EntityPath=hemant-test1";
+        String connectionString = baseConnectionString + ";EntityPath=hemant-test1";
 
         // Instantiate a client that will be used to call the service.
 
@@ -91,7 +92,7 @@ public class AsyncReceiverTest {
             .createAsyncReceiverClient(2);
     }
 
-    @After
+    @AfterEach
     public void teardown() throws IOException {
         messages.clear();
         Mockito.framework().clearInlineMocks();
@@ -116,13 +117,12 @@ public class AsyncReceiverTest {
         verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
     }
 
-
     @Test
     public void receivesNumberOfEventsActual() throws Exception{
 
         // Arrange
         final int numberOfEvents = 1;
-        String connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7uJdC9utZi6pxJ2trk4MmiiEyuHltIz1Oyejp1jZRgM=;EntityPath=hemant-test1";
+        String connectionString = baseConnectionString + ";EntityPath=hemant-test1";
 
         // Instantiate a client that will be used to call the service.
 
@@ -138,7 +138,7 @@ public class AsyncReceiverTest {
                 error.printStackTrace();;
             })
             .subscribe( message -> {
-                System.out.println("!!!!!! Got message from queue: "+message.getBody());
+                System.out.println("!!!!!! Got message from queue: "+message.getBody().toString());
                 try {
                     String converted = new String(message.getBody(), "UTF-8");
                     System.out.println("Got message from queue: " + converted);

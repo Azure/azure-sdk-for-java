@@ -16,7 +16,7 @@
 
   <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
   <suppress checks="Javadoc" files="src[/\\]test[/\\]java[/\\].*.java"/>
-  <suppress checks="Javadoc" files="EventPosition.java"/>
+ <!-- <suppress checks="Javadoc" files="EventPosition.java"/>
   <suppress checks="Javadoc" files="ManagementChannel.java"/>
   <suppress checks="Javadoc" files="EventHubAmqpConnection.java"/>
   <suppress checks="Javadoc" files="EventData.java"/>
@@ -41,8 +41,10 @@
 
 
 
+
   <suppress checks="AvoidStarImport" files="EventData.java"/>
   <suppress checks="WhitespaceAround" files="EventData.java"/>
+  -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(AvoidStarImport|Header|ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
             files=".*[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]messaging[/\\]servicebus[/\\].*\.java"/>
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(AvoidStarImport|Header|ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
