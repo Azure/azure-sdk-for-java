@@ -103,7 +103,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createReadManyQueryAsync(
         IDocumentQueryClient queryClient,
         String collectionResourceId, SqlQuerySpec sqlQuery,
-        Map<PartitionKeyRange, String> rangeQueryMap,
+        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
         FeedOptions feedOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
         

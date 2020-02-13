@@ -491,12 +491,35 @@ public class BridgeInternal {
     public static <T> CosmosContinuablePagedFlux<T> createCosmosContinuablePagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
         return new CosmosContinuablePagedFlux<>(pagedFluxOptionsFluxFunction);
     }
-
-    public static Mono<FeedResponse<Document>> readMany(CosmosAsyncContainer container, 
-                                                     List<Pair<String, PartitionKey>> itemKeyList){
-        return container.getDatabase()
-                   .getDocClientWrapper()
-                   .readMany(itemKeyList, container.getLink());
+    
+    public static PartitionKey partitionKeyfromJsonString(String jsonString) {
+        return PartitionKey.fromJsonString(jsonString);
     }
 
+    public static Object getPartitionKeyObject(PartitionKey right) {
+        return right.getKeyObject();
+    }
+
+    /**
+     * Reads many documents
+     *
+     * @param container the cosmos async container
+     * @param itemKeyList document id and partition key pair that needs to be read
+     * @return a Mono with feed response of documents
+     */
+    public static Mono<FeedResponse<Document>> readMany(
+        CosmosAsyncContainer container,
+        List<Pair<String, PartitionKey>> itemKeyList) {
+        return readManyInternal(container, itemKeyList, new FeedOptions());
+    }
+
+    static Mono<FeedResponse<Document>> readManyInternal(
+        CosmosAsyncContainer container,
+        List<Pair<String, PartitionKey>> itemKeyList,
+        FeedOptions options) {
+        return container.getDatabase()
+                   .getDocClientWrapper()
+                   .readMany(itemKeyList, container.getLink(), options);
+    }
+    
 }

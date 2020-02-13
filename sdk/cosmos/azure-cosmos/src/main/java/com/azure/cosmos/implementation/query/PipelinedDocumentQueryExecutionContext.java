@@ -134,7 +134,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
 
     public static <T extends Resource> Flux<PipelinedDocumentQueryExecutionContext<T>> createReadManyAsync(
         IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
-        Map<PartitionKeyRange, String> rangeQueryMap, FeedOptions feedOptions,
+        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, FeedOptions feedOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
         Flux<IDocumentQueryExecutionComponent<T>> documentQueryExecutionComponentFlux = ParallelDocumentQueryExecutionContext

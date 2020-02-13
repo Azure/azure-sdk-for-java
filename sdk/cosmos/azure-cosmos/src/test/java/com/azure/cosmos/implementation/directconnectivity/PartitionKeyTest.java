@@ -44,7 +44,7 @@ public class PartitionKeyTest {
      */
     @Test(groups = "unit", dataProvider = "paramProvider")
     public void partitionKeyCompare(Object partitionKey, String partitionKeyAsJson) {
-        assertThat(new PartitionKey(partitionKey)).isEqualTo(PartitionKey.fromJsonString(partitionKeyAsJson));
+        assertThat(new PartitionKey(partitionKey)).isEqualTo(BridgeInternal.partitionKeyfromJsonString(partitionKeyAsJson));
     }
 
     /**
@@ -54,7 +54,7 @@ public class PartitionKeyTest {
     public void tooFewPartitionKeyComponents() {
         PartitionKeyDefinition pkd = new PartitionKeyDefinition();
         pkd.setPaths(ImmutableList.of("/pk1", "/pk2"));
-        PartitionKey pk = PartitionKey.fromJsonString("[\"PartitionKeyValue\"]");
+        PartitionKey pk = BridgeInternal.partitionKeyfromJsonString("[\"PartitionKeyValue\"]");
 
         try {
             PartitionKeyInternalHelper.getEffectivePartitionKeyString(BridgeInternal.getPartitionKeyInternal(pk), pkd);
@@ -71,7 +71,7 @@ public class PartitionKeyTest {
     public void tooManyPartitionKeyComponents() {
         PartitionKeyDefinition pkd = new PartitionKeyDefinition();
         pkd.setPaths(ImmutableList.of("/pk1"));
-        PartitionKey pk = PartitionKey.fromJsonString("[true, false]");
+        PartitionKey pk = BridgeInternal.partitionKeyfromJsonString(("[true, false]"));
 
         try {
             PartitionKeyInternalHelper.getEffectivePartitionKeyString(BridgeInternal.getPartitionKeyInternal(pk), pkd);

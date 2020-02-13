@@ -1329,10 +1329,14 @@ public interface AsyncDocumentClient {
      * Reads many documents at once
      * @param itemKeyList document id and partition key pair that needs to be read
      * @param collectionLink link for the documentcollection/container to be queried
-     * @return
+     * @param options the feed options
+     * @return a Mono with feed response of documents
      */
-    Mono<FeedResponse<Document>> readMany(List<Pair<String, PartitionKey>> itemKeyList,
-                                                     String collectionLink);
+    Mono<FeedResponse<Document>> readMany(
+        List<Pair<String, PartitionKey>> itemKeyList,
+        String collectionLink,
+        FeedOptions options);
+    
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.
      */

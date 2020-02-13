@@ -27,14 +27,12 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.google.common.base.Strings;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.tuple.Pair;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import org.testng.asserts.Assertion;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -548,7 +546,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     public void readMany() throws Exception {
         List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
         int count = 0;
-        for (int i = 0; i < createdDocuments.size(); i = i +3) {
+        for (int i = 0; i < createdDocuments.size(); i = i + 3) {
             pairList.add(Pair.of(createdDocuments.get(i).getId(),
                                  new PartitionKey(createdDocuments.get(i).get("mypk"))));
             count++;

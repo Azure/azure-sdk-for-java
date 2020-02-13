@@ -152,7 +152,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
 
     protected void initializeReadMany(
         IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuerySpec,
-        Map<PartitionKeyRange, String> rangeQueryMap,
+        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
         FeedOptions feedOptions,
         UUID activityId,
         String collectionRid) {
@@ -168,7 +168,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
 
                 PartitionKeyInternal partitionKeyInternal = null;
                 return this.createDocumentServiceRequest(headers,
-                                                         new SqlQuerySpec(rangeQueryMap.get(targetRange)),
+                                                         rangeQueryMap.get(targetRange),
                                                          partitionKeyInternal,
                                                          partitionKeyRange,
                                                          collectionRid);
@@ -181,7 +181,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             // TODO: Review pagesize -1
             DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
                                                             null, -1, feedOptions,
-                                                            new SqlQuerySpec(rangeQueryMap.get(targetRange)),
+                                                            rangeQueryMap.get(targetRange),
                                                             commonRequestHeaders, createRequestFunc, executeFunc,
                                                             () -> client.getResetSessionTokenRetryPolicy()
                                                                       .getRequestPolicy());
