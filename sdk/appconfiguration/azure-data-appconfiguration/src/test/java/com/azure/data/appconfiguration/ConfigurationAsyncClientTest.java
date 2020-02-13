@@ -543,6 +543,25 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
+     * Verifies that we can select filter results by key, label, and select fields using SettingSelector with not supported filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithNotSupportedFilter() {
+        listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner((settings, selector) -> {
+            final List<Mono<Response<ConfigurationSetting>>> settingsBeingAdded = new ArrayList<>();
+            for (ConfigurationSetting setting : settings) {
+                settingsBeingAdded.add(client.setConfigurationSettingWithResponse(setting, false));
+            }
+
+            // Waiting for all the settings to be added.
+            Flux.merge(settingsBeingAdded).blockLast();
+
+            StepVerifier.create(client.listConfigurationSettings(selector))
+                .verifyError(HttpResponseException.class);
+        });
+    }
+
+    /**
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
     @Test

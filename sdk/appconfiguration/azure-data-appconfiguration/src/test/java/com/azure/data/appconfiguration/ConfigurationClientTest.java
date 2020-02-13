@@ -18,6 +18,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -407,6 +408,22 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         listConfigurationSettingsSelectFieldsRunner((settings, selector) -> {
             settings.forEach(setting -> client.setConfigurationSettingWithResponse(setting, false, Context.NONE).getValue());
             return client.listConfigurationSettings(selector);
+        });
+    }
+
+    /**
+     * Verifies that we can select filter results by key, label, and select fields using SettingSelector with not supported filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithNotSupportedFilter() {
+        listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner((settings, selector) -> {
+            settings.forEach(setting -> client.setConfigurationSettingWithResponse(setting, false, Context.NONE).getValue());
+            try {
+                client.listConfigurationSettings(selector).iterator().forEachRemaining(cs -> cs.getLabel());
+                Assertions.fail("Expected to fail");
+            } catch (Exception ex) {
+                assertRestException(ex, HttpResponseException.class, 400);
+            }
         });
     }
 

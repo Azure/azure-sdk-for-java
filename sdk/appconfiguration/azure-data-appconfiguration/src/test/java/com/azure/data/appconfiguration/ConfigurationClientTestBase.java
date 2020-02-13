@@ -311,6 +311,31 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
+    public abstract void listConfigurationSettingsSelectFieldsWithNotSupportedFilter();
+
+    void listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner(BiConsumer<List<ConfigurationSetting>, SettingSelector> testRunner) {
+        final String label = "my-first-mylabel";
+        final String label2 = "my-second-mylabel";
+        final int numberToCreate = 8;
+        final Map<String, String> tags = new HashMap<>();
+        tags.put("tag1", "value1");
+        tags.put("tag2", "value2");
+
+        final SettingSelector selector = new SettingSelector()
+            .setLabelFilter("*-second*") // invalid label filter
+            .setKeyFilter(keyPrefix + "-fetch-*")
+            .setFields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
+
+        List<ConfigurationSetting> settings = new ArrayList<>(numberToCreate);
+        for (int value = 0; value < numberToCreate; value++) {
+            String key = value % 2 == 0 ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
+            String lbl = value / 4 == 0 ? label : label2;
+            settings.add(new ConfigurationSetting().setKey(key).setValue("myValue2").setLabel(lbl).setTags(tags));
+        }
+        testRunner.accept(settings, selector);
+    }
+
+    @Test
     public abstract void listConfigurationSettingsAcceptDateTime();
 
     @Test
