@@ -48,6 +48,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
@@ -94,9 +95,6 @@ class EventHubConsumerAsyncClientTest {
     private EventHubAmqpConnection connection;
     @Mock
     private TokenCredential tokenCredential;
-
-    @Captor
-    private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConsumerAsyncClient consumer;
@@ -419,9 +417,10 @@ class EventHubConsumerAsyncClientTest {
      * Verify that backpressure is respected.
      */
     @Test
-    void suppliesCreditsWhenSubscribers() {
+    void suppliesCreditsWhenSubscribers() throws InterruptedException {
         // Arrange
         final int backPressure = 8;
+        final CountDownLatch semaphore = new CountDownLatch(8);
         final AtomicInteger counter = new AtomicInteger();
         final FluxSink<Message> messageSink = messageProcessor.sink();
 
@@ -430,7 +429,12 @@ class EventHubConsumerAsyncClientTest {
         final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).subscribe(
             e -> {
                 logger.info("Event received");
-                counter.getAndIncrement();
+                final int count = counter.incrementAndGet();
+                if (count > backPressure) {
+                    Assertions.fail("Shouldn't have more than " + backPressure + " events. Count: " + count);
+                }
+
+                semaphore.countDown();
             },
             error -> Assertions.fail(error.toString()),
             () -> {
@@ -445,6 +449,7 @@ class EventHubConsumerAsyncClientTest {
             sendMessages(messageSink, 11, PARTITION_ID);
 
             // Assert
+            Assertions.assertTrue(semaphore.await(10, TimeUnit.SECONDS));
             Assertions.assertEquals(backPressure, counter.get());
         } finally {
             subscription.dispose();
