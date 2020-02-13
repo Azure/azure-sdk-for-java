@@ -55,7 +55,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
-        this.scheduler = scheduler;
+        this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
 
         if (trackLastEnqueuedEventProperties) {
             lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
@@ -82,7 +82,6 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                         event.getData().getBodyAsString());
                 }
             })
-            .publishOn(scheduler)
             .subscribeWith(EmitterProcessor.create(false));
     }
 
@@ -103,7 +102,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
      * @return A stream of events received from the partition.
      */
     Flux<PartitionEvent> receive() {
-        return emitterProcessor;
+        return emitterProcessor.publishOn(this.scheduler);
     }
 
     /**
