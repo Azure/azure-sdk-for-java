@@ -6,7 +6,7 @@ import com.azure.cosmos.AccessCondition;
 import com.azure.cosmos.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.implementation.Constants;
@@ -56,7 +56,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
             ServiceItemLease.fromDocument(doc));
 
         return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, CosmosItemProperties.class)
-            .flatMap(documentResourceResponse -> Mono.just(documentResourceResponse.getProperties() != null))
+            .flatMap(documentResourceResponse -> Mono.just(BridgeInternal.getProperties(documentResourceResponse) != null))
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) throwable;
@@ -100,8 +100,8 @@ class DocumentServiceLeaseStore implements LeaseStore {
 
         return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
             .map(documentResourceResponse -> {
-                if (documentResourceResponse.getProperties() != null) {
-                    this.lockETag = documentResourceResponse.getProperties().getETag();
+                if (BridgeInternal.getProperties(documentResourceResponse) != null) {
+                    this.lockETag = BridgeInternal.getProperties(documentResourceResponse).getETag();
                     return true;
                 } else {
                     return false;
@@ -140,7 +140,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
 
         return this.client.deleteItem(lockId, new PartitionKey(lockId), requestOptions)
             .map(documentResourceResponse -> {
-                if (documentResourceResponse.getProperties() != null) {
+                if (documentResourceResponse.getResource() != null) {
                     this.lockETag = null;
                     return true;
                 } else {

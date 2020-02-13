@@ -10,7 +10,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
@@ -494,7 +494,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
 	    CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
 
-		return cosmosContainer.createItem(docDefinition).block().getProperties();
+		return BridgeInternal.getProperties(cosmosContainer.createItem(docDefinition).block());
 	}
 
 	private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, List<CosmosItemProperties> expectedDocs) {
@@ -557,6 +557,4 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         assertThat(pairList.size()).isEqualTo(documentFeedResponse.getResults().size());
     }
 
-    
-    
 }

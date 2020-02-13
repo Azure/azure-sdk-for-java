@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -11,7 +12,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.DataType;
 import com.azure.cosmos.ExcludedPath;
@@ -93,11 +94,13 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         collection = database.createContainer(collectionDefinition).block().getContainer();
 
-        CosmosItemProperties properties = collection.createItem(doc1).block().getProperties();
+        CosmosItemProperties properties = BridgeInternal.getProperties(collection.createItem(doc1).block());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         CosmosItemProperties itemSettings =
-            collection.readItem(properties.getId(), PartitionKey.NONE, options, CosmosItemProperties.class).block().getProperties();
+            BridgeInternal.getProperties(
+                collection.readItem(properties.getId(), PartitionKey.NONE, options, CosmosItemProperties.class)
+                                             .block());
         assertThat(itemSettings.getId()).isEqualTo(doc1.get("id").textValue());
 
         try {
@@ -133,13 +136,15 @@ public class UniqueIndexTest extends TestSuiteBase {
         ObjectNode doc3 = om.readValue("{\"name\":\"Rabindranath Tagore\",\"description\":\"poet\",\"id\": \""+ UUID.randomUUID().toString() +"\"}", ObjectNode.class);
         ObjectNode doc2 = om.readValue("{\"name\":\"عمر خیّام\",\"description\":\"mathematician\",\"id\": \""+ UUID.randomUUID().toString() +"\"}", ObjectNode.class);
 
-        CosmosItemProperties doc1Inserted = collection.createItem(doc1, new CosmosItemRequestOptions()).block().getProperties();
+        CosmosItemProperties doc1Inserted =
+            BridgeInternal.getProperties(collection.createItem(doc1, new CosmosItemRequestOptions()).block());
 
-        collection.replaceItem(doc1Inserted, doc1.get("id").asText(), PartitionKey.NONE, new CosmosItemRequestOptions())
-            .block()
-            .getProperties();     // REPLACE with same values -- OK.
+        BridgeInternal.getProperties(collection.replaceItem(doc1Inserted, doc1.get("id").asText(), PartitionKey.NONE, new CosmosItemRequestOptions())
+            .block());     // REPLACE with same values -- OK.
 
-        CosmosItemProperties doc2Inserted =  collection.createItem(doc2, new CosmosItemRequestOptions()).block().getProperties();
+        CosmosItemProperties doc2Inserted = BridgeInternal.getProperties(collection
+                                                                             .createItem(doc2, new CosmosItemRequestOptions())
+                                                                             .block());
         CosmosItemProperties doc2Replacement = new CosmosItemProperties(doc1Inserted.toJson());
         doc2Replacement.setId( doc2Inserted.getId());
 

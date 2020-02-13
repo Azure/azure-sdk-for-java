@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -89,7 +90,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     }).last();
 
             })
-            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(), this.options)
+            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(),
+                                                                                this.options)
                 .limitRequest(1)
             )
             .flatMap(documentFeedResponse -> {
@@ -204,7 +206,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         return this.resultException;
     }
 
-    private Mono<Void> dispatchChanges(FeedResponse<CosmosItemProperties> response) {
+    private Mono<Void> dispatchChanges(FeedResponse<JsonNode> response) {
         ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(this.settings.getPartitionKeyRangeId(), response, this.checkpointer);
 
         return this.observer.processChanges(context, response.getResults());

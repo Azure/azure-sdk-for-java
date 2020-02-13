@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -33,5 +34,5 @@ public interface ChangeFeedObserver {
      * @param docs the documents changed.
      * @return a deferred operation of this call.
      */
-    Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs);
+    Mono<Void> processChanges(ChangeFeedObserverContext context, List<JsonNode> docs);
 }

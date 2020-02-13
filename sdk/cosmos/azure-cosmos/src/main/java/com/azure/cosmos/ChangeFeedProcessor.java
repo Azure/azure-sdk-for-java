@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedProcessorBuilderImpl;
+import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -99,7 +100,7 @@ public interface ChangeFeedProcessor {
          * @param consumer the consumer of {@link ChangeFeedObserver} to call for handling the feeds.
          * @return current Builder.
          */
-        BuilderDefinition setHandleChanges(Consumer<List<CosmosItemProperties>> consumer);
+        BuilderDefinition setHandleChanges(Consumer<List<JsonNode>> consumer);
 
         /**
          * Sets an existing {@link CosmosAsyncContainer} to be used to read from the leases collection.

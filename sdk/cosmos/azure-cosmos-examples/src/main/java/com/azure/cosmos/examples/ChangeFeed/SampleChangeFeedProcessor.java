@@ -12,12 +12,19 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.SerializationFormattingPolicy;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.implementation.Utils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  * Sample for Change Feed Processor.
@@ -28,6 +35,9 @@ public class SampleChangeFeedProcessor {
     public static int WAIT_FOR_WORK = 60;
     public static final String DATABASE_NAME = "db_" + RandomStringUtils.randomAlphabetic(7);
     public static final String COLLECTION_NAME = "coll_" + RandomStringUtils.randomAlphabetic(7);
+    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    protected static Logger logger = LoggerFactory.getLogger(SampleChangeFeedProcessor.class.getSimpleName());
+
 
     private static ChangeFeedProcessor changeFeedProcessorInstance;
     private static boolean isWorkCompleted = false;
@@ -88,11 +98,16 @@ public class SampleChangeFeedProcessor {
             .setHostName(hostName)
             .setFeedContainer(feedContainer)
             .setLeaseContainer(leaseContainer)
-            .setHandleChanges(docs -> {
+            .setHandleChanges((List<JsonNode> docs) -> {
                 System.out.println("--->setHandleChanges() START");
 
-                for (CosmosItemProperties document : docs) {
-                    System.out.println("---->DOCUMENT RECEIVED: " + document.toJson(SerializationFormattingPolicy.INDENTED));
+                for (JsonNode document : docs) {
+                    try {
+                        System.out.println("---->DOCUMENT RECEIVED: " + OBJECT_MAPPER.writerWithDefaultPrettyPrinter()
+                                                                            .writeValueAsString(document));
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
                 }
                 System.out.println("--->handleChanges() END");
 
@@ -202,7 +217,12 @@ public class SampleChangeFeedProcessor {
             document.setId(String.format("0%d-%s", i, suffix));
 
             containerClient.createItem(document).subscribe(doc -> {
-                System.out.println("---->DOCUMENT WRITE: " + doc.getProperties().toJson(SerializationFormattingPolicy.INDENTED));
+                try {
+                    System.out.println("---->DOCUMENT WRITE: " + OBJECT_MAPPER.writerWithDefaultPrettyPrinter()
+                                                                     .writeValueAsString(doc));
+                } catch (JsonProcessingException e) {
+                    logger.error("Failure in processing json [{}]", e.getMessage(), e);
+                }
             });
 
             long remainingWork = delay.toMillis();

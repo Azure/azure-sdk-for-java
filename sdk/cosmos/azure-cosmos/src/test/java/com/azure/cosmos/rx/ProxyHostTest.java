@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -24,7 +24,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -84,10 +83,13 @@ public class ProxyHostTest extends TestSuiteBase {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
                     .createItem(docDefinition, new CosmosItemRequestOptions());
-            CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
                     .withId(docDefinition.getId())
                     .build();
-            validateSuccess(createObservable, validator);
+            this.validateItemSuccess(createObservable, validator);
+            
         } finally {
             safeClose(clientWithRightProxy);
         }
@@ -117,10 +119,11 @@ public class ProxyHostTest extends TestSuiteBase {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
                     .createItem(docDefinition, new CosmosItemRequestOptions());
-            CosmosResponseValidator<CosmosAsyncItemResponse<CosmosItemProperties>> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
                     .withId(docDefinition.getId())
                     .build();
-            validateSuccess(createObservable, validator);
+            this.validateItemSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_1);
             assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_2);

@@ -12,15 +12,18 @@ import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.SerializationFormattingPolicy;
 import com.azure.cosmos.SqlParameter;
 import com.azure.cosmos.SqlParameterList;
 import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,17 +43,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChangeFeedProcessorTest extends TestSuiteBase {
     private final static Logger log = LoggerFactory.getLogger(ChangeFeedProcessorTest.class);
+    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     private CosmosAsyncDatabase createdDatabase;
     private CosmosAsyncContainer createdFeedCollection;
     private CosmosAsyncContainer createdLeaseCollection;
     private List<CosmosItemProperties> createdDocuments;
-    private static Map<String, CosmosItemProperties> receivedDocuments;
+    private static Map<String, JsonNode> receivedDocuments;
 //    private final String databaseId = "testdb1";
 //    private final String hostName = "TestHost1";
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
@@ -69,16 +74,16 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readFeedDocumentsStartFromBeginning() {
         setupReadFeedDocuments();
-
+        Consumer<List<JsonNode>> itemConsumer = docs -> {
+            ChangeFeedProcessorTest.log.info("START processing from thread in test {}", Thread.currentThread().getId());
+            for (JsonNode item : docs) {
+                processItem(item);
+            }
+            ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
+        }; 
         changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
             .setHostName(hostName)
-            .setHandleChanges(docs -> {
-                ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
-                for (CosmosItemProperties item : docs) {
-                    processItem(item);
-                }
-                ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
-            })
+            .setHandleChanges(itemConsumer)
             .setFeedContainer(createdFeedCollection)
             .setLeaseContainer(createdLeaseCollection)
             .setOptions(new ChangeFeedProcessorOptions()
@@ -128,9 +133,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     public void readFeedDocumentsStartFromCustomDate() {
         ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
             .setHostName(hostName)
-            .setHandleChanges(docs -> {
+            .setHandleChanges((List<JsonNode> docs) -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
-                for (CosmosItemProperties item : docs) {
+                for (JsonNode item : docs) {
                     processItem(item);
                 }
                 ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
@@ -210,9 +215,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
         ChangeFeedProcessor changeFeedProcessorSecond = ChangeFeedProcessor.changeFeedProcessorBuilder()
             .setHostName(ownerSecond)
-            .setHandleChanges(docs -> {
+            .setHandleChanges((List<JsonNode> docs) -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
-                for (CosmosItemProperties item : docs) {
+                for (JsonNode item : docs) {
                     processItem(item);
                 }
                 ChangeFeedProcessorTest.log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
@@ -269,7 +274,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                             BridgeInternal.setProperty(doc, "Owner", "TEMP_OWNER");
                             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
                             return createdLeaseCollection.replaceItem(doc, doc.getId(), new PartitionKey(doc.getId()), options)
-                                .map(CosmosAsyncItemResponse::getProperties);
+                                .map(itemResponse -> BridgeInternal.getProperties(itemResponse));
                         })
                         .map(ServiceItemLease::fromDocument)
                         .map(leaseDocument -> {
@@ -417,8 +422,13 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         return createCollection(createdDatabase, collectionDefinition, options, 400);
     }
 
-    private static synchronized void processItem(CosmosItemProperties item) {
-        ChangeFeedProcessorTest.log.info("RECEIVED {}", item.toJson(SerializationFormattingPolicy.INDENTED));
-        receivedDocuments.put(item.getId(), item);
+    private static synchronized void processItem(JsonNode item) {
+        try {
+            ChangeFeedProcessorTest.log
+                .info("RECEIVED {}", OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(item));
+        } catch (JsonProcessingException e) {
+            log.error("Failure in processing json [{}]", e.getMessage(), e);
+        }
+        receivedDocuments.put(item.get("id").asText(), item);
     }
 }

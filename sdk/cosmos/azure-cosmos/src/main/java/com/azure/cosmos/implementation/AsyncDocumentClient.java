@@ -583,7 +583,7 @@ public interface AsyncDocumentClient {
      * @param options        the feed options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
-    <T> Flux<FeedResponse<T>> queryDocuments(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
 
     /**
      * Query for documents change feed in a document collection.

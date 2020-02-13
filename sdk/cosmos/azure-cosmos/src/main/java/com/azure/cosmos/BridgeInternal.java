@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -58,10 +59,6 @@ public class BridgeInternal {
         return Document.FromObject(document, mapper);
     }
 
-    public static String toJsonString(Object document, ObjectMapper mapper) {
-        return CosmosItemProperties.toJsonString(document, mapper);
-    }
-
     public static void monitorTelemetry(MeterRegistry registry) {
         CosmosAsyncClient.setMonitorTelemetry(registry);
     }
@@ -76,7 +73,7 @@ public class BridgeInternal {
         return new FeedResponse<T>(response.getQueryResponse(cls), response.getResponseHeaders());
     }
 
-    public static <T extends Resource> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
+    public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
         return new FeedResponse<>(results, headers, noChanges);
     }
 
@@ -491,6 +488,10 @@ public class BridgeInternal {
     public static <T> CosmosContinuablePagedFlux<T> createCosmosContinuablePagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
         return new CosmosContinuablePagedFlux<>(pagedFluxOptionsFluxFunction);
     }
+
+    public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
+        return cosmosItemResponse.getProperties();
+    }
     
     public static PartitionKey partitionKeyfromJsonString(String jsonString) {
         return PartitionKey.fromJsonString(jsonString);
@@ -521,5 +522,5 @@ public class BridgeInternal {
                    .getDocClientWrapper()
                    .readMany(itemKeyList, container.getLink(), options);
     }
-    
+
 }
