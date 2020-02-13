@@ -4,7 +4,6 @@ package com.azure;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.CosmosItemProperties;
 
@@ -67,10 +66,8 @@ public class CosmosDB {
 
     private static Mono<Void> simpleQuery(CosmosAsyncContainer container) {
         LOGGER.info("Querying collection...");
-        FeedOptions options = new FeedOptions()
-            .setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosItemProperties>> queryResults = container
-            .queryItems("SELECT c.id FROM c", options);
+            .queryItems("SELECT c.id FROM c", CosmosItemProperties.class);
 
         return queryResults.map(cosmosItemPropertiesFeedResponse -> {
             LOGGER.info("\t{}", cosmosItemPropertiesFeedResponse.getResults().toString());
@@ -89,7 +86,7 @@ public class CosmosDB {
         LOGGER.info("---------------------");
 
         CosmosAsyncClient client = CosmosAsyncClient
-            .builder()
+            .cosmosClientBuilder()
             .setEndpoint(AZURE_COSMOS_ENDPOINT)
             .setKey(AZURE_COSMOS_KEY)
             .buildAsyncClient();
@@ -114,7 +111,7 @@ public class CosmosDB {
            deleteDatabase(client).block();
            LOGGER.info("Closing client...");
            client.close();
-           LOGGER.info("all done closing client");
+           LOGGER.info("Cosmos client closed");
         }
 
         return;
