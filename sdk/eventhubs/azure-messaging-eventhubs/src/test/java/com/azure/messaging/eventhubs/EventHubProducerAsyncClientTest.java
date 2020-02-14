@@ -368,7 +368,8 @@ class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions()
             .setPartitionId(partitionId);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            false);
 
         when(connection.createSendLink(
             argThat(name -> name.endsWith(partitionId)), argThat(name -> name.endsWith(partitionId)), eq(retryOptions)))
