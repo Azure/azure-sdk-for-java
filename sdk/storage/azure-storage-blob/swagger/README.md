@@ -24,7 +24,7 @@ autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.
 
 ### Code generation settings
 ``` yaml
-input-file: C:\azure-rest-api-specs\specification\storage\data-plane\Microsoft.BlobStorage\preview\2019-12-12\blobtemp.json
+input-file: C:\azure-rest-api-specs\specification\storage\data-plane\Microsoft.BlobStorage\preview\2019-12-12\blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -1315,6 +1315,20 @@ directive:
     return $.replace('private Boolean encryptionScopeOverridePrevented;', 'private boolean encryptionScopeOverridePrevented;').
       replace('public Boolean isEncryptionScopeOverridePrevented() {', 'public boolean isEncryptionScopeOverridePrevented() {').
       replace('public BlobContainerItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {', 'public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {');
+```
+
+### /{containerName}/{blob}?comp=query
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=query"]
+  transform: >
+    let param = $.post.parameters[0];
+    if (!param["$ref"].endsWith("ContainerName")) {
+      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
+      $.post.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
+      $.post.parameters.splice(1, 0, { "$ref": path + "Blob" });
+    }
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

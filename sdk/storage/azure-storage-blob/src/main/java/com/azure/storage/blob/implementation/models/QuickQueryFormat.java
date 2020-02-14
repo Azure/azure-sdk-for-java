@@ -9,16 +9,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
- * The BlobQuickQueryFormat model.
+ * The QuickQueryFormat model.
  */
-@JacksonXmlRootElement(localName = "BlobQuickQueryFormat")
+@JacksonXmlRootElement(localName = "QuickQueryFormat")
 @Fluent
-public final class BlobQuickQueryFormat {
+public final class QuickQueryFormat {
     /*
-     * the type. Possible values include: 'CSV', 'JSON'
+     * Possible values include: 'delimited', 'json'
      */
     @JsonProperty(value = "Type", required = true)
-    private String blobQuickQueryType;
+    private QuickQueryType quickQueryType;
 
     /*
      * The delimitedTextConfiguration property.
@@ -33,24 +33,24 @@ public final class BlobQuickQueryFormat {
     private JsonTextConfiguration jsonTextConfiguration;
 
     /**
-     * Get the blobQuickQueryType property: the type. Possible values include:
-     * 'CSV', 'JSON'.
+     * Get the quickQueryType property: Possible values include: 'delimited',
+     * 'json'.
      *
-     * @return the blobQuickQueryType value.
+     * @return the quickQueryType value.
      */
-    public String getBlobQuickQueryType() {
-        return this.blobQuickQueryType;
+    public QuickQueryType getQuickQueryType() {
+        return this.quickQueryType;
     }
 
     /**
-     * Set the blobQuickQueryType property: the type. Possible values include:
-     * 'CSV', 'JSON'.
+     * Set the quickQueryType property: Possible values include: 'delimited',
+     * 'json'.
      *
-     * @param blobQuickQueryType the blobQuickQueryType value to set.
-     * @return the BlobQuickQueryFormat object itself.
+     * @param quickQueryType the quickQueryType value to set.
+     * @return the QuickQueryFormat object itself.
      */
-    public BlobQuickQueryFormat setBlobQuickQueryType(String blobQuickQueryType) {
-        this.blobQuickQueryType = blobQuickQueryType;
+    public QuickQueryFormat setQuickQueryType(QuickQueryType quickQueryType) {
+        this.quickQueryType = quickQueryType;
         return this;
     }
 
@@ -70,9 +70,9 @@ public final class BlobQuickQueryFormat {
      *
      * @param delimitedTextConfiguration the delimitedTextConfiguration value
      * to set.
-     * @return the BlobQuickQueryFormat object itself.
+     * @return the QuickQueryFormat object itself.
      */
-    public BlobQuickQueryFormat setDelimitedTextConfiguration(DelimitedTextConfiguration delimitedTextConfiguration) {
+    public QuickQueryFormat setDelimitedTextConfiguration(DelimitedTextConfiguration delimitedTextConfiguration) {
         this.delimitedTextConfiguration = delimitedTextConfiguration;
         return this;
     }
@@ -92,9 +92,9 @@ public final class BlobQuickQueryFormat {
      * property.
      *
      * @param jsonTextConfiguration the jsonTextConfiguration value to set.
-     * @return the BlobQuickQueryFormat object itself.
+     * @return the QuickQueryFormat object itself.
      */
-    public BlobQuickQueryFormat setJsonTextConfiguration(JsonTextConfiguration jsonTextConfiguration) {
+    public QuickQueryFormat setJsonTextConfiguration(JsonTextConfiguration jsonTextConfiguration) {
         this.jsonTextConfiguration = jsonTextConfiguration;
         return this;
     }
