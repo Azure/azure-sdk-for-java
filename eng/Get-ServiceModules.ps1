@@ -38,15 +38,13 @@ if (!$PSBoundParameters.ContainsKey("ErrorAction")) {
     $ErrorActionPreference = "Stop"
 }
 
-$root = Join-Path "$PSScriptRoot/../sdk" $ServiceDirectory | Resolve-Path
-
 switch($SdkType) {
     "client" {
-        $filter = "azure-*"
+        $parentArtifactId = "azure-client-sdk-parent"
         break
     }
     "data" {
-        $filter = "microsoft-*"
+        $parentArtifactId = "azure-data-sdk-parent"
         break
     }
     default {
@@ -54,11 +52,25 @@ switch($SdkType) {
     }
 }
 
-$modules = @(Get-ChildItem $root -Filter $filter -Name -Directory)
+$modules = New-Object -TypeName "System.Collections.ArrayList"
+$root = Join-Path "$PSScriptRoot/../sdk" $ServiceDirectory | Resolve-Path
 
-if ($modules.Count -eq 0) {
-    Write-Verbose "Could not locate matching modules to test."
-    return
+foreach($file in $(Get-ChildItem $root -Filter pom*.xml -Recurse -File)) {
+    [xml]$xml = Get-Content -Path $file.FullName
+    $project = $xml.project
+
+    if ($project.packaging -eq "pom") {
+        continue
+    }
+
+    Write-Host "Processing POM file: $($file.FullName)"
+
+    if (($null -eq $project.parent) -or ($project.parent.artifactId -ne $parentArtifactId)) {
+        Write-Host "Parent does not match. Skipping."
+        continue
+    }
+
+    $modules.Add("$($project.groupId):$($project.artifactId)") | Out-Null
 }
 
 $($modules -join ",")
