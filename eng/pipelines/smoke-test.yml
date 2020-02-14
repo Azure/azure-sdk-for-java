@@ -1,16 +1,16 @@
+variables:
+  - template: ./templates/variables/globals.yml
+  - name: PomFile
+    value: common/smoke-tests/pom.xml
+
+  # When set to `true`, dependency ordering is shuffled randomly to detect
+  # version conflicts that arise from how maven resolves transitive
+  # dependencies based on the order of their appearance in a pom file.
+  - name: ShuffleDependencies
+    value: false
+
 jobs:
   - job: SmokeTest
-    variables:
-      - template: ./templates/variables/globals.yml
-      - name: PomFile
-        value: common/smoke-tests/pom.xml
-
-      # When set to `true`, dependency ordering is shuffled randomly to detect
-      # version conflicts that arise from how maven resolves transitive
-      # dependencies based on the order of their appearance in a pom file.
-      - name: ShuffleDependencies
-        value: false
-
     timeoutInMinutes: 5
 
     strategy:
@@ -80,7 +80,7 @@ jobs:
           scriptPath: common/smoke-tests/shuffle_dependency_order.py
           workingDirectory: common/smoke-tests
         displayName: Shuffle dependency order
-        condition: eq(true, variables['ShuffleDependencies'])
+        condition: eq('true', variables['ShuffleDependencies'])
 
       - task: Maven@3
         displayName: Show dependency tree
