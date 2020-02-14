@@ -71,8 +71,8 @@ public class LROPollerTests {
         Mockito.framework().clearInlineMocks();
     }
 
-    @Mock
-    private Function<PollingContext<PollResult<Void>>, Mono<PollResult<Void>>> provisioningStateLroInitOperation;
+//    @Mock
+//    private Function<PollingContext<PollResult<Void>>, Mono<PollResult<Void>>> provisioningStateLroInitOperation;
 
     @Host("http://localhost")
     @ServiceInterface(name = "ProvisioningStateLroService")
@@ -135,30 +135,13 @@ public class LROPollerTests {
                 SERIALIZER);
 
             Function<PollingContext<PollResult<FooWithProvisioningState>>, Mono<PollResult<FooWithProvisioningState>>>
-                lroInitFunction = context -> {
-                    return client.startLro()
-                    .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                        .map(bytes -> {
-                            String content = new String(bytes, StandardCharsets.UTF_8);
-                            //
-                            PollingState state = PollingState.create(SERIALIZER,
-                                response.getRequest(),
-                                response.getStatusCode(),
-                                response.getHeaders(),
-                                content);
-                            state.store(context);
-                            //
-                            FooWithProvisioningState entity
-                                = fromJson(content, FooWithProvisioningState.class);
-                            return new PollResult<>(entity);
-                        }));
-                };
+                lroInitFunction = newLroInitFunction(client, FooWithProvisioningState.class);
 
-            when(provisioningStateLroInitOperation.apply(any())).thenAnswer((Answer) in -> {
-                PollingContext<PollResult<FooWithProvisioningState>> context
-                    = (PollingContext<PollResult<FooWithProvisioningState>>) in.getArguments()[0];
-                return lroInitFunction.apply(context);
-            });
+//            when(provisioningStateLroInitOperation.apply(any())).thenAnswer((Answer) in -> {
+//                PollingContext<PollResult<FooWithProvisioningState>> context
+//                    = (PollingContext<PollResult<FooWithProvisioningState>>) in.getArguments()[0];
+//                return lroInitFunction.apply(context);
+//            });
 
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
@@ -240,28 +223,13 @@ public class LROPollerTests {
                 SERIALIZER);
 
             Function<PollingContext<PollResult<Resource>>, Mono<PollResult<Resource>>>
-                lroInitFunction = context -> client.startLro()
-                    .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                        .map(bytes -> {
-                            String content = new String(bytes, StandardCharsets.UTF_8);
-                            //
-                            PollingState state = PollingState.create(SERIALIZER,
-                                response.getRequest(),
-                                response.getStatusCode(),
-                                response.getHeaders(),
-                                content);
-                            state.store(context);
-                            //
-                            Resource entity
-                                = fromJson(content, Resource.class);
-                            return new PollResult<>(entity);
-                        }));
+                lroInitFunction = newLroInitFunction(client, Resource.class);
 
-            when(provisioningStateLroInitOperation.apply(any())).thenAnswer((Answer) in -> {
-                PollingContext<PollResult<Resource>> context
-                    = (PollingContext<PollResult<Resource>>) in.getArguments()[0];
-                return lroInitFunction.apply(context);
-            });
+//            when(provisioningStateLroInitOperation.apply(any())).thenAnswer((Answer) in -> {
+//                PollingContext<PollResult<Resource>> context
+//                    = (PollingContext<PollResult<Resource>>) in.getArguments()[0];
+//                return lroInitFunction.apply(context);
+//            });
 
             PollerFlux<PollResult<Resource>, Resource> lroFlux
                 = PollerFactory.create(SERIALIZER,
@@ -327,6 +295,25 @@ public class LROPollerTests {
                 }
             })
             .build();
+    }
+
+    private static <T> Function<PollingContext<PollResult<T>>, Mono<PollResult<T>>> newLroInitFunction(ProvisioningStateLroServiceClient client, Type type) {
+        return context -> client.startLro()
+            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                .map(bytes -> {
+                    String content = new String(bytes, StandardCharsets.UTF_8);
+                    //
+                    PollingState state = PollingState.create(SERIALIZER,
+                        response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        content);
+                    state.store(context);
+                    //
+                    T entity
+                        = fromJson(content, type);
+                    return new PollResult<>(entity);
+                }));
     }
 
 
