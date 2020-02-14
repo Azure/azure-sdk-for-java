@@ -4,8 +4,7 @@ package com.azure;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.CosmosContinuablePagedFlux;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,13 +65,13 @@ public class CosmosDB {
 
     private static Mono<Void> simpleQuery(CosmosAsyncContainer container) {
         LOGGER.info("Querying collection...");
-        Flux<FeedResponse<CosmosItemProperties>> queryResults = container
-            .queryItems("SELECT c.id FROM c", CosmosItemProperties.class);
+        CosmosContinuablePagedFlux<Planet> queryResults = container
+            .queryItems("SELECT c.id FROM c", Planet.class);
 
-        return queryResults.map(cosmosItemPropertiesFeedResponse -> {
-            LOGGER.info("\t{}", cosmosItemPropertiesFeedResponse.getResults().toString());
-            return cosmosItemPropertiesFeedResponse;
-        }).then();
+        return queryResults.byPage()
+            .doOnEach(pageSignal -> {
+                LOGGER.info("\t{}", pageSignal.get().getResults().toString());
+            }).then();
     }
 
     private static Mono<Void> deleteDatabase(CosmosAsyncClient client) {
