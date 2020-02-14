@@ -59,15 +59,14 @@ $clientModules = New-Object System.Collections.Generic.HashSet[string]
 $clientPom.project.modules.ChildNodes | Where-Object { $_.NodeType -eq "Element" } | ForEach-Object {
     $modulePath = $_.InnerText
 
-    $separators = "/", "\"
-    [string[]]$components = $modulePath.Split($separators, [StringSplitOptions]::RemoveEmptyEntries)
+    [string[]]$components = $modulePath -split "/"
     if ($components.Length -eq 0) {
         Write-Warning "No components in [$modulePath]"
         return
     }
 
     $library = $components[$components.Length - 1]
-    Write-Host "Adding $library"
+    Write-Verbose "Adding $library"
 
     $clientModules.Add($library) | Out-Null
 }
@@ -85,7 +84,7 @@ foreach($file in $(Get-ChildItem $root -Filter pom*.xml -Recurse -File)) {
 
     Write-Host "Processing POM file: $($file.FullName)"
 
-    if (($null -eq $project.parent) -or ($project.parent.artifactId -ne $parentArtifactId)) {
+    if ($null -eq $project.parent -or $project.parent.artifactId -ne $parentArtifactId) {
         Write-Host "- Parent does not match. Skipping."
         continue
     }
