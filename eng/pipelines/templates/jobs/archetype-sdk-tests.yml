@@ -91,11 +91,16 @@ jobs:
 
       - pwsh: |
           $modules = $(eng/Get-ServiceModules.ps1 ${{parameters.ServiceDirectory}} ${{parameters.SDKType}})
+
           if ($modules) {
             $options = "--projects $modules --also-make"
-            Write-Host "Options: [$options]"
-            Write-Host "##vso[task.setvariable variable=ProjectListOptions;]$options"
+          } else {
+            Write-Host "No modules found for ${{parameters.ServiceDirectory}} ${{parameters.SDKType}}"
+            $options = ""
           }
+
+          Write-Host "Options: [$options]"
+          Write-Host "##vso[task.setvariable variable=ProjectListOptions;]$options"
         displayName: 'Get SDK modules'
 
       - task: Maven@3
