@@ -32,10 +32,10 @@ public class WebJobsIdentityTest {
 
     /**
      * Runs the Web jobs identity tests
-     *
+     * @param args the command line arguments.
      * @throws IllegalStateException if AZURE_WEBJOBS_TEST_MODE is not set to "user" or "system"
      */
-    public static void main() throws IllegalStateException {
+    public static void main(String[] args) throws IllegalStateException {
         if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(AZURE_WEBJOBS_TEST_MODE))) {
             throw new IllegalStateException("Webjobs Test mode is not set. Set environemnt "
                                                 + "variable AZURE_WEBJOBS_TEST_MODE to user or system");
