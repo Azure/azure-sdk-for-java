@@ -90,6 +90,27 @@ jobs:
 
       - ${{ parameters.PreRunSteps }}
 
+      # We `install` the code quality reports tooling into our local m2 cache separately. Event though we skip
+      # checkstyle, it still wants to resolve the dependency.
+      - template: ../steps/install-reporting-tools.yml
+        parameters:
+          Options: --batch-mode
+          MavenOptions: $(MemoryOptions) $(LoggingOptions)
+
+      # Install all the modules, so if we are using an "unreleased_dependency", it is available. But we won't run live
+      # tests for it.
+      - task: Maven@3
+        displayName: Install modules
+        inputs:
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          options: --no-transfer-progress -Dmaven.test.skip -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true
+          mavenOptions: '$(MemoryOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install'
+
       - pwsh: |
           $modules = $(eng/Get-ServiceModules.ps1 ${{parameters.ServiceDirectory}} ${{parameters.SDKType}})
 
