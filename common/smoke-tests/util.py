@@ -7,8 +7,6 @@ def get_xml_root(file_path):
     with open(file_path) as f:
         xml = f.read()
 
-    print(xml)
-
     it = ET.iterparse(StringIO(xml))
     for _, el in it:
         if '}' in el.tag:
