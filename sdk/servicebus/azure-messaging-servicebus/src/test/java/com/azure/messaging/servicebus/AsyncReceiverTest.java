@@ -118,7 +118,7 @@ public class AsyncReceiverTest {
     }
 
     @Test
-    public void receivesNumberOfEventsActual() throws Exception{
+    public void receivesNumberOfEventsActual() throws Exception {
 
         // Arrange
         final int numberOfEvents = 1;
@@ -134,22 +134,21 @@ public class AsyncReceiverTest {
         consumer.receive()
             .take(2)
             .doOnError(error -> {
-                System.out.println("Got error response "+error.toString());
-                error.printStackTrace();;
+                System.out.println("Got error response " + error.toString());
+                error.printStackTrace();
             })
-            .subscribe( message -> {
-                System.out.println("!!!!!! Got message from queue: "+message.getBody().toString());
+            .subscribe(message -> {
+                System.out.println("!!!!!! Got message from queue: " + message.getBody().toString());
                 try {
                     String converted = new String(message.getBody(), "UTF-8");
                     System.out.println("Got message from queue: " + converted);
-                }catch(Exception ee ) {
-                    ee.printStackTrace();;
+                } catch (Exception ee) {
+                    ee.printStackTrace();
 
                 }
 
             });
-        Thread.sleep(9000);
-
+        Thread.sleep(5000);
     }
 
     private void sendMessages(int numberOfEvents) {

@@ -40,7 +40,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * </p>
  *
  * @see MessageBatch
-
  */
 public class Message {
     /*
@@ -219,10 +218,18 @@ public class Message {
         return this;
     }
 
+    /**
+     *
+     * @return The lockToken.
+     */
     public UUID getLockToken() {
         return lockToken;
     }
 
+    /**
+     *
+     * @param lockToken set the lockToken.
+     */
     public void setLockToken(UUID lockToken) {
         this.lockToken = lockToken;
     }

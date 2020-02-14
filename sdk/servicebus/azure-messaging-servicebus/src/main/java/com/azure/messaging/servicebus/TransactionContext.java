@@ -5,16 +5,26 @@ package com.azure.messaging.servicebus;
 
 import java.nio.ByteBuffer;
 
+/**
+ * To be able to handle transactions.
+ */
 public class TransactionContext {
-
+    /**
+     *
+     * @return transaction id
+     */
     public ByteBuffer getTransactionId() {
         return null;
     }
 
-    public void commit()  {}
+    /**
+     * Commit the transaction.
+     */
+    public void commit() { }
 
-    public void commitAsync() {}
-
-    public void rollback() {}
+    /**
+     * rollback the transaction
+     */
+    public void rollback() { }
 }
 

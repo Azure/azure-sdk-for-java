@@ -41,12 +41,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
+/***
+ * The builder to create {@link QueueReceiverAsyncClient} and {@link QueueSenderAsyncClient}.
+ */
 @ServiceClientBuilder(serviceClients = {})
 public final class QueueClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
-    private static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions().setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
+    private static final AmqpRetryOptions DEFAULT_RETRY =
+        new AmqpRetryOptions().setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
 
     private static final String SERVICEBUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
     private static final String NAME_KEY = "name";
@@ -70,38 +74,51 @@ public final class QueueClientBuilder {
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
      */
-    public QueueClientBuilder(){
+    public QueueClientBuilder() {
         this.connectionId = StringUtil.getRandomString("MF");
     }
 
+    /**
+     *
+     * @param connectionString to connect to Queue.
+     * @return The updated {@link QueueClientBuilder} object.
+     */
     public QueueClientBuilder connectionString(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
         try {
             tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
                 properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-        } catch ( Exception e) {
-            throw logger.logExceptionAsError(new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
+        } catch (Exception e) {
+            throw logger.logExceptionAsError(
+                new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
         }
         this.fullyQualifiedNamespace = properties.getEndpoint().getHost();
         this.queueName = properties.getEntityPath();
         return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
     }
 
-
+    /**
+     *
+     * @param fullyQualifiedNamespace for the Service Bus.
+     * @param queueName The name of the queue.
+     * @param credential {@link TokenCredential} to be used for authentication.
+     * @return The updated {@link QueueClientBuilder} object.
+     */
     public QueueClientBuilder credential(String fullyQualifiedNamespace, String queueName, TokenCredential credential) {
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.queueName = Objects.requireNonNull(queueName, "'entityPath' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         } else if (CoreUtils.isNullOrEmpty(queueName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entityPath' cannot be an empty string."));
         }
         return this;
     }
-
 
     /**
      * Creates an {@link QueueSenderAsyncClient} for transmitting {@link Message} to the Service Bus Queue.
@@ -119,16 +136,17 @@ public final class QueueClientBuilder {
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
 
         if (isSharedConnection && servicerBusConnectionProcessor == null) {
-            servicerBusConnectionProcessor = buildConnectionProcessor(messageSerializer);
+            servicerBusConnectionProcessor = createConnectionProcessor(messageSerializer);
         }
 
         final ServiceBusConnectionProcessor connectionProcessor = isSharedConnection
             ? servicerBusConnectionProcessor
-            : buildConnectionProcessor(messageSerializer);
+            : createConnectionProcessor(messageSerializer);
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new QueueSenderAsyncClient(queueName, connectionProcessor,  retryOptions, tracerProvider, messageSerializer, isSharedConnection);
+        return new QueueSenderAsyncClient(queueName, connectionProcessor,  retryOptions, tracerProvider,
+            messageSerializer, isSharedConnection);
     }
     /**
      * Creates an Service Bus Queue receiver responsible for reading {@link Message} from a specific Queue.
@@ -147,12 +165,12 @@ public final class QueueClientBuilder {
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
 
         if (isSharedConnection && servicerBusConnectionProcessor == null) {
-            servicerBusConnectionProcessor = buildConnectionProcessor(messageSerializer);
+            servicerBusConnectionProcessor = createConnectionProcessor(messageSerializer);
         }
 
         final ServiceBusConnectionProcessor connectionProcessor = isSharedConnection
             ? servicerBusConnectionProcessor
-            : buildConnectionProcessor(messageSerializer);
+            : createConnectionProcessor(messageSerializer);
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
@@ -219,7 +237,7 @@ public final class QueueClientBuilder {
 
     /** package- private method
      *
-     * @param scheduler
+     * @param scheduler to be used.
      * @return The {@link QueueClientBuilder}.
      */
     QueueClientBuilder scheduler(Scheduler scheduler) {
@@ -228,7 +246,7 @@ public final class QueueClientBuilder {
 
     }
 
-    private ServiceBusConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer) {
+    private ServiceBusConnectionProcessor createConnectionProcessor(MessageSerializer messageSerializer) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
             connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
@@ -243,8 +261,8 @@ public final class QueueClientBuilder {
         final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
 
-            return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId, connectionOptions, provider,
-                handlerProvider, tokenManagerProvider, messageSerializer, product, clientVersion);
+            return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId, connectionOptions,
+                provider, handlerProvider, tokenManagerProvider, messageSerializer, product, clientVersion);
         }).repeat();
 
         return connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -252,10 +270,16 @@ public final class QueueClientBuilder {
             connectionOptions.getRetry()));
     }
 
+    /**
+     *
+     * @param retryOptions to manage AMQP connection.
+     * @return The {@link QueueClientBuilder}.
+     */
     public QueueClientBuilder retry(AmqpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
+
     private ConnectionOptions getConnectionOptions() {
         configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
 

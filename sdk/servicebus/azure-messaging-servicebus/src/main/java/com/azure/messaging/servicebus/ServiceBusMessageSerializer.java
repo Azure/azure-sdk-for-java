@@ -126,7 +126,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T deserializeManagementResponse(org.apache.qpid.proton.message.Message message, Class<T> deserializedType) {
+    private <T> T deserializeManagementResponse(org.apache.qpid.proton.message.Message message,
+                                                Class<T> deserializedType) {
         if (!(message.getBody() instanceof AmqpValue)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
@@ -197,7 +198,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         return eventData;
     }
 
-   private ServiceBusProperties toServiceBusProperties(Map<?, ?> amqpBody) {
+    private ServiceBusProperties toServiceBusProperties(Map<?, ?> amqpBody) {
         return new ServiceBusProperties(
             getValue(amqpBody, MANAGEMENT_ENTITY_NAME_KEY, String.class),
             getDate(amqpBody, MANAGEMENT_RESULT_CREATED_AT),

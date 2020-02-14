@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
@@ -33,7 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -43,11 +45,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
+/**
+ * The thent to send messages to Queue.
+ */
 @ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
 public final class QueueSenderAsyncClient implements Closeable {
 
@@ -73,7 +77,8 @@ public final class QueueSenderAsyncClient implements Closeable {
                            AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
                            MessageSerializer messageSerializer, boolean isSharedConnection) {
         // Caching the created link so we don't invoke another link creation.
-        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
+        this.messageSerializer = Objects.requireNonNull(messageSerializer,
+            "'messageSerializer' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.queueName = Objects.requireNonNull(queueName, "'entityPath' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
@@ -83,17 +88,33 @@ public final class QueueSenderAsyncClient implements Closeable {
         this.retryPolicy = getRetryPolicy(retryOptions);
     }
 
+    /**
+     *
+     * @param message to be sent.
+     * @param sessionId the session id to associate. {@code null} is not a valid  value.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
     public Mono<Void> send(Message message, String sessionId) {
         Objects.requireNonNull(message, "'message' cannot be null.");
-        //TODO Implement session id feature
+        //TODO(sessionid) Implement session id feature
         return send(Flux.just(message));
     }
 
+    /**
+     *
+     * @param message to be sent.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
     public Mono<Void> send(Message message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
         return send(Flux.just(message));
     }
 
+    /**
+     *
+     * @param messages to be sent
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
     public Mono<Void> send(Iterable<Message> messages) {
         Objects.requireNonNull(messages, "'messages' cannot be null.");
         return send(Flux.fromIterable(messages));
@@ -120,8 +141,8 @@ public final class QueueSenderAsyncClient implements Closeable {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                     final CreateBatchOptions batchOptions = new CreateBatchOptions()
                         .setMaximumSizeInBytes(batchSize);
-                    return messages.collect(new AmqpMessageCollector(batchOptions, 1, link::getErrorContext,
-                        tracerProvider));
+                    return messages.collect(new AmqpMessageCollector(batchOptions, 1,
+                        link::getErrorContext, tracerProvider));
                 })
                 .flatMap(list -> sendInternalBatch(Flux.fromIterable(list))));
     }
@@ -136,14 +157,31 @@ public final class QueueSenderAsyncClient implements Closeable {
     }
 
 
-    public long schedule(Message message, Instant scheduledEnqueueTimeUt){
-        return 0;
+    /**
+     *
+     * @param message to be scheduled
+     * @param scheduledEnqueueTimeUt Time of the enqueue.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Long> schedule(Message message, Instant scheduledEnqueueTimeUt) {
+        //TODO(feature-to-implement)
+        return null;
     }
 
-    public void cancelScheduledMessage(long sequenceNumber){
-
+    /**
+     *
+     * @param sequenceNumber for the message to cancel.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
+        //TODO(feature-to-implement)
+        return null;
     }
 
+    /**
+     *
+     * @return The name of  the queue.
+     */
     public String getQueueName() {
         return this.queueName;
     }
@@ -151,7 +189,7 @@ public final class QueueSenderAsyncClient implements Closeable {
     /**
      *
      * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
-     * @return {@link Mono}
+     * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> send(MessageBatch batch) {
         Objects.requireNonNull(batch, "'batch' cannot be null.");
@@ -218,8 +256,8 @@ public final class QueueSenderAsyncClient implements Closeable {
     }
 
     private Mono<AmqpSendLink> getSendLink() {
-        final String entityPath = queueName;//getQueueName(partitionId);
-        final String linkName = queueName;//getQueueName(partitionId);
+        final String entityPath = queueName;
+        final String linkName = queueName;
 
         return connectionProcessor
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
@@ -263,7 +301,8 @@ public final class QueueSenderAsyncClient implements Closeable {
                     final String message = String.format(Locale.US,
                         "EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches);
 
-                    throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, contextProvider.getErrorContext());
+                    throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
+                        contextProvider.getErrorContext());
                 }
 
                 currentBatch = new MessageBatch(maxMessageSize, contextProvider, tracerProvider);
@@ -299,38 +338,6 @@ public final class QueueSenderAsyncClient implements Closeable {
         }
     }
 
-    private Message setSpanContext(Message event, Context parentContext) {
-        Optional<Object> eventContextData = event.getContext().getData(SPAN_CONTEXT_KEY);
-        if (eventContextData.isPresent()) {
-            // if message has context (in case of retries), link it to the span
-            Object spanContextObject = eventContextData.get();
-            if (spanContextObject instanceof Context) {
-                tracerProvider.addSpanLinks((Context) eventContextData.get());
-                // TODO (samvaity): not supported in Opencensus yet
-                // builder.addLink((Context)eventContextData.get());
-            } else {
-                logger.warning(String.format(Locale.US,
-                    "Event Data context type is not of type Context, but type: %s. Not adding span links.",
-                    spanContextObject != null ? spanContextObject.getClass() : "null"));
-            }
-
-            return event;
-        } else {
-            // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.SEND);
-            if (eventSpanContext != null) {
-                Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
-
-                if (eventDiagnosticIdOptional.isPresent()) {
-                    event.addContext(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
-                    tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                    event.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
-                }
-            }
-        }
-        return  event;
-    }
-
     /**
      * Disposes of the {@link QueueSenderAsyncClient}. If the client had a dedicated connection, the underlying
      * connection is also closed.
@@ -344,10 +351,27 @@ public final class QueueSenderAsyncClient implements Closeable {
             connectionProcessor.dispose();
         }
     }
-    public Mono<Long> schedule(Message message, Instant scheduledEnqueueTimeUt, TransactionContext context){
+
+    /**
+     *
+     * @param message to be scheduled.
+     * @param scheduledEnqueueTimeUt Time of the enqueue.
+     * @param context The {@link TransactionContext} to be used.
+     * @return The {@link Mono} the finishes schedule operation.
+     */
+    public Mono<Long> schedule(Message message, Instant scheduledEnqueueTimeUt, TransactionContext context) {
+        //TODO(feature-to-implement)
         return null;
     }
-    public Mono<Void> send(Message message, TransactionContext context){
+
+    /**
+     *
+     * @param message to be scheduled.
+     * @param context The {@link TransactionContext} to be used.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> send(Message message, TransactionContext context) {
+        //TODO(feature-to-implement)
         return null;
     }
 }

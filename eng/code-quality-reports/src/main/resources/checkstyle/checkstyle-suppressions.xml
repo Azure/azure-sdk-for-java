@@ -64,7 +64,6 @@
   <suppress checks="ConstantName" files="SymmetricKey.java"/>
   <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
 
-
   <!-- Public API already released with incorrect static variable naming -->
   <suppress checks="StaticVariableName" files="EventHubClientImpl.java"/>
   <suppress checks="StaticVariableName" files="ManagementClientConstants.java"/>

@@ -55,8 +55,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
                                            ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                                           TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
-                                           String clientVersion) {
+                                           TokenManagerProvider tokenManagerProvider,
+                                           MessageSerializer messageSerializer, String product, String clientVersion) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion);
         this.connectionId = connectionId;

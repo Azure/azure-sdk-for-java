@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
@@ -26,7 +25,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 
@@ -50,9 +48,6 @@ public final class QueueReceiverAsyncClient implements Closeable {
     private final TracerProvider tracerProvider;
     private final ReceiveMode defaultReceiveMode = ReceiveMode.PEEKLOCK;
 
-
-    AmqpRetryOptions defaultRetryOptions =  new AmqpRetryOptions();
-
     /**
      * Keeps track of the open consumers keyed by linkName. The link name is generated as: {@code
      * "partitionId_GUID"}. For receiving from all partitions, links are prefixed with {@code "all-GUID-partitionId"}.
@@ -61,8 +56,8 @@ public final class QueueReceiverAsyncClient implements Closeable {
         new ConcurrentHashMap<>();
 
     QueueReceiverAsyncClient(String fullyQualifiedNamespace, String queueName,
-                             ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider ,
-                             MessageSerializer messageSerializer,int prefetchCount, boolean isSharedConnection) {
+                             ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
+                             MessageSerializer messageSerializer, int prefetchCount, boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.queueName = queueName;
         this.connectionProcessor = connectionProcessor;
@@ -94,13 +89,13 @@ public final class QueueReceiverAsyncClient implements Closeable {
     /**
      * Consumes messages from Queue.
      *
-     * <p>This method is <b>not</b> recommended for production use; the TODO should be used for
+     * <p>This method is <b>not</b> recommended for production use; the TODO(doc) should be used for
      * reading messages in a production scenario, as it offers a much more robust experience with
      * higher throughput.
      *
      * @return A stream of messages from Queue.
      */
-   public Flux<Message> receive() {
+    public Flux<Message> receive() {
         return receive(defaultReceiveMode);
     }
 
@@ -118,14 +113,14 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * @return A stream of messages from Queue.
      */
     public Flux<Message> receive(String sessionId) {
+        //TODO(sessionid) : Session id needs to be implemented.
         return receive(defaultReceiveMode);
-        //TODO : Session id needs to be implemented.
     }
 
     /**
      * Consumes events from all partitions configured with a set of {@code receiveOptions}.
      *
-     * <p>This method is <b>not</b> recommended for production use; the TODO should be used for
+     * <p>This method is <b>not</b> recommended for production use; the TODO(doc) should be used for
      * reading events from all partitions in a production scenario, as it offers a much more robust experience with
      * higher throughput.
      *
@@ -134,11 +129,11 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * given partition or subset of partitions.</p>
      *
      * <ul>
-     * <li>If receive is invoked where TODO has a value, then Event Hubs service will
+     * <li>If receive is invoked where TODO(doc) has a value, then Event Hubs service will
      * guarantee only one active consumer exists per partitionId and consumer group combination. This receive operation
      * is sometimes referred to as an "Epoch Consumer".</li>
      * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
-     * TODO when invoking receive operations. This non-exclusive consumer is sometimes
+     * TODO(doc) when invoking receive operations. This non-exclusive consumer is sometimes
      * referred to as a "Non-Epoch Consumer."</li>
      * </ul>
      *
@@ -148,7 +143,7 @@ public final class QueueReceiverAsyncClient implements Closeable {
      *
      * @throws NullPointerException if {@code receiveMode} is null.
      */
-    public Flux<Message> receive( ReceiveMode receiveMode) {
+    public Flux<Message> receive(ReceiveMode receiveMode) {
         if (Objects.isNull(receiveMode)) {
             return fluxError(logger, new NullPointerException("'receiveMode' cannot be null."));
         }
@@ -164,8 +159,8 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * @return A stream of messages from Queue.
      * @throws NullPointerException if {@code receiveMode} is null.
      */
-    public Flux<Message> receive( ReceiveMode receiveMode, String sessionId) {
-        //TODO : Session id needs to be implemented.
+    public Flux<Message> receive(ReceiveMode receiveMode, String sessionId) {
+        //TODO(sessionid) : Session id needs to be implemented.
         if (Objects.isNull(receiveMode)) {
             return fluxError(logger, new NullPointerException("'receiveMode' cannot be null."));
         }
@@ -223,46 +218,111 @@ public final class QueueReceiverAsyncClient implements Closeable {
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
             new ServiceBusReceiveLinkProcessor(prefetchCount, retryPolicy, connectionProcessor));
 
-        return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, fullyQualifiedNamespace
-        , entityPath, null );
+        return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, fullyQualifiedNamespace,
+            entityPath);
     }
 
-    public Mono<Void> abandon(UUID lockToken){
+    /**
+     *
+     * @param lockToken to be used.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> abandon(UUID lockToken) {
+        //TODO(feature-to-implement)
         return null;
     }
 
-    public Mono<Void> complete(UUID lockToken){
+    /**
+     *
+     * @param lockToken to be used.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> complete(UUID lockToken) {
+        //TODO(feature-to-implement)
         return null;
     }
-    public Mono<Void> defer(UUID lockToken){
 
+    /**
+     *
+     * @param lockToken to be used.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> defer(UUID lockToken) {
+        //TODO(feature-to-implement)
         return null;
     }
-    public Mono<Void> deadLetter(UUID lockToken){
+
+    /**
+     *
+     * @param lockToken to be used.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> deadLetter(UUID lockToken) {
+        //TODO(feature-to-implement)
         return null;
     }
 
-    public void registerMessageHandler(Supplier<Message> messageSupplier) {
-
-    }
+    /**
+     *
+     * @param lockToken to be used.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
     public Instant renewMessageLock(UUID lockToken) {
+        //TODO(feature-to-implement)
         return null;
     }
 
-    public Message receiveDeferredMessage(long sequenceNumber) {
+    /**
+     *
+     * @param sequenceNumber to be used.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Message> receiveDeferredMessage(long sequenceNumber) {
+        //TODO(feature-to-implement)
         return null;
     }
-    public Mono<Void> complete(UUID lockToken, TransactionContext context){
-        return null;
-    }
-    public Mono<Void> deadLetter(UUID lockToken, TransactionContext context){
-        return null;
 
-    }
-    public Mono<Void> abandon(UUID lockToken, TransactionContext context){
+    /**
+     *
+     * @param lockToken to be used.
+     * @param context The {@link TransactionContext} to be used.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> complete(UUID lockToken, TransactionContext context) {
+        //TODO(feature-to-implement)
         return null;
     }
-    public Mono<Void> defer(UUID lockToken, TransactionContext context){
+
+    /**
+     *
+     * @param lockToken to be used.
+     * @param context The {@link TransactionContext} to be used.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> deadLetter(UUID lockToken, TransactionContext context) {
+        //TODO(feature-to-implement)
+        return null;
+    }
+
+    /**
+     *
+     * @param lockToken to be used.
+     * @param context The {@link TransactionContext} to be used.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> abandon(UUID lockToken, TransactionContext context) {
+        //TODO(feature-to-implement)
+        return null;
+    }
+
+    /**
+     *
+     * @param lockToken to be used.
+     * @param context The {@link TransactionContext} to be used.
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> defer(UUID lockToken, TransactionContext context) {
+        //TODO(feature-to-implement)
         return null;
     }
 

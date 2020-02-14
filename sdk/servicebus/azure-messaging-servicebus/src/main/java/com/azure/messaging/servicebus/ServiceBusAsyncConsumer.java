@@ -22,20 +22,14 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     private final MessageSerializer messageSerializer;
     private final String fullyQualifiedNamespace;
     private final String queueName;
-    private final String partitionId;
     private final EmitterProcessor<Message> emitterProcessor;
 
-    private volatile Long currentOffset;
-
     ServiceBusAsyncConsumer(ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
-                            MessageSerializer messageSerializer, String fullyQualifiedNamespace, String queueName,
-                            String partitionId) {
+                            MessageSerializer messageSerializer, String fullyQualifiedNamespace, String queueName) {
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.queueName = queueName;
-        this.partitionId = partitionId;
-
 
         this.emitterProcessor = amqpReceiveLinkProcessor
             .map(message -> onMessageReceived(message))

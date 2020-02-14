@@ -28,8 +28,8 @@ import java.util.Objects;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Authorizes with Azure Service Bus service using a shared access key from either an Service Bus namespace or a specific
- * Service Bus.
+ * Authorizes with Azure Service Bus service using a shared access key from either an Service Bus namespace
+ * or a specific Service Bus.
  *
  * <p>
  * The shared access key can be obtained by creating a <i>shared access policy</i> for the Service Bus namespace or for

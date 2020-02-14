@@ -21,14 +21,11 @@ public class AsyncSenderTest {
     @Captor
     ArgumentCaptor<com.azure.core.amqp.EventData> singleMessageCaptor;
 
-    private static String TEST_CONTENTS = "Hello World Azure Servicebus !!";
-
-
     /**
      * Main method to invoke this demo on how to send a message to an Azure Event Hub.
      */
     @Test
-    public void testPublishSingleMessage() throws Exception{
+    public void testPublishSingleMessage() throws Exception {
         // The connection string value can be obtained by:
         // 1. Going to your Event Hubs namespace in Azure Portal.
         // 2. Creating an Event Hub instance.
@@ -51,11 +48,11 @@ public class AsyncSenderTest {
 
         asyncSender.send(message)
             .doOnError((error) -> {
-                System.out.println("doOnError = "+error);
-                error.printStackTrace();;
+                System.out.println("doOnError = " + error);
+                error.printStackTrace();
             })
             .subscribe(
-                (response) -> System.out.println("Message sent. "+response),
+                (response) -> System.out.println("Message sent. " + response),
                 error -> {
 
                     System.out.println("There was an error sending the event: " + error.toString());
@@ -77,14 +74,14 @@ public class AsyncSenderTest {
 
                     asyncSender.close();
                 });
-        Thread.sleep(1000 *5);
-           }
+        Thread.sleep(1000 * 5);
+    }
 
     /**
      * Main method to invoke this demo on how to send a message to an Azure Event Hub.
      */
     @Test
-    public void testPublishMultipleMessage() throws Exception{
+    public void testPublishMultipleMessage() throws Exception {
         // The connection string value can be obtained by:
         // 1. Going to your Event Hubs namespace in Azure Portal.
         // 2. Creating an Event Hub instance.
@@ -110,11 +107,11 @@ public class AsyncSenderTest {
 
         asyncSender.send(list)
             .doOnError((error) -> {
-                System.out.println("doOnError = "+error);
+                System.out.println("doOnError = " + error);
                 //error.printStackTrace();;
             })
             .subscribe(
-                (response) -> System.out.println("Message sent. "+response),
+                (response) -> System.out.println("Message sent. " + response),
                 error -> {
 
                     System.out.println("There was an error sending the event: " + error.toString());
@@ -135,28 +132,6 @@ public class AsyncSenderTest {
 
                     asyncSender.close();
                 });
-        Thread.sleep(1000 *10);
-        // Arrange
-        //final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
-
-        //when(asyncSender.send(any(EventData.class))).thenReturn(Mono.empty());
-
-        //final SendOptions options = new SendOptions();
-        //final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-        //    .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
-        //final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-        //final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions, tracerProvider);
-
-        // Act
-        //StepVerifier.create(asyncSender.send(testData)).verifyComplete();
-
-        // Assert
-        //verify(asyncSender, times(1)).send(any(EventData.class));
-        //verify(asyncSender).send(singleMessageCaptor.capture());
-
-        //final EventData event = singleMessageCaptor.getValue();
-
-
-
+        Thread.sleep(5000);
     }
 }
