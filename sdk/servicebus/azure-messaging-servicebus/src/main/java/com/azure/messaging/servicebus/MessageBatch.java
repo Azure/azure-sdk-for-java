@@ -84,13 +84,13 @@ final class MessageBatch {
     }
 
     /**
-     * Tries to add an {@link Message event} to the batch.
+     * Tries to add an {@link Message message} to the batch.
      *
      * @param message The {@link Message} to add to the batch.
-     * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
-     *     the batch.
-     * @throws IllegalArgumentException if {@code eventData} is {@code null}.
-     * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link MessageBatch}.
+     * @return {@code true} if the message could be added to the batch; {@code false} if the event was too large
+     * to fit in the batch.
+     * @throws IllegalArgumentException if {@code message} is {@code null}.
+     * @throws AmqpException if {@code message} is larger than the maximum size of the {@link MessageBatch}.
      */
     public boolean tryAdd(final Message message) {
         if (message == null) {
@@ -242,10 +242,7 @@ final class MessageBatch {
                 }
             });
         }
-
-
         message.setBody(new Data(new Binary(event.getBody())));
-
         return message;
     }
 }

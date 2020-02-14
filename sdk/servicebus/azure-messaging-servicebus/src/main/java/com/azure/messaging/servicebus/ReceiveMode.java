@@ -24,11 +24,11 @@ public enum ReceiveMode {
      * receiver had called <code>abandon</code>, making the message available to other receivers</li>
      * </ul>
      */
-    PEEKLOCK,
+    PEEK_LOCK,
     /**
      * In this mode, received message is removed from the queue or subscription and immediately deleted. This option
      * is simple, but if the receiver crashes before it finishes processing the message, the message is lost.
      * Because it's been removed from the queue, no other receiver can access it.
      */
-    RECEIVEANDDELETE
+    RECEIVE_AND_DELETE
 }

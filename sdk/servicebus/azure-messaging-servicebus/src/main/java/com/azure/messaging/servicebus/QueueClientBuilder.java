@@ -44,10 +44,9 @@ import java.util.ServiceLoader;
 /***
  * The builder to create {@link QueueReceiverAsyncClient} and {@link QueueSenderAsyncClient}.
  */
-@ServiceClientBuilder(serviceClients = {})
+@ServiceClientBuilder(serviceClients = { QueueReceiverAsyncClient.class, QueueSenderAsyncClient.class})
 public final class QueueClientBuilder {
 
-    private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
@@ -57,6 +56,8 @@ public final class QueueClientBuilder {
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
 
+    private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
+
     private ProxyOptions proxyOptions;
     private TokenCredential credentials;
     private Configuration configuration;
@@ -65,11 +66,8 @@ public final class QueueClientBuilder {
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private String fullyQualifiedNamespace;
     private String queueName;
-
-
-    private final String connectionId;
     private ServiceBusConnectionProcessor servicerBusConnectionProcessor;
-    private boolean isSharedConnection;
+    private final String connectionId;
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
@@ -135,18 +133,16 @@ public final class QueueClientBuilder {
         }
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
 
-        if (isSharedConnection && servicerBusConnectionProcessor == null) {
+        if (servicerBusConnectionProcessor == null) {
             servicerBusConnectionProcessor = createConnectionProcessor(messageSerializer);
         }
 
-        final ServiceBusConnectionProcessor connectionProcessor = isSharedConnection
-            ? servicerBusConnectionProcessor
-            : createConnectionProcessor(messageSerializer);
+        final ServiceBusConnectionProcessor connectionProcessor = createConnectionProcessor(messageSerializer);
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new QueueSenderAsyncClient(queueName, connectionProcessor,  retryOptions, tracerProvider,
-            messageSerializer, isSharedConnection);
+            messageSerializer);
     }
     /**
      * Creates an Service Bus Queue receiver responsible for reading {@link Message} from a specific Queue.
@@ -164,18 +160,16 @@ public final class QueueClientBuilder {
         }
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
 
-        if (isSharedConnection && servicerBusConnectionProcessor == null) {
+        if (servicerBusConnectionProcessor == null) {
             servicerBusConnectionProcessor = createConnectionProcessor(messageSerializer);
         }
 
-        final ServiceBusConnectionProcessor connectionProcessor = isSharedConnection
-            ? servicerBusConnectionProcessor
-            : createConnectionProcessor(messageSerializer);
+        final ServiceBusConnectionProcessor connectionProcessor = createConnectionProcessor(messageSerializer);
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new QueueReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), queueName,
-            connectionProcessor, tracerProvider, messageSerializer, prefetchCount, isSharedConnection);
+            connectionProcessor, tracerProvider, messageSerializer, prefetchCount);
     }
 
     QueueReceiverAsyncClient createAsyncReceiverClient(ReceiveMode receiveMode, int prefetchCount) {

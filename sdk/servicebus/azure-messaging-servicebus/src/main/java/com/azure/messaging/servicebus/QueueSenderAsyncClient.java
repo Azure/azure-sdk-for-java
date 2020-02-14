@@ -61,7 +61,6 @@ public final class QueueSenderAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final AmqpRetryOptions retryOptions;
     private final AmqpRetryPolicy retryPolicy;
-    private final boolean isSharedConnection;
     private final String queueName;
     private final ServiceBusConnectionProcessor connectionProcessor;
 
@@ -75,7 +74,7 @@ public final class QueueSenderAsyncClient implements Closeable {
      */
     QueueSenderAsyncClient(String queueName, ServiceBusConnectionProcessor connectionProcessor,
                            AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-                           MessageSerializer messageSerializer, boolean isSharedConnection) {
+                           MessageSerializer messageSerializer) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
@@ -84,7 +83,6 @@ public final class QueueSenderAsyncClient implements Closeable {
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
         this.tracerProvider = tracerProvider;
-        this.isSharedConnection = isSharedConnection;
         this.retryPolicy = getRetryPolicy(retryOptions);
     }
 
@@ -347,9 +345,8 @@ public final class QueueSenderAsyncClient implements Closeable {
         if (isDisposed.getAndSet(true)) {
             return;
         }
-        if (!isSharedConnection) {
-            connectionProcessor.dispose();
-        }
+        connectionProcessor.dispose();
+
     }
 
     /**

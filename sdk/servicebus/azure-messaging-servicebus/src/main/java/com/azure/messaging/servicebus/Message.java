@@ -227,22 +227,12 @@ public class Message {
     }
 
     /**
-     *
-     * @param lockToken set the lockToken.
-     */
-    public void setLockToken(UUID lockToken) {
-        this.lockToken = lockToken;
-    }
-
-
-    /**
      * A collection of properties populated by Azure Event Hubs service.
      */
     static class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
 
         private final String partitionKey;
-
 
         SystemProperties() {
             super();

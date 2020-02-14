@@ -47,7 +47,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class AsyncReceiverTest {
+public class QueueReceiverAsyncClientTest {
 
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     private static final int NUMBER_OF_EVENTS = 10;
@@ -56,7 +56,7 @@ public class AsyncReceiverTest {
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 1;
 
-    private final ClientLogger logger = new ClientLogger(AsyncReceiverTest.class);
+    private final ClientLogger logger = new ClientLogger(QueueReceiverAsyncClientTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final DirectProcessor<org.apache.qpid.proton.message.Message> messageProcessor = DirectProcessor.create();
     private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();

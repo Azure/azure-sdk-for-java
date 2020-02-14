@@ -44,9 +44,8 @@ public final class QueueReceiverAsyncClient implements Closeable {
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final MessageSerializer messageSerializer;
     private final int prefetchCount;
-    private final boolean isSharedConnection;
     private final TracerProvider tracerProvider;
-    private final ReceiveMode defaultReceiveMode = ReceiveMode.PEEKLOCK;
+    private final ReceiveMode defaultReceiveMode = ReceiveMode.PEEK_LOCK;
 
     /**
      * Keeps track of the open consumers keyed by linkName. The link name is generated as: {@code
@@ -57,13 +56,12 @@ public final class QueueReceiverAsyncClient implements Closeable {
 
     QueueReceiverAsyncClient(String fullyQualifiedNamespace, String queueName,
                              ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-                             MessageSerializer messageSerializer, int prefetchCount, boolean isSharedConnection) {
+                             MessageSerializer messageSerializer, int prefetchCount) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.queueName = queueName;
         this.connectionProcessor = connectionProcessor;
         this.messageSerializer = messageSerializer;
         this.prefetchCount = prefetchCount;
-        this.isSharedConnection = isSharedConnection;
         this.tracerProvider = tracerProvider;
     }
 
@@ -180,9 +178,8 @@ public final class QueueReceiverAsyncClient implements Closeable {
         openConsumers.forEach((key, value) -> value.close());
         openConsumers.clear();
 
-        if (!isSharedConnection) {
-            connectionProcessor.dispose();
-        }
+        connectionProcessor.dispose();
+
     }
 
     private Flux<Message> createConsumer(String linkName, ReceiveMode receiveMode) {

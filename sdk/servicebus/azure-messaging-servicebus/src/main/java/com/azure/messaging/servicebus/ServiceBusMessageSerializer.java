@@ -11,7 +11,6 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.Messages;
-import com.azure.messaging.servicebus.implementation.ServiceBusProperties;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -115,42 +114,15 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         Objects.requireNonNull(message, "'message' cannot be null.");
         Objects.requireNonNull(clazz, "'clazz' cannot be null.");
 
-        if (clazz == ServiceBusProperties.class) {
-            return deserializeManagementResponse(message, clazz);
-        } else if (clazz == Message.class) {
-            return (T) deserializeEventData(message);
+        if (clazz == Message.class) {
+            return (T) deserializeMessage(message);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Deserialization only supports ServiceBusProperties."));
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> T deserializeManagementResponse(org.apache.qpid.proton.message.Message message,
-                                                Class<T> deserializedType) {
-        if (!(message.getBody() instanceof AmqpValue)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
-        }
-
-        final AmqpValue body = (AmqpValue) message.getBody();
-        if (!(body.getValue() instanceof Map)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Expected message.getBody().getValue() to be of type Map"));
-        }
-
-        final Map<?, ?> amqpBody = (Map<?, ?>) body.getValue();
-
-        if (deserializedType == ServiceBusProperties.class) {
-            return (T) toServiceBusProperties(amqpBody);
-        } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                Messages.CLASS_NOT_A_SUPPORTED_TYPE, deserializedType)));
-        }
-    }
-
-
-    private Message deserializeEventData(org.apache.qpid.proton.message.Message message) {
+    private Message deserializeMessage(org.apache.qpid.proton.message.Message message) {
         final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
         final HashMap<String, Object> receiveProperties = new HashMap<>();
 
@@ -196,13 +168,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         message.clear();
         return eventData;
-    }
-
-    private ServiceBusProperties toServiceBusProperties(Map<?, ?> amqpBody) {
-        return new ServiceBusProperties(
-            getValue(amqpBody, MANAGEMENT_ENTITY_NAME_KEY, String.class),
-            getDate(amqpBody, MANAGEMENT_RESULT_CREATED_AT),
-            getValue(amqpBody, MANAGEMENT_RESULT_PARTITION_IDS, String[].class));
     }
 
     private <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz) {

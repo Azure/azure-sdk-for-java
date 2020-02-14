@@ -15,7 +15,7 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class AsyncSenderTest {
+public class QueueSenderAsyncClientTest {
 
     private final String baseConnectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
     @Captor
