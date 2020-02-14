@@ -195,24 +195,28 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * The existence of a directory in the {@code AzureFileSystem} is defined on two levels. Weak existence is defined
-     * by the presence of a non-zero number of blobs prefixed with the directory's path. This is also known as a virtual
-     * directory and is in order to accommodate containers that were pre-loaded with data by another source but need to
-     * be accessed by this file system. Strong existence is defined as the presence of a zero-length blob whose name is
-     * the directory path with a particular metadata field indicating the blob's status as a directory and is also known
-     * as a concrete directory. Directories created by this file system will strongly exist. Operations targeting
-     * directories themselves as the object (e.g. setting properties) will target marker blobs. Operations using the
-     * directory only as a container (e.g. listing) will operate on the blob-name prefix.
-     *
-     * This method fulfills the contract of: "The check for the existence of the file and the creation of the directory
-     * if it does not exist are a single operation that is atomic with respect to all other filesystem activities that
-     * might affect the directory." The action of checking whether the parent exists, is not, however, atomic with
-     * the creation of the directory. While it is possible that the parent may be deleted between the positive check and
-     * the creation of the child, the creation of the child will always implicitly ensure the existence of a virtual
-     * parent, so the child will never be left floating and unreachable. Note that we only check for weak existence of
-     * the parent directory and only check for strong existence of an actual blob or other directory when attempting to
-     * put an object at the given path. This split is due to limitations in the Storage service API.
-     *
+     * The existence of a directory in the {@code AzureFileSystem} is defined on two levels. <i>Weak existence</i> is
+     * defined by the presence of a non-zero number of blobs prefixed with the directory's path. This concept is also
+     * known as a  <i>virtual directory</i> and enables the file system to work with containers that were pre-loaded
+     * with data by another source but need to be accessed by this file system. <i>Strong existence</i> is defined as
+     * the presence of an actual storage resource at the given path, which in the case of directories, is a zero-length
+     * blob whose name is the directory path with a particular metadata field indicating the blob's status as a
+     * directory. This is also known as a <i>concrete directory</i>. Directories created by this file system will
+     * strongly exist. Operations targeting directories themselves as the object (e.g. setting properties) will target
+     * marker blobs underlying concrete directories. Other operations (e.g. listing) will operate on the blob-name
+     * prefix.
+     * <p>
+     * This method fulfills the nio contract of: "The check for the existence of the file and the creation of the
+     * directory if it does not exist are a single operation that is atomic with respect to all other filesystem
+     * activities that might affect the directory." More specifically, this method will atomically check for <i>strong
+     * existence</i> of another file or directory at the given path and fail if one is present. On the other hand, we
+     * only check for <i>weak existence</i> of the parent to determine if the given path is valid. Additionally, the
+     * action of checking whether the parent exists, is <i>not</i> atomic with the creation of the directory. Note that
+     * while it is possible that the parent may be deleted between when the parent is determined to exist and the
+     * creation of the child, the creation of the child will always ensure the existence of a virtual parent, so the
+     * child will never be left floating and unreachable. The different checks on parent and child is due to limitations
+     * in the Storage service API.
+     * <p>
      * There may be some unintuitive behavior when working with directories in this file system, particularly virtual
      * directories(usually those not created by this file system). A virtual directory will disappear as soon as all its
      * children have been deleted. Furthermore, if a directory with the given path weakly exists at the time of calling
@@ -221,7 +225,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * created. This is both because it is impossible to atomically check if a virtual directory exists while creating a
      * concrete directory and because such behavior will have minimal side effects--no files will be overwritten and the
      * directory will still be available for writing as intended, though it may not be empty.
-     *
+     * <p>
      * This method will attempt to extract standard HTTP content headers from the list of file attributes to set them
      * as blob headers. All other attributes will be set as blob metadata. The value of every attribute will be
      * converted to a {@code String} with the exception of the Content-MD5 attribute which expects a {@code byte[]}.
@@ -235,7 +239,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      *     <li>{@code Cache-Control}</li>
      * </ul>
      * Note that these properties also have a particular semantic in that if one is specified, all are updated. In other
-     * words, if any of the above is set, all those that are not set will be cleared.
+     * words, if any of the above is set, all those that are not set will be cleared. See the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a> for more
+     * information.
      *
      * {@inheritDoc}
      */

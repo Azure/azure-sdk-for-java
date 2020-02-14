@@ -214,10 +214,14 @@ public final class AzureFileSystem extends FileSystem {
 
     /**
      * The list of root directories corresponds to the list of available file stores and therefore containers specified
-     * upon initialization. A root directory always takes the form {@code "<file-store-name>:"}. This list will not
-     * change during the lifetime of this object. If containers are added to the account after initialization, they
-     * will be ignored. If a container is deleted or otherwise becomes unavailable, its root directory will still be
-     * returned but operations to it will fail.
+     * upon initialization. A root directory always takes the form {@code "&lt;file-store-name&gt;:"}. This list will
+     * respect the parameters provided during initialization.
+     * <p>
+     * If a finite list of containers was provided on start up, this list will not change during the lifetime of this
+     * object. If containers are added to the account after initialization, they will be ignored. If a container is
+     * deleted or otherwise becomes unavailable, its root directory will still be returned but operations to it will
+     * fail. If the file system was set to use all containers in the account, the account will be re-queried and the
+     * list may grow or shrink if containers were added or deleted.
      *
      * {@inheritDoc}
      */
@@ -229,9 +233,13 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
-     * This list will not change during the lifetime of this object. If containers are added to the account after
-     * initialization, they will be ignored. If a container is deleted or otherwise becomes unavailable, its
-     * corresponding file store will still be returned but operations to it will fail until it becomes available again.
+     * This list will respect the parameters provided during initialization.
+     * <p>
+     * If a finite list of containers was provided on start up, this list will not change during the lifetime of this
+     * object. If containers are added to the account after initialization, they will be ignored. If a container is
+     * deleted or otherwise becomes unavailable, its root directory will still be returned but operations to it will
+     * fail. If the file system was set to use all containers in the account, the account will be re-queried and the
+     * list may grow or shrink if containers were added or deleted.
      *
      * {@inheritDoc}
      */
