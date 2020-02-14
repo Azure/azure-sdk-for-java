@@ -56,11 +56,15 @@ switch($SdkType) {
 $clientModules = New-Object System.Collections.Generic.HashSet[string]
 [xml]$clientPom = Get-Content -Path (Join-Path "$PSScriptRoot/../" "pom.client.xml")
 
-$separators = "/", "\"
-$clientPom.project.modules.ChildNodes | ? { $_.NodeType -eq "Element" } | foreach {
-    [string[]]$components = $_.InnerText.Split($separators, [StringSplitOptions]::RemoveEmptyEntries)
+$clientPom.project.modules.ChildNodes | Where-Object { $_.NodeType -eq "Element" } | ForEach-Object {
+    $modulePath = $_.InnerText
+
+    Write-Host "Adding $modulePath"
+
+    $separators = "/", "\"
+    [string[]]$components = $modulePath.Split($separators, [StringSplitOptions]::RemoveEmptyEntries)
     if ($components.Length -eq 0) {
-        Write-Warning "No components in [$($_.InnerText)]"
+        Write-Warning "No components in [$modulePath]"
         return
     }
 
