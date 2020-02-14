@@ -106,34 +106,7 @@ public final class QueueReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Receive message for specific session id.
-     * @param sessionId of the message.
-     * @return A stream of messages from Queue.
-     */
-    public Flux<Message> receive(String sessionId) {
-        //TODO(sessionid) : Session id needs to be implemented.
-        return receive(defaultReceiveMode);
-    }
-
-    /**
-     * Consumes events from all partitions configured with a set of {@code receiveOptions}.
-     *
-     * <p>This method is <b>not</b> recommended for production use; the TODO(doc) should be used for
-     * reading events from all partitions in a production scenario, as it offers a much more robust experience with
-     * higher throughput.
-     *
-     * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
-     * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
-     * given partition or subset of partitions.</p>
-     *
-     * <ul>
-     * <li>If receive is invoked where TODO(doc) has a value, then Event Hubs service will
-     * guarantee only one active consumer exists per partitionId and consumer group combination. This receive operation
-     * is sometimes referred to as an "Epoch Consumer".</li>
-     * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
-     * TODO(doc) when invoking receive operations. This non-exclusive consumer is sometimes
-     * referred to as a "Non-Epoch Consumer."</li>
-     * </ul>
+     * Consumes messages for given {@link ReceiveMode}.
      *
      * @param receiveMode {@link ReceiveMode} when receiving events from Queue.
      *
@@ -142,23 +115,6 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * @throws NullPointerException if {@code receiveMode} is null.
      */
     public Flux<Message> receive(ReceiveMode receiveMode) {
-        if (Objects.isNull(receiveMode)) {
-            return fluxError(logger, new NullPointerException("'receiveMode' cannot be null."));
-        }
-
-        final String linkName = connectionProcessor.getEntityPath();
-        return createConsumer(linkName, receiveMode);
-    }
-
-    /**
-     *
-     * @param receiveMode for messages from Queue.
-     * @param sessionId of the message.
-     * @return A stream of messages from Queue.
-     * @throws NullPointerException if {@code receiveMode} is null.
-     */
-    public Flux<Message> receive(ReceiveMode receiveMode, String sessionId) {
-        //TODO(sessionid) : Session id needs to be implemented.
         if (Objects.isNull(receiveMode)) {
             return fluxError(logger, new NullPointerException("'receiveMode' cannot be null."));
         }
