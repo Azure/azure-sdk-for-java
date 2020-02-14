@@ -8,10 +8,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.nio.implementation.util.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,6 +30,7 @@ import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.LinkOption;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
@@ -37,6 +38,7 @@ import java.nio.file.spi.FileSystemProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -117,8 +119,11 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     public static final String CACHE_CONTROL = "Cache-Control";
 
     private static final String ACCOUNT_QUERY_KEY = "account";
-
     static final String DIR_METADATA_MARKER = "is_hdi_folder";
+    private static final int NOT_DIR = -2;
+    private static final int DIR_NOT_EXIST = -1;
+    private static final int DIR_EMPTY = 0;
+    private static final int DIR_NOT_EMPTY = 1;
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
@@ -261,20 +266,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
         fileAttributes = fileAttributes == null ? new FileAttribute<?>[0] : fileAttributes;
 
-        // Get the destination for the directory and it's parent container.
+        // Get the destination for the directory.
         BlobClient client = ((AzurePath) path).toBlobClient();
-        BlobContainerClient containerClient = ((AzureFileSystem) path.getFileSystem()).getBlobServiceClient()
-            .getBlobContainerClient(client.getContainerName());
 
-        // Determine the path for the parent directory blob. This is the parent path without the root.
+        // Validate that we are not trying to create a root.
         Path root = path.getRoot();
         if (root != null && root.equals(path)) {
             throw Utility.logError(logger, new IOException("Creating a root directory is not supported."));
         }
-        Path prefix = root == null ? path.getParent() : root.relativize(path).getParent();
 
         // Check if parent exists. If it does, atomically check if a file already exists and create a new dir if not.
-        if (checkParentDirectoryExists(containerClient, prefix)) {
+        if (checkParentDirectoryExists(client, path)) {
             try {
                 List<FileAttribute<?>> attributeList = new ArrayList<>(Arrays.asList(fileAttributes));
                 BlobHttpHeaders headers = Utility.extractHttpHeaders(attributeList, logger);
@@ -296,16 +298,31 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * If the prefix is null, that means we are in the root dir for the container, which always exists. If there is a
-     * blob with this prefix, it means at least the directory exists. Note that blob names that match the prefix
-     * exactly are returned in listing operations.
+     * If the prefix is null, that means we are in the root dir for the container, which always exists. Otherwise,
+     * perform normal existence check.
      *
      * We do not check for the actual marker blob as parents need only weakly exist.
      */
-    boolean checkParentDirectoryExists(BlobContainerClient containerClient, Path prefix) {
-        return prefix == null
-            || containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR,
-            new ListBlobsOptions().setPrefix(prefix.toString()).setMaxResultsPerPage(1), null).iterator().hasNext();
+    boolean checkParentDirectoryExists(BlobClient client, Path path) {
+        /*
+        Determine the path for the parent directory blob. This is the parent path without the root. Some of this work is
+        deeper in, but we can possibly short circuit a network call, so the computation is worth it.
+         */
+        Path root = path.getRoot();
+        Path parent = root == null ? path.getParent() : root.relativize(path).getParent();
+        return parent == null || checkDirectoryExists(client, parent);
+    }
+
+    /**
+     * Checks whether a directory exists by either being empty or having children.
+     */
+    boolean checkDirectoryExists(BlobClient blobClient, Path directory) {
+        if (directory == null || blobClient == null) {
+            throw Utility.logError(logger, new IllegalArgumentException("One or both of the parameters was null."));
+        }
+
+        int dirStatus = checkDirStatus(blobClient, directory);
+        return dirStatus == DIR_EMPTY || dirStatus == DIR_NOT_EMPTY;
     }
 
     Map<String, String> prepareMetadataForDirectory(Map<String, String> metadata) {
@@ -314,6 +331,11 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
         metadata.put(DIR_METADATA_MARKER, "true");
         return metadata;
+    }
+
+    BlobContainerClient getContainerClient(BlobClient client, Path path) {
+        return ((AzureFileSystem) path.getFileSystem()).getBlobServiceClient()
+            .getBlobContainerClient(client.getContainerName());
     }
 
     /**
@@ -325,11 +347,127 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
+     * COPY_ATTRIBUTES must be true as it is impossible not to copy blob properties; if this option is not passed, an
+     * UnsupportedOperationException (UOE) will be thrown. All copies within an account are atomic, but the check for
+     * a virtual directory will not be atomic. If the FileSystem uses multiple accounts, the account name of the source
+     * and destination will be compared, and an IOException will be thrown if they do not match (why?).
+     * If REPLACE_EXISTING is not passed, we will use an If-None-Match:”*” condition on the destination to prevent overwrites.
+     * The authentication method used on each will be the same as configured on entry. Note that copies between accounts
+     * are implicitly disallowed because we cannot copy from outside the FileSystem. Copy_Attributes must be specified.
+     * ReplaceExisting will be honored. If Nofollow_links is specified, an exception will be thrown. All other options will be ignored.
+     *
      * {@inheritDoc}
      */
     @Override
-    public void copy(Path path, Path path1, CopyOption... copyOptions) throws IOException {
+    public void copy(Path source, Path destination, CopyOption... copyOptions) throws IOException {
+        /*
+        Each of the source and destination could both weakly and strongly exist. We must accommodate all four possible
+        combinations of source/destination.
+         */
+        // Source we can always just copy. If it's a file, we want the file. If it's a directory, we want the blob if
+        // present. We can optimize if the destination dir exists and source is a dir by just eliding the copy since it'd just be the same
+        // anyway.
+        // Check virtual directory existence at destination and size (can only replace non empty directory).
+        // Try copy. Possibly with ifNoneMatch
+        // If 404, check for virtual directory at source. If present, create a new directory at destination
 
+        // Check path instance types.
+        // Validate options.
+        // First, check the destination status
+        // Non-empty dir (concrete or virtual)- throw. Can never overwrite. // countDirChildren(); -1=not exist, 0=empty, >0 nonempty
+        // If replace-existing=false, set etag conditions + check of virtual dir
+        // Try copy source path (doesn't matter if it's a directory or a file).
+        // If 404. Try listing to see if the directory weakly exists.
+        // If yes, do a create dir on destination.
+        // If no, throw.
+
+        // Validate instance types.
+        if (!(source instanceof AzurePath && destination instanceof AzurePath)) {
+            throw Utility.logError(logger, new IllegalArgumentException("This provider cannot operate on subtypes of "
+                + "Path other than AzurePath"));
+        }
+
+        // Read and validate options.
+        boolean replaceExisting = false;
+        List<CopyOption> optionsList = Arrays.asList(copyOptions);
+        if(!optionsList.contains(StandardCopyOption.COPY_ATTRIBUTES)) {
+            throw Utility.logError(logger, new UnsupportedOperationException("StandardCopyOption.COPY_ATTRIBUTES " +
+                "must be specified as the service will always copy file attributes."));
+        }
+        optionsList.remove(StandardCopyOption.COPY_ATTRIBUTES);
+        if (optionsList.contains(StandardCopyOption.REPLACE_EXISTING)) {
+            replaceExisting = true;
+            optionsList.remove(StandardCopyOption.REPLACE_EXISTING);
+        }
+        if (!optionsList.isEmpty()) {
+            throw Utility.logError(logger, new UnsupportedOperationException("Unsupported copy option found. Only " +
+                "StandardCopyOption.COPY_ATTRIBUTES and StandareCopyOption.REPLACE_EXISTING are supported."));
+        }
+
+        // Validate paths. Copying a root directory or attempting to create/overwrite a root directory is illegal.
+        if (source.equals(source.getRoot()) || destination.equals(destination.getRoot())) {
+            throw Utility.logError(logger, new IOException(String.format("Neither source nor destination can be just" +
+                " a root directory. Source: %s. Destination: %s.", source.toString(), destination.toString())));
+        }
+
+        // Build clients.
+        BlobClient sourceBlob = ((AzurePath) source).toBlobClient();
+        BlobClient destinationBlob = ((AzurePath) destination).toBlobClient();
+
+        // Check destination status.
+        int destinationDirectoryStatus = checkDirStatus(destinationBlob, destination);
+    }
+
+    /**
+     * This method will check if a directory is extant and/or empty and accommodates virtual directories.
+     *
+     * @return -1 indicates the directory doesn't exist. 0 indicates the directory exists but is empty. 1 indicates
+     * the directory has children.
+     */
+    int checkDirStatus(BlobClient blobClient, Path directoryPath) {
+        BlobContainerClient containerClient = getContainerClient(blobClient, directoryPath);
+        if (containerClient == null || directoryPath == null) {
+            throw Utility.logError(logger, new IllegalArgumentException("One or more of the arguments was null."));
+        }
+
+        // Remove the root as that indicates the container and is not part of the blob name.
+        Path root = directoryPath.getRoot();
+        Path pathNoRoot = root == null ? directoryPath : root.relativize(directoryPath);
+
+        /*
+        If pathNoRoot is empty, we are checking the status of the root directory (container), so no prefix needed, but
+        we will never return -1. Two blobs will give us all we need (see below).
+         */
+        ListBlobsOptions listOptions = new ListBlobsOptions().setMaxResultsPerPage(2);
+        if (!pathNoRoot.equals(pathNoRoot.getFileSystem().getPath(""))) {
+            listOptions.setPrefix(pathNoRoot.toString());
+        }
+
+        /*
+        Do a list on prefix.
+        Zero elements means no virtual dir. -1 (resource does not exist)
+        One element that matches this dir means empty. 0 (Care about is_hdi_folder? Add another option -2 means not dir? But is it not a dir because it doesn't exist or has other data?)
+        One element that doesn't match this dir or more than one element. Not empty. 1
+        Note that blob names that match the prefix exactly are returned in listing operations.
+         */
+        Iterator<BlobItem> blobIterator = containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR,
+            listOptions, null).iterator();
+        if (!blobIterator.hasNext()) { // Nothing there
+            return DIR_NOT_EXIST;
+        } else {
+            BlobItem item = blobIterator.next();
+            if (blobIterator.hasNext()) { // More than one item. Must be a dir.
+                return DIR_NOT_EMPTY;
+            }
+            if (!item.getName().equals(pathNoRoot.toString())) { // TODO: Double check format of toString and getName to see if they are compatible or need a conversion.
+                return DIR_NOT_EMPTY; // Names do not match. Must be a virtual dir with one item.
+            }
+            if (item.getMetadata() != null && item.getMetadata().containsKey(DIR_METADATA_MARKER)) {
+                return DIR_EMPTY; // Metadata marker.
+            }
+            return NOT_DIR; // There is a file (not a directory) at this location.
+        }
+        // TODO: Can/should use isPrefix?
     }
 
     /**

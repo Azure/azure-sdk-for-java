@@ -6,7 +6,6 @@ package com.azure.storage.blob.nio;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.nio.implementation.util.Utility;
 
 import java.io.File;
 import java.io.IOException;

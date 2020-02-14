@@ -371,6 +371,13 @@ class AzurePathSpec extends APISpec {
         client.getContainerName() == rootToContainer(fs.getDefaultDirectory().toString())
     }
 
+    def "Path getBlobClient empty"() {
+        when:
+        def path = fs.getPath(fs.getRootDirectories().last().toString())
+        def client = ((AzurePath) path).toBlobClient()
+
+    }
+
     def "Path getBlobClient absolute"() {
         when:
         def path = fs.getPath(fs.getRootDirectories().last().toString(), "foo/bar")
