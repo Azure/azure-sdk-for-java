@@ -7,7 +7,7 @@ variables:
   # version conflicts that arise from how maven resolves transitive
   # dependencies based on the order of their appearance in a pom file.
   - name: ShuffleDependencies
-    value: false
+    value: 'false'
 
 jobs:
   - job: SmokeTest
@@ -19,7 +19,7 @@ jobs:
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: windows-2019
-          ShuffleDependencies: true
+          ShuffleDependencies: 'true'
         Java LTS Windows:
           ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
@@ -32,12 +32,12 @@ jobs:
           ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
           OSVmImage: ubuntu-18.04
-          ShuffleDependencies: true
+          ShuffleDependencies: 'true'
         Java 8 MacOS:
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: macOS-10.15
-          ShuffleDependencies: true
+          ShuffleDependencies: 'true'
         Java LTS MacOS:
           ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
