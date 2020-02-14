@@ -18,6 +18,7 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import reactor.core.publisher.Mono;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Runs Identity MSI and IMDS endpoints test in Azure Web Jobs.
@@ -40,7 +41,7 @@ public class WebJobsIdentityTest {
                                                 + "variable AZURE_WEBJOBS_TEST_MODE to user or system");
         }
 
-        String mode = CONFIGURATION.get(AZURE_WEBJOBS_TEST_MODE).toLowerCase();
+        String mode = CONFIGURATION.get(AZURE_WEBJOBS_TEST_MODE).toLowerCase(Locale.ENGLISH);
         WebJobsIdentityTest identityTest = new WebJobsIdentityTest();
         switch (mode) {
             case "user":
@@ -72,8 +73,9 @@ public class WebJobsIdentityTest {
                                           if (token == null || token.getToken() == null) {
                                               return Mono.error(logger.logExceptionAsError(new IllegalStateException(
                                                       "Access Token not returned from System Assigned Identity")));
+                                          } else {
+                                              return Mono.just(token);
                                           }
-                                          return Mono.just(token);
                                       }).block();
         System.out.printf("Received token with length %d and expiry at %s %n "
                               + "testMSIEndpointWithSystemAssigned - Succeeded %n",
@@ -126,8 +128,9 @@ public class WebJobsIdentityTest {
                                           if (token == null || token.getToken() == null) {
                                               return Mono.error(logger.logExceptionAsError(new IllegalStateException(
                                                       "Access Token not returned from System Assigned Identity")));
+                                          } else {
+                                              return Mono.just(token);
                                           }
-                                          return Mono.just(token);
                                       }).block();
         System.out.printf("Received token with length %d and expiry at %s %n "
                               + "testMSIEndpointWithUserAssigned - succeeded %n",
