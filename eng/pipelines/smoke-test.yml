@@ -21,7 +21,7 @@ jobs:
           OSVmImage: windows-2019
           ShuffleDependencies: 'true'
         Java LTS Windows:
-          ProfileFlag: '-Djava-lts'
+          ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: windows-2019
         Java 8 Linux:
@@ -29,7 +29,7 @@ jobs:
           JavaVersion: '1.8'
           OSVmImage: ubuntu-18.04
         Java LTS Linux:
-          ProfileFlag: '-Djava-lts'
+          ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: ubuntu-18.04
           ShuffleDependencies: 'true'
@@ -39,7 +39,7 @@ jobs:
           OSVmImage: macOS-10.15
           ShuffleDependencies: 'true'
         Java LTS MacOS:
-          ProfileFlag: '-Djava-lts'
+          ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: macOS-10.15
 
