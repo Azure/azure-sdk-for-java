@@ -255,8 +255,13 @@ jobs:
         displayName: 'Update versions for source build'
 
       - pwsh: |
-          $modules = $(eng/Get-ServiceModules.ps1 ${{parameters.ServiceDirectory}} ${{parameters.SDKType}})
+          if (("${{ variables.TestFromSource }}" -eq "true") -and "${{ variables.ShouldRunSourceTests }}" -eq "true") {
+            Write-Host "Testing from source. Skipping."
+            Write-Host "##vso[task.setvariable variable=ProjectListOptions;]''"
+            return
+          }
 
+          $modules = $(eng/Get-ServiceModules.ps1 ${{parameters.ServiceDirectory}} ${{parameters.SDKType}})
           if ($modules) {
             $options = "--projects $modules --also-make"
           } else {
@@ -268,6 +273,9 @@ jobs:
           Write-Host "##vso[task.setvariable variable=ProjectListOptions;]$options"
 
         displayName: 'Get SDK modules'
+        # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set)
+        # OR when ShouldRunSourceTests is true
+        condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
       - task: Maven@3
         displayName: 'Run tests'
