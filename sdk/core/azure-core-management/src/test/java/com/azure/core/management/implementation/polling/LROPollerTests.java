@@ -239,7 +239,7 @@ public class LROPollerTests {
                 createHttpPipeline(lroServer.port()),
                 SERIALIZER);
 
-            Function<PollingContext<PollResult<Resource>>, Mono<PollResponse<PollResult<Resource>>>>
+            Function<PollingContext<PollResult<Resource>>, Mono<PollResult<Resource>>>
                 lroInitFunction = context -> client.startLro()
                     .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
                         .map(bytes -> {
@@ -254,11 +254,7 @@ public class LROPollerTests {
                             //
                             Resource entity
                                 = fromJson(content, Resource.class);
-                            if (response.getStatusCode() == 200) {
-                                return new PollResponse<>(state.getOperationStatus(), new PollResult<>(entity));
-                            } else {
-                                return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new PollResult<>(entity));
-                            }
+                            return new PollResult<>(entity);
                         }));
 
             when(provisioningStateLroInitOperation.apply(any())).thenAnswer((Answer) in -> {
@@ -269,11 +265,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<Resource>, Resource> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
-                Resource.class,
-                Resource.class,
-                Duration.ofMillis(100),
-                lroInitFunction);
+                    new HttpPipelineBuilder().build(),
+                    Resource.class,
+                    Resource.class,
+                    Duration.ofMillis(100),
+                    lroInitFunction);
 
             AsyncPollResponse<PollResult<Resource>, Resource> asyncPollResponse = lroFlux.doOnNext(response -> {
                 PollResult<Resource> pollResult = response.getValue();
