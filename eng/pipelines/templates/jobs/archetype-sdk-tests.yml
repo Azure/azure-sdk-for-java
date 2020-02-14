@@ -38,7 +38,7 @@ parameters:
   TestName: LiveTest
   TimeoutInMinutes: 60
   TestStepMavenInputs:
-    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions)'
+    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) $(ProjectListOptions)'
     mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '$(JavaVersion)'
@@ -89,6 +89,15 @@ jobs:
 
       - ${{ parameters.PreRunSteps }}
 
+      - pwsh: |
+          $modules = $(eng/Get-ServiceModules.ps1 ${{parameters.ServiceDirectory}} ${{parameters.SDKType}})
+          if ($modules) {
+            $options = "--projects $modules --also-make"
+            Write-Host "Options: [$options]"
+            Write-Host "##vso[task.setvariable variable=ProjectListOptions;]$options"
+          }
+        displayName: 'Get SDK modules'
+
       - task: Maven@3
         displayName: $(DisplayName)
         inputs:
@@ -110,7 +119,6 @@ jobs:
           condition: ne(variables['AZURE_RESOURCEGROUP_NAME'], '')
           continueOnError: true
           displayName: Remove Test Resources
-
 
       - task: PublishTestResults@2
         condition: always()
