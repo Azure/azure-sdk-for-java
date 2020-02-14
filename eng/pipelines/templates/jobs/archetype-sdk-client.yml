@@ -260,6 +260,8 @@ jobs:
             $options = "--projects $modules --also-make"
             Write-Host "Options: [$options]"
             Write-Host "##vso[task.setvariable variable=ProjectListOptions;]$options"
+          } else {
+            Write-Host "No modules found for ${{parameters.ServiceDirectory}} ${{parameters.SDKType}}"
           }
         displayName: 'Get SDK modules'
 

@@ -59,8 +59,6 @@ $clientModules = New-Object System.Collections.Generic.HashSet[string]
 $clientPom.project.modules.ChildNodes | Where-Object { $_.NodeType -eq "Element" } | ForEach-Object {
     $modulePath = $_.InnerText
 
-    Write-Host "Adding $modulePath"
-
     $separators = "/", "\"
     [string[]]$components = $modulePath.Split($separators, [StringSplitOptions]::RemoveEmptyEntries)
     if ($components.Length -eq 0) {
@@ -68,7 +66,10 @@ $clientPom.project.modules.ChildNodes | Where-Object { $_.NodeType -eq "Element"
         return
     }
 
-    $clientModules.Add($components[$components.Length - 1]) | Out-Null
+    $library = $components[$components.Length - 1]
+    Write-Host "Adding $library"
+
+    $clientModules.Add($library) | Out-Null
 }
 
 $modules = New-Object -TypeName "System.Collections.ArrayList"
@@ -89,7 +90,7 @@ foreach($file in $(Get-ChildItem $root -Filter pom*.xml -Recurse -File)) {
         continue
     }
 
-    if ($SdkType -eq "client" -and !$clientModules.Contains($project.artifactId)) {
+    if (($SdkType -eq "client") -and (!$clientModules.Contains($project.artifactId))) {
         Write-Host "- pom.client.xml does not contain [$($project.artifactId)]. Skipping."
     } else {
         $modules.Add("$($project.groupId):$($project.artifactId)") | Out-Null
