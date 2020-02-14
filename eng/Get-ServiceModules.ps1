@@ -52,6 +52,21 @@ switch($SdkType) {
     }
 }
 
+# If it is not a module that is built by pom.client.xml, we should skip it.
+$clientModules = New-Object System.Collections.Generic.HashSet[string]
+[xml]$clientPom = Get-Content -Path (Join-Path "$PSScriptRoot/../" "pom.client.xml")
+
+$separators = "/", "\"
+$clientPom.project.modules.ChildNodes | ? { $_.NodeType -eq "Element" } | foreach {
+    [string[]]$components = $_.InnerText.Split($separators, [StringSplitOptions]::RemoveEmptyEntries)
+    if ($components.Length -eq 0) {
+        Write-Warning "No components in [$($_.InnerText)]"
+        return
+    }
+
+    $clientModules.Add($components[$components.Length - 1]) | Out-Null
+}
+
 $modules = New-Object -TypeName "System.Collections.ArrayList"
 $root = Join-Path "$PSScriptRoot/../sdk" $ServiceDirectory | Resolve-Path
 
@@ -66,11 +81,15 @@ foreach($file in $(Get-ChildItem $root -Filter pom*.xml -Recurse -File)) {
     Write-Host "Processing POM file: $($file.FullName)"
 
     if (($null -eq $project.parent) -or ($project.parent.artifactId -ne $parentArtifactId)) {
-        Write-Host "Parent does not match. Skipping."
+        Write-Host "- Parent does not match. Skipping."
         continue
     }
 
-    $modules.Add("$($project.groupId):$($project.artifactId)") | Out-Null
+    if ($SdkType -eq "client" -and !$clientModules.Contains($project.artifactId)) {
+        Write-Host "- pom.client.xml does not contain [$($project.artifactId)]. Skipping."
+    } else {
+        $modules.Add("$($project.groupId):$($project.artifactId)") | Out-Null
+    }
 }
 
 $($modules -join ",")
