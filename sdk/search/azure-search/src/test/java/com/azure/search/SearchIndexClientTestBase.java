@@ -20,11 +20,13 @@ import org.junit.Assert;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SearchIndexClientTestBase extends SearchServiceTestBase {
 
@@ -37,32 +39,24 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
     }
 
     protected <T> void uploadDocuments(SearchIndexAsyncClient client, List<T> uploadDoc) {
-        client.uploadDocuments(uploadDoc)
-            .block();
+        client.uploadDocuments(uploadDoc).block();
         waitForIndexing();
     }
 
     <T> void uploadDocument(SearchIndexClient client, T uploadDoc) {
-        List<T> docs = new ArrayList<>();
-        docs.add(uploadDoc);
-
-        client.uploadDocuments(docs);
+        client.uploadDocuments(Collections.singletonList(uploadDoc));
         waitForIndexing();
     }
 
     <T> void uploadDocument(SearchIndexAsyncClient client, T uploadDoc) {
-        List<T> docs = new ArrayList<>();
-        docs.add(uploadDoc);
-
-        client.uploadDocuments(docs)
-            .block();
+        client.uploadDocuments(Collections.singletonList(uploadDoc)).block();
         waitForIndexing();
     }
 
     List<Map<String, Object>> uploadDocumentsJson(
-        SearchIndexAsyncClient client, String dataJson) throws IOException {
+        SearchIndexAsyncClient client, String dataJson) {
         List<Map<String, Object>> documents =
-            readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() {
+            readJsonFileToList(dataJson, new TypeReference<>() {
             });
 
         uploadDocuments(client, documents);
@@ -70,9 +64,9 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
     }
 
     List<Map<String, Object>> uploadDocumentsJson(
-        SearchIndexClient client, String dataJson) throws IOException {
+        SearchIndexClient client, String dataJson) {
         List<Map<String, Object>> documents =
-            readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() {
+            readJsonFileToList(dataJson, new TypeReference<>() {
             });
 
         uploadDocuments(client, documents);
@@ -80,15 +74,20 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         return documents;
     }
 
-    private List<Map<String, Object>> readJsonFileToList(String filename, TypeReference<List<Map<String, Object>>> listTypeReference) throws IOException {
-        Reader reader = new InputStreamReader(
-            getClass().getClassLoader().getResourceAsStream(filename));
+    private List<Map<String, Object>> readJsonFileToList(String filename,
+        TypeReference<List<Map<String, Object>>> listTypeReference) {
+        Reader reader = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
+            .getResourceAsStream(filename)));
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         SerializationUtil.configureMapper(objectMapper);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return objectMapper.readValue(reader, listTypeReference);
+        try {
+            return objectMapper.readValue(reader, listTypeReference);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     SearchIndexClientBuilder getClientBuilder(String indexName) {

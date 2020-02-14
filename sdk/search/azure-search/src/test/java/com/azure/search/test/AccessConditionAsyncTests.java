@@ -6,7 +6,6 @@ package com.azure.search.test;
 import com.azure.core.exception.HttpResponseException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -14,6 +13,12 @@ import reactor.test.StepVerifier;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Contains async version of the access condition tests
@@ -50,8 +55,8 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
             .create(Flux.concat(deletionResult, deleteFunc.apply(resourceName, deleteAccessOptions)))
             .expectNext()
             .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
+                assertEquals(HttpResponseException.class, error.getClass());
+                assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
                     ((HttpResponseException) error).getResponse().getStatusCode());
             });
     }
@@ -66,12 +71,9 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
      */
     public <T> void deleteIfNotChangedWorksOnlyOnCurrentResourceAsync(
-        BiFunction<String, AccessOptions, Mono<Void>> deleteFunc,
-        Supplier<T> newResourceDefinition,
-        BiFunction<T, AccessOptions, Mono<T>> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition,
-        String resourceName
-    ) {
+        BiFunction<String, AccessOptions, Mono<Void>> deleteFunc, Supplier<T> newResourceDefinition,
+        BiFunction<T, AccessOptions, Mono<T>> createOrUpdateDefinition, Function<T, T> mutateResourceDefinition,
+        String resourceName) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T staleResource = newResourceDefinition.get();
@@ -92,8 +94,8 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
         StepVerifier
             .create(deleteFunc.apply(resourceName, accessOptions))
             .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+                assertEquals(HttpResponseException.class, error.getClass());
+                assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
             });
 
         // Get the new eTag
@@ -133,8 +135,8 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
         StepVerifier
             .create(createOrUpdateDefinition.apply(mutatedResource, accessOptions))
             .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+                assertEquals(HttpResponseException.class, error.getClass());
+                assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
             });
     }
 
@@ -157,10 +159,7 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
 
         StepVerifier
             .create(createOrUpdateDefinition.apply(newResource, accessOptions))
-            .assertNext(r -> {
-                String eTag = getEtag(r);
-                Assert.assertTrue(StringUtils.isNotBlank(eTag));
-            })
+            .assertNext(r -> assertTrue(StringUtils.isNotBlank(getEtag(newResource))))
             .verifyComplete();
     }
 
@@ -182,13 +181,12 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
         StepVerifier
             .create(createOrUpdateDefinition.apply(newResource, accessOptions))
             .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+                assertEquals(HttpResponseException.class, error.getClass());
+                assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
             });
 
         // The resource should never have been created on the server, and thus it should not have an ETag
-        String eTag = getEtag(newResource);
-        Assert.assertNull(eTag);
+        assertNull(getEtag(newResource));
     }
 
     /**
@@ -224,12 +222,11 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
             .create(updatedResource)
             .assertNext(res -> {
                 // Get the updated ETag
-                String updatedETag = "";
-                updatedETag = getEtag(res);
+                String updatedETag = getEtag(res);
 
                 // Verify the eTag is not empty and was changed
-                Assert.assertFalse(updatedETag.isEmpty());
-                Assert.assertNotEquals(originalETag, updatedETag);
+                assertFalse(updatedETag.isEmpty());
+                assertNotEquals(originalETag, updatedETag);
             })
             .verifyComplete();
     }
@@ -268,13 +265,13 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
         StepVerifier
             .create(createOrUpdateDefinition.apply(mutateResource, accessOptions))
             .then(() -> {
-                Assert.assertTrue(StringUtils.isNotEmpty(originalETag));
-                Assert.assertTrue(StringUtils.isNotEmpty(updatedETag));
-                Assert.assertNotEquals(originalETag, updatedETag);
+                assertTrue(StringUtils.isNotEmpty(originalETag));
+                assertTrue(StringUtils.isNotEmpty(updatedETag));
+                assertNotEquals(originalETag, updatedETag);
             })
             .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+                assertEquals(HttpResponseException.class, error.getClass());
+                assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
             });
     }
 
@@ -308,12 +305,11 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
         StepVerifier
             .create(createOrUpdateDefinition.apply(mutateResource, accessOptions))
             .assertNext((res) -> {
-                String updatedETag = null;
-                updatedETag = getEtag(res);
+                String updatedETag = getEtag(res);
 
-                Assert.assertTrue(StringUtils.isNotEmpty(originalEtag));
-                Assert.assertTrue(StringUtils.isNotEmpty(updatedETag));
-                Assert.assertNotEquals(originalEtag, updatedETag);
+                assertTrue(StringUtils.isNotEmpty(originalEtag));
+                assertTrue(StringUtils.isNotEmpty(updatedETag));
+                assertNotEquals(originalEtag, updatedETag);
             })
             .verifyComplete();
     }

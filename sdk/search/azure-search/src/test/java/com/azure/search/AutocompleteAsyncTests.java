@@ -7,24 +7,22 @@ import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static com.azure.search.SearchTestBase.HOTELS_INDEX_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AutocompleteAsyncTests extends AutocompleteTestBase {
 
     private SearchIndexAsyncClient client;
 
     @Override
-    protected void initializeClient() throws IOException {
+    protected void initializeClient() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
@@ -48,34 +46,27 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police", "polite", "pool", "popular");
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("po", "sg");
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("po", "sg"), expectedText, expectedQueryPlusText);
     }
 
     @Test
     public void canAutocompleteExcludesFieldsNotInSuggester() {
-        AutocompleteOptions params = new AutocompleteOptions();
-        params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
-        params.setSearchFields("HotelName");
+        AutocompleteOptions params = new AutocompleteOptions()
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+            .setSearchFields("HotelName");
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("luxu", "sg", params, generateRequestOptions());
-        Assert.assertNotNull(results);
-
-        StepVerifier.create(results.byPage()).assertNext(pageResult ->
-            Assert.assertEquals(0, pageResult.getItems().size())
-        ).verifyComplete();
+        StepVerifier.create(client.autocomplete("luxu", "sg", params, generateRequestOptions()).byPage())
+            .assertNext(pageResult -> assertEquals(0, pageResult.getItems().size()))
+            .verifyComplete();
     }
 
     @Test
     public void canAutocompleteFuzzyIsOffByDefault() {
-        AutocompleteOptions params = new AutocompleteOptions();
-        params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("pi", "sg", params, generateRequestOptions());
-        Assert.assertNotNull(results);
-        StepVerifier.create(results.byPage()).assertNext(pageResult ->
-            Assert.assertEquals(0, pageResult.getItems().size())
-        ).verifyComplete();
+        StepVerifier.create(client.autocomplete("pi", "sg", params, generateRequestOptions()).byPage())
+            .assertNext(pageResult -> assertEquals(0, pageResult.getItems().size()))
+            .verifyComplete();
     }
 
     @Test
@@ -83,11 +74,10 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police", "polite", "pool", "popular");
 
-        AutocompleteOptions params = new AutocompleteOptions();
-        params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("po", "sg", params, generateRequestOptions());
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("po", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     @Test
@@ -95,11 +85,11 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         List<String> expectedText = Arrays.asList("very police", "very polite", "very popular");
         List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite", "looking for very popular");
 
-        AutocompleteOptions params = new AutocompleteOptions();
-        params.setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
+        AutocompleteOptions params = new AutocompleteOptions()
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("looking for very po", "sg", params, generateRequestOptions());
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("looking for very po", "sg", params, generateRequestOptions()),
+            expectedText, expectedQueryPlusText);
     }
 
     @Test
@@ -107,12 +97,12 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("very point", "very police", "very polite", "very pool", "very popular");
 
-        AutocompleteOptions params = new AutocompleteOptions();
-        params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
-        params.setUseFuzzyMatching(false);
+        AutocompleteOptions params = new AutocompleteOptions()
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+            .setUseFuzzyMatching(false);
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("very po", "sg", params, generateRequestOptions());
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("very po", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     @Test
@@ -130,11 +120,10 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         List<String> expectedText = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
         List<String> expectedQueryPlusText = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
 
-        AutocompleteOptions params = new AutocompleteOptions();
-        params.setAutocompleteMode(AutocompleteMode.TWO_TERMS);
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.TWO_TERMS);
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("po", "sg", params, generateRequestOptions());
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("po", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     @Test
@@ -148,24 +137,21 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>");
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("po", "sg", params, generateRequestOptions());
-
-        Assert.assertNotNull(results);
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("po", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     @Test
     public void testAutocompleteWithMultipleSelectedFields() {
         List<String> expectedText = Arrays.asList("model", "modern");
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern");
+
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setSearchFields("HotelName", "Description");
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("mod", "sg", params, generateRequestOptions());
-
-        Assert.assertNotNull(results);
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("mod", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     @Test
@@ -178,10 +164,8 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
             .setSearchFields("HotelName")
             .setFilter("HotelId eq '7'");
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("mod", "sg", params, generateRequestOptions());
-
-        Assert.assertNotNull(results);
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("mod", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     @Test
@@ -193,10 +177,8 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setTop(2);
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("po", "sg", params, generateRequestOptions());
-
-        Assert.assertNotNull(results);
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("po", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     @Test
@@ -208,10 +190,8 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setFilter("search.in(HotelId, '6,7')");
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("po", "sg", params, generateRequestOptions());
-
-        Assert.assertNotNull(results);
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("po", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     @Test
@@ -223,10 +203,8 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
             .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT)
             .setUseFuzzyMatching(true);
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("very polit", "sg", params, generateRequestOptions());
-
-        Assert.assertNotNull(results);
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("very polit", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     @Test
@@ -238,10 +216,8 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setUseFuzzyMatching(true);
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("mod", "sg", params, generateRequestOptions());
-
-        Assert.assertNotNull(results);
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("mod", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     @Test
@@ -253,10 +229,8 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
             .setAutocompleteMode(AutocompleteMode.TWO_TERMS)
             .setUseFuzzyMatching(true);
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("mod", "sg", params, generateRequestOptions());
-
-        Assert.assertNotNull(results);
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("mod", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     @Test
@@ -269,29 +243,26 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
             .setUseFuzzyMatching(true)
             .setFilter("HotelId ne '6' and (HotelName eq 'Modern Stay' or Tags/any(t : t eq 'budget'))");
 
-        PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("mod", "sg", params, generateRequestOptions());
-
-        Assert.assertNotNull(results);
-        validateResults(results, expectedText, expectedQueryPlusText);
+        validateResults(client.autocomplete("mod", "sg", params, generateRequestOptions()), expectedText,
+            expectedQueryPlusText);
     }
 
     /**
      * Validate the text and query plus text results
+     *
      * @param results results
      * @param expectedText expected text
      * @param expectedQueryPlusText expected query plus text
      */
-    private void validateResults(PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results, List<String> expectedText, List<String> expectedQueryPlusText) {
-        StepVerifier.create(results.byPage()).assertNext(pageResult -> {
-            List<String> textResults = new ArrayList<>();
-            List<String> queryPlusTextResults = new ArrayList<>();
-            pageResult.getItems()
-                    .forEach(res -> {
-                        textResults.add(res.getText());
-                        queryPlusTextResults.add(res.getQueryPlusText());
-                    });
-            Assert.assertEquals(expectedText, textResults);
-            Assert.assertEquals(expectedQueryPlusText, queryPlusTextResults);
-        }).verifyComplete();
+    private void validateResults(PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> results,
+        List<String> expectedText, List<String> expectedQueryPlusText) {
+        StepVerifier.create(results.byPage())
+            .assertNext(pageResult -> {
+                for (int i = 0; i < pageResult.getItems().size(); i++) {
+                    assertEquals(expectedText.get(i), pageResult.getItems().get(i).getText());
+                    assertEquals(expectedQueryPlusText.get(i), pageResult.getItems().get(i).getQueryPlusText());
+                }
+            })
+            .verifyComplete();
     }
 }

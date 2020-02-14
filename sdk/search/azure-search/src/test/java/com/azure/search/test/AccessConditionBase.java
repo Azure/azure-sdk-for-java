@@ -70,8 +70,8 @@ public abstract class AccessConditionBase {
     }
 
     /**
-     * Constructs an access condition such that an operation will be performed only if the resource's current ETag
-     * value matches the specified ETag value.
+     * Constructs an access condition such that an operation will be performed only if the resource's current ETag value
+     * matches the specified ETag value.
      *
      * @param eTag the ETag value to check against the resource's ETag
      * @return An AccessCondition object that represents the If-Match condition

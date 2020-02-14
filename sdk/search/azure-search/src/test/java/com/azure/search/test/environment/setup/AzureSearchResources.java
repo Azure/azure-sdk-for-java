@@ -55,8 +55,8 @@ public class AzureSearchResources {
     }
 
     /**
-     * Creates an instance of AzureTokenCredentials to be used in creating a Resource Group and Azure Cognitive Search service
-     * in Azure to be used for tests.
+     * Creates an instance of AzureTokenCredentials to be used in creating a Resource Group and Azure Cognitive Search
+     * service in Azure to be used for tests.
      *
      * @param azureTokenCredentials includes credentials to connect to Azure.
      * @param subscriptionId Azure subscription id.
@@ -144,6 +144,7 @@ public class AzureSearchResources {
 
     /**
      * Create a new storage account
+     *
      * @return the storage connection string
      */
     public String createStorageAccount() {
@@ -158,18 +159,17 @@ public class AzureSearchResources {
         StorageAccountKey key = storageAccount.getKeys().get(0);
 
         // Currently this only works on PROD Azure and not on Dogfood
-        String storageConnString =
-            "DefaultEndpointsProtocol=https;AccountName="
-                + storageName + ";"
-                + "AccountKey="
-                + key.value()
-                + ";EndpointSuffix=core.windows.net";
 
-        return storageConnString;
+        return "DefaultEndpointsProtocol=https;AccountName="
+            + storageName + ";"
+            + "AccountKey="
+            + key.value()
+            + ";EndpointSuffix=core.windows.net";
     }
 
     /**
      * Create a blob container inside a given storage account
+     *
      * @param storageConnString a given connection string
      * @return the created container name
      */

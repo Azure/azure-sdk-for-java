@@ -796,10 +796,10 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
     }
 
     void assertTokenInfoEqual(String expectedToken,
-                              Integer expectedStartOffset,
-                              Integer expectedEndOffset,
-                              Integer expectedPosition,
-                              TokenInfo actual) {
+        Integer expectedStartOffset,
+        Integer expectedEndOffset,
+        Integer expectedPosition,
+        TokenInfo actual) {
         Assert.assertEquals(expectedToken, actual.getToken());
         Assert.assertEquals(expectedStartOffset, actual.getStartOffset());
         Assert.assertEquals(expectedEndOffset, actual.getEndOffset());

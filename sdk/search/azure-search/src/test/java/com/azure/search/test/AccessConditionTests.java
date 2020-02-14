@@ -6,12 +6,17 @@ package com.azure.search.test;
 import com.azure.core.exception.HttpResponseException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class AccessConditionTests extends AccessConditionBase {
 
@@ -23,8 +28,7 @@ public class AccessConditionTests extends AccessConditionBase {
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
      */
     public <T> void createOrUpdateIfNotExistsFailsOnExistingResource(
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Supplier<T> newResourceDefinition,
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Supplier<T> newResourceDefinition,
         Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
@@ -41,11 +45,11 @@ public class AccessConditionTests extends AccessConditionBase {
 
             // Update the resource, expect to fail as it already exists
             createOrUpdateDefinition.apply(mutatedResource, accessOptions);
-            Assert.fail("createOrUpdateDefinition should have failed due to "
-                + "selected AccessCondition");
+            fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            Assert.assertEquals(HttpResponseException.class, exc.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
+                ((HttpResponseException) exc).getResponse().getStatusCode());
         }
     }
 
@@ -56,21 +60,18 @@ public class AccessConditionTests extends AccessConditionBase {
      * @param newResourceDefinition a function to generate a new resource object
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
      */
-    public <T> T createOrUpdateIfNotExistsSucceedsOnNoResource(
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
+    public <T> T createOrUpdateIfNotExistsSucceedsOnNoResource(BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
         Supplier<T> newResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
 
-        AccessOptions accessOptions =
-            new AccessOptions(generateIfNotExistsAccessCondition());
+        AccessOptions accessOptions = new AccessOptions(generateIfNotExistsAccessCondition());
 
         // Create the resource on the service
         T createdResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
-        String eTag = getEtag(createdResource);
-        Assert.assertTrue(StringUtils.isNotBlank(eTag));
+        assertTrue(StringUtils.isNotBlank(getEtag(createdResource)));
 
         return createdResource;
     }
@@ -105,10 +106,10 @@ public class AccessConditionTests extends AccessConditionBase {
         // Try to delete again and expect to fail
         try {
             deleteFunc.accept(resourceName, accessOptions);
-            Assert.fail("deleteFunc should have failed due to non existent resource");
+            fail("deleteFunc should have failed due to non existent resource");
         } catch (Exception exc) {
-            Assert.assertEquals(HttpResponseException.class, exc.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
         }
     }
 
@@ -119,12 +120,9 @@ public class AccessConditionTests extends AccessConditionBase {
      * @param newResourceDefinition a function to generate a new resource object
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
      */
-    public <T> void deleteIfNotChangedWorksOnlyOnCurrentResource(
-        BiConsumer<String, AccessOptions> deleteFunc,
-        Supplier<T> newResourceDefinition,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        String resourceName
-    ) {
+    public <T> void deleteIfNotChangedWorksOnlyOnCurrentResource(BiConsumer<String, AccessOptions> deleteFunc,
+        Supplier<T> newResourceDefinition, BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
+        String resourceName) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T staleResource = newResourceDefinition.get();
@@ -145,10 +143,10 @@ public class AccessConditionTests extends AccessConditionBase {
             accessOptions =
                 new AccessOptions(generateIfNotChangedAccessCondition(eTagStale));
             deleteFunc.accept(resourceName, accessOptions);
-            Assert.fail("deleteFunc should have failed due to selected AccessCondition");
+            fail("deleteFunc should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            Assert.assertEquals(HttpResponseException.class, exc.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
         }
 
         // Get the new eTag
@@ -175,16 +173,14 @@ public class AccessConditionTests extends AccessConditionBase {
             AccessOptions accessOptions =
                 new AccessOptions(generateIfExistsAccessCondition());
             createOrUpdateDefinition.apply(newResource, accessOptions);
-            Assert.fail("createOrUpdateDefinition should have failed due to "
-                + "selected AccessCondition");
+            fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            Assert.assertEquals(HttpResponseException.class, exc.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
         }
 
         // The resource should never have been created on the server, and thus it should not have an ETag
-        String eTag = getEtag(newResource);
-        Assert.assertNull(eTag);
+        assertNull(getEtag(newResource));
     }
 
     /**
@@ -221,8 +217,8 @@ public class AccessConditionTests extends AccessConditionBase {
         String updatedETag = getEtag(mutateResource);
 
         // Verify the eTag is not empty and was changed
-        Assert.assertTrue(StringUtils.isNotEmpty(updatedETag));
-        Assert.assertNotEquals(originalETag, updatedETag);
+        assertTrue(StringUtils.isNotEmpty(updatedETag));
+        assertNotEquals(originalETag, updatedETag);
     }
 
     /**
@@ -259,17 +255,16 @@ public class AccessConditionTests extends AccessConditionBase {
         // Update and check the eTags were changed
         try {
             createOrUpdateDefinition.apply(mutateResource, accessOptions);
-            Assert.fail("createOrUpdateDefinition should have failed due to "
-                + "selected AccessCondition");
+            fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            Assert.assertEquals(HttpResponseException.class, exc.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
         }
 
         // Check eTags
-        Assert.assertTrue(StringUtils.isNotEmpty(originalETag));
-        Assert.assertTrue(StringUtils.isNotEmpty(updatedETag));
-        Assert.assertNotEquals(originalETag, updatedETag);
+        assertTrue(StringUtils.isNotEmpty(originalETag));
+        assertTrue(StringUtils.isNotEmpty(updatedETag));
+        assertNotEquals(originalETag, updatedETag);
     }
 
     /**
@@ -303,8 +298,8 @@ public class AccessConditionTests extends AccessConditionBase {
         String updatedETag = getEtag(mutateResource);
 
         // Check eTags as expected
-        Assert.assertTrue(StringUtils.isNotEmpty(originalEtag));
-        Assert.assertTrue(StringUtils.isNotEmpty(updatedETag));
-        Assert.assertNotEquals(originalEtag, updatedETag);
+        assertTrue(StringUtils.isNotEmpty(originalEtag));
+        assertTrue(StringUtils.isNotEmpty(updatedETag));
+        assertNotEquals(originalEtag, updatedETag);
     }
 }

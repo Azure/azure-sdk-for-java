@@ -9,8 +9,6 @@ import com.azure.search.models.DataSourceCredentials;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-
 public abstract class DataSourceTestBase extends SearchServiceTestBase {
 
     private static final String FAKE_DESCRIPTION = "Some data source";
@@ -71,15 +69,6 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged();
-
-    @Test
-    public abstract void existsReturnsFalseForNonExistingDatasource();
-
-    @Test
-    public abstract void existsReturnsTrueForExistingDatasource();
-
-    @Test
-    public abstract void existsReturnsTrueForExistingDatasourceWithResponse();
 
     @Test
     public abstract void canCreateAndDeleteDatasource();
@@ -144,14 +133,5 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
             FAKE_DESCRIPTION,
             deletionDetectionPolicy
         );
-    }
-
-    void assertDataSourcesEqual(DataSource updatedExpected, DataSource actualDataSource) {
-        // Using assertReflectionEquals also checks the etag, however we do not care
-        // for that value, hence, we change both to the same value to make sure it
-        // won't fail the assertion
-        updatedExpected.setETag("none");
-        actualDataSource.setETag("none");
-        assertReflectionEquals(updatedExpected, actualDataSource);
     }
 }

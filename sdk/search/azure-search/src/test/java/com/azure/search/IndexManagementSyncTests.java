@@ -165,27 +165,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     }
 
     @Test
-    public void existsReturnsTrueForExistingIndex() {
-        Index index = createTestIndex();
-        client.createIndex(index);
-
-        Assert.assertTrue(client.indexExists(index.getName()));
-    }
-
-    @Test
-    public void existsReturnsTrueForExistingIndexWithResponse() {
-        Index index = createTestIndex();
-        client.createIndex(index);
-
-        Assert.assertTrue(client.indexExistsWithResponse(index.getName(), generateRequestOptions(), Context.NONE).getValue());
-    }
-
-    @Test
-    public void existsReturnsFalseForNonExistingIndex() {
-        Assert.assertFalse(client.indexExists("invalidindex"));
-    }
-
-    @Test
     public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -236,6 +215,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createIndex(index);
         client.deleteIndex(index.getName());
+
         Assert.assertFalse(client.indexExists(index.getName()));
     }
 

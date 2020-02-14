@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class IndexBatchTests {
 
@@ -46,15 +46,10 @@ public class IndexBatchTests {
         doc3.put("Id", "3");
 
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = new LinkedList<>();
+        List<IndexAction<Document>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.UPLOAD).setDocument(doc))
+            .collect(Collectors.toList());
 
-        for (Document doc : docs) {
-            indexActions.add(
-                new IndexAction<Document>()
-                    .setActionType(IndexActionType.UPLOAD)
-                    .setDocument(doc)
-            );
-        }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
             .actions(indexActions);
 
@@ -94,15 +89,10 @@ public class IndexBatchTests {
         doc3.put("Id", "3");
 
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = new LinkedList<>();
+        List<IndexAction<Document>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.MERGE).setDocument(doc))
+            .collect(Collectors.toList());
 
-        for (Document doc : docs) {
-            indexActions.add(
-                new IndexAction<Document>()
-                    .setActionType(IndexActionType.MERGE)
-                    .setDocument(doc)
-            );
-        }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
             .actions(indexActions);
 
@@ -142,15 +132,10 @@ public class IndexBatchTests {
         doc3.put("Id", "3");
 
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = new LinkedList<>();
+        List<IndexAction<Document>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.MERGE_OR_UPLOAD).setDocument(doc))
+            .collect(Collectors.toList());
 
-        for (Document doc : docs) {
-            indexActions.add(
-                new IndexAction<Document>()
-                    .setActionType(IndexActionType.MERGE_OR_UPLOAD)
-                    .setDocument(doc)
-            );
-        }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
             .actions(indexActions);
 
@@ -190,15 +175,10 @@ public class IndexBatchTests {
         doc3.put("Id", "3");
 
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = new LinkedList<>();
+        List<IndexAction<Document>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.DELETE).setDocument(doc))
+            .collect(Collectors.toList());
 
-        for (Document doc : docs) {
-            indexActions.add(
-                new IndexAction<Document>()
-                    .setActionType(IndexActionType.DELETE)
-                    .setDocument(doc)
-            );
-        }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
             .actions(indexActions);
 
@@ -213,7 +193,7 @@ public class IndexBatchTests {
         Document documentToMerge = new Document();
         documentToMerge.put("Id", "merge");
 
-        Document documentToMergeOrUpload =  new Document();
+        Document documentToMergeOrUpload = new Document();
         documentToMergeOrUpload.put("Id", "mergeOrUpload");
 
         Document documentToUpload = new Document();

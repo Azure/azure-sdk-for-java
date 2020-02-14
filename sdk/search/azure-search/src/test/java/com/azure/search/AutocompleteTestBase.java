@@ -4,8 +4,6 @@ package com.azure.search;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 public abstract class AutocompleteTestBase extends SearchIndexClientTestBase {
 
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
@@ -13,14 +11,10 @@ public abstract class AutocompleteTestBase extends SearchIndexClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        try {
-            initializeClient();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        initializeClient();
     }
 
-    protected abstract void initializeClient() throws IOException;
+    protected abstract void initializeClient();
 
     @Test
     public abstract void canAutocompleteThrowsWhenGivenBadSuggesterName();

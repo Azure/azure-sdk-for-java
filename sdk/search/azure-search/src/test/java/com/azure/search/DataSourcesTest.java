@@ -8,9 +8,9 @@ import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceCredentials;
 import com.azure.search.models.DataSourceType;
 import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit Test DataSources utility class
@@ -26,10 +26,10 @@ public class DataSourcesTest {
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
             .setContainer(new DataContainer().setName("table"));
-        DataSource actual = DataSources.azureSql(
-            "sql", "connectionString", "table");
 
-        Assert.assertTrue(assertDataSourceEqual(actual, expected));
+        DataSource actual = DataSources.azureSql("sql", "connectionString", "table");
+
+        assertTrue(TestHelpers.areDataSourcesEqual(actual, expected));
     }
 
     @Test
@@ -39,13 +39,13 @@ public class DataSourcesTest {
             .setName("storageBlob")
             .setType(DataSourceType.AZURE_BLOB)
             .setCredentials(new DataSourceCredentials()
-            .setConnectionString("connectionString"))
+                .setConnectionString("connectionString"))
             .setContainer(new DataContainer()
                 .setName("container"));
-        DataSource actual = DataSources.azureBlobStorage(
-            "storageBlob", "connectionString", "container");
 
-        Assert.assertTrue(assertDataSourceEqual(actual, expected));
+        DataSource actual = DataSources.azureBlobStorage("storageBlob", "connectionString", "container");
+
+        assertTrue(TestHelpers.areDataSourcesEqual(actual, expected));
     }
 
     @Test
@@ -57,11 +57,11 @@ public class DataSourcesTest {
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
             .setContainer(new DataContainer()
-            .setName("table"));
-        DataSource actual = DataSources.azureTableStorage(
-            "storageTable", "connectionString", "table");
+                .setName("table"));
 
-        Assert.assertTrue(assertDataSourceEqual(actual, expected));
+        DataSource actual = DataSources.azureTableStorage("storageTable", "connectionString", "table");
+
+        assertTrue(TestHelpers.areDataSourcesEqual(actual, expected));
     }
 
     @Test
@@ -74,10 +74,10 @@ public class DataSourcesTest {
                 .setConnectionString("connectionString"))
             .setContainer(new DataContainer()
                 .setName("collection"));
-        DataSource actual = DataSources.cosmos(
-            "cosmos", "connectionString", "collection", false);
 
-        Assert.assertTrue(assertDataSourceEqual(actual, expected));
+        DataSource actual = DataSources.cosmos("cosmos", "connectionString", "collection", false);
+
+        assertTrue(TestHelpers.areDataSourcesEqual(actual, expected));
     }
 
     @Test
@@ -91,24 +91,9 @@ public class DataSourcesTest {
             .setContainer(new DataContainer()
                 .setName("collection"))
             .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts"));
-        DataSource actual = DataSources.cosmos(
-            "cosmos", "connectionString", "collection");
 
-        Assert.assertTrue(assertDataSourceEqual(actual, expected));
-    }
+        DataSource actual = DataSources.cosmos("cosmos", "connectionString", "collection");
 
-    private boolean assertDataSourceEqual(DataSource actual, DataSource expected) {
-        return StringUtils.equals(actual.getName(), expected.getName())
-            && StringUtils.equals(actual.getType().toString(), expected.getType().toString())
-            && StringUtils.equals(actual.getCredentials().getConnectionString(), expected.getCredentials().getConnectionString())
-            && StringUtils.equals(actual.getContainer().getName(), expected.getContainer().getName())
-            && StringUtils.equals(actual.getContainer().getQuery(), expected.getContainer().getQuery())
-            && StringUtils.equals(actual.getDescription(), expected.getDescription())
-
-            && ((actual.getDataChangeDetectionPolicy() == null && expected.getDataChangeDetectionPolicy() == null)
-            || actual.getDataChangeDetectionPolicy().getClass().equals(expected.getDataChangeDetectionPolicy().getClass()))
-
-            && ((actual.getDataDeletionDetectionPolicy() == null && expected.getDataDeletionDetectionPolicy() == null)
-            || actual.getDataDeletionDetectionPolicy().getClass().equals(expected.getDataDeletionDetectionPolicy().getClass()));
+        assertTrue(TestHelpers.areDataSourcesEqual(actual, expected));
     }
 }

@@ -34,15 +34,6 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     public abstract void getIndexThrowsOnNotFound();
 
     @Test
-    public abstract void existsReturnsTrueForExistingIndex();
-
-    @Test
-    public abstract void existsReturnsTrueForExistingIndexWithResponse();
-
-    @Test
-    public abstract void existsReturnsFalseForNonExistingIndex();
-
-    @Test
     public abstract void deleteIndexIfNotChangedWorksOnlyOnCurrentResource();
 
     @Test

@@ -22,7 +22,6 @@ import com.azure.search.models.TokenFilterName;
 import com.azure.search.models.TokenInfo;
 import com.azure.search.models.TokenizerName;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -31,6 +30,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
     private SearchServiceClient searchServiceClient;
@@ -82,20 +84,18 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
         Document document2 = new Document();
         document2.put("id", "2");
         document2.put("message", "His email is someone@nowhere.nothing.");
-        List<Document> documents = Arrays.asList(
-            document1,
-            document2
-        );
+        List<Document> documents = Arrays.asList(document1, document2);
 
         searchIndexClient.uploadDocuments(documents);
         waitForIndexing();
 
-        Iterator<SearchResult> iterator = searchIndexClient.search("someone@somewhere.something",
-            new SearchOptions(), generateRequestOptions(), Context.NONE)
+        Iterator<SearchResult> iterator = searchIndexClient
+            .search("someone@somewhere.something", new SearchOptions(), generateRequestOptions(), Context.NONE)
             .iterator();
         SearchResult searchResult = iterator.next();
 
-        Assert.assertEquals("1", searchResult.getDocument().get("id"));
+        assertEquals("1", searchResult.getDocument().get("id"));
+        assertFalse(iterator.hasNext());
     }
 
     @Test
@@ -112,8 +112,8 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
                 .setType(DataType.EDM_STRING)
                 .setSearchAnalyzer(AnalyzerName.EN_LUCENE.toString());
         } catch (Exception ex) {
-            Assert.assertEquals(IllegalArgumentException.class, ex.getClass());
-            Assert.assertEquals("Only non-language analyzer can be used as search analyzer.", ex.getMessage());
+            assertEquals(IllegalArgumentException.class, ex.getClass());
+            assertEquals("Only non-language analyzer can be used as search analyzer.", ex.getMessage());
         }
         try {
             new Field()
@@ -121,8 +121,8 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
                 .setType(DataType.EDM_STRING)
                 .setIndexAnalyzer(AnalyzerName.AR_MICROSOFT.toString());
         } catch (Exception ex) {
-            Assert.assertEquals(IllegalArgumentException.class, ex.getClass());
-            Assert.assertEquals("Only non-language analyzer can be used as index analyzer.", ex.getMessage());
+            assertEquals(IllegalArgumentException.class, ex.getClass());
+            assertEquals("Only non-language analyzer can be used as index analyzer.", ex.getMessage());
         }
     }
 
@@ -135,10 +135,10 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
             .setText("One two")
             .setAnalyzer(AnalyzerName.WHITESPACE);
         PagedIterable<TokenInfo> results = searchServiceClient.analyzeText(index.getName(), request);
-        Iterator<TokenInfo> iterator = results.stream().iterator();
+        Iterator<TokenInfo> iterator = results.iterator();
         assertTokenInfoEqual("One", 0, 3, 0, iterator.next());
         assertTokenInfoEqual("two", 4, 7, 1, iterator.next());
-        Assert.assertFalse(iterator.hasNext());
+        assertFalse(iterator.hasNext());
 
         request = new AnalyzeRequest()
             .setText("One's <two/>")
@@ -147,15 +147,15 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
             .setCharFilters(Collections.singletonList(CharFilterName.HTML_STRIP));
         results = searchServiceClient.analyzeText(index.getName(), request);
         // End offset is based on the original token, not the one emitted by the filters.
-        iterator = results.stream().iterator();
+        iterator = results.iterator();
         assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
-        Assert.assertFalse(iterator.hasNext());
+        assertFalse(iterator.hasNext());
 
         results = searchServiceClient.analyzeText(index.getName(), request, generateRequestOptions(), Context.NONE);
         // End offset is based on the original token, not the one emitted by the filters.
-        iterator = results.stream().iterator();
+        iterator = results.iterator();
         assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
-        Assert.assertFalse(iterator.hasNext());
+        assertFalse(iterator.hasNext());
     }
 
     @Test

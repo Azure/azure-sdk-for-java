@@ -18,15 +18,15 @@ import com.azure.search.test.AccessConditionTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpStatus;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Collections;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -265,7 +265,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Response<Void> response = client.runIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
         IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
 
-        Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode());
+        Assert.assertEquals(HttpURLConnection.HTTP_ACCEPTED, response.getStatusCode());
         Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
@@ -464,7 +464,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         // Try delete before the indexer even exists.
         Response<Void> result = client.deleteIndexerWithResponse(
             indexer.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
+        Assert.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
 
         // Actually create the indexer
         client.createIndexer(indexer);
@@ -472,11 +472,11 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         // Now delete twice.
         result = client.deleteIndexerWithResponse(
             indexer.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpStatus.SC_NO_CONTENT, result.getStatusCode());
+        Assert.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, result.getStatusCode());
 
         result = client.deleteIndexerWithResponse(
             indexer.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
+        Assert.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
     }
 
     @Test

@@ -20,7 +20,6 @@ import com.azure.search.models.StopAnalyzer;
 import com.azure.search.models.TokenFilterName;
 import com.azure.search.models.TokenizerName;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -29,6 +28,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
     private SearchServiceAsyncClient searchServiceClient;
@@ -70,7 +71,9 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setName(customCharFilterName)
             ));
 
-        searchServiceClient.createIndex(index).block();
+        StepVerifier.create(searchServiceClient.createIndex(index))
+            .expectNextCount(1)
+            .verifyComplete();
 
         SearchIndexAsyncClient searchIndexClient = searchServiceClient.getIndexClient(index.getName());
 
@@ -80,10 +83,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         Document document2 = new Document();
         document2.put("id", "2");
         document2.put("message", "His email is someone@nowhere.nothing.");
-        List<Document> documents = Arrays.asList(
-            document1,
-            document2
-        );
+        List<Document> documents = Arrays.asList(document1, document2);
 
         searchIndexClient.uploadDocuments(documents).block();
         waitForIndexing();
@@ -91,10 +91,8 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         PagedFluxBase<SearchResult, SearchPagedResponse> results =
             searchIndexClient.search("someone@somewhere.something", new SearchOptions(), generateRequestOptions());
 
-        StepVerifier.create(results.collectList())
-            .assertNext(firstPage ->
-                Assert.assertEquals("1", firstPage.get(0).getDocument().get("id"))
-            )
+        StepVerifier.create(results)
+            .assertNext(firstPage -> assertEquals("1", firstPage.getDocument().get("id")))
             .verifyComplete();
     }
 
@@ -102,11 +100,8 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
     public void canUseAllAnalyzerNamesInIndexDefinition() {
         Index index = prepareIndexWithAllAnalyzerNames();
 
-        StepVerifier
-            .create(searchServiceClient.createIndex(index))
-            .assertNext(res ->
-                assertIndexesEqual(index, res)
-            )
+        StepVerifier.create(searchServiceClient.createIndex(index))
+            .assertNext(res -> assertIndexesEqual(index, res))
             .verifyComplete();
 
         // Add language analyzers to searchAnalyzer and indexAnalyzer properties and expect failure
@@ -116,8 +111,8 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                 .setType(DataType.EDM_STRING)
                 .setSearchAnalyzer(AnalyzerName.EN_LUCENE.toString());
         } catch (Exception ex) {
-            Assert.assertEquals(IllegalArgumentException.class, ex.getClass());
-            Assert.assertEquals("Only non-language analyzer can be used as search analyzer.", ex.getMessage());
+            assertEquals(IllegalArgumentException.class, ex.getClass());
+            assertEquals("Only non-language analyzer can be used as search analyzer.", ex.getMessage());
         }
         try {
             new Field()
@@ -125,64 +120,59 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                 .setType(DataType.EDM_STRING)
                 .setIndexAnalyzer(AnalyzerName.AR_MICROSOFT.toString());
         } catch (Exception ex) {
-            Assert.assertEquals(IllegalArgumentException.class, ex.getClass());
-            Assert.assertEquals("Only non-language analyzer can be used as index analyzer.", ex.getMessage());
+            assertEquals(IllegalArgumentException.class, ex.getClass());
+            assertEquals("Only non-language analyzer can be used as index analyzer.", ex.getMessage());
         }
     }
 
     @Test
     public void canAnalyze() {
         Index index = createTestIndex();
-        searchServiceClient.createIndex(index).block();
+
+        StepVerifier.create(searchServiceClient.createIndex(index))
+            .expectNextCount(1)
+            .verifyComplete();
 
         AnalyzeRequest request = new AnalyzeRequest()
             .setText("One two")
             .setAnalyzer(AnalyzerName.WHITESPACE);
-        StepVerifier
-            .create(searchServiceClient.analyzeText(index.getName(), request))
+
+        StepVerifier.create(searchServiceClient.analyzeText(index.getName(), request))
             .assertNext(firstTokenInfo -> assertTokenInfoEqual("One", 0, 3, 0, firstTokenInfo))
             .assertNext(secondTokenInfo -> assertTokenInfoEqual("two", 4, 7, 1, secondTokenInfo))
-            .expectNextCount(0L)
             .verifyComplete();
 
-        request = new AnalyzeRequest()
-            .setText("One's <two/>")
+        request = new AnalyzeRequest().setText("One's <two/>")
             .setTokenizer(TokenizerName.WHITESPACE)
             .setTokenFilters(Collections.singletonList(TokenFilterName.APOSTROPHE))
             .setCharFilters(Collections.singletonList(CharFilterName.HTML_STRIP));
-        StepVerifier
-            .create(searchServiceClient.analyzeText(index.getName(), request))
-            .assertNext(onlyTokenInfo -> {
-                // End offset is based on the original token, not the one emitted by the filters.
-                assertTokenInfoEqual("One", 0, 5, 0, onlyTokenInfo);
-            })
+
+        // End offset is based on the original token, not the one emitted by the filters.
+        StepVerifier.create(searchServiceClient.analyzeText(index.getName(), request))
+            .assertNext(onlyTokenInfo -> assertTokenInfoEqual("One", 0, 5, 0, onlyTokenInfo))
             .verifyComplete();
 
-        StepVerifier
-            .create(searchServiceClient.analyzeText(index.getName(), request, generateRequestOptions()))
-            .assertNext(onlyTokenInfo -> {
-                // End offset is based on the original token, not the one emitted by the filters.
-                assertTokenInfoEqual("One", 0, 5, 0, onlyTokenInfo);
-            })
+        // End offset is based on the original token, not the one emitted by the filters.
+        StepVerifier.create(searchServiceClient.analyzeText(index.getName(), request, generateRequestOptions()))
+            .assertNext(onlyTokenInfo -> assertTokenInfoEqual("One", 0, 5, 0, onlyTokenInfo))
             .verifyComplete();
     }
 
     @Test
     public void canAnalyzeWithAllPossibleNames() {
         Index index = createTestIndex();
-        searchServiceClient.createIndex(index).block();
 
-        AnalyzerName.values()
-            .stream()
+        StepVerifier.create(searchServiceClient.createIndex(index))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        AnalyzerName.values().stream()
             .map(an -> new AnalyzeRequest()
                 .setText("One two")
                 .setAnalyzer(an))
-            .forEach(r ->
-                searchServiceClient.analyzeText(index.getName(), r)
-            );
+            .forEach(r -> searchServiceClient.analyzeText(index.getName(), r));
 
-        TokenizerName.values()
-            .stream()
+        TokenizerName.values().stream()
             .map(tn -> new AnalyzeRequest()
                 .setText("One two")
                 .setTokenizer(tn))
@@ -193,16 +183,18 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
             .setTokenizer(TokenizerName.WHITESPACE)
             .setTokenFilters(new ArrayList<>(TokenFilterName.values()))
             .setCharFilters(new ArrayList<>(CharFilterName.values()));
+
         searchServiceClient.analyzeText(index.getName(), request);
     }
 
     @Test
     public void addingCustomAnalyzerThrowsHttpExceptionByDefault() {
         Index index = createTestIndex()
-            .setAnalyzers(Collections.singletonList(
-                new StopAnalyzer().setName("a1")
-            ));
-        searchServiceClient.createIndex(index).block();
+            .setAnalyzers(Collections.singletonList(new StopAnalyzer().setName("a1")));
+
+        StepVerifier.create(searchServiceClient.createIndex(index))
+            .expectNextCount(1)
+            .verifyComplete();
 
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
 
@@ -216,16 +208,16 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
     @Test
     public void canAddCustomAnalyzerWithIndexDowntime() {
         Index index = createTestIndex()
-            .setAnalyzers(Collections.singletonList(
-                new StopAnalyzer().setName("a1")
-            ));
-        searchServiceClient.createIndex(index).block();
+            .setAnalyzers(Collections.singletonList(new StopAnalyzer().setName("a1")));
+
+        StepVerifier.create(searchServiceClient.createIndex(index))
+            .expectNextCount(1)
+            .verifyComplete();
 
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
 
-        StepVerifier
-            .create(searchServiceClient.createOrUpdateIndexWithResponse(index,
-                true, new AccessCondition(), generateRequestOptions()))
+        StepVerifier.create(searchServiceClient
+            .createOrUpdateIndexWithResponse(index, true, new AccessCondition(), generateRequestOptions()))
             .assertNext(res -> assertAnalysisComponentsEqual(index, res.getValue()))
             .verifyComplete();
     }
@@ -234,11 +226,12 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
     public void canCreateAllAnalysisComponents() {
         Index index = prepareIndexWithAllAnalysisComponentTypes();
 
-        StepVerifier
-            .create(searchServiceClient.createIndex(index))
+        StepVerifier.create(searchServiceClient.createIndex(index))
             .assertNext(res -> assertAnalysisComponentsEqual(index, res))
             .verifyComplete();
-        searchServiceClient.deleteIndex(index.getName()).block();
+
+        StepVerifier.create(searchServiceClient.deleteIndex(index.getName()))
+            .verifyComplete();
 
         // We have to split up analysis components into two indexes, one where any components with optional properties
         // have defaults that are zero or null, and another where we need to specify the default values we
@@ -251,11 +244,12 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         for (int j = 0; j < splittedIndexWithSpecialDefaults.size(); j++) {
             Index expected = splittedExpectedIndexWithSpecialDefaults.get(j);
 
-            StepVerifier
-                .create(searchServiceClient.createIndex(expected))
+            StepVerifier.create(searchServiceClient.createIndex(expected))
                 .assertNext(res -> assertAnalysisComponentsEqual(expected, res))
                 .verifyComplete();
-            searchServiceClient.deleteIndex(expected.getName()).block();
+
+            StepVerifier.create(searchServiceClient.deleteIndex(expected.getName()))
+                .verifyComplete();
         }
     }
 
@@ -263,8 +257,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
     public void canUseAllAnalysisComponentNames() {
         Index index = prepareIndexWithAllAnalysisComponentNames();
 
-        StepVerifier
-            .create(searchServiceClient.createIndex(index))
+        StepVerifier.create(searchServiceClient.createIndex(index))
             .assertNext(res -> assertCustomAnalysisComponentsEqual(index, res))
             .verifyComplete();
     }
@@ -281,8 +274,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setName(generateName()))
                 .collect(Collectors.toList()));
 
-        StepVerifier
-            .create(searchServiceClient.createIndex(index))
+        StepVerifier.create(searchServiceClient.createIndex(index))
             .assertNext(res -> assertAnalysisComponentsEqual(index, res))
             .verifyComplete();
     }
@@ -292,11 +284,12 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         List<Index> indexes = prepareIndexesWithAllAnalysisComponentOptions();
 
         indexes.forEach(expectedIndex -> {
-            StepVerifier
-                .create(searchServiceClient.createIndex(expectedIndex))
+            StepVerifier.create(searchServiceClient.createIndex(expectedIndex))
                 .assertNext(res -> assertAnalysisComponentsEqual(expectedIndex, res))
                 .verifyComplete();
-            searchServiceClient.deleteIndex(expectedIndex.getName()).block();
+
+            StepVerifier.create(searchServiceClient.deleteIndex(expectedIndex.getName()))
+                .verifyComplete();
         });
     }
 }
