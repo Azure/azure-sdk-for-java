@@ -103,7 +103,7 @@ jobs:
         displayName: Install modules
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: --no-transfer-progress -Dmaven.test.skip -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true
+          options: --no-transfer-progress -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
