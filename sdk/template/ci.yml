@@ -40,4 +40,3 @@ stages:
         - name: azure-sdk-template
           groupId: com.azure
           safeName: azuresdktemplate
-          stagingProfileId: 88192f04117501

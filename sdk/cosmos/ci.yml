@@ -45,4 +45,3 @@ stages:
         - name: azure-cosmos
           groupId: com.microsoft.azure
           safeName: azurecosmos
-          stagingProfileId: 534d15ee3800f4
