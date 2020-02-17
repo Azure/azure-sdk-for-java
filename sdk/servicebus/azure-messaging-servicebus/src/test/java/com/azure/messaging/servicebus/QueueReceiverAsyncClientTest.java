@@ -83,7 +83,7 @@ public class QueueReceiverAsyncClientTest {
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
 
-        String connectionString = baseConnectionString + ";EntityPath=hemant-test1";
+        String connectionString = baseConnectionString + ";EntityPath=queue-test1";
 
         // Instantiate a client that will be used to call the service.
 
@@ -122,7 +122,7 @@ public class QueueReceiverAsyncClientTest {
 
         // Arrange
         final int numberOfEvents = 1;
-        String connectionString = baseConnectionString + ";EntityPath=hemant-test1";
+        String connectionString = baseConnectionString + ";EntityPath=queue-test1";
 
         // Instantiate a client that will be used to call the service.
 

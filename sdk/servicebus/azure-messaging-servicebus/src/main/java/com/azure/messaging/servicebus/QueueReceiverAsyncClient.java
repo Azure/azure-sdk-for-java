@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import reactor.core.publisher.Flux;
@@ -51,8 +52,7 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * Keeps track of the open consumers keyed by linkName. The link name is generated as: {@code
      * "partitionId_GUID"}. For receiving from all partitions, links are prefixed with {@code "all-GUID-partitionId"}.
      */
-    private final ConcurrentHashMap<String, ServiceBusAsyncConsumer> openConsumers =
-        new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, ServiceBusAsyncConsumer> openConsumers = new ConcurrentHashMap<>();
 
     QueueReceiverAsyncClient(String fullyQualifiedNamespace, String queueName,
                              ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,

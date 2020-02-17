@@ -8,8 +8,30 @@
   <artifactId>azure-servicebus-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-    <module>microsoft-azure-servicebus</module>
-    <module>azure-messaging-servicebus</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>data</id>
+      <activation>
+        <property>
+          <name>env.SDKTYPE</name>
+          <value>data</value>
+        </property>
+      </activation>
+      <modules>
+        <module>microsoft-azure-servicebus</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>client</id>
+      <activation>
+        <property>
+          <name>env.SDKTYPE</name>
+          <value>!data</value>
+        </property>
+      </activation>
+      <modules>
+        <module>azure-messaging-servicebus</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

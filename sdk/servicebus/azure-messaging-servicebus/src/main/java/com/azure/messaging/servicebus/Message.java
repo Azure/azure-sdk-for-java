@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.Context;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,8 +23,8 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * The data structure encapsulating the message being sent-to and received-from Service Bus. Each Service Bus entity can
- * be visualized as a stream of {@link Message}.
+ * The data structure encapsulating the message being sent-to and received-from Service Bus.
+ * Each Service Bus entity can be visualized as a stream of {@link Message}.
  *
  * <p>
  * Here's how AMQP message sections map to {@link Message}. For reference, the specification can be found here:
@@ -46,12 +47,16 @@ public class Message {
      * These are properties owned by the service and set when a message is received.
      */
     static final Set<String> RESERVED_SYSTEM_PROPERTIES;
-
+    private static final Charset DEFAULT_CHAR_SET = Charset.forName("UTF-8");
     private final Map<String, Object> properties;
     private final byte[] body;
     private final SystemProperties systemProperties;
     private Context context;
     private UUID lockToken;
+    private String messageId;
+    private String contentType;
+    private String sessionId;
+
 
     static {
         final Set<String> properties = new HashSet<>();
@@ -66,34 +71,77 @@ public class Message {
     /**
      * Creates an event containing the {@code body}.
      *
-     * @param body The data to set for this event.
+     * @param content The data to set for this event.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public Message(byte[] body) {
-        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
+    public Message(byte[] content) {
+        this.body = Objects.requireNonNull(content, "'content' cannot be null.");
         this.context = Context.NONE;
         this.properties = new HashMap<>();
         this.systemProperties = new SystemProperties();
+        this.messageId = null;
     }
 
     /**
      * Creates an event containing the {@code body}.
      *
-     * @param body The data to set for this event.
+     * @param content The data to set for this event.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public Message(ByteBuffer body) {
-        this(Objects.requireNonNull(body, "'body' cannot be null.").array());
+    public Message(ByteBuffer content) {
+        this(Objects.requireNonNull(content, "'content' cannot be null.").array());
     }
 
     /**
-     * Creates an event by encoding the {@code body} using UTF-8 charset.
+     * Creates an event by encoding the {@code content} using UTF-8 charset.
      *
-     * @param body The string that will be UTF-8 encoded to create an event.
+     * @param content The string that will be UTF-8 encoded to create an event.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public Message(String body) {
-        this(Objects.requireNonNull(body, "'body' cannot be null.").getBytes(UTF_8));
+    public Message(String content) {
+        this(Objects.requireNonNull(content, "'content' cannot be null.").getBytes(UTF_8));
+    }
+
+    /**
+     * Creates a message from a string. For backward compatibility reasons, the string is converted to a byte array
+     * and message body type is set to binary.
+     * @param content content of the message
+     * @param contentType content type of the message
+     */
+    public Message(String content, String contentType) {
+        this(content.getBytes(DEFAULT_CHAR_SET), contentType);
+    }
+
+    /**
+     * Creates a message from a byte array. Message body type is set to binary.
+     * @param content content of the message
+     * @param contentType content type of the message
+     */
+    public Message(byte[] content, String contentType) {
+        this(content);
+        this.contentType = contentType;
+    }
+
+    /**
+     * Creates a message from a string. For backward compatibility reasons, the string is converted to a byte array
+     * and message body type is set to binary.
+     * @param messageId id of the message
+     * @param content content of the message
+     * @param contentType content type of the message
+     */
+    public Message(String messageId, String content, String contentType) {
+        this(messageId, content.getBytes(DEFAULT_CHAR_SET), contentType);
+    }
+
+    /**
+     * Creates a message from a byte array. Message body type is set to binary.
+     * @param messageId id of the message
+     * @param content content of the message
+     * @param contentType content type of the message
+     */
+    public Message(String messageId, byte[] content, String contentType) {
+        this(content, contentType);
+        this.messageId = messageId;
     }
 
     /**
@@ -104,10 +152,11 @@ public class Message {
      * @param context A specified key-value pair of type {@link Context}.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
-    Message(byte[] body, SystemProperties systemProperties, Context context) {
+    public Message(byte[] body, Map<String, Object> systemProperties, Context context) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
-        this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
+        this.systemProperties = new SystemProperties(Objects.requireNonNull(systemProperties,
+            "'systemProperties' cannot be null."));
         this.properties = new HashMap<>();
     }
 
@@ -126,7 +175,7 @@ public class Message {
     }
 
     /**
-     * Properties that are populated by Event Hubs service. As these are populated by the Event Hubs service, they are
+     * Properties that are populated by Service Bus. As these are populated by the Event Hubs service, they are
      * only present on a <b>received</b> {@link Message}.
      *
      * @return An encapsulation of all system properties appended by EventHubs service into {@link Message}.
@@ -134,6 +183,38 @@ public class Message {
      */
     public Map<String, Object> getSystemProperties() {
         return systemProperties;
+    }
+
+    /**
+     *
+     * @return of the message.
+     */
+    public String getMessageId() {
+        return messageId;
+    }
+
+    /**
+     *
+     * @param messageId of the message.
+     */
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
+    /**
+     *
+     * @return the contentType.
+     */
+    public String getContentType() {
+        return contentType;
+    }
+
+    /**
+     *
+     * @param contentType of the message.
+     */
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     /**

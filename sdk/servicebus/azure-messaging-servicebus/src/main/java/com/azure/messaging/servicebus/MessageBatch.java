@@ -61,7 +61,7 @@ final class MessageBatch {
      *
      * @return The number of {@link Message events} in the batch.
      */
-    public int getCount() {
+    int getCount() {
         return messageList.size();
     }
 
@@ -70,7 +70,7 @@ final class MessageBatch {
      *
      * @return The maximum size, in bytes, of the {@link MessageBatch}.
      */
-    public int getMaxSizeInBytes() {
+    int getMaxSizeInBytes() {
         return maxMessageSize;
     }
 
@@ -79,7 +79,7 @@ final class MessageBatch {
      *
      * @return the size of the {@link MessageBatch} in bytes.
      */
-    public int getSizeInBytes() {
+    int getSizeInBytes() {
         return this.sizeInBytes;
     }
 
@@ -92,7 +92,7 @@ final class MessageBatch {
      * @throws IllegalArgumentException if {@code message} is {@code null}.
      * @throws AmqpException if {@code message} is larger than the maximum size of the {@link MessageBatch}.
      */
-    public boolean tryAdd(final Message message) {
+    boolean tryAdd(final Message message) {
         if (message == null) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("eventData cannot be null"));
         }

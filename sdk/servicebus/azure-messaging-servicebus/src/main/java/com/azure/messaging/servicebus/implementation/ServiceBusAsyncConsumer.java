@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
+import com.azure.messaging.servicebus.Message;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 
@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * A package-private consumer responsible for reading {@link Message} from a specific Service Bus.
  */
-class ServiceBusAsyncConsumer implements AutoCloseable {
+public class ServiceBusAsyncConsumer implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor;
@@ -24,7 +24,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     private final String queueName;
     private final EmitterProcessor<Message> emitterProcessor;
 
-    ServiceBusAsyncConsumer(ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
+    public ServiceBusAsyncConsumer(ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
                             MessageSerializer messageSerializer, String fullyQualifiedNamespace, String queueName) {
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
@@ -52,7 +52,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
      *
      * @return A stream of events received from the partition.
      */
-    Flux<Message> receive() {
+    public Flux<Message> receive() {
         return emitterProcessor;
     }
 
@@ -68,7 +68,6 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
      */
     private Message onMessageReceived(org.apache.qpid.proton.message.Message message) {
         final Message event = messageSerializer.deserialize(message, Message.class);
-        Message.SystemProperties systemProperties = new Message.SystemProperties(event.getSystemProperties());
-        return new Message(event.getBody(), systemProperties, Context.NONE);
+        return new Message(event.getBody(), event.getSystemProperties(), Context.NONE);
     }
 }

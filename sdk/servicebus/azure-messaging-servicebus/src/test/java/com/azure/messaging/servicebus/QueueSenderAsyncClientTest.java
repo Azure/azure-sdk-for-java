@@ -3,12 +3,10 @@
 
 package com.azure.messaging.servicebus;
 
-
-import com.azure.core.amqp.exception.AmqpException;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,7 @@ public class QueueSenderAsyncClientTest {
         // 3. Creating a "Shared access policy" for your Event Hub instance.
         // 4. Copying the connection string from the policy's properties.
 
-        String connectionString = baseConnectionString + ";EntityPath=hemant-test1";
+        String connectionString = baseConnectionString + ";EntityPath=queue-test1";
 
         // Instantiate a client that will be used to call the service.
         QueueSenderAsyncClient asyncSender = new QueueClientBuilder()
@@ -43,51 +41,25 @@ public class QueueSenderAsyncClientTest {
         Message message = new Message("Hello world!".getBytes(UTF_8));
 
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
-        // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
-        // the event.
-
-        asyncSender.send(message)
-            .doOnError((error) -> {
-                System.out.println("doOnError = " + error);
-                error.printStackTrace();
-            })
-            .subscribe(
-                (response) -> System.out.println("Message sent. " + response),
-                error -> {
-
-                    System.out.println("There was an error sending the event: " + error.toString());
-                    error.printStackTrace();
-                    if (error instanceof AmqpException) {
-                        AmqpException amqpException = (AmqpException) error;
-
-                        System.err.println(String.format("Is send operation retriable? %s. Error condition: %s",
-                            amqpException.isTransient(), amqpException.getErrorCondition()));
-                    }
-                }, () -> {
-                    // Disposing of our producer and client.
-                    System.out.println("Disposing of our producer and client. ");
-                    try {
-                        asyncSender.close();
-                    } catch (Exception e) {
-                        System.err.println("Error encountered while closing producer: " + e.toString());
-                    }
-
-                    asyncSender.close();
-                });
+        // event has been delivered to the Service Bus. It completes with an error if an exception
+        // occurred while sending the event.
+        StepVerifier.create(asyncSender.send(message))
+            .verifyComplete();
         Thread.sleep(1000 * 5);
     }
 
     /**
-     * Main method to invoke this demo on how to send a message to an Azure Event Hub.
+     * Main method to invoke this demo on how to send a message to an Azure Service Bus.
      */
     @Test
     public void testPublishMultipleMessage() throws Exception {
         // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal.
-        // 2. Creating an Event Hub instance.
-        // 3. Creating a "Shared access policy" for your Event Hub instance.
+        // 1. Going to your Service Bus namespace in Azure Portal.
+        // 2. Creating an Service Bus instance.
+        // 3. Creating a "Shared access policy" for your Service Bus instance.
         // 4. Copying the connection string from the policy's properties.
-        String connectionString = baseConnectionString + ";EntityPath=hemant-test1";
+
+        String connectionString = baseConnectionString + ";EntityPath=queue-test1";
         // Instantiate a client that will be used to call the service.
         QueueSenderAsyncClient asyncSender = new QueueClientBuilder()
             .connectionString(connectionString)
@@ -104,34 +76,8 @@ public class QueueSenderAsyncClientTest {
 
         list.add(message1);
         list.add(message1);
-
-        asyncSender.send(list)
-            .doOnError((error) -> {
-                System.out.println("doOnError = " + error);
-                //error.printStackTrace();;
-            })
-            .subscribe(
-                (response) -> System.out.println("Message sent. " + response),
-                error -> {
-
-                    System.out.println("There was an error sending the event: " + error.toString());
-                    if (error instanceof AmqpException) {
-                        AmqpException amqpException = (AmqpException) error;
-
-                        System.err.println(String.format("Is send operation retriable? %s. Error condition: %s",
-                            amqpException.isTransient(), amqpException.getErrorCondition()));
-                    }
-                }, () -> {
-                    // Disposing of our producer and client.
-                    System.out.println("Disposing of our producer and client. ");
-                    try {
-                        asyncSender.close();
-                    } catch (Exception e) {
-                        System.err.println("Error encountered while closing producer: " + e.toString());
-                    }
-
-                    asyncSender.close();
-                });
+        StepVerifier.create(asyncSender.send(list))
+            .verifyComplete();
         Thread.sleep(5000);
     }
 }

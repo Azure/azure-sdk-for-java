@@ -158,8 +158,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             body = new byte[0];
         }
 
-        final Message.SystemProperties systemProperties = new Message.SystemProperties(receiveProperties);
-        final Message eventData = new Message(body, systemProperties, Context.NONE);
+        final Message eventData = new Message(body, receiveProperties, Context.NONE);
         final Map<String, Object> properties = message.getApplicationProperties() == null
             ? new HashMap<>()
             : message.getApplicationProperties().getValue();
