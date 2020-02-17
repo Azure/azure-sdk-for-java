@@ -37,10 +37,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.stubbing.Answer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -53,9 +51,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.function.Function;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 public class LROPollerTests {
@@ -88,11 +83,10 @@ public class LROPollerTests {
             private int[] getCallCount = new int[1];
 
             @Override
-            public com.github.tomakehurst.wiremock.http.Response
-                transform(Request request,
-                          com.github.tomakehurst.wiremock.http.Response response,
-                        FileSource fileSource,
-                        Parameters parameters) {
+            public com.github.tomakehurst.wiremock.http.Response transform(Request request,
+                                                                           com.github.tomakehurst.wiremock.http.Response response,
+                                                                           FileSource fileSource,
+                                                                           Parameters parameters) {
 
                 if (!request.getUrl().endsWith(resourceEndpoint)) {
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
@@ -145,11 +139,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                    new HttpPipelineBuilder().build(),
-                    FooWithProvisioningState.class,
-                    FooWithProvisioningState.class,
-                    Duration.ofMillis(100),
-                    lroInitFunction);
+                new HttpPipelineBuilder().build(),
+                FooWithProvisioningState.class,
+                FooWithProvisioningState.class,
+                Duration.ofMillis(100),
+                lroInitFunction);
 
             int[] onNextCallCount = new int[1];
             lroFlux.doOnNext(response -> {
@@ -186,11 +180,10 @@ public class LROPollerTests {
         final String sampleVaultUpdateSucceededResponse = "{\"id\":\"/subscriptions/###/resourceGroups/rg-weidxu/providers/Microsoft.KeyVault/vaults/v1weidxu\",\"name\":\"v1weidxu\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"centralus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"###\",\"accessPolicies\":[],\"enabledForDeployment\":false,\"vaultUri\":\"https://v1weidxu.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}";
         ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
             @Override
-            public com.github.tomakehurst.wiremock.http.Response
-            transform(Request request,
-                      com.github.tomakehurst.wiremock.http.Response response,
-                      FileSource fileSource,
-                      Parameters parameters) {
+            public com.github.tomakehurst.wiremock.http.Response transform(Request request,
+                                                                           com.github.tomakehurst.wiremock.http.Response response,
+                                                                           FileSource fileSource,
+                                                                           Parameters parameters) {
 
                 if (!request.getUrl().endsWith(resourceEndpoint)) {
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
@@ -233,11 +226,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<Resource>, Resource> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                    new HttpPipelineBuilder().build(),
-                    Resource.class,
-                    Resource.class,
-                    Duration.ofMillis(100),
-                    lroInitFunction);
+                new HttpPipelineBuilder().build(),
+                Resource.class,
+                Resource.class,
+                Duration.ofMillis(100),
+                lroInitFunction);
 
             AsyncPollResponse<PollResult<Resource>, Resource> asyncPollResponse = lroFlux.doOnNext(response -> {
                 PollResult<Resource> pollResult = response.getValue();

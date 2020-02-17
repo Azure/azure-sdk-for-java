@@ -236,7 +236,10 @@ public final class PollerFactory {
                 } else {
                     return pipeline.send(new HttpRequest(HttpMethod.GET, finalResult.getResultUri()))
                         .flatMap((Function<HttpResponse, Mono<String>>) response -> response.getBodyAsString())
-                        .map(body -> deserialize(serializerAdapter, body, finalResultType));
+                        .flatMap(body -> {
+                            U result = deserialize(serializerAdapter, body, finalResultType);
+                            return result != null ? Mono.just(result) : Mono.empty();
+                        });
                 }
             }
         };
