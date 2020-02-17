@@ -33,7 +33,7 @@ public class LinuxConfiguration {
     private SshConfiguration ssh;
 
     /**
-     * Get the disablePasswordAuthentication value.
+     * Get specifies whether password authentication should be disabled.
      *
      * @return the disablePasswordAuthentication value
      */
@@ -42,7 +42,7 @@ public class LinuxConfiguration {
     }
 
     /**
-     * Set the disablePasswordAuthentication value.
+     * Set specifies whether password authentication should be disabled.
      *
      * @param disablePasswordAuthentication the disablePasswordAuthentication value to set
      * @return the LinuxConfiguration object itself.
@@ -53,7 +53,7 @@ public class LinuxConfiguration {
     }
 
     /**
-     * Get the ssh value.
+     * Get specifies the ssh key configuration for a Linux OS.
      *
      * @return the ssh value
      */
@@ -62,7 +62,7 @@ public class LinuxConfiguration {
     }
 
     /**
-     * Set the ssh value.
+     * Set specifies the ssh key configuration for a Linux OS.
      *
      * @param ssh the ssh value to set
      * @return the LinuxConfiguration object itself.
