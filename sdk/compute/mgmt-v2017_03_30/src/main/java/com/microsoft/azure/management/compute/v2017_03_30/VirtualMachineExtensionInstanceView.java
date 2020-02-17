@@ -47,7 +47,7 @@ public class VirtualMachineExtensionInstanceView {
     private List<InstanceViewStatus> statuses;
 
     /**
-     * Get the name value.
+     * Get the virtual machine extension name.
      *
      * @return the name value
      */
@@ -56,7 +56,7 @@ public class VirtualMachineExtensionInstanceView {
     }
 
     /**
-     * Set the name value.
+     * Set the virtual machine extension name.
      *
      * @param name the name value to set
      * @return the VirtualMachineExtensionInstanceView object itself.
@@ -67,7 +67,7 @@ public class VirtualMachineExtensionInstanceView {
     }
 
     /**
-     * Get the type value.
+     * Get specifies the type of the extension; an example is "CustomScriptExtension".
      *
      * @return the type value
      */
@@ -76,7 +76,7 @@ public class VirtualMachineExtensionInstanceView {
     }
 
     /**
-     * Set the type value.
+     * Set specifies the type of the extension; an example is "CustomScriptExtension".
      *
      * @param type the type value to set
      * @return the VirtualMachineExtensionInstanceView object itself.
@@ -87,7 +87,7 @@ public class VirtualMachineExtensionInstanceView {
     }
 
     /**
-     * Get the typeHandlerVersion value.
+     * Get specifies the version of the script handler.
      *
      * @return the typeHandlerVersion value
      */
@@ -96,7 +96,7 @@ public class VirtualMachineExtensionInstanceView {
     }
 
     /**
-     * Set the typeHandlerVersion value.
+     * Set specifies the version of the script handler.
      *
      * @param typeHandlerVersion the typeHandlerVersion value to set
      * @return the VirtualMachineExtensionInstanceView object itself.
@@ -107,7 +107,7 @@ public class VirtualMachineExtensionInstanceView {
     }
 
     /**
-     * Get the substatuses value.
+     * Get the resource status information.
      *
      * @return the substatuses value
      */
@@ -116,7 +116,7 @@ public class VirtualMachineExtensionInstanceView {
     }
 
     /**
-     * Set the substatuses value.
+     * Set the resource status information.
      *
      * @param substatuses the substatuses value to set
      * @return the VirtualMachineExtensionInstanceView object itself.
@@ -127,7 +127,7 @@ public class VirtualMachineExtensionInstanceView {
     }
 
     /**
-     * Get the statuses value.
+     * Get the resource status information.
      *
      * @return the statuses value
      */
@@ -136,7 +136,7 @@ public class VirtualMachineExtensionInstanceView {
     }
 
     /**
-     * Set the statuses value.
+     * Set the resource status information.
      *
      * @param statuses the statuses value to set
      * @return the VirtualMachineExtensionInstanceView object itself.
