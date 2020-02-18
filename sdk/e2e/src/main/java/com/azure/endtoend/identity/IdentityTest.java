@@ -27,7 +27,6 @@ public class IdentityTest {
         }
 
         String platform = CONFIGURATION.get(AZURE_IDENTITY_TEST_PLATFORM).toLowerCase(Locale.ENGLISH);
-        WebJobsIdentityTest identityTest = new WebJobsIdentityTest();
         switch (platform) {
             case "webjobs":
                 WebJobsIdentityTest webJobsIdentityTest  = new WebJobsIdentityTest();
