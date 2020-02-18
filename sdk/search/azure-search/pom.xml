@@ -144,7 +144,6 @@
                 --add-reads com.azure.core=ALL-UNNAMED
                 --add-reads com.azure.core.test=ALL-UNNAMED
                 --add-reads com.azure.core.http.netty=ALL-UNNAMED
-                --illegal-access=warn
               </argLine>
             </configuration>
           </plugin>
