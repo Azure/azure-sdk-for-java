@@ -39,7 +39,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         StepVerifier.create(client.getDocument(expected.hotelId()))
-            .assertNext(res -> assertTrue(TestHelpers.areHotelsEqual(convertToType(res, Hotel.class), expected)))
+            .assertNext(res -> TestHelpers.assertHotelsEqual(expected, convertToType(res, Hotel.class)))
             .verifyComplete();
     }
 
@@ -51,7 +51,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         StepVerifier.create(client.getDocument(expected.hotelId()))
-            .assertNext(res -> assertTrue(TestHelpers.areHotelsEqual(convertToType(res, Hotel.class), expected)))
+            .assertNext(res -> TestHelpers.assertHotelsEqual(expected, convertToType(res, Hotel.class)))
             .verifyComplete();
     }
 
@@ -63,7 +63,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         StepVerifier.create(client.getDocument(expected.hotelId()))
-            .assertNext(res -> assertTrue(TestHelpers.areHotelsEqual(convertToType(res, Hotel.class), expected)))
+            .assertNext(res -> TestHelpers.assertHotelsEqual(expected, convertToType(res, Hotel.class)))
             .verifyComplete();
     }
 
@@ -76,7 +76,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         StepVerifier.create(client.getDocument(expected.key()))
-            .assertNext(res -> assertTrue(TestHelpers.areModelsWithPrimitivesEqual(convertToType(res, ModelWithPrimitiveCollections.class), expected)))
+            .assertNext(res -> TestHelpers.assetModelsWithPrimitivesEqual(expected, convertToType(res, ModelWithPrimitiveCollections.class)))
             .verifyComplete();
     }
 
@@ -99,7 +99,7 @@ public class LookupAsyncTests extends LookupTestBase {
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
 
         StepVerifier.create(client.getDocumentWithResponse(indexedDoc.hotelId(), selectedFields, generateRequestOptions()))
-            .assertNext(res -> assertTrue(TestHelpers.areHotelsEqual(convertToType(res, Hotel.class), expected)))
+            .assertNext(res -> TestHelpers.assertHotelsEqual(expected, convertToType(res, Hotel.class)))
             .verifyComplete();
     }
 

@@ -41,7 +41,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.unitils.reflectionReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public class SearchAsyncTests extends SearchTestBase {
 
@@ -188,10 +187,8 @@ public class SearchAsyncTests extends SearchTestBase {
         Flux<SearchResult> results = client.search("*", searchOptions, generateRequestOptions()).log();
         assertNotNull(results);
         StepVerifier.create(results)
-            .assertNext(
-                res -> ReflectionassertLenientEquals(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(0)))
-            .assertNext(
-                res -> ReflectionassertLenientEquals(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(1)))
+            .assertNext(res -> TestHelpers.assertDocumentsEqual(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(0)))
+            .assertNext(res -> TestHelpers.assertDocumentsEqual(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(1)))
             .verifyComplete();
     }
 
@@ -438,7 +435,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         assertEquals(hotelsList.size(), actualResults.size());
         for (int i = 0; i < hotelsList.size(); i++) {
-            assertTrue(TestHelpers.areHotelsEqual(actualResults.get(i), hotelsList.get(i)));
+            TestHelpers.assertHotelsEqual(hotelsList.get(i), actualResults.get(i));
         }
     }
 
@@ -466,8 +463,8 @@ public class SearchAsyncTests extends SearchTestBase {
         assertNotNull(results);
         StepVerifier.create(results.byPage()).assertNext(res -> {
             assertEquals(2, res.getItems().size());
-            assertReflectionEquals(doc1, convertToType(res.getItems().get(0).getDocument(), NonNullableModel.class), IGNORE_DEFAULTS);
-            assertReflectionEquals(doc2, convertToType(res.getItems().get(1).getDocument(), NonNullableModel.class), IGNORE_DEFAULTS);
+            TestHelpers.assetNonNullableModelsEqual(doc1, convertToType(res.getItems().get(0).getDocument(), NonNullableModel.class));
+            TestHelpers.assetNonNullableModelsEqual(doc2, convertToType(res.getItems().get(1).getDocument(), NonNullableModel.class));
         }).verifyComplete();
     }
 

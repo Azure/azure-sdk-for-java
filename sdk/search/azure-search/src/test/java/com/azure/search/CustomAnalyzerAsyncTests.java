@@ -101,7 +101,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         Index index = prepareIndexWithAllAnalyzerNames();
 
         StepVerifier.create(searchServiceClient.createIndex(index))
-            .assertNext(res -> assertIndexesEqual(index, res))
+            .assertNext(res -> TestHelpers.assertIndexesEqual(index, res))
             .verifyComplete();
 
         // Add language analyzers to searchAnalyzer and indexAnalyzer properties and expect failure

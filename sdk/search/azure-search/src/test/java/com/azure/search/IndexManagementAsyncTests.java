@@ -78,7 +78,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     public void createIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
         StepVerifier.create(client.createIndex(index))
-            .assertNext(createdIndex -> assertIndexesEqual(index, createdIndex))
+            .assertNext(createdIndex -> TestHelpers.assertIndexesEqual(index, createdIndex))
             .verifyComplete();
     }
 
@@ -86,7 +86,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     public void createIndexReturnsCorrectDefinitionWithResponse() {
         Index index = createTestIndex();
         StepVerifier.create(client.createIndexWithResponse(index.setName("hotel2"), generateRequestOptions()))
-            .assertNext(createdIndex -> assertIndexesEqual(index, createdIndex.getValue()))
+            .assertNext(createdIndex -> TestHelpers.assertIndexesEqual(index, createdIndex.getValue()))
             .verifyComplete();
     }
 
@@ -140,7 +140,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier.create(client.createIndex(index)
             .then(client.getIndex(index.getName())))
-            .assertNext(res -> assertIndexesEqual(index, res))
+            .assertNext(res -> TestHelpers.assertIndexesEqual(index, res))
             .verifyComplete();
     }
 
@@ -150,7 +150,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier.create(client.createIndex(index)
             .then(client.getIndexWithResponse(index.getName(), generateRequestOptions())))
-            .assertNext(res -> assertIndexesEqual(index, res.getValue()))
+            .assertNext(res -> TestHelpers.assertIndexesEqual(index, res.getValue()))
             .verifyComplete();
     }
 
@@ -330,7 +330,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .create(client.createOrUpdateIndexWithResponse(existingIndex,
                 true, new AccessCondition(), generateRequestOptions()))
             .assertNext(res ->
-                assertIndexesEqual(existingIndex, res.getValue())
+                TestHelpers.assertIndexesEqual(existingIndex, res.getValue())
             )
             .verifyComplete();
     }
@@ -359,7 +359,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.createOrUpdateIndex(index))
-            .assertNext(res -> assertIndexesEqual(fullFeaturedIndex, res))
+            .assertNext(res -> TestHelpers.assertIndexesEqual(fullFeaturedIndex, res))
             .verifyComplete();
 
         // Modify the fields on an existing index
@@ -390,7 +390,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         StepVerifier
             .create(client
                 .createOrUpdateIndexWithResponse(existingIndex, true, new AccessCondition(), generateRequestOptions()))
-            .assertNext(res -> assertIndexesEqual(existingIndex, res.getValue()))
+            .assertNext(res -> TestHelpers.assertIndexesEqual(existingIndex, res.getValue()))
             .verifyComplete();
     }
 
@@ -417,7 +417,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         StepVerifier
             .create(client.createOrUpdateIndexWithResponse(existingIndex,
                 true, new AccessCondition(), generateRequestOptions()))
-            .assertNext(res -> assertIndexesEqual(existingIndex, res.getValue()))
+            .assertNext(res -> TestHelpers.assertIndexesEqual(existingIndex, res.getValue()))
             .verifyComplete();
     }
 
@@ -448,12 +448,12 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.createOrUpdateIndex(expected))
-            .assertNext(res -> assertIndexesEqual(expected, res))
+            .assertNext(res -> TestHelpers.assertIndexesEqual(expected, res))
             .verifyComplete();
 
         StepVerifier
             .create(client.createOrUpdateIndex(expected.setName("hotel1")))
-            .assertNext(res -> assertIndexesEqual(expected, res))
+            .assertNext(res -> TestHelpers.assertIndexesEqual(expected, res))
             .verifyComplete();
 
         StepVerifier
@@ -469,13 +469,13 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         StepVerifier
             .create(client.createOrUpdateIndexWithResponse(expected, false, new AccessCondition(),
                 generateRequestOptions()))
-            .assertNext(res -> assertIndexesEqual(expected, res.getValue()))
+            .assertNext(res -> TestHelpers.assertIndexesEqual(expected, res.getValue()))
             .verifyComplete();
 
         StepVerifier
             .create(client.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
                 false, new AccessCondition(), generateRequestOptions()))
-            .assertNext(res -> assertIndexesEqual(expected, res.getValue()))
+            .assertNext(res -> TestHelpers.assertIndexesEqual(expected, res.getValue()))
             .verifyComplete();
 
         StepVerifier

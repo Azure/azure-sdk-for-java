@@ -4,8 +4,9 @@
 package com.azure.search.test;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.CoreUtils;
+import com.azure.search.TestHelpers;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -13,9 +14,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class AccessConditionTests extends AccessConditionBase {
@@ -71,7 +72,7 @@ public class AccessConditionTests extends AccessConditionBase {
         // Create the resource on the service
         T createdResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
-        assertTrue(StringUtils.isNotBlank(getEtag(createdResource)));
+        assertFalse(TestHelpers.isBlank(getEtag(createdResource)));
 
         return createdResource;
     }
@@ -217,7 +218,7 @@ public class AccessConditionTests extends AccessConditionBase {
         String updatedETag = getEtag(mutateResource);
 
         // Verify the eTag is not empty and was changed
-        assertTrue(StringUtils.isNotEmpty(updatedETag));
+        assertFalse(CoreUtils.isNullOrEmpty(updatedETag));
         assertNotEquals(originalETag, updatedETag);
     }
 
@@ -262,8 +263,8 @@ public class AccessConditionTests extends AccessConditionBase {
         }
 
         // Check eTags
-        assertTrue(StringUtils.isNotEmpty(originalETag));
-        assertTrue(StringUtils.isNotEmpty(updatedETag));
+        assertFalse(CoreUtils.isNullOrEmpty(originalETag));
+        assertFalse(CoreUtils.isNullOrEmpty(updatedETag));
         assertNotEquals(originalETag, updatedETag);
     }
 
@@ -298,8 +299,8 @@ public class AccessConditionTests extends AccessConditionBase {
         String updatedETag = getEtag(mutateResource);
 
         // Check eTags as expected
-        assertTrue(StringUtils.isNotEmpty(originalEtag));
-        assertTrue(StringUtils.isNotEmpty(updatedETag));
+        assertFalse(CoreUtils.isNullOrEmpty(originalEtag));
+        assertFalse(CoreUtils.isNullOrEmpty(updatedETag));
         assertNotEquals(originalEtag, updatedETag);
     }
 }

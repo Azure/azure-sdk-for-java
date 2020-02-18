@@ -103,7 +103,7 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
         Index index = prepareIndexWithAllAnalyzerNames();
 
         Index res = searchServiceClient.createIndex(index);
-        assertIndexesEqual(index, res);
+        TestHelpers.assertIndexesEqual(index, res);
 
         // Add language analyzers to searchAnalyzer and indexAnalyzer properties and expect failure
         try {

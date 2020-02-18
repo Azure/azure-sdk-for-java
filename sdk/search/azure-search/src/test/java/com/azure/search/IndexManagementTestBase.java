@@ -4,13 +4,9 @@ package com.azure.search;
 
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.unitils.reflectionReflectionassertReflectionEquals;
-import static org.unitils.reflectionReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public abstract class IndexManagementTestBase extends SearchServiceTestBase {
 
@@ -97,15 +93,6 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void canCreateAndGetIndexStatsWithResponse();
-
-    protected void assertIndexesEqual(Index expected, Index actual) {
-        expected.setETag("none");
-        actual.setETag("none");
-
-        // we ignore defaults as when properties are not set they are returned from the service with
-        // default values
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
-    }
 
     Index mutateCorsOptionsInIndex(Index index) {
         index.getCorsOptions().setAllowedOrigins("*");

@@ -37,9 +37,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.unitils.reflectionReflectionassertReflectionEquals;
-import static org.unitils.reflectionReflectionComparatorMode.IGNORE_DEFAULTS;
-
 public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
 
     static final String CONTEXT_VALUE = "/document";
@@ -170,12 +167,6 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void deleteSkillsetIfExistsWorksOnlyWhenResourceExists();
-
-    void assertSkillsetsEqual(Skillset expected, Skillset actual) {
-        expected.setETag("none");
-        actual.setETag("none");
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
-    }
 
     Skillset createTestSkillsetImageAnalysisKeyPhrase() {
         List<Skill> skills = new ArrayList<>();

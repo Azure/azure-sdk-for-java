@@ -29,7 +29,6 @@ import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataSourceAsyncTests extends DataSourceTestBase {
     private SearchServiceAsyncClient client;
@@ -137,7 +136,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         StepVerifier.create(client.createOrUpdateDataSource(updatedExpected))
             .assertNext(updatedActual -> {
                 updatedExpected.getCredentials().setConnectionString(null); // Create doesn't return connection strings.
-                assertTrue(TestHelpers.areDataSourcesEqual(updatedActual, updatedExpected));
+                TestHelpers.assertDataSourcesEqual(updatedExpected, updatedActual);
             })
             .verifyComplete();
     }
@@ -254,7 +253,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         assertNotNull(actualDataSource);
 
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null));
-        assertTrue(TestHelpers.areDataSourcesEqual(actualDataSource, expectedDataSource));
+        TestHelpers.assertDataSourcesEqual(expectedDataSource, actualDataSource);
 
         // we delete the data source because otherwise we will hit the quota limits during the tests
         StepVerifier.create(client.deleteDataSource(actualDataSource.getName()))
@@ -280,7 +279,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         StepVerifier.create(client.getDataSource(dataSourceName))
             .assertNext(dataSource -> {
                 assertNotNull(dataSource);
-                assertTrue(TestHelpers.areDataSourcesEqual(dataSource, expectedDataSource));
+                TestHelpers.assertDataSourcesEqual(expectedDataSource, dataSource);
             })
             .verifyComplete();
 
@@ -288,7 +287,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .assertNext(response -> {
                 DataSource dataSource = response.getValue();
                 assertNotNull(dataSource);
-                assertTrue(TestHelpers.areDataSourcesEqual(dataSource, expectedDataSource));
+                TestHelpers.assertDataSourcesEqual(expectedDataSource, dataSource);
             })
             .verifyComplete();
 

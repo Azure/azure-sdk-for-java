@@ -10,7 +10,6 @@ import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -22,6 +21,9 @@ import java.util.stream.Collectors;
 
 import static com.azure.search.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.SearchTestBase.HOTELS_INDEX_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SuggestSyncTests extends SuggestTestBase {
 
@@ -42,7 +44,7 @@ public class SuggestSyncTests extends SuggestTestBase {
             .iterator();
 
         verifyDynamicDocumentSuggest(suggestResultIterator.next());
-        Assert.assertFalse(suggestResultIterator.hasNext());
+        assertFalse(suggestResultIterator.hasNext());
     }
 
     @Test
@@ -60,7 +62,7 @@ public class SuggestSyncTests extends SuggestTestBase {
             .iterator();
 
         verifyFieldsExcludesFieldsSuggest(suggestResultIterator.next());
-        Assert.assertFalse(suggestResultIterator.hasNext());
+        assertFalse(suggestResultIterator.hasNext());
     }
 
     @Test
@@ -81,7 +83,7 @@ public class SuggestSyncTests extends SuggestTestBase {
             .iterator();
 
         verifyHitHighlightingSuggest(suggestResultIterator.next());
-        Assert.assertFalse(suggestResultIterator.hasNext());
+        assertFalse(suggestResultIterator.hasNext());
     }
 
     @Test
@@ -99,7 +101,7 @@ public class SuggestSyncTests extends SuggestTestBase {
             .iterator();
 
         verifyFuzzySuggest(suggestResultIterator.next());
-        Assert.assertFalse(suggestResultIterator.hasNext());
+        assertFalse(suggestResultIterator.hasNext());
     }
 
     @Test
@@ -263,11 +265,11 @@ public class SuggestSyncTests extends SuggestTestBase {
             .iterator()
             .next();
 
-        Assert.assertNotNull(suggestPagedResponse);
+        assertNotNull(suggestPagedResponse);
         List<String> actualIds = suggestPagedResponse.getValue().stream()
             .map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "5");
-        Assert.assertEquals(expectedIds, actualIds);
+        assertEquals(expectedIds, actualIds);
     }
 
     @Test
@@ -287,11 +289,11 @@ public class SuggestSyncTests extends SuggestTestBase {
             "sg", suggestOptions, generateRequestOptions(), Context.NONE)
             .iterableByPage().iterator().next();
 
-        Assert.assertNotNull(suggestPagedResponse);
+        assertNotNull(suggestPagedResponse);
         List<String> actualIds = suggestPagedResponse.getValue().stream()
             .map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
-        Assert.assertEquals(expectedIds, actualIds);
+        assertEquals(expectedIds, actualIds);
     }
 
     @Test

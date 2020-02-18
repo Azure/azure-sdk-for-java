@@ -559,10 +559,6 @@ public abstract class SearchServiceTestBase extends TestBase {
         }
     }
 
-    protected void assertIndexesEqual(Index expected, Index actual) {
-        assertTrue(TestHelpers.areIndexesEqual(actual, expected));
-    }
-
     protected void waitForIndexing() {
         // Wait 2 secs to allow index request to finish
         if (!interceptorManager.isPlaybackMode()) {

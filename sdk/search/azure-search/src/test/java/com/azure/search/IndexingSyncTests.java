@@ -36,7 +36,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class IndexingSyncTests extends IndexingTestBase {
@@ -196,13 +195,13 @@ public class IndexingSyncTests extends IndexingTestBase {
         }
 
         Hotel actualHotel1 = convertToType(client.getDocument(hotel1.hotelId()), Hotel.class);
-        assertTrue(TestHelpers.areHotelsEqual(actualHotel1, hotel1));
+        TestHelpers.assertHotelsEqual(hotel1, actualHotel1);
 
         Hotel actualHotel2 = convertToType(client.getDocument(hotel2.hotelId()), Hotel.class);
-        assertTrue(TestHelpers.areHotelsEqual(actualHotel2, hotel2));
+        TestHelpers.assertHotelsEqual(hotel2, actualHotel2);
 
         Hotel actualHotel3 = convertToType(client.getDocument(hotel3.hotelId()), Hotel.class);
-        assertTrue(TestHelpers.areHotelsEqual(actualHotel3, hotel3));
+        TestHelpers.assertHotelsEqual(hotel3, actualHotel3);
     }
 
     @Test
@@ -306,7 +305,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         for (Hotel expected : boundaryConditionDocs) {
             Document doc = client.getDocument(expected.hotelId());
             Hotel actual = convertToType(doc, Hotel.class);
-            assertTrue(TestHelpers.areHotelsEqual(actual, expected));
+            TestHelpers.assertHotelsEqual(expected, actual);
         }
     }
 
@@ -484,10 +483,10 @@ public class IndexingSyncTests extends IndexingTestBase {
         List<Hotel> updatedDocs = new ArrayList<>();
         updatedDocs.add(updatedDoc);
         client.mergeDocuments(updatedDocs);
-        assertTrue(TestHelpers.areHotelsEqual(convertToType(client.getDocument("1"), Hotel.class), expectedDoc));
+        TestHelpers.assertHotelsEqual(expectedDoc, convertToType(client.getDocument("1"), Hotel.class));
 
         client.mergeDocuments(originalDocs);
-        assertTrue(TestHelpers.areHotelsEqual(convertToType(client.getDocument("1"), Hotel.class), originalDoc));
+        TestHelpers.assertHotelsEqual(originalDoc, convertToType(client.getDocument("1"), Hotel.class));
     }
 
     @Test
@@ -620,14 +619,14 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         Document result = client.getDocument("1");
         LoudHotel actualDoc = convertToType(result, LoudHotel.class);
-        assertTrue(TestHelpers.areLoudHotelsEqual(actualDoc, expectedDoc));
+        TestHelpers.assertLoudHotelsEqual(expectedDoc, actualDoc);
 
         client.uploadDocuments(originalDocs);
         waitForIndexing();
 
         result = client.getDocument("1");
         actualDoc = convertToType(result, LoudHotel.class);
-        assertTrue(TestHelpers.areLoudHotelsEqual(actualDoc, originalDoc));
+        TestHelpers.assertLoudHotelsEqual(originalDoc, actualDoc);
     }
 
     @Test

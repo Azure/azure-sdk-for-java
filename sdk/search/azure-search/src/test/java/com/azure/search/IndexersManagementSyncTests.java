@@ -5,6 +5,7 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.Index;
@@ -18,7 +19,6 @@ import com.azure.search.models.Skillset;
 import com.azure.search.test.AccessConditionTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -34,7 +34,6 @@ import java.util.function.Supplier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     private SearchServiceClient client;
@@ -117,7 +116,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         // verify the returned updated indexer is as expected
         setSameStartTime(updatedIndexer, indexerResponse);
-        assertTrue(TestHelpers.areIndexersEqual(indexerResponse, updatedIndexer));
+        TestHelpers.assertIndexersEqual(updatedIndexer, indexerResponse);
     }
 
     /**
@@ -135,7 +134,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         // verify the returned updated indexer is as expected
         setSameStartTime(indexer, indexerResponse);
-        assertTrue(TestHelpers.areIndexersEqual(indexerResponse, indexer));
+        TestHelpers.assertIndexersEqual(indexer, indexerResponse);
     }
 
     @Override
@@ -169,7 +168,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             .setConfiguration(Collections.emptyMap()));
         setSameStartTime(expectedIndexer, actualIndexer);
 
-        assertTrue(TestHelpers.areIndexersEqual(actualIndexer, expectedIndexer));
+        TestHelpers.assertIndexersEqual(expectedIndexer, actualIndexer);
     }
 
     @Test
@@ -193,8 +192,8 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client.createIndexer(indexer2);
 
         Iterator<Indexer> indexers = client.listIndexers().iterator();
-        assertTrue(TestHelpers.areIndexersEqual(indexers.next(), indexer1));
-        assertTrue(TestHelpers.areIndexersEqual(indexers.next(), indexer2));
+        TestHelpers.assertIndexersEqual(indexer1, indexers.next());
+        TestHelpers.assertIndexersEqual(indexer2, indexers.next());
         assertFalse(indexers.hasNext());
     }
 
@@ -205,11 +204,11 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Iterator<Indexer> indexersRes = client.listIndexers("name", generateRequestOptions(), Context.NONE).iterator();
 
         Indexer actualIndexer = indexersRes.next();
-        assertTrue(TestHelpers.areIndexersEqual(actualIndexer, indexers.get(0)));
+        TestHelpers.assertIndexersEqual(indexers.get(0), actualIndexer);
         assertAllIndexerFieldsNullExceptName(actualIndexer);
 
         actualIndexer = indexersRes.next();
-        assertTrue(TestHelpers.areIndexersEqual(actualIndexer, indexers.get(1)));
+        TestHelpers.assertIndexersEqual(indexers.get(1), actualIndexer);
         assertAllIndexerFieldsNullExceptName(actualIndexer);
 
         assertFalse(indexersRes.hasNext());
@@ -489,10 +488,10 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         client.createIndexer(indexer);
         Indexer indexerResult = client.getIndexer(indexerName);
-        assertTrue(TestHelpers.areIndexersEqual(indexerResult, indexer));
+        TestHelpers.assertIndexersEqual(indexer, indexerResult);
 
         indexerResult = client.getIndexerWithResponse(indexerName, generateRequestOptions(), Context.NONE).getValue();
-        assertTrue(TestHelpers.areIndexersEqual(indexerResult, indexer));
+        TestHelpers.assertIndexersEqual(indexer, indexerResult);
     }
 
     @Test
@@ -513,7 +512,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Indexer indexerResult = act.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateIndexerFunc,
             newIndexerFunc);
 
-        assertTrue(StringUtils.isNoneEmpty(indexerResult.getETag()));
+        assertFalse(CoreUtils.isNullOrEmpty(indexerResult.getETag()));
     }
 
     @Test

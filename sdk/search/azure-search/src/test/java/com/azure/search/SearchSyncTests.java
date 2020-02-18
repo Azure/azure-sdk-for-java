@@ -20,11 +20,8 @@ import com.azure.search.test.environment.models.NonNullableModel;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.unitils.reflectionReflectionAssert;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
@@ -49,8 +46,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.unitils.reflectionReflectionassertReflectionEquals;
-import static org.unitils.reflectionReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public class SearchSyncTests extends SearchTestBase {
 
@@ -208,7 +203,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         assertEquals(hotelsList.size(), actualResults.size());
         for (int i = 0; i < hotelsList.size(); i++) {
-            assertTrue(TestHelpers.areHotelsEqual(actualResults.get(i), hotelsList.get(i)));
+            TestHelpers.assertHotelsEqual(hotelsList.get(i), actualResults.get(i));
         }
     }
 
@@ -240,8 +235,8 @@ public class SearchSyncTests extends SearchTestBase {
 
         PagedResponse<SearchResult> result = iterator.next();
         assertEquals(2, result.getItems().size());
-        assertReflectionEquals(doc1, convertToType(result.getItems().get(0).getDocument(), NonNullableModel.class), IGNORE_DEFAULTS);
-        assertReflectionEquals(doc2, convertToType(result.getItems().get(1).getDocument(), NonNullableModel.class), IGNORE_DEFAULTS);
+        TestHelpers.assetNonNullableModelsEqual(doc1, convertToType(result.getItems().get(0).getDocument(), NonNullableModel.class));
+        TestHelpers.assetNonNullableModelsEqual(doc2, convertToType(result.getItems().get(1).getDocument(), NonNullableModel.class));
     }
 
     @Test
@@ -517,8 +512,9 @@ public class SearchSyncTests extends SearchTestBase {
 
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
         assertEquals(2, searchResultsList.size());
-
-        ReflectionassertLenientEquals(expectedDocsList, searchResultsList);
+        for (int i = 0; i < searchResultsList.size(); i++) {
+            TestHelpers.assertDocumentsEqual(expectedDocsList.get(i), searchResultsList.get(i));
+        }
     }
 
     @Test

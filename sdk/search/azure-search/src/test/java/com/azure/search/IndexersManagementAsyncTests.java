@@ -31,7 +31,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     private SearchServiceAsyncClient client;
@@ -124,7 +123,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         StepVerifier.create(client.createOrUpdateIndexer(updatedIndexer))
             .assertNext(indexer -> {
                 setSameStartTime(updatedIndexer, indexer);
-                assertTrue(TestHelpers.areIndexersEqual(indexer, updatedIndexer));
+                TestHelpers.assertIndexersEqual(updatedIndexer, indexer);
             })
             .verifyComplete();
     }
@@ -143,7 +142,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         StepVerifier.create(client.createIndexer(indexer))
             .assertNext(responseIndexer -> {
                 setSameStartTime(indexer, responseIndexer);
-                assertTrue(TestHelpers.areIndexersEqual(indexer, responseIndexer));
+                TestHelpers.assertIndexersEqual(indexer, responseIndexer);
             })
             .verifyComplete();
     }
@@ -201,8 +200,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
                 expectedIndexer.setParameters(new IndexingParameters()
                     .setConfiguration(Collections.emptyMap()));
                 setSameStartTime(expectedIndexer, actualIndexer);
-
-                assertTrue(TestHelpers.areIndexersEqual(actualIndexer, expectedIndexer));
+                TestHelpers.assertIndexersEqual(expectedIndexer, actualIndexer);
             })
             .verifyComplete();
     }
@@ -211,8 +209,8 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         List<Indexer> indexers = prepareIndexersForCreateAndListIndexers();
 
         StepVerifier.create(client.listIndexers())
-            .assertNext(indexer -> assertTrue(TestHelpers.areIndexersEqual(indexer, indexers.get(0))))
-            .assertNext(indexer -> assertTrue(TestHelpers.areIndexersEqual(indexer, indexers.get(1))))
+            .assertNext(indexer -> TestHelpers.assertIndexersEqual(indexers.get(0), indexer))
+            .assertNext(indexer -> TestHelpers.assertIndexersEqual(indexers.get(1), indexer))
             .verifyComplete();
     }
 
@@ -222,11 +220,11 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
         StepVerifier.create(client.listIndexers("name", generateRequestOptions()))
             .assertNext(indexer -> {
-                assertTrue(TestHelpers.areIndexersEqual(indexers.get(0), indexer));
+                TestHelpers.assertIndexersEqual(indexers.get(0), indexer);
                 assertAllIndexerFieldsNullExceptName(indexer);
             })
             .assertNext(indexer -> {
-                assertTrue(TestHelpers.areIndexersEqual(indexers.get(1), indexer));
+                TestHelpers.assertIndexersEqual(indexers.get(1), indexer);
                 assertAllIndexerFieldsNullExceptName(indexer);
             })
             .verifyComplete();
@@ -489,11 +487,11 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         client.createIndexer(indexer).block();
 
         StepVerifier.create(client.getIndexer(indexerName))
-            .assertNext(actualIndexer -> assertTrue(TestHelpers.areIndexersEqual(actualIndexer, indexer)))
+            .assertNext(actualIndexer -> TestHelpers.assertIndexersEqual(indexer, actualIndexer))
             .verifyComplete();
 
         StepVerifier.create(client.getIndexerWithResponse(indexerName, generateRequestOptions()))
-            .assertNext(response -> assertTrue(TestHelpers.areIndexersEqual(response.getValue(), indexer)))
+            .assertNext(response -> TestHelpers.assertIndexersEqual(indexer, response.getValue()))
             .verifyComplete();
     }
 

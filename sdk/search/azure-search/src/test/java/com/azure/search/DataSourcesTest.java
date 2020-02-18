@@ -10,8 +10,6 @@ import com.azure.search.models.DataSourceType;
 import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Unit Test DataSources utility class
  */
@@ -29,7 +27,7 @@ public class DataSourcesTest {
 
         DataSource actual = DataSources.azureSql("sql", "connectionString", "table");
 
-        assertTrue(TestHelpers.areDataSourcesEqual(actual, expected));
+        TestHelpers.assertDataSourcesEqual(expected, actual);
     }
 
     @Test
@@ -45,7 +43,7 @@ public class DataSourcesTest {
 
         DataSource actual = DataSources.azureBlobStorage("storageBlob", "connectionString", "container");
 
-        assertTrue(TestHelpers.areDataSourcesEqual(actual, expected));
+        TestHelpers.assertDataSourcesEqual(expected, actual);
     }
 
     @Test
@@ -61,7 +59,7 @@ public class DataSourcesTest {
 
         DataSource actual = DataSources.azureTableStorage("storageTable", "connectionString", "table");
 
-        assertTrue(TestHelpers.areDataSourcesEqual(actual, expected));
+        TestHelpers.assertDataSourcesEqual(expected, actual);
     }
 
     @Test
@@ -77,7 +75,7 @@ public class DataSourcesTest {
 
         DataSource actual = DataSources.cosmos("cosmos", "connectionString", "collection", false);
 
-        assertTrue(TestHelpers.areDataSourcesEqual(actual, expected));
+        TestHelpers.assertDataSourcesEqual(expected, actual);
     }
 
     @Test
@@ -94,6 +92,6 @@ public class DataSourcesTest {
 
         DataSource actual = DataSources.cosmos("cosmos", "connectionString", "collection");
 
-        assertTrue(TestHelpers.areDataSourcesEqual(actual, expected));
+        TestHelpers.assertDataSourcesEqual(expected, actual);
     }
 }

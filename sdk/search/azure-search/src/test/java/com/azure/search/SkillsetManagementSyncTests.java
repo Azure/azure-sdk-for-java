@@ -68,7 +68,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhrase() {
         Skillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
         Response<Skillset> skillsetResponse = client.createSkillsetWithResponse(expectedSkillset,
             generateRequestOptions(), Context.NONE);
-        assertSkillsetsEqual(expectedSkillset, skillsetResponse.getValue());
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, skillsetResponse.getValue());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createTestSkillsetLanguageDetection();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -92,14 +92,14 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createTestSkillsetMergeText();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrEntity() {
         Skillset expectedSkillset = createTestSkillsetOcrEntity(null, null);
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
 
         List<EntityCategory> entityCategories = Arrays.asList(
             EntityCategory.LOCATION, EntityCategory.ORGANIZATION, EntityCategory.PERSON);
@@ -107,7 +107,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         expectedSkillset = createTestSkillsetOcrEntity(TextExtractionAlgorithm.PRINTED, entityCategories)
             .setName("testskillset1");
         actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -115,17 +115,17 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.PT,
             SentimentSkillLanguage.PT_PT, TextExtractionAlgorithm.PRINTED);
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
 
         expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.FI,
             SentimentSkillLanguage.FI, TextExtractionAlgorithm.PRINTED).setName("testskillset1");
         actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
 
         expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.EN,
             SentimentSkillLanguage.EN, TextExtractionAlgorithm.HANDWRITTEN).setName("testskillset2");
         actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -133,17 +133,17 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createTestSkillsetOcrKeyPhrase(OcrSkillLanguage.EN,
             KeyPhraseExtractionSkillLanguage.EN);
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
 
         expectedSkillset = createTestSkillsetOcrKeyPhrase(OcrSkillLanguage.FR, KeyPhraseExtractionSkillLanguage.FR)
             .setName("testskillset1");
         actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
 
         expectedSkillset = createTestSkillsetOcrKeyPhrase(OcrSkillLanguage.ES, KeyPhraseExtractionSkillLanguage.ES)
             .setName("testskillset2");
         actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -151,7 +151,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createTestSkillsetOcrShaper();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -159,24 +159,24 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.EN,
             SplitSkillLanguage.EN, TextSplitMode.PAGES);
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
 
 
         expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.FR,
             SplitSkillLanguage.FR, TextSplitMode.PAGES).setName("testskillset1");
         actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
 
         expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.FI,
             SplitSkillLanguage.FI, TextSplitMode.SENTENCES).setName("testskillset2");
         actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
         client.deleteSkillset(expectedSkillset.getName());
 
         expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.DA,
             SplitSkillLanguage.DA, TextSplitMode.SENTENCES).setName("testskillset3");
         actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -185,7 +185,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -193,7 +193,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -201,7 +201,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createSkillsetWithImageAnalysisDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -209,7 +209,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createSkillsetWithKeyPhraseExtractionDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -217,7 +217,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createSkillsetWithMergeDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -225,7 +225,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createSkillsetWithEntityRecognitionDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -234,7 +234,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         client.createSkillset(expected);
 
         Skillset actual = client.getSkillset(expected.getName());
-        assertSkillsetsEqual(expected, actual);
+        TestHelpers.assertSkillsetsEqual(expected, actual);
     }
 
     @Test
@@ -244,7 +244,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
         Skillset actual = client.getSkillsetWithResponse(expected.getName(), generateRequestOptions(), Context.NONE)
             .getValue();
-        assertSkillsetsEqual(expected, actual);
+        TestHelpers.assertSkillsetsEqual(expected, actual);
     }
 
     @Test
@@ -255,7 +255,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
         Skillset actual = client.getSkillset(expected.getName());
 
-        assertSkillsetsEqual(expected, actual);
+        TestHelpers.assertSkillsetsEqual(expected, actual);
     }
 
     @Test
@@ -263,7 +263,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createSkillsetWithSentimentDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -271,7 +271,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createSkillsetWithSplitDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
+        TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset);
     }
 
     @Test
@@ -279,7 +279,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expected = createSkillsetWithCustomSkills();
         Skillset actual = client.createSkillset(expected);
 
-        assertSkillsetsEqual(expected, actual);
+        TestHelpers.assertSkillsetsEqual(expected, actual);
     }
 
     @Test
@@ -365,7 +365,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED, false);
 
         Skillset actual = client.createOrUpdateSkillset(expected);
-        assertSkillsetsEqual(expected, actual);
+        TestHelpers.assertSkillsetsEqual(expected, actual);
     }
 
     @Test
@@ -400,7 +400,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         // update skills
         createdSkillset.setSkills(getCreateOrUpdateSkills());
 
-        assertSkillsetsEqual(createdSkillset, client.createOrUpdateSkillset(createdSkillset));
+        TestHelpers.assertSkillsetsEqual(createdSkillset, client.createOrUpdateSkillset(createdSkillset));
     }
 
 
@@ -413,7 +413,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         // update skills
         createdSkillset.setCognitiveServicesAccount(new DefaultCognitiveServicesAccount().setDescription("description"));
 
-        assertSkillsetsEqual(createdSkillset, client.createOrUpdateSkillset(createdSkillset));
+        TestHelpers.assertSkillsetsEqual(createdSkillset, client.createOrUpdateSkillset(createdSkillset));
     }
 
     @Test
@@ -421,7 +421,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expected = createSkillsetWithSharperSkillWithNestedInputs();
         Skillset actual = client.createSkillset(expected);
 
-        assertSkillsetsEqual(expected, actual);
+        TestHelpers.assertSkillsetsEqual(expected, actual);
     }
 
     @Test
@@ -439,7 +439,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset expected = createTestSkillsetConditional();
         Skillset actual = client.createSkillset(expected);
 
-        assertSkillsetsEqual(expected, actual);
+        TestHelpers.assertSkillsetsEqual(expected, actual);
     }
 
     @Test

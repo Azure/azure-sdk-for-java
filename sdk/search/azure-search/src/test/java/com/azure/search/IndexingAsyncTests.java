@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;
@@ -127,15 +126,15 @@ public class IndexingAsyncTests extends IndexingTestBase {
             });
 
         StepVerifier.create(client.getDocument(hotel1.hotelId()))
-            .assertNext(result -> assertTrue(TestHelpers.areHotelsEqual(convertToType(result, Hotel.class), hotel1)))
+            .assertNext(result -> TestHelpers.assertHotelsEqual(hotel1, convertToType(result, Hotel.class)))
             .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel2.hotelId()))
-            .assertNext(result -> assertTrue(TestHelpers.areHotelsEqual(convertToType(result, Hotel.class), hotel2)))
+            .assertNext(result -> TestHelpers.assertHotelsEqual(hotel2, convertToType(result, Hotel.class)))
             .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel3.hotelId()))
-            .assertNext(result -> assertTrue(TestHelpers.areHotelsEqual(convertToType(result, Hotel.class), hotel3)))
+            .assertNext(result -> TestHelpers.assertHotelsEqual(hotel3, convertToType(result, Hotel.class)))
             .verifyComplete();
     }
 
@@ -243,7 +242,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         for (Hotel expected : boundaryConditionDocs) {
             StepVerifier.create(client.getDocument(expected.hotelId()))
-                .assertNext(d -> assertTrue(TestHelpers.areHotelsEqual(convertToType(d, Hotel.class), expected)))
+                .assertNext(d -> TestHelpers.assertHotelsEqual(expected, convertToType(d, Hotel.class)))
                 .verifyComplete();
         }
 
@@ -440,14 +439,14 @@ public class IndexingAsyncTests extends IndexingTestBase {
         client.mergeDocuments(updatedDocs).block();
 
         StepVerifier.create(client.getDocument("1"))
-            .assertNext(result -> assertTrue(TestHelpers.areHotelsEqual(convertToType(result, Hotel.class), expectedDoc)))
+            .assertNext(result -> TestHelpers.assertHotelsEqual(expectedDoc, convertToType(result, Hotel.class)))
             .verifyComplete();
 
         client.mergeDocuments(originalDocs).block();
 
         // Verify
         StepVerifier.create(client.getDocument("1"))
-            .assertNext(result -> assertTrue(TestHelpers.areHotelsEqual(convertToType(result, Hotel.class), originalDoc)))
+            .assertNext(result -> TestHelpers.assertHotelsEqual(originalDoc, convertToType(result, Hotel.class)))
             .verifyComplete();
     }
 
@@ -659,14 +658,14 @@ public class IndexingAsyncTests extends IndexingTestBase {
         waitForIndexing();
 
         StepVerifier.create(client.getDocument("1"))
-            .assertNext(result -> assertTrue(TestHelpers.areLoudHotelsEqual(convertToType(result, LoudHotel.class), expectedDoc)))
+            .assertNext(result -> TestHelpers.assertLoudHotelsEqual(expectedDoc, convertToType(result, LoudHotel.class)))
             .verifyComplete();
 
         client.uploadDocuments(originalDocs).block();
         waitForIndexing();
 
         StepVerifier.create(client.getDocument("1"))
-            .assertNext(result -> assertTrue(TestHelpers.areLoudHotelsEqual(convertToType(result, LoudHotel.class), originalDoc)))
+            .assertNext(result -> TestHelpers.assertLoudHotelsEqual(originalDoc, convertToType(result, LoudHotel.class)))
             .verifyComplete();
     }
 

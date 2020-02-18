@@ -73,7 +73,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -83,7 +83,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillsetWithResponse(expectedSkillset, generateRequestOptions()))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset.getValue()))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset.getValue()))
             .verifyComplete();
     }
 
@@ -93,7 +93,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -103,7 +103,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -112,7 +112,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         Skillset expectedSkillset = createTestSkillsetOcrEntity(null, null);
         StepVerifier
             .create(client.createSkillset(expectedSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
 
         List<EntityCategory> entityCategories = Arrays.asList(
@@ -122,7 +122,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             entityCategories).setName("testskillset1");
         StepVerifier
             .create(client.createSkillset(expectedSkillsetWithPrintedExtraction))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillsetWithPrintedExtraction, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillsetWithPrintedExtraction, actualSkillset))
             .verifyComplete();
     }
 
@@ -132,21 +132,21 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             SentimentSkillLanguage.PT_PT, TextExtractionAlgorithm.PRINTED);
         StepVerifier
             .create(client.createSkillset(expectedSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
 
         Skillset expectedSkillsetWithPrintedExtraction = createTestSkillsetOcrSentiment(OcrSkillLanguage.FI,
             SentimentSkillLanguage.FI, TextExtractionAlgorithm.PRINTED).setName("testskillset1");
         StepVerifier
             .create(client.createSkillset(expectedSkillsetWithPrintedExtraction))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillsetWithPrintedExtraction, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillsetWithPrintedExtraction, actualSkillset))
             .verifyComplete();
 
         Skillset expectedSkillsetWithHandWrittenExtraction = createTestSkillsetOcrSentiment(OcrSkillLanguage.EN,
             SentimentSkillLanguage.EN, TextExtractionAlgorithm.HANDWRITTEN).setName("testskillset2");
         StepVerifier
             .create(client.createSkillset(expectedSkillsetWithHandWrittenExtraction))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillsetWithHandWrittenExtraction, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillsetWithHandWrittenExtraction, actualSkillset))
             .verifyComplete();
     }
 
@@ -156,21 +156,21 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             KeyPhraseExtractionSkillLanguage.EN);
         StepVerifier
             .create(client.createSkillset(expectedSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
 
         Skillset expectedSkillsetWithFRLanguage = createTestSkillsetOcrKeyPhrase(OcrSkillLanguage.FR,
             KeyPhraseExtractionSkillLanguage.FR).setName("testskillset1");
         StepVerifier
             .create(client.createSkillset(expectedSkillsetWithFRLanguage))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillsetWithFRLanguage, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillsetWithFRLanguage, actualSkillset))
             .verifyComplete();
 
         Skillset expectedSkillsetWithESLanguage = createTestSkillsetOcrKeyPhrase(OcrSkillLanguage.ES,
             KeyPhraseExtractionSkillLanguage.ES).setName("testskillset2");
         StepVerifier
             .create(client.createSkillset(expectedSkillsetWithESLanguage))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillsetWithESLanguage, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillsetWithESLanguage, actualSkillset))
             .verifyComplete();
     }
 
@@ -180,7 +180,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -190,21 +190,21 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             SplitSkillLanguage.EN, TextSplitMode.PAGES);
         StepVerifier
             .create(client.createSkillset(expectedSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
 
         Skillset expectedSkillsetWithFRLanguage = createTestSkillsetOcrSplitText(OcrSkillLanguage.FR,
             SplitSkillLanguage.FR, TextSplitMode.PAGES).setName("testskillset1");
         StepVerifier
             .create(client.createSkillset(expectedSkillsetWithFRLanguage))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillsetWithFRLanguage, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillsetWithFRLanguage, actualSkillset))
             .verifyComplete();
 
         Skillset expectedSkillsetWithFILanguage = createTestSkillsetOcrSplitText(OcrSkillLanguage.FI,
             SplitSkillLanguage.FI, TextSplitMode.SENTENCES).setName("testskillset2");
         StepVerifier
             .create(client.createSkillset(expectedSkillsetWithFILanguage))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillsetWithFILanguage, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillsetWithFILanguage, actualSkillset))
             .verifyComplete();
 
         Skillset expectedSkillsetWithDALanguage = createTestSkillsetOcrSplitText(OcrSkillLanguage.DA,
@@ -212,7 +212,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         StepVerifier
             .create(client.deleteSkillset(expectedSkillsetWithFILanguage.getName())
                 .then(client.createSkillset(expectedSkillsetWithDALanguage)))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillsetWithDALanguage, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillsetWithDALanguage, actualSkillset))
             .verifyComplete();
     }
 
@@ -222,7 +222,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -232,7 +232,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedOcrSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedOcrSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedOcrSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -243,7 +243,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         StepVerifier
             .create(client.createSkillset(expected)
                 .then(client.getSkillset(expected.getName())))
-            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
+            .assertNext(actual -> TestHelpers.assertSkillsetsEqual(expected, actual))
             .verifyComplete();
     }
 
@@ -254,7 +254,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         StepVerifier
             .create(client.createSkillset(expected)
                 .then(client.getSkillsetWithResponse(expected.getName(), generateRequestOptions())))
-            .assertNext(actual -> assertSkillsetsEqual(expected, actual.getValue()))
+            .assertNext(actual -> TestHelpers.assertSkillsetsEqual(expected, actual.getValue()))
             .verifyComplete();
     }
 
@@ -264,7 +264,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedImageAnalysisSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedImageAnalysisSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedImageAnalysisSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -274,7 +274,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedKeyPhraseSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedKeyPhraseSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedKeyPhraseSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -284,7 +284,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedMergeSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedMergeSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedMergeSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -294,7 +294,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedEntityRecognitionSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedEntityRecognitionSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedEntityRecognitionSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -304,7 +304,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedSentimentSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSentimentSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSentimentSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -315,7 +315,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         StepVerifier
             .create(client.createSkillset(expected)
                 .then(client.getSkillset(expected.getName())))
-            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
+            .assertNext(actual -> TestHelpers.assertSkillsetsEqual(expected, actual))
             .verifyComplete();
     }
 
@@ -325,7 +325,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedSplitSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSplitSkillset, actualSkillset))
+            .assertNext(actualSkillset -> TestHelpers.assertSkillsetsEqual(expectedSplitSkillset, actualSkillset))
             .verifyComplete();
     }
 
@@ -335,7 +335,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expected))
-            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
+            .assertNext(actual -> TestHelpers.assertSkillsetsEqual(expected, actual))
             .verifyComplete();
     }
 
@@ -433,7 +433,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createOrUpdateSkillset(expected))
-            .assertNext(res -> assertSkillsetsEqual(expected, res))
+            .assertNext(res -> TestHelpers.assertSkillsetsEqual(expected, res))
             .verifyComplete();
     }
 
@@ -477,7 +477,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(updatedSkillSetResult)
-            .assertNext(res -> assertSkillsetsEqual(skillset.setSkills(getCreateOrUpdateSkills()), res))
+            .assertNext(res -> TestHelpers.assertSkillsetsEqual(skillset.setSkills(getCreateOrUpdateSkills()), res))
             .verifyComplete();
     }
 
@@ -494,7 +494,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(updatedSkillset)
-            .assertNext(res -> assertSkillsetsEqual(
+            .assertNext(res -> TestHelpers.assertSkillsetsEqual(
                 skillset.setCognitiveServicesAccount(new DefaultCognitiveServicesAccount()
                     .setDescription("description")), res))
             .verifyComplete();
@@ -506,7 +506,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expected))
-            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
+            .assertNext(actual -> TestHelpers.assertSkillsetsEqual(expected, actual))
             .verifyComplete();
     }
 
@@ -555,7 +555,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expected))
-            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
+            .assertNext(actual -> TestHelpers.assertSkillsetsEqual(expected, actual))
             .verifyComplete();
     }
 

@@ -31,7 +31,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataSourceSyncTests extends DataSourceTestBase {
     private SearchServiceClient client;
@@ -157,7 +156,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         DataSource updatedActual = client.createOrUpdateDataSource(updatedExpected);
 
         updatedExpected.getCredentials().setConnectionString(null); // Create doesn't return connection strings.
-        assertTrue(TestHelpers.areDataSourcesEqual(updatedActual, updatedExpected));
+        TestHelpers.assertDataSourcesEqual(updatedExpected, updatedActual);
     }
 
     @Test
@@ -245,7 +244,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         DataSource actualDataSource = client.createOrUpdateDataSource(expectedDataSource);
 
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null));
-        assertTrue(TestHelpers.areDataSourcesEqual(actualDataSource, expectedDataSource));
+        TestHelpers.assertDataSourcesEqual(expectedDataSource, actualDataSource);
         // we delete the data source because otherwise we will hit the quota limits during the tests
         client.deleteDataSource(actualDataSource.getName());
 
@@ -267,11 +266,11 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null)); // Get doesn't return connection strings.
 
         DataSource actualDataSource = client.getDataSource(dataSourceName);
-        assertTrue(TestHelpers.areDataSourcesEqual(actualDataSource, expectedDataSource));
+        TestHelpers.assertDataSourcesEqual(expectedDataSource, actualDataSource);
 
         actualDataSource = client.getDataSourceWithResponse(dataSourceName, generateRequestOptions(), Context.NONE)
             .getValue();
-        assertTrue(TestHelpers.areDataSourcesEqual(actualDataSource, expectedDataSource));
+        TestHelpers.assertDataSourcesEqual(expectedDataSource, actualDataSource);
 
         client.deleteDataSource(dataSourceName);
     }

@@ -4,8 +4,9 @@
 package com.azure.search.test;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.CoreUtils;
+import com.azure.search.TestHelpers;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -18,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Contains async version of the access condition tests
@@ -159,7 +159,7 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
 
         StepVerifier
             .create(createOrUpdateDefinition.apply(newResource, accessOptions))
-            .assertNext(r -> assertTrue(StringUtils.isNotBlank(getEtag(newResource))))
+            .assertNext(r -> assertFalse(TestHelpers.isBlank(getEtag(newResource))))
             .verifyComplete();
     }
 
@@ -265,8 +265,8 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
         StepVerifier
             .create(createOrUpdateDefinition.apply(mutateResource, accessOptions))
             .then(() -> {
-                assertTrue(StringUtils.isNotEmpty(originalETag));
-                assertTrue(StringUtils.isNotEmpty(updatedETag));
+                assertFalse(CoreUtils.isNullOrEmpty(originalETag));
+                assertFalse(CoreUtils.isNullOrEmpty(updatedETag));
                 assertNotEquals(originalETag, updatedETag);
             })
             .verifyErrorSatisfies(error -> {
@@ -307,8 +307,8 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
             .assertNext((res) -> {
                 String updatedETag = getEtag(res);
 
-                assertTrue(StringUtils.isNotEmpty(originalEtag));
-                assertTrue(StringUtils.isNotEmpty(updatedETag));
+                assertFalse(CoreUtils.isNullOrEmpty(originalEtag));
+                assertFalse(CoreUtils.isNullOrEmpty(updatedETag));
                 assertNotEquals(originalEtag, updatedETag);
             })
             .verifyComplete();

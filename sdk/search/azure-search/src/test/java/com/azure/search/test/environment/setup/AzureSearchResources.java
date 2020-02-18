@@ -3,6 +3,7 @@
 
 package com.azure.search.test.environment.setup;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.search.models.DataSource;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -14,7 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.search.SearchService;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
@@ -86,7 +86,7 @@ public class AzureSearchResources {
     private void validate() {
         Objects.requireNonNull(this.azureTokenCredentials, "azureTokenCredentials cannot be null");
         Objects.requireNonNull(this.location, "location cannot be null");
-        if (StringUtils.isBlank(this.subscriptionId)) {
+        if (CoreUtils.isNullOrEmpty(this.subscriptionId)) {
             throw new IllegalArgumentException("subscriptionId cannot be blank");
         }
     }
