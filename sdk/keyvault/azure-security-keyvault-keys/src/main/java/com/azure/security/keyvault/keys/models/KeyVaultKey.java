@@ -108,6 +108,7 @@ public class KeyVaultKey {
         Objects.requireNonNull(jsonWebKey, "The Json web key cannot be null");
         KeyProperties properties = new KeyProperties();
         properties.unpackId(keyId);
+        jsonWebKey.setId(keyId);
         return new KeyVaultKey(properties, jsonWebKey);
     }
 

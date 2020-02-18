@@ -67,7 +67,7 @@ class CryptographyServiceClient {
             .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
     }
 
-    Mono<Response<JsonWebKey>> getSecretKey(Context context) {
+    Mono<Response<KeyVaultKey>> getSecretKey(Context context) {
         return service.getSecret(vaultUrl, keyName, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
            .doOnRequest(ignored -> logger.info("Retrieving key - {}", keyName))
            .doOnSuccess(response -> logger.info("Retrieved key - {}", response.getValue().getName()))
@@ -99,7 +99,7 @@ class CryptographyServiceClient {
                    .doOnError(error -> logger.warning("Failed to set secret - {}", secret.getName(), error));
     }
 
-    JsonWebKey transformSecretKey(SecretKey secretKey) throws JsonProcessingException {
+    KeyVaultKey transformSecretKey(SecretKey secretKey) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
         ArrayNode a = mapper.createArrayNode();
@@ -114,7 +114,13 @@ class CryptographyServiceClient {
         ((ObjectNode) rootNode).put("key_ops", a);
 
         String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
-        return mapper.readValue(jsonString, JsonWebKey.class);
+        JsonWebKey jwk =  mapper.readValue(jsonString, JsonWebKey.class);
+        KeyVaultKey output = KeyVaultKey.fromKeyId(secretKey.getId(), jwk);
+        output.getProperties().setEnabled(secretKey.getProperties().isEnabled());
+        output.getProperties().setExpiresOn(secretKey.getProperties().getExpiresOn());
+        output.getProperties().setNotBefore(secretKey.getProperties().getNotBefore());
+        output.getProperties().setTags(secretKey.getProperties().getTags());
+        return output;
     }
 
     Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {

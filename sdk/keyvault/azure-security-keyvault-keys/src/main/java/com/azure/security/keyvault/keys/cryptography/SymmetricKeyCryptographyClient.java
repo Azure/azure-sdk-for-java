@@ -47,13 +47,72 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey jsonWebKey) {
-        return Mono.error(new UnsupportedOperationException("encrypt operation not supported for AES/OCT/Symmetric key"));
+        key = getKey(jsonWebKey);
+
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+
+        if (baseAlgorithm == null || !(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        }
+
+        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm) baseAlgorithm;
+
+        ICryptoTransform transform;
+
+        try {
+            transform = algo.createEncryptor(key, null, null);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+
+        byte[] cipherText;
+
+        try {
+            cipherText = transform.doFinal(plaintext);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+
+        byte[] authenticationTag = null;
+
+        if (transform instanceof IAuthenticatedCryptoTransform) {
+
+            IAuthenticatedCryptoTransform authenticatedTransform = (IAuthenticatedCryptoTransform) transform;
+
+            authenticationTag = authenticatedTransform.getTag().clone();
+        }
+
+        return Mono.just(new EncryptResult(cipherText, algorithm, jsonWebKey.getId()));
     }
 
     @Override
     Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, Context context,
                                      JsonWebKey jsonWebKey) {
-        return Mono.error(new UnsupportedOperationException("decrypt operation not supported for AES/OCT/Symmetric key"));
+
+        key = getKey(jsonWebKey);
+
+        // Interpret the algorithm
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+
+        if (baseAlgorithm == null || !(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
+            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+        }
+
+        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm) baseAlgorithm;
+
+        ICryptoTransform transform;
+
+        try {
+            transform = algo.createDecryptor(key, null, null, null);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+
+        try {
+            return Mono.just(new DecryptResult(transform.doFinal(cipherText), algorithm, jsonWebKey.getId()));
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
     }
 
     @Override

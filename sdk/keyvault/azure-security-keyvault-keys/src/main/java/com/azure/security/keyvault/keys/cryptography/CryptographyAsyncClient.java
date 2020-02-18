@@ -30,6 +30,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,7 +56,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.OCT;
 public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
     static final String SECRETS_COLLECTION = "secrets";
-    JsonWebKey key;
+    KeyVaultKey kvKey;
     private final CryptographyService service;
     private CryptographyServiceClient cryptographyServiceClient;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
@@ -75,16 +76,19 @@ public class CryptographyAsyncClient {
         JsonWebKey jsonWebKey = key.getKey();
         Objects.requireNonNull(jsonWebKey, "The Json web key is required.");
         if (!jsonWebKey.isValid()) {
-            throw new IllegalArgumentException("Json Web Key is not valid");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Json Web Key is not valid"));
         }
         if (jsonWebKey.getKeyOps() == null) {
-            throw new IllegalArgumentException("Json Web Key's key operations property is not configured");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Json Web Key's key operations property is not configured"));
         }
 
         if (key.getKeyType() == null) {
-            throw new IllegalArgumentException("Json Web Key's key type property is not configured");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Json Web Key's key type property is not configured"));
         }
-        this.key = jsonWebKey;
+
+        validateKeyExpiry(key);
+
+        this.kvKey = key;
         this.keyId = key.getId();
         service = RestProxy.create(CryptographyService.class, pipeline);
         if (!Strings.isNullOrEmpty(key.getId())) {
@@ -108,13 +112,24 @@ public class CryptographyAsyncClient {
         this.keyId = keyId;
         service = RestProxy.create(CryptographyService.class, pipeline);
         cryptographyServiceClient = new CryptographyServiceClient(keyId, service);
-        this.key = null;
+        this.kvKey = null;
+    }
+
+    private void validateKeyExpiry(KeyVaultKey key) throws IllegalStateException {
+        if (key.getProperties().getExpiresOn() != null && key.getProperties().getExpiresOn().compareTo(OffsetDateTime.now()) < 0) {
+            throw logger.logExceptionAsError(new IllegalStateException("Key Vault Key is expired and cannot be used for cryptography operations."));
+        }
+
+        if (key.getProperties().getNotBefore() != null && key.getProperties().getNotBefore().compareTo(OffsetDateTime.now()) > 0) {
+            throw logger.logExceptionAsError(new IllegalStateException("Key Vault Key is expired and cannot be used for cryptography operations."));
+        }
     }
 
     private void initializeCryptoClients() {
         if (localKeyCryptographyClient != null) {
             return;
         }
+        JsonWebKey key = kvKey.getKey();
         if (key.getKeyType().equals(RSA) || key.getKeyType().equals(RSA_HSM)) {
             localKeyCryptographyClient = new RsaKeyCryptographyClient(key, cryptographyServiceClient);
         } else if (key.getKeyType().equals(EC) || key.getKeyType().equals(EC_HSM)) {
@@ -178,7 +193,7 @@ public class CryptographyAsyncClient {
         return cryptographyServiceClient.getKey(context);
     }
 
-    Mono<JsonWebKey> getSecretKey() {
+    Mono<KeyVaultKey> getSecretKey() {
         try {
             return withContext(context -> cryptographyServiceClient.getSecretKey(context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -234,7 +249,14 @@ public class CryptographyAsyncClient {
                 return cryptographyServiceClient.encrypt(algorithm, plaintext, context);
             }
 
-            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
+            try {
+                validateKeyExpiry(this.kvKey);
+            } catch (IllegalStateException e) {
+                return Mono.error(e);
+            }
+
+            JsonWebKey key = kvKey.getKey();
+            if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
                 return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Encrypt Operation is missing "
                                                                                                                  + "permission/not supported for key with id %s", key.getId()))));
             }
@@ -286,8 +308,9 @@ public class CryptographyAsyncClient {
             if (!available) {
                 return cryptographyServiceClient.decrypt(algorithm, cipherText, context);
             }
+            JsonWebKey key = kvKey.getKey();
 
-            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
+            if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
                 return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Decrypt Operation is not allowed for "
                                                                                                                  + "key with id %s", key.getId()))));
             }
@@ -337,7 +360,15 @@ public class CryptographyAsyncClient {
                 return cryptographyServiceClient.sign(algorithm, digest, context);
             }
 
-            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
+            try {
+                validateKeyExpiry(this.kvKey);
+            } catch (IllegalStateException e) {
+                return Mono.error(e);
+            }
+
+            JsonWebKey key = kvKey.getKey();
+
+            if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
                 return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
                                                                                                                  + "with id %s", key.getId()))));
             }
@@ -389,7 +420,9 @@ public class CryptographyAsyncClient {
                 return cryptographyServiceClient.verify(algorithm, digest, signature, context);
             }
 
-            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
+            JsonWebKey key = kvKey.getKey();
+
+            if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
                 return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Verify Operation is not allowed for "
                                                                                                                  + "key with id %s", key.getId()))));
             }
@@ -436,12 +469,20 @@ public class CryptographyAsyncClient {
                 return cryptographyServiceClient.wrapKey(algorithm, key, context);
             }
 
-            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
-                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Wrap Key Operation is not allowed for "
-                                                                                                                 + "key with id %s", this.key.getId()))));
+            try {
+                validateKeyExpiry(this.kvKey);
+            } catch (IllegalStateException e) {
+                return Mono.error(e);
             }
 
-            return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key);
+            JsonWebKey jwk = kvKey.getKey();
+
+            if (!checkKeyPermissions(jwk.getKeyOps(), KeyOperation.WRAP_KEY)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Wrap Key Operation is not allowed for "
+                                                                                                                 + "key with id %s", jwk.getId()))));
+            }
+
+            return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, jwk);
         });
     }
 
@@ -488,11 +529,13 @@ public class CryptographyAsyncClient {
                 return cryptographyServiceClient.unwrapKey(algorithm, encryptedKey, context);
             }
 
-            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.UNWRAP_KEY)) {
+            JsonWebKey jwk = kvKey.getKey();
+
+            if (!checkKeyPermissions(jwk.getKeyOps(), KeyOperation.UNWRAP_KEY)) {
                 return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unwrap Key Operation is not allowed "
-                                                                                                                 + "for key with id %s", this.key.getId()))));
+                                                                                                                 + "for key with id %s", jwk.getId()))));
             }
-            return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
+            return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, jwk);
         });
     }
 
@@ -539,11 +582,13 @@ public class CryptographyAsyncClient {
                 return cryptographyServiceClient.signData(algorithm, data, context);
             }
 
-            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
+            JsonWebKey jwk = kvKey.getKey();
+
+            if (!checkKeyPermissions(jwk.getKeyOps(), KeyOperation.SIGN)) {
                 return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
-                                                                                                                 + "with id %s", this.key.getId()))));
+                                                                                                                 + "with id %s", jwk.getId()))));
             }
-            return localKeyCryptographyClient.signDataAsync(algorithm, data, context, key);
+            return localKeyCryptographyClient.signDataAsync(algorithm, data, context, jwk);
         });
     }
 
@@ -591,11 +636,13 @@ public class CryptographyAsyncClient {
                 return cryptographyServiceClient.verifyData(algorithm, data, signature, context);
             }
 
-            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
+            JsonWebKey jwk = kvKey.getKey();
+
+            if (!checkKeyPermissions(jwk.getKeyOps(), KeyOperation.VERIFY)) {
                 return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
-                    "Verify Operation is not allowed for key with id %s", this.key.getId()))));
+                    "Verify Operation is not allowed for key with id %s", jwk.getId()))));
             }
-            return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key);
+            return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, jwk);
         });
     }
 
@@ -627,19 +674,21 @@ public class CryptographyAsyncClient {
     }
 
     private Mono<Boolean> ensureValidKeyAvailable() {
-        boolean keyNotAvailable = (this.key == null && keyCollection != null);
+        boolean keyNotAvailable = (this.kvKey == null && keyCollection != null);
         if (keyNotAvailable) {
             if (keyCollection.equals(SECRETS_COLLECTION)) {
-                return getSecretKey().map(jwk -> {
-                    this.key = (jwk);
+                return getSecretKey().map(kvKey -> {
+                    this.kvKey = (kvKey);
                     initializeCryptoClients();
-                    return this.key.isValid();
+                    JsonWebKey jwk = kvKey.getKey();
+                    return this.kvKey.getKey().isValid();
                 });
             } else {
                 return getKey().map(kvKey -> {
-                    this.key = (kvKey.getKey());
+                    this.kvKey = (kvKey);
                     initializeCryptoClients();
-                    return key.isValid();
+                    JsonWebKey jwk = kvKey.getKey();
+                    return jwk.isValid();
                 });
             }
         } else {
