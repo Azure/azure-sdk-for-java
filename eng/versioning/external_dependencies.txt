@@ -178,8 +178,8 @@ cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 
 # sdk\eventgrid\microsoft-azure-eventgrid\pom.xml
-eventgrid_com.microsoft.azure:azure-client-runtime;1.5.0
-eventgrid_com.microsoft.azure:azure-client-authentication;1.5.0
+eventgrid_com.microsoft.azure:azure-client-runtime;1.7.1
+eventgrid_com.microsoft.azure:azure-client-authentication;1.7.1
 eventgrid_commons-io:commons-io;2.6
 
 # sdk\eventhubs\microsoft-azure-eventhubs-eph\pom.xml
