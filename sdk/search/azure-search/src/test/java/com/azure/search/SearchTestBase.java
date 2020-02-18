@@ -43,6 +43,9 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
     static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
     private static final String SEARCH_SCORE_FIELD = "@search.score";
+    private static final String FACET_FROM = "from";
+    private static final String FACET_TO = "to";
+    private static final String FACET_VALUE = "value";
 
     protected List<Map<String, Object>> hotels;
 
@@ -97,7 +100,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         }
     }
 
-    void assertRangeFacets(List<RangeFacetResult> baseRateFacets, List<RangeFacetResult> lastRenovationDateFacets) {
+    <T> void assertRangeFacets(List<RangeFacetResult<T>> baseRateFacets, List<RangeFacetResult<T>> lastRenovationDateFacets) {
         Assert.assertNull(baseRateFacets.get(0).getFrom());
         Assert.assertEquals(5.0, baseRateFacets.get(0).getTo());
         Assert.assertEquals(5.0, baseRateFacets.get(1).getFrom());
@@ -121,17 +124,20 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(2, lastRenovationDateFacets.get(1).getCount().intValue());
     }
 
-    List<RangeFacetResult> getRangeFacetsForField(
+    List<RangeFacetResult<String>> getRangeFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
-        return facetCollection.stream().map(RangeFacetResult::new)
+        return facetCollection.stream().map(facetResult -> new RangeFacetResult<String>(facetResult.getCount(),
+            (String) facetResult.getDocument().get(FACET_FROM),  (String) facetResult.getDocument().get(FACET_TO)))
             .collect(Collectors.toList());
     }
 
-    List<ValueFacetResult> getValueFacetsForField(
+    @SuppressWarnings("unchecked")
+    <T> List<ValueFacetResult<T>> getValueFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
-        return facetCollection.stream().map(ValueFacetResult::new)
+        return facetCollection.stream().map(facetResult -> new ValueFacetResult<T>(facetResult.getCount(),
+            (T) facetResult.getDocument().get(FACET_VALUE)))
             .collect(Collectors.toList());
     }
 
@@ -152,7 +158,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(expectedKeys, actualKeys);
     }
 
-    void assertValueFacetsEqual(List<ValueFacetResult> actualFacets, ArrayList<ValueFacetResult> expectedFacets) {
+    <T> void assertValueFacetsEqual(List<ValueFacetResult<T>> actualFacets, ArrayList<ValueFacetResult<T>> expectedFacets) {
         Assert.assertEquals(expectedFacets.size(), actualFacets.size());
         for (int i = 0; i < actualFacets.size(); i++) {
             Assert.assertEquals(expectedFacets.get(i).getCount(), actualFacets.get(i).getCount());

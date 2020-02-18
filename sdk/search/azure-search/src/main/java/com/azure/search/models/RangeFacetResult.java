@@ -10,20 +10,22 @@ import com.azure.core.annotation.Immutable;
  * with a field value falling within a particular range.
  */
 @Immutable
-public class RangeFacetResult {
+public class RangeFacetResult<T> {
     private final Long count;
-    private final Object from;
-    private final Object to;
+    private final T from;
+    private final T to;
 
     /**
-     * Constructor
+     * Constructor of RangeFacetResult.
      *
-     * @param facetResult facet result object
+     * @param count The count of the result.
+     * @param from Value indicates the lower bound of facet's range
+     * @param to Value indicates the upper bound of facet's range
      */
-    public RangeFacetResult(FacetResult facetResult) {
-        count = facetResult.getCount();
-        from = facetResult.getDocument().get("from");
-        to = facetResult.getDocument().get("to");
+    public RangeFacetResult(Long count, T from, T to) {
+        this.count = count;
+        this.from = from;
+        this.to = to;
     }
 
     /**
